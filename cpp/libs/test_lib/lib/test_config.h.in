@@ -1,0 +1,10 @@
+#pragma once 
+
+#include <string>
+
+////////////////////////////////////////////////////////////////////////////////
+
+namespace ebu_list::test_lib::detail
+{
+    constexpr auto sample_data_root_dir = R"(@EBU_LIST_SAMPLE_DATA_ROOT@)";
+}

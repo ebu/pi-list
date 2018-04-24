@@ -1,0 +1,26 @@
+# Configurations for LIST Web Server
+# Use this file for development mode
+
+# Filesystem related
+folder: /home/
+cpp: /app/bin/
+
+# HTTP-related
+cookieSecret: STRD4O
+webappDomain: http://localhost:8080
+
+# MongoDB database
+database:
+  hostname: mongo
+  port: 27017
+
+# Comment / Uncomment to use facebook auth
+facebook:
+  APP_ID: %APP_ID%
+  APP_SECRET: %APP_SECRET%
+  CALLBACK_URL: http://localhost:3030/auth/facebook/callback
+
+# InfluxDB URL. Comment to disable sending data to influxDB
+influx:
+  hostname: influxdb
+  port: 8086

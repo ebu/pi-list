@@ -1,0 +1,33 @@
+.lst-table-configure-sdp-badge {
+  padding: 3px 10px;
+  font-size: 13px;
+
+  .lst-icons {
+    position: relative;
+    font-size: 14px;
+    top: 2px;
+  }
+
+  span{
+    font-weight: 400;
+    position: relative;
+    top: -1px;
+
+    &:before{
+      content: '';
+      margin-left: 8px;
+    }
+  }
+}
+
+.stream-type-number {
+  font-size: 12px;
+  padding-right: 0.5rem;
+  color: $black-light-20;
+
+  i {
+    font-size: 14px;
+    top: 3px;
+    position: relative;
+  }
+}

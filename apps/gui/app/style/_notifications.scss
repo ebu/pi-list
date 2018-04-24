@@ -1,0 +1,49 @@
+.noty_theme__list {
+    &.noty_bar {
+        margin-bottom: $margin / 2;
+        border-radius: 4px;
+        box-shadow: 0px 2px 10px 0px rgba(196, 196, 196, 0.8);
+
+        .noty_body {
+            padding: $margin;
+            background: transparentize($white-blank, 0.1);
+        }
+
+        .lst-noty-icon {
+            font-size: 36px;
+        }
+
+        .list-noty-icon-wrapper {
+            margin-right: $margin;
+        }
+
+        .noty_close_button {
+          top: 6px;
+          right: 6px;
+          background: none;
+          color: $black-light-40;
+
+          &:hover {
+            background: inherit;
+          }
+        }
+    }
+
+  &.noty_type__success {
+      i {
+        color: $green;
+      }
+  }
+
+  &.noty_type__error {
+    i {
+      color: $red;
+    }
+  }
+
+  &.noty_type__warn {
+    i {
+      color: $yellow;
+    }
+  }
+}

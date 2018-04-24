@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/common/Badge Badge Snapshots should render a default badge (info) with the correct text 1`] = `
+<span
+  className="lst-badge lst-badge--info"
+>
+  Just a badge
+</span>
+`;
+
+exports[`components/common/Badge Badge Snapshots should render a error badge with the correct text 1`] = `
+<span
+  className="lst-badge"
+>
+  Just a badge
+</span>
+`;
+
+exports[`components/common/Badge Badge Snapshots should render a info badge with the correct text 1`] = `
+<span
+  className="lst-badge lst-badge--info"
+>
+  Just a badge
+</span>
+`;
+
+exports[`components/common/Badge Badge Snapshots should render a success badge with the correct text 1`] = `
+<span
+  className="lst-badge lst-badge--success"
+>
+  Just a badge
+</span>
+`;
+
+exports[`components/common/Badge Badge Snapshots should render a warning badge with the correct text 1`] = `
+<span
+  className="lst-badge lst-badge--warning"
+>
+  Just a badge
+</span>
+`;

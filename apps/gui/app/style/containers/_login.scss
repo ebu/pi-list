@@ -1,0 +1,82 @@
+.lst-login {
+    &--container {
+        @extend .lst-no-padding, .lst-no-margin;
+        margin: 0;
+        height: 100vh;
+        flex-direction: column;
+    }
+
+    &--form {
+        background-color: $white-blank;
+        min-height: 435px;
+        width: 380px;
+        border-radius: 5px;
+        box-shadow: 0 2px 18px 3px rgba(196, 196, 196, 0.28);
+    }
+
+    &--logo {
+        margin-bottom: $margin;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 400;
+    }
+
+    &--header {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 400;
+        text-transform: uppercase;
+        margin: 2rem 0;
+    }
+}
+
+.lst-login--form {
+    .lst-input {
+        border: 1px solid #d8d8d8;
+        color: #676767;
+        padding: 10px;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .lst-login--group {
+        @extend .row, .middle-xs;
+        padding: 6px 30px;
+    }
+
+    .lst-login-btn {
+        font-family: 'Montserrat', sans-serif;
+        text-transform: uppercase;
+        width: 100%;
+        padding: 12px;
+        font-weight: 600;
+    }
+
+    .lst-external-login {
+        font-size: 11px;
+        padding: 11px;
+        line-height: 12px;
+    }
+}
+
+h3.lst-login--heading {
+    overflow: hidden;
+    text-align: center;
+    color: #969697;
+}
+
+.lst-login--heading {
+    display: flex;
+    flex-basis: 100%;
+    align-items: center;
+    color: rgba(0, 0, 0, 0.35);
+    margin: 8px 0px;
+}
+.lst-login--heading::before,
+.lst-login--heading::after {
+    content: "";
+    flex-grow: 1;
+    background: #d8d8d8;
+    height: 1px;
+    font-size: 0px;
+    line-height: 0px;
+    margin: 0px 32px;
+}
+

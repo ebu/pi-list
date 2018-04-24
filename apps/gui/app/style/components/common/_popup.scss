@@ -1,0 +1,49 @@
+.lst-popup {
+    &__header {
+        i {
+            font-size: 24px;
+            position: relative;
+            top: 3px;
+            margin-right: $margin / 2;
+        }
+
+        span {
+            position: relative;
+            top: -2px;
+        }
+    }
+
+    &__content {
+        margin: 1.3rem 0;
+        color: $black;
+    }
+
+    &__footer {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+    }
+
+    // Customization to Rodal
+
+    .rodal-dialog {
+        margin-top: 15%;
+    }
+
+    .rodal-close {
+        top: 23px;
+        width: 14px;
+        height: 14px;
+
+        &::before, &::after {
+            height: 1px;
+            background-color: $black-light-40;
+        }
+    }
+}
+
+.rodal-fade-enter {
+    #lst-app {
+        background-color: red;
+    }
+}

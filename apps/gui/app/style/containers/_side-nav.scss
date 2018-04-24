@@ -1,0 +1,123 @@
+.lst-side-nav {
+    width: $side-nav-width-closed;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    background: $black;
+    color: $white;
+    transition: width $normal-transition-time;
+
+    &__user {
+        &-photo {
+            border-radius: 50%;
+            height: 35px;
+            width: 35px;
+        }
+
+        &-name {
+            font-size: 13px;
+            font-weight: 400;
+        }
+
+        &-email {
+            font-size: 10px;
+            font-weight: 100;
+        }
+    }
+
+    &__options {
+        background: $black-dark-3;
+        margin-bottom: 0;
+        padding: 5px;
+        color: $red;
+        font-weight: 500;
+        font-size: 15px;
+
+        a, button, button:hover {
+            margin: 0.5rem 0;
+            color: $red;
+            text-decoration: none;
+            display: flex;
+        }
+
+        button, button:hover {
+            font-weight: 600;
+
+            i {
+                font-size: 17px !important;
+                padding-right: 0;
+                top: -1px !important;
+            }
+        }
+
+        i {
+            padding: 2px 11px;
+            font-size: 16px;
+        }
+    }
+
+    &__is-open {
+        width: $side-nav-width-open;
+    }
+
+    .lst-side-nav-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        height: $top-nav-height;
+
+        img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+    }
+
+    ul {
+        padding-left: 0;
+        list-style: none;
+    }
+
+    li {
+        white-space: nowrap;
+
+        a {
+            color: #babbbc;
+            text-decoration: none;
+            display: flex;
+            flex: 1;
+            align-items: center;
+            padding: 12px;
+            transition: background $normal-transition-time, box-shadow $normal-transition-time;
+
+            &.active {
+                color: $white;
+                background-color: #35373c;
+                box-shadow: inset 2px 0 0px 0px $blue;
+            }
+        }
+    }
+
+    .lst-side-nav__item {
+        &-icon {
+            display: flex;
+            margin-right: 8px;
+        }
+
+        &-text {
+            display: flex;
+            opacity: 0;
+            font-weight: 400;
+            transition: opacity $fast-transition-time;
+        }
+    }
+
+    .lst-side-nav__items {
+        flex: 1;
+        margin-bottom: 60px;
+    }
+}
+
+.lst-side-nav__is-open .lst-side-nav__item-text {
+    opacity: 1;
+}

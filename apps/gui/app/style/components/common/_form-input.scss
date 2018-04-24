@@ -1,0 +1,8 @@
+.lst-control-group {
+  @extend .row;
+  padding: $margin / 3;
+
+  .lst-form-label {
+    @extend .lst-text-right, .lst-text-vertical-align;
+  }
+}

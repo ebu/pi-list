@@ -1,0 +1,40 @@
+.lst-alert {
+  padding: 0.8em;
+  margin-bottom: 0.8em;
+  border-radius: 4px;
+  color: #fff;
+  display: flex;
+  text-align: left;
+
+  &__icon {
+    flex-direction: row;
+    margin-right: 0.8em;
+  }
+
+  &__icon-size {
+    font-size: 2em;
+  }
+
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &--success{
+    @extend .lst-bg--green;
+  }
+
+  &--warning{
+    @extend .lst-bg--yellow;
+  }
+
+  &--danger {
+    @extend .lst-bg--red;
+  }
+
+  &--info {
+    @extend .lst-bg--blue;
+  }
+}

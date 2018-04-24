@@ -1,0 +1,184 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/common/Alert Alert Snapshots should render a danger alert with the correct label 1`] = `
+<div
+  className="lst-alert col-xs-12 lst-alert--danger"
+>
+  
+  <div
+    className="lst-alert__content"
+  >
+    Hello world
+  </div>
+</div>
+`;
+
+exports[`components/common/Alert Alert Snapshots should render a danger alert with the correct label and correct icon 1`] = `
+<div
+  className="lst-alert col-xs-12 lst-alert--danger"
+>
+  <div
+    className="lst-alert__icon"
+  >
+    <i
+      className="lst-alert__icon-size lst-icons"
+    >
+      error
+    </i>
+  </div>
+  <div
+    className="lst-alert__content"
+  >
+    Hello world
+  </div>
+</div>
+`;
+
+exports[`components/common/Alert Alert Snapshots should render a default alert (danger) with the correct label 1`] = `
+<div
+  className="lst-alert col-xs-12 lst-alert--danger"
+>
+  
+  <div
+    className="lst-alert__content"
+  >
+    Hello world
+  </div>
+</div>
+`;
+
+exports[`components/common/Alert Alert Snapshots should render a default alert (danger) with the correct label 2`] = `
+<div
+  className="lst-alert col-xs-12 lst-alert--danger"
+>
+  
+  <div
+    className="lst-alert__content"
+  >
+    Hello world
+  </div>
+</div>
+`;
+
+exports[`components/common/Alert Alert Snapshots should render a info alert with the correct label 1`] = `
+<div
+  className="lst-alert col-xs-12 lst-alert--info"
+>
+  
+  <div
+    className="lst-alert__content"
+  >
+    Hello world
+  </div>
+</div>
+`;
+
+exports[`components/common/Alert Alert Snapshots should render a info alert with the correct label and correct icon 1`] = `
+<div
+  className="lst-alert col-xs-12 lst-alert--info"
+>
+  <div
+    className="lst-alert__icon"
+  >
+    <i
+      className="lst-alert__icon-size lst-icons"
+    >
+      info
+    </i>
+  </div>
+  <div
+    className="lst-alert__content"
+  >
+    Hello world
+  </div>
+</div>
+`;
+
+exports[`components/common/Alert Alert Snapshots should render a success alert with the correct label 1`] = `
+<div
+  className="lst-alert col-xs-12 lst-alert--success"
+>
+  
+  <div
+    className="lst-alert__content"
+  >
+    Hello world
+  </div>
+</div>
+`;
+
+exports[`components/common/Alert Alert Snapshots should render a success alert with the correct label and correct icon 1`] = `
+<div
+  className="lst-alert col-xs-12 lst-alert--success"
+>
+  <div
+    className="lst-alert__icon"
+  >
+    <i
+      className="lst-alert__icon-size lst-icons"
+    >
+      check_circle
+    </i>
+  </div>
+  <div
+    className="lst-alert__content"
+  >
+    Hello world
+  </div>
+</div>
+`;
+
+exports[`components/common/Alert Alert Snapshots should render a warning alert with the correct label 1`] = `
+<div
+  className="lst-alert col-xs-12 lst-alert--warning"
+>
+  
+  <div
+    className="lst-alert__content"
+  >
+    Hello world
+  </div>
+</div>
+`;
+
+exports[`components/common/Alert Alert Snapshots should render a warning alert with the correct label and correct icon 1`] = `
+<div
+  className="lst-alert col-xs-12 lst-alert--warning"
+>
+  <div
+    className="lst-alert__icon"
+  >
+    <i
+      className="lst-alert__icon-size lst-icons"
+    >
+      warning
+    </i>
+  </div>
+  <div
+    className="lst-alert__content"
+  >
+    Hello world
+  </div>
+</div>
+`;
+
+exports[`components/common/Alert Alert Snapshots should render an alert with custom icon 1`] = `
+<div
+  className="lst-alert col-xs-12 lst-alert--warning"
+>
+  <div
+    className="lst-alert__icon"
+  >
+    <i
+      className="lst-alert__icon-size lst-icons"
+    >
+      build
+    </i>
+  </div>
+  <div
+    className="lst-alert__content"
+  >
+    Hello world
+  </div>
+</div>
+`;

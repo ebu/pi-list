@@ -1,0 +1,62 @@
+{
+  "headings": {
+    "network_information": "Network Information",
+    "media_information": "Media Information"
+  },
+
+  "audio_explorer": "Audio Explorer",
+
+  "audio_player": {
+    "play": "Play",
+    "pause": "Pause"
+  },
+
+  "destination_address": "Destination Address",
+  "destination_port": "Destination Port",
+  "media_type": "Media Type",
+  "payload_type": "Payload Type",
+  "source_address": "Source Address",
+  "source_port": "Source Port",
+  "ssrc": "Synchronization Source Identifiers",
+  "sampling": "Sampling",
+  "color_depth": "Color Depth",
+  "width": "Width",
+  "height": "Height",
+  "rate": "Rate",
+  "colorimetry": "Colorimetry",
+  "packets_per_frame": "Packets per Frame",
+  "scan_type": "Scan Type",
+  "number_channels": "Number of Channels",
+  "encoding": "Encoding",
+  "packet_time": "Packet Time",
+
+  "stream": "%{smart_count} stream |||| %{smart_count} streams",
+  "configure_streams": "Configure Stream |||| Configure Streams",
+
+  "alerts": {
+    "stream_missing_information": "Missing Stream Information",
+    "stream_already_analyzed": "Stream already analyzed",
+    "media_type_unknown": "The media type for this stream is unknown!"
+  },
+
+  "information": {
+    "stream_missing_information": "This stream doesn't have all information needed to proceed for the stream analysis. Please give us more information in the Media Information.",
+    "stream_analyzed_information": "We already analyzed this stream. If the results didn't match your expectation, try to change the Media Settings and try again.",
+    "media_type_unknown": "By marking this stream as unknown, it will not be analyzed."
+  },
+
+  "notifications": {
+    "success": {
+      "pcap-upload": "PCAP file uploaded!",
+      "pcap-upload-message": "The %{name} file was successfully uploaded"
+    },
+    "error": {
+      "pcap-upload": "PCAP upload failed!",
+      "pcap-upload-message": "An error occurred during the %{name} file upload process"
+    }
+  },
+
+  "errors": {
+    "stream-marked-as-unknown": "The Media Type for this stream was configured as \"Unknown\". To get more information about this stream change the Media Type in the stream configuration."
+  }
+}

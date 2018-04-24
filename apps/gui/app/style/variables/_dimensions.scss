@@ -1,0 +1,14 @@
+$margin: 1rem;
+$top-nav-height: 48px;
+$main-container-height: $top-nav-height + (16px * 2);
+
+$side-nav-width-closed: 50px;
+$side-nav-width-open: 220px;
+
+$small-font-size: 12px;
+
+$border-radius: 0.25rem;
+
+
+// This is usefull for media queries
+$xs-screen: 767px;

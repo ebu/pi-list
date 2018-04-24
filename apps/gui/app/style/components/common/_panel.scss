@@ -1,0 +1,39 @@
+.lst-panel {
+  margin-bottom: $margin;
+
+  .lst-panel__header h2{
+    font-weight: 400;
+  }
+
+  .lst-panel__container {
+    padding: $margin;
+    border-radius: $border-radius;
+    background-color: $white-blank;
+  }
+
+  .lst-panel--no-padding {
+    padding: 0;
+
+    &.lst-panel--full-height {
+        height: 100%;
+    }
+  }
+
+  .lst-panel--padding {
+    padding: $margin;
+    //padding-bottom: $margin/2;
+
+    &.lst-panel--full-height {
+      height: calc(100% - #{(1.5 * $margin)});
+    }
+  }
+
+  .lst-panel--no-border {
+    border: 0;
+  }
+
+  .lst-panel--border {
+    border: 1px solid $grey;
+  }
+
+}

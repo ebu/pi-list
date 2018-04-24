@@ -1,0 +1,17 @@
+rabbitmq:
+  image: rabbitmq:3.7.3-management
+  container_name: rabbitmq
+  ports:
+    - "15672:15672"
+    - "5672:5672"
+
+influxdb:
+  image: influxdb:1.4.2
+  container_name: influxdb
+  ports:
+    - "8086:8086"
+
+mongo:
+  image: mongo:latest
+  ports:
+    - "27017:27017"

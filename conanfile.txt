@@ -1,0 +1,15 @@
+[requires]
+cpprestsdk/2.10.1@bincrafters/stable
+libpng/1.6.34@bincrafters/stable
+rxcpp/4.0.0@bincrafters/stable
+fmt/4.1.0@bincrafters/stable
+jsonformoderncpp/3.1.1@vthiery/stable
+spdlog/0.16.3@bincrafters/stable
+catch2/2.2.2@bincrafters/stable
+
+[options]
+cpprestsdk:exclude_websockets=False
+cpprestsdk:exclude_compression=True
+
+[generators]
+cmake

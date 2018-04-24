@@ -1,0 +1,12 @@
+[submodule "third_party/bicla"]
+	path = third_party/bicla
+	url = https://github.com/pedro-alves-ferreira/bicla.git
+[submodule "third_party/bimo"]
+	path = third_party/bimo
+	url = https://github.com/pedro-alves-ferreira/bimo.git
+[submodule "third_party/GSL"]
+	path = third_party/GSL
+	url = https://github.com/Microsoft/GSL.git
+[submodule "third_party/influxdb-cpp-rest"]
+	path = third_party/influxdb-cpp-rest
+	url = https://github.com/bisect-pt/influxdb-cpp-rest.git

@@ -1,0 +1,44 @@
+.lst-app-container {
+  @include flex;
+  min-height: 100%;
+}
+
+.lst-main-container {
+  height: calc(100% - #{$main-container-height});
+  padding: $margin;
+}
+
+.lst-main {
+  flex: 1;
+  width: 100%;
+  background: $background-color-blue;
+}
+
+.lst-dashboard-wrapper {
+  margin: 0;
+}
+
+.lst-async-loader--loading {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lst-error-page {
+  height: 100%;
+  align-items: center;
+
+  &__icon i{
+    font-size: 7rem;
+  }
+
+  .lst-error-page-heading {
+    font-weight: 400;
+  }
+}
+
+#lst-landing-page-loader {
+  position: relative;
+  top: 42vh;
+}

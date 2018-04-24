@@ -1,0 +1,24 @@
+.lst-statistic {
+  margin-bottom: $margin/2;
+
+  &__icon {
+    padding: $margin;
+    border-radius: $border-radius 0 0 $border-radius;
+  }
+
+  &__icon-size {
+    font-size: 3rem;
+    line-height: 3rem;
+  }
+
+  &__content {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+
+    &__info {
+      padding: $margin/2;
+      padding-left: $margin;
+    }
+  }
+}

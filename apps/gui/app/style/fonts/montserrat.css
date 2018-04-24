@@ -1,0 +1,30 @@
+/**
+ * Montserrat Light
+ */
+@font-face {
+    font-family: 'Montserrat';
+    font-weight: 400;
+    font-style: normal;
+    src: url('./montserrat/Montserrat-Regular.ttf') format('truetype');
+}
+
+
+/**
+ * Montserrat Regular
+ */
+@font-face {
+    font-family: 'Montserrat';
+    font-weight: 400;
+    font-style: normal;
+    src: url('./montserrat/Montserrat-Regular.ttf') format('truetype');
+}
+
+/**
+ * Montserrat Medium
+ */
+@font-face {
+    font-family: 'Montserrat';
+    font-weight: 500;
+    font-style: normal;
+    src: url('./montserrat/Montserrat-Medium.ttf') format('truetype');
+}

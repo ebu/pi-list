@@ -1,0 +1,47 @@
+$badge-font-size: 12px;
+
+.lst-badge {
+  display: inline-block;
+  border-radius: 6px;
+  padding: $badge-font-size / 2;
+  font-size: $badge-font-size;
+  font-weight: 300;
+  line-height: $badge-font-size;
+  white-space: nowrap;
+  margin: 0 $margin/2;
+  vertical-align: middle;
+  color: $white;
+
+  .lst-icons {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  &--success{
+    @extend .lst-bg--green;
+  }
+
+  &--warning{
+    @extend .lst-bg--yellow;
+  }
+
+  &--danger {
+    @extend .lst-bg--red;
+  }
+
+  &--info {
+    @extend .lst-bg--blue;
+  }
+
+  &--mini {
+    padding: 4px;
+    font-size: 12px;
+    margin: 4px;
+
+    i {
+      padding: 0 4px;
+      top: 1px;
+      position: relative;
+    }
+  }
+}

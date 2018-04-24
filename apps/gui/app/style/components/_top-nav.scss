@@ -1,0 +1,31 @@
+.lst-top-nav {
+    height: $top-nav-height;
+    background: $white-blank;
+
+    @include flex;
+    @include flex-center-vertical;
+
+    .lst-top-nav__link {
+        @include flex;
+        @include flex-center-vertical;
+        @include flex-center-horizontal;
+        background: none;
+        border: none;
+        margin-left: 0.5rem;
+        color: $black-light-20;
+      cursor: pointer;
+    }
+
+    .lst-header-title {
+        font-size: 1.25rem;
+        color: $black-light-20;
+
+        .lst-icons {
+            margin: 0 $margin / 2;
+        }
+    }
+
+    .lst-header-button {
+        margin-right: 10px;
+    }
+}

@@ -1,0 +1,77 @@
+.lst-pcap-uploader {
+  @extend .lst-text-center;
+
+  display: flex;
+  height: 150px;
+  padding: $margin;
+  margin-bottom: $margin;
+  color: $grey-dark;
+  font-weight: 400;
+  font-size: 1.1rem;
+  border: 2px dashed $grey-dark;
+  align-items: center;
+  justify-content: center;
+  transition: color $fast-transition-time, border-color $fast-transition-time;
+
+  &.active {
+    color: $blue;
+    border-color: $blue;
+    background-color: $blue-light-25;
+  }
+
+  .lst-pcap-uploader__icon {
+    font-size: 1.8rem;
+  }
+
+  .lst-pcap-uploader__link {
+    text-decoration: underline;
+    cursor: pointer;
+    text-decoration-skip: ink;
+  }
+}
+
+.lst-pcap-uploader-files {
+  margin-bottom: $margin/2;
+
+  li {
+    margin: $margin/2 0;
+
+    .pcap-icon {
+      @extend .lst-text-blue;
+      font-size: 26px;
+      position: relative;
+      top: 1px;
+    }
+
+    .upload-state-icon {
+      line-height: 11px;
+      position: relative;
+      top: 3px;
+    }
+
+    .pcap-file-name,
+    .pcap-upload-file-info {
+      @extend .lst-no-padding;
+      margin-bottom: 0;
+    }
+
+    .pcap-upload-progress {
+      @extend .lst-no-padding, .lst-text-right;
+    }
+
+    .lst-pcap-uploader-bar {
+      margin-top: 4px;
+    }
+
+    .lst-pcap-uploader-file-size {
+      margin: 0 $margin/2;
+      font-style: italic;
+      font-size: $small-font-size;
+    }
+  }
+}
+
+.lst-pcap-uploader-list {
+  margin-top: $margin;
+}
+

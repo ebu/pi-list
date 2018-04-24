@@ -1,0 +1,10 @@
+@import 'dashboard';
+@import 'login';
+@import 'pcaps-page';
+@import '_side-nav';
+@import 'stream';
+
+/* TODO: Remove this code from _index.scss and move it to sdp-config */
+.lst-sdp-config {
+  height: calc(100% - 45px);
+}

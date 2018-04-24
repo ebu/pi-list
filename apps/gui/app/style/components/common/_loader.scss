@@ -1,0 +1,82 @@
+/**
+ * <Loader /> CSS style
+ */
+
+@keyframes spinner {
+  to {transform: rotate(360deg);}
+}
+
+$spinner-large-size: 64px;
+$spinner-default-size: 42px;
+$spinner-default-border-size: 2px;
+$spinner-small-size: 24px;
+$spinner-mini-size: 12px;
+
+@mixin spinner-size($size, $border-size) {
+  width: $size + (3 * $border-size);
+  height: $size + (3 * $border-size);
+}
+
+@mixin spinner-content-size($size) {
+  width: $size;
+  height: $size;
+}
+
+.lst-loader {
+  @include spinner-size($spinner-default-size, $spinner-default-border-size);
+  margin: $margin/2;
+
+  &::before {
+    position: absolute;
+    content: '';
+    @include spinner-content-size($spinner-default-size);
+    border-radius: 50%;
+    border: $spinner-default-border-size solid $grey-hover;
+    border-top-color: $black-light-40;
+    animation: spinner $slow-transition-time linear infinite;
+  }
+
+  &--mini {
+    @include spinner-size($spinner-mini-size, $spinner-default-border-size);
+
+    &:before {
+      @include spinner-content-size($spinner-mini-size);
+    }
+  }
+
+  &--small {
+    @include spinner-size($spinner-small-size, $spinner-default-border-size);
+
+    &:before {
+      @include spinner-content-size($spinner-small-size);
+    }
+  }
+
+  &--large {
+    @include spinner-size($spinner-large-size, $spinner-default-border-size);
+
+    &:before {
+      @include spinner-content-size($spinner-large-size);
+    }
+  }
+
+  &--landing-page {
+    @include spinner-size(58px, 3px);
+
+    &:before {
+      @include spinner-content-size(50px);
+      position: absolute;
+      border-color: $ebu-blue-light;
+      border-top-color: $ebu-blue;
+      top: 60px;
+      left: calc(50% - 27px);
+    }
+  }
+
+  &--inverted {
+    &::before {
+      border-color: transparentize($white-blank, 0.6);
+      border-top-color: $white;
+    }
+  }
+}

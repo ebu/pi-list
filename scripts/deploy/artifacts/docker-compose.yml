@@ -1,0 +1,27 @@
+version: "3"
+services:
+  influxdb:
+    image: influxdb:1.4.2
+    volumes:
+      - influxdb:/var/lib/influxdb
+
+  mongo:
+    image: mongo:latest
+    volumes:
+      - mongo:/data/db
+
+  list_server:
+    build: .
+    ports:
+      - "8080:8080"
+      - "3030:3030"
+    links:
+      - influxdb
+      - mongo
+    volumes:
+      - listserver:/home/
+
+volumes:
+  mongo:
+  listserver:
+  influxdb:

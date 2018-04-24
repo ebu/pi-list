@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/common/Loader Loader Snapshots should render a default loader 1`] = `
+<span
+  className="lst-loader"
+/>
+`;
+
+exports[`components/common/Loader Loader Snapshots should render a large loader 1`] = `
+<span
+  className="lst-loader lst-loader--large"
+/>
+`;
+
+exports[`components/common/Loader Loader Snapshots should render a mini loader 1`] = `
+<span
+  className="lst-loader lst-loader--mini"
+/>
+`;
+
+exports[`components/common/Loader Loader Snapshots should render a small loader 1`] = `
+<span
+  className="lst-loader lst-loader--small"
+/>
+`;

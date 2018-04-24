@@ -1,0 +1,17 @@
+{
+  "env": {},
+  "ignore": [],
+  "plugins": [
+    [
+      "lodash",
+      "module-resolver", {
+        "root": ["./app"]
+      }
+    ]
+  ],
+  "presets": [
+    "es2015",
+    "stage-2",
+    "react"
+  ]
+}

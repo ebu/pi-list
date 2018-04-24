@@ -1,0 +1,26 @@
+.lst-stream-column {
+    box-shadow: 0 0 16px 0 rgba(196, 196, 196, 0.45);
+}
+
+@mixin stream-status($color) {
+    color: $color;
+    border-color: $color;
+    background-color: lighten($color, 48%);
+}
+
+.lst-stream-status {
+    font-size: 1rem;
+    border: 2px solid;
+    padding: 4px;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+
+    &--check {
+        @include stream-status($green);
+    }
+
+    &--uncheck {
+        @include stream-status($yellow);
+    }
+}

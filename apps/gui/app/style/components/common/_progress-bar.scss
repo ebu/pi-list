@@ -1,0 +1,12 @@
+.lst-progress-bar {
+    background: $grey;
+    width: 100%;
+    border-radius: 10px;
+
+    .progress {
+        transition: width $normal-transition-time;
+        background: $blue;
+        height: 5px;
+        border-radius: 10px;
+    }
+}

@@ -1,0 +1,47 @@
+/**
+ * Roboto Thin
+ */
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 100;
+    font-style: normal;
+    src: url("./roboto/Roboto-Thin.woff2") format("woff2"),
+    url('./roboto/Roboto-Thin.woff') format('woff'),
+    url('./roboto/Roboto-Thin.ttf') format('truetype');
+}
+
+/**
+ * Roboto Light
+ */
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 300;
+    font-style: normal;
+    src: url("./roboto/Roboto-Light.woff2") format("woff2"),
+    url('./roboto/Roboto-Light.woff') format('woff'),
+    url('./roboto/Roboto-Light.ttf') format('truetype');
+}
+
+/**
+ * Roboto Regular
+ */
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-style: normal;
+    src: url("./roboto/Roboto-Regular.woff2") format("woff2"),
+    url('./roboto/Roboto-Regular.woff') format('woff'),
+    url('./roboto/Roboto-Regular.ttf') format('truetype');
+}
+
+/**
+ * Roboto Medium
+ */
+@font-face {
+    font-family: 'Roboto';
+    font-weight: 500;
+    font-style: normal;
+    src: url("./roboto/Roboto-Medium.woff2") format("woff2"),
+    url('./roboto/Roboto-Medium.woff') format('woff'),
+    url('./roboto/Roboto-Medium.ttf') format('truetype');
+}

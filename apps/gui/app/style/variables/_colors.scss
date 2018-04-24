@@ -1,0 +1,89 @@
+// COLORS
+
+$white-blank: #fff;
+$white: #f7f7f7;
+
+$background-color-blue: #f5f6f7;
+
+$ebu-blue: #2347fc;
+$ebu-blue-light: lighten($ebu-blue, 30%);
+
+$grey: #eaeaea;
+$grey-hover: darken($grey, 5%);
+$grey-dark: darken($grey, 15%);
+
+$black: #2d3034;
+$black-dark-3: darken($black, 3%);
+$black-light-20: lighten($black, 20%);
+$black-light-40: lighten($black, 40%);
+
+$green: #4caf4f;
+$green-hover: darken($green, 5%);
+
+$yellow: #ecb857;
+$yellow-hover: darken($yellow, 5%);
+
+$red: #d25b49;
+
+$blue: #5086d8;
+$blue-light-25: lighten($blue, 40%);
+
+
+// COLOR CLASSES
+.lst-text-blue {
+  color: $blue;
+}
+
+.lst-text-grey {
+  color: $grey;
+}
+
+.lst-text-dark-grey {
+  color: $grey-dark;
+}
+
+.lst-text-green {
+  color: $green;
+}
+
+.lst-text-red {
+  color: $red !important;
+}
+
+.lst-text-yellow {
+  color: $yellow;
+}
+
+// BACKGROUND CLASSES
+.lst-bg {
+  &--green {
+    background-color: $green;
+    color: $white;
+  }
+
+  &--yellow {
+    background-color: $yellow;
+    color: $white;
+  }
+
+  &--red {
+    background-color: $red;
+    color: $white;
+  }
+
+  &--blue {
+    background-color: $blue;
+    color: $white;
+  }
+
+  &--white {
+    background-color: $white-blank;
+    color: $black;
+  }
+
+  &--gray {
+    background-color: $grey-dark;
+    color: $black;
+  }
+
+}

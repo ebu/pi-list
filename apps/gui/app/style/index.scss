@@ -1,0 +1,84 @@
+// Fonts
+@import 'fonts/roboto.css';
+@import 'fonts/material-icons.css';
+@import 'fonts/montserrat.css';
+
+// Libs
+@import '~normalize.css';
+@import '~flexboxgrid';
+@import '~react-select/dist/react-select.css';
+
+// Variables
+@import 'variables/index';
+
+// Browser Customizations
+@import 'browser-custom';
+
+// Helpers
+@import 'helpers';
+@import 'animations';
+@import 'headings';
+@import 'notifications';
+
+// App CSS
+@import 'app';
+@import 'menu';
+@import 'components/index';
+@import 'containers/index';
+
+*, *:before, *:after {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100vh;
+    background: #F4F5F6;
+}
+
+#lst-app {
+    height: 100vh;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    color: $black;
+    background: $background-color-blue;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+    font-weight: 300;
+    margin-top: 0;
+    margin-bottom: $margin;
+}
+
+hr {
+    margin: 1em 0;
+    @include border-solid(0.5, $grey);
+}
+
+.row {
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: $margin;
+}
+
+li {
+    align-items: center;
+    display: flex;
+}
+
+
+
+/* TODO: REMOVE FROM HERE */
+
+img {
+    &.selected {
+        border: 2px solid $blue;
+    }
+}

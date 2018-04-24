@@ -1,0 +1,171 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/common/Button Button Snapshots should render a button as a link 1`] = `
+<button
+  className="lst-btn lst-btn--link"
+  disabled={false}
+  onClick={null}
+  type="button"
+>
+  test
+</button>
+`;
+
+exports[`components/common/Button Button Snapshots should render a button with an icon 1`] = `
+<button
+  className="lst-btn"
+  disabled={false}
+  onClick={null}
+  type="button"
+>
+  <i
+    className="lst-icons"
+  >
+    delete
+  </i>
+  test
+</button>
+`;
+
+exports[`components/common/Button Button Snapshots should render a button without margin 1`] = `
+<button
+  className="lst-btn lst-btn--info lst-btn--no-margin"
+  disabled={false}
+  onClick={null}
+  type="button"
+>
+  test
+</button>
+`;
+
+exports[`components/common/Button Button Snapshots should render a danger outlined button 1`] = `
+<button
+  className="lst-btn lst-btn--danger"
+  disabled={false}
+  onClick={null}
+  type="button"
+>
+  test
+</button>
+`;
+
+exports[`components/common/Button Button Snapshots should render a default button if the button type isn't defined 1`] = `
+<button
+  className="lst-btn"
+  disabled={false}
+  onClick={null}
+  type="button"
+>
+  test
+</button>
+`;
+
+exports[`components/common/Button Button Snapshots should render a default button with the correct label 1`] = `
+<button
+  className="lst-btn"
+  disabled={false}
+  onClick={null}
+  type="button"
+>
+  test
+</button>
+`;
+
+exports[`components/common/Button Button Snapshots should render a default outlined button 1`] = `
+<button
+  className="lst-btn"
+  disabled={false}
+  onClick={null}
+  type="button"
+>
+  test
+</button>
+`;
+
+exports[`components/common/Button Button Snapshots should render a disabled button 1`] = `
+<button
+  className="lst-btn"
+  disabled={true}
+  onClick={null}
+  type="button"
+>
+  test
+</button>
+`;
+
+exports[`components/common/Button Button Snapshots should render a info button 1`] = `
+<button
+  className="lst-btn lst-btn--info"
+  disabled={false}
+  onClick={null}
+  type="button"
+>
+  test
+</button>
+`;
+
+exports[`components/common/Button Button Snapshots should render a info outlined button 1`] = `
+<button
+  className="lst-btn lst-btn--info"
+  disabled={false}
+  onClick={null}
+  type="button"
+>
+  test
+</button>
+`;
+
+exports[`components/common/Button Button Snapshots should render a primary outlined button 1`] = `
+<button
+  className="lst-btn lst-btn--primary"
+  disabled={false}
+  onClick={null}
+  type="button"
+>
+  test
+</button>
+`;
+
+exports[`components/common/Button Button Snapshots should render a success button 1`] = `
+<button
+  className="lst-btn lst-btn--success"
+  disabled={false}
+  onClick={null}
+  type="button"
+>
+  test
+</button>
+`;
+
+exports[`components/common/Button Button Snapshots should render a success outlined button 1`] = `
+<button
+  className="lst-btn lst-btn--success"
+  disabled={false}
+  onClick={null}
+  type="button"
+>
+  test
+</button>
+`;
+
+exports[`components/common/Button Button Snapshots should render a warning button 1`] = `
+<button
+  className="lst-btn lst-btn--warning"
+  disabled={false}
+  onClick={null}
+  type="button"
+>
+  test
+</button>
+`;
+
+exports[`components/common/Button Button Snapshots should render a warning outlined button 1`] = `
+<button
+  className="lst-btn lst-btn--warning"
+  disabled={false}
+  onClick={null}
+  type="button"
+>
+  test
+</button>
+`;

@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/common/Panel Panel Snapshots should render a panel with header 1`] = `
+<div
+  className="lst-panel"
+>
+  <div
+    className="lst-panel__container lst-panel--no-padding"
+  >
+    <div
+      className="lst-panel__header lst-truncate"
+    >
+      <h2>
+        test title
+      </h2>
+    </div>
+    Just a panel!
+  </div>
+</div>
+`;
+
+exports[`components/common/Panel Panel Snapshots should render a panel with no padding 1`] = `
+<div
+  className="lst-panel"
+>
+  <div
+    className="lst-panel__container lst-panel--no-padding"
+  >
+    
+    Just a panel!
+  </div>
+</div>
+`;
+
+exports[`components/common/Panel Panel Snapshots should render a panel with padding 1`] = `
+<div
+  className="lst-panel"
+>
+  <div
+    className="lst-panel__container lst-panel--padding"
+  >
+    
+    Just a panel!
+  </div>
+</div>
+`;

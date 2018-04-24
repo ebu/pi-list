@@ -1,0 +1,12 @@
+/**
+ * This is needed in order to remove the Firefox behaviour
+ * when the link is clicked.
+ * https://stackoverflow.com/a/7628310
+ */
+a, a:visited, a:focus, a:active, a:hover{
+  outline: none;
+}
+
+button:focus {
+  outline: none;
+}
