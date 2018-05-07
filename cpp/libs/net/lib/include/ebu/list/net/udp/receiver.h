@@ -11,6 +11,7 @@ namespace ebu_list::udp
     {
     public:
         receiver(listener_uptr l, const std::string& address, uint16_t port);
+        receiver(listener_uptr l, ipv4::address dest_addr, port dest_port);
         virtual ~receiver();
 
     private:
