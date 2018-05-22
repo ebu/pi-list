@@ -12,33 +12,6 @@ namespace
     constexpr auto packets_file_name = "packets.json";
     constexpr auto cinst_file_name = "cinst.json";
 
-    json to_json(const line_info& line)
-    {
-        LIST_ASSERT(line.valid);
-        json j;
-        j["line_number"] = line.line_number;
-        j["length"] = line.length;
-        j["offset"] = line.offset;
-        j["field_identification"] = line.field_identification;
-        j["continuation"] = line.continuation;
-
-        return j;
-    }
-
-    json to_json(const lines_info& lines)
-    {
-        json j;
-        for (const auto& line : lines)
-        {
-            if (line.valid)
-            {
-                j.push_back(to_json(line));
-            }
-        }
-
-        return j;
-    }
-
     media::video::video_dimensions get_frame_size(const video_stream_details& info)
     {
         auto dimensions = info.video.dimensions;
@@ -53,13 +26,7 @@ namespace
 
 void ebu_list::write_frame_info(const path& base_dir, const std::string& stream_id, const frame_info& info)
 {
-    json j;
-    j["timestamp"] = info.timestamp;
-    j["packet_count"] = info.packet_count;
-    j["first_packet_ts"] = info.first_packet_timestamp;
-    j["last_packet_ts"] = info.last_packet_timestamp;
-
-    write_json_to(base_dir / stream_id / std::to_string(info.timestamp), constants::meta_filename, j);
+    write_json_to(base_dir / stream_id / std::to_string(info.timestamp), constants::meta_filename, frame_info::to_json(info));
 }
 
 void ebu_list::write_packets(const path& packets_path, const packets& packets_info)
@@ -73,7 +40,7 @@ void ebu_list::write_packets(const path& packets_path, const packets& packets_in
         i["rtp_timestamp"] = packet.rtp.rtp.view().timestamp();
         i["sequence_number"] = packet.full_sequence_number;
         i["marker"] = packet.rtp.rtp.view().marker();
-        i["lines"] = ::to_json(packet.line_info);
+        i["lines"] = ebu_list::to_json(packet.line_info);
         j.push_back(i);
     }
 
@@ -88,7 +55,7 @@ video_stream_serializer::video_stream_serializer(rtp::packet first_packet,
     completion_handler ch,
     path base_dir,
     executor_ptr main_executor)
-    : video_stream_handler(std::move(first_packet), std::move(info), std::move(details), std::move(ch)),
+    : video_stream_handler(std::move(first_packet), std::move(info), details, std::move(ch)),
     base_dir_(std::move(base_dir)),
     main_executor_(std::move(main_executor)),
     frame_size_(get_frame_size(details))

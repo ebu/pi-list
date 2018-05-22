@@ -1,6 +1,5 @@
 const passport = require('passport');
 const db = require('../managers/database');
-const programArguments = require('../util/programArguments');
 const setupLocalAuth = require('./local');
 const setupFacebookOAuth = require('./facebook');
 const logger = require('../util/logger');
