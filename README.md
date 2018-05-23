@@ -4,27 +4,45 @@
 
 LIST is composed by:
 - a set of libraries that handle the ST2110 standards suite;
-- an browser-based application that analyzes previously captured network packets as pcap files.
+- a browser-based application that analyzes previously captured network packets as pcap files.
+
+## Run - Quick-start
+
+The easiest way to quickly use LIST application is via Docker. You'll need:
+
+- **Docker** >= v15
+- **Docker-compose** >= v1.20
+- **CMake** >= v3.9
+- **Conan** >= v1
+- **C++17** compiler
+
+Steps:
+- `git clone https://github.com/ebu/pi-list.git`
+- `git submodule update --init --recursive`
+- cd to `./scripts` and run `./setup-dev-env.sh`
+- cd to `./deploy` and run `./deploy.sh`
+- A new folder `release` will appear on the top-level directory of this repository.
+- cd to the top-level directory of this repository
+- cd to newly created `release` folder.
+- run `./start.sh`
+- You're good to go: `http://localhost:8080`
 
 ## Development
 ### Pre-requisites
-
-LIST requires a C++17 compatible compiler.
-
-Make sure you have installed:
 
 - **CMake** >= v3.9
 - **Conan** >= v1
 - **Docker** >= v15
 - **Docker-compose** >= v1.20
 - **NodeJS** >= v8
+- **C++17 compatible compiler**
 
 We use cmake as the meta build system and require most of our third-party dependencies using conan. 
-Our *rule of thumb* is to include dependencies using conan when possible. Conan is integrate with CMake, 
+Our *rule of thumb* is to include dependencies using conan when possible. Conan is integrated with CMake, 
 so it should be transparent within the building process.
 
-In order to run and develop this application on your computer, you need this additional dependencies:
-- **FFmpeg**
+In order to run and develop this application on your computer, you need this additional dependencies (you can do all this steps via `./scripts/setup-dev-env.sh` script):
+- **FFmpeg** (only if you're going to run LIST locally - ignore this if you're going to run it on Docker)
 - **uuid-dev** (only on linux - sudo apt-get install uuid-dev)
 - **libpcap-dev** (only on linux)
 
@@ -36,12 +54,11 @@ conan config install https://github.com/bisect-pt/conan_config.git
 
 ### Quick-start
 
-If you have all the tools needed, a quick way to start right away is:
+If you meet all the pre-requisites, a quick way to start right away is:
 
 ```
 git clone
 git submodule update --init --recursive
-
 ```
 
 To run cmake, you can do:
@@ -119,4 +136,3 @@ Just use cmake's `add_subdirectory()` and it will work out-of-the-box.
 ## License
 
 See [LICENSE](LICENSE.md) for more information.
-
