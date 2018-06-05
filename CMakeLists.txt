@@ -45,7 +45,7 @@ conan_cmake_run(CONANFILE conanfile.txt
 # -------------------------------------------------------------------------
 
 if(WIN32)
-    include(${CMAKE_BINARY_DIR}/conanbuildinfo_multi.cmake)
+    include(${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo_multi.cmake)
 endif()
 
 include(cpp-requirements)
