@@ -20,7 +20,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "libs")
 
 #-------------------------------------------------------------------------------
 # Create a config file for tests.
-set (EBU_LIST_SAMPLE_DATA_ROOT ${CMAKE_SOURCE_DIR}/sample_data)
+set (EBU_LIST_SAMPLE_DATA_ROOT ${ebu_list_all_SOURCE_DIR}/sample_data)
 
 # create a header file to pass some settings to the source code
 configure_file(

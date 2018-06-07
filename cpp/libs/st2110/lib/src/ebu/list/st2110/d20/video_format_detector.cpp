@@ -9,7 +9,7 @@ using namespace ebu_list;
 //------------------------------------------------------------------------------
 namespace
 {
-    constexpr auto maximum_packets_per_frame = 10000; // TODO: this is enough for UHD
+    constexpr auto maximum_packets_per_frame = 30000; // TODO: this is enough for UHD
     constexpr auto minimum_packets_per_frame = 100;
 
     std::tuple<int, int> get_dimensions_from_max_line(int max_line, bool is_field_based)
@@ -30,6 +30,7 @@ namespace
             {
             case 719: return { 1280, 720 };
             case 1079: return { 1920, 1080 };
+            case 2159: return { 3840, 2160 }; // TODO: calculate width correctly
 
             default:
                 break;

@@ -54,3 +54,22 @@ SCENARIO("net to native conversion")
         }
     }
 }
+
+SCENARIO("native to net round-trip")
+{
+    GIVEN("a native 16-bit value")
+    {
+        const uint16_t source = 5030;
+
+        WHEN("we convert to net")
+        {
+            auto target = to_net(source);
+
+            THEN("the value is correct")
+            {
+                REQUIRE(to_native(target) == source);
+            }
+        }
+    }
+}
+

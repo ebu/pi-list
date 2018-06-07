@@ -5,33 +5,15 @@
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/serialization/serializable_stream_info.h"
 #include "ebu/list/serialization/video_serialization.h"
+#include "ebu/list/serialization/video/frame.h"
 
 namespace ebu_list
 {
-    struct frame_info
-    {
-        uint32_t timestamp = 0;
-        size_t packet_count = 0;
-        int64_t first_packet_timestamp = 0;
-        int64_t last_packet_timestamp = 0;
-    };
-
     struct frame : frame_info
     {
         sbuffer_ptr buffer;
     };
     using frame_uptr = std::unique_ptr<frame>;
-
-    struct line_info
-    {
-        bool valid = false;
-        uint16_t length;
-        uint16_t line_number;
-        uint8_t field_identification;
-        bool continuation;
-        uint16_t offset;
-    };
-    using lines_info = std::array<line_info, 3>; // ST2110-20 6.2.1: max 3 line headers per packet
 
     struct packet_info
     {

@@ -36,3 +36,5 @@ echo
 echo "Copying artifacts..."
 cp -r scripts/deploy/artifacts/* release/
 echo "Copying scripts... done"
+echo
+echo "Deploy ready! You can find a folder named release on the top-level directory of this repository"
