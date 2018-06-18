@@ -26,7 +26,8 @@ scan_type video::parse_scan_type(std::string_view s)
 
 Rate video::parse_from_string(std::string_view s)
 {
-    if( s == "24" ) return video::Rate(24,1);
+    if (s == "0") return video::Rate(0);
+    else if( s == "24" ) return video::Rate(24,1);
     else if( s == "25" ) return video::Rate(25,1);
     else if( s == "30000/1001" ) return video::Rate(30000,1001);
     else if( s == "30" ) return video::Rate(30,1);

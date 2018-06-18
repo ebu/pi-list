@@ -1,7 +1,8 @@
 #pragma once
 
-#include "ebu/list/rtp/decoder.h"
 #include "nlohmann/json.hpp"
+#include "ebu/list/rtp/decoder.h"
+#include "ebu/list/serialization/video/frame.h"
 
 namespace ebu_list
 {

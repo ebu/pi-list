@@ -31,6 +31,13 @@ pcap_player::pcap_player(path pcap_file, udp::listener_ptr listener)
 {
 }
 
+void pcap_player::done()
+{
+    if (done_) return;
+    done_ = true;
+    listener_->on_complete();
+}
+
 bool pcap_player::next()
 {
     if (done_) return false;

@@ -2,7 +2,7 @@
 
 #include "ebu/list/serialization/audio_serialization.h"
 #include "ebu/list/handlers/audio_stream_handler.h"
-#include "ebu/list/executor.h"
+#include "ebu/list/core/platform/executor.h"
 
 namespace ebu_list
 {

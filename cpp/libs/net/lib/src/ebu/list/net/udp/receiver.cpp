@@ -26,6 +26,8 @@ struct receiver::impl
 
     malloc_sbuffer_factory factory_; // todo: receive the factory from outside ?
 
+    std::future<void> runner_;
+
     impl(listener_uptr l, const std::string& address, uint16_t port) :
         io_context_()
         , socket_(io_context_, bai::udp::endpoint(bai::udp::v4(), port))
@@ -86,7 +88,7 @@ receiver::receiver(listener_uptr l, const std::string& address, uint16_t port)
     : pimpl_(std::make_unique<impl>(std::move(l), address, port))
 {
     pimpl_->do_receive();
-    pimpl_->io_context_.run(); // todo: do not block here
+    pimpl_->runner_ = std::async(std::launch::async, [&]() { pimpl_->io_context_.run(); });
 }
 
 udp::receiver::receiver(listener_uptr l, ipv4::address dest_addr, port dest_port)
@@ -96,4 +98,10 @@ udp::receiver::receiver(listener_uptr l, ipv4::address dest_addr, port dest_port
 
 receiver::~receiver()
 {
+    pimpl_->runner_.wait();
+}
+
+void udp::receiver::stop()
+{
+    pimpl_->io_context_.stop();
 }

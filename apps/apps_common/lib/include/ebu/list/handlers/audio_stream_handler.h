@@ -23,7 +23,10 @@ namespace ebu_list
     public:
         using completion_handler = std::function<void(const audio_stream_handler& ash)>;
 
-        audio_stream_handler(rtp::packet first_packet, serializable_stream_info info, audio_stream_details details, completion_handler ch);
+        audio_stream_handler(rtp::packet first_packet, 
+            serializable_stream_info info, 
+            audio_stream_details details, 
+            completion_handler ch = [](const audio_stream_handler&) {});
 
         const audio_stream_details& info() const;
         const serializable_stream_info& network_info() const;

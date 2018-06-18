@@ -2,7 +2,7 @@
 
 #include "ebu/list/sdp/media_description.h"
 #include "ebu/list/core/platform/guid.h"
-#include <nlohmann/json.hpp>
+#include "nlohmann/json.hpp"
 
 namespace ebu_list
 {
@@ -16,6 +16,7 @@ namespace ebu_list
     {
         NEEDS_INFO,
         READY,
+        ON_GOING_ANALYSIS,
         ANALYZED
     };
     std::string to_string(StreamState s);
@@ -25,8 +26,10 @@ namespace ebu_list
     {
         std::string id = newGuid().str();
         StreamState state = StreamState::NEEDS_INFO;
+
+        /** serialization details **/
+        static serializable_stream_info from_json(const nlohmann::json& j);
+        static nlohmann::json to_json(const serializable_stream_info& info);
     };
 
-    serializable_stream_info from_json(const nlohmann::json& j);
-    nlohmann::json to_json(const serializable_stream_info& info);
 }

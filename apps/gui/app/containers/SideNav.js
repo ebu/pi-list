@@ -113,7 +113,7 @@ class SideNav extends Component {
                 <PopUp
                     type="delete"
                     visible={this.state.showModal}
-                    message={`Are you sure you want to your account? This action will delete all data and it's irreversible!`}
+                    message={'Are you sure you want to delete your account? This action will delete all data and is irreversible!'}
                     resource="user account"
                     onClose={this.hideModal}
                     onDelete={this.deleteAccount}

@@ -6,7 +6,9 @@
 namespace ebu_list
 {
     // Launches a separate task.
-    // Where T implements "bool next()", which processes the next item
+    // Where T implements:
+    // "bool next()", which processes the next item
+    // "void done()", which is called when all items are processed
     template<class T> 
     class launcher
     {
@@ -45,6 +47,8 @@ namespace ebu_list
             while (!done_ && target_->next())
             {
             }
+
+            target_->done();
         }
     };
 

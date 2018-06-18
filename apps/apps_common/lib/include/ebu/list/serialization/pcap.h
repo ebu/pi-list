@@ -19,6 +19,11 @@ namespace ebu_list
         int audio_streams = 0;
         int video_streams = 0;
         int anc_streams = 0;
+
+        int wide_streams = 0;
+        int narrow_streams = 0;
+        int narrow_linear_streams = 0;
+        int not_compliant_streams = 0;
     };
 
     pcap_info read_pcap_from_json(const path& json_file);

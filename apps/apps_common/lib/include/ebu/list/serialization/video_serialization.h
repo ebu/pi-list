@@ -22,8 +22,9 @@ namespace ebu_list
         unsigned long frame_count = 0;
         clock::time_point first_packet_ts {};
         clock::time_point last_packet_ts {};
-    };
 
-    video_stream_details parse_video_json(const nlohmann::json& j);
-    nlohmann::json to_json(const video_stream_details& details);
+        /** serialization details **/
+        static video_stream_details from_json(const nlohmann::json& j);
+        static nlohmann::json to_json(const video_stream_details& details);
+    };
 }

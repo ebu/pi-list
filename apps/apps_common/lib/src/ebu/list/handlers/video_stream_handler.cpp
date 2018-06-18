@@ -54,6 +54,8 @@ video_stream_handler::video_stream_handler(rtp::packet first_packet,
     video_description_.first_frame_ts = first_packet.info.rtp.view().timestamp();
     video_description_.last_frame_ts = video_description_.first_frame_ts;
     video_description_.first_packet_ts = first_packet.info.udp.packet_time;
+
+    info_.state = StreamState::ON_GOING_ANALYSIS; // mark as analysis started
 }
 
 void video_stream_handler::new_frame()
@@ -133,7 +135,7 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
     // skip esn
     p += sizeof(raw_extended_sequence_number);
 
-    packet_info info{ packet.info, *current_frame_, full_sequence_number, {} };
+    packet_info info{ packet.info, packet, *current_frame_, full_sequence_number, {} };
     auto line_index = 0;
 
     while (p < end)
@@ -182,6 +184,17 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
 
         p += line.length;
     }
+
+    const auto current_sequence_number = info.full_sequence_number;
+
+    if(last_sequence_number_ && static_cast<int64_t>(current_sequence_number) != last_sequence_number_.value() + 1)
+    {
+        logger()->warn("Packet loss! Last sqn was {} and received {}", last_sequence_number_.value(), current_sequence_number);
+    }
+
+    last_sequence_number_ = current_sequence_number;
+    
+    // todo: log number of packets lost
 
     this->on_packet(info);
 }

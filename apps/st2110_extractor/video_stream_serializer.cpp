@@ -2,14 +2,18 @@
 #include "png_writer.h"
 #include "color_conversion.h"
 #include "ebu/list/serialization/utils.h"
+#include "ebu/list/serialization/video/st2110_d20_packet.h"
+#include "ebu/list/serialization/compliance.h"
 #include "ebu/list/constants.h"
 
 using namespace ebu_list;
+using namespace ebu_list::st2110;
 using json =  nlohmann::json;
+
+//------------------------------------------------------------------------------
 
 namespace
 {
-    constexpr auto packets_file_name = "packets.json";
     constexpr auto cinst_file_name = "cinst.json";
 
     media::video::video_dimensions get_frame_size(const video_stream_details& info)
@@ -22,6 +26,9 @@ namespace
 
         return dimensions;
     }
+    // TODO: receive this externally
+    constexpr auto vrx_analysis_settings = d21::vrx_settings{ d21::read_schedule::gapped, d21::tvd_kind::first_packet_each_frame };
+
 }
 
 void ebu_list::write_frame_info(const path& base_dir, const std::string& stream_id, const frame_info& info)
@@ -35,16 +42,11 @@ void ebu_list::write_packets(const path& packets_path, const packets& packets_in
 
     for (const auto& packet : packets_info)
     {
-        json i;
-        i["packet_time"] = to_date_time_string(packet.rtp.udp.packet_time);
-        i["rtp_timestamp"] = packet.rtp.rtp.view().timestamp();
-        i["sequence_number"] = packet.full_sequence_number;
-        i["marker"] = packet.rtp.rtp.view().marker();
-        i["lines"] = ebu_list::to_json(packet.line_info);
-        j.push_back(i);
+        const st2110_d20_packet p {rtp_packet::build_from(packet.rtp), packet.full_sequence_number, packet.line_info};
+        j.push_back(st2110_d20_packet::to_json(p));
     }
 
-    write_json_to(packets_path, packets_file_name, j);
+    write_json_to(packets_path, constants::packets_file_name, j);
 }
 
 //------------------------------------------------------------------------------
@@ -52,13 +54,15 @@ void ebu_list::write_packets(const path& packets_path, const packets& packets_in
 video_stream_serializer::video_stream_serializer(rtp::packet first_packet,
     serializable_stream_info info,
     video_stream_details details,
-    completion_handler ch,
     path base_dir,
-    executor_ptr main_executor)
-    : video_stream_handler(std::move(first_packet), std::move(info), details, std::move(ch)),
+    executor_ptr main_executor,
+    completion_callback on_complete_callback)
+    : video_stream_handler(std::move(first_packet), std::move(info), details, std::bind(&video_stream_serializer::on_complete, this, std::placeholders::_1)),
     base_dir_(std::move(base_dir)),
     main_executor_(std::move(main_executor)),
-    frame_size_(get_frame_size(details))
+    frame_size_(get_frame_size(details)),
+    on_complete_callback_(on_complete_callback),
+    compliance_(d21::build_compliance_analyzer(details.video, vrx_analysis_settings))
 {
 }
 
@@ -93,6 +97,12 @@ int64_t get_last_packet_timestamp(const packets& ps)
     if (ps.empty()) return 0;
     auto last = ps.rbegin();
     return std::chrono::duration_cast<std::chrono::nanoseconds>(last->rtp.udp.packet_time.time_since_epoch()).count();
+}
+
+void video_stream_serializer::on_packet(const packet_info& p)
+{
+    current_frame_packets_.push_back(p);
+    compliance_.handle_packet(p.packet.info);
 }
 
 void video_stream_serializer::on_frame_complete(frame_uptr&& f)
@@ -132,9 +142,14 @@ void video_stream_serializer::on_frame_complete(frame_uptr&& f)
     main_executor_->execute(std::move(png_writer));
 }
 
-void video_stream_serializer::on_packet(const packet_info& p)
+void video_stream_serializer::on_complete(const video_stream_handler&)
 {
-    current_frame_packets_.push_back(p);
+    on_complete_callback_(*this);
+}
+
+st2110::d21::video_analysis_info video_stream_serializer::get_video_analysis_info() const
+{
+    return st2110::d21::get_video_analysis_info(compliance_);
 }
 
 //------------------------------------------------------------------------------

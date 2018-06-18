@@ -1,7 +1,7 @@
 #include "ebu/list/version.h"
 #include "ebu/list/pcap/player.h"
 #include "ebu/list/core/platform/parallel.h"
-#include "ebu/list/st2110/d21/calculators.h"
+#include "ebu/list/st2110/d21/settings.h"
 #include "ebu/list/st2110/d21/c_analyzer.h"
 #include "ebu/list/st2110/d21/rtp_ts_analyzer.h"
 #include "ebu/list/st2110/d21/vrx_analyzer.h"
@@ -12,7 +12,7 @@
 #include "ebu/list/serialization/pcap.h"
 #include "ebu/list/serialization/serialization.h"
 #include "ebu/list/serialization/stream_identification.h"
-#include "ebu/list/executor.h"
+#include "ebu/list/core/platform/executor.h"
 #include "ebu/list/utils/multi_listener.h"
 #include "bisect/bicla.h"
 #include "ebu/list/handlers/audio_stream_handler.h"
@@ -98,6 +98,11 @@ namespace
         std::atomic_int nr_anc = 0;
         std::atomic_int nr_total = 0;
 
+        std::atomic_int nr_wide = 0;
+        std::atomic_int nr_narrow = 0;
+        std::atomic_int nr_narrow_linear = 0;
+        std::atomic_int nr_not_compliant = 0;
+
         const auto wanted_streams = get_ids_to_process(config);
 
         auto pcap = read_pcap_from_json(config.pcap_dir / constants::meta_filename);
@@ -107,12 +112,22 @@ namespace
 
         auto main_executor = std::make_shared<executor>();
 
-        auto video_dump_handler = [&](const video_stream_handler& handler)
+        auto video_dump_handler = [&](const video_stream_serializer& handler)
         {
             const auto& network_info = handler.network_info();
             write_network_info(network_info);
 
-            write_stream_info(config.pcap_dir, network_info, handler.info());
+            const auto analysis_info = handler.get_video_analysis_info();
+            switch(analysis_info.compliance)
+            {
+
+                case compliance_profile::narrow: nr_narrow++; break;
+                case compliance_profile::narrow_linear: nr_narrow_linear++; break;
+                case compliance_profile::wide: nr_wide++; break;
+                case compliance_profile::not_compliant: nr_not_compliant++; break;
+            }
+
+            write_stream_info(config.pcap_dir, network_info, handler.info(), analysis_info);
             st2110::d20::st2110_20_sdp_serializer s(handler.info().video);
             sdp.add_media(network_info, s);
         };
@@ -160,7 +175,7 @@ namespace
                     in_video_info.video.dimensions
                 };
 
-                auto new_handler = std::make_unique<video_stream_serializer>(first_packet, stream_info, in_video_info, video_dump_handler, config.pcap_dir, main_executor);
+                auto new_handler = std::make_unique<video_stream_serializer>(first_packet, stream_info, in_video_info, config.pcap_dir, main_executor, video_dump_handler);
                 write_stream_info(config.pcap_dir, new_handler->network_info(), new_handler->info());
 
                 auto ml = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
@@ -188,21 +203,21 @@ namespace
 
                         {
                             auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(config.influxdb_url.value(), pcap.id, stream_info.id, "gapped-ideal");
-                            const auto settings = vrx_analyzer::vrx_settings{ read_schedule::gapped, vrx_analyzer::tvd_kind::ideal };
+                            const auto settings = vrx_settings{ read_schedule::gapped, tvd_kind::ideal };
                             auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info, settings);
                             framer_ml->add(std::move(analyzer));
                         }
 
                         {
                             auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(config.influxdb_url.value(), pcap.id, stream_info.id, "gapped-first_packet_first_frame");
-                            const auto settings = vrx_analyzer::vrx_settings{ read_schedule::gapped, vrx_analyzer::tvd_kind::first_packet_first_frame };
+                            const auto settings = vrx_settings{ read_schedule::gapped, tvd_kind::first_packet_first_frame };
                             auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info, settings);
                             framer_ml->add(std::move(analyzer));
                         }
 
                         {
                             auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(config.influxdb_url.value(), pcap.id, stream_info.id, "gapped-first_packet_each_frame");
-                            const auto settings = vrx_analyzer::vrx_settings{ read_schedule::gapped, vrx_analyzer::tvd_kind::first_packet_each_frame };
+                            const auto settings = vrx_settings{ read_schedule::gapped, tvd_kind::first_packet_each_frame };
                             auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info, settings);
                             framer_ml->add(std::move(analyzer));
                         }
@@ -239,7 +254,6 @@ namespace
             }
         };
 
-
         auto ptp_logger = get_ptp_influx_logger(config.influxdb_url, pcap.id);
         auto ptp_sm = std::make_shared<ptp::state_machine>(ptp_logger);
         auto handler = std::make_shared<rtp::udp_handler>(create_handler);
@@ -260,12 +274,16 @@ namespace
 
         sdp.write_to(sdp_path);
 
-        const auto base_dir = config.pcap_dir.parent_path().remove_filename(); // todo: fix bug with trailing slash
+        const auto base_dir = config.pcap_dir.parent_path().remove_filename();
         pcap.analyzed = true;
         pcap.audio_streams = nr_audio.load();
         pcap.video_streams = nr_video.load();
         pcap.anc_streams = nr_anc.load();
         pcap.total_streams = nr_total.load();
+        pcap.wide_streams = nr_wide.load();
+        pcap.narrow_streams = nr_narrow.load();
+        pcap.narrow_linear_streams = nr_narrow_linear.load();
+        pcap.not_compliant_streams = nr_not_compliant.load();
 
         write_pcap_info(base_dir, pcap);
     }

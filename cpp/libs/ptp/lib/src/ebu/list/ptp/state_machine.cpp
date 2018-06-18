@@ -117,8 +117,8 @@ namespace
         const auto t4 = ptp::to_time_point(c.delay_response_origin_timestamp);
         const auto clock_offset = ((t2 - t1) - (t4 - t3)) / 2;
         const auto transmission_delay = ((t2 - t1) + (t4 - t3)) / 2;
-        logger()->info("clock_offset: {}", std::chrono::duration_cast<std::chrono::nanoseconds>(clock_offset).count());
-        logger()->info("transmission_delay: {}", std::chrono::duration_cast<std::chrono::nanoseconds>(transmission_delay).count());
+        //logger()->info("clock_offset: {}", std::chrono::duration_cast<std::chrono::nanoseconds>(clock_offset).count());
+        //logger()->info("transmission_delay: {}", std::chrono::duration_cast<std::chrono::nanoseconds>(transmission_delay).count());
 
         c.listener->on_data({ c.last_sync_timestamp, clock_offset });
     }

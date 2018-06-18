@@ -37,7 +37,7 @@ namespace ebu_list
         }
 
         template<typename U>
-        explicit constexpr fraction_t(fraction_t<U> u)
+        constexpr fraction_t(fraction_t<U> u)
                 : numerator_(u.numerator()), denominator_(u.denominator())
         {
         }
@@ -88,9 +88,9 @@ namespace ebu_list
     };
 
     template<typename T, typename U>
-    constexpr fraction_t<T> operator*(fraction_t<U> u, fraction_t<T> f)
+    constexpr auto operator*(fraction_t<U> u, fraction_t<T> f)
     {
-        return fraction_t<T>(u.numerator() * f.numerator(), u.denominator() * f.denominator());
+        return fraction_t<decltype(T() * U())>(u.numerator() * f.numerator(), u.denominator() * f.denominator());
     }
 
     template<typename T, typename U>
@@ -108,7 +108,7 @@ namespace ebu_list
     template<typename T, typename U>
     constexpr auto operator+(U u, fraction_t<T> rhs)
     {
-        return fraction_t<U>(u, 1) + rhs;
+        return fraction_t<decltype(T() + U())>(u, 1) + rhs;
     }
 
     template<typename T, typename U>
@@ -142,33 +142,33 @@ namespace ebu_list
     }
 
     template<typename T, typename U>
-    constexpr fraction_t<T> operator*(U u, fraction_t<T> f)
+    constexpr auto operator*(U u, fraction_t<T> f)
     {
-        return fraction_t<T>(u * f.numerator(), f.denominator());
+        return fraction_t<decltype(T() * U())>(u * f.numerator(), f.denominator());
     }
 
     template<typename T, typename U>
-    constexpr fraction_t<T> operator*(fraction_t<T> f, U u)
+    constexpr auto operator*(fraction_t<T> f, U u)
     {
-        return fraction_t<T>(u * f.numerator(), f.denominator());
+        return fraction_t<decltype(T() * U())>(u * f.numerator(), f.denominator());
     }
 
     template<typename T, typename U>
-    constexpr fraction_t<T> operator/(fraction_t<U> u, fraction_t<T> f)
+    constexpr auto operator/(fraction_t<U> u, fraction_t<T> f)
     {
-        return fraction_t<T>(u.numerator() * f.denominator(), u.denominator() * f.numerator());
+        return fraction_t<decltype(T() / U())>(u.numerator() * f.denominator(), u.denominator() * f.numerator());
     }
 
     template<typename T, typename U>
-    constexpr fraction_t<T> operator/(U u, fraction_t<T> f)
+    constexpr auto operator/(U u, fraction_t<T> f)
     {
-        return fraction_t<T>(u * f.denominator(), f.numerator());
+        return fraction_t<decltype(T() / U())>(u * f.denominator(), f.numerator());
     }
 
     template<typename T, typename U>
-    constexpr fraction_t<T> operator/(fraction_t<T> f, U u)
+    constexpr auto operator/(fraction_t<T> f, U u)
     {
-        return fraction_t<T>(f.numerator(), f.denominator() * u);
+        return fraction_t<decltype(T() / U())>(f.numerator(), f.denominator() * u);
     }
 
     template<typename T>

@@ -15,8 +15,6 @@ namespace ebu_list::udp
 
     struct datagram_info : header, ipv4::packet_info
     {
-        ipv4::address source_address;
-        ipv4::address destination_address;
         size_t datagram_size;
     };
 
