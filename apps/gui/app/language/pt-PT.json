@@ -1,0 +1,179 @@
+{
+  "headings": {
+    "network_information": "Informação de Rede",
+    "media_information": "Informação da Essência",
+    "audio_explorer": "Explorador de Áudio",
+    "audio_measurements": "Medições do Áudio",
+    "video_measurements": "Medições do Vídeo",
+    "last_pcaps": "Últimos PCAPs analisados",
+    "video": "Vídeo",
+    "audio": "Áudio",
+    "anc": "Dados Auxiliares",
+    "unknown": "Desconhecido",
+    "filters": "Filtros"
+  },
+
+  "audio_player": {
+    "play": "Play",
+    "pause": "Pause"
+  },
+
+  "filters": {
+    "show_error_only": "Apenas com Erros",
+    "show_online_only": "Apenas Online"
+  },
+
+  "media_information": {
+    "video_profiles": "Perfis de Vídeo",
+    "audio_profiles": "Perfis de Áudio",
+    "media_type": "Tipo de Essência",
+    "media_time": "Duração",
+
+    "audio": {
+      "number_channels": "Nº Canais",
+      "encoding": "Codificação",
+      "packet_time": "Packet Time",
+      "sampling": "Amostragem",
+      "number_samples": "Nº de Amostras",
+      "sample_size": "Tamanho da Amostra",
+      "samples_per_packet": "Nº Amostras por pacote RTP"
+    },
+
+    "video": {
+      "sampling": "Amostragem",
+      "color_depth": "Profundidade de Cor",
+      "width": "Largura",
+      "height": "Altura",
+      "colorimetry": "Colorimetry",
+      "packets_per_frame": "Nº pacotes por frame",
+      "scan_type": "Scan Type",
+      "rate": "Rate",
+      "dimensions": "Dimensões",
+      "field_rate": "Field Rate",
+      "frame_rate": "Frame Rate",
+      "interlaced": "Entrelaçado",
+      "progressive": "Progressivo",
+      "read_schedule": "Read Schedule",
+      "fields": "Campos",
+      "frames": "Frames"
+    },
+
+    "rtp": {
+      "source": "Origem",
+      "destination": "Destino",
+      "ssrc": "SSRC",
+      "packet_count": "Nº Pacotes RTP",
+      "payload_type": "Payload Type",
+      "destination_address": "Endereço de Destino",
+      "destination_port": "Porto de Destino",
+      "source_address": "Endereço de Origem",
+      "source_port": "Porto de Origem"
+    }
+  },
+
+  "stream": {
+    "configure_streams": "Configurar Stream |||| Configurar Streams",
+    "analyze_stream": "Analisar Stream",
+    "no_streams": "Sem Streams",
+    "no_frames": "Stream sem Frames",
+    "detected_stream": "Norma Detectada",
+    "compliance": "Conformidade"
+  },
+
+  "alerts": {
+    "stream_missing_information": "Informação da Stream insuficiente!",
+    "stream_already_analyzed": "Stream já analisada",
+    "stream_not_analyzed": "Stream não analisada",
+    "media_type_unknown": "O tipo de Essência desta stream é desconhecido!"
+  },
+
+  "information": {
+    "stream_missing_information": "Não temos dados suficientes para analisar esta stream. Por favor complete a Informação da Essência.",
+    "stream_analyzed_information": "Já analisamos esta stream. Se os resultados não corresponderam, por favor mude a Informação da Essência e tente de novo.",
+    "media_type_unknown": "Por marcar o tipo desta Stream como Desconhecido, esta não será analisada."
+  },
+
+  "date": "Data",
+  "or": "ou",
+
+  "notifications": {
+    "success": {
+      "pcap_upload": "Ficheiro PCAP submetido!",
+      "pcap_upload-message": "O ficheiro %{name} foi submetido com sucesso!",
+
+      "pcap_deleted": "Ficheiro PCAP apagado",
+      "pcap_deleted_message": "O ficheiro %{name} foi apagado com sucesso!",
+
+      "stream_analysis": "Sucesso!",
+      "stream_analysis_message": "A Stream foi corretamente analisada!"
+    },
+    "error": {
+      "pcap_upload": "O upload do PCAP falhou!",
+      "pcap_upload-message": "Ocorreu um erro enquanto o ficheiro %{name} foi submetido",
+
+      "pcap_deleted": "Erro a apagar o PCAP",
+      "pcap_deleted_message": "Não foi possível apagar o ficheiro %{name}!",
+
+      "stream_analysis": "Erro!",
+      "stream_analysis_message": "Algo correu mal durante a análise da stream!"
+    }
+  },
+
+  "workflow": {
+    "drop_files_here": "Arraste para aqui os ficheiros PCAP",
+    "select_from_drive": "ou selecione-os a partir do seu PC",
+    "import_pcap": "Importar ficheiros PCAP",
+    "pcaps_to_be_imported": "PCAPs submetidos",
+    "reading_pcap": "A ler o ficheiro PCAP...",
+    "processing_streams": "A processar as Streams...",
+    "done": "Concluído!"
+  },
+
+  "user_account": {
+    "delete_user_account": "Apagar Conta",
+    "sign_in": "Autenticação",
+    "logout": "Sair",
+    "delete_confirmation": "Tem a certeza que quer apagar a sua conta? Esta ação é permanente e irreversível!",
+    "user_registered_message": "Utilizador registado com sucesso!",
+    "email": "E-mail",
+    "password": "Palavra-chave",
+    "facebook_account": "Entrar com o Facebook"
+  },
+
+  "pcap": {
+    "delete_header": "Apagar PCAP",
+    "delete_message": "Tem a certeza que quer apagar o ficheiro %{name}?",
+    "download_sdp": "Descarregar SDP",
+
+    "state": {
+      "no_analysis": "Sem análise efetuada",
+      "needs_user_input": "Necessita de informações adicionais",
+      "compliant": "Compatível",
+      "not_compliant": "Incompatível"
+    }
+  },
+
+  "buttons": {
+    "delete": "Apagar",
+    "cancel": "Cancelar",
+    "reload": "Recarregar a Página",
+    "go_back": "Anterior",
+    "login": "Entrar",
+    "register": "Registar"
+  },
+
+  "navigation": {
+    "dashboard": "Resumo",
+    "live_streams": "Em Direto",
+    "pcaps": "PCAPs & Streams"
+  },
+
+  "errors": {
+    "anc_not_supported": "Os Dados Auxiliares ainda não são suportados",
+    "anc_not_supported_message": "Ainda assim, pode marcar esta stream como Dados Auxiliares, apesar de que não será analisada.",
+    "stream-marked-as-unknown": "A Essência desta Stream não é conhecida ou suportada. Carregue no botão abaixo para adicionar mais detalhes sobre a Stream",
+    "404_title": "Página não encontrada",
+    "404_message": "A página que tentou aceder não existe ou ocorreu um erro.",
+    "network_error_title": "Erro de Rede"
+  }
+}

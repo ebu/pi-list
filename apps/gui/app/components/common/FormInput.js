@@ -7,24 +7,26 @@ const propTypes = {
     label: PropTypes.string,
     labelColSize: PropTypes.number,
     valueColSize: PropTypes.number,
-    icon: PropTypes.string
+    icon: PropTypes.string,
+    className: PropTypes.string
 };
 const defaultProps = {
     labelColSize: 4,
     valueColSize: 8,
     label: '',
     icon: '',
+    className: ''
 };
 
 const FormInput = props => (
     <div className={classNames('lst-control-group col-xs-12', props.className)}>
         <div className={`lst-form-label col-xs-${props.labelColSize} middle-xs`}>
-        {props.icon && (
+            {props.icon && (
                 <Icon value={props.icon} />
             )}
             <strong>{props.label}</strong>
         </div>
-        <div className="lst-form-value col-xs-8 middle-xs">
+        <div className={`lst-form-value col-xs-${props.valueColSize} middle-xs`}>
             {props.children}
         </div>
     </div>

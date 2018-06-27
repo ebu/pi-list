@@ -5,12 +5,12 @@ import Button from 'components/common/Button';
 import Alert from 'components/common/Alert';
 import AsyncErrorsManager from 'components/AsyncErrorsManager';
 import keyEnum from 'enums/keyEnum';
+import { translate } from 'utils/translation';
 
 class Login extends Component {
     constructor() {
         super();
 
-        this.onMenuIconClick = this.onMenuIconClick.bind(this);
         this.onClickLogin = this.onClickLogin.bind(this);
         this.onKeyUpEnter = this.onKeyUpEnter.bind(this);
         this.onClickRegister = this.onClickRegister.bind(this);
@@ -23,10 +23,6 @@ class Login extends Component {
 
     componentWillMount() {
         document.addEventListener(keyEnum.EVENTS.KEY_UP, this.onKeyUpEnter);
-    }
-
-    onMenuIconClick() {
-        this.sideNav.toggleSideNav();
     }
 
     onClickRegister() {
@@ -79,13 +75,13 @@ class Login extends Component {
                     <b>LIST</b> - LiveIP Software Toolkit
                 </div>
                 <div className="lst-login--form lst-text-center">
-                    <h1 className="lst-login--header">Sign In</h1>
+                    <h1 className="lst-login--header">{translate('user_account.sign_in')}</h1>
                     <div className="lst-login--group">
                         <input
                             className="lst-input"
                             ref={ref => this.email = ref}
                             type="email"
-                            placeholder="Email"
+                            placeholder={translate('user_account.email')}
                         />
                     </div>
                     <div className="lst-login--group">
@@ -93,14 +89,14 @@ class Login extends Component {
                             className="lst-input"
                             ref={ref => this.password = ref}
                             type="password"
-                            placeholder="Password"
+                            placeholder={translate('user_account.password')}
                         />
                     </div>
 
                     <div className="lst-login--group lst-no-margin">
                         {this.state.userSuccessfullyRegistered && (
                             <Alert type="success" showIcon>
-                                User successfully Registered
+                                {translate('user_account.user_registered_message')}
                             </Alert>
                         )}
                         <AsyncErrorsManager errors={this.state.errors} />
@@ -108,30 +104,33 @@ class Login extends Component {
 
                     <div className="lst-login--group">
                         <div className="col-xs-6 lst-no-padding lst-padding--right-10">
-                            <Button className="lst-login-btn" outline label="Register" onClick={this.onClickRegister} noMargin />
+                            <Button
+                                className="lst-login-btn"
+                                outline
+                                label={translate('buttons.register')}
+                                onClick={this.onClickRegister}
+                                noMargin
+                            />
                         </div>
                         <div className="col-xs-6 lst-no-padding lst-padding--left-10">
-                            <Button className="lst-login-btn" type="info" label="login" onClick={this.onClickLogin} noMargin />
+                            <Button
+                                className="lst-login-btn"
+                                type="info"
+                                label={translate('buttons.login')}
+                                onClick={this.onClickLogin}
+                                noMargin
+                            />
                         </div>
                     </div>
 
-                    <h3 className="lst-login--heading">or</h3>
+                    <h3 className="lst-login--heading">{translate('or')}</h3>
 
                     <div className="lst-login--group lst-no-margin">
                         <a
                             className="lst-btn lst-login-btn lst-btn--outline lst-btn--info lst-no-margin lst-external-login"
                             href={api.authenticateWithFacebook()}
                         >
-                            Sign in with facebook
-                        </a>
-                    </div>
-
-                    <div className="lst-login--group">
-                        <a
-                            className="lst-btn lst-login-btn lst-btn--outline lst-btn--danger lst-no-margin lst-external-login"
-                            href={api.authenticateWithFacebook()}
-                        >
-                            Sign in with Google
+                            {translate('user_account.facebook_account')}
                         </a>
                     </div>
                 </div>

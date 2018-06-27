@@ -3,7 +3,8 @@ import { Switch, Route } from 'react-router-dom';
 import Button from 'components/common/Button';
 import routeNames from 'config/routeNames';
 import api from 'utils/api';
-import Badge from "./components/common/Badge";
+import { pluralize, translate } from 'utils/translation';
+import { LiveRoute } from 'utils/liveFeature';
 
 const Header = (props) => {
     return (
@@ -32,21 +33,22 @@ const Header = (props) => {
     );
 };
 
-const HEADER_FOR_PCAPS = {
-    backButtonLabel: "Back"
-};
-
 export default (
     <Switch>
         <Route
             exact
             path={routeNames.DASHBOARD}
-            render={() => (<Header label="Dashboard" />)}
+            render={() => (<Header label={translate('navigation.dashboard')} />)}
         />
         <Route
             exact
             path={routeNames.PCAPS}
-            render={() => (<Header label="PCAPs" />)}
+            render={() => (<Header label={translate('navigation.pcaps')} />)}
+        />
+        <LiveRoute
+            path={routeNames.LIVE}
+            hideOnFalse
+            render={() => (<Header label={translate('navigation.live_streams')} />)}
         />
         <Route
             exact
@@ -57,7 +59,7 @@ export default (
                     label="PTP Analysis"
                     buttons={[
                         {
-                            label: 'Back',
+                            label: translate('buttons.go_back'),
                             icon: 'keyboard backspace',
                             onClick: () => {
                                 const { pcapID } = props.match.params;
@@ -77,16 +79,15 @@ export default (
                     label="Streams"
                     buttons={[
                         {
-                            label: 'Download SDP',
+                            label: translate('pcap.download_sdp'),
                             icon: 'file download',
                             downloadPath: api.downloadSDP(props.match.params.pcapID),
                             onClick: () => {}
                         },
                         {
-                            label: 'Back',
+                            label: translate('buttons.go_back'),
                             icon: 'keyboard backspace',
                             onClick: () => {
-                                const { pcapID } = props.match.params;
                                 props.history.push(`${routeNames.PCAPS}/`);
                             }
                         }
@@ -101,10 +102,9 @@ export default (
                 <Header
                     {...props}
                     label="Stream"
-                    backButtonLabel="Back to Streams"
                     buttons={[
                         {
-                            label: 'Configure Stream',
+                            label: pluralize('stream.configure_streams', 1),
                             icon: 'settings',
                             onClick: () => {
                                 const { pcapID, streamID } = props.match.params;
@@ -112,7 +112,7 @@ export default (
                             }
                         },
                         {
-                            label: 'Back to Streams',
+                            label: translate('buttons.go_back'),
                             icon: 'keyboard backspace',
                             onClick: () => {
                                 const { pcapID } = props.match.params;
@@ -129,10 +129,10 @@ export default (
             render={props => (
                 <Header
                     {...props}
-                    label="Configure Stream"
+                    label={pluralize('stream.configure_streams', 1)}
                     buttons={[
                         {
-                            label: 'Back to Streams',
+                            label: translate('buttons.go_back'),
                             icon: 'keyboard backspace',
                             onClick: () => {
                                 const { pcapID } = props.match.params;

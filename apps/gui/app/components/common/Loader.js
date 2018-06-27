@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 
 const propTypes = {
     className: PropTypes.string,
-    size: PropTypes.string
+    size: PropTypes.oneOf(['small', 'mini', 'large', 'default']),
+    inverted: PropTypes.bool
 };
 
 const defaultProps = {
     className: '',
     size: 'default',
+    inverted: false
 };
 
 const Loader = (props) => {

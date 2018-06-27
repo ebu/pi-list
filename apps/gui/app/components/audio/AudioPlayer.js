@@ -1,10 +1,10 @@
 import React from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import Button from 'components/common/Button';
 import Loader from 'components/common/Loader';
-import {translate} from 'utils/translation';
+import { translate } from 'utils/translation';
 
 const propTypes = {
     src: PropTypes.string.isRequired,
@@ -47,7 +47,7 @@ class AudioPlayer extends React.Component {
             hideScrollbar: false,
             height: 80,
             cursorWidth: 2,
-            plugins: plugins,
+            plugins,
             xhr: { withCredentials: true }
         });
 
@@ -80,13 +80,14 @@ class AudioPlayer extends React.Component {
         const buttonIcon = this.state.isPlaying ? 'pause' : 'play arrow';
 
         return (
-            <div ref={ref => this.waveformComponent = ref} className='waveform center-xs middle-xs'>
-                { this.state.loading &&  <Loader/>}
+            <div ref={ref => this.waveformComponent = ref} className="waveform center-xs middle-xs">
+                { this.state.loading && <Loader />}
                 <div className="wave" />
                 <div className="wave-timeline" />
-                { !this.state.loading && <Button type={buttonType} label={buttonLabel} icon={buttonIcon} outline onClick={this.play} /> }
+                { !this.state.loading &&
+                <Button type={buttonType} label={buttonLabel} icon={buttonIcon} outline onClick={this.play} /> }
             </div>
-        )
+        );
     }
 }
 

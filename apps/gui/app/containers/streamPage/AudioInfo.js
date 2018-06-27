@@ -1,21 +1,22 @@
 import React, { Fragment } from 'react';
 import SectionHeader from 'components/common/SectionHeader';
 import { renderInformationList } from 'containers/streamPage/utils';
+import { translate } from 'utils/translation';
 
 const AudioInfo = props => (
     <Fragment>
-        <SectionHeader icon="audiotrack" label="Audio" />
+        <SectionHeader icon="audiotrack" label={translate('headings.audio')} />
         {renderInformationList([
             {
-                key: 'Encoding',
+                key: translate('media_information.audio.encoding'),
                 value: props.encoding
             },
             {
-                key: 'Number of Channels',
+                key: translate('media_information.audio.number_channels'),
                 value: `${props.number_channels}`
             },
             {
-                key: 'Sampling',
+                key: translate('media_information.audio.sampling'),
                 value: props.sampling
             }
         ])}

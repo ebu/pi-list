@@ -11,7 +11,7 @@ export const CHART_COLORS = {
 };
 
 class Chart extends Component {
-    componentDidMount() {
+    prepareChart() {
         const labels = isFunction(this.props.labels)
             ? this.props.labels(this.props.rawData)
             : this.props.labels;
@@ -28,7 +28,7 @@ class Chart extends Component {
             lineTension: 0.25
         }));
 
-        const config = {
+        return {
             type: this.props.type,
             data: {
                 labels,
@@ -88,7 +88,10 @@ class Chart extends Component {
                 }
             }
         };
+    }
 
+    componentDidMount() {
+        const config = this.prepareChart();
         const ctx = this.chart.getContext('2d');
         this.chartInstance = new ChartJS(ctx, config);
     }
@@ -137,17 +140,26 @@ class Chart extends Component {
     }
 
     render() {
+        if (this.chartInstance !== undefined) {
+            const config = this.prepareChart();
+            this.chartInstance.data = config.data;
+            this.chartInstance.options = config.options;
+
+            this.chartInstance.update();
+        }
+
         const style = {
             height: isNumber(this.props.height) ? `${this.props.height}px` : null
         };
 
         return (
             <div style={style}>
-                <canvas className={`lst-chart-${Date.now()} fade-in`}
-                        onDoubleClick={this.onDoubleClick.bind(this)}
-                        onMouseDown={this.onMouseDown.bind(this)}
-                        onMouseUp={this.onMouseUp.bind(this)}
-                        ref={ref => this.chart = ref} />
+                <canvas
+                    className={`lst-chart-${Date.now()} fade-in`}
+                    onDoubleClick={this.onDoubleClick.bind(this)}
+                    onMouseDown={this.onMouseDown.bind(this)}
+                    onMouseUp={this.onMouseUp.bind(this)}
+                    ref={ref => this.chart = ref} />
             </div>
         );
     }

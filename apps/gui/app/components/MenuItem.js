@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
+import Icon from './common/Icon';
 
 const propTypes = {
     link: PropTypes.string.isRequired,
@@ -22,9 +23,7 @@ const MenuItem = props => (
             activeClassName="active"
             exact={props.exact}
         >
-            <i className="lst-side-nav__item-icon lst-icons">
-                {props.icon}
-            </i>
+            <Icon value={props.icon} className="lst-side-nav__item-icon" />
             {props.isOpen && <span className="lst-side-nav__item-text fade-in">{props.label}</span>}
         </NavLink>
     </li>

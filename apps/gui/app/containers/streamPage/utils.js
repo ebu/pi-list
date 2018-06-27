@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import FormInput from 'components/common/FormInput';
 
 export function renderInformationList(information) {

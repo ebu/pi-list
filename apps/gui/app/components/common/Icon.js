@@ -15,6 +15,9 @@ const Icon = (props) => {
     const iconClassName = classNames(
         'lst-icons',
         props.className,
+        {
+            'recording-animation': props.value === 'fiber_manual_record'
+        }
     );
 
     const materialIconName = props.value.replace(/ /g, '_');

@@ -28,6 +28,7 @@ export default {
     getSDPAvailableOptions: () => request.get('sdp/available-options'),
     getAvailableVideoOptions: () => request.get('sdp/available-options?media_type=video'),
     getAvailableAudioOptions: () => request.get('sdp/available-options?media_type=audio'),
+    getFeatures: () => request.get('features'),
 
     /** Auth **/
     getUser: () => request.get('user'),
@@ -88,7 +89,7 @@ export default {
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/DeltaToPreviousRtpTsRaw?from=${fromNs}&to=${toNs}`),
     getDeltaRtpVsNtRaw: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/DeltaRtpVsNt?from=${fromNs}&to=${toNs}`),
-        
+
     getStreamInformation: (pcapID, streamID) => request.get(`pcap/${pcapID}/stream/${streamID}`),
     getStreamHelp: (pcapID, streamID) => request.get(`pcap/${pcapID}/stream/${streamID}/help`),
     sendStreamConfigurations: (pcapID, streamID, streamsConfigurations) => request.put(`pcap/${pcapID}/stream/${streamID}/help`, streamsConfigurations),
@@ -102,4 +103,9 @@ export default {
 
     /** Audio **/
     downloadMP3: (pcapID, streamID) => `${API_URL}/pcap/${pcapID}/stream/${streamID}/mp3`,
+
+    /** Live **/
+    getLiveStreams: () => request.get('live/streams/'),
+    getLiveStream: streamID => request.get(`live/streams/${streamID}`)
+
 };
