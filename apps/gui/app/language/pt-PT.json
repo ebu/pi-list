@@ -165,7 +165,8 @@
   "navigation": {
     "dashboard": "Resumo",
     "live_streams": "Em Direto",
-    "pcaps": "PCAPs & Streams"
+    "pcaps": "PCAPs & Streams",
+    "help": "Precisa de ajuda?"
   },
 
   "errors": {

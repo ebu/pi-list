@@ -18,6 +18,8 @@ const propTypes = {
     noAnimation: PropTypes.bool,
     onClick: PropTypes.func,
     noStyle: PropTypes.bool,
+    downloadPath: PropTypes.string,
+    externalPath: PropTypes.string
 };
 
 const defaultProps = {
@@ -33,7 +35,9 @@ const defaultProps = {
     disabled: false,
     noAnimation: false,
     onClick: null,
-    noStyle: false
+    noStyle: false,
+    downloadPath: null,
+    externalPath: null
 };
 
 const Button = (props) => {
@@ -79,6 +83,9 @@ const Button = (props) => {
         >
             {props.loading && <Loader size="mini" className="lst-padding-right-30 lst-no-margin" inverted />}
             {props.icon && <Icon value={props.icon} />}
+            {props.externalPath &&
+                <a href={props.externalPath} rel="noopener noreferrer" target="_blank">{props.label}</a>
+            }
             {props.downloadPath
                 ? <a href={props.downloadPath} download>{props.label}</a>
                 : props.label}

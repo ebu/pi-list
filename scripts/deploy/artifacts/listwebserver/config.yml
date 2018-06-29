@@ -15,10 +15,10 @@ database:
   port: 27017
 
 # Comment / Uncomment to use facebook auth
-#facebook:
-#  APP_ID: FACEBOOK_APP_ID
-#  APP_SECRET: FACEBOOK_APP_SECRET
-#  CALLBACK_URL: http://localhost:3030/auth/facebook/callback
+facebook:
+  APP_ID: FACEBOOK_APP_ID
+  APP_SECRET: FACEBOOK_APP_SECRET
+  CALLBACK_URL: http://localhost:3030/auth/facebook/callback
 
 # InfluxDB URL
 influx:

@@ -81,6 +81,7 @@ class SideNav extends Component {
                                         icon={item.icon}
                                         label={item.label}
                                         exact={item.exact}
+                                        external={item.external}
                                         isOpen={this.state.showMenuItems}
                                     />
                                 ))}

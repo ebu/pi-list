@@ -20,5 +20,11 @@ export default [
         icon: 'dvr',
         label: translate('navigation.pcaps'),
         exact: false
+    },
+    {
+        link: 'https://github.com/ebu/pi-list/issues',
+        icon: 'help',
+        label: translate('navigation.help'),
+        external: true
     }
 ];

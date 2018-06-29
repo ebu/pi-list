@@ -24,6 +24,7 @@ const Header = (props) => {
                         noMargin
                         noAnimation
                         downloadPath={button.downloadPath}
+                        externalPath={button.externalPath}
                         filename={button.filename}
                         onClick={() => button.onClick()}
                     />

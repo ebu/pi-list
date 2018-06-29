@@ -165,7 +165,8 @@
   "navigation": {
     "dashboard": "Dashboard",
     "live_streams": "Live Streams",
-    "pcaps": "PCAPs & Streams"
+    "pcaps": "PCAPs & Streams",
+    "help": "Need some help?"
   },
 
   "errors": {
