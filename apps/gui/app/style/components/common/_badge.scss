@@ -23,6 +23,7 @@ $badge-font-size: 12px;
 
   &--warning{
     @extend .lst-bg--yellow;
+    color: $black;
   }
 
   &--danger {

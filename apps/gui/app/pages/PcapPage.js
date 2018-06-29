@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Panel from 'components/common/Panel';
 import api from 'utils/api';
 import chartFormatters from 'utils/chartFormatters';
-import SectionHeader from 'components/common/SectionHeader';
 import Chart from 'components/Chart';
 
 class PcapPage extends Component {

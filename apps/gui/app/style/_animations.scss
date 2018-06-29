@@ -18,6 +18,11 @@
   animation-name: fadeIn;
 }
 
+.slow-fade-in {
+  @extend .fade-in;
+  animation-duration: $super-slow-time;
+}
+
 @keyframes bounce {
   from, 20%, 53%, 80%, to {
     animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
@@ -86,3 +91,47 @@
 .spin {
     animation: spinner $super-slow-time linear infinite;
 }
+
+// Pulse animation
+@mixin pulse-template($name, $attribute, $color) {
+  @keyframes #{$name} {
+    @content
+    0%, 100% {
+      #{$attribute}: inherit;
+    }
+    50% {
+      #{$attribute}: #{$color};
+    }
+  }
+}
+
+@include pulse-template(pulse-red, color, $red)
+@include pulse-template(pulse-green, color, $green)
+@include pulse-template(pulse-blue, color, $blue)
+@include pulse-template(pulse-yellow, color, $yellow)
+
+@include pulse-template(pulse-red-bg, background-color, $red) {
+  50% {
+    color: $white;
+  }
+}
+
+@include pulse-template(pulse-yello-bg, background-color, $yellow) {
+  50% {
+    color: $white;
+  }
+}
+
+.recording-animation {
+  animation: pulse-red 2s infinite;
+}
+
+.stream-has-error {
+  animation: pulse-red-bg 2s infinite;
+}
+
+.stream-has-warning {
+  animation: pulse-yello-bg 2s infinite;
+}
+
+

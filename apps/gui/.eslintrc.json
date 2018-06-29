@@ -4,7 +4,6 @@
     ],
     "plugins": [],
     "rules": {
-        // Indentation
         "indent": [ "error", 4 ],
         "react/jsx-indent": [ "error", 4 ],
         "react/jsx-indent-props": [ "error", 4],
@@ -26,7 +25,8 @@
         "react/jsx-filename-extension": [ "never" ],
         "import/no-extraneous-dependencies": [ "never" ],
         "import/no-unresolved": [ "never" ],
-        "import/extensions": [ "never" ]
+        "import/extensions": [ "never" ],
+        "linebreak-style": ["off"]
     },
     "env": {
         "browser": true,

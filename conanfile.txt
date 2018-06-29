@@ -9,7 +9,7 @@ catch2/2.2.2@bincrafters/stable
 
 [options]
 cpprestsdk:exclude_websockets=False
-cpprestsdk:exclude_compression=True
+cpprestsdk:exclude_compression=False
 
 [generators]
 cmake

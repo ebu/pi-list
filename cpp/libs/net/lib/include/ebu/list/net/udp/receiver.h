@@ -4,7 +4,6 @@
 
 namespace ebu_list::udp
 {
-    // todo: enable stopping the receiver
     // todo: error handling
 
     class receiver
@@ -14,8 +13,12 @@ namespace ebu_list::udp
         receiver(listener_uptr l, ipv4::address dest_addr, port dest_port);
         virtual ~receiver();
 
+        void stop();
+
     private:
         struct impl;
         std::unique_ptr<impl> pimpl_;
     };
+
+    using receiver_uptr = std::unique_ptr<receiver>;
 }

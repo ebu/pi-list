@@ -4,11 +4,12 @@ import classNames from 'classnames';
 import Icon from 'components/common/Icon';
 
 const propTypes = {
-    type: PropTypes.oneOf(['success','danger', 'warning', 'info']),
+    type: PropTypes.oneOf(['success', 'danger', 'warning', 'info']),
     icon: PropTypes.string,
     text: PropTypes.string,
     className: PropTypes.string,
-    outline: PropTypes.bool
+    outline: PropTypes.bool,
+    mini: PropTypes.bool
 };
 
 const defaultProps = {
@@ -16,7 +17,8 @@ const defaultProps = {
     text: '',
     icon: '',
     className: '',
-    outline: false
+    outline: false,
+    mini: false
 };
 
 const Badge = (props) => {
@@ -28,8 +30,8 @@ const Badge = (props) => {
             'lst-badge--danger': props.type === 'danger',
             'lst-badge--warning': props.type === 'warning',
             'lst-badge--info': props.type === 'info',
-            'lst-badge--mini': props.size === 'mini',
-            'lst-badge--outline': props.outline,
+            'lst-badge--mini': props.mini,
+            'lst-badge--outline': props.outline
         }
     );
 

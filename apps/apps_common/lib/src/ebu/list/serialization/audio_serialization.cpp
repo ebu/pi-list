@@ -3,7 +3,7 @@
 using namespace ebu_list;
 using namespace std;
 
-nlohmann::json ebu_list::to_json(const audio_stream_details& details)
+nlohmann::json audio_stream_details::to_json(const audio_stream_details& details)
 {
     nlohmann::json statistics;
     statistics["sample_size"] = details.sample_size;
@@ -20,10 +20,11 @@ nlohmann::json ebu_list::to_json(const audio_stream_details& details)
     return j;
 }
 
-audio_stream_details ebu_list::parse_audio_json(const nlohmann::json& j)
+audio_stream_details audio_stream_details::from_json(const nlohmann::json& j)
 {
     audio_stream_details desc{};
-    desc.audio = st2110::d30::from_json(j);
+    desc.audio = st2110::d30::from_json(j.at("media_specific"));
+    // todo: parse statistics
     return desc;
 }
 

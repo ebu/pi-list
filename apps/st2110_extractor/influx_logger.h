@@ -3,7 +3,7 @@
 #include "ebu/list/core/platform/time.h"
 #include "ebu/list/rtp/listener.h"
 #include "ebu/list/ptp/state_machine.h"
-#include "ebu/list/st2110/d21/calculators.h"
+#include "ebu/list/st2110/d21/settings.h"
 #include "ebu/list/st2110/d21/c_analyzer.h"
 #include "ebu/list/st2110/d21/rtp_ts_analyzer.h"
 #include "ebu/list/st2110/d21/vrx_analyzer.h"
@@ -60,7 +60,7 @@ namespace ebu_list::influx
 
     private:
         // calculator::listener
-        void on_data(const st2110::d21::vrx_analyzer::packet_info&) override;
+        void on_data(const st2110::d21::packet_info&) override;
         void on_complete() override;
         void on_error(std::exception_ptr ptr) override;
 

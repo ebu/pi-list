@@ -23,4 +23,20 @@
     &--uncheck {
         @include stream-status($yellow);
     }
+
+    &--ok {
+        @include stream-status($green);
+    }
+
+    &--error {
+        @include stream-status($red);
+    }
+
+    &--warning {
+        @include stream-status($yellow);
+    }
+
+    &--faded {
+        @include stream-status($grey-hover);
+    }
 }

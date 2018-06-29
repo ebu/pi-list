@@ -3,7 +3,7 @@
 using namespace ebu_list;
 using namespace std;
 
-nlohmann::json ebu_list::to_json(const video_stream_details& details)
+nlohmann::json video_stream_details::to_json(const video_stream_details& details)
 {
     nlohmann::json statistics;
     statistics["first_frame_ts"] = details.first_frame_ts;
@@ -13,8 +13,8 @@ nlohmann::json ebu_list::to_json(const video_stream_details& details)
     statistics["rate"] = details.video.rate.to_float();
     statistics["packet_count"] = details.packet_count;
     statistics["frame_count"] = details.frame_count;
-    statistics["first_packet_ts"] = std::chrono::duration_cast<std::chrono::nanoseconds>(details.first_packet_ts.time_since_epoch()).count();
-    statistics["last_packet_ts"] = std::chrono::duration_cast<std::chrono::nanoseconds>(details.last_packet_ts.time_since_epoch()).count();
+    statistics["first_packet_ts"] = chrono::duration_cast<chrono::nanoseconds>(details.first_packet_ts.time_since_epoch()).count();
+    statistics["last_packet_ts"] = chrono::duration_cast<chrono::nanoseconds>(details.last_packet_ts.time_since_epoch()).count();
     statistics["packets_per_frame"] = details.video.packets_per_frame;
 
     nlohmann::json j;
@@ -24,15 +24,23 @@ nlohmann::json ebu_list::to_json(const video_stream_details& details)
     return j;
 }
 
-video_stream_details ebu_list::parse_video_json(const nlohmann::json& j)
+video_stream_details video_stream_details::from_json(const nlohmann::json& j)
 {
     video_stream_details desc{};
-    desc.video = st2110::d20::from_json(j);
+    desc.video = st2110::d20::from_json(j.at("media_specific"));
 
-    const auto ppf = j.find("packets_per_frame");
-    if (ppf != j.end())
+    const auto statistics_json = j.find("statistics");
+    if (statistics_json != j.end())
     {
-        desc.video.packets_per_frame = j.at("packets_per_frame").get<int>();
+        desc.first_frame_ts = statistics_json->at("first_frame_ts").get<uint32_t>();
+        desc.last_frame_ts = statistics_json->at("last_frame_ts").get<uint32_t>();
+        // todo: is interlaced -> maybe remove? check GUI
+        desc.max_line_number = statistics_json->at("max_line_number").get<int>();
+        // todo: rate -> maybe remove? check GUI
+        desc.packet_count = statistics_json->at("packet_count").get<unsigned long>();
+        desc.frame_count = statistics_json->at("frame_count").get<unsigned long>();
+        desc.first_packet_ts = clock::time_point{ clock::duration{ statistics_json->at("first_packet_ts").get<long>()} };
+        desc.last_packet_ts = clock::time_point{ clock::duration{ statistics_json->at("last_packet_ts").get<long>()} };
     }
 
     return desc;
@@ -46,9 +54,10 @@ nlohmann::json st2110::d20::to_json(const st2110::d20::video_description& desc)
     j["color_depth"] = desc.color_depth;
     j["width"] = desc.dimensions.width;
     j["height"] = desc.dimensions.height;
-    j["rate"] = to_string(desc.rate);
     j["colorimetry"] = to_string(desc.colorimetry);
     j["scan_type"] = to_string(desc.scan_type);
+    j["packets_per_frame"] = desc.packets_per_frame;
+    j["schedule"] = to_string(desc.schedule);
 
     return j;
 }
@@ -65,6 +74,8 @@ st2110::d20::video_description st2110::d20::from_json(const nlohmann::json& j)
     desc.dimensions = { j.at("width").get<uint16_t>(), j.at("height").get<uint16_t>() };
     desc.rate = media::video::parse_from_string(j.at("rate").get<string>());
     desc.colorimetry = media::video::parse_colorimetry(j.at("colorimetry").get<string>());
+    desc.packets_per_frame = j.at("packets_per_frame").get<int>();
+    desc.schedule = d21::read_schedule_from_string(j.at("schedule").get<string>());
 
     const auto scan_type = j.find("scan_type");
     if (scan_type != j.end())

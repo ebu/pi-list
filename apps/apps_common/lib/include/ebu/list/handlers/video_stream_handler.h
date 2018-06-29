@@ -18,6 +18,7 @@ namespace ebu_list
     struct packet_info
     {
         rtp::packet_info rtp;
+        const rtp::packet& packet;
         const frame& of_frame;
         uint32_t full_sequence_number;
         lines_info line_info;
@@ -54,6 +55,7 @@ namespace ebu_list
 
         st2110::rate_calculator rate_;
         frame_uptr current_frame_;
+        std::optional<int64_t> last_sequence_number_;
         malloc_sbuffer_factory block_factory_;
 
         serializable_stream_info info_;

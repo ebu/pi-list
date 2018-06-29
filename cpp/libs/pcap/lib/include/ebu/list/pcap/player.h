@@ -14,6 +14,7 @@ namespace ebu_list::pcap
         pcap_player(path pcap_file, udp::listener_ptr listener, clock::duration packet_timestamp_correction);
 
         bool next();
+        void done();
 
     private:
         void do_next();

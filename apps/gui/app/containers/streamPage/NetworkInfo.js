@@ -1,35 +1,35 @@
-import React, { Fragment} from 'react';
+import React, { Fragment } from 'react';
 import Icon from 'components/common/Icon';
 import { renderInformationList } from 'containers/streamPage/utils';
-
+import { translate } from 'utils/translation';
 
 const NetworkInfo = props => (
     <Fragment>
         <h2>
             <Icon value="settings ethernet" />
-            <span>Network Information</span>
+            <span>{translate('headings.network_information')}</span>
         </h2>
         <hr />
         {
             renderInformationList([
                 {
-                    key: 'Detected Stream',
+                    key: translate('stream.detected_stream'),
                     value: 'ST2110'
                 },
                 {
-                    key: 'Source',
+                    key: translate('media_information.rtp.source'),
                     value: `${props.source_address}:${props.source_port}`
                 },
                 {
-                    key: 'Destination',
+                    key: translate('media_information.rtp.destination'),
                     value: `${props.destination_address}:${props.destination_port}`
                 },
                 {
-                    key: 'SSRC',
+                    key: translate('media_information.rtp.ssrc'),
                     value: props.ssrc
                 },
                 {
-                    key: 'Packets',
+                    key: translate('media_information.rtp.packet_count'),
                     value: props.packet_count
                 }
             ])

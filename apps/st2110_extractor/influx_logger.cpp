@@ -93,7 +93,7 @@ influxdb_vrx_logger::influxdb_vrx_logger(std::string_view url, std::string_view 
 {
 }
 
-void influxdb_vrx_logger::on_data(const vrx_analyzer::packet_info& fd)
+void influxdb_vrx_logger::on_data(const packet_info& fd)
 {
     db_.send_data(prefix_ + "-vrx", fd.vrx, fd.packet_time);
     db_.send_data(prefix_ + "-delta_to_ideal_tpr0", fd.delta_to_ideal_tpr0, fd.packet_time);

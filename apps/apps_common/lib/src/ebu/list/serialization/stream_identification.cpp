@@ -7,21 +7,20 @@ using namespace ebu_list;
 using namespace std;
 namespace fs = std::experimental::filesystem;
 
-nlohmann::json ebu_list::to_json(const stream_with_details& stream_info)
+nlohmann::json stream_with_details_serializer::to_json(const stream_with_details& stream_info)
 {
     const serializable_stream_info& info = std::get<0>(stream_info);
-    auto j = to_json(info);
+    auto j = serializable_stream_info::to_json(info);
 
     if(info.type == media::media_type::VIDEO)
     {
         const auto& video_details = std::get<video_stream_details>(std::get<1>(stream_info));
-        j["media_specific"] = st2110::d20::to_json(video_details.video);
-        j["media_specific"]["packets_per_frame"] = video_details.video.packets_per_frame;
+        j.merge_patch(video_stream_details::to_json(video_details));
     }
     else if(info.type == media::media_type::AUDIO)
     {
         const auto& audio_details = std::get<audio_stream_details>(std::get<1>(stream_info));
-        j["media_specific"] = st2110::d30::to_json(audio_details.audio);
+        j.merge_patch(audio_stream_details::to_json(audio_details));
     }
     else
     {
@@ -31,12 +30,20 @@ nlohmann::json ebu_list::to_json(const stream_with_details& stream_info)
     return j;
 }
 
+stream_with_details stream_with_details_serializer::from_json(const nlohmann::json& j)
+{
+    const auto stream_info = serializable_stream_info::from_json(j);
+
+    if( stream_info.type == media::media_type::VIDEO ) return { stream_info, video_stream_details::from_json(j) };
+    else if( stream_info.type == media::media_type::AUDIO ) return { stream_info, audio_stream_details::from_json(j) };
+    else return { stream_info, {} };
+}
+
 void ebu_list::write_stream_id_info(const path& dir, const stream_with_details& stream_info)
 {
     const serializable_stream_info& info = std::get<0>(stream_info);
-    write_json_to(dir / info.id, constants::help_filename, to_json(stream_info));
+    write_json_to(dir / info.id, constants::help_filename, stream_with_details_serializer::to_json(stream_info));
 }
-
 
 std::vector<stream_with_details> ebu_list::scan_folder(const path& folder_path)
 {
@@ -50,23 +57,11 @@ std::vector<stream_with_details> ebu_list::scan_folder(const path& folder_path)
 
             if( fs::exists(stream_helper) )
             {
-                found_streams.push_back(from_json(stream_helper));
+                const auto json_file = read_from_file(stream_helper);
+                found_streams.push_back(stream_with_details_serializer::from_json(json_file));
             }
         }
     }
 
     return found_streams;
-}
-
-stream_with_details ebu_list::from_json(const path& json_file)
-{
-    const auto j = read_from_file(json_file);
-
-    const auto stream_info = from_json(j);
-
-    const auto media_info = j.at("media_specific");
-
-    if( stream_info.type == media::media_type::VIDEO ) return { stream_info, parse_video_json(media_info) };
-    else if( stream_info.type == media::media_type::AUDIO ) return { stream_info, parse_audio_json(media_info) };
-    else return { stream_info, {} };
 }

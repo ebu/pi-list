@@ -5,18 +5,20 @@
  *        When the client doesn't have a valid cookie any of those routes are inaccessible.
  */
 const { Router } = require('express');
-
-// REST API Routes
-const pcapRoutes = require('./pcap');
-const sdpRoutes = require('./sdp');
-const userRoutes = require('./user');
+const program = require('../util/programArguments');
 
 // Initialize Express Router
 const router = Router();
 
 // API routes
-router.use('/pcap', pcapRoutes);
-router.use('/sdp', sdpRoutes);
-router.use('/user', userRoutes);
+router.use('/pcap', require('./pcap'));
+router.use('/sdp', require('./sdp'));
+router.use('/user', require('./user'));
+router.use('/features', require('./features'));
+
+if (program.liveMode) {
+    router.use('/live', require('./live'));
+}
+
 
 module.exports = router;

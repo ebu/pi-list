@@ -1,5 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
+
+const propTypes = {
+    percentage: PropTypes.number.isRequired,
+    className: PropTypes.string
+};
+
+const defaultProps = {
+    className: ''
+};
 
 const ProgressBar = (props) => {
     const progressBarClassName = classNames(
@@ -13,5 +23,8 @@ const ProgressBar = (props) => {
         </div>
     );
 };
+
+ProgressBar.propTypes = propTypes;
+ProgressBar.defaultProps = defaultProps;
 
 export default ProgressBar;

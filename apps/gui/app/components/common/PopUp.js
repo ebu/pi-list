@@ -1,18 +1,29 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Rodal from 'rodal';
 import Button from 'components/common/Button';
 import Icon from 'components/common/Icon';
-
 import 'rodal/lib/rodal.css';
+import { translate } from 'utils/translation';
+
+const propTypes = {
+    visible: PropTypes.bool.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
+    height: PropTypes.number,
+    width: PropTypes.number
+};
+
+const defaultProps = {
+    height: 140,
+    width: 400
+};
 
 const PopUp = (props) => {
-    let label, message, buttons, header;
-    const height = props.height || 140;
-    const width = props.width || 400;
+    let message, buttons, header;
 
     switch (props.type) {
     case 'delete':
-        label = `Delete ${props.resource}`;
         message = (
             <div className="lst-text-center">
                 {props.message}
@@ -21,14 +32,14 @@ const PopUp = (props) => {
         header = (
             <h2 className="lst-text-red">
                 <Icon value="warning" />
-                <span>{label}</span>
+                <span>{props.label}</span>
             </h2>
         );
         buttons = [
-            <Button key="cancel-btn" label="Cancel" outline noAnimation onClick={props.onClose} />,
+            <Button key="cancel-btn" label={translate('buttons.cancel')} outline noAnimation onClick={props.onClose} />,
             <Button
                 key="delete-btn"
-                label="Delete"
+                label={translate('buttons.delete')}
                 type="danger"
                 outline
                 noAnimation
@@ -54,8 +65,8 @@ const PopUp = (props) => {
             animation="slideDown"
             closeOnEsc
             onClose={props.onClose}
-            height={height}
-            width={width}
+            height={props.height}
+            width={props.width}
             closeMaskOnClick={false}
         >
             <div className="lst-popup__header">
@@ -70,5 +81,8 @@ const PopUp = (props) => {
         </Rodal>
     );
 };
+
+PopUp.propTypes = propTypes;
+PopUp.defaultProps = defaultProps;
 
 export default PopUp;

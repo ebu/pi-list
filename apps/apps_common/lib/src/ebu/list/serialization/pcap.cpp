@@ -18,6 +18,10 @@ void ebu_list::write_pcap_info(const path &base_dir, const pcap_info &info)
     j["audio_streams"] = info.audio_streams;
     j["anc_streams"] = info.anc_streams;
     j["total_streams"] = info.total_streams;
+    j["wide_streams"] = info.wide_streams;
+    j["narrow_streams"] = info.narrow_streams;
+    j["narrow_linear_streams"] = info.narrow_linear_streams;
+    j["not_compliant_streams"] = info.not_compliant_streams;
 
     write_json_to(base_dir / info.id, constants::meta_filename, j);
 }
@@ -38,6 +42,10 @@ pcap_info ebu_list::read_pcap_from_json(const path& json_file)
     pcap.video_streams = j.at("video_streams").get<int>();
     pcap.audio_streams = j.at("audio_streams").get<int>();
     pcap.total_streams = j.at("total_streams").get<int>();
+    pcap.wide_streams = j.at("wide_streams").get<int>();
+    pcap.narrow_streams = j.at("narrow_streams").get<int>();
+    pcap.narrow_linear_streams = j.at("narrow_linear_streams").get<int>();
+    pcap.not_compliant_streams = j.at("not_compliant_streams").get<int>();
 
     return pcap;
 }

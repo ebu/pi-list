@@ -5,7 +5,7 @@ let instance = null;
 
 class WebSocket {
     constructor(app) {
-        this.connections = {};
+        this.connections = new Map(); //<userID, socketID>
 
         this.websocket = require('socket.io')(app, { path: '/socket'});
 
@@ -15,11 +15,11 @@ class WebSocket {
             socket.on('register', (userID) => {
 
                 // This step will verify is the user has already any connection and close that connection
-                if (isString(this.connections[userID])) {
+                if(this.connections.has(userID)) {
                     this.disconnectUser(userID);
                 }
 
-                this.connections[userID] = socket.id;
+                this.connections.set(userID, socket.id);
 
                 const sessionCount = Object.keys(this.websocket.sockets.connected).length;
 
@@ -39,8 +39,15 @@ class WebSocket {
     }
 
     sendEventToUser(userID, dataObject) {
-        logger('websocket-manager').info(`Message sent to ${userID} websocket channel`);
-        this.websocket.to(this.connections[userID]).emit('message', dataObject);
+        // logger('websocket-manager').info(`Message sent to ${userID} websocket channel`);
+        this.websocket.to(this.connections.get(userID)).emit('message', dataObject);
+    }
+
+    sendEventToAllUsers(dataObject) {
+        // logger('websocket-manager').info(`Message sent to all users`);
+        this.connections.forEach( (value, key) => {
+            this.sendEventToUser(key, dataObject);
+        });
     }
 
     disconnectUser(userID) {
@@ -49,9 +56,12 @@ class WebSocket {
         );
 
         // Yep sockets.sockets are really necessary!
-        if (isString(this.connections[userID]) && isObject(this.websocket.sockets.sockets[this.connections[userID]])) {
-            this.websocket.sockets.sockets[this.connections[userID]].disconnect();
-            this.connections[userID] = null;
+        if (this.connections.has(userID) && isObject(this.websocket.sockets.sockets[this.connections.get(userID)])) {
+            this.websocket.sockets.sockets[this.connections.get(userID)].disconnect();
+        }
+
+        if (this.connections.has(userID)) { // keep me to remove me from map
+            this.connections.delete(userID);
         }
     }
 }

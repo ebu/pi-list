@@ -14,5 +14,6 @@
   Options:
 
     --dev  Development mode
+    --live Live mode
     -h, --help  output usage information
 ```

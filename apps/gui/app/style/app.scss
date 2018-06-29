@@ -42,3 +42,8 @@
   position: relative;
   top: 42vh;
 }
+
+.inactive {
+  background-color: $grey !important;
+  border: 1px solid $grey-hover !important;
+}

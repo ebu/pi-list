@@ -35,7 +35,7 @@ function getRootPath(req) {
 router.put('/', upload.single('pcap'), (req, res) => {
     const userID = req.session.passport.user.id;
 
-    if(!req.file) {
+    if (!req.file) {
         logger('pcap-api').error('File not received!');
         res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send(API_ERRORS.PCAP_FILE_TO_UPLOAD_NOT_FOUND);
     } else {
@@ -85,7 +85,7 @@ router.put('/', upload.single('pcap'), (req, res) => {
                         });
                     });
             })
-            .then(() =>  {
+            .then(() => {
                 logger('st2110_extractor').info(`Command: ${st2110ExtractorCommand}`);
                 websocketManager.instance().sendEventToUser(userID, {
                     event: 'ANALYZING',
@@ -117,7 +117,7 @@ router.delete('/:pcapID/', (req, res) => {
     const root = getRootPath(req);
     const path = `${root}/${pcapID}`;
 
-    if(fs.folderExists(path)) {
+    if (fs.folderExists(path)) {
         const pcap_meta_file = `${path}/${CONSTANTS.META_FILE}`;
         fs.readFile(pcap_meta_file)
             .then(data => {
@@ -171,10 +171,10 @@ router.get('/:pcapID/streams/', (req, res) => {
     const { pcapID } = req.params;
     const pcapFolder = `${getRootPath(req)}/${pcapID}`;
 
-    if(fs.folderExists(pcapFolder)) {
+    if (fs.folderExists(pcapFolder)) {
         const streams = fs.getAllFirstLevelFolders(pcapFolder)
             .map(stream => {
-                const meta_path =`${pcapFolder}/${stream.id}/${CONSTANTS.META_FILE}`;
+                const meta_path = `${pcapFolder}/${stream.id}/${CONSTANTS.META_FILE}`;
                 const help = fs.readFile(`${pcapFolder}/${stream.id}/${CONSTANTS.HELP_FILE}`);
                 let promises = [help];
                 fs.fileExists(meta_path) ? promises.push(fs.readFile(meta_path)) : promises.push(Promise.resolve({}));
@@ -186,7 +186,9 @@ router.get('/:pcapID/streams/', (req, res) => {
             });
 
         Promise.all(streams)
-            .then(streamData => res.send(streamData));
+            .then(
+                streamData => res.send(streamData)
+            );
     } else {
         res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND);
     }
@@ -235,29 +237,29 @@ router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
     const { from, to } = req.query;
 
     let chartData = null;
-    
+
     if (measurement === 'CInst') {
         chartData = influxDbManager.getCInstByStream(pcapID, streamID, from, to);
     } else if (measurement === 'CInstRaw') {
         chartData = influxDbManager.getCInstRaw(pcapID, streamID, from, to);
     } else if (measurement === 'VrxIdeal') {
         chartData = influxDbManager.getVrxIdeal(pcapID, streamID, from, to);
-    } else if (measurement === 'VrxFirstPacketFirstFrame' ) {
+    } else if (measurement === 'VrxFirstPacketFirstFrame') {
         chartData = influxDbManager.getVrxFirstPacketFirstFrame(pcapID, streamID, from, to)
-    } else if (measurement === 'VrxFirstPacketEachFrame' ) {
+    } else if (measurement === 'VrxFirstPacketEachFrame') {
         chartData = influxDbManager.getVrxFirstPacketEachFrame(pcapID, streamID, from, to)
-    } else if (measurement === 'VrxFirstPacketEachFrameRaw' ) {
+    } else if (measurement === 'VrxFirstPacketEachFrameRaw') {
         chartData = influxDbManager.getVrxFirstPacketEachFrameRaw(pcapID, streamID, from, to)
-    } else if (measurement === 'DeltaToIdealTpr0Raw' ) {
+    } else if (measurement === 'DeltaToIdealTpr0Raw') {
         chartData = influxDbManager.getDeltaToIdealTpr0Raw(pcapID, streamID, from, to)
-    } else if (measurement === 'DeltaRtpTsVsPacketTsRaw' ) {
+    } else if (measurement === 'DeltaRtpTsVsPacketTsRaw') {
         chartData = influxDbManager.getDeltaRtpTsVsPacketTsRaw(pcapID, streamID, from, to)
-    } else if (measurement === 'DeltaToPreviousRtpTsRaw' ) {
+    } else if (measurement === 'DeltaToPreviousRtpTsRaw') {
         chartData = influxDbManager.getDeltaToPreviousRtpTsRaw(pcapID, streamID, from, to)
-    } else if (measurement === 'DeltaRtpVsNt' ) {
+    } else if (measurement === 'DeltaRtpVsNt') {
         chartData = influxDbManager.getDeltaRtpVsNt(pcapID, streamID, from, to)
     }
-    
+
     chartData.then(data => res.json(data));
 });
 
@@ -267,7 +269,7 @@ router.put('/:pcapID/stream/:streamID/help', (req, res) => {
 
     fs.writeFile(`${getRootPath(req)}/${pcapID}/${streamID}/${CONSTANTS.HELP_FILE}`, req.body)
         .then(() => fs.readFile(`${getRootPath(req)}/${pcapID}/${CONSTANTS.META_FILE}`))
-        .then((meta) =>  {
+        .then((meta) => {
             const pcap_file = `${getRootPath(req)}/${meta.pcap_file_name}`;
             const pcap_folder = `${getRootPath(req)}/${pcapID}/`;
 
@@ -293,7 +295,7 @@ router.put('/:pcapID/stream/:streamID/help', (req, res) => {
 router.get('/:pcapID/stream/:streamID/frames', (req, res) => {
     const { pcapID, streamID } = req.params;
 
-    if( fs.folderExists(`${getRootPath(req)}/${pcapID}`) ) {
+    if (fs.folderExists(`${getRootPath(req)}/${pcapID}`)) {
         const path = `${getRootPath(req)}/${pcapID}/${streamID}`;
 
         const frames = fs.getAllFirstLevelFolders(path)

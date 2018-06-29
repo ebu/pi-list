@@ -3,14 +3,15 @@ import { isObject } from 'lodash';
 import Button from 'components/common/Button';
 import Icon from 'components/common/Icon';
 import errorEnum from 'enums/errorEnum';
+import { translate } from 'utils/translation';
 
 function getButtonLabelForErrorType(errorType) {
     switch (errorType) {
     case errorEnum.NETWORK_ERROR:
-        return 'Reload Page';
+        return translate('buttons.reload_page');
     case errorEnum.PAGE_NOT_FOUND:
     case errorEnum.NO_STREAMS:
-        return 'Go Back';
+        return translate('buttons.go_back');
     default:
         return '';
     }

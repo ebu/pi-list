@@ -9,16 +9,19 @@ function parseArguments(arguments) {
         folder: path.sanitizeDirectoryPath(arguments.folder),
         cpp: path.sanitizeDirectoryPath(arguments.cpp),
         influxURL: arguments.influx ? `http://${arguments.influx.hostname}:${arguments.influx.port}` : '',
-        developmentMode: arguments.dev || false
+        developmentMode: arguments.dev || false,
+        liveMode: arguments.live || false
     });
 }
 
 commander
     .arguments('<configFile>')
     .option('--dev', 'Development mode')
+    .option('--live', 'Live mode')
     .action((configFile, options) => {
         config = yamlParser.sync(configFile);
         config.dev = options.dev;
+        config.live = options.live;
     })
     .parse(process.argv);
 

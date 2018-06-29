@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import StreamConfiguration from 'containers/StreamConfiguration';
-import routeNames from "../config/routeNames";
+import routeNames from 'config/routeNames';
 
 class ConfigureStreamsPage extends Component {
     constructor(props) {
         super(props);
+
+        this.onStreamAnalyzed.bind(this);
     }
 
     onStreamAnalyzed() {
@@ -17,7 +19,11 @@ class ConfigureStreamsPage extends Component {
         const { pcapID, streamID } = this.props.match.params;
 
         return (
-            <StreamConfiguration pcapID={pcapID} streamID={streamID} onStreamAnalyzed={this.onStreamAnalyzed.bind(this)}/>
+            <StreamConfiguration
+                pcapID={pcapID}
+                streamID={streamID}
+                onStreamAnalyzed={this.onStreamAnalyzed}
+            />
         );
     }
 }

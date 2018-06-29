@@ -42,28 +42,29 @@ class PcapUploader extends Component {
 
     onDrop(files) {
         this.setState({ files, dragActivated: false });
+        files.map((f, index) => this.uploadPcapFile(f, index));
     }
 
-    uploadPcapFile() {
-        const fileToUpload = this.state.files[0];
-
+    uploadPcapFile(fileToUpload, index) {
         api.sendPcapFile(fileToUpload, (uploadPercentage) => {
+            const newStateUploadProgress = this.state.uploadProgress;
+            newStateUploadProgress[index] = uploadPercentage;
             this.setState({
-                uploadProgress: [uploadPercentage],
+                uploadProgress: newStateUploadProgress,
                 isUploading: true,
                 uploadComplete: false
             });
         }).then(() => {
             this.setState({ uploadComplete: true, isUploading: false, uploadFailed: false });
             notifications.success({
-                title: translate('notifications.success.pcap-upload'),
-                message: translate('notifications.success.pcap-upload-message', { name: fileToUpload.name })
+                title: translate('notifications.success.pcap_upload'),
+                message: translate('notifications.success.pcap_upload-message', { name: fileToUpload.name })
             });
         }).catch(() => {
             this.setState({ uploadComplete: false, isUploading: false, uploadFailed: true });
             notifications.error({
-                title: translate('notifications.error.pcap-upload'),
-                message: translate('notifications.error.pcap-upload-message', { name: fileToUpload.name })
+                title: translate('notifications.error.pcap_upload'),
+                message: translate('notifications.error.pcap_upload-message', { name: fileToUpload.name })
             });
         });
     }
@@ -71,7 +72,7 @@ class PcapUploader extends Component {
     renderUploadedFiles() {
         return (
             <div className="lst-pcap-uploader-list fade-in">
-                <h3>PCAP files to be imported:</h3>
+                <h3>{translate('workflow.pcaps_to_be_imported')}</h3>
                 <ul className="lst-pcap-uploader-files">
                     {this.state.files.map((file, index) => (
                         <li key={file.name} className="row lst-no-padding">
@@ -94,7 +95,7 @@ class PcapUploader extends Component {
                                         <span className="lst-pcap-uploader-file-size">({bytes(file.size)})</span>
                                     </div>
                                     <div className="col-xs-2 pcap-upload-progress">
-                                        {this.state.isUploading && `${this.state.uploadProgress[index]}%`}
+                                        {this.state.isUploading && `${this.state.uploadProgress[index] ? this.state.uploadProgress[index] : 0}%`}
                                         {this.state.uploadComplete && (
                                             <Icon className="lst-text-green fade-in upload-state-icon" value="check" />
                                         )}
@@ -106,7 +107,7 @@ class PcapUploader extends Component {
                                 {(this.state.isUploading) && (
                                     <ProgressBar
                                         className="lst-pcap-uploader-bar fade-in"
-                                        percentage={this.state.uploadProgress[index]}
+                                        percentage={this.state.uploadProgress[index] ? this.state.uploadProgress[index] : 0}
                                     />
                                 )}
                             </div>
@@ -117,8 +118,8 @@ class PcapUploader extends Component {
                 <div className="row reverse">
                     <Button
                         type="info"
-                        label="Import PCAP files"
-                        onClick={this.uploadPcapFile}
+                        label={translate('workflow.import_pcap')}
+                        onClick={() => this.state.files.map((f, index) => this.uploadPcapFile(f, index))}
                         disabled={this.state.isUploading}
                         outline
                         noMargin
@@ -131,8 +132,8 @@ class PcapUploader extends Component {
     renderDragAndDropMessage() {
         return (
             <p>
-                Drag & drop your PCAP files or {' '}
-                <span className="lst-pcap-uploader__link">select them from your computer</span>
+                {translate('workflow.drop_files_here')} {' '}
+                <span className="lst-pcap-uploader__link">{translate('workflow.select_from_drive')}</span>
             </p>
         );
     }
@@ -141,7 +142,7 @@ class PcapUploader extends Component {
         return (
             <div>
                 <i className="lst-pcap-uploader__icon lst-icons bounce">file_download</i>
-                <p>Drop your PCAP files here</p>
+                <p>{translate('workflow.drop_files_here')}</p>
             </div>
         );
     }

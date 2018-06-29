@@ -27,6 +27,8 @@ audio_stream_handler::audio_stream_handler(rtp::packet first_packet, serializabl
 {
     logger()->info("created handler for {:08x}, {}->{}", info_.network.ssrc, to_string(info_.network.source), to_string(info_.network.destination));
 
+    info.state = StreamState::ON_GOING_ANALYSIS;
+
     audio_description_.first_packet_ts = first_packet.info.udp.packet_time;
 
     using float_sec = std::chrono::duration<float, std::ratio<1, 1>>;

@@ -3,7 +3,7 @@
 using namespace ebu_list;
 using namespace std;
 
-serializable_stream_info ebu_list::from_json(const nlohmann::json& j)
+serializable_stream_info serializable_stream_info::from_json(const nlohmann::json& j)
 {
     serializable_stream_info stream;
     stream.id = j["id"].get<string>();
@@ -14,7 +14,7 @@ serializable_stream_info ebu_list::from_json(const nlohmann::json& j)
     return stream;
 }
 
-nlohmann::json ebu_list::to_json(const serializable_stream_info& info)
+nlohmann::json serializable_stream_info::to_json(const serializable_stream_info& info)
 {
     nlohmann::json j;
     j["id"] = info.id;
@@ -31,6 +31,7 @@ std::string ebu_list::to_string(StreamState s)
     {
         case StreamState::NEEDS_INFO: return "needs_info";
         case StreamState::READY: return "ready";
+        case StreamState::ON_GOING_ANALYSIS: return "on_going_analysis";
         default:
         {
             assert(s == StreamState::ANALYZED);
@@ -48,6 +49,10 @@ StreamState ebu_list::from_string(std::string_view s)
     else if (s == "ready")
     {
         return StreamState::READY;
+    }
+    else if (s == "on_going_analysis")
+    {
+        return StreamState::ON_GOING_ANALYSIS;
     }
     else
     {

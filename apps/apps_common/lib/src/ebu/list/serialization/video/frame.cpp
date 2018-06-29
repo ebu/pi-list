@@ -46,6 +46,7 @@ line_info line_info::from_json(const nlohmann::json& j)
     l.offset = j["offset"].get<uint16_t>();
     l.field_identification = j["field_identification"].get<uint8_t>();
     l.continuation = j["continuation"].get<bool>();
+    l.valid = true;
 
     return l;
 }

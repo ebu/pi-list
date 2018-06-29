@@ -12,6 +12,7 @@ import routeNames from 'config/routeNames';
 import Badge from 'components/common/Badge';
 import ProgressBar from 'components/common/ProgressBar';
 import websocketEventsEnum from 'enums/websocketEventsEnum';
+import { translate } from 'utils/translation';
 
 class PcapList extends Component {
     constructor(props) {
@@ -43,7 +44,7 @@ class PcapList extends Component {
             pcaps: [
                 {
                     ...data,
-                    stateLabel: 'Reading PCAP file...'
+                    stateLabel: translate('workflow.reading_pcap')
                 },
                 ...this.state.pcaps
             ]
@@ -53,7 +54,7 @@ class PcapList extends Component {
     onPcapProcessed(data) {
         const pcaps = immutable.findAndUpdateElementInArray({ id: data.id }, this.state.pcaps, {
             ...data,
-            stateLabel: 'Processing Streams...'
+            stateLabel: translate('workflow.processing_streams')
         });
 
         this.setState({ pcaps });
@@ -62,7 +63,7 @@ class PcapList extends Component {
     onDone(data) {
         const pcaps = immutable.findAndUpdateElementInArray({ id: data.id }, this.state.pcaps, {
             ...data,
-            stateLabel: 'Done!'
+            stateLabel: translate('workflow.done')
         });
 
         this.setState({ pcaps });
@@ -80,14 +81,14 @@ class PcapList extends Component {
                 this.setState({ pcaps });
 
                 notifications.success({
-                    title: 'PCAP file deleted',
-                    message: `The ${this.state.pcapSelected.file_name} file was successfully deleted!`
+                    title: translate('notifications.success.pcap_deleted'),
+                    message: translate('notifications.success.pcap_deleted_message', { name: this.state.pcapSelected.file_name })
                 });
             })
             .catch(() => {
                 notifications.error({
-                    title: 'Error while deleting PCAP',
-                    message: `The ${this.state.pcapSelected.file_name} file cannot be deleted!`
+                    title: translate('notifications.error.pcap_deleted'),
+                    message: translate('notifications.error.pcap_deleted_message', { name: this.state.pcapSelected.file_name })
                 });
             });
         this.hideDeleteModal();
@@ -112,7 +113,6 @@ class PcapList extends Component {
     }
 
     render() {
-        const showFirstFiveElements = this.props.showLastPcaps ? 5 : null;
         return (
             <React.Fragment>
                 <Table
@@ -126,7 +126,7 @@ class PcapList extends Component {
                             header: 'PCAP',
                             value: 'file_name',
                             cellClassName: 'lst-truncate',
-                            width: '25%'
+                            width: '30%'
                         },
                         {
                             key: 'analyzed',
@@ -136,13 +136,13 @@ class PcapList extends Component {
                         },
                         {
                             key: 'date',
-                            header: 'Date',
+                            header: translate('date'),
                             render: this.renderPcapDate,
-                            width: '20%'
+                            width: '15%'
                         }
                     ]}
                     fixed
-                    showFirstElements={showFirstFiveElements}
+                    showFirstElements={this.props.limit}
                     showActions
                     rowClickable
                     onRowClick={this.onPcapClick}
@@ -151,8 +151,8 @@ class PcapList extends Component {
                 <PopUp
                     type="delete"
                     visible={this.state.showPcapDeleteModal}
-                    message={`Are you sure you want to delete ${this.state.resourceName} file?`}
-                    resource="PCAP file"
+                    label={translate('pcap.delete_header')}
+                    message={translate('pcap.delete_message', { name: this.state.resourceName })}
                     onClose={this.hideDeleteModal}
                     onDelete={this.deletePcapFile}
                 />
@@ -161,6 +161,33 @@ class PcapList extends Component {
     }
 
     renderPcapStatusCell(rowData) {
+        let stateText;
+        let stateIcon;
+        let stateType;
+
+        if (!rowData.analyzed) {
+            stateText = translate('pcap.state.needs_user_input');
+            stateIcon = 'warning';
+            stateType = 'warning';
+        } else {
+            const hasError = rowData.not_compliant_streams !== 0;
+            const nrAnalyzedStreams = rowData.not_compliant_streams + rowData.narrow_streams + rowData.narrow_linear_streams + rowData.wide_streams;
+
+            if (nrAnalyzedStreams === 0) {
+                stateText = translate('pcap.state.no_analysis');
+                stateIcon = 'info';
+                stateType = 'info';
+            } else if (hasError) {
+                stateText = translate('pcap.state.not_compliant');
+                stateIcon = 'close';
+                stateType = 'danger';
+            } else {
+                stateText = translate('pcap.state.compliant');
+                stateIcon = 'done all';
+                stateType = 'success';
+            }
+        }
+
         return (
             <Fragment>
                 {rowData.progress && rowData.progress < 100 ? (
@@ -175,9 +202,9 @@ class PcapList extends Component {
                     <Fragment>
                         <Badge
                             className="lst-table-configure-sdp-badge"
-                            type={rowData.analyzed ? 'success' : 'warning'}
-                            text={rowData.analyzed ? 'Streams Analyzed' : 'Configure Streams'}
-                            icon={rowData.analyzed ? 'done all' : 'warning'}
+                            type={stateType}
+                            text={stateText}
+                            icon={stateIcon}
                         />
                         {rowData.offset_from_ptp_clock !== 0 && (
                             <Badge

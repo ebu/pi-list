@@ -1,6 +1,6 @@
 #include "ebu/list/st2110/pch.h"
 #include "ebu/list/st2110/d21/rtp_ts_analyzer.h"
-#include "ebu/list/st2110/d21/calculators.h"
+#include "ebu/list/st2110/d21/settings.h"
 #include "ebu/list/core/math.h"
 
 using namespace ebu_list;

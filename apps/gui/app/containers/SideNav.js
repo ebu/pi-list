@@ -7,6 +7,8 @@ import sideNavItems from 'config/sideNavList';
 import Icon from 'components/common/Icon';
 import Button from 'components/common/Button';
 import PopUp from 'components/common/PopUp';
+import { translate } from 'utils/translation';
+import { AppContext } from 'utils/liveFeature';
 
 const propTypes = {
     isOpen: PropTypes.bool
@@ -43,18 +45,18 @@ class SideNav extends Component {
     }
 
     onClickDeleteUser() {
-        this.setState({showModal: true});
+        this.setState({ showModal: true });
     }
 
     hideModal() {
-        this.setState({showModal: false});
+        this.setState({ showModal: false });
     }
 
     deleteAccount() {
         api.deleteUser()
             .then(() => {
                 this.hideModal();
-                window.appHistory.push("/login");
+                window.appHistory.push('/login');
             });
     }
 
@@ -66,23 +68,31 @@ class SideNav extends Component {
         return (
             <nav className={sideNavClassNames} ref={sideNav => (this.sideNav = sideNav)}>
                 <div className="lst-side-nav-header center-xs middle-xs">
-                    <img src="/static/ebu-white.png"/>
+                    <img src="/static/ebu-white.png" alt="ebu logo" />
                 </div>
                 <ul className="lst-side-nav__items">
-                    {sideNavItems.map(item => (
-                        <MenuItem
-                            key={`lst-side-nav-${item.link}`}
-                            link={item.link}
-                            icon={item.icon}
-                            label={item.label}
-                            exact={item.exact}
-                            isOpen={this.state.showMenuItems}
-                        />))}
+                    <AppContext.Consumer>
+                        {value => (
+                            <React.Fragment>
+                                {sideNavItems.filter(item => item.liveOnly !== undefined ? value : true).map(item => (
+                                    <MenuItem
+                                        key={`lst-side-nav-${item.link}`}
+                                        link={item.link}
+                                        icon={item.icon}
+                                        label={item.label}
+                                        exact={item.exact}
+                                        external={item.external}
+                                        isOpen={this.state.showMenuItems}
+                                    />
+                                ))}
+                            </React.Fragment>
+                        )}
+                    </AppContext.Consumer>
                 </ul>
                 <div className="lst-side-nav__user row middle-xs">
                     <div className="col-xs-2">
                         {this.props.user.photoURL && (
-                            <img className="lst-side-nav__user-photo" src={this.props.user.photoURL} />
+                            <img className="lst-side-nav__user-photo" src={this.props.user.photoURL} alt="user photo" />
                         )}
                     </div>
                     {(this.state.showMenuItems && this.props.user.username) ? (
@@ -100,21 +110,21 @@ class SideNav extends Component {
                     <Button noStyle onClick={() => this.onClickDeleteUser()}>
                         <Icon value="delete" />
                         {this.state.showMenuItems && (
-                            <div className="fade-in lst-no-margin">Delete Account</div>
+                            <div className="fade-in lst-no-margin">{translate('user_account.delete_user_account')}</div>
                         )}
                     </Button>
                     <a className="row middle-xs" href={api.logout()}>
                         <Icon value="power settings new" />
                         {this.state.showMenuItems && (
-                            <div className="fade-in">Logout out</div>
+                            <div className="fade-in">{translate('user_account.logout')}</div>
                         )}
                     </a>
                 </div>
                 <PopUp
                     type="delete"
                     visible={this.state.showModal}
-                    message={`Are you sure you want to your account? This action will delete all data and it's irreversible!`}
-                    resource="user account"
+                    message={translate('user_account.delete_confirmation')}
+                    label={translate('user_account.delete_user_account')}
                     onClose={this.hideModal}
                     onDelete={this.deleteAccount}
                 />

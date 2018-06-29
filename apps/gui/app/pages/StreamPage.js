@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import api from 'utils/api';
-import { translate } from 'utils/translation';
+import { pluralize, translate } from 'utils/translation';
 import asyncLoader from 'components/asyncLoader';
 import errorEnum from 'enums/errorEnum';
 import routeNames from 'config/routeNames';
@@ -8,16 +8,8 @@ import VideoPage from 'containers/VideoPage';
 import AudioPage from 'containers/AudioPage';
 
 class StreamPage extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     isVideo() {
         return this.props.streamInfo.media_type === 'video';
-    }
-
-    isAudio() {
-        return this.props.streamInfo.media_type === 'audio';
     }
 
     renderAudio() {
@@ -47,7 +39,7 @@ export default asyncLoader(StreamPage, {
         errorType: errorEnum.STREAM_NOT_ANALYSED,
         icon: 'help',
         button: {
-            label: 'Configure Stream',
+            label: pluralize('stream.configure_streams', 1),
             onClick: (props) => {
                 const { pcapID, streamID } = props.match.params;
                 props.history.push(`${routeNames.PCAPS}/${pcapID}/${routeNames.STREAMS_PAGE}/${streamID}/${routeNames.CONFIGURE}`);

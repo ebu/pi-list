@@ -1,38 +1,32 @@
-import React, { Component } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
-import api from 'utils/api';
-import chartFormatters from 'utils/chartFormatters';
+import React from 'react';
 import NetworkInfo from 'containers/streamPage/NetworkInfo';
 import VideoInfo from 'containers/streamPage/VideoInfo';
 import VideoStatistics from 'containers/streamPage/VideoStatistics';
-import SectionHeader from 'components/common/SectionHeader';
-import Chart from 'components/Chart';
+import Dash21Info from 'containers/streamPage/Dash21Info';
 
-class VideoStreamInformation extends Component {
+const VideoStreamInformation = (props) => {
+    const streamInfo = props.streamInfo;
+    const networkInfo = streamInfo.network_information;
+    const statistics = streamInfo.statistics;
+    const mediaInfo = streamInfo.media_specific;
+    const globalVideoAnalysis = streamInfo.global_video_analysis;
 
-    render() {
-        const streamInfo = this.props.streamInfo;
-        const networkInfo = streamInfo.network_information;
-        const statistics = streamInfo.statistics;
-        const mediaInfo = streamInfo.media_specific;
-
-        const { first_packet_ts, last_packet_ts } = streamInfo.statistics;
-        const { streamID, pcapID } = this.props;
-
-        return (
-            <div className="row">
-                <div className="col-xs-12 col-md-4">
-                    <NetworkInfo {...networkInfo} packet_count={statistics.packet_count} />
-                </div>
-                <div className="col-xs-12 col-md-4">
-                    <VideoInfo {...mediaInfo} />
-                </div>
-                <div className="col-xs-12 col-md-4">
-                    <VideoStatistics {...statistics} />
-                </div>
+    return (
+        <div className="row">
+            <div className="col-xs-12 col-md-3">
+                <NetworkInfo {...networkInfo} packet_count={statistics.packet_count} />
             </div>
-        );
-    }
-}
+            <div className="col-xs-12 col-md-3">
+                <VideoInfo {...mediaInfo} />
+            </div>
+            <div className="col-xs-12 col-md-3">
+                <VideoStatistics {...statistics} />
+            </div>
+            <div className="col-xs-12 col-md-3">
+                <Dash21Info {...globalVideoAnalysis} />
+            </div>
+        </div>
+    );
+};
 
 export default VideoStreamInformation;

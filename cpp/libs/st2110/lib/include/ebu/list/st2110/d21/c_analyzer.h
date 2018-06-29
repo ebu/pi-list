@@ -3,11 +3,11 @@
 #include "ebu/list/rtp/listener.h"
 #include "ebu/list/core/media/video_description.h"
 #include <vector>
-#include <unordered_map>
+#include <map>
 
 namespace ebu_list::st2110::d21
 {
-    using cinst_histogram_t = std::unordered_map<int, int>;
+    using cinst_histogram_t = std::map<int, int>;
 
     class cinst_histogram_listener
     {

@@ -22,7 +22,7 @@ namespace ebu_list::pcap
     static_assert(sizeof(raw_file_header) == 24);
 #pragma pack(pop)
 
-    // TODO: we are assuming version 2.4, little-endian and thiszone = GTM,
+    // TODO: we are assuming version 2.4, little-endian and thiszone = GMT,
     // as hinted by https://wiki.wireshark.org/Development/LibpcapFileFormat 
     class file_header_lens
     {

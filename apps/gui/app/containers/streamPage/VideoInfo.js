@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import Icon from 'components/common/Icon';
 import { renderInformationList } from 'containers/streamPage/utils';
+import { translate } from 'utils/translation';
 
 const VideoInfo = (props) => {
-
     const size = `${props.width}x${props.height}`;
 
     const isInterlaced = props.scan_type === 'interlaced';
@@ -12,25 +12,33 @@ const VideoInfo = (props) => {
         <Fragment>
             <h2>
                 <Icon value="ondemand video" />
-                <span>Video</span>
+                <span>{translate('headings.video')}</span>
             </h2>
             <hr />
             {renderInformationList([
                 {
-                    key: 'Dimensions',
+                    key: translate('media_information.video.dimensions'),
                     value: size
                 },
                 {
-                    key: 'Sampling',
+                    key: translate('media_information.video.sampling'),
                     value: props.sampling
                 },
                 {
-                    key: isInterlaced ? 'Field Rate' : 'Frame Rate',
+                    key: isInterlaced ?
+                        translate('media_information.video.field_rate') :
+                        translate('media_information.video.frame_rate'),
                     value: props.rate
                 },
                 {
-                    key: 'Scan Mode',
-                    value: isInterlaced ? 'Interlaced' : 'Progressive'
+                    key: translate('media_information.video.scan_type'),
+                    value: isInterlaced ?
+                        translate('media_information.video.interlaced') :
+                        translate('media_information.video.progressive')
+                },
+                {
+                    key: translate('media_information.video.read_schedule'),
+                    value: props.schedule === 'gapped' ? 'Gapped' : 'Linear'
                 },
             ])}
         </Fragment>
