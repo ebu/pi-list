@@ -1,6 +1,5 @@
 const passport = require('passport');
 const setupLocalAuth = require('./local');
-const setupFacebookOAuth = require('./facebook');
 const logger = require('../util/logger');
 const uuid = require('uuid/v4');
 const tokenManager = require('../managers/token');
@@ -16,7 +15,6 @@ module.exports = (app) => {
     app.use(passport.initialize());
     app.use(passport.session());
 
-    setupFacebookOAuth(app);
     setupLocalAuth(app);
 
     app.get('/auth/logout', (req, res) => {

@@ -14,12 +14,6 @@ database:
   hostname: localhost
   port: 27017
 
-# Comment / Uncomment to use facebook auth
-facebook:
-  APP_ID: %APP_ID%
-  APP_SECRET: %APP_SECRET%
-  CALLBACK_URL: http://localhost:3030/auth/facebook/callback
-
 # InfluxDB URL. Comment to disable sending data to influxDB
 influx:
   hostname: localhost

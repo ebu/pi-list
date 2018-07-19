@@ -35,7 +35,6 @@ export default {
     deleteUser: () => request.delete('user'),
 
     register: loginData => axios.post(`${REST_URL}/user/register`, loginData).then(response => response.data),
-    authenticateWithFacebook: () => `${REST_URL}/auth/facebook`,
     getToken: () => axios.get(`${REST_URL}/auth/token`).then(response => response.data),
 
     login: loginData => axios.post(`${REST_URL}/auth/login`, loginData).then(response => response.data),
