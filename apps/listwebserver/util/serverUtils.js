@@ -1,6 +1,6 @@
 const programArguments = require('./programArguments');
 const logger = require('./logger');
-const databaseManager = require('../managers/database');
+const mongoose = require('mongoose');
 
 /**
  * Event listener for HTTP server "error" event.
@@ -40,7 +40,7 @@ function onListening() {
 
 function onProcessClosed() {
     logger('server').info(`Closing LIST Web Server`);
-    databaseManager.close();
+    mongoose.disconnect();
     process.exit(0);
 }
 

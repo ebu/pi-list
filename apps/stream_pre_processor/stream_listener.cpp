@@ -1,19 +1,28 @@
 #include "pch.h"
 #include "stream_listener.h"
 #include "ebu/list/serialization/stream_identification.h"
+#include "ebu/list/constants.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110;
 
-stream_listener::stream_listener(rtp::packet first_packet, path base_dir, std::string pcap_id)
-    : base_dir_(std::move(base_dir)),
-    pcap_id_(std::move(pcap_id)),
-    detector_(first_packet)
+namespace
+{
+    void save_on_db(const db_serializer& db, const stream_with_details& stream_info)
+    {
+        db.insert(constants::db::offline, constants::db::collections::streams, stream_with_details_serializer::to_json(stream_info));
+    }
+}
+
+stream_listener::stream_listener(rtp::packet first_packet, std::string pcap_id)
+    : detector_(first_packet)
+    , db_("mongodb://localhost:27017")
 {
     stream_id_.network.source = source(first_packet.info.udp);
     stream_id_.network.destination = destination(first_packet.info.udp);
     stream_id_.network.ssrc = first_packet.info.rtp.view().ssrc();
     stream_id_.network.payload_type = first_packet.info.rtp.view().payload_type();
+    stream_id_.pcap = std::move(pcap_id);
 }
 
 void stream_listener::on_data(const rtp::packet& packet)
@@ -38,7 +47,7 @@ void stream_listener::on_complete()
         video_details.video = video_format;
 
         stream_with_details swd{ stream_id_, video_details };
-        write_stream_id_info(base_dir_ / pcap_id_, swd);
+        save_on_db(db_, swd);
 
         logger()->info("----------------------------------------");
         logger()->info("Found video stream {}:", stream_id_.id);
@@ -60,7 +69,7 @@ void stream_listener::on_complete()
         details.audio = audio_format;
         
         stream_with_details swd{ stream_id_, details };
-        write_stream_id_info(base_dir_ / pcap_id_, swd);
+        save_on_db(db_, swd);
 
         logger()->info("----------------------------------------");
         logger()->info("Found audio stream {}:", stream_id_.id);
@@ -76,7 +85,7 @@ void stream_listener::on_complete()
         stream_id_.type = media::media_type::ANCILLARY_DATA;
         stream_id_.state = StreamState::ANALYZED; // todo: remove me when we process anc data
         stream_with_details swd{ stream_id_, {} };
-        write_stream_id_info(base_dir_ / pcap_id_, swd);
+        save_on_db(db_, swd);
 
         logger()->info("----------------------------------------");
         logger()->info("Found ANC stream {}:", stream_id_.id);
@@ -89,7 +98,7 @@ void stream_listener::on_complete()
     {
         stream_with_details swd{ stream_id_,{} };
         stream_id_.state = StreamState::NEEDS_INFO;
-        write_stream_id_info(base_dir_ / pcap_id_, swd);
+        save_on_db(db_, swd);
 
         logger()->info("----------------------------------------");
         logger()->info("Found unknown stream {}:", stream_id_.id);

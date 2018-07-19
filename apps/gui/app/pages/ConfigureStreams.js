@@ -6,7 +6,7 @@ class ConfigureStreamsPage extends Component {
     constructor(props) {
         super(props);
 
-        this.onStreamAnalyzed.bind(this);
+        this.onStreamAnalyzed = this.onStreamAnalyzed.bind(this);
     }
 
     onStreamAnalyzed() {

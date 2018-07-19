@@ -1,5 +1,4 @@
 const passport = require('passport');
-const db = require('../managers/database');
 const setupLocalAuth = require('./local');
 const setupFacebookOAuth = require('./facebook');
 const logger = require('../util/logger');
@@ -11,6 +10,7 @@ const validator = require('validator');
 const API_ERRORS = require('../enums/apiErrors');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const program = require('../util/programArguments');
+const User = require('../models/user');
 
 module.exports = (app) => {
     app.use(passport.initialize());
@@ -49,7 +49,7 @@ module.exports = (app) => {
             return res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send(API_ERRORS.TOKEN_EXPIRED);
         }
 
-        db.saveUser({
+        User.create({
             email,
             password: rawPassword
         }).then((user) => {

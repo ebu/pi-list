@@ -17,7 +17,4 @@ namespace ebu_list
         static stream_with_details from_json(const nlohmann::json& json_file);
         static nlohmann::json to_json(const stream_with_details& stream_info);
     };
-
-    void write_stream_id_info(const path& dir, const stream_with_details& stream_info);
-    std::vector<stream_with_details> scan_folder(const path& folder_path);
 }

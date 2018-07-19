@@ -1,10 +1,9 @@
 const { Router } = require('express');
-const db = require('../managers/database');
-const websocket = require('../managers/websocket');
 const router = Router();
 const fs = require('../util/filesystem');
 const program = require('../util/programArguments');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
+const User = require('../models/user');
 
 /**
  * GET /api/user
@@ -23,8 +22,7 @@ router.get('/', (req, res) => {
  */
 router.delete('/', (req, res) => {
     const { user } = req.session.passport;
-
-    db.deleteUserById(user.id)
+    User.remove({ id: user.id })
         .then(() => {
             // delete folders
             fs.delete(`${program.folder}/${req.session.passport.user.id}`);

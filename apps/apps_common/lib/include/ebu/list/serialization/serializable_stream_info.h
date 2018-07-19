@@ -25,6 +25,7 @@ namespace ebu_list
     struct serializable_stream_info : media::network_media_description
     {
         std::string id = newGuid().str();
+        std::string pcap = "";
         StreamState state = StreamState::NEEDS_INFO;
 
         /** serialization details **/

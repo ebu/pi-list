@@ -2,8 +2,8 @@ const { isObject } = require('lodash');
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const programArguments = require('../util/programArguments');
-const db = require('../managers/database');
 const logger= require('../util/logger');
+const User = require('../models/user');
 
 module.exports = (app) => {
     passport.use(
@@ -13,10 +13,10 @@ module.exports = (app) => {
                 callbackURL: programArguments.facebook.CALLBACK_URL,
                 profileFields: ['emails', 'displayName', 'name', 'photos']
             }, (accessToken, refreshToken, profile, done) => {
-                db.findUserByEmail(profile.emails[0].value)
+                User.findOne({ email: profile.emails[0].value })
                     .then((user) => {
                         if (!isObject(user)) {
-                            return db.saveUser({
+                            return User.create({
                                 username: profile.displayName,
                                 email: profile.emails[0].value,
                                 password: profile.id,

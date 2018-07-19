@@ -6,6 +6,8 @@ fmt/4.1.0@bincrafters/stable
 jsonformoderncpp/3.1.1@vthiery/stable
 spdlog/0.16.3@bincrafters/stable
 catch2/2.2.2@bincrafters/stable
+mongo-cxx-driver/3.3.0@bisect/stable
+OpenSSL/1.0.2o@conan/stable # to override cpprestsdk's ssl version 1.0.2n
 
 [options]
 cpprestsdk:exclude_websockets=False

@@ -2,6 +2,7 @@
 
 #include "ebu/list/core/types.h"
 #include "ebu/list/core/platform/guid.h"
+#include "nlohmann/json.hpp"
 
 namespace ebu_list
 {
@@ -24,8 +25,9 @@ namespace ebu_list
         int narrow_streams = 0;
         int narrow_linear_streams = 0;
         int not_compliant_streams = 0;
-    };
 
-    pcap_info read_pcap_from_json(const path& json_file);
-    void write_pcap_info(const path &base_dir, const pcap_info &info);
+        /** serialization details **/
+        static pcap_info from_json(const nlohmann::json& j);
+        static nlohmann::json to_json(const pcap_info& info);
+    };
 }
