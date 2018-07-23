@@ -20,7 +20,6 @@
 #include "influx_logger.h"
 #include "audio_stream_serializer.h"
 
-
 using namespace ebu_list;
 using namespace ebu_list::st2110::d21;
 
@@ -28,12 +27,16 @@ using namespace ebu_list::st2110::d21;
 
 namespace
 {
+    constexpr auto MONGO_DEFAULT_URL = "mongodb://localhost:27017";
+    constexpr auto INFLUX_DEFAULT_URL = "http://localhost:8086";
+
     struct config
     {
         std::string pcap_id;
         path pcap_file;
         path storage_folder;
         std::optional<std::string> influxdb_url;
+        std::optional<std::string> mongo_db_url;
         std::optional<std::string> id_to_process;
     };
 
@@ -46,7 +49,8 @@ namespace
             argument(&config::pcap_id, "pcap id", "the pcap id to be processed"),
             argument(&config::pcap_file, "pcap file", "the path to the pcap file within the filesystem"),
             argument(&config::storage_folder, "storage dir", "the path to a storage folder where some information is writen"),
-            argument(&config::influxdb_url, "influxDB url", "url to influxDB. Usually http://localhost:8086")
+            option(&config::influxdb_url, "influx_url", "influxDB url", "url to influxDB. Usually http://localhost:8086"),
+            option(&config::mongo_db_url, "mongo_url", "mongo url", "url to influxDB. Usually mongodb://localhost:27017.")
         );
 
         if (parse_result) return config;
@@ -59,7 +63,7 @@ namespace
     {
         if (influxdb_url)
         {
-            return std::make_shared<influx::influxdb_ptp_logger>(influxdb_url.value(), pcap_uuid);
+            return std::make_shared<influx::influxdb_ptp_logger>(influxdb_url.value_or(INFLUX_DEFAULT_URL), pcap_uuid);
         }
         else
         {
@@ -99,7 +103,7 @@ namespace
 
     void run(logger_ptr console, const config& config)
     {
-        db_serializer db {"mongodb://localhost:27017"};
+        db_serializer db {config.mongo_db_url.value_or(MONGO_DEFAULT_URL)};
 
         std::atomic_int nr_audio = 0;
         std::atomic_int nr_video = 0;
@@ -198,11 +202,12 @@ namespace
 
                 if (config.influxdb_url)
                 {
+                    const auto influx_db_url = config.influxdb_url.value_or(INFLUX_DEFAULT_URL);
                     {
                         const auto info_path = config.storage_folder / stream_info.id;
 
                         auto cinst_writer = std::make_shared<c_inst_histogram_writer>(info_path);
-                        auto db_logger = std::make_unique<influx::influxdb_c_inst_logger>(cinst_writer, config.influxdb_url.value(), pcap.id, stream_info.id);
+                        auto db_logger = std::make_unique<influx::influxdb_c_inst_logger>(cinst_writer, influx_db_url, pcap.id, stream_info.id);
                         auto analyzer = std::make_unique<c_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info.rate);
                         ml->add(std::move(analyzer));
                     }
@@ -211,27 +216,27 @@ namespace
                         auto framer_ml = std::make_unique<multi_listener_t<frame_start_filter::listener, frame_start_filter::packet_info>>();
 
                         {
-                            auto db_logger = std::make_unique<influx::influxdb_rtp_ts_logger>(config.influxdb_url.value(), pcap.id, stream_info.id);
+                            auto db_logger = std::make_unique<influx::influxdb_rtp_ts_logger>(influx_db_url, pcap.id, stream_info.id);
                             auto analyzer = std::make_unique<rtp_ts_analyzer>(std::move(db_logger), video_info.rate);
                             framer_ml->add(std::move(analyzer));
                         }
 
                         {
-                            auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(config.influxdb_url.value(), pcap.id, stream_info.id, "gapped-ideal");
+                            auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(influx_db_url, pcap.id, stream_info.id, "gapped-ideal");
                             const auto settings = vrx_settings{ read_schedule::gapped, tvd_kind::ideal };
                             auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info, settings);
                             framer_ml->add(std::move(analyzer));
                         }
 
                         {
-                            auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(config.influxdb_url.value(), pcap.id, stream_info.id, "gapped-first_packet_first_frame");
+                            auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(influx_db_url, pcap.id, stream_info.id, "gapped-first_packet_first_frame");
                             const auto settings = vrx_settings{ read_schedule::gapped, tvd_kind::first_packet_first_frame };
                             auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info, settings);
                             framer_ml->add(std::move(analyzer));
                         }
 
                         {
-                            auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(config.influxdb_url.value(), pcap.id, stream_info.id, "gapped-first_packet_each_frame");
+                            auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(influx_db_url, pcap.id, stream_info.id, "gapped-first_packet_each_frame");
                             const auto settings = vrx_settings{ read_schedule::gapped, tvd_kind::first_packet_each_frame };
                             auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info, settings);
                             framer_ml->add(std::move(analyzer));

@@ -14,9 +14,9 @@ namespace
     }
 }
 
-stream_listener::stream_listener(rtp::packet first_packet, std::string pcap_id)
+stream_listener::stream_listener(rtp::packet first_packet, std::string pcap_id, std::string mongo_url)
     : detector_(first_packet)
-    , db_("mongodb://localhost:27017")
+    , db_(std::move(mongo_url))
 {
     stream_id_.network.source = source(first_packet.info.udp);
     stream_id_.network.destination = destination(first_packet.info.udp);

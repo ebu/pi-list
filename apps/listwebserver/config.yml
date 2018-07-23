@@ -14,7 +14,7 @@ database:
   hostname: localhost
   port: 27017
 
-# InfluxDB URL. Comment to disable sending data to influxDB
+# InfluxDB URL
 influx:
   hostname: localhost
   port: 8086

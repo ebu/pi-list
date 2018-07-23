@@ -12,7 +12,7 @@ namespace ebu_list
     class stream_listener: public rtp::listener
     {
     public:
-        stream_listener(rtp::packet first_packet, std::string pcap_id);
+        stream_listener(rtp::packet first_packet, std::string pcap_id, std::string mongo_url);
 
         void on_data(const rtp::packet& packet) override;
         void on_complete() override;

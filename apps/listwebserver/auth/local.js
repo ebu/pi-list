@@ -46,6 +46,14 @@ module.exports = (app) => {
         })
     );
 
+    passport.serializeUser((user, done) => {
+        done(null, user);
+    });
+
+    passport.deserializeUser((user, done) => {
+        done(null, user);
+    });
+
     app.post('/auth/login', (req, res, next) => {
         passport.authenticate('local', function (info, user, data) {
             if (!user) {

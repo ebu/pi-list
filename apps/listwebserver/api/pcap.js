@@ -30,6 +30,13 @@ function isAuthorized (req, res, next) {
     } else next();
 }
 
+function argumentsToCmd() {
+    return {
+        withMongo: `-mongo_url ${program.databaseURL}`,
+        withInflux: `-influx_url ${program.influxURL}`
+    };
+}
+
 function getUserFolder(req) {
     return `${program.folder}/${req.session.passport.user.id}`;
 }
@@ -67,9 +74,11 @@ router.put('/', upload.single('pcap'), (req, res) => {
         const pcap_uuid = req.pcap.uuid;
         const pcap_folder = req.pcap.folder;
 
-        const streamPreProcessorCommand = `"${program.cpp}/stream_pre_processor" "${req.file.path}" ${pcap_uuid}`;
+        const {withMongo, withInflux} = argumentsToCmd();
+
+        const streamPreProcessorCommand = `"${program.cpp}/stream_pre_processor" "${req.file.path}" ${pcap_uuid} ${withMongo}`;
         const st2110ExtractorCommand =
-            `"${program.cpp}/st2110_extractor" ${pcap_uuid} "${req.file.path}" "${pcap_folder}" ${program.influxURL}`;
+            `"${program.cpp}/st2110_extractor" ${pcap_uuid} "${req.file.path}" "${pcap_folder}" ${withInflux} ${withMongo}`;
 
         websocketManager.instance().sendEventToUser(userID, {
             event: 'PCAP_FILE_RECEIVED',
@@ -164,8 +173,9 @@ router.get('/:pcapID/', (req, res) => {
 router.get('/:pcapID/analytics/PtpOffset', (req, res) => {
     const { pcapID } = req.params;
 
-    Pcap.findOne({id: pcapID}).exec()
-        .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
+    const chartData = influxDbManager.getPtpOffsetSamplesByPcap(pcapID);
+    chartData
+        .then(data => res.json(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
@@ -252,8 +262,10 @@ router.put('/:pcapID/stream/:streamID/help', (req, res) => {
             const pcap_folder = `${getUserFolder(req)}/${pcapID}`;
             const pcap_location = `${pcap_folder}/${pcap.pcap_file_name}`;
 
+            const {withMongo, withInflux} = argumentsToCmd();
+
             const st2110ExtractorCommand =
-                `"${program.cpp}/st2110_extractor" ${pcapID} "${pcap_location}" "${pcap_folder}" ${program.influxURL} -s "${streamID}"`;
+                `"${program.cpp}/st2110_extractor" ${pcapID} "${pcap_location}" "${pcap_folder}" ${withInflux} ${withMongo} -s "${streamID}"`;
 
             logger('st2110_extractor').info(`Command: ${st2110ExtractorCommand}`);
             return exec(st2110ExtractorCommand);
@@ -311,6 +323,5 @@ router.get('/:pcapID/stream/:streamID/mp3', (req, res) => {
 
     fs.sendFileAsResponse(filePath, res);
 });
-
 
 module.exports = router;

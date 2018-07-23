@@ -36,6 +36,22 @@ struct db_serializer::impl
         client_ = mongocxx::client{mongocxx::uri{url}};
         LIST_ENFORCE( client_, std::runtime_error, "mongoDB client is not valid" );
     }
+
+    bool insert_or_update_impl(std::string_view database, std::string_view collection, const json& look_alike, const json& update_info, bool upsert)
+    {
+        using namespace bsoncxx::builder;
+
+        mongocxx::database db = client_[database];
+        mongocxx::collection coll = db[collection];
+
+        auto to_be_updated = from_json_to_bson(update_info);
+        auto doc = stream::document{} << "$set" << bsoncxx::types::b_document{to_be_updated.view()} << stream::finalize;
+        auto filter = from_json_to_bson(look_alike);
+
+        coll.update_one(std::move(filter), std::move(doc), mongocxx::options::update().upsert(upsert));
+
+        return true;
+    }
 };
 
 db_serializer::db_serializer(std::string_view url)
@@ -78,18 +94,7 @@ bool ebu_list::db_serializer::insert(std::string_view database, std::string_view
 
 bool ebu_list::db_serializer::update(std::string_view database, std::string_view collection, const json& look_alike, const json& update_info) const
 {
-    using namespace bsoncxx::builder;
-
-    mongocxx::database db = impl_->client_[database];
-    mongocxx::collection coll = db[collection];
-
-    auto to_be_updated = from_json_to_bson(update_info);
-    auto doc = stream::document{} << "$set" << bsoncxx::types::b_document{to_be_updated.view()} << stream::finalize;
-    auto filter = from_json_to_bson(look_alike);
-
-    coll.update_one(std::move(filter), std::move(doc));
-
-    return true;
+    return impl_->insert_or_update_impl(database, collection, look_alike, update_info, false);
 }
 
 std::vector<json> ebu_list::db_serializer::find_many(std::string_view database, std::string_view collection, const json& look_alike) const
@@ -107,4 +112,9 @@ std::vector<json> ebu_list::db_serializer::find_many(std::string_view database, 
     }
 
     return jsons;
+}
+
+bool ebu_list::db_serializer::insert_or_update(std::string_view database, std::string_view collection, const json& look_alike, const json& update_info) const
+{
+    return impl_->insert_or_update_impl(database, collection, look_alike, update_info, true);
 }

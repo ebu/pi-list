@@ -23,7 +23,7 @@ echo "Creating release folders... done"
 echo
 echo "Copying binaries..."
 cp build/bin/stream_pre_processor build/bin/static_generator build/bin/st2110_extractor release/bin/
-cp build/lib/*.so release/lib/
+cp build/lib/*.so.* release/lib/
 echo "Copying binaries... done"
 
 echo

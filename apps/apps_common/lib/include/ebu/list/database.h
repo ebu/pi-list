@@ -15,6 +15,7 @@ namespace ebu_list
         virtual ~db_serializer();
 
         bool insert(std::string_view database, std::string_view collection, const json& j) const;
+        bool insert_or_update(std::string_view database, std::string_view collection, const json& look_alike, const json& update_info) const;
         bool update(std::string_view database, std::string_view collection, const json& look_alike, const json& update_info) const;
 
         maybe_result find_one(std::string_view database, std::string_view collection, const json& look_alike) const;

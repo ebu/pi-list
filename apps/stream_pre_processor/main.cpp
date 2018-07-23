@@ -15,10 +15,13 @@ using namespace ebu_list;
 
 namespace
 {
+    constexpr auto MONGO_DEFAULT_URL = "mongodb://localhost:27017";
+
     struct config
     {
         path pcap_file;
         std::string pcap_uuid;
+        std::optional<std::string> mongo_db_url;
     };
 
     config parse_or_usage_and_exit(int argc, char const* const* argv)
@@ -27,7 +30,8 @@ namespace
 
         const auto[parse_result, config] = parse(argc, argv,
             argument(&config::pcap_file, "pcap file", "the path to the pcap file to use as input"),
-            argument(&config::pcap_uuid, "pcap uuid", "the identifier that will be used as the name of the directory and the id of the pcap file")
+            argument(&config::pcap_uuid, "pcap uuid", "the identifier that will be used as the name of the directory and the id of the pcap file"),
+            option(&config::mongo_db_url, "mongo_url", "mongo url", "url to influxDB. Usually mongodb://localhost:27017.")
         );
 
         if (parse_result) return config;
@@ -49,10 +53,11 @@ namespace
         auto fi = make_pcap_info(config.pcap_file, config.pcap_uuid);
         auto offset_calculator = std::make_shared<ptp_offset_calculator>();
         const auto offset_calculator_p = offset_calculator.get();
+        const auto mongo_db_url = config.mongo_db_url.value_or(MONGO_DEFAULT_URL);
 
         auto create_handler = [&](rtp::packet first_packet)
         {
-            return std::make_unique<stream_listener>(first_packet, fi.id);
+            return std::make_unique<stream_listener>(first_packet, fi.id, mongo_db_url);
         };
 
         auto ptp_sm = std::make_shared<ptp::state_machine>(offset_calculator);
@@ -72,7 +77,7 @@ namespace
         logger()->info("Processing time: {:.3f} s", processing_time_ms / 1000.0);
 
         fi.offset_from_ptp_clock = offset_calculator_p->get_average_offset();
-        db_serializer db {"mongodb://localhost:27017"};
+        db_serializer db {mongo_db_url};
         db.insert(constants::db::offline, constants::db::collections::pcaps, pcap_info::to_json(fi));
 
         logger()->info("----------------------------------------");
