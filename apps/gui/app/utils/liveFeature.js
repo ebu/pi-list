@@ -17,7 +17,7 @@ export const LiveFeature = props => (
     </AppContext.Consumer>
 );
 
-export const LiveRoute = (props) => (
+export const LiveRoute = props => (
     <AppContext.Consumer>
         {value => (
             <ConditionalRoute

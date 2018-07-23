@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import StreamConfiguration from 'containers/StreamConfiguration';
-import routeNames from 'config/routeNames';
+import routeBuilder from 'utils/routeBuilder';
 
 class ConfigureStreamsPage extends Component {
     constructor(props) {
@@ -11,8 +11,7 @@ class ConfigureStreamsPage extends Component {
 
     onStreamAnalyzed() {
         const { pcapID } = this.props.match.params;
-        const route = `${routeNames.PCAPS}/${pcapID}/${routeNames.STREAMS_PAGE}/`;
-        this.props.history.push(route);
+        this.props.history.push(routeBuilder.pcap_stream_list(pcapID));
     }
 
     render() {

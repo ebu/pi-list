@@ -2,11 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import Panel from 'components/common/Panel';
-import routeNames from 'config/routeNames';
 import Icon from 'components/common/Icon';
 import FormInput from 'components/common/FormInput';
 import StreamBadge from 'components/stream/StreamBadge';
 import AnalysisBadge from 'components/stream/AnalysisBadge';
+import routeBuilder from 'utils/routeBuilder';
 
 function renderNeedsInfo() {
     const statusClassName = classNames('lst-stream-status', 'lst-stream-status--uncheck');
@@ -41,9 +41,9 @@ const StreamCard = (props) => {
     let route;
 
     if (needsInfo) {
-        route = `${routeNames.PCAPS}/${props.pcapID}/${routeNames.STREAMS_PAGE}/${props.id}/${routeNames.CONFIGURE}`;
+        route = routeBuilder.stream_config_page(props.pcapID, props.id);
     } else {
-        route = `${routeNames.PCAPS}/${props.pcapID}/${routeNames.STREAMS_PAGE}/${props.id}`;
+        route = routeBuilder.stream_page(props.pcapID, props.id);
     }
 
     return (

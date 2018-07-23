@@ -48,7 +48,7 @@ class VideoExplorer extends Component {
                             {this.state.packets.map((packet, index) => (
                                 <div
                                     data-packet={index}
-                                    key={packet.timestamp}
+                                    key={packet.packet_time}
                                     className="lst-stream-packet lst-text-center"
                                 >
                                     {index + 1}
@@ -72,7 +72,7 @@ class VideoExplorer extends Component {
                                     </li>
                                     <li>
                                         <strong>Packet Time: </strong>
-                                        <span>{this.state.packets[this.state.selectedPacket].packet_time}</span>
+                                        <span>{this.state.packets[this.state.selectedPacket].packet_time} ns</span>
 
                                     </li>
                                     <li>
