@@ -10,7 +10,7 @@ const Dashboard = () => (
             <PcapUploader />
         </Panel>
         <Panel className="col-xs-12 col-md-9 col-lg-8" title={translate('headings.last_pcaps')}>
-            <PcapList limit={5} />
+            <PcapList limit={10} />
         </Panel>
     </div>
 );

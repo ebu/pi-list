@@ -20,6 +20,9 @@ const StreamSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    alias: {
+        type: String
+    },
     media_specific: {
         type: mongoose.Schema.Types.Mixed
     },

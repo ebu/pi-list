@@ -24,4 +24,15 @@ router.get('/streams/:streamID/', (req, res) => {
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
+/* Patch the stream info with a new name */
+router.patch('/streams/:streamID/', (req, res) => {
+    const { streamID } = req.params;
+    const alias = req.body.name;
+
+    // todo: maybe check if it found a document (check data.n)?
+    LiveStream.updateOne({id: streamID}, {alias: alias}).exec()
+        .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+});
+
 module.exports = router;

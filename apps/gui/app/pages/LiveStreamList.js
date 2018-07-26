@@ -119,8 +119,6 @@ class LiveStreamList extends Component {
 
 export default asyncLoader(LiveStreamList, {
     asyncRequests: {
-        availableStreams: () => {
-            return api.getLiveStreams();
-        }
+        availableStreams: () => api.getLiveStreams()
     }
 });

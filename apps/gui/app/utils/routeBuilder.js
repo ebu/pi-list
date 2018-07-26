@@ -16,5 +16,8 @@ export default {
     pcap_stream_list: pcapID => `${routeNames.PCAPS}/${pcapID}/${routeNames.STREAMS_PAGE}/`,
 
     /* Page that shows all pcaps files available */
-    pcap_list: () => `${routeNames.PCAPS}/`
+    pcap_list: () => `${routeNames.PCAPS}/`,
+
+    /* Paget that shows a live stream */
+    live_stream_page: streamID => `${routeNames.LIVE}/${routeNames.STREAMS_PAGE}/${streamID}`
 };

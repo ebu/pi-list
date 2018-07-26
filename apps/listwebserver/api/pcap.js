@@ -208,6 +208,17 @@ router.get('/:pcapID/stream/:streamID/help', (req, res) => {
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
+/* Patch the stream info with a new name */
+router.patch('/:pcapID/stream/:streamID', (req, res) => {
+    const { streamID } = req.params;
+    const alias = req.body.name;
+
+    // todo: maybe check if it found a document (check data.n)?
+    Stream.updateOne({id: streamID}, {alias: alias}).exec()
+        .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+});
+
 /* */
 router.get('/:pcapID/stream/:streamID/analytics/CInst/validation', (req, res) => {
     const { pcapID, streamID } = req.params;

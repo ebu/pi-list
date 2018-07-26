@@ -80,6 +80,7 @@
     "react-hot-loader": "^3.1.3",
     "react-test-renderer": "^16.4.1",
     "regenerator-runtime": "^0.11.1",
+    "riek": "^1.1.0",
     "rodal": "^1.6.3",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.19.1",

@@ -19,6 +19,9 @@ const StreamSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    alias: {
+        type: String
+    },
     media_specific: {
         type: mongoose.Schema.Types.Mixed
     },
@@ -34,6 +37,7 @@ const StreamSchema = new mongoose.Schema({
 });
 
 StreamSchema.set('toJSON', {
+    virtuals: true,
     versionKey: false
 });
 
