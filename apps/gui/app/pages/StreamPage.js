@@ -19,7 +19,29 @@ class StreamPage extends Component {
         return (<VideoPage streamInfo={this.props.streamInfo} pcapID={pcapID} streamID={streamID} />);
     }
 
+    renderError(errorMessage, errorType) {
+        return (
+            <ErrorPage
+                errorMessage={errorMessage}
+                errorType={errorType}
+                icon="feedback"
+                button={{
+                    label: pluralize('stream.configure_streams', 1),
+                    onClick: () => {
+                        const { pcapID, streamID } = this.props.match.params;
+                        this.props.history.push(routeBuilder.stream_config_page(pcapID, streamID));
+                    }
+                }}
+            />
+        );
+    }
+
     render() {
+        // if the stream is not analyzed, we need to render an error
+        if (this.props.streamInfo.state !== 'analyzed') {
+            return this.renderError(translate('errors.stream-marked-as-unknown'), errorEnum.STREAM_NOT_ANALYSED);
+        }
+
         switch (this.props.streamInfo.media_type) {
         case 'video': return this.renderVideo();
         case 'audio': return this.renderAudio();
@@ -27,16 +49,10 @@ class StreamPage extends Component {
             return (
                 <ErrorPage
                     errorMessage={translate('errors.anc_not_supported_message')}
-                    errorType={errorEnum.STREAM_NOT_ANALYSED}
+                    errorType={translate('errors.anc_not_supported')}
                     icon="feedback"
-                    button={{
-                        label: pluralize('stream.configure_streams', 1),
-                        onClick: () => {
-                            const { pcapID, streamID } = this.props.match.params;
-                            this.props.history.push(routeBuilder.stream_config_page(pcapID, streamID));
-                        }
-                    }}
                 />
+
             );
         }
     }

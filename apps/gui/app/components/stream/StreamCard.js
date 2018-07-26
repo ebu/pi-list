@@ -37,7 +37,7 @@ const StreamCard = (props) => {
     const from = `${net.source_address}:${net.source_port}`;
     const to = `${net.destination_address}:${net.destination_port}`;
 
-    const needsInfo = props.state === 'needs_info';
+    const needsInfo = props.state === 'needs_info' || props.state === 'ready';
     const isVideo = props.media_type === 'video';
 
     let route;
@@ -78,7 +78,8 @@ const StreamCard = (props) => {
                 { !needsInfo && (
                     <div className="row lst-no-margin">
                         <StreamBadge media_type={props.media_type} media_specific={props.media_specific} />
-                        {isVideo && <AnalysisBadge name="ST2110-21" compliance={props.global_video_analysis.compliance} />}
+                        { isVideo &&
+                            <AnalysisBadge name="ST2110-21" compliance={props.global_video_analysis.compliance} /> }
                     </div>
                 )}
             </Panel>
