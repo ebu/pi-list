@@ -112,7 +112,6 @@ void video_stream_serializer::on_frame_complete(frame_uptr&& f)
 
     const auto info_base = base_dir_ / stream_id / frame_id;
     const auto png_path = info_base / "frame.png";
-    const auto packets_path = base_dir_ / stream_id / frame_id;
 
     std::experimental::filesystem::create_directories(info_base);
 
@@ -124,7 +123,7 @@ void video_stream_serializer::on_frame_complete(frame_uptr&& f)
     };
     write_frame_info(base_dir_, stream_id, fi);
 
-    packets_write_info pwi{ packets_path, std::move(current_frame_packets_) };
+    packets_write_info pwi{ info_base, std::move(current_frame_packets_) };
 
     auto packets_writer = [pwi]() mutable {
 

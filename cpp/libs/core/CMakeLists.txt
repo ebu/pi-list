@@ -17,13 +17,13 @@ configure_file(
 #-------------------------------------------------------------------------------
 
 if(APPLE)
-    target_link_libraries(${PROJECT_NAME} c++experimental -L/usr/local/opt/llvm/lib/)
+    target_link_libraries(ebu_list_core c++experimental -L/usr/local/opt/llvm/lib/)
 
     find_library(CFLIB CoreFoundation)
-    target_link_libraries(${PROJECT_NAME} ${CFLIB})
+    target_link_libraries(ebu_list_core ${CFLIB})
 endif()
 
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(ebu_list_core
     bimo
     GSL
     CONAN_PKG::spdlog
@@ -33,14 +33,14 @@ target_link_libraries(${PROJECT_NAME}
 #-------------------------------------------------------------------------------
 find_package(Threads REQUIRED)
 if(THREADS_HAVE_PTHREAD_ARG)
-    target_compile_options(${PROJECT_NAME} PUBLIC "-pthread")
+    target_compile_options(ebu_list_core PUBLIC "-pthread")
 endif()
 if(CMAKE_THREAD_LIBS_INIT)
-    target_link_libraries(${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(ebu_list_core ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-    target_link_libraries(${PROJECT_NAME} stdc++fs uuid)
+    target_link_libraries(ebu_list_core stdc++fs uuid)
 endif()
 
-define_pch(${PROJECT_NAME} lib/src/ebu/list/core/pch.h)
+define_pch(ebu_list_core lib/src/ebu/list/core/pch.h)

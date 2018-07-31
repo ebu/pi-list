@@ -3,15 +3,12 @@ import api from 'utils/api';
 import { pluralize, translate } from 'utils/translation';
 import asyncLoader from 'components/asyncLoader';
 import errorEnum from 'enums/errorEnum';
-import routeNames from 'config/routeNames';
 import VideoPage from 'containers/VideoPage';
 import AudioPage from 'containers/AudioPage';
+import ErrorPage from 'components/ErrorPage';
+import routeBuilder from 'utils/routeBuilder';
 
 class StreamPage extends Component {
-    isVideo() {
-        return this.props.streamInfo.media_type === 'video';
-    }
-
     renderAudio() {
         const { pcapID, streamID } = this.props.match.params;
         return (<AudioPage streamInfo={this.props.streamInfo} pcapID={pcapID} streamID={streamID} />);
@@ -22,8 +19,42 @@ class StreamPage extends Component {
         return (<VideoPage streamInfo={this.props.streamInfo} pcapID={pcapID} streamID={streamID} />);
     }
 
+    renderError(errorMessage, errorType) {
+        return (
+            <ErrorPage
+                errorMessage={errorMessage}
+                errorType={errorType}
+                icon="feedback"
+                button={{
+                    label: pluralize('stream.configure_streams', 1),
+                    onClick: () => {
+                        const { pcapID, streamID } = this.props.match.params;
+                        this.props.history.push(routeBuilder.stream_config_page(pcapID, streamID));
+                    }
+                }}
+            />
+        );
+    }
+
     render() {
-        return this.isVideo() ? this.renderVideo() : this.renderAudio();
+        // if the stream is not analyzed, we need to render an error
+        if (this.props.streamInfo.state !== 'analyzed') {
+            return this.renderError(translate('errors.stream-marked-as-unknown'), errorEnum.STREAM_NOT_ANALYSED);
+        }
+
+        switch (this.props.streamInfo.media_type) {
+        case 'video': return this.renderVideo();
+        case 'audio': return this.renderAudio();
+        default:
+            return (
+                <ErrorPage
+                    errorMessage={translate('errors.anc_not_supported_message')}
+                    errorType={translate('errors.anc_not_supported')}
+                    icon="feedback"
+                />
+
+            );
+        }
     }
 }
 
@@ -35,15 +66,8 @@ export default asyncLoader(StreamPage, {
         }
     },
     errorPage: {
-        message: translate('errors.stream-marked-as-unknown'),
-        errorType: errorEnum.STREAM_NOT_ANALYSED,
-        icon: 'help',
-        button: {
-            label: pluralize('stream.configure_streams', 1),
-            onClick: (props) => {
-                const { pcapID, streamID } = props.match.params;
-                props.history.push(`${routeNames.PCAPS}/${pcapID}/${routeNames.STREAMS_PAGE}/${streamID}/${routeNames.CONFIGURE}`);
-            }
-        }
+        message: translate('errors.404_message'),
+        errorType: errorEnum.PAGE_NOT_FOUND,
+        icon: 'help'
     }
 });

@@ -17,7 +17,7 @@ class StreamList extends Component {
                 {
                     streams.map((stream, index) => {
                         return (
-                            <StreamCard title={`Stream #${index + 1}`} {...stream} pcapID={pcapID} />
+                            <StreamCard key={stream.id} title={`Stream #${index + 1}`} {...stream} pcapID={pcapID} />
                         );
                     })
                 }

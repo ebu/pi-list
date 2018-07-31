@@ -24,5 +24,4 @@ cd ../
 echo
 echo "Compiling List Web Server..."
 cd listwebserver/
-# npm install && pkg -t node8-linux -o listwebserver server.js
 echo "Compiling List Web Server... done"

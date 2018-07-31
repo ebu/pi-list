@@ -2,11 +2,11 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const LocalStrategy = require('passport-local').Strategy;
 const passwordInterpreter = require('./passwordInterpreter');
-const database = require('../managers/database');
 const tokenManager = require('../managers/token');
 const API_ERRORS = require('../enums/apiErrors');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const logger= require('../util/logger');
+const User = require('../models/user');
 
 module.exports = (app) => {
     passport.use(
@@ -19,7 +19,7 @@ module.exports = (app) => {
                 done(null, false, API_ERRORS.TOKEN_EXPIRED);
                 tokenManager.setTokenAsInvalid(token);
             } else {
-                database.findUserByEmail(username)
+                User.findOne({ email: username })
                     .then(user => {
                         bcrypt.compare(rawPassword, user.password)
                             .then((res) => {
@@ -45,6 +45,14 @@ module.exports = (app) => {
             }
         })
     );
+
+    passport.serializeUser((user, done) => {
+        done(null, user);
+    });
+
+    passport.deserializeUser((user, done) => {
+        done(null, user);
+    });
 
     app.post('/auth/login', (req, res, next) => {
         passport.authenticate('local', function (info, user, data) {

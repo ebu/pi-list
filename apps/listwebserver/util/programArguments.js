@@ -8,7 +8,8 @@ function parseArguments(arguments) {
         port: arguments.port || '3030',
         folder: path.sanitizeDirectoryPath(arguments.folder),
         cpp: path.sanitizeDirectoryPath(arguments.cpp),
-        influxURL: arguments.influx ? `http://${arguments.influx.hostname}:${arguments.influx.port}` : '',
+        influxURL: `http://${arguments.influx.hostname}:${arguments.influx.port}`,
+        databaseURL: `mongodb://${arguments.database.hostname}:${arguments.database.port}`,
         developmentMode: arguments.dev || false,
         liveMode: arguments.live || false
     });

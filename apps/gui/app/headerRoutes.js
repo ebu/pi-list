@@ -5,6 +5,7 @@ import routeNames from 'config/routeNames';
 import api from 'utils/api';
 import { pluralize, translate } from 'utils/translation';
 import { LiveRoute } from 'utils/liveFeature';
+import routeBuilder from 'utils/routeBuilder';
 
 const Header = (props) => {
     return (
@@ -64,7 +65,7 @@ export default (
                             icon: 'keyboard backspace',
                             onClick: () => {
                                 const { pcapID } = props.match.params;
-                                props.history.push(`${routeNames.PCAPS}/${pcapID}/${routeNames.STREAMS_PAGE}/`);
+                                props.history.push(routeBuilder.pcap_stream_list(pcapID));
                             }
                         }
                     ]}
@@ -89,7 +90,7 @@ export default (
                             label: translate('buttons.go_back'),
                             icon: 'keyboard backspace',
                             onClick: () => {
-                                props.history.push(`${routeNames.PCAPS}/`);
+                                props.history.push(routeBuilder.pcap_list());
                             }
                         }
                     ]}
@@ -109,7 +110,7 @@ export default (
                             icon: 'settings',
                             onClick: () => {
                                 const { pcapID, streamID } = props.match.params;
-                                props.history.push(`${routeNames.PCAPS}/${pcapID}/${routeNames.STREAMS_PAGE}/${streamID}/${routeNames.CONFIGURE}`);
+                                props.history.push(routeBuilder.stream_config_page(pcapID, streamID));
                             }
                         },
                         {
@@ -117,7 +118,7 @@ export default (
                             icon: 'keyboard backspace',
                             onClick: () => {
                                 const { pcapID } = props.match.params;
-                                props.history.push(`${routeNames.PCAPS}/${pcapID}/${routeNames.STREAMS_PAGE}/`);
+                                props.history.push(routeBuilder.pcap_stream_list(pcapID));
                             }
                         }
                     ]}
@@ -137,7 +138,7 @@ export default (
                             icon: 'keyboard backspace',
                             onClick: () => {
                                 const { pcapID } = props.match.params;
-                                props.history.push(`${routeNames.PCAPS}/${pcapID}/${routeNames.STREAMS_PAGE}/`);
+                                props.history.push(routeBuilder.pcap_stream_list(pcapID));
                             }
                         }
                     ]}

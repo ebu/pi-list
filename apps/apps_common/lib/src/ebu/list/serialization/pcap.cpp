@@ -1,11 +1,8 @@
 #include "ebu/list/serialization/pcap.h"
 
-#include "ebu/list/constants.h"
-#include "ebu/list/serialization/utils.h"
-
 using namespace ebu_list;
 
-void ebu_list::write_pcap_info(const path &base_dir, const pcap_info &info)
+nlohmann::json pcap_info::to_json(const pcap_info& info)
 {
     nlohmann::json j;
     j["id"] = info.id;
@@ -23,13 +20,11 @@ void ebu_list::write_pcap_info(const path &base_dir, const pcap_info &info)
     j["narrow_linear_streams"] = info.narrow_linear_streams;
     j["not_compliant_streams"] = info.not_compliant_streams;
 
-    write_json_to(base_dir / info.id, constants::meta_filename, j);
+    return j;
 }
 
-pcap_info ebu_list::read_pcap_from_json(const path& json_file)
+pcap_info pcap_info::from_json(const nlohmann::json& j)
 {
-    const auto j = read_from_file(json_file);
-
     pcap_info pcap;
     pcap.id = j.at("id").get<std::string>();
     pcap.filename = j.at("file_name").get<std::string>();

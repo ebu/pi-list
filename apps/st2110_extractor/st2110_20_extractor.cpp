@@ -9,32 +9,34 @@
 #include "ebu/list/rtp/udp_handler.h"
 #include "ebu/list/sdp/sdp_writer.h"
 #include "ebu/list/constants.h"
-#include "ebu/list/serialization/pcap.h"
-#include "ebu/list/serialization/serialization.h"
-#include "ebu/list/serialization/stream_identification.h"
 #include "ebu/list/core/platform/executor.h"
 #include "ebu/list/utils/multi_listener.h"
-#include "bisect/bicla.h"
 #include "ebu/list/handlers/audio_stream_handler.h"
+#include "ebu/list/ptp/udp_filter.h"
+#include "ebu/list/database.h"
+#include "ebu/list/serialization/serialization.h"
+#include "bisect/bicla.h"
 #include "video_stream_serializer.h"
 #include "influx_logger.h"
 #include "audio_stream_serializer.h"
-#include "ebu/list/ptp/udp_filter.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110::d21;
 
 //------------------------------------------------------------------------------
 
-// TODO: support schedule selection
-
 namespace
 {
+    constexpr auto MONGO_DEFAULT_URL = "mongodb://localhost:27017";
+    constexpr auto INFLUX_DEFAULT_URL = "http://localhost:8086";
+
     struct config
     {
+        std::string pcap_id;
         path pcap_file;
-        path pcap_dir;
+        path storage_folder;
         std::optional<std::string> influxdb_url;
+        std::optional<std::string> mongo_db_url;
         std::optional<std::string> id_to_process;
     };
 
@@ -44,10 +46,12 @@ namespace
 
         const auto[parse_result, config] = parse(argc, argv,
             option(&config::id_to_process, "s", "stream id", "One or more stream ids to process. If none is specified, processes all streams in the file."),
-            argument(&config::pcap_file, "pcap file", "the path to the pcap file to use as input"),
-            argument(&config::pcap_dir, "base dir", "the path to the pcap directory where to read/write the information"),
-            argument(&config::influxdb_url, "influxDB url", "url to influxDB. Usually http://localhost:8086")
-            );
+            argument(&config::pcap_id, "pcap id", "the pcap id to be processed"),
+            argument(&config::pcap_file, "pcap file", "the path to the pcap file within the filesystem"),
+            argument(&config::storage_folder, "storage dir", "the path to a storage folder where some information is writen"),
+            option(&config::influxdb_url, "influx_url", "influxDB url", "url to influxDB. Usually http://localhost:8086"),
+            option(&config::mongo_db_url, "mongo_url", "mongo url", "url to influxDB. Usually mongodb://localhost:27017.")
+        );
 
         if (parse_result) return config;
 
@@ -59,7 +63,7 @@ namespace
     {
         if (influxdb_url)
         {
-            return std::make_shared<influx::influxdb_ptp_logger>(influxdb_url.value(), pcap_uuid);
+            return std::make_shared<influx::influxdb_ptp_logger>(influxdb_url.value_or(INFLUX_DEFAULT_URL), pcap_uuid);
         }
         else
         {
@@ -67,18 +71,15 @@ namespace
         }
     }
 
-    void write_network_info(const serializable_stream_info& info)
+    std::vector<stream_with_details> get_ids_to_process(const db_serializer& db, const config& config)
     {
-        logger()->info("----------------------------------------");
-        logger()->info("Stream {}:", info.id);
-        logger()->info("\tpayload type: {}", info.network.payload_type);
-        logger()->info("\tsource: {}", to_string(info.network.source));
-        logger()->info("\tdestination: {}", to_string(info.network.destination));
-    }
+        const auto look_for = nlohmann::json{ {"pcap", config.pcap_id} };
+        const auto r = db.find_many(constants::db::offline, constants::db::collections::streams, look_for);
 
-    std::vector<stream_with_details> get_ids_to_process(const config& config)
-    {
-        const auto found_streams = scan_folder(config.pcap_dir);
+        std::vector<stream_with_details> found_streams;
+        std::transform(r.begin(), r.end(), std::back_inserter(found_streams), [](const auto& j){
+            return stream_with_details_serializer::from_json(j);
+        });
 
         if (!config.id_to_process.has_value()) return found_streams;
 
@@ -91,8 +92,19 @@ namespace
         return { *wanted_stream_it };
     }
 
+    template<class T>
+    nlohmann::json gather_info(const serializable_stream_info& info, const T& details)
+    {
+        auto j = serializable_stream_info::to_json(info);
+        j.merge_patch(T::to_json(details));
+
+        return j;
+    }
+
     void run(logger_ptr console, const config& config)
     {
+        db_serializer db {config.mongo_db_url.value_or(MONGO_DEFAULT_URL)};
+
         std::atomic_int nr_audio = 0;
         std::atomic_int nr_video = 0;
         std::atomic_int nr_anc = 0;
@@ -103,31 +115,38 @@ namespace
         std::atomic_int nr_narrow_linear = 0;
         std::atomic_int nr_not_compliant = 0;
 
-        const auto wanted_streams = get_ids_to_process(config);
 
-        auto pcap = read_pcap_from_json(config.pcap_dir / constants::meta_filename);
+        const auto wanted_streams = get_ids_to_process(db, config);
 
-        const auto sdp_path = config.pcap_dir / "sdp.sdp";
+        const auto look_for = nlohmann::json{ {"id", config.pcap_id} };
+        const auto result = db.find_one(constants::db::offline, constants::db::collections::pcaps, look_for);
+        LIST_ENFORCE( result , std::runtime_error, "Can't find pcap {} on DB", config.pcap_id);
+        auto pcap = pcap_info::from_json(result.value());
+
+        const auto sdp_path = config.storage_folder / "sdp.sdp";
         ebu_list::sdp::sdp_writer sdp({"LIST Generated SDP", "LIST SDP"});
 
         auto main_executor = std::make_shared<executor>();
 
         auto video_dump_handler = [&](const video_stream_serializer& handler)
         {
-            const auto& network_info = handler.network_info();
-            write_network_info(network_info);
-
             const auto analysis_info = handler.get_video_analysis_info();
             switch(analysis_info.compliance)
             {
-
                 case compliance_profile::narrow: nr_narrow++; break;
                 case compliance_profile::narrow_linear: nr_narrow_linear++; break;
                 case compliance_profile::wide: nr_wide++; break;
                 case compliance_profile::not_compliant: nr_not_compliant++; break;
             }
 
-            write_stream_info(config.pcap_dir, network_info, handler.info(), analysis_info);
+            // save on db
+            const auto& network_info = handler.network_info();
+            const auto stream_to_update = nlohmann::json{ {"id", network_info.id} };
+
+            auto j = ::gather_info(network_info, handler.info());
+            j["global_video_analysis"] = nlohmann::json(analysis_info);
+            db.update(constants::db::offline, constants::db::collections::streams, stream_to_update, j);
+
             st2110::d20::st2110_20_sdp_serializer s(handler.info().video);
             sdp.add_media(network_info, s);
         };
@@ -135,9 +154,11 @@ namespace
         auto audio_dump_handler = [&](const audio_stream_handler& handler)
         {
             const auto& network_info = handler.network_info();
-            write_network_info(network_info);
+            const auto stream_to_update = nlohmann::json{ {"id", network_info.id} };
 
-            write_stream_info(config.pcap_dir, network_info, handler.info());
+            auto j = ::gather_info(network_info, handler.info());
+            db.update(constants::db::offline, constants::db::collections::streams, stream_to_update, j);
+
             st2110::d30::st2110_30_sdp_serializer s(handler.info().audio);
             sdp.add_media(network_info, s);
         };
@@ -175,19 +196,18 @@ namespace
                     in_video_info.video.dimensions
                 };
 
-                auto new_handler = std::make_unique<video_stream_serializer>(first_packet, stream_info, in_video_info, config.pcap_dir, main_executor, video_dump_handler);
-                write_stream_info(config.pcap_dir, new_handler->network_info(), new_handler->info());
-
+                auto new_handler = std::make_unique<video_stream_serializer>(first_packet, stream_info, in_video_info, config.storage_folder, main_executor, video_dump_handler);
                 auto ml = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
                 ml->add(std::move(new_handler));
 
                 if (config.influxdb_url)
                 {
+                    const auto influx_db_url = config.influxdb_url.value_or(INFLUX_DEFAULT_URL);
                     {
-                        const auto info_path = config.pcap_dir / stream_info.id;
+                        const auto info_path = config.storage_folder / stream_info.id;
 
                         auto cinst_writer = std::make_shared<c_inst_histogram_writer>(info_path);
-                        auto db_logger = std::make_unique<influx::influxdb_c_inst_logger>(cinst_writer, config.influxdb_url.value(), pcap.id, stream_info.id);
+                        auto db_logger = std::make_unique<influx::influxdb_c_inst_logger>(cinst_writer, influx_db_url, pcap.id, stream_info.id);
                         auto analyzer = std::make_unique<c_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info.rate);
                         ml->add(std::move(analyzer));
                     }
@@ -196,27 +216,27 @@ namespace
                         auto framer_ml = std::make_unique<multi_listener_t<frame_start_filter::listener, frame_start_filter::packet_info>>();
 
                         {
-                            auto db_logger = std::make_unique<influx::influxdb_rtp_ts_logger>(config.influxdb_url.value(), pcap.id, stream_info.id);
+                            auto db_logger = std::make_unique<influx::influxdb_rtp_ts_logger>(influx_db_url, pcap.id, stream_info.id);
                             auto analyzer = std::make_unique<rtp_ts_analyzer>(std::move(db_logger), video_info.rate);
                             framer_ml->add(std::move(analyzer));
                         }
 
                         {
-                            auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(config.influxdb_url.value(), pcap.id, stream_info.id, "gapped-ideal");
+                            auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(influx_db_url, pcap.id, stream_info.id, "gapped-ideal");
                             const auto settings = vrx_settings{ read_schedule::gapped, tvd_kind::ideal };
                             auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info, settings);
                             framer_ml->add(std::move(analyzer));
                         }
 
                         {
-                            auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(config.influxdb_url.value(), pcap.id, stream_info.id, "gapped-first_packet_first_frame");
+                            auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(influx_db_url, pcap.id, stream_info.id, "gapped-first_packet_first_frame");
                             const auto settings = vrx_settings{ read_schedule::gapped, tvd_kind::first_packet_first_frame };
                             auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info, settings);
                             framer_ml->add(std::move(analyzer));
                         }
 
                         {
-                            auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(config.influxdb_url.value(), pcap.id, stream_info.id, "gapped-first_packet_each_frame");
+                            auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(influx_db_url, pcap.id, stream_info.id, "gapped-first_packet_each_frame");
                             const auto settings = vrx_settings{ read_schedule::gapped, tvd_kind::first_packet_each_frame };
                             auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info, settings);
                             framer_ml->add(std::move(analyzer));
@@ -233,8 +253,7 @@ namespace
             {
                 nr_audio++;
                 const auto& audio_info = std::get<audio_stream_details>(stream_info_it->second);
-                auto new_handler = std::make_unique<audio_stream_serializer>(first_packet, stream_info, audio_info, audio_dump_handler, config.pcap_dir/*, main_executor*/);
-                write_stream_info(config.pcap_dir, new_handler->network_info(), new_handler->info());
+                auto new_handler = std::make_unique<audio_stream_serializer>(first_packet, stream_info, audio_info, audio_dump_handler, config.storage_folder);
                 return new_handler;
             }
             else if( stream_info.type == media::media_type::ANCILLARY_DATA )
@@ -258,7 +277,7 @@ namespace
         auto ptp_sm = std::make_shared<ptp::state_machine>(ptp_logger);
         auto handler = std::make_shared<rtp::udp_handler>(create_handler);
         auto filter = std::make_shared<ptp::udp_filter>(ptp_sm, handler);
-        auto player = std::make_unique<pcap::pcap_player>(path(config.pcap_file), filter, -pcap.offset_from_ptp_clock);
+        auto player = std::make_unique<pcap::pcap_player>(config.pcap_file, filter, -pcap.offset_from_ptp_clock);
 
         const auto start_time = std::chrono::steady_clock::now();
 
@@ -274,7 +293,6 @@ namespace
 
         sdp.write_to(sdp_path);
 
-        const auto base_dir = config.pcap_dir.parent_path().remove_filename();
         pcap.analyzed = true;
         pcap.audio_streams = nr_audio.load();
         pcap.video_streams = nr_video.load();
@@ -285,7 +303,7 @@ namespace
         pcap.narrow_linear_streams = nr_narrow_linear.load();
         pcap.not_compliant_streams = nr_not_compliant.load();
 
-        write_pcap_info(base_dir, pcap);
+        db.update(constants::db::offline, constants::db::collections::pcaps, look_for, pcap_info::to_json(pcap));
     }
 }
 

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const db = require('../managers/database')('list');
 const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
@@ -52,4 +53,4 @@ UserSchema.set('toJSON', {
     }
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = db.model('User', UserSchema);

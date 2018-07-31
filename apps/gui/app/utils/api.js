@@ -17,6 +17,7 @@ const request = {
     get: url => axios.get(`${API_URL}/${url}`).then(response => response.data),
     put: (url, data, config = null) => axios.put(`${API_URL}/${url}`, data, config),
     post: (url, data) => axios.post(`${API_URL}/${url}`, data),
+    patch: (url, data) => axios.patch(`${API_URL}/${url}`, data),
     delete: url => axios.delete(`${API_URL}/${url}`)
 };
 
@@ -24,24 +25,23 @@ export const WS_SERVER_URL = REST_URL;
 
 export default {
 
-    /** Options **/
+    /* Options */
     getSDPAvailableOptions: () => request.get('sdp/available-options'),
     getAvailableVideoOptions: () => request.get('sdp/available-options?media_type=video'),
     getAvailableAudioOptions: () => request.get('sdp/available-options?media_type=audio'),
     getFeatures: () => request.get('features'),
 
-    /** Auth **/
+    /* Auth */
     getUser: () => request.get('user'),
     deleteUser: () => request.delete('user'),
 
     register: loginData => axios.post(`${REST_URL}/user/register`, loginData).then(response => response.data),
-    authenticateWithFacebook: () => `${REST_URL}/auth/facebook`,
     getToken: () => axios.get(`${REST_URL}/auth/token`).then(response => response.data),
 
     login: loginData => axios.post(`${REST_URL}/auth/login`, loginData).then(response => response.data),
     logout: () => `${REST_URL}/auth/logout`,
 
-    /** PCAP **/
+    /* PCAP */
     getPcaps: () => request.get('pcap'),
     getPcap: pcapID => request.get(`pcap/${pcapID}`),
     deletePcap: pcapID => request.delete(`pcap/${pcapID}`),
@@ -62,10 +62,9 @@ export default {
         return request.put('pcap', data, config);
     },
 
-    getPtpOffset: (pcapID) =>
-        request.get(`pcap/${pcapID}/analytics/PtpOffset`),
+    getPtpOffset: pcapID => request.get(`pcap/${pcapID}/analytics/PtpOffset`),
 
-    /** Stream **/
+    /* Stream */
     getCInstHistogramForStream: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/CInst/validation`),
 
@@ -93,19 +92,20 @@ export default {
     getStreamInformation: (pcapID, streamID) => request.get(`pcap/${pcapID}/stream/${streamID}`),
     getStreamHelp: (pcapID, streamID) => request.get(`pcap/${pcapID}/stream/${streamID}/help`),
     sendStreamConfigurations: (pcapID, streamID, streamsConfigurations) => request.put(`pcap/${pcapID}/stream/${streamID}/help`, streamsConfigurations),
+    changeStreamName: (pcapID, streamID, data) => request.patch(`pcap/${pcapID}/stream/${streamID}/`, data),
 
-    /** Video **/
+    /* Video */
     getFramesFromStream: (pcapID, streamID) => request.get(`pcap/${pcapID}/stream/${streamID}/frames`),
     getImageFromStream: (pcapID, streamID, timestamp) =>
         `${API_URL}/pcap/${pcapID}/stream/${streamID}/frame/${timestamp}/png`,
     getPacketsFromFrame: (pcapID, streamID, frameNumber) => request
         .get(`pcap/${pcapID}/stream/${streamID}/frame/${frameNumber}/packets`),
 
-    /** Audio **/
+    /* Audio */
     downloadMP3: (pcapID, streamID) => `${API_URL}/pcap/${pcapID}/stream/${streamID}/mp3`,
 
-    /** Live **/
+    /* Live */
     getLiveStreams: () => request.get('live/streams/'),
-    getLiveStream: streamID => request.get(`live/streams/${streamID}`)
-
+    getLiveStream: streamID => request.get(`live/streams/${streamID}`),
+    changeLiveStreamName: (streamID, data) => request.patch(`live/streams/${streamID}/`, data)
 };

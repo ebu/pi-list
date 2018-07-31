@@ -1,21 +1,38 @@
 const router = require('express').Router();
-const fs = require('../util/filesystem');
-const program = require('../util/programArguments');
+const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
+const API_ERRORS = require('../enums/apiErrors');
+const LiveStream = require('../models/liveStream');
 
-const fakePCAPID = 'live-pcap';
+// todo: stream ownership
 
 // get all "live" streams, active or not
 router.get('/streams', (req, res) => {
-    const liveUserPath = `${program.folder}/${req.session.passport.user.id}/${fakePCAPID}`;
-    fs.createIfNotExists(liveUserPath); // todo: remove me when we stop using filesystem
+    const userID = req.session.passport.user.id;
 
-    res.redirect(`/api/pcap/${fakePCAPID}/streams/`);
+    LiveStream.find(/*{owner_id: userID}*/).exec()
+        .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
+// get a single stream definition
 router.get('/streams/:streamID/', (req, res) => {
-    // get a single stream definition
     const { streamID } = req.params;
-    res.redirect(`/api/pcap/${fakePCAPID}/stream/${streamID}`);
+    // const userID = req.session.passport.user.id;
+
+    LiveStream.findOne({/*owner_id: userID, */id: streamID}).exec()
+        .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+});
+
+/* Patch the stream info with a new name */
+router.patch('/streams/:streamID/', (req, res) => {
+    const { streamID } = req.params;
+    const alias = req.body.name;
+
+    // todo: maybe check if it found a document (check data.n)?
+    LiveStream.updateOne({id: streamID}, {alias: alias}).exec()
+        .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
 module.exports = router;

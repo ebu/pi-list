@@ -8,11 +8,11 @@ import asyncLoader from 'components/asyncLoader';
 import PopUp from 'components/common/PopUp';
 import Icon from 'components/common/Icon';
 import Table from 'components/common/Table';
-import routeNames from 'config/routeNames';
 import Badge from 'components/common/Badge';
 import ProgressBar from 'components/common/ProgressBar';
 import websocketEventsEnum from 'enums/websocketEventsEnum';
 import { translate } from 'utils/translation';
+import routeBuilder from 'utils/routeBuilder';
 
 class PcapList extends Component {
     constructor(props) {
@@ -34,7 +34,7 @@ class PcapList extends Component {
     }
 
     onPcapClick(rowData) {
-        const route = `${routeNames.PCAPS}/${rowData.id}/${routeNames.STREAMS_PAGE}/`;
+        const route = routeBuilder.pcap_stream_list(rowData.id);
         window.appHistory.push(route);
         //this.props.history.push(route); // todo: replace the line above by this one
     }

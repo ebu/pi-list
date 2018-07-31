@@ -8,8 +8,10 @@ RUN apt-get install -y ffmpeg
 
 RUN npm install -g serve
 
+ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib/
+
 COPY bin/ /app/bin/
-COPY lib/ /app/lib/
+COPY lib/ /usr/local/lib
 COPY listwebserver/ /app/listwebserver/
 COPY listwebserver/config.yml /app/listwebserver/
 COPY gui/ /app/gui/

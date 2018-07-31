@@ -5,13 +5,14 @@
 #include "ebu/list/st2110/rate_calculator.h"
 #include "ebu/list/st2110/packets_per_frame_calculator.h"
 #include "ebu/list/st2110/format_detector.h"
+#include "ebu/list/database.h"
 
 namespace ebu_list
 {
     class stream_listener: public rtp::listener
     {
     public:
-        stream_listener(rtp::packet first_packet, path base_dir, std::string pcap_id);
+        stream_listener(rtp::packet first_packet, std::string pcap_id, std::string mongo_url);
 
         void on_data(const rtp::packet& packet) override;
         void on_complete() override;
@@ -19,9 +20,7 @@ namespace ebu_list
 
     private:
         serializable_stream_info stream_id_;
-        logger_ptr logger_;
-        path base_dir_;
-        std::string pcap_id_;
         st2110::format_detector detector_;
+        db_serializer db_;
     };
 }

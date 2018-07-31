@@ -102,7 +102,7 @@ class Login extends Component {
                         <AsyncErrorsManager errors={this.state.errors} />
                     </div>
 
-                    <div className="lst-login--group">
+                    <div className="lst-login--group lst-margin--bottom-2">
                         <div className="col-xs-6 lst-no-padding lst-padding--right-10">
                             <Button
                                 className="lst-login-btn"
@@ -121,17 +121,6 @@ class Login extends Component {
                                 noMargin
                             />
                         </div>
-                    </div>
-
-                    <h3 className="lst-login--heading">{translate('or')}</h3>
-
-                    <div className="lst-login--group lst-no-margin">
-                        <a
-                            className="lst-btn lst-login-btn lst-btn--outline lst-btn--info lst-no-margin lst-external-login"
-                            href={api.authenticateWithFacebook()}
-                        >
-                            {translate('user_account.facebook_account')}
-                        </a>
                     </div>
                 </div>
             </div>

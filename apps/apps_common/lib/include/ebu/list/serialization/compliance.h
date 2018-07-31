@@ -2,7 +2,7 @@
 
 #include "ebu/list/st2110/d21/compliance.h"
 #include "ebu/list/st2110/d20/video_description.h"
-#include <nlohmann/json.hpp>
+#include "nlohmann/json.hpp"
 
 namespace ebu_list::st2110::d21
 {
