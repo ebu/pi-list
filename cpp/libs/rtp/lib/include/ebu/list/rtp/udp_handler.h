@@ -13,7 +13,6 @@ namespace ebu_list::rtp
 
         explicit udp_handler(handler_creator creator);
 
-    private:
 #pragma region udp::listener events
         void on_data(udp::datagram&& datagram) override;
         void on_complete() override;
