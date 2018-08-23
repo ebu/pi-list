@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "amqplib": "^0.5.2",
+    "axios": "^0.18.0",
     "base64-min": "^2.0.0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",

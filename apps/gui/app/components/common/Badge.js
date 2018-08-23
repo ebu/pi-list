@@ -8,7 +8,6 @@ const propTypes = {
     icon: PropTypes.string,
     text: PropTypes.string,
     className: PropTypes.string,
-    outline: PropTypes.bool,
     mini: PropTypes.bool
 };
 
@@ -17,7 +16,6 @@ const defaultProps = {
     text: '',
     icon: '',
     className: '',
-    outline: false,
     mini: false
 };
 
@@ -30,8 +28,7 @@ const Badge = (props) => {
             'lst-badge--danger': props.type === 'danger',
             'lst-badge--warning': props.type === 'warning',
             'lst-badge--info': props.type === 'info',
-            'lst-badge--mini': props.mini,
-            'lst-badge--outline': props.outline
+            'lst-badge--mini': props.mini
         }
     );
 

@@ -6,6 +6,7 @@ export default {
         DONE: 'DONE'
     },
     LIVE: {
-        STREAM_UPDATE: 'STREAM_UPDATE'
+        STREAM_UPDATE: 'STREAM_UPDATE',
+        NMOS_UPDATE: 'NMOS_UPDATE'
     }
 };

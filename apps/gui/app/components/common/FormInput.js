@@ -19,7 +19,7 @@ const defaultProps = {
 };
 
 const FormInput = props => (
-    <div className={classNames('lst-control-group col-xs-12', props.className)}>
+    <div className={classNames('row lst-control-group', props.className)}>
         <div className={`lst-form-label col-xs-${props.labelColSize} middle-xs`}>
             {props.icon && (
                 <Icon value={props.icon} />

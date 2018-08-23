@@ -16,7 +16,8 @@ const Icon = (props) => {
         'lst-icons',
         props.className,
         {
-            'recording-animation': props.value === 'fiber_manual_record'
+            'recording-animation': props.value === 'fiber_manual_record',
+            'device-search-animation': props.value === 'wifi_tethering'
         }
     );
 

@@ -6,6 +6,7 @@
     "audio_measurements": "Medições do Áudio",
     "video_measurements": "Medições do Vídeo",
     "last_pcaps": "Últimos PCAPs analisados",
+    "last_flows": "Últimos Flows em Direto",
     "video": "Vídeo",
     "audio": "Áudio",
     "anc": "Dados Auxiliares",
@@ -20,7 +21,9 @@
 
   "filters": {
     "show_error_only": "Apenas com Erros",
-    "show_online_only": "Apenas Online"
+    "show_online_only": "Apenas Online",
+    "show_video_only": "Apenas Vídeo",
+    "show_audio_only": "Apenas Áudio"
   },
 
   "media_information": {
@@ -94,7 +97,6 @@
   },
 
   "date": "Data",
-  "or": "ou",
 
   "notifications": {
     "success": {
@@ -103,6 +105,9 @@
 
       "pcap_deleted": "Ficheiro PCAP apagado",
       "pcap_deleted_message": "O ficheiro %{name} foi apagado com sucesso!",
+
+      "stream_deleted": "Stream apagada",
+      "stream_deleted_message": "A stream foi apagada com sucesso!",
 
       "stream_analysis": "Sucesso!",
       "stream_analysis_message": "A Stream foi corretamente analisada!"
@@ -113,6 +118,9 @@
 
       "pcap_deleted": "Erro a apagar o PCAP",
       "pcap_deleted_message": "Não foi possível apagar o ficheiro %{name}!",
+
+      "stream_deleted": "Erro a apagar a stream",
+      "stream_deleted_message": "Não foi possível apagar. Por favor verifique os logs.",
 
       "stream_analysis": "Erro!",
       "stream_analysis_message": "Algo correu mal durante a análise da stream!"
@@ -136,14 +144,14 @@
     "delete_confirmation": "Tem a certeza que quer apagar a sua conta? Esta ação é permanente e irreversível!",
     "user_registered_message": "Utilizador registado com sucesso!",
     "email": "E-mail",
-    "password": "Palavra-chave",
-    "facebook_account": "Entrar com o Facebook"
+    "password": "Palavra-chave"
   },
 
   "pcap": {
     "delete_header": "Apagar PCAP",
     "delete_message": "Tem a certeza que quer apagar o ficheiro %{name}?",
     "download_sdp": "Descarregar SDP",
+    "no_pcaps": "Não foram encontrados ficheiros PCAP!",
 
     "state": {
       "no_analysis": "Sem análise efetuada",
@@ -151,6 +159,10 @@
       "compliant": "Compatível",
       "not_compliant": "Incompatível"
     }
+  },
+
+  "flow": {
+    "no_flows": "Não foram encontrados Flows!"
   },
 
   "buttons": {
@@ -165,8 +177,18 @@
   "navigation": {
     "dashboard": "Resumo",
     "live_streams": "Em Direto",
+    "network": "Na Rede",
     "pcaps": "PCAPs & Streams",
     "help": "Precisa de ajuda?"
+  },
+
+  "realtime_feed": {
+    "ok": "A receber informações em tempo real"
+  },
+
+  "live_stream": {
+    "no_streams": "Não foram encontradas streams!",
+    "no_streams_message": "Comece a gravar streams em direto para as ver aqui."
   },
 
   "errors": {
