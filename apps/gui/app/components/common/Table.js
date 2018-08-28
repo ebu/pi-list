@@ -61,6 +61,20 @@ class Table extends Component {
         );
     }
 
+    renderStringItem(item, row) {
+        let value = null;
+
+        if (isFunction(row.key)) {
+            value = row.key(item);
+        } else if (isString(row.key)) {
+            value = item[row.key];
+        }
+
+        return (
+            <span>{value}</span>
+        );
+    }
+
     renderRowItem(rowConfiguration, item) {
         return rowConfiguration.map((row) => {
             return (
@@ -68,8 +82,7 @@ class Table extends Component {
                     key={`${row.key}-${item.id}`}
                     className={classNames('lst-table-body__item', row.cellClassName)}
                 >
-                    {isFunction(row.render) ? row.render(item) : (
-                        <span>{item[row.key]}</span>
+                    {isFunction(row.render) ? row.render(item) : ( this.renderStringItem(item, row)
                     )}
                 </td>
             );
@@ -84,7 +97,7 @@ class Table extends Component {
                 key={`row-item-${item.id}`}
             >
                 {this.renderRowItem(this.props.rows, item)}
-                {this.props.showActions && (
+                {isFunction(this.props.onItemDelete) && (
                     <td className="lst-table-actions lst-text-right" key={`actions-${item.id}`}>
                         <Button
                             key={`button-actions-${item.id}`}
@@ -96,6 +109,22 @@ class Table extends Component {
                                 evt.stopPropagation();
 
                                 this.props.onItemDelete(item);
+                            }}
+                        />
+                    </td>
+                )}
+                {this.props.action && (
+                    <td className="lst-table-actions lst-text-right" key={`actions-${item.id}`}>
+                        <Button
+                            key={`button-actions-${item.id}`}
+                            className="lst-table-delete-item-btn"
+                            icon={this.props.action.icon}
+                            type={this.props.action.type}
+                            link
+                            onClick={(evt) => {
+                                evt.stopPropagation();
+
+                                this.props.action.onClick(item);
                             }}
                         />
                     </td>

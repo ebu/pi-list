@@ -1,15 +1,12 @@
 const router = require('express').Router();
+const logger = require('../util/logger');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const API_ERRORS = require('../enums/apiErrors');
 const LiveStream = require('../models/liveStream');
 
-// todo: stream ownership
-
 // get all "live" streams, active or not
 router.get('/streams', (req, res) => {
-    const userID = req.session.passport.user.id;
-
-    LiveStream.find(/*{owner_id: userID}*/).exec()
+    LiveStream.find().exec()
         .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
@@ -17,9 +14,17 @@ router.get('/streams', (req, res) => {
 // get a single stream definition
 router.get('/streams/:streamID/', (req, res) => {
     const { streamID } = req.params;
-    // const userID = req.session.passport.user.id;
 
-    LiveStream.findOne({/*owner_id: userID, */id: streamID}).exec()
+    LiveStream.findOne({id: streamID}).exec()
+        .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+});
+
+// delete a live stream
+router.delete('/streams/:streamID/', (req, res) => {
+    const { streamID } = req.params;
+
+    LiveStream.deleteOne({id: streamID}).exec()
         .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
@@ -33,6 +38,17 @@ router.patch('/streams/:streamID/', (req, res) => {
     LiveStream.updateOne({id: streamID}, {alias: alias}).exec()
         .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+});
+
+// subscribe to a stream on the network
+router.put('/streams/subscribe', (req, res) => {
+    // todo: ask probe to subscribe to this flow
+    // either by sending a SDP file (through /senders information) or an endpoint (address + port)
+
+    logger('live').info("Mocked...");
+    logger('live').info(`Should subscribe: ${req.data}`);
+
+    res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
 });
 
 module.exports = router;

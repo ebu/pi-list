@@ -6,6 +6,7 @@ import FormInput from 'components/common/FormInput';
 import StreamBadge from 'components/stream/StreamBadge';
 import AnalysisBadge from 'components/stream/AnalysisBadge';
 import EditableField from 'components/common/EditableField';
+import Button from 'components/common/Button';
 import api from 'utils/api';
 import routeBuilder from 'utils/routeBuilder';
 
@@ -31,37 +32,51 @@ const LiveStreamCard = (props) => {
     const title = props.alias ? props.alias : props.title;
 
     return (
-        <Link key={`streams-${props.id}`} to={route} className="lst-href-no-style">
-            <Panel containerClassName={panelClassName}>
-                <div className="row lst-no-margin">
-                    <div className="col-xs-9 lst-no-padding lst-no-margin">
-                        <div className="row">
-                            <p className="lst-paragraph col-xs-12">
-                                <h2 className="lst-no-margin">
-                                    <EditableField
-                                        value={title}
-                                        className="lst-no-margin"
-                                        updateFunction={data => api.changeLiveStreamName(props.id, { name: data })}
-                                    />
-                                </h2>
-                            </p>
-                            <FormInput className="lst-no-margin" icon="arrow upward" labelColSize={3} valueColSize={9}>
-                                {from}
-                            </FormInput>
-                            <FormInput className="lst-no-margin" icon="arrow downward" labelColSize={3} valueColSize={9}>
-                                {to}
-                            </FormInput>
-                        </div>
+        <Panel
+            containerClassName={panelClassName}
+            title={
+                <div className="row lst-panel__header lst-truncate">
+                    <div className="col-xs-10">
+                        <h2 className="lst-no-margin fit-to-div">
+                            <EditableField
+                                value={title}
+                                className="lst-no-margin"
+                                updateFunction={data => api.changeLiveStreamName(props.id, { name: data })}
+                            />
+                        </h2>
+                    </div>
+                    <div className="col-xs-2 end-xs lst-no-padding">
+                        <Button
+                            key={`delete-stream-${props.id}`}
+                            className="lst-panel rightToolbar"
+                            icon="delete"
+                            type="danger"
+                            link
+                            onClick={(evt) => {
+                                evt.stopPropagation();
+                                props.onDeleteButtonClicked(props.id);
+                            }}
+                        />
                     </div>
                 </div>
+            }
+        >
+            <Link key={`streams-${props.id}`} to={route} className="lst-href-no-style">
+                <FormInput className="lst-no-margin" icon="arrow upward" labelColSize={2} valueColSize={10}>
+                    {from}
+                </FormInput>
+                <FormInput className="lst-no-margin" icon="arrow downward" labelColSize={2} valueColSize={10}>
+                    {to}
+                </FormInput>
                 { mediaTypeIsKnown && (
                     <div className="row lst-no-margin">
-                        <StreamBadge media_type={props.media_type} media_specific={props.media_specific}/>
+                        {!props.lowInformation &&
+                        <StreamBadge media_type={props.media_type} media_specific={props.media_specific} />}
                         <AnalysisBadge name="ST2110-21" compliance={globalStatus.compliance} />
                     </div>
                 )}
-            </Panel>
-        </Link>
+            </Link>
+        </Panel>
     );
 };
 

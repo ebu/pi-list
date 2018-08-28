@@ -55,9 +55,9 @@ namespace ebu_list
             auto r = entries();
             r.reserve(values_.size());
 
-            for (const auto& it : values_)
+            for (const auto& item : values_)
             {
-                const auto&[value, count] = it;
+                const auto&[value, count] = item;
                 r.push_back({ value, count, static_cast<float>(count) / total });
             }
 

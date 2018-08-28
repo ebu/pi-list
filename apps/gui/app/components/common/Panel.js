@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { isString } from 'lodash';
 import Icon from 'components/common/Icon';
 
 const propTypes = {
     className: PropTypes.string,
     containerClassName: PropTypes.string,
-    title: PropTypes.string,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
@@ -21,7 +22,7 @@ const propTypes = {
 const defaultProps = {
     className: '',
     containerClassName: '',
-    title: '',
+    title: null,
     noPadding: false,
     noBorder: false,
     fullHeight: false,
@@ -50,13 +51,15 @@ const Panel = (props) => {
     return (
         <div className={cardClassNames}>
             <div className={containerClassNames}>
-                {props.title && (
+                {isString(props.title) ? (
                     <div className="row lst-panel__header lst-truncate">
                         <div className="col-xs-6">
-                            <h2>{props.icon && <Icon value={props.icon} />}{props.title}</h2>
+                            <h2 className="fit-to-div">{props.icon && <Icon value={props.icon} />}{props.title}</h2>
                         </div>
                         <div className="col-xs-6 end-xs">{props.rightToolbar}</div>
                     </div>
+                ) : (
+                    props.title
                 )}
                 {props.children}
             </div>

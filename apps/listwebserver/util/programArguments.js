@@ -10,6 +10,9 @@ function parseArguments(arguments) {
         cpp: path.sanitizeDirectoryPath(arguments.cpp),
         influxURL: `http://${arguments.influx.hostname}:${arguments.influx.port}`,
         databaseURL: `mongodb://${arguments.database.hostname}:${arguments.database.port}`,
+        nmosRegistry: `http://${arguments.nmosRegistry.hostname}:${arguments.nmosRegistry.port}`,
+        nmosRegistryRefreshRate: arguments.nmosRegistry.refresh,
+        nmosVersion: arguments.nmosRegistry.version,
         developmentMode: arguments.dev || false,
         liveMode: arguments.live || false
     });

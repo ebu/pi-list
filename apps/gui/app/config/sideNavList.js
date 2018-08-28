@@ -16,6 +16,13 @@ export default [
         liveOnly: true
     },
     {
+        link: routeNames.NETWORK,
+        icon: 'wifi_tethering',
+        label: translate('navigation.network'),
+        exact: true,
+        liveOnly: true
+    },
+    {
         link: routeNames.PCAPS,
         icon: 'dvr',
         label: translate('navigation.pcaps'),

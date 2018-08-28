@@ -81,7 +81,7 @@ void video_stream_handler::detect_frame_transition(uint32_t timestamp)
 {
     if (timestamp != video_description_.last_frame_ts)
     {
-        logger()->trace("new frame. ts = {}", timestamp);
+        // logger()->trace("new frame. ts = {}", timestamp);
         video_description_.last_frame_ts = timestamp;
 
         video_description_.frame_count++;

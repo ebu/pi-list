@@ -1,6 +1,12 @@
 .lst-panel {
   margin-bottom: $margin;
 
+  &:hover {
+    .rightToolbar {
+      opacity: 1;
+    }
+  }
+
   .lst-panel__header h2{
     font-weight: 400;
   }
@@ -36,4 +42,18 @@
     border: 1px solid $grey;
   }
 
+  .background-on-white {
+    color: $white;
+    background-color: inherit;
+  }
+
+  .rightToolbar {
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+  }
+}
+
+.fit-to-div {
+  font-size: 1vw;
 }

@@ -37,6 +37,7 @@ const ErrorPage = (props) => {
     ) || isObject(props.button);
 
     const icon = props.icon || 'error outline';
+    const title = props.errorType !== undefined ? props.errorType : props.title;
 
     return (
         <div className="lst-error-page row center-xs">
@@ -47,7 +48,7 @@ const ErrorPage = (props) => {
                             <Icon className="lst-icons" value={icon} />
                         </div>
                         <div className="lst-error-page__message lst-text-left col-xs-12 col-sm-9">
-                            <h2 className="lst-error-page-heading">{props.errorType}</h2>
+                            <h2 className="lst-error-page-heading">{title}</h2>
                             <p>{props.errorMessage}</p>
                         </div>
                     </div>

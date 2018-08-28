@@ -2,8 +2,9 @@
 # Use this file for development mode
 
 # Filesystem related
-folder: /home/list/
-cpp: /home/list/bin/
+folder: /home/mpoeira/tmp/list/
+cpp: /home/mpoeira/list/live/cmake-build-debug/third_party/ebu_list/bin/
+#cpp: /home/mpoeira/list/live/third_party/ebu_list/cmake-build-debug/bin/
 
 # HTTP-related
 cookieSecret: STRD4O
@@ -18,3 +19,9 @@ database:
 influx:
   hostname: localhost
   port: 8086
+
+nmosRegistry:
+  hostname: localhost
+  port: 8082
+  version: 1.2
+  refresh: 1

@@ -107,5 +107,7 @@ export default {
     /* Live */
     getLiveStreams: () => request.get('live/streams/'),
     getLiveStream: streamID => request.get(`live/streams/${streamID}`),
-    changeLiveStreamName: (streamID, data) => request.patch(`live/streams/${streamID}/`, data)
+    deleteLiveStream: streamID => request.delete(`live/streams/${streamID}`),
+    changeLiveStreamName: (streamID, data) => request.patch(`live/streams/${streamID}/`, data),
+    subscribeLiveStream: data => request.put('live/streams/subscribe/', data)
 };

@@ -116,10 +116,33 @@
   }
 }
 
-@include pulse-template(pulse-yello-bg, background-color, $yellow) {
+@include pulse-template(pulse-yellow-bg, background-color, $yellow) {
   50% {
     color: $white;
   }
+}
+
+// Ripple animation
+@keyframes ripple {
+  0% {
+    color: $yellow;
+  }
+  50% {
+    color: radial-gradient(circle closest-side, $yellow, $yellow);
+  }
+  75% {
+    color: radial-gradient(circle closest-side, $yellow, $yellow);
+  }
+  100% {
+    color: inherit;
+  }
+}
+
+.device-search-animation {
+  color: inherit;
+  -webkit-animation: ripple 3s infinite;
+  animation: ripple 3s infinite;
+  z-index: 3;
 }
 
 .recording-animation {
@@ -131,7 +154,7 @@
 }
 
 .stream-has-warning {
-  animation: pulse-yello-bg 2s infinite;
+  animation: pulse-yellow-bg 2s infinite;
 }
 
 

@@ -116,10 +116,9 @@ class PcapList extends Component {
         return (
             <React.Fragment>
                 <Table
-                    ref={table => this.pcapTable = table}
                     orderBy="date"
                     data={this.state.pcaps}
-                    noItemsMessage="No PCAPs file found!"
+                    noItemsMessage={translate('pcap.no_pcaps')}
                     rows={[
                         {
                             key: 'file_name',
@@ -138,13 +137,11 @@ class PcapList extends Component {
                             key: 'date',
                             header: translate('date'),
                             render: this.renderPcapDate,
-                            width: '15%'
+                            width: '20%'
                         }
                     ]}
                     fixed
                     showFirstElements={this.props.limit}
-                    showActions
-                    rowClickable
                     onRowClick={this.onPcapClick}
                     onItemDelete={this.showPcapDeleteModal}
                 />

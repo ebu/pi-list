@@ -3,7 +3,7 @@ import api from 'utils/api';
 import { translate } from 'utils/translation';
 import asyncLoader from 'components/asyncLoader';
 import errorEnum from 'enums/errorEnum';
-import LiveVideoPage from 'containers/LiveVideoPage';
+import LiveVideoPage from 'containers/live/LiveVideoPage';
 import AudioPage from 'containers/AudioPage';
 import { withRouter } from 'react-router-dom';
 

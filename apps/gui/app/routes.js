@@ -9,6 +9,7 @@ import LiveStreamList from 'pages/LiveStreamList';
 import Dashboard from 'pages/Dashboard';
 import StreamPage from 'pages/StreamPage';
 import LiveStreamPage from 'pages/LiveStreamPage';
+import FlowList from 'containers/live/FlowList';
 
 import ErrorPage from 'components/ErrorPage';
 import PcapList from 'containers/PcapList';
@@ -35,6 +36,15 @@ export default (
         <Route path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}/:streamID/${routeNames.CONFIGURE}`} component={ConfigureStreamsPage} exact />
 
         <LiveRoute path={routeNames.LIVE} component={LiveStreamList} exact />
+        <LiveRoute
+            path={routeNames.NETWORK}
+            exact
+            component={props => (
+                <Panel className="col-xs-12 ">
+                    <FlowList {...props} />
+                </Panel>
+            )}
+        />
         <LiveRoute path={`${routeNames.LIVE}/${routeNames.STREAMS_PAGE}/:streamID/`} component={LiveStreamPage} exact />
 
         <Route render={() => (

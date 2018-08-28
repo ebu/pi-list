@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Button from 'components/common/Button';
+import RealTimeDataStatus from 'containers/live/RealTimeDataStatus';
 import routeNames from 'config/routeNames';
 import api from 'utils/api';
 import { pluralize, translate } from 'utils/translation';
@@ -14,6 +15,7 @@ const Header = (props) => {
                 <span>{props.label}</span>
             </h1>
             <div className="col-xs end-xs">
+                {props.children}
                 {props.buttons && props.buttons.map(button => (
                     <Button
                         key={button.label}
@@ -50,7 +52,20 @@ export default (
         <LiveRoute
             path={routeNames.LIVE}
             hideOnFalse
-            render={() => (<Header label={translate('navigation.live_streams')} />)}
+            render={() => (
+                <Header label={translate('navigation.live_streams')}>
+                    <RealTimeDataStatus />
+                </Header>
+            )}
+        />
+        <LiveRoute
+            path={routeNames.NETWORK}
+            hideOnFalse
+            render={() => (
+                <Header label={translate('navigation.network')}>
+                    <RealTimeDataStatus />
+                </Header>
+            )}
         />
         <Route
             exact

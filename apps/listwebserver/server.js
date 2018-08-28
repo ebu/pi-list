@@ -20,8 +20,10 @@ websocketManager.initialize(httpServer);
 httpServer.listen(programArguments.port);
 
 if(programArguments.liveMode) {
-    logger('server').info(`Running StreamUpdates Worker`);
+    logger('server').info(`Starting StreamUpdates Worker`);
     require('./worker/streamUpdates');
+    logger('server').info(`Starting NMOS Worker`);
+    require('./worker/nmos-crawler');
 }
 
 httpServer.on('error', onError);
