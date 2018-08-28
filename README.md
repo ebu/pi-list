@@ -18,7 +18,7 @@ Drill drown on each stream and understand what's going on | ![](docs/stream_dril
 
 ## Dematerialized version
 
-We deployed an [online version](http://51.136.33.162) that you can start using right away.
+We deployed an [online version](http://list.ebu.io/) that you can start using right away.
 
 ## Run - Quick-start
 
