@@ -1,6 +1,6 @@
 import React from 'react';
 import api from 'utils/api';
-import LineChart from "components/LineChart";
+import LineChart from 'components/LineChart';
 import chartFormatters from 'utils/chartFormatters';
 
 const VrxAnalysis = (props) => {
@@ -12,7 +12,7 @@ const VrxAnalysis = (props) => {
             <div className="col-xs-12 col-md-12">
                 <LineChart
                     asyncData={() => api.getVrxIdealForStream(pcapID, streamID, first_packet_ts, last_packet_ts)}
-                    xAxis={(item) => item.time}
+                    xAxis={item => item.time}
                     data={chartFormatters.minMaxLineChart}
                     title="Tvd = Ideal"
                     height={300}
@@ -21,7 +21,7 @@ const VrxAnalysis = (props) => {
                 />
                 <LineChart
                     asyncData={() => api.getVrxFirstPacketFirstFrameFromStream(pcapID, streamID, first_packet_ts, last_packet_ts)}
-                    xAxis={(item) => item.time}
+                    xAxis={item => item.time}
                     data={chartFormatters.minMaxLineChart}
                     title="Tvd = 1st Packet of 1st Frame"
                     height={300}

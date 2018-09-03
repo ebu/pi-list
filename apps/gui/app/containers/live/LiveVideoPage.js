@@ -8,7 +8,7 @@ import Panel from 'components/common/Panel';
 import websocketEventsEnum from 'enums/websocketEventsEnum';
 import websocket from 'utils/websocket';
 import chartFormatters from 'utils/chartFormatters';
-import Chart from 'components/Chart';
+import Chart from 'components/StyledChart';
 
 const maxHistoryArraySize = 60;
 const fillArray = () => Array(maxHistoryArraySize).fill({ value: 0, time: 1 });

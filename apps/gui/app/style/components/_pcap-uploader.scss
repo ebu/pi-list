@@ -13,6 +13,11 @@
   justify-content: center;
   transition: color $fast-transition-time, border-color $fast-transition-time;
 
+  .dark & {
+    color: $white-perl;
+    border: 2px dashed $white-perl;
+  }
+
   &.active {
     color: $blue;
     border-color: $blue;

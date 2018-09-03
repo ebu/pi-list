@@ -161,8 +161,8 @@ class LineChart extends Component {
         [...this.props.data].reverse().forEach((chart) => {
             const line = d3.line()
                 .curve(d3.curveMonotoneX)
-                .x((item) => this.xScale(item.timestamp))
-                .y((item) => this.yScale(item[chart.yValues]));
+                .x(item => this.xScale(item.timestamp))
+                .y(item => this.yScale(item[chart.yValues]));
 
             this.lines.push(line);
 

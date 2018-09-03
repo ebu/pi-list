@@ -15,6 +15,10 @@
     padding: $margin;
     border-radius: $border-radius;
     background-color: $white-blank;
+
+    .dark & {
+      background-color: $nord3;
+    }
   }
 
   .lst-panel--no-padding {
@@ -27,7 +31,6 @@
 
   .lst-panel--padding {
     padding: $margin;
-    //padding-bottom: $margin/2;
 
     &.lst-panel--full-height {
       height: calc(100% - #{(1.5 * $margin)});
@@ -40,6 +43,10 @@
 
   .lst-panel--border {
     border: 1px solid $grey;
+
+    .dark & {
+      border: 1px solid $nord1;
+    }
   }
 
   .background-on-white {

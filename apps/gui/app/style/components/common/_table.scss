@@ -22,6 +22,10 @@
             font-size: 12px;
             font-weight: 600;
 
+            .dark & {
+                color: $white;
+            }
+
             span.lst-table-header--show-order {
                 position: relative;
 
@@ -32,8 +36,12 @@
                     position: relative;
                     right: -4px;
                     width: 0;
-                    border-top: 4px solid #DFE1E6;
+                    border-top: 4px solid blue;
                     content: ' ';
+
+                    .dark & {
+                        border-top: 4px solid blue;
+                    }
                 }
 
                 &:before {
@@ -43,7 +51,7 @@
                     position: absolute;
                     right: -4px;
                     width: 0;
-                    border-bottom: 4px solid #DFE1E6;
+                    border-bottom: 4px solid blue;
                     bottom: 8px;
                     content: ' ';
                 }

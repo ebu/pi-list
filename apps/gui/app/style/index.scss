@@ -45,10 +45,13 @@ body {
     font-weight: 300;
     font-size: 14px;
     color: $black;
-    background: $background-color-blue;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    & .dark {
+        color: $white-blank;
+    }
 }
 
 h1, h2, h3, h4 {

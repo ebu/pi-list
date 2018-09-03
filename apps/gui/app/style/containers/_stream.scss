@@ -31,11 +31,20 @@
     font-size: 9px;
     width: 20px;
     cursor: pointer;
+
+    .dark & {
+        background: $nord1;
+        color: $white-perl;
+    }
 }
 
 .lst-timeline-bar {
     padding: 2px;
     background: $grey;
+
+    .dark & {
+        background: $nord1;
+    }
 
     .lst-timeline-progress {
         height: 4px;

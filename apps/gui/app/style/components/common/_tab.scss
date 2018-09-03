@@ -13,6 +13,10 @@ $tab-header-height: 50px;
               cursor: pointer;
               border: 1px solid #f4f4f4;
 
+              .dark & {
+                border: 1px solid $nord1;
+              }
+
 
               &.selected {
                   background-color: $white-blank;
@@ -25,6 +29,13 @@ $tab-header-height: 50px;
                   position: relative;
                   top: 1px;
                   z-index: 1;
+
+                .dark & {
+                  color: $white-perl;
+                  border: 1px solid $nord1;
+                  border-bottom: 1px solid $nord3;
+                  background-color: $nord3;
+                }
               }
 
 
@@ -41,5 +52,10 @@ $tab-header-height: 50px;
       padding: $margin;
       background-color: $white-blank;
       border: 1px solid $grey-hover;
+
+      .dark & {
+        background-color: $nord3;
+        border: 1px solid $nord1;
+      }
   }
 }

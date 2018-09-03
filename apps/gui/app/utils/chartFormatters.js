@@ -5,6 +5,13 @@ export const CHART_COLORS = {
     RED: '#d25b49'
 };
 
+export const DARK_CHART_COLORS = {
+    BLUE: '#5E81AC',
+    YELLOW: '#EBCB8B',
+    GREEN: '#A3BE8C',
+    RED: '#BF616A'
+};
+
 function getTimeLineLabel(chartData) {
     return chartData.map(data => data.time);
 }
@@ -48,7 +55,8 @@ function singleValueChart(chartData) {
         {
             label: 'Value',
             data: value,
-            color: CHART_COLORS.GREEN
+            color: CHART_COLORS.GREEN,
+            backgroundColor: CHART_COLORS.GREEN
         }
     ];
 }
@@ -173,4 +181,4 @@ export default {
     stdDeviationMeanMinMaxLineChart,
     singleValueLineChart,
     xAxisTimeDomain
-}
+};
