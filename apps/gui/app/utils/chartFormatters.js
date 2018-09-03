@@ -1,4 +1,9 @@
-import { CHART_COLORS } from 'components/Chart';
+export const CHART_COLORS = {
+    BLUE: '#5086d8',
+    YELLOW: '#ecb857',
+    GREEN: '#4caf4f',
+    RED: '#d25b49'
+};
 
 function getTimeLineLabel(chartData) {
     return chartData.map(data => data.time);
@@ -108,11 +113,64 @@ function stdDeviationMeanMinMaxChart(chartData) {
     ];
 }
 
+
+const minMaxLineChart = [
+    {
+        yValues: "max",
+        label: "Max",
+        color: CHART_COLORS.GREEN
+    },
+    {
+        yValues: "min",
+        label: "Min",
+        color: CHART_COLORS.YELLOW
+    }
+];
+
+const stdDeviationMeanMinMaxLineChart = [
+    {
+        yValues: "stddev",
+        label: "Std. Deviation",
+        color: CHART_COLORS.BLUE
+    },
+    {
+        yValues: "mean",
+        label: "Mean",
+        color: CHART_COLORS.YELLOW
+    },
+    {
+        yValues: "max",
+        label: "Max",
+        color: CHART_COLORS.GREEN
+    },
+    {
+        yValues: "min",
+        label: "Min",
+        color: CHART_COLORS.RED
+    }
+];
+
+const singleValueLineChart = [
+    {
+        yValues: "value",
+        label: "Value",
+        color: CHART_COLORS.GREEN
+    }
+];
+
+const xAxisTimeDomain = (point) => point.time;
+
 export default {
     cinstHistogramValues,
     cinstHistogramCounts,
     singleValueChart,
     minMaxChart,
     getTimeLineLabel,
-    stdDeviationMeanMinMaxChart
+    stdDeviationMeanMinMaxChart,
+
+    // new Line Chart API
+    minMaxLineChart,
+    stdDeviationMeanMinMaxLineChart,
+    singleValueLineChart,
+    xAxisTimeDomain
 }

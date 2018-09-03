@@ -3,13 +3,6 @@ import { isNumber, isFunction } from 'lodash';
 import ChartJS from 'chart.js';
 import asyncLoader from 'components/asyncLoader';
 
-export const CHART_COLORS = {
-    BLUE: '#5086d8',
-    YELLOW: '#ecb857',
-    GREEN: '#4caf4f',
-    RED: '#d25b49'
-};
-
 class Chart extends Component {
     prepareChart() {
         const labels = isFunction(this.props.labels)

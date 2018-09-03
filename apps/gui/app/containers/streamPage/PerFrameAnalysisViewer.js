@@ -3,7 +3,7 @@ import api from 'utils/api';
 import asyncLoader from 'components/asyncLoader';
 import StreamTimeline from 'components/stream/StreamTimeline';
 import chartFormatters from 'utils/chartFormatters';
-import Chart from 'components/Chart';
+import LineChart from 'components/LineChart';
 
 class PerFrameAnalysisViewer extends Component {
     constructor(props) {
@@ -35,25 +35,23 @@ class PerFrameAnalysisViewer extends Component {
                 </div>
                 <div className="row">
                     <div className="col-xs-12 col-md-12">
-                        <Chart
+                        <LineChart
                             key={this.state.first_packet_ts}
-                            type="line"
-                            request={() => api.getCInstRaw(this.props.pcapID, this.props.streamID, this.state.first_packet_ts, this.state.last_packet_ts)}
-                            labels={chartFormatters.getTimeLineLabel}
-                            formatData={chartFormatters.singleValueChart}
-                            xLabel=""
+                            asyncData={() => api.getCInstRaw(this.props.pcapID, this.props.streamID, this.state.first_packet_ts, this.state.last_packet_ts)}
+                            xAxis={chartFormatters.getTimeLineLabel}
+                            data={chartFormatters.singleValueLineChart}
                             title="CInst"
                             height={300}
+                            lineWidth={3}
                         />
-                        <Chart
+                        <LineChart
                             key={this.state.first_packet_ts + "s"}
-                            type="line"
-                            request={() => api.getVrxFirstPacketEachFrameRaw(this.props.pcapID, this.props.streamID, this.state.first_packet_ts, this.state.last_packet_ts)}
-                            labels={chartFormatters.getTimeLineLabel}
-                            formatData={chartFormatters.singleValueChart}
-                            xLabel=""
+                            asyncData={() => api.getVrxFirstPacketEachFrameRaw(this.props.pcapID, this.props.streamID, this.state.first_packet_ts, this.state.last_packet_ts)}
+                            xAxis={chartFormatters.getTimeLineLabel}
+                            data={chartFormatters.singleValueLineChart}
                             title="Vrx"
                             height={300}
+                            lineWidth={3}
                         />
                     </div>
                 </div>

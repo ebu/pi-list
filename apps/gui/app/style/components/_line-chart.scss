@@ -1,0 +1,36 @@
+.lst-css-line-chart {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.lst-css-line-chart--title {
+    text-align: center;
+    font-weight: 400;
+    color: $black-light-20;
+}
+
+.lst-css-line-chart--legend {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    padding: 0 1rem;
+    width: auto;
+
+    &__item {
+        @extend .lst-truncate;
+        justify-content: center;
+    }
+}
+
+.lst-css-line-chart--grid {
+    path {
+        stroke-width: 0;
+    }
+    .tick > line {
+        stroke: $grey;
+    }
+}
+
+.lst-svg-line-chart--zoom-area {
+    fill: transparent;
+}

@@ -8,3 +8,15 @@
 .lst-sdp-config {
   height: calc(100% - 45px);
 }
+
+.lst-round {
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    margin: 0 10px;
+}
+
+.lst-line-through {
+    text-decoration: line-through;
+}
