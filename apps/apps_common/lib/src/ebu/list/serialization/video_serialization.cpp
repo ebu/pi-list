@@ -12,6 +12,7 @@ nlohmann::json video_stream_details::to_json(const video_stream_details& details
     statistics["max_line_number"] = details.max_line_number;
     statistics["rate"] = details.video.rate.to_float();
     statistics["packet_count"] = details.packet_count;
+    statistics["dropped_packet_count"] = details.dropped_packet_count;
     statistics["frame_count"] = details.frame_count;
     statistics["first_packet_ts"] = chrono::duration_cast<chrono::nanoseconds>(details.first_packet_ts.time_since_epoch()).count();
     statistics["last_packet_ts"] = chrono::duration_cast<chrono::nanoseconds>(details.last_packet_ts.time_since_epoch()).count();
@@ -38,6 +39,7 @@ video_stream_details video_stream_details::from_json(const nlohmann::json& j)
         desc.max_line_number = statistics_json->at("max_line_number").get<int>();
         // todo: rate -> maybe remove? check GUI
         desc.packet_count = statistics_json->at("packet_count").get<unsigned long>();
+        desc.dropped_packet_count = statistics_json->at("dropped_packet_count").get<unsigned long>();
         desc.frame_count = statistics_json->at("frame_count").get<unsigned long>();
         desc.first_packet_ts = clock::time_point{ clock::duration{ statistics_json->at("first_packet_ts").get<long>()} };
         desc.last_packet_ts = clock::time_point{ clock::duration{ statistics_json->at("last_packet_ts").get<long>()} };

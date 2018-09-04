@@ -66,6 +66,7 @@
       "destination": "Destino",
       "ssrc": "SSRC",
       "packet_count": "Nº Pacotes RTP",
+      "dropped": "perdidos",
       "payload_type": "Payload Type",
       "destination_address": "Endereço de Destino",
       "destination_port": "Porto de Destino",

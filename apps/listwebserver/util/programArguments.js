@@ -3,16 +3,28 @@ const yamlParser = require('read-yaml');
 const deepFreeze = require('deep-freeze');
 const path = require('../helpers/path');
 
+function parseNmosArguments(arguments) {
+    if(!arguments.nmosRegistry) {
+        return null;
+    }
+
+    return {
+        url: `http://${arguments.nmosRegistry.hostname}:${arguments.nmosRegistry.port}`,
+        refreshRate: parseFloat(arguments.nmosRegistry.refresh),
+        version: arguments.nmosRegistry.version
+    };
+}
+
 function parseArguments(arguments) {
+    const nmosArguments = parseNmosArguments(arguments);
+
     return Object.assign({}, arguments, {
         port: arguments.port || '3030',
         folder: path.sanitizeDirectoryPath(arguments.folder),
         cpp: path.sanitizeDirectoryPath(arguments.cpp),
         influxURL: `http://${arguments.influx.hostname}:${arguments.influx.port}`,
         databaseURL: `mongodb://${arguments.database.hostname}:${arguments.database.port}`,
-        nmosRegistry: `http://${arguments.nmosRegistry.hostname}:${arguments.nmosRegistry.port}`,
-        nmosRegistryRefreshRate: arguments.nmosRegistry.refresh,
-        nmosVersion: arguments.nmosRegistry.version,
+        nmos: nmosArguments,
         developmentMode: arguments.dev || false,
         liveMode: arguments.live || false
     });

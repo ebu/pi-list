@@ -21,7 +21,7 @@ class Chart extends Component {
             lineTension: 0.25
         }));
 
-        return {
+        const config = {
             type: this.props.type,
             data: {
                 labels,
@@ -88,6 +88,20 @@ class Chart extends Component {
                 }
             }
         };
+
+        if(this.props.ticksMin) {
+            const current = config.options.scales.yAxes[0].ticks || {};
+            current.min = this.props.ticksMin;
+            config.options.scales.yAxes[0].ticks = current;
+        }
+
+        if(this.props.ticksMax) {
+            const current = config.options.scales.yAxes[0].ticks || {};
+            current.max = this.props.ticksMax;
+            config.options.scales.yAxes[0].ticks = current;
+        }
+
+        return config;
     }
 
     componentDidMount() {

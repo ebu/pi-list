@@ -29,7 +29,7 @@ namespace ebu_list::st2110::d21
         std::optional<fraction64> first_tvd_;
         int64_t frame_count_ = 0;
         fraction64 tvd_;
-        fraction64 start_draining_ts_;
+        std::optional<fraction64> start_draining_ts_;
         int packet_number_in_frame_;
         int drained_prev_ = 0;
         int vrx_prev_ = 0;

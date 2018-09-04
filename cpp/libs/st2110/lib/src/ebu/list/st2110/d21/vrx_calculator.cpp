@@ -7,12 +7,13 @@ using namespace ebu_list::st2110::d21;
 //------------------------------------------------------------------------------
 
 vrx_calculator::vrx_calculator(int npackets,
-    media::video::info video_info, 
+    media::video::info video_info,
     vrx_settings settings)
     : tvd_kind_(settings.tvd),
     tframe_(1 / video_info.rate),
     constants_(calculate_vrx_constants(npackets, tframe_, settings.schedule, video_info.scan, video_info.raster)),
-    start_draining_watermark_(calculate_vrx_full(compliance_profile::narrow, npackets, tframe_) * 3 / 4) // TODO: make the percentage configurable
+    //start_draining_watermark_(calculate_vrx_full(compliance_profile::narrow, npackets, tframe_) * 3 / 4) // TODO: make the percentage configurable
+    start_draining_watermark_(0)
 {
 }
 
@@ -25,6 +26,8 @@ packet_info vrx_calculator::on_packet(const clock::time_point& packet_timestamp,
 
     if (frame_start)
     {
+        start_draining_ts_ = std::nullopt;
+
         current_n_ = calculate_n(packet_time, tframe_);
 
         const auto base_frame_time = current_n_ * tframe_;
@@ -75,12 +78,12 @@ packet_info vrx_calculator::on_packet(const clock::time_point& packet_timestamp,
             return current;
         }
 
-        if (packet_number_in_frame_ == start_draining_watermark_)
+        if (!start_draining_ts_)
         {
             start_draining_ts_ = packet_time;
         }
 
-        const auto drained = static_cast<int>(floor((packet_time - start_draining_ts_ + constants_.trs) / constants_.trs));
+        const auto drained = static_cast<int>(floor((packet_time - start_draining_ts_.value() + constants_.trs) / constants_.trs));
         current.vrx = vrx_prev_ + 1 - (drained - drained_prev_);
 
         vrx_prev_ = current.vrx;

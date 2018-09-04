@@ -41,11 +41,13 @@ namespace
 }
 //------------------------------------------------------------------------------
 
-video_stream_handler::video_stream_handler(rtp::packet first_packet,
+video_stream_handler::video_stream_handler(decode_video should_decode_video,
+    rtp::packet first_packet,
     serializable_stream_info info, 
     video_stream_details details,
     completion_handler ch)
-    : info_(std::move(info)),
+    : should_decode_video_(should_decode_video == decode_video::yes),
+    info_(std::move(info)),
     video_description_(std::move(details)),
     completion_handler_(std::move(ch))
 {
@@ -62,7 +64,12 @@ void video_stream_handler::new_frame()
 {
     current_frame_ = std::make_unique<frame>();
     current_frame_->timestamp = video_description_.last_frame_ts;
-    current_frame_->buffer = block_factory_.get_buffer(get_buffer_size_for(video_description_.video));
+
+    if(should_decode_video_)
+    {
+        current_frame_->buffer = block_factory_.get_buffer(get_buffer_size_for(video_description_.video));
+    }
+
     this->on_frame_started(*current_frame_);
 }
 
@@ -99,7 +106,23 @@ void video_stream_handler::on_data(const rtp::packet& packet)
     const auto ts = packet.info.rtp.view().timestamp();
     detect_frame_transition(ts);
 
+    const auto previous_sequence_number = last_sequence_number_;
+
     parse_packet(packet); // todo: allow moving out of a packet
+
+    if(previous_sequence_number)
+    {
+        const auto current_sequence_number = last_sequence_number_;
+
+        const auto sn_difference = *current_sequence_number - *previous_sequence_number;
+
+        // TODO: deal with wrap-around?
+        if(sn_difference > 1)
+        {
+            video_description_.dropped_packet_count += sn_difference - 1;
+        }
+    }
+
     ++video_description_.packet_count;
     rate_.on_packet(ts);
 }
@@ -136,63 +159,61 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
     p += sizeof(raw_extended_sequence_number);
 
     packet_info info{ packet.info, packet, *current_frame_, full_sequence_number, {} };
-    auto line_index = 0;
 
-    while (p < end)
+    if(should_decode_video_)
     {
-        const auto line_header = line_header_lens(*reinterpret_cast<const raw_line_header*>(p));
-        p += sizeof(raw_line_header);
+        auto line_index = 0;
 
-        throw_if_inconsistent(line_header, video_description_.video.scan_type);
-
-        video_description_.max_line_number = std::max(video_description_.max_line_number, int(line_header.line_number()));
-
-        LIST_ENFORCE(line_index < info.line_info.size(), std::runtime_error, "Only three lines per packet allowed by ST2110-20");
-
-        info.line_info[line_index].continuation = line_header.continuation();
-        info.line_info[line_index].field_identification = line_header.field_identification();
-        info.line_info[line_index].length = line_header.length();
-        info.line_info[line_index].line_number = line_header.line_number();
-        info.line_info[line_index].offset = line_header.offset();
-        info.line_info[line_index].valid = true;
-
-        ++line_index;
-        if (!line_header.continuation()) break;
-    }
-
-    for (const auto& line : info.line_info)
-    {
-        if (!line.valid) break;
-
-        if (p + line.length > end)
+        while (p < end)
         {
-            logger()->error("buffer out of bounds");
-            break;
+            const auto line_header = line_header_lens(*reinterpret_cast<const raw_line_header*>(p));
+            p += sizeof(raw_line_header);
+
+            throw_if_inconsistent(line_header, video_description_.video.scan_type);
+
+            video_description_.max_line_number = std::max(video_description_.max_line_number, int(line_header.line_number()));
+
+            LIST_ENFORCE(line_index < info.line_info.size(), std::runtime_error, "Only three lines per packet allowed by ST2110-20");
+
+            info.line_info[line_index].continuation = line_header.continuation();
+            info.line_info[line_index].field_identification = line_header.field_identification();
+            info.line_info[line_index].length = line_header.length();
+            info.line_info[line_index].line_number = line_header.line_number();
+            info.line_info[line_index].offset = line_header.offset();
+            info.line_info[line_index].valid = true;
+
+            ++line_index;
+            if (!line_header.continuation()) break;
         }
 
-        const auto byte_offset = offset_to_byte_offset(line.offset, video_description_.video);
-        const auto target = current_frame_->buffer->begin() + get_line_size_bytes(video_description_.video) * line.line_number + byte_offset;
-        if (target + line.length > current_frame_->buffer->end())
+        for (const auto& line : info.line_info)
         {
-            logger()->error("buffer out of bounds");
-            break;
+            if (!line.valid) break;
+
+            if (p + line.length > end)
+            {
+                logger()->error("buffer out of bounds");
+                break;
+            }
+
+            const auto byte_offset = offset_to_byte_offset(line.offset, video_description_.video);
+
+            const auto target = current_frame_->buffer->begin() + get_line_size_bytes(video_description_.video) * line.line_number + byte_offset;
+            if (target + line.length > current_frame_->buffer->end())
+            {
+                logger()->error("buffer out of bounds");
+                break;
+            }
+
+            cbyte_span source_data(p, line.length);
+            byte_span target_data(target, current_frame_->buffer->end() - target);
+            ebu_list::copy(source_data, target_data);
+
+            p += line.length;
         }
-
-        cbyte_span source_data(p, line.length);
-        byte_span target_data(target, current_frame_->buffer->end() - target);
-        ebu_list::copy(source_data, target_data);
-
-        p += line.length;
     }
 
-    const auto current_sequence_number = info.full_sequence_number;
-
-    if(last_sequence_number_ && static_cast<int64_t>(current_sequence_number) != last_sequence_number_.value() + 1)
-    {
-        logger()->warn("Packet loss! Last sqn was {} and received {}", last_sequence_number_.value(), current_sequence_number);
-    }
-
-    last_sequence_number_ = current_sequence_number;
+    last_sequence_number_ = info.full_sequence_number;
     
     // todo: log number of packets lost
 

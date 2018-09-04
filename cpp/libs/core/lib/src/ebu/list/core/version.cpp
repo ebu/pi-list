@@ -4,9 +4,7 @@
 
 std::string ebu_list::version()
 {
-    using namespace std;
-
-    return to_string(version_major) + '.' 
-        + to_string(version_minor) + '.'
-        + to_string(version_patch);
+    return std::to_string(version_major) + '.' 
+        + std::to_string(version_minor) + '.'
+        + std::to_string(version_patch);
 }

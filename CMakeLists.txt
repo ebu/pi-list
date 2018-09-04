@@ -44,8 +44,10 @@ conan_cmake_run(CONANFILE conanfile.txt
         BUILD missing)
 # -------------------------------------------------------------------------
 
-if(WIN32)
-    include(${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo_multi.cmake)
+if(${CMAKE_GENERATOR} MATCHES "Visual Studio.*")
+    include(${CMAKE_BINARY_DIR}/conanbuildinfo_multi.cmake)
+else()
+    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 endif()
 
 include(cpp-requirements)
