@@ -18,5 +18,3 @@ cmake
 
 [imports]
 lib, *.so.* -> ./lib # Copies all dynamic libs
-bin, *.dll -> ./bin # Copies all dynamic libs
-lib, *.dll -> ./bin # Copies all dynamic libs
