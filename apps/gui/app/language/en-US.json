@@ -153,6 +153,7 @@
     "delete_message": "Are you sure you want to delete %{name} file?",
     "download_sdp": "Download SDP",
     "no_pcaps": "No PCAPs file found!",
+    "truncated": "Truncated",
 
     "state": {
       "no_analysis": "No analysis done",

@@ -114,7 +114,7 @@ rtp::listener *udp_handler::find_or_create(const rtp::packet &packet)
 #endif // defined LIST_USE_ANALYZER
 
         const auto p_handler = new_handler.get();
-        handlers_.insert({d, std::move(new_handler)});
+        handlers_.emplace(d, std::move(new_handler));
         return p_handler;
     }
 

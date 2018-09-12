@@ -76,6 +76,11 @@ namespace
         const auto processing_time_ms = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(processing_time).count());
         logger()->info("Processing time: {:.3f} s", processing_time_ms / 1000.0);
 
+        if (launcher.target().pcap_has_truncated_packets())
+        {
+            fi.truncated = true;
+        }
+
         fi.offset_from_ptp_clock = offset_calculator_p->get_average_offset();
         db_serializer db {mongo_db_url};
         db.insert(constants::db::offline, constants::db::collections::pcaps, pcap_info::to_json(fi));

@@ -36,6 +36,11 @@ namespace ebu_list
         {
             runner_.wait();
         }
+        
+        const T& target() const noexcept
+        {
+            return *target_;
+        }
 
     private:
         std::unique_ptr<T> target_;

@@ -16,6 +16,8 @@ namespace ebu_list::pcap
         bool next();
         void done();
 
+        bool pcap_has_truncated_packets() const noexcept;
+
     private:
         void do_next();
 
@@ -25,5 +27,6 @@ namespace ebu_list::pcap
         chunked_data_source source_;
         maybe_header file_header_;
         std::atomic<bool> done_ = false;
+        bool pcap_has_truncated_packets_ = false;
     };
 }

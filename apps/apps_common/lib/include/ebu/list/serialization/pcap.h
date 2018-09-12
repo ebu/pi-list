@@ -13,6 +13,7 @@ namespace ebu_list
         std::string pcap_file_name;
         std::chrono::system_clock::time_point date = std::chrono::system_clock::now();
         bool analyzed = false;
+        bool truncated = false; // True iff the pcap file only has partial packets
         clock::duration offset_from_ptp_clock = {};
 
         // statistics

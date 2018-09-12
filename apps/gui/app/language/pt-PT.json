@@ -153,6 +153,7 @@
     "delete_message": "Tem a certeza que quer apagar o ficheiro %{name}?",
     "download_sdp": "Descarregar SDP",
     "no_pcaps": "Não foram encontrados ficheiros PCAP!",
+    "truncated": "Truncado",
 
     "state": {
       "no_analysis": "Sem análise efetuada",
