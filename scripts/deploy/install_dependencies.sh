@@ -9,7 +9,7 @@ else
     apt install -y curl
     curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh
     bash nodesource_setup.sh
-    apt install -y nodejs
+    apt install -y nodejs npm
 fi
 
 for dep in "${NPMdependencies[@]}"
