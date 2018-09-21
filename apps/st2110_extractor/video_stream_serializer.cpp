@@ -27,7 +27,7 @@ namespace
         return dimensions;
     }
     // TODO: receive this externally
-    constexpr auto vrx_analysis_settings = d21::vrx_settings{ d21::read_schedule::gapped, d21::tvd_kind::first_packet_each_frame };
+    constexpr auto vrx_analysis_settings = d21::vrx_settings{ d21::read_schedule::gapped, d21::tvd_kind::ideal };
 
 }
 

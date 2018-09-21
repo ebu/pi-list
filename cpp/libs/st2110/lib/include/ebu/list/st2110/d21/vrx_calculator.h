@@ -24,13 +24,11 @@ namespace ebu_list::st2110::d21
         const tvd_kind tvd_kind_;
         const fraction64 tframe_; // Period of a frame, in seconds
         const vrx_constants constants_;
-        const int start_draining_watermark_;
         int64_t current_n_ = 0;
         std::optional<fraction64> first_tvd_;
         int64_t frame_count_ = 0;
         fraction64 tvd_;
         std::optional<fraction64> start_draining_ts_;
-        int packet_number_in_frame_;
         int drained_prev_ = 0;
         int vrx_prev_ = 0;
     };
