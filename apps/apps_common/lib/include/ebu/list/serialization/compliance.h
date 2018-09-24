@@ -10,12 +10,16 @@ namespace ebu_list::st2110::d21
     {
         compliance_profile compliance;
         std::map<int, float> histogram;
+        int cmax_wide;
+        int cmax_narrow;
     };
 
     struct vrx_analysis
     {
         compliance_profile compliance;
         std::map<int, float> histogram;
+        int vrx_full_wide;
+        int vrx_full_narrow;
     };
 
     struct video_analysis_info
