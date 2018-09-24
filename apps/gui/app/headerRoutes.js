@@ -67,11 +67,6 @@ export default (
                 </Header>
             )}
         />
-        <LiveRoute
-            path={routeNames.NETWORK}
-            hideOnFalse
-            render={() => (<Header label={translate('navigation.network')} />)}
-        />
         <Route
             exact
             path={`${routeNames.PCAPS}/:pcapID/ptp`}
