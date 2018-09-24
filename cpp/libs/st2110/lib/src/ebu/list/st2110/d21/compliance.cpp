@@ -43,6 +43,16 @@ void compliance_analyzer::handle_packet(const rtp::packet_info& info) noexcept
     }
 }
 
+compliance_parameters compliance_analyzer::get_narrow_parameters() const
+{
+    return checker_.get_narrow_parameters();
+}
+
+compliance_parameters compliance_analyzer::get_wide_parameters() const
+{
+    return checker_.get_wide_parameters();
+}
+
 compliance_analyzer::compliance_status compliance_analyzer::get_compliance() const noexcept
 {
     const auto current_vrx_min = get_histogram_min(vrx_histogram_.values());
@@ -135,4 +145,14 @@ compliance_profile compliance_checker::check(int vrx_min, int vrx_peak, int c_pe
     }
 
     return compliance_profile::not_compliant;
+}
+
+compliance_parameters compliance_checker::get_narrow_parameters() const
+{
+    return narrow_;
+}
+
+compliance_parameters compliance_checker::get_wide_parameters() const
+{
+    return wide_;
 }

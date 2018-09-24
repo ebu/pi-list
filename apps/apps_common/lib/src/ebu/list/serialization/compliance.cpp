@@ -25,12 +25,16 @@ d21::video_analysis_info d21::get_video_analysis_info(const st2110::d21::complia
 
     va.cinst = d21::cinst_analysis{
         compliance.cinst,
-        transform_histogram_samples_to_percentages(ca.get_cinst_histogram())
+        transform_histogram_samples_to_percentages(ca.get_cinst_histogram()),
+        ca.get_wide_parameters().cmax,
+        ca.get_narrow_parameters().cmax
     };
 
     va.vrx = d21::vrx_analysis{
         compliance.vrx,
-        transform_histogram_samples_to_percentages(ca.get_vrx_histogram())
+        transform_histogram_samples_to_percentages(ca.get_vrx_histogram()),
+        ca.get_wide_parameters().vrx_full,
+        ca.get_narrow_parameters().vrx_full
     };
 
     return va;
@@ -54,24 +58,32 @@ void d21::to_json(nlohmann::json& j, const cinst_analysis& v)
 {
     j["compliance"] = v.compliance;
     j["histogram"] = v.histogram;
+    j["cmax_wide"] = v.cmax_wide;
+    j["cmax_narrow"] = v.cmax_narrow;
 }
 
 void d21::from_json(const nlohmann::json& j, cinst_analysis& v)
 {
     v.compliance = j.at("compliance");
     //v.histogram = j.at("histogram").get<std::map<int,int>>(); // todo: uncomment and make it compile
+    v.cmax_wide = j.at("cmax_wide");
+    v.cmax_narrow = j.at("cmax_narrow");
 }
 
 void d21::to_json(nlohmann::json& j, const vrx_analysis& v)
 {
     j["compliance"] = v.compliance;
     j["histogram"] = v.histogram;
+    j["vrx_full_wide"] = v.vrx_full_wide;
+    j["vrx_full_narrow"] = v.vrx_full_narrow;
 }
 
 void d21::from_json(const nlohmann::json& j, vrx_analysis& v)
 {
     v.compliance = j.at("compliance");
     //v.histogram = j.at("histogram").get<std::map<int,int>>(); // todo: uncomment and make it compile
+    v.vrx_full_wide = j.at("vrx_full_wide");
+    v.vrx_full_narrow = j.at("vrx_full_narrow");
 }
 
 void st2110::d21::to_json(nlohmann::json& j, const compliance_profile& v)

@@ -22,6 +22,9 @@ namespace ebu_list::st2110::d21
         compliance_profile check_c_peak(int c_peak) const noexcept;
         compliance_profile check(int vrx_min, int vrx_peak, int c_peak) const noexcept;
 
+        compliance_parameters get_narrow_parameters() const;
+        compliance_parameters get_wide_parameters() const;
+
     private:
         const compliance_parameters narrow_;
         const compliance_parameters wide_;
@@ -55,6 +58,9 @@ namespace ebu_list::st2110::d21
         };
 
         compliance_status get_compliance() const noexcept;
+
+        compliance_parameters get_narrow_parameters() const;
+        compliance_parameters get_wide_parameters() const;
 
     private:
         st2110::d21::c_calculator c_calculator_;
