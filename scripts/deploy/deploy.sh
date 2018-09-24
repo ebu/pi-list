@@ -8,6 +8,9 @@ SCRIPT_DIR="$(dirname $(readlink -f $0))"
 TOP_DIR="$(readlink -f $SCRIPT_DIR/../..)"
 RELEASE_DIR="$TOP_DIR/release"
 
+# conan custom config
+conan config install https://github.com/bisect-pt/conan_config.git
+
 # Builds CPP code
 source $SCRIPT_DIR/build.sh
 

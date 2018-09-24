@@ -1,8 +1,10 @@
 #!/bin/bash
 
 SCRIPT_DIR="$(dirname $(readlink -f $0))"
-TOP_DIR="$SCRIPT_DIR/../.."
+TOP_DIR="$(readlink -f $SCRIPT_DIR/../..)"
 BUILD_DIR="$TOP_DIR/build"
+
+LD_LIBRARY_PATH=/usr/local/lib/
 
 mkdir -p $BUILD_DIR
 cd $BUILD_DIR
