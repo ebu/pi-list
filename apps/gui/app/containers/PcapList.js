@@ -211,6 +211,14 @@ class PcapList extends Component {
                                 text="PTP"
                             />
                         )}
+                        {rowData.truncated && (
+                            <Badge
+                                className="lst-table-configure-sdp-badge"
+                                type="warning"
+                                icon="warning"
+                                text={translate('pcap.truncated')}
+                            />
+                        )}
                         <span className="stream-type-number">
                             <Icon value="videocam" /> {rowData.video_streams}
                         </span>

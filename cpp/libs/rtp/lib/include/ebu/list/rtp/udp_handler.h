@@ -25,9 +25,8 @@ namespace ebu_list::rtp
     private:
         handler_creator creator_;
 
-        // SSRC, destination endpoint, source endpoint
-        using stream_descriptor = std::tuple<uint32_t, ipv4::endpoint, ipv4::endpoint>;
-        using handler_map = std::map<stream_descriptor, rtp::listener_uptr>;
+        // destination endpoint
+        using handler_map = std::map<ipv4::endpoint, rtp::listener_uptr>;
         handler_map handlers_;
     };
 }

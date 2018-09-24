@@ -1,5 +1,3 @@
-include(${CMAKE_CURRENT_SOURCE_DIR}/third_party/bimo/config/cmake/cpp-requirements.cmake)
-
 macro(list_set_target_cpp_properties)
     bimo_set_target_cpp_properties()
 endmacro()

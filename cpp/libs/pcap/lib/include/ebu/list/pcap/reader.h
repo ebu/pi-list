@@ -16,6 +16,7 @@ namespace ebu_list::pcap
     {
         packet_header pcap_header;
         oview data;
+        bool was_padded = false;
     };
 
     using maybe_packet = std::optional<packet>;

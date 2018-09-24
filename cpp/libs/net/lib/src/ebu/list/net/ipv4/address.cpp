@@ -1,6 +1,7 @@
 #include "ebu/list/net/ipv4/address.h"
 #include "ebu/list/core/platform/config.h"
 #include "ebu/list/core/idioms.h"
+#include <boost/algorithm/string.hpp>
 
 #if defined(_WIN32)
 #include <WinSock2.h>
@@ -44,6 +45,20 @@ address ipv4::from_dotted_string(std::string_view s)
     if(result == 1) return a;
     if (result == 0) throw std::logic_error(fmt::format("invalid IPv4 dotted string {}", s.data()));
     throw std::runtime_error("error converting dotted string to IPv4 address");
+}
+
+endpoint ipv4::endpoint_from_string(std::string_view address_and_port)
+{
+    std::vector<std::string> results;
+    boost::split(results, address_and_port, [](char c){return c == ':';});
+
+    if(results.size() != 2)
+    {
+        // TODO: handle format errors
+        return {};
+    }
+
+    return endpoint(from_string(results[0], results[1]));
 }
 
 std::string ipv4::to_string(const address& a)

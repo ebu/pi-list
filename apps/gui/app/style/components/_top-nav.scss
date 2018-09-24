@@ -2,6 +2,11 @@
     height: $top-nav-height;
     background: $white-blank;
 
+    .dark & {
+        background-color: $nord0;
+        color: $white;
+    }
+
     @include flex;
     @include flex-center-vertical;
 
@@ -13,12 +18,20 @@
         border: none;
         margin-left: 0.5rem;
         color: $black-light-20;
-      cursor: pointer;
+        cursor: pointer;
+
+        .dark & {
+            color: $white;
+        }
     }
 
     .lst-header-title {
         font-size: 1.25rem;
         color: $black-light-20;
+
+        .dark & {
+            color: $white;
+        }
 
         .lst-icons {
             margin: 0 $margin / 2;

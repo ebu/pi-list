@@ -30,16 +30,17 @@ maybe_packet pcap::read_packet(const file_header_lens& header, chunked_data_sour
     const auto payload_len = ph().orig_len();
     if (data.view().size_bytes() == payload_len)
     {
-        return packet{ std::move(ph),  std::move(data) };
+        const auto was_padded = false;
+        return packet{ std::move(ph),  std::move(data), was_padded };
     }
     else
     {
-        // TODO: signal that we are padding the data
         assert(payload_len >= data.view().size_bytes());
         const auto padding_size = payload_len - data.view().size_bytes();
         auto padding = oview(source.get_factory().get_buffer(padding_size), 0, padding_size);
         auto padded_data = merge(source.get_factory(), std::move(data), std::move(padding));
         assert(padded_data.view().size_bytes() == payload_len);
-        return packet{ std::move(ph),  std::move(padded_data) };
+        const auto was_padded = true;
+        return packet{ std::move(ph),  std::move(padded_data), was_padded };
     }
 }

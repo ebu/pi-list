@@ -27,7 +27,7 @@ namespace
         return dimensions;
     }
     // TODO: receive this externally
-    constexpr auto vrx_analysis_settings = d21::vrx_settings{ d21::read_schedule::gapped, d21::tvd_kind::first_packet_each_frame };
+    constexpr auto vrx_analysis_settings = d21::vrx_settings{ d21::read_schedule::gapped, d21::tvd_kind::ideal };
 
 }
 
@@ -57,7 +57,7 @@ video_stream_serializer::video_stream_serializer(rtp::packet first_packet,
     path base_dir,
     executor_ptr main_executor,
     completion_callback on_complete_callback)
-    : video_stream_handler(std::move(first_packet), std::move(info), details, std::bind(&video_stream_serializer::on_complete, this, std::placeholders::_1)),
+    : video_stream_handler(decode_video::yes, std::move(first_packet), std::move(info), details, std::bind(&video_stream_serializer::on_complete, this, std::placeholders::_1)),
     base_dir_(std::move(base_dir)),
     main_executor_(std::move(main_executor)),
     frame_size_(get_frame_size(details)),

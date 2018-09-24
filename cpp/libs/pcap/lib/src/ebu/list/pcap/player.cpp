@@ -38,6 +38,11 @@ void pcap_player::done()
     listener_->on_complete();
 }
 
+bool pcap_player::pcap_has_truncated_packets() const noexcept
+{
+    return pcap_has_truncated_packets_;
+}
+
 bool pcap_player::next()
 {
     if (done_) return false;
@@ -68,6 +73,11 @@ void pcap_player::do_next()
         }
 
         auto& packet = maybe_packet.value();
+        if (packet.was_padded)
+        {
+            pcap_has_truncated_packets_ = true;
+        }
+
         const auto packet_timestamp = packet.pcap_header.view().timestamp() + packet_timestamp_correction_;
 
         auto[ethernet_header, ethernet_payload] = ethernet::decode(std::move(packet.data));

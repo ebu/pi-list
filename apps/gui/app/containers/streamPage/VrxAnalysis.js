@@ -1,7 +1,7 @@
 import React from 'react';
 import api from 'utils/api';
+import LineChart from 'components/LineChart';
 import chartFormatters from 'utils/chartFormatters';
-import Chart from 'components/Chart';
 
 const VrxAnalysis = (props) => {
     const { first_packet_ts, last_packet_ts } = props.streamInfo.statistics;
@@ -10,46 +10,41 @@ const VrxAnalysis = (props) => {
     return (
         <div className="row">
             <div className="col-xs-12 col-md-12">
-                <Chart
-                    type="line"
-                    request={() => api.getVrxIdealForStream(pcapID, streamID, first_packet_ts, last_packet_ts)}
-                    labels={chartFormatters.getTimeLineLabel}
-                    formatData={chartFormatters.minMaxChart}
-                    xLabel=""
+                <LineChart
+                    asyncData={() => api.getVrxIdealForStream(pcapID, streamID, first_packet_ts, last_packet_ts)}
+                    xAxis={item => item.time}
+                    data={chartFormatters.minMaxLineChart}
                     title="Tvd = Ideal"
                     height={300}
-                    legend="true"
+                    lineWidth={3}
+                    legend
                 />
-                <Chart
-                    type="line"
-                    request={() => api.getVrxFirstPacketFirstFrameFromStream(pcapID, streamID, first_packet_ts, last_packet_ts)}
-                    labels={chartFormatters.getTimeLineLabel}
-                    formatData={chartFormatters.minMaxChart}
-                    xLabel=""
+                <LineChart
+                    asyncData={() => api.getVrxFirstPacketFirstFrameFromStream(pcapID, streamID, first_packet_ts, last_packet_ts)}
+                    xAxis={item => item.time}
+                    data={chartFormatters.minMaxLineChart}
                     title="Tvd = 1st Packet of 1st Frame"
                     height={300}
-                    legend="true"
+                    lineWidth={3}
+                    legend
                 />
-                <Chart
-                    type="line"
-                    request={() => api.getVrxFirstPacketEachFrame(pcapID, streamID, first_packet_ts, last_packet_ts)}
-                    labels={chartFormatters.getTimeLineLabel}
-                    formatData={chartFormatters.minMaxChart}
-                    xLabel=""
+                <LineChart
+                    asyncData={() => api.getVrxFirstPacketEachFrame(pcapID, streamID, first_packet_ts, last_packet_ts)}
+                    xAxis={chartFormatters.xAxisTimeDomain}
+                    data={chartFormatters.minMaxLineChart}
                     title="Tvd = 1st Packet Each Frame"
                     height={300}
-                    legend="true"
+                    lineWidth={3}
+                    legend
                 />
-                <Chart
-                    type="line"
-                    request={() => api.getDeltaToIdealTpr0Raw(pcapID, streamID, first_packet_ts, last_packet_ts)}
-                    labels={chartFormatters.getTimeLineLabel}
-                    formatData={chartFormatters.singleValueChart}
-                    xLabel=""
+                <LineChart
+                    asyncData={() => api.getDeltaToIdealTpr0Raw(pcapID, streamID, first_packet_ts, last_packet_ts)}
+                    xAxis={chartFormatters.xAxisTimeDomain}
+                    data={chartFormatters.singleValueLineChart}
                     title="Delta to Ideal TPR0"
+                    yAxisLabel="s"
                     height={300}
-                    legend="true"
-                    yLabel="s"
+                    lineWidth={3}
                 />
             </div>
         </div>

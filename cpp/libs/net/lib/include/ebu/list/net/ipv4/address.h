@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ebu/list/core/types.h"
-#include <array>
+#include <vector>
 #include <string>
 
 namespace ebu_list::ipv4
@@ -17,6 +17,10 @@ namespace ebu_list::ipv4
     };
     endpoint from_string(std::string_view address, uint16_t port);
     endpoint from_string(std::string_view address, std::string_view port);
+
+    endpoint endpoint_from_string(std::string_view address_and_port);
+
+    using endpoint_list = std::vector<endpoint>;
 
     bool operator<(const endpoint& lhs, const endpoint& rhs);
     bool operator==(const endpoint& lhs, const endpoint& rhs);

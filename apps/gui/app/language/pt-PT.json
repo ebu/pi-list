@@ -66,6 +66,7 @@
       "destination": "Destino",
       "ssrc": "SSRC",
       "packet_count": "Nº Pacotes RTP",
+      "dropped": "perdidos",
       "payload_type": "Payload Type",
       "destination_address": "Endereço de Destino",
       "destination_port": "Porto de Destino",
@@ -152,6 +153,7 @@
     "delete_message": "Tem a certeza que quer apagar o ficheiro %{name}?",
     "download_sdp": "Descarregar SDP",
     "no_pcaps": "Não foram encontrados ficheiros PCAP!",
+    "truncated": "Truncado",
 
     "state": {
       "no_analysis": "Sem análise efetuada",

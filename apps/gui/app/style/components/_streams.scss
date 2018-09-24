@@ -1,5 +1,9 @@
 .lst-stream-column {
     box-shadow: 0 0 16px 0 rgba(196, 196, 196, 0.45);
+
+    .dark & {
+        box-shadow: 0 0 16px 0 $black-dark-3;
+    }
 }
 
 @mixin stream-status($color) {

@@ -1,11 +1,12 @@
 import React from 'react';
 import api from 'utils/api';
 import chartFormatters from 'utils/chartFormatters';
-import Chart from 'components/Chart';
+import Chart from 'components/StyledChart';
+import LineChart from 'components/LineChart';
 
 const CbufferAnalysis = (props) => {
-    const { first_packet_ts, last_packet_ts } = props.streamInfo.statistics;
-    const { streamID, pcapID } = props;
+    const {first_packet_ts, last_packet_ts} = props.streamInfo.statistics;
+    const {streamID, pcapID} = props;
 
     return (
         <div className="row">
@@ -21,17 +22,14 @@ const CbufferAnalysis = (props) => {
                     yLabel="Count"
                     displayXTicks="true"
                 />
-            </div>
-            <div className="col-xs-12 col-md-12">
-                <Chart
-                    type="line"
-                    request={() => api.getCInstForStream(pcapID, streamID, first_packet_ts, last_packet_ts)}
-                    labels={chartFormatters.getTimeLineLabel}
-                    formatData={chartFormatters.stdDeviationMeanMinMaxChart}
-                    xLabel=""
+                <LineChart
+                    asyncData={() => api.getCInstForStream(pcapID, streamID, first_packet_ts, last_packet_ts)}
+                    xAxis={chartFormatters.xAxisTimeDomain}
+                    data={chartFormatters.stdDeviationMeanMinMaxLineChart}
                     title="Cinst - Timeline"
                     height={300}
-                    legend="true"
+                    lineWidth={3}
+                    legend
                 />
             </div>
         </div>

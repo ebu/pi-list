@@ -1,0 +1,7 @@
+add_subdirectory(test_lib)
+add_subdirectory(core)
+add_subdirectory(net)
+add_subdirectory(rtp)
+add_subdirectory(pcap)
+add_subdirectory(st2110)
+add_subdirectory(ptp)

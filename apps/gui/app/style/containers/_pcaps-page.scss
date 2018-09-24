@@ -25,6 +25,10 @@
   padding-right: 0.5rem;
   color: $black-light-20;
 
+  .dark & {
+    color: $white-perl;
+  }
+
   i {
     font-size: 14px;
     top: 3px;

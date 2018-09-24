@@ -9,6 +9,7 @@ import Button from 'components/common/Button';
 import PopUp from 'components/common/PopUp';
 import { translate } from 'utils/translation';
 import { AppContext } from 'utils/liveFeature';
+import { ThemeContext } from 'utils/theme';
 
 const propTypes = {
     isOpen: PropTypes.bool
@@ -107,6 +108,16 @@ class SideNav extends Component {
                     ) : null}
                 </div>
                 <div className="lst-side-nav__options">
+                    <ThemeContext.Consumer>
+                        {({ theme, toggleTheme }) => (
+                            <Button noStyle onClick={toggleTheme}>
+                                <Icon value="opacity" />
+                                {this.state.showMenuItems && (
+                                    <div className="fade-in lst-no-margin">{`Use ${theme} theme`}</div>
+                                )}
+                            </Button>
+                        )}
+                    </ThemeContext.Consumer>
                     <Button noStyle onClick={() => this.onClickDeleteUser()}>
                         <Icon value="delete" />
                         {this.state.showMenuItems && (

@@ -12,6 +12,10 @@
   flex: 1;
   width: 100%;
   background: $background-color-blue;
+
+  .dark & {
+    background: $nord1;
+  }
 }
 
 .lst-dashboard-wrapper {
@@ -46,4 +50,9 @@
 .inactive {
   background-color: $grey !important;
   border: 1px solid $grey-hover !important;
+
+  .dark & {
+    background-color: $nord0 !important;
+    border: 1px solid $nord0 !important;
+  }
 }

@@ -13,12 +13,12 @@ namespace
         const auto mode_string = _mode == ebu_list::file_handle::mode::read ? L"rb" : L"wb";
         FILE* handle;
         const auto open_result = ::_wfopen_s(&handle, path.native().c_str(), mode_string);
-        LIST_ENFORCE(open_result == 0, std::runtime_error, "Error opening '", path, "'");
+        LIST_ENFORCE(open_result == 0, std::runtime_error, "Error opening '{}'", path);
         return handle;
 #else
         const auto mode_string = _mode == ebu_list::file_handle::mode::read ? "rb" : "wb";
         FILE* handle = ::fopen(path.generic_u8string().c_str(), mode_string);
-        LIST_ENFORCE(handle != nullptr, std::runtime_error, "Couldn't open file");
+        LIST_ENFORCE(handle != nullptr, std::runtime_error, "Error opening '{}'", path);
         return handle;
 #endif
     }

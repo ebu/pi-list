@@ -34,7 +34,7 @@ void rtp_analyzer::on_data(const packet &p)
     ++last_sequence_number_;
     if (sn != last_sequence_number_)
     {
-        fmt::print("Dropped - expected: {:x} actual: {:x}\n", last_sequence_number_, sn);
+        // fmt::print("Dropped - expected: {:x} actual: {:x}\n", last_sequence_number_, sn);
         last_sequence_number_ = sn;
     }
 
@@ -99,10 +99,7 @@ void udp_handler::on_error(std::exception_ptr e)
 
 rtp::listener *udp_handler::find_or_create(const rtp::packet &packet)
 {
-    const auto d = stream_descriptor{
-        packet.info.rtp.view().ssrc(),
-        source(packet.info.udp),
-        destination(packet.info.udp)};
+    const auto d = destination(packet.info.udp);
 
     auto it = handlers_.find(d);
 
@@ -111,14 +108,13 @@ rtp::listener *udp_handler::find_or_create(const rtp::packet &packet)
 
         auto new_handler = creator_(packet);
 
-#define LIST_USE_ANALYZER
+// #define LIST_USE_ANALYZER
 #if defined LIST_USE_ANALYZER
         new_handler = std::make_unique<rtp_analyzer>(packet, std::move(new_handler));
 #endif // defined LIST_USE_ANALYZER
 
         const auto p_handler = new_handler.get();
-        handler_map::value_type v{d, std::move(new_handler)};
-        handlers_.insert(std::move(v));
+        handlers_.emplace(d, std::move(new_handler));
         return p_handler;
     }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import api from 'utils/api';
 import chartFormatters from 'utils/chartFormatters';
-import Chart from 'components/Chart';
+import LineChart from 'components/LineChart';
 
 const RtpAnalysisViewer = (props) => {
     const { first_packet_ts, last_packet_ts } = props.streamInfo.statistics;
@@ -10,35 +10,32 @@ const RtpAnalysisViewer = (props) => {
     return (
         <div className="row">
             <div className="col-xs-12 col-md-12">
-                <Chart
-                    type="line"
-                    request={() => api.getDeltaRtpTsVsPacketTsRaw(pcapID, streamID, first_packet_ts, last_packet_ts)}
-                    labels={chartFormatters.getTimeLineLabel}
-                    formatData={chartFormatters.singleValueChart}
-                    xLabel=""
+                <LineChart
+                    asyncData={() => api.getDeltaRtpTsVsPacketTsRaw(pcapID, streamID, first_packet_ts, last_packet_ts)}
+                    xAxis={chartFormatters.getTimeLineLabel}
+                    data={chartFormatters.singleValueLineChart}
                     title="Delta from RTP TS to Packet TS"
+                    yAxisLabel="Ticks"
                     height={300}
-                    yLabel="Ticks"
+                    lineWidth={3}
                 />
-                <Chart
-                    type="line"
-                    request={() => api.getDeltaRtpVsNtRaw(pcapID, streamID, first_packet_ts, last_packet_ts)}
-                    labels={chartFormatters.getTimeLineLabel}
-                    formatData={chartFormatters.singleValueChart}
-                    xLabel=""
+                <LineChart
+                    asyncData={() => api.getDeltaRtpVsNtRaw(pcapID, streamID, first_packet_ts, last_packet_ts)}
+                    xAxis={chartFormatters.getTimeLineLabel}
+                    data={chartFormatters.singleValueLineChart}
                     title="Delta from RTP TS to NxTframe"
+                    yAxisLabel="Ticks"
                     height={300}
-                    yLabel="Ticks"
+                    lineWidth={3}
                 />
-                <Chart
-                    type="line"
-                    request={() => api.getDeltaToPreviousRtpTsRaw(pcapID, streamID, first_packet_ts, last_packet_ts)}
-                    labels={chartFormatters.getTimeLineLabel}
-                    formatData={chartFormatters.singleValueChart}
-                    xLabel=""
+                <LineChart
+                    asyncData={() => api.getDeltaToPreviousRtpTsRaw(pcapID, streamID, first_packet_ts, last_packet_ts)}
+                    xAxis={chartFormatters.getTimeLineLabel}
+                    data={chartFormatters.singleValueLineChart}
                     title="TS Delta to previous RTP packet"
+                    yAxisLabel="Ticks"
                     height={300}
-                    yLabel="Ticks"
+                    lineWidth={3}
                 />
             </div>
         </div>

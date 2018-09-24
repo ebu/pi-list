@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Panel from 'components/common/Panel';
 import api from 'utils/api';
 import chartFormatters from 'utils/chartFormatters';
-import Chart from 'components/Chart';
+import Chart from 'components/StyledChart';
 
 class PcapPage extends Component {
 

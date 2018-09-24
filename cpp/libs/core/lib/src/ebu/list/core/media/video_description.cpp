@@ -34,5 +34,11 @@ Rate video::parse_from_string(std::string_view s)
     else if( s == "50" ) return video::Rate(50,1);
     else if( s == "60000/1001" ) return video::Rate(60000,1001);
     else if( s == "60" ) return video::Rate(60,1);
-    else throw std::runtime_error("invalid preset value");
+    else 
+    {
+        logger()->error("Invalid rate: {}", s);
+        // TODO: review this
+        // throw std::runtime_error("invalid preset value");
+        return {};
+    }
 }

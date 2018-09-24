@@ -8,10 +8,47 @@ import Panel from 'components/common/Panel';
 import websocketEventsEnum from 'enums/websocketEventsEnum';
 import websocket from 'utils/websocket';
 import chartFormatters from 'utils/chartFormatters';
-import Chart from 'components/Chart';
+import Chart from 'components/StyledChart';
 
 const maxHistoryArraySize = 60;
 const fillArray = () => Array(maxHistoryArraySize).fill({ value: 0, time: 1 });
+
+// data is an array of [ value, pergentage ]
+// this function:
+// - adds all the items which value is less than (min)
+// - adds all the items which value is grater than (max)
+// - creates an entry for each missing value between [<min,max] with percentage = 0
+function normalizeHistogramData(data) {
+    // TODO: get these from Cfull and VRXmax
+    const min = 0;
+    const max = 16;
+
+    if (!data || !data.histogram || data.histogram.length == 0) return [];
+    const newData = new Map();
+    for(var i = min - 1; i <= max + 1; ++i) {
+        newData.set(i, 0);
+    }
+
+    data.histogram.forEach((entry) => {
+        const [k, v] = entry;
+        var realK = k;
+        if(k > max) realK = max + 1;
+        if(k < min) realK = min - 1;
+
+        const newValue = newData.get(realK) + v;
+        newData.set(realK, newValue);
+    });
+
+    const arrayData = [];
+    newData.forEach((v, k) => {
+        arrayData.push([k, v]);
+    });
+
+    arrayData[0] = [ '<', arrayData[0][1] ];
+    arrayData[arrayData.length - 1] = [ '>', arrayData[arrayData.length - 1][1] ];
+
+    return arrayData;
+}
 
 class VideoPage extends Component {
     constructor(props) {
@@ -78,7 +115,7 @@ class VideoPage extends Component {
                 request={() => data}
                 labels={chartFormatters.getTimeLineLabel}
                 formatData={chartFormatters.singleValueChart}
-                point_radius={2}
+                point_radius={1}
                 xLabel=""
                 title={title}
                 height={300}
@@ -86,7 +123,8 @@ class VideoPage extends Component {
         );
     }
 
-    renderChart(data, title) {
+    renderChart(rawData, title) {
+        const data = { histogram: normalizeHistogramData(rawData) };
         return (
             <Chart
                 type="bar"
@@ -99,6 +137,8 @@ class VideoPage extends Component {
                 height={300}
                 yLabel="%"
                 displayXTicks="true"
+                ticksMax={100}
+                ticksMin={0}
             />
         );
     }
@@ -139,7 +179,7 @@ class VideoPage extends Component {
                 <div className="row">
                     <Panel className="col-xs-12 col-md-4">
                         <Dash21Info {...globalVideoAnalysis} />
-                        <NetworkInfo {...networkInfo} packet_count={statistics.packet_count} />
+                        <NetworkInfo {...networkInfo} dropped_packet_count={statistics.dropped_packet_count} packet_count={statistics.packet_count} />
                         <VideoInfo {...mediaInfo} />
                         <VideoStatistics {...statistics} />
                     </Panel>

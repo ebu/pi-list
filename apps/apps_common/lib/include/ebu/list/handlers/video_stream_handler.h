@@ -29,7 +29,8 @@ namespace ebu_list
     public:
         using completion_handler = std::function<void(const video_stream_handler& vsh)>;
 
-        video_stream_handler(rtp::packet first_packet, serializable_stream_info info, video_stream_details details, completion_handler ch);
+        enum class decode_video { yes, no };
+        video_stream_handler(decode_video should_decode_video, rtp::packet first_packet, serializable_stream_info info, video_stream_details details, completion_handler ch);
 
         const video_stream_details& info() const;
         const serializable_stream_info& network_info() const;
@@ -53,6 +54,7 @@ namespace ebu_list
         void parse_packet(const rtp::packet& packet);
         void detect_frame_transition(uint32_t timestamp);
 
+        const bool should_decode_video_; 
         st2110::rate_calculator rate_;
         frame_uptr current_frame_;
         std::optional<int64_t> last_sequence_number_;

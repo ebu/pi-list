@@ -3,13 +3,6 @@ import { isNumber, isFunction } from 'lodash';
 import ChartJS from 'chart.js';
 import asyncLoader from 'components/asyncLoader';
 
-export const CHART_COLORS = {
-    BLUE: '#5086d8',
-    YELLOW: '#ecb857',
-    GREEN: '#4caf4f',
-    RED: '#d25b49'
-};
-
 class Chart extends Component {
     prepareChart() {
         const labels = isFunction(this.props.labels)
@@ -28,7 +21,7 @@ class Chart extends Component {
             lineTension: 0.25
         }));
 
-        return {
+        const config = {
             type: this.props.type,
             data: {
                 labels,
@@ -44,7 +37,8 @@ class Chart extends Component {
                 maintainAspectRatio: false,
                 title: {
                     display: true,
-                    text: this.props.title
+                    text: this.props.title,
+                    [this.props.colorScheme === 'dark' && 'fontColor']: '#D8DEE9'
                 },
                 elements: {
                     point: {
@@ -54,12 +48,17 @@ class Chart extends Component {
                 scales: {
                     yAxes: [{
                         gridLines: {
-                            display: true
+                            display: true,
+                            [this.props.colorScheme === 'dark' && 'fontColor']: '#D8DEE9'
                         },
-                        scaleLabel : {
+                        scaleLabel: {
                             display: this.props.yLabel != null,
-                            labelString: this.props.yLabel
+                            labelString: this.props.yLabel,
+                            [this.props.colorScheme === 'dark' && 'fontColor']: '#D8DEE9'
                         },
+                        ticks: {
+                            [this.props.colorScheme === 'dark' && 'fontColor']: '#D8DEE9'
+                        }
                     }],
                     xAxes: [{
                         gridLines: {
@@ -71,7 +70,8 @@ class Chart extends Component {
                             labelString: this.props.xLabel
                         },
                         ticks: {
-                            display: this.props.displayXTicks != null
+                            display: this.props.displayXTicks != null,
+                            [this.props.colorScheme === 'dark' && 'fontColor']: '#D8DEE9'
                         }
                     }]
                 },
@@ -88,6 +88,20 @@ class Chart extends Component {
                 }
             }
         };
+
+        if(this.props.ticksMin) {
+            const current = config.options.scales.yAxes[0].ticks || {};
+            current.min = this.props.ticksMin;
+            config.options.scales.yAxes[0].ticks = current;
+        }
+
+        if(this.props.ticksMax) {
+            const current = config.options.scales.yAxes[0].ticks || {};
+            current.max = this.props.ticksMax;
+            config.options.scales.yAxes[0].ticks = current;
+        }
+
+        return config;
     }
 
     componentDidMount() {
@@ -98,45 +112,6 @@ class Chart extends Component {
 
     componentWillUnmount() {
         this.chartInstance.destroy();
-    }
-
-    onDoubleClick() {
-        this.chartInstance.resetZoom();
-    }
-
-    onMouseDown(event) {
-        if (this.zoomStarted === undefined || this.zoomStarted === null) {
-            this.zoomStarted = event.clientX;
-        }
-    }
-
-    onMouseUp(event) {
-        if (this.zoomStarted) {
-            const beginPoint = this.zoomStarted;
-
-            const startX = Math.min(beginPoint, event.clientX);
-            const endX = Math.max(beginPoint, event.clientX);
-
-            if (startX !== endX) {
-                ChartJS.helpers.each(this.chartInstance.scales, (scale, id) => {
-                    if (scale.isHorizontal()) {
-
-                        const labels = scale.chart.data.labels;
-
-                        const startValue = scale.getValueForPixel(startX);
-                        const endValue = scale.getValueForPixel(endX);
-                        const offset = scale.minIndex;
-
-                        scale.options.ticks.min = labels[startValue - offset];
-                        scale.options.ticks.max = labels[endValue - offset];
-                    }
-                });
-
-                this.chartInstance.update();
-            }
-
-            this.zoomStarted = null;
-        }
     }
 
     render() {
@@ -156,10 +131,8 @@ class Chart extends Component {
             <div style={style}>
                 <canvas
                     className={`lst-chart-${Date.now()} fade-in`}
-                    onDoubleClick={this.onDoubleClick.bind(this)}
-                    onMouseDown={this.onMouseDown.bind(this)}
-                    onMouseUp={this.onMouseUp.bind(this)}
-                    ref={ref => this.chart = ref} />
+                    ref={ref => this.chart = ref}
+                />
             </div>
         );
     }

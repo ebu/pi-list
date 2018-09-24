@@ -67,9 +67,9 @@ SCENARIO("parsing rate from a string")
 
         WHEN("we try to convert it to a rate representation")
         {
-            THEN("we get an exception")
+            THEN("it returns 0") // TODO: this should signal an error
             {
-                REQUIRE_THROWS_AS(parse_from_string(not_valid), std::runtime_error);
+                REQUIRE(Rate(0) == parse_from_string(not_valid));
             }
         }
     }
