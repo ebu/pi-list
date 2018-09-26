@@ -72,15 +72,22 @@ You'll need:
 - **C++17** compiler
 
 Steps:
-- `git clone https://github.com/ebu/pi-list.git`
-- `git submodule update --init --recursive`
-- cd to `./scripts` and run `./setup-dev-env.sh`
-- cd to `./deploy` and run `./deploy.sh`
-- A new folder `release` will appear on the top-level directory of this repository.
-- cd to the top-level directory of this repository
-- cd to newly created `release` folder.
-- run `./start.sh`
-- You're good to go: `http://localhost:8080`
+
+```
+git clone https://github.com/ebu/pi-list.git
+git submodule update --init --recursive
+./scripts/setup-dev-env.sh
+./scripts/deploy/deploy.sh
+```
+
+A new folder `release` will appear on the top-level directory of this repository.
+
+```
+cd release
+./start.sh
+```
+
+You're good to go: `http://localhost:8080`
 
 ## Development
 ### Pre-requisites
@@ -92,8 +99,8 @@ Steps:
 - **NodeJS** >= v8
 - **C++17 compatible compiler**
 
-We use cmake as the meta build system and require most of our third-party dependencies using conan. 
-Our *rule of thumb* is to include dependencies using conan when possible. Conan is integrated with CMake, 
+We use cmake as the meta build system and require most of our third-party dependencies using conan.
+Our *rule of thumb* is to include dependencies using conan when possible. Conan is integrated with CMake,
 so it should be transparent within the building process.
 
 In order to run and develop this application on your computer, you need this additional dependencies (you can do all this steps via `./scripts/setup-dev-env.sh` script):

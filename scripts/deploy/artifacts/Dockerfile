@@ -10,12 +10,10 @@ RUN npm install -g serve
 
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib/
 
-COPY bin/ /app/bin/
-COPY lib/ /usr/local/lib
-COPY listwebserver/ /app/listwebserver/
-COPY listwebserver/config.yml /app/listwebserver/
-COPY gui/ /app/gui/
+ADD server/app/ /app
+ADD server/lib/ /usr/local/lib
 
-RUN cd /app/listwebserver/ && npm install
+WORKDIR /app/listwebserver/
+RUN npm install
 
-CMD cd /app/ && serve -s gui -p 8080 & cd /app/listwebserver/ && npm start -- config.yml --dev
+CMD serve -s /app/gui -p 8080 & npm start -- config.yml --dev
