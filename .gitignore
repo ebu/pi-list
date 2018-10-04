@@ -1,6 +1,7 @@
 /build*
+/cmake-build*
+/release
+/.conan/
+/.idea/
 /.vs/*
 /.vscode
-/cmake-build*
-/.idea/
-/release

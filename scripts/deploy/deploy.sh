@@ -8,6 +8,9 @@ SCRIPT_DIR="$(dirname $(readlink -f $0))"
 TOP_DIR="$(readlink -f $SCRIPT_DIR/../..)"
 RELEASE_DIR="$TOP_DIR/release"
 
+# conan custom config
+conan config install https://github.com/bisect-pt/conan_config.git
+
 # Builds CPP code
 source $SCRIPT_DIR/build.sh
 
@@ -38,13 +41,12 @@ rsync -ahv $TOP_DIR/apps/gui/dist/* $RELEASE_DIR/server/app/gui
 echo "Copying apps... done"
 
 echo
-echo "Copying scripts..."
+echo "Copying artifacts..."
 install -m 755 $SCRIPT_DIR/artifacts/*.sh $RELEASE_DIR/
-install -m 644 $SCRIPT_DIR/artifacts/*ocker* $RELEASE_DIR/
-echo "Copying scripts... done"
-
-echo "Copying config..."
+install -m 755 $SCRIPT_DIR/artifacts/docker-compose.yml $RELEASE_DIR/
+install -m 644 $SCRIPT_DIR/artifacts/listwebserver/Dockerfile $RELEASE_DIR/server/
 install -m 644 $SCRIPT_DIR/artifacts/listwebserver/config.yml $RELEASE_DIR/server/app/listwebserver
+echo "Copying artifacts... done"
 
 echo
 echo "Deploy is ready in $RELEASE_DIR.

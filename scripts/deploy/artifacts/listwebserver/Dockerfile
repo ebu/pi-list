@@ -1,17 +1,19 @@
+# This is the LIST server's runtime Dockerfile
+
 FROM gcc:7.2
 
 # Install node
 RUN curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh
 RUN bash nodesource_setup.sh
 RUN apt-get install -y nodejs
-RUN apt-get install -y ffmpeg
-
 RUN npm install -g serve
+
+RUN apt-get install -y ffmpeg
 
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib/
 
-ADD server/app/ /app
-ADD server/lib/ /usr/local/lib
+ADD app/ /app
+ADD lib/ /usr/local/lib
 
 WORKDIR /app/listwebserver/
 RUN npm install
