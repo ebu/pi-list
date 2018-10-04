@@ -10,14 +10,14 @@
 SCRIPT_DIR="$(dirname $(readlink -f $0))"
 TOP_DIR="$(readlink -f $SCRIPT_DIR/..)"
 USER=builder
-IMAGE=list_dev_env
+IMAGE=list_builder
 DOCKERFILE=$TOP_DIR/release/Dockerfile
 
 usage(){
-    echo "Usage: $basename $0 <init|build|bash>
-    init   Generate a Dockerfile and the Docker image $IMAGE
-    build  Build LIST project using a container based on $IMAGE
-    bash   Start bash in the container for dev or troubleshoot."
+    echo "Usage: $basename $0 <init|release|bash>
+    init        Generate a Dockerfile and the Docker image $IMAGE
+    release     Build and deploy LIST project using a container based on $IMAGE
+    bash        Start bash in the container for dev or troubleshoot."
 }
 
 init() {
@@ -47,7 +47,14 @@ EOF
     docker build --rm -t $IMAGE -f $DOCKERFILE $TOP_DIR
 }
 
-build() {
+check() {
+    if ! $(docker images | grep -qv "^$IMAGE")
+    then
+        init
+    fi
+}
+
+release() {
     docker run -u $USER -v $TOP_DIR:/home/$USER -it $IMAGE:latest ./scripts/deploy/deploy.sh
 }
 
@@ -59,10 +66,12 @@ case $1 in
     init)
         init
         ;;
-    build)
-        build
+    release)
+        check
+        release
         ;;
     bash)
+        check
         run_bash
         ;;
     *)
