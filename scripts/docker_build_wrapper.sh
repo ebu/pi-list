@@ -17,6 +17,7 @@ usage(){
     echo "Usage: $basename $0 <init|release|bash>
     init        Generate a Dockerfile and the Docker image $IMAGE
     release     Build and deploy LIST project using a container based on $IMAGE
+    dev         Build for development, i.e. with debug profile, tests and demos included
     bash        Start bash in the container for dev or troubleshoot."
 }
 
@@ -48,14 +49,20 @@ EOF
 }
 
 check() {
-    if ! $(docker images | grep -qv "^$IMAGE")
+    if ! $(docker images | grep -q "^$IMAGE")
     then
         init
     fi
 }
 
 release() {
-    docker run -u $USER -v $TOP_DIR:/home/$USER -it $IMAGE:latest ./scripts/deploy/deploy.sh
+    docker run -u $USER -v $TOP_DIR:/home/$USER -it $IMAGE:latest \
+        ./scripts/deploy/deploy.sh
+}
+
+dev() {
+    docker run -u $USER -v $TOP_DIR:/home/$USER -it $IMAGE:latest \
+        ./scripts/deploy/build.sh "-DCMAKE_BUILD_TYPE=Debug -DUSE_PCH=OFF -DBUILD_ALL=ON"
 }
 
 run_bash() {
@@ -69,6 +76,10 @@ case $1 in
     release)
         check
         release
+        ;;
+    dev)
+        check
+        dev
         ;;
     bash)
         check
