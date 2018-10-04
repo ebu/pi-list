@@ -11,5 +11,6 @@ namespace ebu_list::st2110::d40
     struct anc_description : d10::stream_information
     {
         video::Rate rate = video::Rate(0,1);
+        // list of ANC channels
     };
 }

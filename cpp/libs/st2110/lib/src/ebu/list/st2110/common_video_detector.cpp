@@ -2,6 +2,7 @@
 #include "ebu/list/st2110/common_video_detector.h"
 #include "ebu/list/st2110/d20/video_format_detector.h"
 #include "ebu/list/st2110/d30/audio_format_detector.h"
+#include "ebu/list/st2110/d40/anc_format_detector.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110;
@@ -20,6 +21,7 @@ detector::status common_video_detector::handle_data(const rtp::packet& packet)
         return status_;
     }
 
+    // new frame
     if (!current_frame_rtp_timestamp_ || last_frame_was_marked_)
     {
         last_frame_was_marked_ = false;
