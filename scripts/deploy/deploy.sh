@@ -1,40 +1,55 @@
 #!/bin/bash
 
+# Abort if anything goes wrong
+set -eu
+
 # Installs Deploy dependencies
-./install_dependencies.sh
+SCRIPT_DIR="$(dirname $(readlink -f $0))"
+TOP_DIR="$(readlink -f $SCRIPT_DIR/../..)"
+RELEASE_DIR="$TOP_DIR/release"
+
+# conan custom config
+conan config install https://github.com/bisect-pt/conan_config.git
 
 # Builds CPP code
-./build.sh
+source $SCRIPT_DIR/build.sh
 
-cd ../..
-
+# Install the release directory
 echo
 echo "Deleting old release dir (if present)..."
-rm -rf release
+rm -rf $RELEASE_DIR
 echo "Deleting old release dir (if present)... done"
 
 echo
 echo "Creating release folders..."
-mkdir -p release
-mkdir -p release/bin
-mkdir -p release/lib
+install -d $RELEASE_DIR/server/app/bin
+install -d $RELEASE_DIR/server/app/gui
+install -d $RELEASE_DIR/server/app/listwebserver
+install -d $RELEASE_DIR/server/lib
 echo "Creating release folders... done"
 
 echo
 echo "Copying binaries..."
-cp build/bin/stream_pre_processor build/bin/static_generator build/bin/st2110_extractor release/bin/
-cp build/lib/*.so.* release/lib/
+install -D -m 755 $BUILD_DIR/bin/* $RELEASE_DIR/server/app/bin/
+install -D -m 755 $BUILD_DIR/lib/*.so.* $RELEASE_DIR/server/lib/
 echo "Copying binaries... done"
 
 echo
 echo "Copying apps..."
-cp -rf apps/listwebserver/ release/
-cp -rf apps/gui/dist/ release/gui/
+rsync -ahv $TOP_DIR/apps/listwebserver/* $RELEASE_DIR/server/app/listwebserver
+rsync -ahv $TOP_DIR/apps/gui/dist/* $RELEASE_DIR/server/app/gui
 echo "Copying apps... done"
 
 echo
 echo "Copying artifacts..."
-cp -r scripts/deploy/artifacts/* release/
-echo "Copying scripts... done"
+install -m 755 $SCRIPT_DIR/artifacts/*.sh $RELEASE_DIR/
+install -m 755 $SCRIPT_DIR/artifacts/docker-compose.yml $RELEASE_DIR/
+install -m 644 $SCRIPT_DIR/artifacts/listwebserver/Dockerfile $RELEASE_DIR/server/
+install -m 644 $SCRIPT_DIR/artifacts/listwebserver/config.yml $RELEASE_DIR/server/app/listwebserver
+echo "Copying artifacts... done"
+
 echo
-echo "Deploy ready! You can find a folder named release on the top-level directory of this repository"
+echo "Deploy is ready in $RELEASE_DIR.
+If you run the server in a container OR if you want to access this server from another machine, you should replace 'localhost' in $RELEASE_DIR/server/app/listwebserver/config.yml with appropriate address."
+
+set +eu

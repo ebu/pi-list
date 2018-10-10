@@ -11,7 +11,7 @@ services:
       - mongo:/data/db
 
   list_server:
-    build: .
+    build: ./server/
     ports:
       - "8080:8080"
       - "3030:3030"

@@ -31,9 +31,9 @@ add_subdirectory(third_party)
 if(BUILD_TESTS)
     enable_testing ()
 
-	if(!WIN32)
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage") # for coverage
-	endif()
+    if(!WIN32)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage") # for coverage
+    endif()
 endif()
 
 message(STATUS "====== LIBS ======")
