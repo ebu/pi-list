@@ -11,9 +11,9 @@ std::string video::to_string(scan_type scan)
     switch(scan)
     {
         case scan_type::INTERLACED: return "interlaced";
-        default: 
-			assert(scan == scan_type::PROGRESSIVE); 
-			return "progressive";
+        default:
+            assert(scan == scan_type::PROGRESSIVE);
+            return "progressive";
     }
 }
 
