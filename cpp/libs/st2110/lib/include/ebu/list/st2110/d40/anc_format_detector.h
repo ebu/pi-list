@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ebu/list/st2110/common_video_detector.h"
+#include "ebu/list/st2110/d40/anc_description.h"
 
 namespace ebu_list::st2110::d40
 {
@@ -14,5 +15,6 @@ namespace ebu_list::st2110::d40
 
     private:
         common_video_detector detector_;
+        anc_description description_ {};
     };
 }

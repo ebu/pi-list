@@ -2,10 +2,13 @@
 #include "ebu/list/st2110/d40/anc_format_detector.h"
 #include "ebu/list/st2110/d40/anc_description.h"
 #include "ebu/list/st2110/d40/packet.h"
+#include "ebu/list/core/media/anc_description.h"
 
 using namespace ebu_list::st2110::d40;
 using namespace ebu_list::st2110;
 using namespace ebu_list;
+using namespace ebu_list::media::anc;
+using namespace ebu_list::media;
 
 //------------------------------------------------------------------------------
 namespace
@@ -83,9 +86,24 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
         {
             get_bits(&p, 1, &bit_counter);
         }
+
+        auto stream = anc_stream(anc_packet.did(), anc_packet.sdid(), anc_packet.stream_num());
+        if (!stream.is_valid())
+        {
+            logger()->error("Ancillary: stream invalid");
+            return detector::status::invalid;
+        }
+
+        if (std::find(description_.streams.begin(), description_.streams.end(), stream) == description_.streams.end())
+        {
+            logger()->info("Ancillary: new stream: {}", to_string(stream.did_sdid()));
+            description_.streams.push_back(stream);
+        }
     }
 
-    return detector_.handle_data(packet);
+    const auto res = detector_.handle_data(packet);
+
+    return  res;
 }
 
 detector::details anc_format_detector::get_details() const
