@@ -31,7 +31,7 @@ namespace
         const auto[parse_result, config] = parse(argc, argv,
             argument(&config::pcap_file, "pcap file", "the path to the pcap file to use as input"),
             argument(&config::pcap_uuid, "pcap uuid", "the identifier that will be used as the name of the directory and the id of the pcap file"),
-            option(&config::mongo_db_url, "mongo_url", "mongo url", "url to influxDB. Usually mongodb://localhost:27017.")
+            option(&config::mongo_db_url, "mongo_url", "mongo url", "url to mongoDB. Usually mongodb://localhost:27017.")
         );
 
         if (parse_result) return config;

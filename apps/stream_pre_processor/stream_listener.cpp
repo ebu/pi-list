@@ -67,7 +67,7 @@ void stream_listener::on_complete()
 
         audio_stream_details details{};
         details.audio = audio_format;
-        
+
         stream_with_details swd{ stream_id_, details };
         save_on_db(db_, swd);
 

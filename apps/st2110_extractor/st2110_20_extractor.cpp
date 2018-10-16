@@ -50,7 +50,7 @@ namespace
             argument(&config::pcap_file, "pcap file", "the path to the pcap file within the filesystem"),
             argument(&config::storage_folder, "storage dir", "the path to a storage folder where some information is writen"),
             option(&config::influxdb_url, "influx_url", "influxDB url", "url to influxDB. Usually http://localhost:8086"),
-            option(&config::mongo_db_url, "mongo_url", "mongo url", "url to influxDB. Usually mongodb://localhost:27017.")
+            option(&config::mongo_db_url, "mongo_url", "mongo url", "url to mongoDB. Usually mongodb://localhost:27017.")
         );
 
         if (parse_result) return config;
