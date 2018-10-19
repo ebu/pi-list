@@ -8,9 +8,6 @@ SCRIPT_DIR="$(dirname $(readlink -f $0))"
 TOP_DIR="$(readlink -f $SCRIPT_DIR/../..)"
 RELEASE_DIR="$TOP_DIR/release"
 
-# conan custom config
-conan config install https://github.com/bisect-pt/conan_config.git
-
 # Builds CPP code
 source $SCRIPT_DIR/build.sh
 
@@ -36,8 +33,8 @@ echo "Copying binaries... done"
 
 echo
 echo "Copying apps..."
-rsync -ahv $TOP_DIR/apps/listwebserver/* $RELEASE_DIR/server/app/listwebserver
-rsync -ahv $TOP_DIR/apps/gui/dist/* $RELEASE_DIR/server/app/gui
+cp -R $TOP_DIR/apps/listwebserver/* $RELEASE_DIR/server/app/listwebserver
+cp -R $TOP_DIR/apps/gui/dist/* $RELEASE_DIR/server/app/gui
 echo "Copying apps... done"
 
 echo

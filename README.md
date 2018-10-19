@@ -140,11 +140,6 @@ In order to run and develop this application on your computer, you need this add
 - **uuid-dev** (only on linux - sudo apt-get install uuid-dev)
 - **libpcap-dev** (only on linux)
 
-Also, you must add this conan configuration:
-
-```
-conan config install https://github.com/bisect-pt/conan_config.git
-```
 
 ### Quick-start
 
