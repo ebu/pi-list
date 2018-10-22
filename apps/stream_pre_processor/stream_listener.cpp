@@ -82,9 +82,15 @@ void stream_listener::on_complete()
     }
     else if (std::holds_alternative<d40::anc_description>(format))
     {
+        const auto anc_format = std::get<d40::anc_description>(format);
+
         stream_id_.type = media::media_type::ANCILLARY_DATA;
         stream_id_.state = StreamState::ANALYZED; // todo: remove me when we process anc data
-        stream_with_details swd{ stream_id_, {} };
+
+        anc_stream_details details{};
+        details.anc = anc_format;
+
+        stream_with_details swd{stream_id_, details};
         save_on_db(db_, swd);
 
         logger()->info("----------------------------------------");
