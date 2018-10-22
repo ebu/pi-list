@@ -35,6 +35,7 @@ void stream_listener::on_complete()
     detector_.on_complete();
 
     const auto format = detector_.get_details();
+    media_stream_details details;
 
     if (std::holds_alternative<d20::video_description>(format))
     {
@@ -45,18 +46,7 @@ void stream_listener::on_complete()
 
         video_stream_details video_details{};
         video_details.video = video_format;
-
-        stream_with_details swd{ stream_id_, video_details };
-        save_on_db(db_, swd);
-
-        logger()->info("----------------------------------------");
-        logger()->info("Found video stream {}:", stream_id_.id);
-        logger()->info("\tpayload type: {}", stream_id_.network.payload_type);
-        logger()->info("\tsource: {}", to_string(stream_id_.network.source));
-        logger()->info("\tdestination: {}", to_string(stream_id_.network.destination));
-        logger()->info("\tpackets_per_frame: {}", video_details.video.packets_per_frame);
-
-        return;
+        details = video_details;
     }
     else if (std::holds_alternative<d30::audio_description>(format))
     {
@@ -65,20 +55,9 @@ void stream_listener::on_complete()
         stream_id_.type = media::media_type::AUDIO;
         stream_id_.state = StreamState::READY;
 
-        audio_stream_details details{};
-        details.audio = audio_format;
-
-        stream_with_details swd{ stream_id_, details };
-        save_on_db(db_, swd);
-
-        logger()->info("----------------------------------------");
-        logger()->info("Found audio stream {}:", stream_id_.id);
-        logger()->info("\tpayload type: {}", stream_id_.network.payload_type);
-        logger()->info("\tsource: {}", to_string(stream_id_.network.source));
-        logger()->info("\tdestination: {}", to_string(stream_id_.network.destination));
-        logger()->info("\tencoding: {}", to_string(details.audio.encoding));
-
-        return;
+        audio_stream_details audio_details{};
+        audio_details.audio = audio_format;
+        details = audio_details;
     }
     else if (std::holds_alternative<d40::anc_description>(format))
     {
@@ -87,32 +66,19 @@ void stream_listener::on_complete()
         stream_id_.type = media::media_type::ANCILLARY_DATA;
         stream_id_.state = StreamState::ANALYZED; // todo: remove me when we process anc data
 
-        anc_stream_details details{};
-        details.anc = anc_format;
-
-        stream_with_details swd{stream_id_, details};
-        save_on_db(db_, swd);
-
-        logger()->info("----------------------------------------");
-        logger()->info("Found ANC stream {}:", stream_id_.id);
-        logger()->info("\tpayload type: {}", stream_id_.network.payload_type);
-        logger()->info("\tsource: {}", to_string(stream_id_.network.source));
-        logger()->info("\tdestination: {}", to_string(stream_id_.network.destination));
-        return;
+        anc_stream_details anc_details{};
+        anc_details.anc = anc_format;
+        details = anc_details;
     }
     else
     {
-        stream_with_details swd{ stream_id_,{} };
         stream_id_.state = StreamState::NEEDS_INFO;
-        save_on_db(db_, swd);
-
-        logger()->info("----------------------------------------");
-        logger()->info("Found unknown stream {}:", stream_id_.id);
-        logger()->info("\tpayload type: {}", stream_id_.network.payload_type);
-        logger()->info("\tsource: {}", to_string(stream_id_.network.source));
-        logger()->info("\tdestination: {}", to_string(stream_id_.network.destination));
-        return;
     }
+
+    stream_with_details swd{ stream_id_, details };
+    save_on_db(db_, swd);
+
+    return;
 }
 
 void stream_listener::on_error(std::exception_ptr ex)
