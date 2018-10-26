@@ -3,5 +3,6 @@
 /release
 /.conan/
 /.idea/
+/.npm/
 /.vs/*
 /.vscode

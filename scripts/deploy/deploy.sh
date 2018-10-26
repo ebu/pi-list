@@ -12,7 +12,7 @@ RELEASE_DIR="$TOP_DIR/release"
 conan config install https://github.com/bisect-pt/conan_config.git
 
 # Builds CPP code
-source $SCRIPT_DIR/build.sh
+source $SCRIPT_DIR/build.sh "-DCMAKE_BUILD_TYPE=Release -DUSE_PCH=OFF -DBUILD_APPS=ON"
 
 # Install the release directory
 echo
