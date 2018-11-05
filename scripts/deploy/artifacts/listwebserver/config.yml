@@ -7,7 +7,7 @@ cpp: /app/bin/
 
 # HTTP-related
 cookieSecret: STRD4O
-webappDomain: http://localhost:8080
+webappDomain: [http://list.ebu.io, http://13.81.240.88]
 
 # MongoDB database
 database:
@@ -18,3 +18,4 @@ database:
 influx:
   hostname: influxdb
   port: 8086
+
