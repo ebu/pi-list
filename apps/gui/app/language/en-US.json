@@ -194,8 +194,8 @@
   },
 
   "errors": {
-    "anc_not_supported": "Ancillary Data not yet supported",
-    "anc_not_supported_message": "You can still mark this stream as Ancillary data, but it will not be analyzed yet.",
+    "anc_not_supported": "Format not yet supported",
+    "anc_not_supported_message": "Because of that, %{name} will not be analyzed.",
     "stream-marked-as-unknown": "The Media Type for this stream was configured as \"Unknown\". To get more information about this stream change the Media Type in the stream configuration.",
     "404_title": "Page not found",
     "404_message": "The page you are looking for doesn't exist or another error occurred.",
