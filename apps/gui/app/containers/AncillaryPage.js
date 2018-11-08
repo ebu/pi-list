@@ -38,7 +38,7 @@ const AncillaryPage = (props) => {
                                         <hr />
                                         {renderInformationList([
                                             {
-                                                key: "<",
+                                                key: "Type",
                                                 value: type.label
                                             },
                                             {
