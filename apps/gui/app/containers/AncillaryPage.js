@@ -15,7 +15,7 @@ const AncillaryPage = (props) => {
     const statistics = streamInfo.statistics;
     const anc_streams = streamInfo.media_specific.streams;
 
-    const availableAncTypes = props.availableAncOptions[0].value;
+    const availableAncTypes = props.availableAncOptions[0].value; // todo: change this
 
     return (
         <Scrollbars>
@@ -38,7 +38,7 @@ const AncillaryPage = (props) => {
                                         <hr />
                                         {renderInformationList([
                                             {
-                                                key: "Type",
+                                                key: "<",
                                                 value: type.label
                                             },
                                             {
