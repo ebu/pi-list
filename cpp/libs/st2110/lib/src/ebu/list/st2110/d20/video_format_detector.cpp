@@ -44,60 +44,6 @@ namespace
 
 //------------------------------------------------------------------------------
 
-detector::status packet_spacing_analyzer::handle_data(const rtp::packet& packet)
-{
-    if (status_ != detector::status::detecting) return status_;
-
-    if (last_packet_timestamp_)
-    {
-        const auto delta = packet.info.udp.packet_time - *last_packet_timestamp_;
-
-        if (last_frame_was_marked_)
-        {
-            ++frame_start_packet_count_;
-            frame_start_packet_total_ += delta;
-        }
-        else
-        {
-            ++regular_packet_count_;
-            regular_packet_total_ += delta;
-        }
-    }
-
-    last_packet_timestamp_ = packet.info.udp.packet_time;
-    last_frame_was_marked_ = packet.info.rtp().marker();
-
-    constexpr auto minimum_frame_start_packet_count = 3;
-    if (frame_start_packet_count_ == minimum_frame_start_packet_count)
-    {
-        status_ = detector::status::valid;
-    }
-
-    return status_;
-}
-
-st2110::d21::read_schedule packet_spacing_analyzer::get_schedule() const noexcept
-{
-    constexpr auto minimum_ratio = 10;
-    const auto is_gapped = (average_frame_start_packet_spacing() > average_regular_packet_spacing() * minimum_ratio);
-    return is_gapped ? st2110::d21::read_schedule::gapped : st2110::d21::read_schedule::linear;
-}
-
-clock::duration packet_spacing_analyzer::average_regular_packet_spacing() const noexcept
-{
-    if (regular_packet_count_ == 0) return {};
-    return regular_packet_total_ / regular_packet_count_;
-}
-
-clock::duration packet_spacing_analyzer::average_frame_start_packet_spacing() const noexcept
-{
-    if (frame_start_packet_count_ == 0) return {};
-    return frame_start_packet_total_ / frame_start_packet_count_;
-}
-
-
-//------------------------------------------------------------------------------
-
 detector::status line_data_analyzer::handle_data(const rtp::packet& packet)
 {
     auto& sdu = packet.sdu;
