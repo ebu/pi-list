@@ -11,14 +11,14 @@
 #include "ebu/list/constants.h"
 #include "ebu/list/core/platform/executor.h"
 #include "ebu/list/utils/multi_listener.h"
-#include "ebu/list/handlers/audio_stream_handler.h"
 #include "ebu/list/ptp/udp_filter.h"
 #include "ebu/list/database.h"
 #include "ebu/list/serialization/serialization.h"
 #include "bisect/bicla.h"
-#include "video_stream_serializer.h"
 #include "influx_logger.h"
+#include "video_stream_serializer.h"
 #include "audio_stream_serializer.h"
+#include "anc_stream_serializer.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110::d21;
@@ -163,6 +163,18 @@ namespace
             sdp.add_media(network_info, s);
         };
 
+        auto anc_dump_handler = [&](const anc_stream_handler& handler)
+        {
+            const auto& network_info = handler.network_info();
+            const auto stream_to_update = nlohmann::json{ {"id", network_info.id} };
+
+            auto j = ::gather_info(network_info, handler.info());
+            db.update(constants::db::offline, constants::db::collections::streams, stream_to_update, j);
+
+            st2110::d40::st2110_40_sdp_serializer s(handler.info().anc);
+            sdp.add_media(network_info, s);
+        };
+
         auto create_handler = [&](rtp::packet first_packet) -> rtp::listener_uptr
         {
             nr_total++;
@@ -259,10 +271,10 @@ namespace
             else if( stream_info.type == media::media_type::ANCILLARY_DATA )
             {
                 nr_anc++;
-                console->warn("Bypassing ANC stream with ssrc: {}.", ssrc);
-                console->warn("\tdestination: {}", to_string(destination));
-                auto handler = std::make_unique<rtp::null_listener>();
-                return handler;
+                console->warn("Processing ANC stream with ssrc: {}.", ssrc);
+                const auto& anc_info = std::get<anc_stream_details>(stream_info_it->second);
+                auto new_handler = std::make_unique<anc_stream_serializer>(first_packet, stream_info, anc_info, anc_dump_handler, config.storage_folder);
+                return new_handler;
             }
             else
             {
