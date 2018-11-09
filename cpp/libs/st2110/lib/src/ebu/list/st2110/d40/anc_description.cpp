@@ -49,3 +49,40 @@ bool anc_stream::is_valid() const
 {
     return (did_sdid_ != ancillary::did_sdid::UNKNOWN);
 }
+
+//-----------------------------------------------
+
+void st2110_40_sdp_serializer::additional_attributes(std::vector<std::string>& current_lines, const ebu_list::media::network_media_description& network_info)
+{
+    // todo: implement source-filters (rfc4570)
+    //current_lines.emplace_back("a=source-filter:incl IN IP4 239.100.9.10 192.168.100.2");
+
+    /** Obligatory Parameters **/
+    const auto payload = network_info.network.payload_type;
+    // TODO add DID_SDID: this way:
+    // https://tools.ietf.org/id/draft-ietf-payload-rtp-ancillary-10.xml
+    // "a=fmtp:112 DID_SDID={0x61,0x02};DID_SDID={0x41,0x05};VPID_Code=132"
+    // TODO: fix this is executed twice...
+    for (const auto s : anc_desc_.streams)
+    {
+        logger()->info("----------------- Ancillary: {}", to_string(s.did_sdid()));
+    }
+    current_lines.emplace_back(fmt::format(
+            "a=fmtp:{}", payload
+    ));
+
+    // todo: add PTP
+    //current_lines.emplace_back("a=ts-refclk:ptp=IEEE1588-2008:39-A7-94-FF-FE-07-CB-D0:37");
+    //current_lines.emplace_back("a=mediaclk:direct=0");
+}
+
+void st2110_40_sdp_serializer::write_rtpmap_line(std::vector<std::string>& current_lines, const ebu_list::media::network_media_description& media_description)
+{
+    // "a=rtpmap:<payload_type> smpte291/<clock_rate>"
+    current_lines.emplace_back(fmt::format("a=rtpmap:{} smpte291/90000", media_description.network.payload_type));
+}
+
+st2110_40_sdp_serializer::st2110_40_sdp_serializer(const d40::anc_description& anc_des)
+    : anc_desc_(anc_des)
+{
+}

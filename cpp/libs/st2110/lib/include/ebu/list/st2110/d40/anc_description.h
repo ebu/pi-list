@@ -31,6 +31,17 @@ namespace ebu_list::st2110::d40
     struct anc_description : d10::stream_information
     {
         video::Rate rate = video::Rate(0,1);
+        int packets_per_frame = 0;
         std::vector<anc_stream> streams;
+    };
+
+    struct st2110_40_sdp_serializer
+    {
+        explicit st2110_40_sdp_serializer(const anc_description& anc_des);
+        void write_rtpmap_line(std::vector<std::string>& current_lines, const ebu_list::media::network_media_description& media_description);
+        void additional_attributes(std::vector<std::string>& current_lines, const media::network_media_description& media_description);
+
+    private:
+        const anc_description& anc_desc_;
     };
 }

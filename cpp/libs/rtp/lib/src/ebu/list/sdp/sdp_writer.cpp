@@ -37,12 +37,15 @@ void sdp_writer::write_to(const ebu_list::path &path) const
 void sdp_writer::write_media_line(const media::network_media_description &media_description)
 {
     LIST_ENFORCE(
-            media_description.type == media::media_type::VIDEO || media_description.type == media::media_type::AUDIO,
+            media_description.type == media::media_type::VIDEO ||
+            media_description.type == media::media_type::AUDIO ||
+            media_description.type == media::media_type::ANCILLARY_DATA,
             std::invalid_argument,
             "Only audio and video supported on SDP serialization"
     );
 
-    const std::string media_type_string = media_description.type == media::media_type::VIDEO ? "video" : "audio";
+    const std::string media_type_string = media_description.type == media::media_type::VIDEO ? "video" :
+        media_description.type == media::media_type::AUDIO ? "audio" : "ancillary";
     const auto port = ebu_list::to_string(media_description.network.destination.p);
 
     // "m=<media_type> <port> RTP/AVP <payload_type>"
