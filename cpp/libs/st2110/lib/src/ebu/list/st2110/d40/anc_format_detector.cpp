@@ -27,6 +27,9 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
 {
     auto& sdu = packet.sdu;
 
+    const auto sa_result = spacing_analyzer_.handle_data(packet);
+    if (sa_result == detector::status::invalid) return detector::status::invalid;
+
     constexpr auto minimum_size = sizeof(raw_extended_sequence_number) + sizeof(raw_anc_header);
     if (sdu.view().size() < minimum_size)
     {

@@ -15,6 +15,7 @@ namespace ebu_list::st2110::d40
 
     private:
         common_video_detector detector_;
+        packet_spacing_analyzer spacing_analyzer_;
         anc_description description_ {};
     };
 }
