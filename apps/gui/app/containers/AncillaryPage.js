@@ -28,6 +28,7 @@ const AncillaryPage = (props) => {
                         {
                             anc_streams.map((stream) => {
                                 const type = find(availableAncTypes, { value: `${stream.did_sdid}` });
+                                const hex_did_sdid = stream.did_sdid.toString(16);
 
                                 return (
                                     <Fragment>
@@ -42,8 +43,8 @@ const AncillaryPage = (props) => {
                                                 value: type.label
                                             },
                                             {
-                                                key: "DID_SDID",
-                                                value: stream.did_sdid
+                                                key: "DID/SDID",
+                                                value: `${hex_did_sdid.slice(0, 2)}h/${hex_did_sdid.slice(2)}h`
                                             }
                                         ])}
                                     </Fragment>

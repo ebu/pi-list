@@ -20,17 +20,6 @@ function renderNeedsInfo() {
     );
 }
 
-function renderStatus(isVideo) {
-    if (isVideo) return null;
-
-    const statusClassName = classNames('lst-stream-status', 'lst-stream-status--faded');
-    return (
-        <div className={statusClassName}>
-            <Icon value="remove" />
-        </div>
-    );
-}
-
 const StreamCard = (props) => {
     const net = props.network_information;
 
@@ -72,7 +61,7 @@ const StreamCard = (props) => {
                         </FormInput>
                     </div>
                     <div className="row col-xs-3 lst-no-padding lst-no-margin end-xs">
-                        { needsInfo ? renderNeedsInfo() : renderStatus(isVideo) }
+                        { needsInfo && renderNeedsInfo() }
                     </div>
                 </div>
                 { !needsInfo && (
