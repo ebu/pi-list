@@ -4,6 +4,7 @@
 #include "ebu/list/core/media/anc_description.h"
 #include "ebu/list/sdp/media_description.h"
 #include "ebu/list/st2110/d10/network.h"
+#include "ebu/list/st2110/d40/packet.h"
 
 namespace ebu_list::st2110::d40
 {
@@ -13,10 +14,11 @@ namespace ebu_list::st2110::d40
     class anc_stream
     {
         public:
-            anc_stream(uint8_t did, uint8_t sdid, uint8_t num);
             anc_stream(uint16_t did_sdid, uint8_t num);
             anc::did_sdid did_sdid() const;
             uint8_t num() const;
+            uint16_t errors() const;
+            void errors(uint16_t err);
             std::string type() const;
             bool operator==(const anc_stream& other);
             bool is_valid() const;
@@ -25,6 +27,7 @@ namespace ebu_list::st2110::d40
             void check();
             anc::did_sdid did_sdid_;
             uint8_t num_;
+            uint16_t errors_;
             // add payload_
     };
 

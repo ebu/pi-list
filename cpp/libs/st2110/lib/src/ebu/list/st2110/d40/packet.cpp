@@ -7,6 +7,7 @@ using namespace ebu_list::st2110::d40;
 constexpr auto word_mask = 0x00FF;
 constexpr auto word_parity_mask = 0x0100;
 constexpr auto word_inverted_parity_mask = 0x0200;
+constexpr auto checksum_mask = 0x01FF;
 
 namespace ebu_list::st2110::d40
 {
@@ -83,6 +84,29 @@ namespace ebu_list::st2110::d40
         }
 
         return res;
+    }
+
+    /*
+     * sanity_ckeck_sum verifies the parity of a 10-bit checksum based on:
+     * https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.1364-3-201510-I!!PDF-E.pdf
+     * - b8-0: sum of 9-bit words of payload
+     * - b9: not b8
+     */
+    bool sanity_check_sum(const uint16_t checksum, uint16_t  sum)
+    {
+        if ((checksum & checksum_mask) != (sum & checksum_mask))
+        {
+            logger()->debug("Ancillary checksum error");
+            return false;
+        }
+
+        if (((checksum & word_parity_mask) >> 8) == ((checksum & word_inverted_parity_mask) >> 9))
+        {
+            logger()->debug("Ancillary checksum malformed");
+            return false;
+        }
+
+        return true;
     }
 }
 

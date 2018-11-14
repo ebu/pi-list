@@ -46,6 +46,7 @@ nlohmann::json st2110::d40::to_json(const st2110::d40::anc_description& desc)
         nlohmann::json stream;
         stream["num"] = it.num();
         stream["did_sdid"] = it.did_sdid();
+        stream["errors"] = it.errors();
         j["streams"].push_back(stream);
     }
 
@@ -58,6 +59,7 @@ st2110::d40::anc_description st2110::d40::from_json(const nlohmann::json& j)
 
     for(auto it : j.at("streams")) {
         auto s = anc_stream(it.at("did_sdid"), it.at("num"));
+        s.errors(it.at("errors"));
         desc.streams.push_back(s);
     }
 

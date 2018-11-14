@@ -5,16 +5,10 @@ using namespace ebu_list::st2110::d40;
 using namespace ebu_list::media;
 namespace ancillary = ebu_list::media::anc;
 
-anc_stream::anc_stream(uint8_t did, uint8_t sdid, uint8_t num)
-    : did_sdid_(static_cast<ancillary::did_sdid>((did << 8) + sdid))
-    , num_(num)
-{
-    check();
-}
-
 anc_stream::anc_stream(uint16_t did_sdid, uint8_t num)
     : did_sdid_(static_cast<ancillary::did_sdid>(did_sdid))
     , num_(num)
+    , errors_(0)
 {
     check();
 }
@@ -43,6 +37,16 @@ ancillary::did_sdid anc_stream::did_sdid() const
 uint8_t anc_stream::num() const
 {
     return num_;
+}
+
+uint16_t anc_stream::errors() const
+{
+    return errors_;
+}
+
+void anc_stream::errors(uint16_t err)
+{
+    errors_ = err;
 }
 
 bool anc_stream::is_valid() const

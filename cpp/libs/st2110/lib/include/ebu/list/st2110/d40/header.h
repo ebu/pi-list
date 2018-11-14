@@ -70,6 +70,8 @@ namespace ebu_list::st2110::d40
     static_assert(platform::config::little_endian);
 
     uint16_t get_bits(const std::byte** data_p, const uint8_t word_len, uint16_t *bit_counter);
+    bool sanity_check_word(const uint16_t word);
+    bool sanity_check_sum(const uint16_t checksum, uint16_t  sum);
 
 #pragma pack(pop)
 }
