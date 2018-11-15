@@ -27,8 +27,10 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
 {
     auto& sdu = packet.sdu;
 
-    const auto sa_result = spacing_analyzer_.handle_data(packet);
-    if (sa_result == detector::status::invalid) return detector::status::invalid;
+    if (spacing_analyzer_.handle_data(packet) == detector::status::invalid)
+    {
+        return detector::status::invalid;
+    }
 
     constexpr auto minimum_size = sizeof(raw_extended_sequence_number) + sizeof(raw_anc_header);
     if (sdu.view().size() < minimum_size)
@@ -55,6 +57,8 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
      * - walk through the payload+checksum+padding
      * - verify the parity for every word and checksum
      * - increment an error counter for every stream
+     * - return if error detected but do not invalidate because the
+     *   capture may still contains valid other streams
      */
     for (uint8_t i=0; i < anc_header.anc_count(); i++)
     {
@@ -83,14 +87,14 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
         if ( !anc_packet.sanity_check() )
         {
             logger()->error("Ancillary: sanity");
-            return detector::status::invalid;
+            return detector::status::detecting;
         }
 
         auto stream = anc_stream((anc_packet.did() << 8) + anc_packet.sdid(), anc_packet.stream_num());
         if (!stream.is_valid())
         {
             logger()->error("Ancillary: stream invalid");
-            return detector::status::invalid;
+            return detector::status::detecting;
         }
 
         auto it = std::find(description_.streams.begin(), description_.streams.end(), stream);
