@@ -29,6 +29,7 @@ const AncillaryPage = (props) => {
                             anc_streams.map((stream) => {
                                 const type = find(availableAncTypes, { value: `${stream.did_sdid}` });
                                 const hex_did_sdid = stream.did_sdid.toString(16);
+                                const error_counter = stream.errors.toString();
 
                                 return (
                                     <Fragment>
@@ -45,6 +46,10 @@ const AncillaryPage = (props) => {
                                             {
                                                 key: "DID/SDID",
                                                 value: `${hex_did_sdid.slice(0, 2)}h/${hex_did_sdid.slice(2)}h`
+                                            },
+                                            {
+                                                key: "Payload errors",
+                                                value: error_counter
                                             }
                                         ])}
                                     </Fragment>
