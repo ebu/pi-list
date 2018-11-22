@@ -32,7 +32,7 @@ SCENARIO("sdp creation for st2110 audio")
 
             THEN("we get the correct information")
             {
-                const std::vector<std::string> expected = { "a=ptime:1" };
+                const std::vector<std::string> expected = { "a=source-filter:incl IN IP4 255.10.10.1 192.168.1.10", "a=ptime:1" };
                 REQUIRE( lines == expected );
             }
         }
@@ -45,7 +45,7 @@ SCENARIO("sdp creation for st2110 audio")
 
             THEN("we get the correct information")
             {
-                const std::vector<std::string> expected = { "a=ptime:0.125" };
+                const std::vector<std::string> expected = { "a=source-filter:incl IN IP4 255.10.10.1 192.168.1.10", "a=ptime:0.125" };
                 REQUIRE( lines == expected );
             }
         }

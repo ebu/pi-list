@@ -32,6 +32,7 @@ namespace
         write_available_options(config.base_dir);
         write_available_options_for_video(config.base_dir);
         write_available_options_for_audio(config.base_dir);
+        write_available_options_for_ancillary(config.base_dir);
     }
 }
 

@@ -2,11 +2,13 @@
 #include "ebu/list/serialization/utils.h"
 #include "ebu/list/core/media/video_description.h"
 #include "ebu/list/core/media/audio_description.h"
+#include "ebu/list/core/media/anc_description.h"
 #include "ebu/list/st2110/d30/audio_description.h"
 
 using namespace ebu_list;
 using namespace ebu_list::media;
 using namespace ebu_list::media::video;
+using namespace ebu_list::media::anc;
 using namespace ebu_list::st2110::d30;
 using namespace std::literals::chrono_literals;
 
@@ -68,6 +70,7 @@ namespace
             {"4 milliseconds", 4ms}
     };
 
+
     //----------------------------------------------------------------
     template<class ENUM>
     nlohmann::json to_json(ENUM this_enum)
@@ -120,6 +123,13 @@ void ebu_list::write_available_options_for_audio(const ebu_list::path& dir)
     write_json_to(dir, "audio_options.json", content);
 }
 
+void ebu_list::write_available_options_for_ancillary(const ebu_list::path& dir)
+{
+    nlohmann::json content;
+    content.push_back(convert_to_json("stream_type", to_json(anc::stream_types)));
+
+    write_json_to(dir, "ancillary_options.json", content);
+}
 
 namespace
 {

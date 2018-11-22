@@ -15,10 +15,16 @@ media::video::info d20::get_info(video_description video)
 
 //------------------------------------------------------------------------------
 
+st2110_20_sdp_serializer::st2110_20_sdp_serializer(const d20::video_description& video_des)
+    : video_desc_(video_des)
+{
+}
+
 void st2110_20_sdp_serializer::additional_attributes(std::vector<std::string>& current_lines, const ebu_list::media::network_media_description& network_info)
 {
-    // todo: implement source-filters (rfc4570)
-    //current_lines.emplace_back("a=source-filter:incl IN IP4 239.100.9.10 192.168.100.2");
+    current_lines.emplace_back(fmt::format("a=source-filter:incl IN IP4 {} {}",
+                ipv4::to_string(network_info.network.destination.addr),
+                ipv4::to_string(network_info.network.source.addr)));
 
     /** Obligatory Parameters **/
     const auto payload = network_info.network.payload_type;
@@ -46,9 +52,4 @@ void st2110_20_sdp_serializer::write_rtpmap_line(std::vector<std::string>& curre
 {
     // "a=rtpmap:<payload_type> raw/<clock_rate>"
     current_lines.emplace_back(fmt::format("a=rtpmap:{} raw/90000", media_description.network.payload_type));
-}
-
-st2110_20_sdp_serializer::st2110_20_sdp_serializer(const d20::video_description& video_des)
-    : video_desc_(video_des)
-{
 }

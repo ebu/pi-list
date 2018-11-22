@@ -92,18 +92,16 @@ SCENARIO("SDP serialization")
         }
     }
 
-    GIVEN("an unknown or ancillary streams")
+    GIVEN("an unknown stream")
     {
         auto sdp = sdp_writer(settings);
         media::network_media_description unknown { network_info, media::media_type::UNKNOWN };
-        media::network_media_description ancillary { network_info, media::media_type::ANCILLARY_DATA };
 
         WHEN("we try to serialize it into SDP format")
         {
             THEN("we get an error")
             {
                 REQUIRE_THROWS_AS(sdp.add_media(unknown), std::invalid_argument);
-                REQUIRE_THROWS_AS(sdp.add_media(ancillary), std::invalid_argument);
             }
         }
     }

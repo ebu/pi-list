@@ -5,6 +5,7 @@ import asyncLoader from 'components/asyncLoader';
 import errorEnum from 'enums/errorEnum';
 import VideoPage from 'containers/VideoPage';
 import AudioPage from 'containers/AudioPage';
+import AncillaryPage from 'containers/AncillaryPage';
 import ErrorPage from 'components/ErrorPage';
 import routeBuilder from 'utils/routeBuilder';
 
@@ -17,6 +18,11 @@ class StreamPage extends Component {
     renderVideo() {
         const { pcapID, streamID } = this.props.match.params;
         return (<VideoPage streamInfo={this.props.streamInfo} pcapID={pcapID} streamID={streamID} />);
+    }
+
+    renderAncillary() {
+        const { pcapID, streamID } = this.props.match.params;
+        return (<AncillaryPage streamInfo={this.props.streamInfo} pcapID={pcapID} streamID={streamID} />);
     }
 
     renderError(errorMessage, errorType) {
@@ -45,11 +51,12 @@ class StreamPage extends Component {
         switch (this.props.streamInfo.media_type) {
         case 'video': return this.renderVideo();
         case 'audio': return this.renderAudio();
+        case 'ancillary_data': return this.renderAncillary();
         default:
             return (
                 <ErrorPage
-                    errorMessage={translate('errors.anc_not_supported_message')}
-                    errorType={translate('errors.anc_not_supported')}
+                    errorMessage={translate('errors.not_supported_message', { name: this.props.streamInfo.media_type })}
+                    errorType={translate('errors.not_supported')}
                     icon="feedback"
                 />
 

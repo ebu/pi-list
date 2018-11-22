@@ -32,8 +32,6 @@ SCENARIO("ST2110-40 heuristics")
             {
                 const auto details = detector.get_details();
                 REQUIRE(std::holds_alternative<anc_description>(details));
-                const auto anc_details = std::get<d40::anc_description>(details);
-                REQUIRE(anc_details.rate == video::Rate(60000, 1001));
             }
         }
     }

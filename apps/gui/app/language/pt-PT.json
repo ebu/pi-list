@@ -194,8 +194,8 @@
   },
 
   "errors": {
-    "anc_not_supported": "Os Dados Auxiliares ainda não são suportados",
-    "anc_not_supported_message": "Ainda assim, pode marcar esta stream como Dados Auxiliares, apesar de que não será analisada.",
+    "not_supported": "Formato não suportado",
+    "not_supported_message": "Por causa disso, %{name} não será analisada",
     "stream-marked-as-unknown": "A Essência desta Stream não é conhecida ou suportada. Carregue no botão abaixo para adicionar mais detalhes sobre a Stream",
     "404_title": "Página não encontrada",
     "404_message": "A página que tentou aceder não existe ou ocorreu um erro.",

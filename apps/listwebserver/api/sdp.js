@@ -13,7 +13,7 @@ router.get('/available-options', (req, res) => {
     const { query } = req;
 
     if (isObject(query) && !isEmpty(query)) {
-        if (query.media_type === "video" || query.media_type === "audio") {
+        if (query.media_type === "video" || query.media_type === "audio" || query.media_type === "ancillary" ) {
             fs.readFile(`${program.folder}/${query.media_type}_options.json`)
                 .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
                 .catch(() => res
