@@ -72,14 +72,14 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
 
         uint16_t bit_counter = 0;
         raw_anc_packet_header anc_packet_header;
-        anc_packet_header.color_channel = get_bits(&p, 1, &bit_counter);
-        anc_packet_header.line_num = get_bits(&p, 11, &bit_counter);
-        anc_packet_header.horizontal_offset = get_bits(&p, 12, &bit_counter);
-        anc_packet_header.stream_flag = get_bits(&p, 1, &bit_counter);
-        anc_packet_header.stream_num = get_bits(&p, 7, &bit_counter);
-        anc_packet_header.did = get_bits(&p, 10, &bit_counter);
-        anc_packet_header.sdid = get_bits(&p, 10, &bit_counter);
-        anc_packet_header.data_count = get_bits(&p, 10, &bit_counter);
+        anc_packet_header.color_channel = get_bits<1>(&p, &bit_counter);
+        anc_packet_header.line_num = get_bits<11>(&p, &bit_counter);
+        anc_packet_header.horizontal_offset = get_bits<12>(&p, &bit_counter);
+        anc_packet_header.stream_flag = get_bits<1>(&p, &bit_counter);
+        anc_packet_header.stream_num = get_bits<7>(&p, &bit_counter);
+        anc_packet_header.did = get_bits<10>(&p, &bit_counter);
+        anc_packet_header.sdid = get_bits<10>(&p, &bit_counter);
+        anc_packet_header.data_count = get_bits<10>(&p, &bit_counter);
 
         const auto anc_packet = anc_packet_header_lens(anc_packet_header);
         anc_packet.dump();
@@ -112,7 +112,7 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
         /* walkthrough the payload */
         for (uint8_t j=0; j < anc_packet.data_count(); j++)
         {
-            const uint16_t word = get_bits(&p, 10, &bit_counter);
+            const uint16_t word = get_bits<10>(&p, &bit_counter);
             if (! sanity_check_word(word))
             {
                 errors++;
@@ -121,7 +121,7 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
         }
 
         /* validate the checksum */
-        if (! sanity_check_sum(get_bits(&p, 10, &bit_counter), sum))
+        if (! sanity_check_sum(get_bits<10>(&p, &bit_counter), sum))
         {
             errors++;
         }
@@ -129,7 +129,7 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
         /* skip the padding */
         while (bit_counter % 32)
         {
-            get_bits(&p, 1, &bit_counter);
+            get_bits<1>(&p, &bit_counter);
         }
 
         if(errors)

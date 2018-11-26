@@ -1,6 +1,7 @@
 #include "ebu/list/core/media/anc_description.h"
 #include "ebu/list/st2110/d40/anc_description.h"
 
+using namespace ebu_list::st2110;
 using namespace ebu_list::st2110::d40;
 using namespace ebu_list::media;
 namespace ancillary = ebu_list::media::anc;

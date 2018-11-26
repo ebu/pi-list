@@ -20,9 +20,9 @@ SCENARIO("Read n-bit words in byte-unaligned buffer")
         {
             THEN("we get the correct values")
             {
-                REQUIRE(get_bits(&p, 8, &bit_counter) == 0b00000000);
-                REQUIRE(get_bits(&p, 8, &bit_counter) == 0b11111111);
-                REQUIRE(get_bits(&p, 8, &bit_counter) == 0b10101010);
+                REQUIRE(get_bits<8>(&p, &bit_counter) == 0b00000000);
+                REQUIRE(get_bits<8>(&p, &bit_counter) == 0b11111111);
+                REQUIRE(get_bits<8>(&p, &bit_counter) == 0b10101010);
             }
         }
     }
@@ -40,9 +40,9 @@ SCENARIO("Read n-bit words in byte-unaligned buffer")
         {
             THEN("we get the correct values")
             {
-                REQUIRE(get_bits(&p, 16, &bit_counter) == 0b0000000000000000);
-                REQUIRE(get_bits(&p, 16, &bit_counter) == 0b1111111111111111);
-                REQUIRE(get_bits(&p, 16, &bit_counter) == 0b1010101010101010);
+                REQUIRE(get_bits<16>(&p, &bit_counter) == 0b0000000000000000);
+                REQUIRE(get_bits<16>(&p, &bit_counter) == 0b1111111111111111);
+                REQUIRE(get_bits<16>(&p, &bit_counter) == 0b1010101010101010);
             }
         }
     }
@@ -58,22 +58,22 @@ SCENARIO("Read n-bit words in byte-unaligned buffer")
         {
             THEN("we get the correct values")
             {
-                REQUIRE(get_bits(&p, 4, &bit_counter) == 0b1111);
-                REQUIRE(get_bits(&p, 2, &bit_counter) == 0b00);
-                REQUIRE(get_bits(&p, 2, &bit_counter) == 0b11);
-
-                REQUIRE(get_bits(&p, 3, &bit_counter) == 0b000);
-                REQUIRE(get_bits(&p, 3, &bit_counter) == 0b111);
-                REQUIRE(get_bits(&p, 2, &bit_counter) == 0b00);
-
-                REQUIRE(get_bits(&p, 1, &bit_counter) == 0b1);
-                REQUIRE(get_bits(&p, 1, &bit_counter) == 0b0);
-                REQUIRE(get_bits(&p, 1, &bit_counter) == 0b1);
-                REQUIRE(get_bits(&p, 1, &bit_counter) == 0b0);
-                REQUIRE(get_bits(&p, 1, &bit_counter) == 0b1);
-                REQUIRE(get_bits(&p, 1, &bit_counter) == 0b0);
-                REQUIRE(get_bits(&p, 1, &bit_counter) == 0b1);
-                REQUIRE(get_bits(&p, 1, &bit_counter) == 0b0);
+                REQUIRE(get_bits<4>(&p, &bit_counter) == 0b1111);
+                REQUIRE(get_bits<2>(&p, &bit_counter) == 0b00);
+                REQUIRE(get_bits<2>(&p, &bit_counter) == 0b11);
+                
+                REQUIRE(get_bits<3>(&p, &bit_counter) == 0b000);
+                REQUIRE(get_bits<3>(&p, &bit_counter) == 0b111);
+                REQUIRE(get_bits<2>(&p, &bit_counter) == 0b00);
+                
+                REQUIRE(get_bits<1>(&p, &bit_counter) == 0b1);
+                REQUIRE(get_bits<1>(&p, &bit_counter) == 0b0);
+                REQUIRE(get_bits<1>(&p, &bit_counter) == 0b1);
+                REQUIRE(get_bits<1>(&p, &bit_counter) == 0b0);
+                REQUIRE(get_bits<1>(&p, &bit_counter) == 0b1);
+                REQUIRE(get_bits<1>(&p, &bit_counter) == 0b0);
+                REQUIRE(get_bits<1>(&p, &bit_counter) == 0b1);
+                REQUIRE(get_bits<1>(&p, &bit_counter) == 0b0);
             }
         }
     }
@@ -91,13 +91,13 @@ SCENARIO("Read n-bit words in byte-unaligned buffer")
         {
             THEN("we get the correct values")
             {
-                REQUIRE(get_bits(&p, 4, &bit_counter) == 0b1111);
-                REQUIRE(get_bits(&p, 8, &bit_counter) == 0b00000000);
-                REQUIRE(get_bits(&p, 12, &bit_counter) == 0b111111111111);
+                REQUIRE(get_bits<4>(&p, &bit_counter) == 0b1111);
+                REQUIRE(get_bits<8>(&p, &bit_counter) == 0b00000000);
+                REQUIRE(get_bits<12>(&p, &bit_counter) == 0b111111111111);
 
-                REQUIRE(get_bits(&p, 2, &bit_counter) == 0b00);
-                REQUIRE(get_bits(&p, 16, &bit_counter) == 0b1111111111111111);
-                REQUIRE(get_bits(&p, 6, &bit_counter) == 0b000000);
+                REQUIRE(get_bits<2>(&p, &bit_counter) == 0b00);
+                REQUIRE(get_bits<16>(&p, &bit_counter) == 0b1111111111111111);
+                REQUIRE(get_bits<6>(&p, &bit_counter) == 0b000000);
             }
         }
     }
@@ -116,14 +116,14 @@ SCENARIO("Read n-bit words in byte-unaligned buffer")
         {
             THEN("we get the correct values")
             {
-                REQUIRE(get_bits(&p, 10, &bit_counter) == 0b1111111111);
-                REQUIRE(get_bits(&p, 10, &bit_counter) == 0b0000000000);
-                REQUIRE(get_bits(&p, 10, &bit_counter) == 0b1111111111);
-                REQUIRE(get_bits(&p, 10, &bit_counter) == 0b0000000000);
-                REQUIRE(get_bits(&p, 10, &bit_counter) == 0b1111111111);
-                REQUIRE(get_bits(&p, 10, &bit_counter) == 0b0000000000);
-                REQUIRE(get_bits(&p, 10, &bit_counter) == 0b1111111111);
-                REQUIRE(get_bits(&p, 10, &bit_counter) == 0b0000000000);
+                REQUIRE(get_bits<10>(&p, &bit_counter) == 0b1111111111);
+                REQUIRE(get_bits<10>(&p, &bit_counter) == 0b0000000000);
+                REQUIRE(get_bits<10>(&p, &bit_counter) == 0b1111111111);
+                REQUIRE(get_bits<10>(&p, &bit_counter) == 0b0000000000);
+                REQUIRE(get_bits<10>(&p, &bit_counter) == 0b1111111111);
+                REQUIRE(get_bits<10>(&p, &bit_counter) == 0b0000000000);
+                REQUIRE(get_bits<10>(&p, &bit_counter) == 0b1111111111);
+                REQUIRE(get_bits<10>(&p, &bit_counter) == 0b0000000000);
             }
         }
     }
@@ -141,15 +141,15 @@ SCENARIO("Read n-bit words in byte-unaligned buffer")
         {
             THEN("we get the correct values")
             {
-                REQUIRE(get_bits(&p, 1, &bit_counter) == 0b0);
-                REQUIRE(get_bits(&p, 10, &bit_counter) == 0b1111111111);
-                REQUIRE(get_bits(&p, 10, &bit_counter) == 0b0000000000);
-                REQUIRE(get_bits(&p, 10, &bit_counter) == 0b1111111111);
-                REQUIRE(get_bits(&p, 10, &bit_counter) == 0b0000000000);
-                REQUIRE(get_bits(&p, 10, &bit_counter) == 0b1111111111);
-                REQUIRE(get_bits(&p, 10, &bit_counter) == 0b0000000000);
-                REQUIRE(get_bits(&p, 10, &bit_counter) == 0b1111111111);
-                REQUIRE(get_bits(&p, 9, &bit_counter) == 0b000000000);
+                REQUIRE(get_bits<1>(&p, &bit_counter) == 0b0);
+                REQUIRE(get_bits<10>(&p, &bit_counter) == 0b1111111111);
+                REQUIRE(get_bits<10>(&p, &bit_counter) == 0b0000000000);
+                REQUIRE(get_bits<10>(&p, &bit_counter) == 0b1111111111);
+                REQUIRE(get_bits<10>(&p, &bit_counter) == 0b0000000000);
+                REQUIRE(get_bits<10>(&p, &bit_counter) == 0b1111111111);
+                REQUIRE(get_bits<10>(&p, &bit_counter) == 0b0000000000);
+                REQUIRE(get_bits<10>(&p, &bit_counter) == 0b1111111111);
+                REQUIRE(get_bits<9>(&p, &bit_counter) == 0b000000000);
             }
         }
     }
