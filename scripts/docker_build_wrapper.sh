@@ -1,7 +1,8 @@
 #!/bin/bash
 #
 # This script creates a build environment in a docker container to be
-# used to compile the whole project.
+# used to compile the whole project in a dev or deployment context.
+#
 # The project directory is mounted as a volume in the container to allow
 # both container and native system user to access everything r/w. The
 # container user ID is mapped to the native system user ID in order to
@@ -10,14 +11,15 @@
 SCRIPT_DIR="$(dirname $(readlink -f $0))"
 TOP_DIR="$(readlink -f $SCRIPT_DIR/..)"
 USER=builder
-IMAGE=list_dev_env
+IMAGE=list_builder
 DOCKERFILE=$TOP_DIR/release/Dockerfile
 
 usage(){
-    echo "Usage: $basename $0 <init|build|bash>
-    init   Generate a Dockerfile and the Docker image $IMAGE
-    build  Build LIST project using a container based on $IMAGE
-    bash   Start bash in the container for dev or troubleshoot."
+    echo "Usage: $basename $0 <init|release|dev|bash>
+    init        Generate a Dockerfile and the Docker image $IMAGE
+    release     Build and deploy LIST project using a container based on $IMAGE
+    dev         Build for development, i.e. with debug profile, tests and demos included
+    bash        Start bash in the container for dev or troubleshoot."
 }
 
 init() {
@@ -47,8 +49,21 @@ EOF
     docker build --rm -t $IMAGE -f $DOCKERFILE $TOP_DIR
 }
 
-build() {
-    docker run -u $USER -v $TOP_DIR:/home/$USER -it $IMAGE:latest ./scripts/deploy/deploy.sh
+check() {
+    if ! $(docker images | grep -q "^$IMAGE")
+    then
+        init
+    fi
+}
+
+release() {
+    docker run -u $USER -v $TOP_DIR:/home/$USER -it $IMAGE:latest \
+        ./scripts/deploy/deploy.sh
+}
+
+dev() {
+    docker run -u $USER -v $TOP_DIR:/home/$USER -it $IMAGE:latest \
+        ./scripts/deploy/build.sh "-DCMAKE_BUILD_TYPE=Debug -DUSE_PCH=OFF -DBUILD_ALL=ON"
 }
 
 run_bash() {
@@ -59,10 +74,16 @@ case $1 in
     init)
         init
         ;;
-    build)
-        build
+    release)
+        check
+        release
+        ;;
+    dev)
+        check
+        dev
         ;;
     bash)
+        check
         run_bash
         ;;
     *)
