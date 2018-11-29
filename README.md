@@ -181,7 +181,7 @@ We use Cmake as the build system for LIST. All the options bellow can be combine
 | BUILD_APPS | Build LIST applications | OFF |
 | BUILD_ALL | Build everything | OFF |
 
-The folder `config/cmake` contains some cmake files that are used project-wide in order to simplify 
+The folder `config/cmake` contains some cmake files that are used project-wide in order to simplify
 CMake usage and extra functionality.
 
 ## SDK Structure
@@ -203,7 +203,7 @@ Each project has the following structure:
 lib/            --> contains library files; nested folders represent namespaces
     include/    --> public .h files
     src/        --> private .h files and .cpp files
-    
+
 unit_tests/     --> test files
 CMakeLists.txt  --> definitions for both lib and unit_tests
 ```
@@ -221,6 +221,10 @@ Just use cmake's `add_subdirectory()` and it will work out-of-the-box.
 6. Push to the branch
 7. Create a new Pull Request
 8. Watch CI turn green and wait for review
+
+## Additional information
+
+[Cfull and Vrx Analysis](./docs/cfull_and_vrx_analysis.md)
 
 ## License
 
