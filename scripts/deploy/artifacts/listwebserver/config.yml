@@ -7,7 +7,7 @@ cpp: /app/bin/
 
 # HTTP-related
 cookieSecret: STRD4O
-webappDomain: [http://list.ebu.io, http://13.81.240.88]
+webappDomain: [http://list.ebu.io, http://35.180.154.73, http://localhost:8080, http://localhost]
 
 # MongoDB database
 database:
