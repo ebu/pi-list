@@ -37,6 +37,8 @@ void stream_listener::on_complete()
     const auto format = detector_.get_details();
     media_stream_details details;
 
+    bool is_valid = true;
+
     if (std::holds_alternative<d20::video_description>(format))
     {
         const auto video_format = std::get<d20::video_description>(format);
@@ -62,21 +64,30 @@ void stream_listener::on_complete()
     else if (std::holds_alternative<d40::anc_description>(format))
     {
         const auto anc_format = std::get<d40::anc_description>(format);
+        if (anc_format.streams.empty())
+        {
+            is_valid = false;
+        }
+        else
+        {
+            stream_id_.type = media::media_type::ANCILLARY_DATA;
+            stream_id_.state = StreamState::ANALYZED; // todo: remove me when we process anc data
 
-        stream_id_.type = media::media_type::ANCILLARY_DATA;
-        stream_id_.state = StreamState::ANALYZED; // todo: remove me when we process anc data
-
-        anc_stream_details anc_details{};
-        anc_details.anc = anc_format;
-        details = anc_details;
+            anc_stream_details anc_details{};
+            anc_details.anc = anc_format;
+            details = anc_details;
+        }
     }
     else
     {
         stream_id_.state = StreamState::NEEDS_INFO;
     }
 
-    stream_with_details swd{ stream_id_, details };
-    save_on_db(db_, swd);
+    if (is_valid)
+    {
+        stream_with_details swd{ stream_id_, details };
+        save_on_db(db_, swd);
+    }
 
     return;
 }

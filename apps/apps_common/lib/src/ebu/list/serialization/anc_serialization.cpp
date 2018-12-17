@@ -24,7 +24,11 @@ nlohmann::json anc_stream_details::to_json(const anc_stream_details& details)
 anc_stream_details anc_stream_details::from_json(const nlohmann::json& j)
 {
     anc_stream_details desc{};
-    desc.anc = st2110::d40::from_json(j.at("media_specific"));
+    const auto anc_json = j.find("media_specific");
+    if (anc_json != j.end())
+    {
+        desc.anc = st2110::d40::from_json(*anc_json);
+    }
 
     const auto statistics_json = j.find("statistics");
     if (statistics_json != j.end())
