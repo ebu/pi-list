@@ -4,7 +4,6 @@ import Tabs from 'components/common/Tabs';
 import VideoStreamInformation from 'containers/streamPage/VideoStreamInformation';
 import CbufferAnalysis from 'containers/streamPage/CbufferAnalysis';
 import VrxAnalysis from 'containers/streamPage/VrxAnalysis';
-import TvdAnalysis from 'containers/streamPage/TvdAnalysis';
 import VideoExplorer from 'containers/streamPage/VideoExplorer';
 import PerFrameAnalysisViewer from 'containers/streamPage/PerFrameAnalysisViewer';
 import RtpAnalysisViewer from 'containers/streamPage/RtpAnalysisViewer';
@@ -14,7 +13,6 @@ const TABS = [
     VideoExplorer,
     CbufferAnalysis,
     VrxAnalysis,
-    TvdAnalysis,
     RtpAnalysisViewer,
     PerFrameAnalysisViewer
 ];
@@ -55,10 +53,6 @@ class VideoPage extends Component {
                         },
                         {
                             label: 'Vrx',
-                            icon: 'timeline'
-                        },
-                        {
-                            label: 'Tvd',
                             icon: 'timeline'
                         },
                         {

@@ -19,6 +19,7 @@
 #include "video_stream_serializer.h"
 #include "audio_stream_serializer.h"
 #include "anc_stream_serializer.h"
+#include "troffset_calculator.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110::d21;
@@ -92,6 +93,30 @@ namespace
         return { *wanted_stream_it };
     }
 
+    void update_one_tr_info(db_serializer& db, std::string stream_id, const tro_stream_info& info)
+    {
+        const auto stream_to_update = nlohmann::json{ {"id", stream_id} };
+
+        auto maybe_record = db.find_one(constants::db::offline, constants::db::collections::streams, stream_to_update);
+        if (!maybe_record) return;
+        auto record = maybe_record.value();
+        nlohmann::json j;
+        j["avg_tro_ns"] = info.avg_tro_ns;
+        j["tro_default_ns"] = info.tro_default_ns;
+        auto& media = record["media_specific"];
+        media.merge_patch(j);
+
+        db.update(constants::db::offline, constants::db::collections::streams, stream_to_update, record);
+    }
+
+    void update_tr_info(db_serializer& db, const tro_map& info)
+    {
+        for (const auto[key, value] : info)
+        {
+            update_one_tr_info(db, key, value);
+        }
+    }
+
     template<class T>
     nlohmann::json gather_info(const serializable_stream_info& info, const T& details)
     {
@@ -103,7 +128,9 @@ namespace
 
     void run(logger_ptr console, const config& config)
     {
-        db_serializer db {config.mongo_db_url.value_or(MONGO_DEFAULT_URL)};
+        constexpr auto use_offset_from_ptp_clock = false;
+        const auto db_url = config.mongo_db_url.value_or(MONGO_DEFAULT_URL);
+        db_serializer db {db_url};
 
         std::atomic_int nr_audio = 0;
         std::atomic_int nr_video = 0;
@@ -118,10 +145,14 @@ namespace
 
         const auto wanted_streams = get_ids_to_process(db, config);
 
+        const auto tro_info = calculate_average_troffset(config.pcap_file, wanted_streams);
+
         const auto look_for = nlohmann::json{ {"id", config.pcap_id} };
         const auto result = db.find_one(constants::db::offline, constants::db::collections::pcaps, look_for);
         LIST_ENFORCE( result , std::runtime_error, "Can't find pcap {} on DB", config.pcap_id);
         auto pcap = pcap_info::from_json(result.value());
+
+        const auto offset_from_ptp_clock = use_offset_from_ptp_clock ? -pcap.offset_from_ptp_clock : std::chrono::nanoseconds(0);
 
         const auto sdp_path = config.storage_folder / "sdp.sdp";
         ebu_list::sdp::sdp_writer sdp({"LIST Generated SDP", "LIST SDP"});
@@ -241,6 +272,15 @@ namespace
                         }
 
                         {
+                            auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(influx_db_url, pcap.id, stream_info.id, "gapped-adjusted-avg-tro");
+                            const auto it = tro_info.find(stream_info.id);
+                            const auto tro = it == tro_info.end() ? 0 : it->second.avg_tro_ns;
+                            const auto settings = vrx_settings{ read_schedule::gapped, tvd_kind::ideal, std::chrono::nanoseconds(tro) };
+                            auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info, settings);
+                            framer_ml->add(std::move(analyzer));
+                        }
+
+                        {
                             auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(influx_db_url, pcap.id, stream_info.id, "gapped-first_packet_first_frame");
                             const auto settings = vrx_settings{ read_schedule::gapped, tvd_kind::first_packet_first_frame };
                             auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info, settings);
@@ -289,7 +329,7 @@ namespace
         auto ptp_sm = std::make_shared<ptp::state_machine>(ptp_logger);
         auto handler = std::make_shared<rtp::udp_handler>(create_handler);
         auto filter = std::make_shared<ptp::udp_filter>(ptp_sm, handler);
-        auto player = std::make_unique<pcap::pcap_player>(config.pcap_file, filter, -pcap.offset_from_ptp_clock);
+        auto player = std::make_unique<pcap::pcap_player>(config.pcap_file, filter, offset_from_ptp_clock);
 
         const auto start_time = std::chrono::steady_clock::now();
 
@@ -302,6 +342,8 @@ namespace
         const auto processing_time = end_time - start_time;
         const auto processing_time_ms = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(processing_time).count());
         console->info("Processing time: {:.3f} s", processing_time_ms / 1000.0);
+
+        update_tr_info(db, tro_info);
 
         sdp.write_to(sdp_path);
 

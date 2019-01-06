@@ -21,7 +21,7 @@ namespace ebu_list::st2110::d21
         packet_info on_packet(const clock::time_point& packet_timestamp, bool frame_start);
 
     private:
-        const tvd_kind tvd_kind_;
+        const vrx_settings settings_;
         const fraction64 tframe_; // Period of a frame, in seconds
         const vrx_constants constants_;
         int64_t current_n_ = 0;

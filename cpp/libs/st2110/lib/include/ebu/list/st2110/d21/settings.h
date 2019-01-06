@@ -72,6 +72,7 @@ namespace ebu_list::st2110::d21
     {
         read_schedule schedule;
         tvd_kind tvd;
+        std::optional<std::chrono::nanoseconds> troffset;
     };
 
     fraction64 get_ractive(read_schedule schedule, media::video::scan_type scan, media::video::video_dimensions raster);
