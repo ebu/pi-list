@@ -134,6 +134,7 @@ const state* state_initial::handle_message(context& c, const ptp::v2::sync& mess
 
     c.last_sync_timestamp = message.packet_timestamp();
     c.current_sequence_id = message.header().value().sequence_id();
+    c.precise_origin_timestamp = message.message().origin_timestamp();
 
     return c.waiting_for_follow_up;
 }
@@ -153,6 +154,7 @@ const state* state_waiting_for_sync::handle_message(context& c, const ptp::v2::s
 
     c.last_sync_timestamp = message.packet_timestamp();
     c.current_sequence_id = message.header().value().sequence_id();
+    c.precise_origin_timestamp = message.message().origin_timestamp();
 
     return c.waiting_for_follow_up; 
 }
@@ -184,7 +186,16 @@ const state* state_waiting_for_follow_up::handle_message(context& c, const ptp::
     return c.waiting_for_delay_request;
 }
 
-const state* state_waiting_for_follow_up::handle_message(context& /*c*/, const ptp::v2::delay_req& /*message*/) const { return this; }
+const state* state_waiting_for_follow_up::handle_message(context& c, const ptp::v2::delay_req& message) const 
+{
+    // We didn't receive a follow up message, so this is a one-step clock
+
+    c.delay_request_packet_timestamp = message.packet_timestamp();
+    c.current_sequence_id = message.header().value().sequence_id();
+
+    return c.waiting_for_delay_response;
+}
+
 const state* state_waiting_for_follow_up::handle_message(context& /*c*/, const ptp::v2::delay_resp& /*message*/) const { return this; }
 const state* state_waiting_for_follow_up::handle_message(context& /*c*/, const ptp::v2::other& /*message*/) const { return this; }
 

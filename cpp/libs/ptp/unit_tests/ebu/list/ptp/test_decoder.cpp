@@ -3,6 +3,7 @@
 #include "ebu/list/ptp/decoder.h"
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/ptp/test_messages.h"
+#include "ebu/list/ptp/v2/sync.h"
 #include "catch.hpp"
 using namespace ebu_list;
 using namespace ebu_list::ptp;

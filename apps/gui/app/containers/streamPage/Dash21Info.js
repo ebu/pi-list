@@ -13,7 +13,7 @@ const getHighestFromHistogram = (hist) => {
     return hist[hist.length - 1][0];
 };
 
-const VideoStatistics = (props) => {
+const Dash21Info = (props) => {
 
     const compliance = props.compliance;
     const cinstCompliance = props.cinst.compliance;
@@ -44,9 +44,17 @@ const VideoStatistics = (props) => {
                     key: 'Vrx',
                     value: `${vrxmin} .. ${vrxpeak}`
                 },
+                {
+                    key: 'Average TROffset',
+                    value: `${(props.avg_tro_ns / 1000).toFixed(3)} μs`
+                },
+                {
+                    key: 'TRO Default',
+                    value: `${(props.tro_default_ns / 1000).toFixed(3)} μs`
+                },
             ])}
         </Fragment>
     );
 };
 
-export default VideoStatistics;
+export default Dash21Info;

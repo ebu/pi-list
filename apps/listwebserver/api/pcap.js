@@ -240,6 +240,8 @@ router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
         chartData = influxDbManager.getCInstRaw(pcapID, streamID, from, to);
     } else if (measurement === 'VrxIdeal') {
         chartData = influxDbManager.getVrxIdeal(pcapID, streamID, from, to);
+    } else if (measurement === 'VrxAdjustedAvgTro') {
+        chartData = influxDbManager.getVrxAdjustedAvgTro(pcapID, streamID, from, to);
     } else if (measurement === 'VrxFirstPacketFirstFrame') {
         chartData = influxDbManager.getVrxFirstPacketFirstFrame(pcapID, streamID, from, to)
     } else if (measurement === 'VrxFirstPacketEachFrame') {
@@ -248,6 +250,8 @@ router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
         chartData = influxDbManager.getVrxFirstPacketEachFrameRaw(pcapID, streamID, from, to)
     } else if (measurement === 'DeltaToIdealTpr0Raw') {
         chartData = influxDbManager.getDeltaToIdealTpr0Raw(pcapID, streamID, from, to)
+    } else if (measurement === 'DeltaToIdealTpr0AdjustedAvgTroRaw') {
+        chartData = influxDbManager.getDeltaToIdealTpr0AdjustedAvgTroRaw(pcapID, streamID, from, to)
     } else if (measurement === 'DeltaRtpTsVsPacketTsRaw') {
         chartData = influxDbManager.getDeltaRtpTsVsPacketTsRaw(pcapID, streamID, from, to)
     } else if (measurement === 'DeltaToPreviousRtpTsRaw') {

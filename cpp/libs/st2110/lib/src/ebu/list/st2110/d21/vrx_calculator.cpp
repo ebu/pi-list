@@ -9,7 +9,7 @@ using namespace ebu_list::st2110::d21;
 vrx_calculator::vrx_calculator(int npackets,
     media::video::info video_info,
     vrx_settings settings)
-    : tvd_kind_(settings.tvd),
+    : settings_(settings),
     tframe_(1 / video_info.rate),
     constants_(calculate_vrx_constants(npackets, tframe_, settings.schedule, video_info.scan, video_info.raster))
 {
@@ -29,11 +29,18 @@ packet_info vrx_calculator::on_packet(const clock::time_point& packet_timestamp,
         const auto base_frame_time = current_n_ * tframe_;
         const auto ideal_tvd = base_frame_time + constants_.tr_offset;
 
-        if (tvd_kind_ == tvd_kind::ideal)
+        if (settings_.tvd == tvd_kind::ideal)
         {
-            tvd_ = ideal_tvd;
+            if (settings_.troffset.has_value())
+            {
+                tvd_ = base_frame_time + fraction64(settings_.troffset.value().count(), 1'000'000'000);
+            }
+            else
+            {
+                tvd_ = ideal_tvd;
+            }
         }
-        else if (tvd_kind_ == tvd_kind::first_packet_first_frame)
+        else if (settings_.tvd == tvd_kind::first_packet_first_frame)
         {
             if (!first_tvd_)
             {
@@ -44,7 +51,7 @@ packet_info vrx_calculator::on_packet(const clock::time_point& packet_timestamp,
         }
         else
         {
-            LIST_ASSERT(tvd_kind_ == tvd_kind::first_packet_each_frame);
+            LIST_ASSERT(settings_.tvd == tvd_kind::first_packet_each_frame);
             tvd_ = packet_time;
         }
 
@@ -53,7 +60,7 @@ packet_info vrx_calculator::on_packet(const clock::time_point& packet_timestamp,
         // TODO: do not reset
         vrx_prev_ = 0;
 
-        current.delta_to_ideal_tpr0 = ideal_tvd - packet_time;
+        current.delta_to_ideal_tpr0 = tvd_ - packet_time;
 
         ++frame_count_;
     }

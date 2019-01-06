@@ -81,6 +81,18 @@ class InfluxDbManager {
         return this.sendQueryAndFormatResults(query);
     }
 
+    getVrxAdjustedAvgTro(pcapID, streamID, startTime, endTime) {
+        const query = `
+            select max("gapped-adjusted-avg-tro-vrx"), min("gapped-adjusted-avg-tro-vrx")
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
+            group by time(2ms)
+        `;
+
+        log.info(`Get VRX adjusted average TRO for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
+
     getVrxFirstPacketFirstFrame(pcapID, streamID, startTime, endTime) {
         const query = `
             select max("gapped-first_packet_first_frame-vrx"), min("gapped-first_packet_first_frame-vrx")
@@ -119,14 +131,23 @@ class InfluxDbManager {
     }
 
     getDeltaToIdealTpr0Raw(pcapID, streamID, startTime, endTime) {
-        const wanted_resolution = Math.ceil((endTime - startTime) / 2000);
-        const resolution = wanted_resolution <= 1 ? "1ns" : `${wanted_resolution}ns`;
         const query = `
             select "gapped-ideal-delta_to_ideal_tpr0" as "value"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
         `;
 
         log.info(`Get DeltaToIdealTpr0 for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
+
+    getDeltaToIdealTpr0AdjustedAvgTroRaw(pcapID, streamID, startTime, endTime) {
+        const query = `
+            select "gapped-adjusted-avg-tro-delta_to_ideal_tpr0" as "value"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
+        `;
+
+        log.info(`Get DeltaToIdealTpr0AdjustedAvgTroRaw for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
 
         return this.sendQueryAndFormatResults(query);
     }
@@ -156,7 +177,7 @@ class InfluxDbManager {
 
         return this.sendQueryAndFormatResults(query);
     }
-    
+
     getDeltaToPreviousRtpTsRaw(pcapID, streamID, startTime, endTime) {
         const wanted_resolution = Math.ceil((endTime - startTime) / 2000);
         const resolution = wanted_resolution <= 1 ? "1ns" : `${wanted_resolution}ns`;

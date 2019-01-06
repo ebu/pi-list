@@ -23,7 +23,7 @@ const VideoStreamInformation = (props) => {
                 <VideoStatistics {...statistics} />
             </div>
             <div className="col-xs-12 col-md-3">
-                <Dash21Info {...globalVideoAnalysis} />
+                <Dash21Info {...globalVideoAnalysis} {...mediaInfo} />
             </div>
         </div>
     );
