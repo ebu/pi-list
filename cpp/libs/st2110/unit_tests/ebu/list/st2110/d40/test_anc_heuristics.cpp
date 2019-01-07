@@ -70,4 +70,22 @@ SCENARIO("ST2110-40 heuristics")
             }
         }
     }
+
+    GIVEN("an ancillary stream with unknown DID/SDID")
+    {
+        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-40/forged_as_invalid_did-sdid=1.pcap");
+
+        rtp_source source(pcap_file);
+
+        anc_format_detector detector;
+        const auto result = run_detector(detector, source);
+
+        WHEN("we check the status")
+        {
+            THEN("it is invalid")
+            {
+                REQUIRE(result == detector::status::invalid);
+            }
+        }
+    }
 }

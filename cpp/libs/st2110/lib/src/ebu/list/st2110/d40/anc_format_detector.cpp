@@ -86,7 +86,6 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
 
         if ( !anc_packet.sanity_check() )
         {
-            logger()->error("Ancillary: sanity");
             return detector::status::detecting;
         }
 
@@ -147,6 +146,13 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
     }
 
     const auto res = detector_.handle_data(packet);
+
+    /* analysis terminated but no valid ancillary found */
+    if ((res != detector::status::detecting) && (! description_.streams.size()))
+    {
+        logger()->warn("Ancillary, no valid stream found");
+        return detector::status::invalid;
+    }
 
     return  res;
 }
