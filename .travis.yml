@@ -1,0 +1,10 @@
+language: c++
+
+services:
+  - docker
+
+before_install:
+  - ./scripts/docker_build_wrapper.sh init
+
+#script:
+#  - bundle exec rake test
