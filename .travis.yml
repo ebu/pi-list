@@ -1,4 +1,4 @@
-language: c++
+language: cpp
 
 services:
   - docker
@@ -7,4 +7,4 @@ before_install:
   - ./scripts/docker_build_wrapper.sh init
 
 script:
-  - ./scripts/docker_build_wrapper.sh release
+  - ./scripts/docker_build_wrapper.sh dev
