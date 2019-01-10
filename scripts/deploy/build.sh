@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eu
+
 CMAKE_FLAGS=$1
 
 SCRIPT_DIR="$(dirname $(readlink -f $0))"
