@@ -98,6 +98,15 @@ class FileSystem {
         return Promise.all(filesToRead);
     }
 
+
+    downloadFile(filePath, filename, res) {
+        if(this.fileExists(filePath)) {
+            res.download(filePath, filename);
+        } else {
+            res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND);
+        }
+    }
+
     /**
      *
      * @param filePath
@@ -105,13 +114,7 @@ class FileSystem {
      */
     sendFileAsResponse(filePath, res) {
         if(this.fileExists(filePath)) {
-            // Verify if the file extension is related with a JSON file
-            if (filePath.includes('.json')) {
-                this.readFile(filePath).then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data));
-            } else {
-                res.sendFile(filePath);
-            }
-
+            this.readFile(filePath).then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data));
         } else {
             res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND);
         }

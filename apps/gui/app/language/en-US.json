@@ -152,6 +152,7 @@
     "delete_header": "Delete PCAP file",
     "delete_message": "Are you sure you want to delete %{name} file?",
     "download_sdp": "Download SDP",
+    "download_pcap": "Download PCAP",
     "no_pcaps": "No PCAPs file found!",
     "truncated": "Truncated",
 

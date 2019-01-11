@@ -152,13 +152,23 @@ router.delete('/:pcapID/', (req, res) => {
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
+/* Download a PCAP File */
+router.get('/:pcapID/download', (req, res) => {
+    const { pcapID } = req.params;
+
+    Pcap.findOne({id: pcapID}).exec()
+        .then(data => {
+            const path = `${getUserFolder(req)}/${pcapID}/${data.pcap_file_name}`;
+            fs.downloadFile(path, `${data.file_name}`, res);
+        });
+});
 
 /* Get sdp.sdp file for a pcap */
 router.get('/:pcapID/sdp', (req, res) => {
     const { pcapID } = req.params;
     const path = `${getUserFolder(req)}/${pcapID}/sdp.sdp`;
 
-    fs.sendFileAsResponse(path, res);
+    fs.downloadFile(path, `${pcapID}_sdp.sdp`, res);
 });
 
 /* Get info from pcap */

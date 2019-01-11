@@ -152,6 +152,7 @@
     "delete_header": "Apagar PCAP",
     "delete_message": "Tem a certeza que quer apagar o ficheiro %{name}?",
     "download_sdp": "Descarregar SDP",
+    "download_pcap": "Descarregar PCAP",
     "no_pcaps": "Não foram encontrados ficheiros PCAP!",
     "truncated": "Truncado",
 
