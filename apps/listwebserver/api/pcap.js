@@ -111,13 +111,50 @@ router.put('/', upload.single('pcap'), (req, res) => {
             })
             .then((output) => {
                 logger('st2110_extractor').info(output.stdout);
-                Pcap.findOne({id: pcap_uuid}).exec()
-                    .then(data => {
-                        websocketManager.instance().sendEventToUser(userID, {
-                            event: "DONE",
-                            data: Object.assign({}, data._doc, { progress: 100 })
-                        });
-                    });
+                // post-process every audio stream for jitter analysis
+                return Stream.find({pcap: pcap_uuid, media_type: "audio" }).exec()
+            })
+            .then(streams => {
+                var influx_promises= [];
+                streams.forEach(stream => {
+                    influx_promises.push(influxDbManager.getTSDFAmp(pcap_uuid, stream.id));
+                    influx_promises.push(Stream.findOne({id: stream.id}));
+                })
+                return Promise.all(influx_promises);
+            })
+            .then(values => {
+                var mongo_promises = [];
+                // values = [ [influx1], stream1, [influx2], stream2, ... ]
+                for (i = 0; i < values.length; i+=2) {
+                    var tsdf_max, res;
+                    if (values[i] == false) res = 'undefined';
+                    else tsdf_max = values[i][0].max;
+
+                    const stream = values[i+1];
+                    if (! stream.media_specific) continue; // can't do anything without associated stream
+                    const packet_time = stream.media_specific.packet_time * 1000; // usec
+
+                    // determine compliance based on EBU's recommendation
+                    if (tsdf_max < packet_time) res = 'narrow';
+                    else if (tsdf_max > 17 * packet_time) res = 'not_compliant';
+                    else if (! tsdf_max) res = 'undefined';
+                    else res = 'wide';
+
+                    console.debug("promise: tsdf:" + tsdf_max + " res:" + res); // TODO: remove me
+                    mongo_promises.push(Stream.findOneAndUpdate({id: stream.id},
+                        {global_audio_analysis: { tsdf_max: tsdf_max, tsdf_compliance: res }}, {new: true}));
+                }
+                return Promise.all(mongo_promises);
+            })
+            .then(values => {
+                return Pcap.findOne({id: pcap_uuid}).exec(); // it returns the mongo db record of the PCAP
+            })
+            .then(pcap_data => {
+                // Everything is done, we must notify the GUI
+                websocketManager.instance().sendEventToUser(userID, {
+                    event: "DONE",
+                    data: Object.assign({}, pcap_data._doc, { progress: 100 })
+                });
             })
             .catch((output) => {
                 logger('upload-pcap').error(`exception: ${output} ${output.stderr}`);
@@ -229,12 +266,31 @@ router.patch('/:pcapID/stream/:streamID', (req, res) => {
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
-/* */
+/*  */
 router.get('/:pcapID/stream/:streamID/analytics/CInst/validation', (req, res) => {
     const { pcapID, streamID } = req.params;
 
     const path = `${getUserFolder(req)}/${pcapID}/${streamID}/${CONSTANTS.CINST_FILE}`;
     fs.sendFileAsResponse(path, res);
+});
+
+/* Audio jitters: TSDF */
+router.get('/:pcapID/stream/:streamID/analytics/TimeStampedDelayFactor', (req, res) => {
+    const { pcapID, streamID } = req.params;
+    const { from, to, tolerance, tsdfmax } = req.query;
+    const limit = tolerance * 17; // EBU recommendation #3337
+
+    chartData = influxDbManager.getTSDF(pcapID, streamID, from, to);
+    chartData
+        .then(data => {
+            data.forEach(e => {
+                e['tolerance'] = tolerance;
+                // display the red limit only when relevant
+                if (tsdfmax > 0.3 * limit) e['limit'] = limit;
+            });
+            res.json(data);
+        })
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
 /* */
@@ -269,7 +325,6 @@ router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
     } else if (measurement === 'DeltaRtpVsNt') {
         chartData = influxDbManager.getDeltaRtpVsNt(pcapID, streamID, from, to)
     }
-
     chartData.then(data => res.json(data));
 });
 

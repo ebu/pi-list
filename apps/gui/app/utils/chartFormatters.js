@@ -158,6 +158,25 @@ const stdDeviationMeanMinMaxLineChart = [
     }
 ];
 
+const singleValueLineThresholdChart = [
+    {
+        yValues: "value",
+        label: "Value",
+        color: CHART_COLORS.GREEN
+    },
+    {
+        yValues: "tolerance",
+        label: "Tolerance",
+        color: CHART_COLORS.YELLOW
+    },
+    {
+        yValues: "limit",
+        label: "Limit",
+        color: CHART_COLORS.RED
+    }
+
+];
+
 const singleValueLineChart = [
     {
         yValues: "value",
@@ -179,6 +198,7 @@ export default {
     // new Line Chart API
     minMaxLineChart,
     stdDeviationMeanMinMaxLineChart,
+    singleValueLineThresholdChart,
     singleValueLineChart,
     xAxisTimeDomain
 };

@@ -107,3 +107,26 @@ void influxdb_vrx_logger::on_complete()
 void influxdb_vrx_logger::on_error(std::exception_ptr)
 {
 }
+
+//------------------------------------------------------------------------------
+
+influxdb_audio_jitter_logger::influxdb_audio_jitter_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id, std::string prefix)
+    : db_(url, pcap_id, stream_id),
+    prefix_(std::move(prefix))
+{
+}
+
+void influxdb_audio_jitter_logger::on_data(const ebu_list::audio_jitter_analyser::tsdf_sample& sample)
+{
+    db_.send_data(prefix_ + "-tsdf", sample.time_stamped_delay_factor, sample.timestamp);
+}
+
+void influxdb_audio_jitter_logger::on_complete()
+{
+    db_.on_complete();
+}
+
+void influxdb_audio_jitter_logger::on_error(std::exception_ptr)
+{
+}
+

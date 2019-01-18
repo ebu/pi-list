@@ -18,7 +18,12 @@ const AudioInfo = props => (
             {
                 key: translate('media_information.audio.sampling'),
                 value: props.sampling
+            },
+            {
+                key: translate('media_information.audio.packet_time'),
+                value: props.packet_time
             }
+
         ])}
     </Fragment>
 );

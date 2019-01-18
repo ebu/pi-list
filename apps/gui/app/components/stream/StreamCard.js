@@ -28,6 +28,7 @@ const StreamCard = (props) => {
 
     const needsInfo = props.state === 'needs_info' || props.state === 'ready';
     const isVideo = props.media_type === 'video';
+    const isAudio = props.media_type === 'audio';
 
     let route;
 
@@ -68,7 +69,9 @@ const StreamCard = (props) => {
                     <div className="row lst-no-margin">
                         <StreamBadge media_type={props.media_type} media_specific={props.media_specific} />
                         { isVideo &&
-                            <AnalysisBadge name="ST2110-21" compliance={props.global_video_analysis.compliance} /> }
+                            <AnalysisBadge media_type={props.media_type} name="ST2110-21" compliance={props.global_video_analysis.compliance} /> }
+                        { isAudio &&
+                            <AnalysisBadge media_type={props.media_type} name="TSFD" compliance={props.global_audio_analysis.tsdf_compliance} /> }
                     </div>
                 )}
             </Panel>

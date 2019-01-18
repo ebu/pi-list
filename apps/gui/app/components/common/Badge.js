@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import Icon from 'components/common/Icon';
 
 const propTypes = {
-    type: PropTypes.oneOf(['success', 'danger', 'warning', 'info']),
+    type: PropTypes.oneOf(['success', 'danger', 'warning', 'info', 'undefined']),
     icon: PropTypes.string,
     text: PropTypes.string,
     className: PropTypes.string,

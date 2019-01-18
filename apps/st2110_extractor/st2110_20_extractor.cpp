@@ -306,7 +306,21 @@ namespace
                 nr_audio++;
                 const auto& audio_info = std::get<audio_stream_details>(stream_info_it->second);
                 auto new_handler = std::make_unique<audio_stream_serializer>(first_packet, stream_info, audio_info, audio_dump_handler, config.storage_folder);
-                return new_handler;
+                auto ml = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
+                ml->add(std::move(new_handler));
+
+                if (config.influxdb_url)
+                {
+                    const auto influx_db_url = config.influxdb_url.value_or(INFLUX_DEFAULT_URL);
+                    {
+                        const auto info_path = config.storage_folder / stream_info.id;
+
+                        auto db_logger = std::make_unique<influx::influxdb_audio_jitter_logger>(influx_db_url, pcap.id, stream_info.id, "audio-jitter");
+                        auto analyzer = std::make_unique<audio_jitter_analyser>(first_packet, std::move(db_logger), ebu_list::media::audio::to_int(audio_info.audio.sampling));
+                        ml->add(std::move(analyzer));
+                    }
+                }
+                return ml;
             }
             else if( stream_info.type == media::media_type::ANCILLARY_DATA )
             {

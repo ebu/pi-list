@@ -18,7 +18,12 @@ const AudioStatistics = props => (
             {
                 key: translate('media_information.audio.samples_per_packet'),
                 value: props.samples_per_packet
+            },
+            {
+                key: translate('media_information.audio.tsdf_max'),
+                value: `${props.tsdf_max} usec`
             }
+
         ])}
     </Fragment>
 );
