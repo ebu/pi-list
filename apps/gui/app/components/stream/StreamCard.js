@@ -71,7 +71,7 @@ const StreamCard = (props) => {
                         { isVideo &&
                             <AnalysisBadge media_type={props.media_type} name="ST2110-21" compliance={props.global_video_analysis.compliance} /> }
                         { isAudio &&
-                            <AnalysisBadge media_type={props.media_type} name="TSFD" compliance={props.global_audio_analysis.tsdf_compliance} /> }
+                            <AnalysisBadge media_type={props.media_type} name="TSDF" compliance={props.global_audio_analysis.tsdf_compliance} /> }
                     </div>
                 )}
             </Panel>
