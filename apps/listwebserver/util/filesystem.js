@@ -114,7 +114,13 @@ class FileSystem {
      */
     sendFileAsResponse(filePath, res) {
         if(this.fileExists(filePath)) {
-            this.readFile(filePath).then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data));
+            // Verify if the file extension is related with a JSON file
+            if (filePath.includes('.json')) {
+                this.readFile(filePath).then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data));
+            } else {
+                res.sendFile(filePath);
+            }
+
         } else {
             res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND);
         }
