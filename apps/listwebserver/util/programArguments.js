@@ -1,7 +1,7 @@
 const commander = require('commander');
 const yamlParser = require('read-yaml');
 const deepFreeze = require('deep-freeze');
-const path = require('../helpers/path');
+const path = require('./path');
 
 function parseNmosArguments(arguments) {
     if(!arguments.nmosRegistry) {

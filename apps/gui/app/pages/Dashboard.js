@@ -5,7 +5,8 @@ import PcapList from 'containers/PcapList';
 import FlowList from 'containers/live/FlowList';
 import { translate } from 'utils/translation';
 import { LiveFeature } from 'utils/liveFeature';
-import RealTimeDataStatus from '../containers/live/RealTimeDataStatus';
+import RealTimeDataStatus from 'containers/live/RealTimeDataStatus';
+import PCAPSubscriptionPanel from 'containers/live/PCAPSubscriptionPanel';
 
 const Dashboard = () => (
     <React.Fragment>
@@ -19,8 +20,11 @@ const Dashboard = () => (
         </div>
         <LiveFeature>
             <div className="row">
+                <Panel className="col-xs-12 col-md-3 col-lg-4" title={translate('workflow.record_stream')}>
+                    <PCAPSubscriptionPanel />
+                </Panel>
                 <Panel
-                    className="col-xs-12"
+                    className="col-xs-12 col-md-9 col-lg-8"
                     title={translate('headings.last_flows')}
                     rightToolbar={<RealTimeDataStatus />}
                 >

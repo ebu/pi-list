@@ -76,6 +76,8 @@ export default {
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/CInstRaw?from=${fromNs}&to=${toNs}`),
     getVrxIdealForStream: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/VrxIdeal?from=${fromNs}&to=${toNs}`),
+    getVrxIdealRaw: (pcapID, streamID, fromNs, toNs) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/VrxIdealRaw?from=${fromNs}&to=${toNs}`),
     getVrxAdjustedAvgTro: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/VrxAdjustedAvgTro?from=${fromNs}&to=${toNs}`),
     getVrxFirstPacketFirstFrameFromStream: (pcapID, streamID, fromNs, toNs) =>
@@ -119,5 +121,6 @@ export default {
     getLiveStream: streamID => request.get(`live/streams/${streamID}`),
     deleteLiveStream: streamID => request.delete(`live/streams/${streamID}`),
     changeLiveStreamName: (streamID, data) => request.patch(`live/streams/${streamID}/`, data),
-    subscribeLiveStream: data => request.put('live/streams/subscribe/', data)
+    subscribeLiveStream: data => request.put('live/streams/subscribe/', data),
+    subscribePCAP: data => request.put('live/pcap/capture/', data)
 };

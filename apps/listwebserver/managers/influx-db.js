@@ -81,6 +81,17 @@ class InfluxDbManager {
         return this.sendQueryAndFormatResults(query);
     }
 
+    getVrxIdealRaw(pcapID, streamID, startTime, endTime) {
+        const query = `
+            select "gapped-ideal-vrx" as "value"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
+        `;
+
+        log.info(`Get VRX Ideal in the pcap ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
+
     getVrxAdjustedAvgTro(pcapID, streamID, startTime, endTime) {
         const query = `
             select max("gapped-adjusted-avg-tro-vrx"), min("gapped-adjusted-avg-tro-vrx")

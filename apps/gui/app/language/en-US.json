@@ -72,7 +72,8 @@
       "destination_address": "Destination Address",
       "destination_port": "Destination Port",
       "source_address": "Source Address",
-      "source_port": "Source Port"
+      "source_port": "Source Port",
+      "duration": "Duration"
     }
   },
 
@@ -136,7 +137,8 @@
     "pcaps_to_be_imported": "PCAP files to be imported",
     "reading_pcap": "Reading PCAP file...",
     "processing_streams": "Processing Streams...",
-    "done": "Done!"
+    "done": "Done!",
+    "record_stream": "Record Stream"
   },
 
   "user_account": {

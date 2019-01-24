@@ -64,6 +64,10 @@ const PcapSchema = new mongoose.Schema({
     wide_streams: {
         type: Number,
         default: 0
+    },
+    generated_from_network: {
+        type: Boolean,
+        default: false
     }
 });
 

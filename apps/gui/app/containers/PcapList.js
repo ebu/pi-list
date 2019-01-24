@@ -123,7 +123,7 @@ class PcapList extends Component {
                         {
                             key: 'file_name',
                             header: 'PCAP',
-                            value: 'file_name',
+                            render: this.renderPcapFileName,
                             cellClassName: 'lst-truncate',
                             width: '30%'
                         },
@@ -243,6 +243,18 @@ class PcapList extends Component {
                 {moment(rowData.date).format('lll')}
             </span>
         );
+    }
+
+    renderPcapFileName(rowData) {
+        return rowData.generated_from_network ?
+            <Fragment>
+                {rowData.file_name}
+                <Badge
+                    className="lst-table-configure-sdp-badge"
+                    type="info"
+                    icon="settings_input_composite"
+                />
+            </Fragment> : rowData.file_name;
     }
 }
 

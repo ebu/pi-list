@@ -46,7 +46,7 @@ class PerFrameAnalysisViewer extends Component {
                         />
                         <LineChart
                             key={this.state.first_packet_ts + "s"}
-                            asyncData={() => api.getVrxFirstPacketEachFrameRaw(this.props.pcapID, this.props.streamID, this.state.first_packet_ts, this.state.last_packet_ts)}
+                            asyncData={() => api.getVrxIdealRaw(this.props.pcapID, this.props.streamID, this.state.first_packet_ts, this.state.last_packet_ts)}
                             xAxis={chartFormatters.getTimeLineLabel}
                             data={chartFormatters.singleValueLineChart}
                             title="Vrx"
