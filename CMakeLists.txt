@@ -33,7 +33,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 add_subdirectory(third_party)
 
 if(BUILD_TESTS)
-    enable_testing ()
+    enable_testing()
 
     if(!WIN32)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage") # for coverage

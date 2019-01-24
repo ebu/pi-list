@@ -6,6 +6,9 @@ using namespace ebu_list::pcap;
 using namespace ebu_list;
 
 //------------------------------------------------------------------------------
+
+constexpr auto max_packet_size = 0x40000;
+
 maybe_header pcap::read_header(chunked_data_source& source) noexcept
 {
     auto s = source.try_read_exactly(sizeof(raw_file_header));
@@ -23,9 +26,12 @@ maybe_packet pcap::read_packet(const file_header_lens& header, chunked_data_sour
     if (size(s) < sizeof(raw_packet_header)) return std::nullopt;
 
     auto ph = packet_header(std::move(s), header);
+    
+    const auto included_len = ph().incl_len();
+    LIST_ENFORCE(included_len < max_packet_size, std::runtime_error, "Invalid packet size: ", included_len);
 
-    auto data = source.try_read_exactly(ph().incl_len());
-    if (size(data) != ph().incl_len()) return std::nullopt;
+    auto data = source.try_read_exactly(included_len);
+    if (size(data) != included_len) return std::nullopt;
 
     const auto payload_len = ph().orig_len();
     if (data.view().size_bytes() == payload_len)
