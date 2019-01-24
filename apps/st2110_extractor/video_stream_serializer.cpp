@@ -27,8 +27,13 @@ namespace
         return dimensions;
     }
     // TODO: receive this externally
-    constexpr auto vrx_analysis_settings = d21::vrx_settings{ d21::read_schedule::gapped, d21::tvd_kind::ideal };
-
+    constexpr auto vrx_analysis_settings = 
+        d21::vrx_settings
+        {
+            d21::read_schedule::gapped, 
+            d21::tvd_kind::ideal ,
+            std::nullopt
+        };
 }
 
 void ebu_list::write_frame_info(const path& base_dir, const std::string& stream_id, const frame_info& info)

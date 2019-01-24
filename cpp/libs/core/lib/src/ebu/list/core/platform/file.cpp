@@ -43,3 +43,8 @@ ebu_list::file_handle::operator bool() const
 {
     return handle_ != nullptr;
 }
+
+size_t ebu_list::write(file_handle& f, cbyte_span buffer)
+{
+    return fwrite(buffer.data(), 1, buffer.length_bytes(), f.handle());
+}

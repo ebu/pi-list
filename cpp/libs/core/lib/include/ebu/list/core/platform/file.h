@@ -25,7 +25,7 @@ namespace ebu_list
         FILE* const handle_ = nullptr;
     };
 
-    int read(file_handle& f, byte_span buffer);
+    size_t write(file_handle& f, cbyte_span buffer);
 
     using std::experimental::filesystem::create_directories;
 }
