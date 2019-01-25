@@ -29,7 +29,7 @@ SCENARIO("Open a file")
             THEN("it opens the file")
             {
                 const auto p = test_lib::sample_file("unit_tests/core/io/f1.bin");
-                file_source source(f, p);
+                file_source source(f, p.generic_u8string().c_str());
             }
         }
     }
@@ -41,7 +41,7 @@ SCENARIO("Open a file")
             THEN("it throws")
             {
                 const auto p = test_lib::sample_file("an_invalid_path.bin");
-                auto l = [&]() { file_source source(f, p); };
+                auto l = [&]() { file_source source(f, p.generic_u8string().c_str()); };
                 REQUIRE_THROWS(l());
             }
         }

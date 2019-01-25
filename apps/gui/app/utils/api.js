@@ -80,12 +80,6 @@ export default {
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/VrxIdealRaw?from=${fromNs}&to=${toNs}`),
     getVrxAdjustedAvgTro: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/VrxAdjustedAvgTro?from=${fromNs}&to=${toNs}`),
-    getVrxFirstPacketFirstFrameFromStream: (pcapID, streamID, fromNs, toNs) =>
-        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/VrxFirstPacketFirstFrame?from=${fromNs}&to=${toNs}`),
-    getVrxFirstPacketEachFrame: (pcapID, streamID, fromNs, toNs) =>
-        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/VrxFirstPacketEachFrame?from=${fromNs}&to=${toNs}`),
-    getVrxFirstPacketEachFrameRaw: (pcapID, streamID, fromNs, toNs) =>
-        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/VrxFirstPacketEachFrameRaw?from=${fromNs}&to=${toNs}`),
     getDeltaToIdealTpr0Raw: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/DeltaToIdealTpr0Raw?from=${fromNs}&to=${toNs}`),
     getDeltaToIdealTpr0AdjustedAvgTroRaw: (pcapID, streamID, fromNs, toNs) =>

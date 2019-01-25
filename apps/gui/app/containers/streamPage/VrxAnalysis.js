@@ -32,24 +32,6 @@ const VrxAnalysis = (props) => {
                     lineWidth={3}
                     legend
                 />
-                <LineChart
-                    asyncData={() => api.getVrxFirstPacketFirstFrameFromStream(pcapID, streamID, first_packet_ts, last_packet_ts)}
-                    xAxis={item => item.time}
-                    data={chartFormatters.minMaxLineChart}
-                    title="Tvd = 1st Packet of 1st Frame"
-                    height={300}
-                    lineWidth={3}
-                    legend
-                />
-                <LineChart
-                    asyncData={() => api.getVrxFirstPacketEachFrame(pcapID, streamID, first_packet_ts, last_packet_ts)}
-                    xAxis={chartFormatters.xAxisTimeDomain}
-                    data={chartFormatters.minMaxLineChart}
-                    title="Tvd = 1st Packet Each Frame"
-                    height={300}
-                    lineWidth={3}
-                    legend
-                />
             </div>
         </div>
     );

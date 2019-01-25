@@ -15,7 +15,8 @@ namespace
     uint32_t calculate_rtp_timestamp(fraction64 time)
     {
         // TODO: this overflows if using fraction
-        const auto ticks = static_cast<int64_t>(floor(static_cast<double>(time) * RTP_CLOCK_RATE));
+        const auto t = static_cast<double>(time) * RTP_CLOCK_RATE;
+        const auto ticks = static_cast<int64_t>(round(t));
         return ticks % RTP_WRAP_AROUND;
     }
 }

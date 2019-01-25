@@ -126,7 +126,7 @@ namespace
         return j;
     }
 
-    void run(logger_ptr console, const config& config)
+    void run(logger_ptr logger, const config& config)
     {
         constexpr auto use_offset_from_ptp_clock = false;
         const auto db_url = config.mongo_db_url.value_or(MONGO_DEFAULT_URL);
@@ -220,8 +220,8 @@ namespace
 
             if (stream_info_it == wanted_streams.end())
             {
-                console->warn("Bypassing stream with ssrc: {}", ssrc);
-                console->warn("\tdestination: {}", to_string(destination));
+                logger->warn("Bypassing stream with ssrc: {}", ssrc);
+                logger->warn("\tdestination: {}", to_string(destination));
                 auto handler = std::make_unique<rtp::null_listener>();
                 return handler;
             }
@@ -280,20 +280,6 @@ namespace
                             framer_ml->add(std::move(analyzer));
                         }
 
-                        {
-                            auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(influx_db_url, pcap.id, stream_info.id, "gapped-first_packet_first_frame");
-                            const auto settings = vrx_settings{ read_schedule::gapped, tvd_kind::first_packet_first_frame };
-                            auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info, settings);
-                            framer_ml->add(std::move(analyzer));
-                        }
-
-                        {
-                            auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(influx_db_url, pcap.id, stream_info.id, "gapped-first_packet_each_frame");
-                            const auto settings = vrx_settings{ read_schedule::gapped, tvd_kind::first_packet_each_frame };
-                            auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info, settings);
-                            framer_ml->add(std::move(analyzer));
-                        }
-
                         auto framer = std::make_unique<frame_start_filter>(frame_start_filter::listener_uptr(std::move(framer_ml)));
                         ml->add(std::move(framer));
                     }
@@ -325,15 +311,15 @@ namespace
             else if( stream_info.type == media::media_type::ANCILLARY_DATA )
             {
                 nr_anc++;
-                console->warn("Processing ANC stream with ssrc: {}.", ssrc);
+                logger->warn("Processing ANC stream with ssrc: {}.", ssrc);
                 const auto& anc_info = std::get<anc_stream_details>(stream_info_it->second);
                 auto new_handler = std::make_unique<anc_stream_serializer>(first_packet, stream_info, anc_info, anc_dump_handler, config.storage_folder);
                 return new_handler;
             }
             else
             {
-                console->warn("Bypassing stream with ssrc: {}. Reason: Unknown media type", ssrc);
-                console->warn("\tdestination: {}", to_string(destination));
+                logger->warn("Bypassing stream with ssrc: {}. Reason: Unknown media type", ssrc);
+                logger->warn("\tdestination: {}", to_string(destination));
                 auto handler = std::make_unique<rtp::null_listener>();
                 return handler;
             }
@@ -355,7 +341,7 @@ namespace
         const auto end_time = std::chrono::steady_clock::now();
         const auto processing_time = end_time - start_time;
         const auto processing_time_ms = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(processing_time).count());
-        console->info("Processing time: {:.3f} s", processing_time_ms / 1000.0);
+        logger->info("Processing time: {:.3f} s", processing_time_ms / 1000.0);
 
         update_tr_info(db, tro_info);
 
@@ -379,18 +365,17 @@ namespace
 
 int main(int argc, char* argv[])
 {
-    auto console = logger();
-    console->info("Based on EBU LIST v{}", ebu_list::version());
+    logger()->info("Based on EBU LIST v{}", ebu_list::version());
 
     const auto config = parse_or_usage_and_exit(argc, argv);
 
     try
     {
-        run(console, config);
+        run(logger(), config);
     }
     catch (std::exception& ex)
     {
-        console->error("exception: {}", ex.what());
+        logger()->error("exception: {}", ex.what());
         return -1;
     }
 
