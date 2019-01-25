@@ -4,7 +4,7 @@ import api from 'utils/api';
 import chartFormatters from 'utils/chartFormatters';
 import Chart from 'components/StyledChart';
 
-class PcapPage extends Component {
+class PtpPage extends Component {
 
     render() {
         const { pcapID } = this.props.match.params;
@@ -31,4 +31,4 @@ class PcapPage extends Component {
     }
 }
 
-export default PcapPage;
+export default PtpPage;

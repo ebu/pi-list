@@ -137,7 +137,8 @@
     "reading_pcap": "A ler o ficheiro PCAP...",
     "processing_streams": "A processar as Streams...",
     "done": "Concluído!",
-    "record_stream": "Gravar Stream"
+    "capture_stream": "Gravar Stream",
+    "start_capture": "Iniciar"
   },
 
   "user_account": {

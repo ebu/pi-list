@@ -138,7 +138,8 @@
     "reading_pcap": "Reading PCAP file...",
     "processing_streams": "Processing Streams...",
     "done": "Done!",
-    "record_stream": "Record Stream"
+    "capture_stream": "Capture Stream",
+    "start_capture": "Start"
   },
 
   "user_account": {

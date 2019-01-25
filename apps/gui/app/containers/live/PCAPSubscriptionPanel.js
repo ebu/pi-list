@@ -65,7 +65,7 @@ class PCAPSubscriptionPanel extends Component {
                             value={this.state.destination_port}
                             placeholder={this.state.destination_port}
                             min="0"
-                            max="60000"
+                            max="65535"
                             onChange={evt => this.setState({ destination_port: parseInt(evt.currentTarget.value, 10) })}
                         />
                     </FormInput>
@@ -91,7 +91,7 @@ class PCAPSubscriptionPanel extends Component {
                 <div className="row end-xs lst-text-right lst-no-margin">
                     <Button
                         type="info"
-                        label={translate('stream.analyze_stream')}
+                        label={translate('workflow.start_capture')}
                         onClick={this.subscribe}
                     />
                 </div>

@@ -52,6 +52,10 @@ const Dash21Info = (props) => {
                     key: 'TRO Default',
                     value: `${(props.tro_default_ns / 1000).toFixed(3)} μs`
                 },
+                {
+                    key: translate('media_information.video.read_schedule'),
+                    value: props.schedule === 'gapped' ? 'Gapped' : 'Linear'
+                },
             ])}
         </Fragment>
     );

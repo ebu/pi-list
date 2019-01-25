@@ -82,7 +82,7 @@ router.get('/:pcapID/download', (req, res) => {
     Pcap.findOne({id: pcapID}).exec()
         .then(data => {
             const path = `${getUserFolder(req)}/${pcapID}/${data.pcap_file_name}`;
-            fs.downloadFile(path, `${data.file_name}`, res);
+            fs.downloadFile(path, `${data.file_name}.pcap`, res);
         });
 });
 

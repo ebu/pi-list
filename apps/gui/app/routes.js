@@ -4,7 +4,7 @@ import routeNames from 'config/routeNames';
 
 import StreamList from 'pages/StreamList';
 import ConfigureStreamsPage from 'pages/ConfigureStreams';
-import PcapPage from 'pages/PcapPage';
+import PtpPage from 'pages/PtpPage';
 import LiveStreamList from 'pages/LiveStreamList';
 import Dashboard from 'pages/Dashboard';
 import StreamPage from 'pages/StreamPage';
@@ -30,7 +30,7 @@ export default (
                 </Panel>
             )}
         />
-        <Route path={`${routeNames.PCAPS}/:pcapID/ptp`} component={PcapPage} exact />
+        <Route path={`${routeNames.PCAPS}/:pcapID/ptp`} component={PtpPage} exact />
         <Route path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}`} component={StreamList} exact />
         <Route path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}/:streamID`} component={StreamPage} exact />
         <Route path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}/:streamID/${routeNames.CONFIGURE}`} component={ConfigureStreamsPage} exact />

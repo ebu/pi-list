@@ -20,7 +20,7 @@ const Dashboard = () => (
         </div>
         <LiveFeature>
             <div className="row">
-                <Panel className="col-xs-12 col-md-3 col-lg-4" title={translate('workflow.record_stream')}>
+                <Panel className="col-xs-12 col-md-3 col-lg-4" title={translate('workflow.capture_stream')}>
                     <PCAPSubscriptionPanel />
                 </Panel>
                 <Panel
