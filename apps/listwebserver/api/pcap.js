@@ -9,7 +9,8 @@ const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const CONSTANTS = require('../enums/constants');
 const Pcap = require('../models/pcap');
 const Stream = require('../models/stream');
-const { generateRandomPcapFilename, pcapIngest, generateRandomPcapDefinition, getUserFolder } = require('../util/ingest');
+const { pcapSingleStreamIngest, pcapIngest,
+    generateRandomPcapDefinition, generateRandomPcapFilename, getUserFolder } = require('../util/ingest');
 
 function isAuthorized (req, res, next) {
     const { pcapID } = req.params;
@@ -47,7 +48,10 @@ router.use('/:pcapID', isAuthorized);
  *  URL: /api/pcap/
  *  Method: PUT
  */
-router.put('/', upload.single('pcap'), pcapIngest);
+router.put('/', upload.single('pcap'), (req, res, next) => {
+    res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send();
+    next();
+}, pcapIngest);
 
 /* Get all Pcaps found */
 router.get('/', (req, res) => {
@@ -152,7 +156,6 @@ router.patch('/:pcapID/stream/:streamID', (req, res) => {
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
-/*  */
 router.get('/:pcapID/stream/:streamID/analytics/CInst/validation', (req, res) => {
     const { pcapID, streamID } = req.params;
 
@@ -211,11 +214,9 @@ router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
 });
 
 /* PUT new help information for stream */
-router.put('/:pcapID/stream/:streamID/help', (req, res) => {
+router.put('/:pcapID/stream/:streamID/help', (req, res, next) => {
     const { pcapID, streamID } = req.params;
 
-    // todo: only change media_specific and media_type?
-    // todo: do we really need overwrite?
     Stream.findOneAndUpdate({id: streamID}, req.body, {new: true, overwrite: true}).exec()
         .then(() => {
             return Pcap.findOne({id: pcapID}).exec();
@@ -224,23 +225,28 @@ router.put('/:pcapID/stream/:streamID/help', (req, res) => {
             const pcap_folder = `${getUserFolder(req)}/${pcapID}`;
             const pcap_location = `${pcap_folder}/${pcap.pcap_file_name}`;
 
-            const {withMongo, withInflux} = argumentsToCmd();
+            // sets req.file, which is used by the ingest system
+            req.file = {
+                path: pcap_location,
+                originalname: pcap.file_name,
+                filename: pcap.pcap_file_name
+            };
 
-            const st2110ExtractorCommand =
-                `"${program.cpp}/st2110_extractor" ${pcapID} "${pcap_location}" "${pcap_folder}" ${withInflux} ${withMongo} -s "${streamID}"`;
+            // sets req.pcap, which is used by the ingest system
+            req.pcap = {
+                uuid: pcapID,
+                folder: pcap_folder
+            };
 
-            logger('st2110_extractor').info(`Command: ${st2110ExtractorCommand}`);
-            return exec(st2110ExtractorCommand);
-        })
-        .then((output) => {
-            logger('st2110_extractor').info(output.stdout);
-            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(true);
+            next();
         })
         .catch((output) => {
-            logger('st2110_extractor').error(`${output.stdout} ${output.stderr}`);
+            logger('Stream Re-ingest').error(`${output.stdout} ${output.stderr}`);
             res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR)
                 .send(API_ERRORS.PCAP_EXTRACT_METADATA_ERROR);
         });
+}, pcapSingleStreamIngest, (req, res) => {
+    res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
 });
 
 /* Get all frames for stream */
