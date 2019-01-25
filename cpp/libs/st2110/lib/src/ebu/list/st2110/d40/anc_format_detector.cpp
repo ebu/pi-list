@@ -62,7 +62,7 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
      */
     for (uint8_t i=0; i < anc_header.anc_count(); i++)
     {
-        logger()->debug("Ancillary: data count : {}", i);
+        logger()->trace("Ancillary: data count : {}", i);
 
         if (p > end)
         {
@@ -92,7 +92,7 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
         auto stream = anc_stream((anc_packet.did() << 8) + anc_packet.sdid(), anc_packet.stream_num());
         if (!stream.is_valid())
         {
-            logger()->error("Ancillary: stream invalid");
+            logger()->trace("Ancillary: stream invalid");
             return detector::status::detecting;
         }
 

@@ -62,7 +62,7 @@ bool anc_packet_header_lens::sanity_check() const
 
 void anc_packet_header_lens::dump() const
 {
-    logger()->debug("Ancillary packet: color_channel={}, line_num={}, offset={}, stream={}, did={}, sdid={}, data_count={}",
+    logger()->trace("Ancillary packet: color_channel={}, line_num={}, offset={}, stream={}, did={}, sdid={}, data_count={}",
             color_channel(),
             line_num(),
             horizontal_offset(),

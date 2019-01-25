@@ -56,7 +56,7 @@ bool d40::sanity_check_word(const uint16_t word)
 
     if (!res)
     {
-        logger()->debug("Parity error in {}", word);
+        logger()->trace("Parity error in {}", word);
     }
 
     return res;

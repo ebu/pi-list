@@ -21,26 +21,43 @@ void format_detector::on_data(const rtp::packet& packet)
     if (status_ != detector::status::detecting) return;
 
     std::vector<const detector*> to_remove;
+    const detector* one_valid = nullptr;
 
     for(auto& d : detectors_) 
     { 
+        if (one_valid)
+        {
+            to_remove.push_back(d.get());
+            continue;
+        }
+
         const auto result = d->handle_data(packet);
         if (result == detector::status::invalid)
         {
-            logger()->debug("Detector marked this stream as not target format");
+            //logger()->debug("Detector marked this stream as not target format");
 
             to_remove.push_back(d.get());
         }
 
-        if (result == detector::status::valid && detectors_.size() == 1)
+        if (result == detector::status::valid)
         {
             status_ = detector::status::valid;
+            one_valid = d.get();
         }
     }
 
-    detectors_.erase(remove_if(begin(detectors_), end(detectors_),
-        [&](const auto& x) { return find(begin(to_remove), end(to_remove), x.get()) != end(to_remove); }), 
-        end(detectors_));
+    if (one_valid)
+    {
+        detectors_.erase(remove_if(begin(detectors_), end(detectors_),
+            [&](const auto& x) { return x.get() != one_valid; }),
+            end(detectors_));
+    }
+    else
+    {
+        detectors_.erase(remove_if(begin(detectors_), end(detectors_),
+            [&](const auto& x) { return find(begin(to_remove), end(to_remove), x.get()) != end(to_remove); }),
+            end(detectors_));
+    }
 
     if (detectors_.empty())
     {
