@@ -90,7 +90,7 @@
     "stream_missing_information": "Missing Stream Information",
     "stream_already_analyzed": "Stream already analyzed",
     "stream_not_analyzed": "Stream not analyzed",
-    "media_type_unknown": "The media type for this stream is unknown!"
+    "media_type_unknown": "The media type for this stream is unknown"
   },
 
   "information": {
@@ -103,30 +103,32 @@
 
   "notifications": {
     "success": {
-      "pcap_upload": "PCAP file uploaded!",
+      "pcap_upload": "PCAP file uploaded",
       "pcap_upload-message": "The %{name} file was successfully uploaded",
 
       "pcap_deleted": "PCAP file deleted",
-      "pcap_deleted_message": "The %{name} file was successfully deleted!",
+      "pcap_deleted_message": "The %{name} file was successfully deleted",
 
       "stream_deleted": "Stream deleted",
-      "stream_deleted_message": "The stream was successfully deleted!",
+      "stream_deleted_message": "The stream was successfully deleted",
 
-      "stream_analysis": "Success!",
-      "stream_analysis_message": "The stream was successfully analysed!"
+      "stream_analysis": "Success",
+      "stream_analysis_message": "The stream was successfully analysed",
+      "stream_capture_message": "The stream was successfully captured"
     },
     "error": {
-      "pcap_upload": "PCAP upload failed!",
+      "pcap_upload": "PCAP upload failed",
       "pcap_upload-message": "An error occurred during the %{name} file upload process",
 
       "pcap_deleted": "Error while deleting PCAP",
-      "pcap_deleted_message": "The %{name} file cannot be deleted!",
+      "pcap_deleted_message": "The %{name} file cannot be deleted",
 
       "stream_deleted": "Error while deleting stream",
-      "stream_deleted_message": "The stream cannot be deleted!",
+      "stream_deleted_message": "The stream cannot be deleted",
 
-      "stream_analysis": "Error!",
-      "stream_analysis_message": "Something went wrong during the stream analysis!"
+      "stream_analysis": "Error",
+      "stream_analysis_message": "Something went wrong during the stream analysis",
+      "stream_capture_message": "Something went wrong during the capture"
     }
   },
 
@@ -137,7 +139,7 @@
     "pcaps_to_be_imported": "PCAP files to be imported",
     "reading_pcap": "Reading PCAP file...",
     "processing_streams": "Processing Streams...",
-    "done": "Done!",
+    "done": "Done",
     "capture_stream": "Capture Stream",
     "start_capture": "Start"
   },
@@ -146,7 +148,7 @@
     "delete_user_account": "Delete Account",
     "sign_in": "Sign In",
     "logout": "Log Out",
-    "delete_confirmation": "Are you sure you want to delete your account? This action will delete all data and is irreversible!",
+    "delete_confirmation": "Are you sure you want to delete your account? This action will delete all data and is irreversible",
     "user_registered_message": "User successfully registered",
     "email": "Email",
     "password": "Password"
@@ -157,7 +159,7 @@
     "delete_message": "Are you sure you want to delete %{name} file?",
     "download_sdp": "Download SDP",
     "download_pcap": "Download PCAP",
-    "no_pcaps": "No PCAPs file found!",
+    "no_pcaps": "No PCAPs file found",
     "truncated": "Truncated",
 
     "state": {
@@ -169,7 +171,7 @@
   },
 
   "flow": {
-    "no_flows": "No Flows found!"
+    "no_flows": "No Flows found"
   },
 
   "buttons": {
@@ -194,7 +196,7 @@
   },
 
   "live_stream": {
-    "no_streams": "No streams found!",
+    "no_streams": "No streams found",
     "no_streams_message": "Start recording a live stream in order to see it here."
   },
 

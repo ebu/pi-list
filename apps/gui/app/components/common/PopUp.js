@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Rodal from 'rodal';
 import Button from 'components/common/Button';
@@ -19,68 +19,90 @@ const defaultProps = {
     width: 400
 };
 
-const PopUp = (props) => {
-    let message, buttons, header;
+class PopUp extends Component {
+    constructor(props) {
+        super(props);
 
-    switch (props.type) {
-    case 'delete':
-        message = (
-            <div className="lst-text-center">
-                {props.message}
-            </div>
-        );
-        header = (
-            <h2 className="lst-text-red">
-                <Icon value="warning" />
-                <span>{props.label}</span>
-            </h2>
-        );
-        buttons = [
-            <Button key="cancel-btn" label={translate('buttons.cancel')} outline noAnimation onClick={props.onClose} />,
-            <Button
-                key="delete-btn"
-                label={translate('buttons.delete')}
-                type="danger"
-                outline
-                noAnimation
-                onClick={props.onDelete}
-            />
-        ];
-        break;
-    default:
-        header = (
-            <h2>
-                <Icon value={props.icon} />
-                <span>{props.label}</span>
-            </h2>
-        );
-        message = props.component();
-        break;
+        this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
-    return (
-        <Rodal
-            className="lst-popup"
-            visible={props.visible}
-            animation="slideDown"
-            closeOnEsc
-            onClose={props.onClose}
-            height={props.height}
-            width={props.width}
-            closeMaskOnClick={false}
-        >
-            <div className="lst-popup__header">
-                {header}
+    handleKeyPress(event) {
+        switch (this.props.type) {
+            case 'delete':
+                if (event.keyCode == 13) {
+                    this.props.onDelete();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    render() {
+        let message, buttons, header;
+
+        switch (this.props.type) {
+            case 'delete':
+                message = (
+                    <div className="lst-text-center">
+                        {this.props.message}
+                    </div>
+                );
+                header = (
+                    <h2 className="lst-text-red">
+                        <Icon value="warning" />
+                        <span>{this.props.label}</span>
+                    </h2>
+                );
+                buttons = [
+                    <Button key="cancel-btn" label={translate('buttons.cancel')} outline noAnimation onClick={this.props.onClose} />,
+                    <Button
+                        key="delete-btn"
+                        label={translate('buttons.delete')}
+                        type="danger"
+                        outline
+                        noAnimation
+                        onClick={this.props.onDelete}
+                    />
+                ];
+                break;
+            default:
+                header = (
+                    <h2>
+                        <Icon value={this.props.icon} />
+                        <span>{this.props.label}</span>
+                    </h2>
+                );
+                message = this.props.component();
+                break;
+        }
+
+        return (
+            <div onKeyUp={this.handleKeyPress}>
+                <Rodal
+                    className="lst-popup"
+                    visible={this.props.visible}
+                    animation="slideDown"
+                    closeOnEsc
+                    onClose={this.props.onClose}
+                    height={this.props.height}
+                    width={this.props.width}
+                    closeMaskOnClick={false}
+                >
+                    <div className="lst-popup__header">
+                        {header}
+                    </div>
+                    <div className="lst-popup__content">
+                        {message}
+                    </div>
+                    <div className="lst-popup__footer">
+                        {buttons}
+                    </div>
+                </Rodal>
             </div>
-            <div className="lst-popup__content">
-                {message}
-            </div>
-            <div className="lst-popup__footer">
-                {buttons}
-            </div>
-        </Rodal>
-    );
-};
+        );
+    }
+}
 
 PopUp.propTypes = propTypes;
 PopUp.defaultProps = defaultProps;

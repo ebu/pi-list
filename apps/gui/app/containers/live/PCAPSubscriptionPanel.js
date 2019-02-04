@@ -14,27 +14,34 @@ class PCAPSubscriptionPanel extends Component {
         this.state = {
             source: '',
             destination_address: '',
-            destination_port: 3000,
-            duration: 500,
-            name: Date.now()
+            destination_port: 0,
+            duration: 1000,
+            name: Date.now(),
+            capturing: false
         };
 
         this.subscribe = this.subscribe.bind(this);
     }
 
     subscribe() {
-        api.subscribePCAP(this.state)
-            .then(() => {
-                notifications.success({
-                    title: translate('notifications.success.stream_analysis'),
-                    message: translate('notifications.success.stream_analysis_message')
-                });
-            })
-            .catch((error) => {
-                notifications.error({
-                    title: translate('notifications.error.stream_analysis'),
-                    message: translate('notifications.error.stream_analysis_message')
-                });
+        this.setState(
+            prevState => Object.assign({}, ...prevState, { capturing: true }),
+            () => {
+                api.subscribePCAP(this.state)
+                    .then(() => {
+                        notifications.success({
+                            title: translate('notifications.success.stream_analysis'),
+                            message: translate('notifications.success.stream_capture_message')
+                        });
+                        this.setState({ capturing: false });
+                    })
+                    .catch((error) => {
+                        notifications.error({
+                            title: translate('notifications.error.stream_analysis'),
+                            message: translate('notifications.error.stream_capture_message')
+                        });
+                        this.setState({ capturing: false });
+                    });
             });
     }
 
@@ -46,7 +53,7 @@ class PCAPSubscriptionPanel extends Component {
                         <Input
                             noFullWidth
                             type="text"
-                            placeholder="224.10.10.1"
+                            placeholder="Source IP address"
                             value={this.state.source}
                             onChange={evt => this.setState({ source: evt.target.value })}
                         />
@@ -55,18 +62,9 @@ class PCAPSubscriptionPanel extends Component {
                         <Input
                             noFullWidth
                             type="text"
-                            placeholder="224.10.10.1"
+                            placeholder="Multicast group"
                             value={this.state.destination_address}
                             onChange={evt => this.setState({ destination_address: evt.target.value })}
-                        />
-                        <Input
-                            noFullWidth
-                            type="number"
-                            value={this.state.destination_port}
-                            placeholder={this.state.destination_port}
-                            min="0"
-                            max="65535"
-                            onChange={evt => this.setState({ destination_port: parseInt(evt.currentTarget.value, 10) })}
                         />
                     </FormInput>
                     <FormInput label={translate('media_information.rtp.duration')}>
@@ -93,6 +91,7 @@ class PCAPSubscriptionPanel extends Component {
                         type="info"
                         label={translate('workflow.start_capture')}
                         onClick={this.subscribe}
+                        disabled={this.state.capturing}
                     />
                 </div>
             </Panel>

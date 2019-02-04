@@ -168,9 +168,8 @@ class PcapList extends Component {
             stateType = 'warning';
         } else {
             const hasError = rowData.not_compliant_streams !== 0;
-            const nrAnalyzedStreams = rowData.not_compliant_streams + rowData.narrow_streams + rowData.narrow_linear_streams + rowData.wide_streams;
 
-            if (nrAnalyzedStreams === 0) {
+            if (rowData.total_streams === 0) {
                 stateText = translate('pcap.state.no_analysis');
                 stateIcon = 'info';
                 stateType = 'info';
@@ -196,43 +195,43 @@ class PcapList extends Component {
                         <ProgressBar percentage={rowData.progress} />
                     </Fragment>
                 ) : (
-                    <Fragment>
-                        <Badge
-                            className="lst-table-configure-sdp-badge"
-                            type={stateType}
-                            text={stateText}
-                            icon={stateIcon}
-                        />
-                        {rowData.offset_from_ptp_clock !== 0 && (
+                        <Fragment>
                             <Badge
                                 className="lst-table-configure-sdp-badge"
-                                type="success"
-                                icon="timer"
-                                text="PTP"
+                                type={stateType}
+                                text={stateText}
+                                icon={stateIcon}
                             />
-                        )}
-                        {rowData.truncated && (
-                            <Badge
-                                className="lst-table-configure-sdp-badge"
-                                type="warning"
-                                icon="warning"
-                                text={translate('pcap.truncated')}
-                            />
-                        )}
-                        <span className="stream-type-number">
-                            <Icon value="videocam" /> {rowData.video_streams}
-                        </span>
-                        <span className="stream-type-number">
-                            <Icon value="audiotrack" /> {rowData.audio_streams}
-                        </span>
-                        <span className="stream-type-number">
-                            <Icon value="assignment" /> {rowData.anc_streams}
-                        </span>
-                        <span className="stream-type-number">
-                            <Icon value="help" /> {rowData.total_streams - rowData.video_streams - rowData.audio_streams - rowData.anc_streams}
-                        </span>
-                    </Fragment>
-                )}
+                            {rowData.offset_from_ptp_clock !== 0 && (
+                                <Badge
+                                    className="lst-table-configure-sdp-badge"
+                                    type="success"
+                                    icon="timer"
+                                    text="PTP"
+                                />
+                            )}
+                            {rowData.truncated && (
+                                <Badge
+                                    className="lst-table-configure-sdp-badge"
+                                    type="warning"
+                                    icon="warning"
+                                    text={translate('pcap.truncated')}
+                                />
+                            )}
+                            <span className="stream-type-number">
+                                <Icon value="videocam" /> {rowData.video_streams}
+                            </span>
+                            <span className="stream-type-number">
+                                <Icon value="audiotrack" /> {rowData.audio_streams}
+                            </span>
+                            <span className="stream-type-number">
+                                <Icon value="assignment" /> {rowData.anc_streams}
+                            </span>
+                            <span className="stream-type-number">
+                                <Icon value="help" /> {rowData.total_streams - rowData.video_streams - rowData.audio_streams - rowData.anc_streams}
+                            </span>
+                        </Fragment>
+                    )}
             </Fragment>
         );
     }

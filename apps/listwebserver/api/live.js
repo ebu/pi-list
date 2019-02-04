@@ -13,6 +13,84 @@ const exec = util.promisify(child_process.exec);
 
 const { pcapIngest, generateRandomPcapDefinition, generateRandomPcapFilename } = require('../util/ingest');
 
+
+function runTcpdump(req, res, next) {
+    logger('live').info(`Received: ${JSON.stringify(req.body)}`);
+
+    const new_pcap_filename = generateRandomPcapFilename();
+    const destination_file = `${req.pcap.folder}/${new_pcap_filename}`;
+    const duration_ms = req.body.duration || 500;
+
+    // sets req.file, which is used by the ingest system
+    req.file = {
+        path: destination_file,
+        originalname: req.body.name,
+        filename: new_pcap_filename
+    };
+
+    if (!program.capture || !program.capture.interfaceName) {
+        throw new Error('program.capture.interfaceName not set in configuration file');
+    }
+
+    const dst_filter = req.body.destination_address ? `dst ${req.body.destination_address}` : '';
+
+    const tcpdumpOptions = {
+        env: Object.assign({}, process.env, {
+            LD_PRELOAD: 'libvma.so'
+        })
+    };
+
+    const tcpdumpArguments = [
+        "-i", program.capture.interfaceName,
+        dst_filter,
+        "--time-stamp-precision=nano",
+        "-j", "adapter_unsynced",
+        "-c", "5000000",
+        "-w", destination_file
+    ];
+
+    const childProcess = child_process.spawn('tcpdump',
+        tcpdumpArguments,
+        tcpdumpOptions
+    );
+
+    const tcpdumpOutput = [];
+    const appendToOutput = (data) => {
+        tcpdumpOutput.push(new TextDecoder("utf-8").decode(data));
+    };
+
+    childProcess.on('error', (err) => {
+        console.log('Failed to start subprocess.');
+        res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send(API_ERRORS.UNEXPECTED_ERROR);
+    });
+
+    childProcess.stdout.on('data', appendToOutput);
+    childProcess.stderr.on('data', appendToOutput);
+
+    let killed = false;
+    const onTimeout = () => {
+        console.log('onTimeout');
+        killed = true;
+        childProcess.kill();
+    };
+
+    const timer = setTimeout(onTimeout, duration_ms);
+
+    childProcess.on('close', (code) => {
+        logger('live').info(`child process exited with code ${code}`);
+        logger('live').info(tcpdumpOutput.join('\n'));
+
+        clearTimeout(timer);
+
+        if (code === 0 || killed) {
+            res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send();
+            next();
+        } else {
+            res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send(API_ERRORS.UNEXPECTED_ERROR);
+        }
+    });
+}
+
 // Start a PCAP capture
 router.put('/pcap/capture',
     // generate pcap information
@@ -24,88 +102,9 @@ router.put('/pcap/capture',
         next();
     },
     // do the capture
-    (req, res, next) => {
-        logger('live').info(`Received: ${JSON.stringify(req.body)}`);
-
-        const new_pcap_filename = generateRandomPcapFilename();
-        const destination_file = `${req.pcap.folder}/${new_pcap_filename}`;
-        const duration_ms = req.body.duration || 500;
-
-        // sets req.file, which is used by the ingest system
-        req.file = {
-            path: destination_file,
-            originalname: req.body.name,
-            filename: new_pcap_filename
-        };
-
-        if (!program.capture || !program.capture.interfaceName) {
-            throw new Error('program.capture.interfaceName not set in configuration file');
-        }
-
-        const tcpdump = `tcpdump -i ${program.capture.interfaceName} --time-stamp-precision=nano -j adapter_unsynced -c 5000000 -w ${destination_file}`;
-
-        const tcpdumpOptions = {
-            env: Object.assign({}, process.env, {
-                LD_PRELOAD: 'libvma.so'
-            })
-        };
-
-        const tcpdumpArguments = [
-            "-i", program.capture.interfaceName,
-            "--time-stamp-precision=nano",
-            "-j", "adapter_unsynced",
-            "-c", "5000000",
-            "-w", destination_file
-        ];
-
-        const childProcess = child_process.spawn('tcpdump',
-            tcpdumpArguments,
-            tcpdumpOptions
-        );
-
-        const tcpdumpOutput = [];
-        const appendToOutput = (data) => {
-            tcpdumpOutput.push(new TextDecoder("utf-8").decode(data));
-        };
-
-        childProcess.stdout.on('data', appendToOutput);
-        childProcess.stderr.on('data', appendToOutput);
-
-        let killed = false;
-        const onTimeout = () => {
-            console.log('onTimeout');
-            killed = true;
-            childProcess.kill();
-        };
-
-        const timer = setTimeout(onTimeout, duration_ms);
-
-        childProcess.on('close', (code) => {
-            logger('live').info(`child process exited with code ${code}`);
-            logger('live').info(tcpdumpOutput.join('\n'));
-
-            clearTimeout(timer);
-
-            if (code === 0 || killed) {
-                next();
-            } else {
-                next(`tcpdump exited with code ${code}`);
-            }
-        });
-
-        // exec(tcpdump, options)
-        //     .then((stdout, stderr) => {
-        //         logger('live').info('capture ended');
-        //         console.log(stdout, stderr);
-        //         next();
-        //     })
-        //     .catch(e => {
-        //         logger('live').error(e.stderr);
-        //         next(e);
-        //     });
-    },
+    runTcpdump,
     // do the ingest
-    pcapIngest
+    ...pcapIngest
 );
 
 // get all "live" streams, active or not
