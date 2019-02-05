@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ebu/list/config.h"
+#include "ebu/list/core/platform/config.h"
 #include "ebu/list/core/platform/time.h"
 #include "ebu/list/core/io/logger.h"
 #include "gsl/gsl_byte"

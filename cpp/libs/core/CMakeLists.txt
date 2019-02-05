@@ -2,18 +2,12 @@ cmake_minimum_required (VERSION 3.9)
 
 list_declare_library(ebu_list_core)
 
-#-------------------------------------------------------------------------------
-# The version number
-set (EBU_LIST_VERSION_MAJOR 0)
-set (EBU_LIST_VERSION_MINOR 0)
-set (EBU_LIST_VERSION_PATCH 1)
-
 # create a header file to pass some settings to the source code
 configure_file(
-        "${PROJECT_SOURCE_DIR}/lib/src/config.h.in"
-        "${PROJECT_BINARY_DIR}/include/ebu/list/config.h"
+    "${PROJECT_SOURCE_DIR}/lib/src/config.h.in"
+    "${PROJECT_BINARY_DIR}/include/ebu/list/version_config.h"
 )
-#
+
 #-------------------------------------------------------------------------------
 
 if(APPLE)

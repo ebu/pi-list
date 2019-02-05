@@ -12,6 +12,7 @@ logger('server').info(`Path for the executables directory: ${programArguments.cp
 logger('server').info(`InfluxDB URL: ${programArguments.influxURL}`);
 logger('server').info(`Mode: ${programArguments.developmentMode ? 'DEV' : 'PRODUCTION'}`);
 logger('server').info(`Live Features: ${programArguments.liveMode}`);
+logger('server').info(`Version: v${programArguments.version.major}.${programArguments.version.minor} @ ${programArguments.version.hash}`);
 
 app.set('port', programArguments.port);
 const httpServer = http.createServer(app);

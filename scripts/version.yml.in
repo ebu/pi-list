@@ -1,0 +1,5 @@
+version:
+  major: @EBU_LIST_VERSION_MAJOR@
+  minor: @EBU_LIST_VERSION_MINOR@
+  patch: @EBU_LIST_VERSION_PATCH@
+  hash: @EBU_LIST_COMMIT_HASH@

@@ -93,7 +93,7 @@ void audio_stream_handler::parse_packet(const rtp::packet& packet)
     // check if number of samples is consistent
     if( const auto actual_size = sdu.view().size(); actual_size != audio_description_.sample_size )
     {
-        logger()->error("bad packet size. Expected: {}; Actual: {}", audio_description_.sample_size, actual_size);
+        logger()->trace("bad packet size. Expected: {}; Actual: {}", audio_description_.sample_size, actual_size);
         return;
     }
 

@@ -30,7 +30,8 @@ export default {
     getAvailableVideoOptions: () => request.get('sdp/available-options?media_type=video'),
     getAvailableAudioOptions: () => request.get('sdp/available-options?media_type=audio'),
     getAvailableAncillaryOptions: () => request.get('sdp/available-options?media_type=ancillary'),
-    getFeatures: () => request.get('features'),
+    getFeatures: () => request.get('meta/features'),
+    getVersion: () => request.get('meta/version'),
 
     /* Auth */
     getUser: () => request.get('user'),

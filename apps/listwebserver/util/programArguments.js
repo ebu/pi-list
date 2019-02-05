@@ -36,6 +36,7 @@ commander
     .option('--live', 'Live mode')
     .action((configFile, options) => {
         config = yamlParser.sync(configFile);
+        config = Object.assign(config, yamlParser.sync("version.yml"));
         config.dev = options.dev;
         config.live = options.live;
     })

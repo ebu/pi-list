@@ -7,6 +7,7 @@ include(options)
 include(conan)
 include(cpp-requirements)
 include(ebu-list-cpp-requirements)
+include(list-version)
 
 # -------------------------------------------------------------------------
 # conan

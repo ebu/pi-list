@@ -9,8 +9,8 @@ export const AppContext = React.createContext(false);
 
 export const LiveFeature = props => (
     <AppContext.Consumer>
-        {value => (
-            <If condition={value}>
+        {({ live }) => (
+            <If condition={live}>
                 {props.children}
             </If>
         )}
@@ -19,11 +19,11 @@ export const LiveFeature = props => (
 
 export const LiveRoute = props => (
     <AppContext.Consumer>
-        {value => (
+        {({ live }) => (
             <ConditionalRoute
                 path={props.path}
                 exact={props.exact}
-                conditional={value}
+                conditional={live}
                 trueComponent={props.component !== undefined ? props.component : props.render}
                 falseComponent={props.hideOnFalse ? null : () => (
                     <ErrorPage

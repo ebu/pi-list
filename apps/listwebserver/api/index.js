@@ -14,7 +14,7 @@ const router = Router();
 router.use('/pcap', require('./pcap'));
 router.use('/sdp', require('./sdp'));
 router.use('/user', require('./user'));
-router.use('/features', require('./features'));
+router.use('/meta', require('./meta'));
 
 if (program.liveMode) {
     router.use('/live', require('./live'));
