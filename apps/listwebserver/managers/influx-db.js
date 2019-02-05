@@ -165,9 +165,23 @@ class InfluxDbManager {
         return this.sendQueryAndFormatResults(query);
     }
 
-    getTSDF(pcapID, streamID, startTime, endTime) {
+    getAudioTransitDelay(pcapID, streamID, startTime, endTime) {
         const query = `
-            select "audio-jitter-tsdf" as "value"
+            select
+            "audio-transit-delay-min" as "min",
+            "audio-transit-delay-max" as "max",
+            "audio-transit-delay-mean" as "mean"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
+        `;
+
+        log.info(`Get Delay for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
+
+    getAudioTimeStampedDelayFactor(pcapID, streamID, startTime, endTime) {
+        const query = `
+            select "audio-tsdf" as "value"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
         `;
 
@@ -176,9 +190,9 @@ class InfluxDbManager {
         return this.sendQueryAndFormatResults(query);
     }
 
-    getTSDFAmp(pcapID, streamID) {
+    getAudioTimeStampedDelayFactorAmp(pcapID, streamID) {
         const query = `
-            select max("audio-jitter-tsdf") as "max", min("audio-jitter-tsdf") as "min"
+            select max("audio-tsdf") as "max", min("audio-tsdf") as "min"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}
         `;
 

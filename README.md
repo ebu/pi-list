@@ -224,7 +224,8 @@ Just use cmake's `add_subdirectory()` and it will work out-of-the-box.
 
 ## Additional information
 
-[Cfull and Vrx Analysis](./docs/cfull_and_vrx_analysis.md)
+* [Cfull and Vrx analysis](./docs/cfull_and_vrx_analysis.md)
+* [Audio timing analysis](./docs/audio_timing_analysis.md)
 
 ## License
 

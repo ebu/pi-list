@@ -71,14 +71,14 @@ namespace ebu_list::influx
         const std::string prefix_;
     };
 
-    class influxdb_audio_jitter_logger : public ebu_list::audio_jitter_analyser::listener
+    class influxdb_audio_delay_logger : public ebu_list::audio_delay_analyser::listener
     {
     public:
-        influxdb_audio_jitter_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id, std::string prefix);
+        influxdb_audio_delay_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id, std::string prefix);
 
     private:
         // calculator::listener
-        void on_data(const ebu_list::audio_jitter_analyser::tsdf_sample&) override;
+        void on_data(const ebu_list::audio_delay_analyser::delay_sample&) override;
         void on_complete() override;
         void on_error(std::exception_ptr ptr) override;
 

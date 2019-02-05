@@ -137,9 +137,9 @@ const minMaxLineChart = [
 
 const stdDeviationMeanMinMaxLineChart = [
     {
-        yValues: "stddev",
-        label: "Std. Deviation",
-        color: CHART_COLORS.BLUE
+        yValues: "max",
+        label: "Max",
+        color: CHART_COLORS.GREEN
     },
     {
         yValues: "mean",
@@ -147,22 +147,22 @@ const stdDeviationMeanMinMaxLineChart = [
         color: CHART_COLORS.YELLOW
     },
     {
-        yValues: "max",
-        label: "Max",
-        color: CHART_COLORS.GREEN
-    },
-    {
         yValues: "min",
         label: "Min",
         color: CHART_COLORS.RED
+    },
+    {
+        yValues: "stddev",
+        label: "Std. Deviation",
+        color: CHART_COLORS.BLUE
     }
 ];
 
 const singleValueLineThresholdChart = [
     {
-        yValues: "value",
-        label: "Value",
-        color: CHART_COLORS.GREEN
+        yValues: "limit",
+        label: "Limit",
+        color: CHART_COLORS.RED
     },
     {
         yValues: "tolerance",
@@ -170,11 +170,10 @@ const singleValueLineThresholdChart = [
         color: CHART_COLORS.YELLOW
     },
     {
-        yValues: "limit",
-        label: "Limit",
-        color: CHART_COLORS.RED
+        yValues: "value",
+        label: "Value",
+        color: CHART_COLORS.GREEN
     }
-
 ];
 
 const singleValueLineChart = [

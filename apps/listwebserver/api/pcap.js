@@ -163,13 +163,23 @@ router.get('/:pcapID/stream/:streamID/analytics/CInst/validation', (req, res) =>
     fs.sendFileAsResponse(path, res);
 });
 
-/* Audio jitters: TSDF */
-router.get('/:pcapID/stream/:streamID/analytics/TimeStampedDelayFactor', (req, res) => {
+/* Audio Delays */
+router.get('/:pcapID/stream/:streamID/analytics/AudioTransitDelay', (req, res) => {
+    const { pcapID, streamID } = req.params;
+    const { from, to } = req.query;
+
+    chartData = influxDbManager.getAudioTransitDelay(pcapID, streamID, from, to);
+    chartData
+        .then(data => { res.json(data); })
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+});
+
+router.get('/:pcapID/stream/:streamID/analytics/AudioTimeStampedDelayFactor', (req, res) => {
     const { pcapID, streamID } = req.params;
     const { from, to, tolerance, tsdfmax } = req.query;
     const limit = tolerance * 17; // EBU recommendation #3337
 
-    chartData = influxDbManager.getTSDF(pcapID, streamID, from, to);
+    chartData = influxDbManager.getAudioTimeStampedDelayFactor(pcapID, streamID, from, to);
     chartData
         .then(data => {
             data.forEach(e => {

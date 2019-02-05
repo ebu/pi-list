@@ -19,7 +19,7 @@ namespace ebu_list
     using sample_uptr = std::unique_ptr<sample>;
 
     /*
-     * Audio packet jitter measurement
+     * Audio TS-DF measurement method:
      * https://tech.ebu.ch/docs/tech/tech3337.pdf
      *
      * Relative Transit Time:
@@ -35,12 +35,15 @@ namespace ebu_list
      *
      */
 
-    class audio_jitter_analyser : public rtp::listener
+    class audio_delay_analyser : public rtp::listener
     {
     public:
-        struct tsdf_sample
+        struct delay_sample
         {
             clock::time_point timestamp;
+            int64_t delay_min;
+            int64_t delay_max;
+            int64_t delay_mean;
             int64_t time_stamped_delay_factor;
         };
 
@@ -49,15 +52,15 @@ namespace ebu_list
         public:
             virtual ~listener() = default;
 
-            virtual void on_data(const tsdf_sample&) = 0;
+            virtual void on_data(const delay_sample&) = 0;
             virtual void on_complete() = 0;
             virtual void on_error(std::exception_ptr e) = 0;
         };
 
         using listener_uptr = std::unique_ptr<listener>;
 
-        audio_jitter_analyser(rtp::packet first_packet, listener_uptr listener, int sampling);
-        ~audio_jitter_analyser();
+        audio_delay_analyser(rtp::packet first_packet, listener_uptr listener, int sampling);
+        ~audio_delay_analyser();
 
         void on_data(const rtp::packet&) override;
         void on_complete() override;
@@ -67,13 +70,11 @@ namespace ebu_list
         struct impl;
         const std::unique_ptr<impl> impl_;
 
-        int64_t get_transit_time(const rtp::packet& packet);
+        int64_t get_transit_delay(const rtp::packet& packet);
 
         int sampling_;
-        int64_t first_delta_usec_;
         int64_t first_packet_ts_usec_;
-        int64_t relative_transit_time_max_;
-        int64_t relative_transit_time_min_;
+        std::vector<int64_t> delays_;
     };
 
     class audio_stream_handler : public rtp::listener

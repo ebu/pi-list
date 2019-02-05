@@ -30,8 +30,18 @@ const AudioPage = (props) => {
                     <div className="col-xs-12 col-md-8">
                         <AudioExplorer pcapID={props.pcapID} streamID={props.streamID}/>
                         <LineChart
+                            asyncData={() => api.getAudioTransitDelay(props.pcapID, props.streamID, first_packet_ts, last_packet_ts)}
+                            xAxis={chartFormatters.getTimeLineLabel}
+                            data={chartFormatters.stdDeviationMeanMinMaxLineChart}
+                            title="Transit Time"
+                            yAxisLabel="Delay (usec)"
+                            height={300}
+                            lineWidth={3}
+                            legend
+                        />
+                        <LineChart
                             // provide packet_time and tsdf to plot the yellow tolerance and red limit lines respectively
-                            asyncData={() => api.getTSDF(props.pcapID, props.streamID, first_packet_ts, last_packet_ts, mediaInfo.packet_time * 1000, analysis.tsdf_max)}
+                            asyncData={() => api.getAudioTimeStampedDelayFactor(props.pcapID, props.streamID, first_packet_ts, last_packet_ts, mediaInfo.packet_time * 1000, analysis.tsdf_max)}
                             xAxis={chartFormatters.getTimeLineLabel}
                             data={chartFormatters.singleValueLineThresholdChart}
                             title="TimeStamped Delay Factor"
