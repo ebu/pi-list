@@ -45,7 +45,7 @@ class StreamPage extends Component {
     render() {
         // if the stream is not analyzed, we need to render an error
         if (this.props.streamInfo.state !== 'analyzed') {
-            return this.renderError(translate('errors.stream-marked-as-unknown'), errorEnum.STREAM_NOT_ANALYSED);
+            return this.renderError(translate('errors.stream_marked_as_unknown'), errorEnum.STREAM_NOT_ANALYSED);
         }
 
         switch (this.props.streamInfo.media_type) {

@@ -104,7 +104,7 @@
   "notifications": {
     "success": {
       "pcap_upload": "PCAP file uploaded",
-      "pcap_upload-message": "The %{name} file was successfully uploaded",
+      "pcap_upload_message": "The %{name} file was successfully uploaded",
 
       "pcap_deleted": "PCAP file deleted",
       "pcap_deleted_message": "The %{name} file was successfully deleted",
@@ -118,7 +118,7 @@
     },
     "error": {
       "pcap_upload": "PCAP upload failed",
-      "pcap_upload-message": "An error occurred during the %{name} file upload process",
+      "pcap_upload_message": "An error occurred during the %{name} file upload process",
 
       "pcap_deleted": "Error while deleting PCAP",
       "pcap_deleted_message": "The %{name} file cannot be deleted",
@@ -202,8 +202,8 @@
 
   "errors": {
     "anc_not_supported": "Format not yet supported",
-    "anc_not_supported_message": "Because of that, %{name} will not be analyzed.",
-    "stream-marked-as-unknown": "The Media Type for this stream was configured as \"Unknown\". To get more information about this stream change the Media Type in the stream configuration.",
+    "anc_not_supported_message": "This stream will not be analyzed.",
+    "stream_marked_as_unknown": "The Media Type for this stream was configured as \"Unknown\". To get more information about this stream change the Media Type in the stream configuration.",
     "404_title": "Page not found",
     "404_message": "The page you are looking for doesn't exist or another error occurred.",
     "network_error_title": "Network Error"

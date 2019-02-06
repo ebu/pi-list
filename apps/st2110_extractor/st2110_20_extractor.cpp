@@ -331,17 +331,10 @@ namespace
         auto filter = std::make_shared<ptp::udp_filter>(ptp_sm, handler);
         auto player = std::make_unique<pcap::pcap_player>(config.pcap_file, filter, offset_from_ptp_clock);
 
-        const auto start_time = std::chrono::steady_clock::now();
-
         auto launcher = launch(std::move(player));
 
         launcher.wait();
         main_executor->wait();
-
-        const auto end_time = std::chrono::steady_clock::now();
-        const auto processing_time = end_time - start_time;
-        const auto processing_time_ms = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(processing_time).count());
-        logger->info("Processing time: {:.3f} s", processing_time_ms / 1000.0);
 
         update_tr_info(db, tro_info);
 
@@ -371,7 +364,14 @@ int main(int argc, char* argv[])
 
     try
     {
+        const auto start_time = std::chrono::steady_clock::now();
+
         run(logger(), config);
+
+        const auto end_time = std::chrono::steady_clock::now();
+        const auto processing_time = end_time - start_time;
+        const auto processing_time_ms = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(processing_time).count());
+        logger()->info("Processing time: {:.3f} s", processing_time_ms / 1000.0);
     }
     catch (std::exception& ex)
     {

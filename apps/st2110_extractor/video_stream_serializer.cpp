@@ -8,7 +8,7 @@
 
 using namespace ebu_list;
 using namespace ebu_list::st2110;
-using json =  nlohmann::json;
+using json = nlohmann::json;
 
 //------------------------------------------------------------------------------
 
@@ -27,13 +27,12 @@ namespace
         return dimensions;
     }
     // TODO: receive this externally
-    constexpr auto vrx_analysis_settings = 
-        d21::vrx_settings
-        {
-            d21::read_schedule::gapped, 
-            d21::tvd_kind::ideal ,
-            std::nullopt
-        };
+    constexpr auto vrx_analysis_settings = d21::vrx_settings
+    {
+        d21::read_schedule::gapped,
+        d21::tvd_kind::ideal ,
+        std::nullopt
+    };
 }
 
 void ebu_list::write_frame_info(const path& base_dir, const std::string& stream_id, const frame_info& info)
@@ -47,7 +46,7 @@ void ebu_list::write_packets(const path& packets_path, const packets& packets_in
 
     for (const auto& packet : packets_info)
     {
-        const st2110_d20_packet p {rtp_packet::build_from(packet.rtp), packet.full_sequence_number, packet.line_info};
+        const st2110_d20_packet p{ rtp_packet::build_from(packet.rtp), packet.full_sequence_number, packet.line_info };
         j.push_back(st2110_d20_packet::to_json(p));
     }
 
@@ -73,7 +72,7 @@ video_stream_serializer::video_stream_serializer(rtp::packet first_packet,
 
 void video_stream_serializer::on_frame_started(const frame& f)
 {
-    frame_info fi{f.timestamp, 1};
+    frame_info fi{ f.timestamp, 1 };
     write_frame_info(base_dir_, this->network_info().id, fi);
     current_frame_packets_.clear();
 }
@@ -120,8 +119,8 @@ void video_stream_serializer::on_frame_complete(frame_uptr&& f)
 
     std::experimental::filesystem::create_directories(info_base);
 
-    frame_info fi{ 
-        f->timestamp, 
+    frame_info fi{
+        f->timestamp,
         current_frame_packets_.size(),
         get_first_packet_timestamp(current_frame_packets_),
         get_last_packet_timestamp(current_frame_packets_),
@@ -136,7 +135,7 @@ void video_stream_serializer::on_frame_complete(frame_uptr&& f)
     };
     main_executor_->execute(std::move(packets_writer));
 
-    png_write_info wfi { frame_size_, oview(f->buffer), png_path };
+    png_write_info wfi{ frame_size_, oview(f->buffer), png_path };
 
     auto png_writer = [wfi]() mutable {
         auto rgba = from_ycbcr422_to_rgba(wfi.data, wfi.frame_size);

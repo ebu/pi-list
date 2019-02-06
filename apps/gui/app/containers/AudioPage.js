@@ -34,7 +34,7 @@ const AudioPage = (props) => {
                             xAxis={chartFormatters.getTimeLineLabel}
                             data={chartFormatters.stdDeviationMeanMinMaxLineChart}
                             title="Transit Time"
-                            yAxisLabel="Delay (usec)"
+                            yAxisLabel="Delay (μs)"
                             height={300}
                             lineWidth={3}
                             legend
@@ -45,7 +45,7 @@ const AudioPage = (props) => {
                             xAxis={chartFormatters.getTimeLineLabel}
                             data={chartFormatters.singleValueLineThresholdChart}
                             title="TimeStamped Delay Factor"
-                            yAxisLabel="TSDF (usec)"
+                            yAxisLabel="TSDF (μs)"
                             height={300}
                             lineWidth={3}
                             legend

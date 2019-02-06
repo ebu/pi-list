@@ -4,6 +4,8 @@
 
 namespace ebu_list::rtp
 {
+    static_assert(platform::config::little_endian);
+
 #pragma pack(push, 1)
 
     // from https://tools.ietf.org/html/rfc3550
@@ -33,8 +35,21 @@ namespace ebu_list::rtp
         net_uint32_t timestamp;
         net_uint32_t ssrc;
     };
-    static_assert(platform::config::little_endian);
     static_assert(sizeof(raw_header) == 12);
+
+    // 0                   1                   2                   3
+    // 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+    // +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    // |      defined by profile       |           length              |
+    // +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+    // |                        header extension                       |
+    // |                             ....                              |
+    struct extension_header
+    {
+        net_uint16_t defined_by_profile;
+        net_uint16_t length;
+    };
+    static_assert(sizeof(extension_header) == 4);
 
 #pragma pack(pop)
 }

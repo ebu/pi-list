@@ -103,7 +103,7 @@
   "notifications": {
     "success": {
       "pcap_upload": "Ficheiro PCAP submetido",
-      "pcap_upload-message": "O ficheiro %{name} foi submetido com sucesso",
+      "pcap_upload_message": "O ficheiro %{name} foi submetido com sucesso",
 
       "pcap_deleted": "Ficheiro PCAP apagado",
       "pcap_deleted_message": "O ficheiro %{name} foi apagado com sucesso",
@@ -117,7 +117,7 @@
     },
     "error": {
       "pcap_upload": "O upload do PCAP falhou",
-      "pcap_upload-message": "Ocorreu um erro enquanto o ficheiro %{name} foi submetido",
+      "pcap_upload_message": "Ocorreu um erro enquanto o ficheiro %{name} foi submetido",
 
       "pcap_deleted": "Erro a apagar o PCAP",
       "pcap_deleted_message": "Não foi possível apagar o ficheiro %{name}",
@@ -202,7 +202,7 @@
   "errors": {
     "not_supported": "Formato não suportado",
     "not_supported_message": "Por causa disso, %{name} não será analisada",
-    "stream-marked-as-unknown": "A Essência desta Stream não é conhecida ou suportada. Carregue no botão abaixo para adicionar mais detalhes sobre a Stream",
+    "stream_marked_as_unknown": "A Essência desta Stream não é conhecida ou suportada. Carregue no botão abaixo para adicionar mais detalhes sobre a Stream",
     "404_title": "Página não encontrada",
     "404_message": "A página que tentou aceder não existe ou ocorreu um erro.",
     "network_error_title": "Erro de Rede"

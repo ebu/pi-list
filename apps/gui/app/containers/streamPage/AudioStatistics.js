@@ -21,7 +21,7 @@ const AudioStatistics = props => (
             },
             {
                 key: translate('media_information.audio.tsdf_max'),
-                value: `${props.tsdf_max} usec`
+                value: `${props.tsdf_max} μs`
             }
 
         ])}
