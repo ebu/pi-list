@@ -20,9 +20,12 @@ namespace ebu_list
 
         sbuffer_factory& get_factory() const;
 
+        size_t get_current_offset() const;
+
     public:
         sbuffer_factory_ptr factory_;
         data_source_uptr source_;
         oview cache_;
+        size_t current_offset_ = 0;
     };
 }

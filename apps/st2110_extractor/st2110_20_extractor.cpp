@@ -329,7 +329,7 @@ namespace
         auto ptp_sm = std::make_shared<ptp::state_machine>(ptp_logger);
         auto handler = std::make_shared<rtp::udp_handler>(create_handler);
         auto filter = std::make_shared<ptp::udp_filter>(ptp_sm, handler);
-        auto player = std::make_unique<pcap::pcap_player>(config.pcap_file, filter, offset_from_ptp_clock);
+        auto player = std::make_unique<pcap::pcap_player>(config.pcap_file, filter, on_error_exit, offset_from_ptp_clock);
 
         auto launcher = launch(std::move(player));
 

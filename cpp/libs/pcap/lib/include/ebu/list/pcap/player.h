@@ -5,13 +5,20 @@
 #include "ebu/list/core/io/chunked_data_source.h"
 #include "ebu/list/pcap/reader.h"
 
+namespace ebu_list
+{
+    // TODO: move this to a common place
+    using on_error_t = std::function<void(std::exception_ptr)>;
+    void on_error_exit(std::exception_ptr e);
+}
+
 namespace ebu_list::pcap
 {
     class pcap_player
     {
     public:
-        pcap_player(path pcap_file, udp::listener_ptr listener);
-        pcap_player(path pcap_file, udp::listener_ptr listener, clock::duration packet_timestamp_correction);
+        pcap_player(path pcap_file, udp::listener_ptr listener, on_error_t on_error);
+        pcap_player(path pcap_file, udp::listener_ptr listener, on_error_t on_error, clock::duration packet_timestamp_correction);
 
         bool next();
         void done();
@@ -22,6 +29,7 @@ namespace ebu_list::pcap
         void do_next();
 
         udp::listener_ptr listener_;
+        on_error_t on_error_;
         const clock::duration packet_timestamp_correction_;
         sbuffer_factory_ptr bf_;
         chunked_data_source source_;

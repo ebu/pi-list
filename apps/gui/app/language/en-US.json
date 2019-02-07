@@ -163,6 +163,7 @@
     "truncated": "Truncated",
 
     "state": {
+      "failed": "Analysis failed",
       "no_analysis": "No analysis done",
       "needs_user_input": "Configure Streams",
       "compliant": "Compliant",

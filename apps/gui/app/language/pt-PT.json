@@ -162,6 +162,7 @@
     "truncated": "Truncado",
 
     "state": {
+      "failed": "A análise falhou",
       "no_analysis": "Sem análise efetuada",
       "needs_user_input": "Necessita de informações adicionais",
       "compliant": "Compatível",

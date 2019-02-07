@@ -142,7 +142,7 @@ tro_map ebu_list::calculate_average_troffset(ebu_list::path pcap_file,
     };
 
     auto handler = std::make_shared<rtp::udp_handler>(create_handler);
-    auto player = std::make_unique<pcap::pcap_player>(pcap_file, handler);
+    auto player = std::make_unique<pcap::pcap_player>(pcap_file, handler, on_error_exit);
 
     const auto start_time = std::chrono::steady_clock::now();
 

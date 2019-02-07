@@ -31,7 +31,7 @@ SCENARIO("format detector")
     {
         const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-20/2110-20_1080i5994.pcap");
 
-        pcap::pcap_player player(pcap_file, udp_handler);
+        pcap::pcap_player player(pcap_file, udp_handler, on_error_exit);
         while (player.next()) {}
 
         REQUIRE(fd != nullptr);
@@ -55,7 +55,7 @@ SCENARIO("format detector")
     {
         const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-30/l16_48000_2ch_1ms.pcap");
 
-        pcap::pcap_player player(pcap_file, udp_handler);
+        pcap::pcap_player player(pcap_file, udp_handler, on_error_exit);
         while (player.next()) {}
 
         REQUIRE(fd != nullptr);
@@ -81,7 +81,7 @@ SCENARIO("format detector")
     {
         const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-30/l24_48000_8ch_0125.pcap");
 
-        pcap::pcap_player player(pcap_file, udp_handler);
+        pcap::pcap_player player(pcap_file, udp_handler, on_error_exit);
         while (player.next()) {}
 
         REQUIRE(fd != nullptr);

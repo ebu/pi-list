@@ -23,6 +23,11 @@ sbuffer_factory& chunked_data_source::get_factory() const
     return *factory_;
 }
 
+size_t chunked_data_source::get_current_offset() const
+{
+    return current_offset_;
+}
+
 oview chunked_data_source::try_read_exactly(ptrdiff_t amount)
 {
     if (!cache_)
@@ -45,10 +50,14 @@ oview chunked_data_source::try_read_exactly(ptrdiff_t amount)
     {
         auto[left, right] = split(std::move(cache_), amount);
         cache_ = std::move(right);
+
+        current_offset_ += left.view().size_bytes();
+
         return left;
     }
     else
     {
+        current_offset_ += cache_.view().size_bytes();
         return std::move(cache_);
     }
 }

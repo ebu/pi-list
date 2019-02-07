@@ -29,6 +29,10 @@ const PcapSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    error: {
+        type: String,
+        default: ''
+    },
     offset_from_ptp_clock: {
         type: Number,
         default: 0

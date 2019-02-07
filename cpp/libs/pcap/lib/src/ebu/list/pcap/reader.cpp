@@ -20,15 +20,21 @@ maybe_header pcap::read_header(chunked_data_source& source) noexcept
     return h;
 }
 
-maybe_packet pcap::read_packet(const file_header_lens& header, chunked_data_source& source) noexcept
+maybe_packet pcap::read_packet(const file_header_lens& header, chunked_data_source& source)
 {
     auto s = source.try_read_exactly(sizeof(raw_packet_header));
     if (size(s) < sizeof(raw_packet_header)) return std::nullopt;
 
     auto ph = packet_header(std::move(s), header);
-    
+
     const auto included_len = ph().incl_len();
-    LIST_ENFORCE(included_len < max_packet_size, std::runtime_error, "Invalid packet size: ", included_len);
+
+    if (included_len > max_packet_size)
+    {
+        const auto message = fmt::format("Request to read invalid packet size (0x{:x}) at position 0x{:x}", included_len, source.get_current_offset());
+        logger()->error(message);
+        throw std::runtime_error(message);
+    }
 
     auto data = source.try_read_exactly(included_len);
     if (size(data) != included_len) return std::nullopt;

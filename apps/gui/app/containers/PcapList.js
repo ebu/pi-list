@@ -30,6 +30,7 @@ class PcapList extends Component {
         this.hideDeleteModal = this.hideDeleteModal.bind(this);
         this.onPcapReceived = this.onPcapReceived.bind(this);
         this.onPcapProcessed = this.onPcapProcessed.bind(this);
+        this.onPcapFailed = this.onPcapFailed.bind(this);
         this.onDone = this.onDone.bind(this);
     }
 
@@ -52,6 +53,15 @@ class PcapList extends Component {
     }
 
     onPcapProcessed(data) {
+        const pcaps = immutable.findAndUpdateElementInArray({ id: data.id }, this.state.pcaps, {
+            ...data,
+            stateLabel: translate('workflow.processing_streams')
+        });
+
+        this.setState({ pcaps });
+    }
+
+    onPcapFailed(data) {
         const pcaps = immutable.findAndUpdateElementInArray({ id: data.id }, this.state.pcaps, {
             ...data,
             stateLabel: translate('workflow.processing_streams')
@@ -102,6 +112,7 @@ class PcapList extends Component {
         websocket.on(websocketEventsEnum.PCAP.FILE_RECEIVED, this.onPcapReceived);
         websocket.on(websocketEventsEnum.PCAP.FILE_PROCESSED, this.onPcapProcessed);
         websocket.on(websocketEventsEnum.PCAP.ANALYZING, this.onPcapProcessed);
+        websocket.on(websocketEventsEnum.PCAP.FILE_FAILED, this.onPcapFailed);
         websocket.on(websocketEventsEnum.PCAP.DONE, this.onDone);
     }
 
@@ -109,6 +120,7 @@ class PcapList extends Component {
         websocket.off(websocketEventsEnum.PCAP.FILE_RECEIVED, this.onPcapReceived);
         websocket.off(websocketEventsEnum.PCAP.FILE_PROCESSED, this.onPcapProcessed);
         websocket.off(websocketEventsEnum.PCAP.ANALYZING, this.onPcapProcessed);
+        websocket.off(websocketEventsEnum.PCAP.FILE_FAILED, this.onPcapFailed);
         websocket.off(websocketEventsEnum.PCAP.DONE, this.onDone);
     }
 
@@ -162,7 +174,11 @@ class PcapList extends Component {
         let stateIcon;
         let stateType;
 
-        if (!rowData.analyzed) {
+        if (rowData.error) {
+            stateText = translate('pcap.state.failed');
+            stateIcon = 'close';
+            stateType = 'danger';
+        } else if (!rowData.analyzed) {
             stateText = translate('pcap.state.needs_user_input');
             stateIcon = 'warning';
             stateType = 'warning';
@@ -184,6 +200,18 @@ class PcapList extends Component {
             }
         }
 
+        if (rowData.error) {
+            return (
+                <Fragment>
+                    <Badge
+                        className="lst-table-configure-sdp-badge"
+                        type={stateType}
+                        text={stateText}
+                        icon={stateIcon}
+                    />
+                </Fragment>
+            );
+        }
         return (
             <Fragment>
                 {rowData.progress && rowData.progress < 100 ? (

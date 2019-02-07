@@ -63,7 +63,7 @@ namespace
         auto ptp_sm = std::make_shared<ptp::state_machine>(offset_calculator);
         auto udp_handler = std::make_shared<rtp::udp_handler>(create_handler);
         auto filter = std::make_shared<ptp::udp_filter>(ptp_sm, udp_handler);
-        auto player = std::make_unique<pcap::pcap_player>(path(config.pcap_file), filter);
+        auto player = std::make_unique<pcap::pcap_player>(path(config.pcap_file), filter, on_error_exit);
 
         const auto start_time = std::chrono::steady_clock::now();
 
