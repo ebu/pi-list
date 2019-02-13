@@ -19,6 +19,7 @@ const VrxAnalysis = (props) => {
                     xAxis={item => item.time}
                     data={chartFormatters.minMaxLineChart}
                     title="VRX (with TRoffset = TROdefault)"
+                    yAxisLabel="packets"
                     height={300}
                     lineWidth={3}
                     legend
@@ -28,6 +29,7 @@ const VrxAnalysis = (props) => {
                     xAxis={item => item.time}
                     data={chartFormatters.minMaxLineChart}
                     title="VRX (with TRoffset = Measured/Averaged)"
+                    yAxisLabel="packets"
                     height={300}
                     lineWidth={3}
                     legend

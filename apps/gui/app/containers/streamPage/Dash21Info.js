@@ -38,11 +38,11 @@ const Dash21Info = (props) => {
                 },
                 {
                     key: 'Cinst',
-                    value: `${cmin} .. ${cpeak}`
+                    value: `${cmin} .. ${cpeak} packets`
                 },
                 {
                     key: 'Vrx',
-                    value: `${vrxmin} .. ${vrxpeak}`
+                    value: `${vrxmin} .. ${vrxpeak} packets`
                 },
                 {
                     key: 'Average TROffset',
