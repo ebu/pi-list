@@ -18,7 +18,7 @@ const VrxAnalysis = (props) => {
                     asyncData={() => api.getDeltaToIdealTpr0Raw(pcapID, streamID, first_packet_ts, last_packet_ts).then(data => dataAsNanoseconds(data))}
                     xAxis={chartFormatters.xAxisTimeDomain}
                     data={chartFormatters.singleValueLineChart}
-                    title="Ideal Tvd - TPR0"
+                    title="TVD (with TRoffset = TROdefault)"
                     yAxisLabel="nanoseconds"
                     height={300}
                     lineWidth={3}
@@ -27,7 +27,7 @@ const VrxAnalysis = (props) => {
                     asyncData={() => api.getDeltaToIdealTpr0AdjustedAvgTroRaw(pcapID, streamID, first_packet_ts, last_packet_ts).then(data => dataAsNanoseconds(data))}
                     xAxis={chartFormatters.xAxisTimeDomain}
                     data={chartFormatters.singleValueLineChart}
-                    title="Average Tvd - TPR0"
+                    title="TVD (with TRoffset = Measured/Averaged)"
                     yAxisLabel="nanoseconds"
                     height={300}
                     lineWidth={3}

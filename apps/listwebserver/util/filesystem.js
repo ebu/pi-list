@@ -9,20 +9,10 @@ const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 
 class FileSystem {
 
-    /**
-     *
-     * @param filePath
-     */
-
     createIfNotExists(dir) {
         jetpack.dir(dir);
     }
 
-    /**
-     *
-     * @param filePath
-     * @returns {Promise}
-     */
     readFile(filePath) {
         if (filePath.includes('.json')) {
             return readFileAsync(filePath, 'utf8')
@@ -45,28 +35,14 @@ class FileSystem {
         return writeFileAsync(filePath, content, 'utf8');
     }
 
-    /**
-     *
-     * @param filePath
-     * @returns {boolean}
-     */
     fileExists(filePath) {
         return jetpack.exists(filePath) === 'file';
     }
 
-    /**
-     *
-     * @param directoryPath
-     * @returns {boolean}
-     */
     folderExists(directoryPath) {
         return jetpack.exists(directoryPath) === 'dir';
     }
 
-    /**
-     *
-     * @param directoryPath
-     */
     getAllFirstLevelFolders(directoryPath) {
         const folders = jetpack.find(directoryPath, {
             matching: '*',
@@ -80,11 +56,6 @@ class FileSystem {
             .map(dir => ({ id: dir.name }));
     }
 
-    /**
-     *
-     * @param {String} directoryPath
-     * @returns {Promise}
-     */
     readAllJSONFilesFromDirectory(directoryPath, matching = '*/*.json') {
 
         if(!this.folderExists(directoryPath)) return Promise.resolve([]);
@@ -98,11 +69,15 @@ class FileSystem {
         return Promise.all(filesToRead);
     }
 
-    /**
-     *
-     * @param filePath
-     * @param res
-     */
+
+    downloadFile(filePath, filename, res) {
+        if(this.fileExists(filePath)) {
+            res.download(filePath, filename);
+        } else {
+            res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND);
+        }
+    }
+
     sendFileAsResponse(filePath, res) {
         if(this.fileExists(filePath)) {
             // Verify if the file extension is related with a JSON file

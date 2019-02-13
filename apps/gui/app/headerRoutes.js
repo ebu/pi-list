@@ -96,6 +96,12 @@ export default (
                     label="Streams"
                     buttons={[
                         {
+                            label: translate('pcap.download_pcap'),
+                            icon: 'file download',
+                            downloadPath: api.downloadPcap(props.match.params.pcapID),
+                            onClick: () => {}
+                        },
+                        {
                             label: translate('pcap.download_sdp'),
                             icon: 'file download',
                             downloadPath: api.downloadSDP(props.match.params.pcapID),

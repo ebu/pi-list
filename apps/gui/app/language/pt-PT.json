@@ -71,7 +71,8 @@
       "destination_address": "Endereço de Destino",
       "destination_port": "Porto de Destino",
       "source_address": "Endereço de Origem",
-      "source_port": "Porto de Origem"
+      "source_port": "Porto de Origem",
+      "duration": "Duração"
     }
   },
 
@@ -85,10 +86,10 @@
   },
 
   "alerts": {
-    "stream_missing_information": "Informação da Stream insuficiente!",
+    "stream_missing_information": "Informação da Stream insuficiente",
     "stream_already_analyzed": "Stream já analisada",
     "stream_not_analyzed": "Stream não analisada",
-    "media_type_unknown": "O tipo de Essência desta stream é desconhecido!"
+    "media_type_unknown": "O tipo de Essência desta stream é desconhecido"
   },
 
   "information": {
@@ -101,30 +102,32 @@
 
   "notifications": {
     "success": {
-      "pcap_upload": "Ficheiro PCAP submetido!",
-      "pcap_upload-message": "O ficheiro %{name} foi submetido com sucesso!",
+      "pcap_upload": "Ficheiro PCAP submetido",
+      "pcap_upload_message": "O ficheiro %{name} foi submetido com sucesso",
 
       "pcap_deleted": "Ficheiro PCAP apagado",
-      "pcap_deleted_message": "O ficheiro %{name} foi apagado com sucesso!",
+      "pcap_deleted_message": "O ficheiro %{name} foi apagado com sucesso",
 
       "stream_deleted": "Stream apagada",
-      "stream_deleted_message": "A stream foi apagada com sucesso!",
+      "stream_deleted_message": "A stream foi apagada com sucesso",
 
-      "stream_analysis": "Sucesso!",
-      "stream_analysis_message": "A Stream foi corretamente analisada!"
+      "stream_analysis": "Sucesso",
+      "stream_analysis_message": "A Stream foi corretamente analisada",
+      "stream_capture_message": "Captura terminada com sucesso"
     },
     "error": {
-      "pcap_upload": "O upload do PCAP falhou!",
-      "pcap_upload-message": "Ocorreu um erro enquanto o ficheiro %{name} foi submetido",
+      "pcap_upload": "O upload do PCAP falhou",
+      "pcap_upload_message": "Ocorreu um erro enquanto o ficheiro %{name} foi submetido",
 
       "pcap_deleted": "Erro a apagar o PCAP",
-      "pcap_deleted_message": "Não foi possível apagar o ficheiro %{name}!",
+      "pcap_deleted_message": "Não foi possível apagar o ficheiro %{name}",
 
       "stream_deleted": "Erro a apagar a stream",
       "stream_deleted_message": "Não foi possível apagar. Por favor verifique os logs.",
 
-      "stream_analysis": "Erro!",
-      "stream_analysis_message": "Algo correu mal durante a análise da stream!"
+      "stream_analysis": "Erro",
+      "stream_analysis_message": "Algo correu mal durante a análise da stream",
+      "stream_capture_message": "Algo correu mal durante a captura"
     }
   },
 
@@ -135,15 +138,17 @@
     "pcaps_to_be_imported": "PCAPs submetidos",
     "reading_pcap": "A ler o ficheiro PCAP...",
     "processing_streams": "A processar as Streams...",
-    "done": "Concluído!"
+    "done": "Concluído",
+    "capture_stream": "Gravar Stream",
+    "start_capture": "Iniciar"
   },
 
   "user_account": {
     "delete_user_account": "Apagar Conta",
     "sign_in": "Autenticação",
     "logout": "Sair",
-    "delete_confirmation": "Tem a certeza que quer apagar a sua conta? Esta ação é permanente e irreversível!",
-    "user_registered_message": "Utilizador registado com sucesso!",
+    "delete_confirmation": "Tem a certeza que quer apagar a sua conta? Esta ação é permanente e irreversível",
+    "user_registered_message": "Utilizador registado com sucesso",
     "email": "E-mail",
     "password": "Palavra-chave"
   },
@@ -152,10 +157,12 @@
     "delete_header": "Apagar PCAP",
     "delete_message": "Tem a certeza que quer apagar o ficheiro %{name}?",
     "download_sdp": "Descarregar SDP",
-    "no_pcaps": "Não foram encontrados ficheiros PCAP!",
+    "download_pcap": "Descarregar PCAP",
+    "no_pcaps": "Não foram encontrados ficheiros PCAP",
     "truncated": "Truncado",
 
     "state": {
+      "failed": "A análise falhou",
       "no_analysis": "Sem análise efetuada",
       "needs_user_input": "Necessita de informações adicionais",
       "compliant": "Compatível",
@@ -164,7 +171,7 @@
   },
 
   "flow": {
-    "no_flows": "Não foram encontrados Flows!"
+    "no_flows": "Não foram encontrados Flows"
   },
 
   "buttons": {
@@ -189,14 +196,14 @@
   },
 
   "live_stream": {
-    "no_streams": "Não foram encontradas streams!",
+    "no_streams": "Não foram encontradas streams",
     "no_streams_message": "Comece a gravar streams em direto para as ver aqui."
   },
 
   "errors": {
     "not_supported": "Formato não suportado",
     "not_supported_message": "Por causa disso, %{name} não será analisada",
-    "stream-marked-as-unknown": "A Essência desta Stream não é conhecida ou suportada. Carregue no botão abaixo para adicionar mais detalhes sobre a Stream",
+    "stream_marked_as_unknown": "A Essência desta Stream não é conhecida ou suportada. Carregue no botão abaixo para adicionar mais detalhes sobre a Stream",
     "404_title": "Página não encontrada",
     "404_message": "A página que tentou aceder não existe ou ocorreu um erro.",
     "network_error_title": "Erro de Rede"

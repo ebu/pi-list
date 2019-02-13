@@ -1,19 +1,16 @@
-const util = require('util');
-const child_process = require('child_process');
 const router = require('express').Router();
 const multer = require('multer');
-const uuidv1 = require('uuid/v1');
 const program = require('../util/programArguments');
-const websocketManager = require('../managers/websocket');
 const influxDbManager = require('../managers/influx-db');
 const fs = require('../util/filesystem');
 const logger = require('../util/logger');
 const API_ERRORS = require('../enums/apiErrors');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const CONSTANTS = require('../enums/constants');
-const exec = util.promisify(child_process.exec);
 const Pcap = require('../models/pcap');
 const Stream = require('../models/stream');
+const { pcapSingleStreamIngest, pcapIngest,
+    generateRandomPcapDefinition, generateRandomPcapFilename, getUserFolder } = require('../util/ingest');
 
 function isAuthorized (req, res, next) {
     const { pcapID } = req.params;
@@ -30,27 +27,14 @@ function isAuthorized (req, res, next) {
     } else next();
 }
 
-function argumentsToCmd() {
-    return {
-        withMongo: `-mongo_url ${program.databaseURL}`,
-        withInflux: `-influx_url ${program.influxURL}`
-    };
-}
-
-function getUserFolder(req) {
-    return `${program.folder}/${req.session.passport.user.id}`;
-}
-
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        const pcap_uuid = uuidv1();
-        // generate pcap info and save in the req for using in the handling
-        req.pcap = {
-            uuid: pcap_uuid,
-            folder: `${getUserFolder(req)}/${pcap_uuid}`
-        };
+        req.pcap = generateRandomPcapDefinition(req);
         fs.createIfNotExists(req.pcap.folder);
         cb(null, req.pcap.folder);
+    },
+    filename: function (req, file, cb) {
+        cb(null, generateRandomPcapFilename())
     }
 });
 
@@ -64,67 +48,10 @@ router.use('/:pcapID', isAuthorized);
  *  URL: /api/pcap/
  *  Method: PUT
  */
-router.put('/', upload.single('pcap'), (req, res) => {
-    const userID = req.session.passport.user.id;
-
-    if (!req.file) {
-        logger('pcap-api').error('File not received!');
-        res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send(API_ERRORS.PCAP_FILE_TO_UPLOAD_NOT_FOUND);
-    } else {
-        const pcap_uuid = req.pcap.uuid;
-        const pcap_folder = req.pcap.folder;
-
-        const {withMongo, withInflux} = argumentsToCmd();
-
-        const streamPreProcessorCommand = `"${program.cpp}/stream_pre_processor" "${req.file.path}" ${pcap_uuid} ${withMongo}`;
-        const st2110ExtractorCommand =
-            `"${program.cpp}/st2110_extractor" ${pcap_uuid} "${req.file.path}" "${pcap_folder}" ${withInflux} ${withMongo}`;
-
-        websocketManager.instance().sendEventToUser(userID, {
-            event: 'PCAP_FILE_RECEIVED',
-            data: {
-                id: pcap_uuid,
-                file_name: req.file.originalname,
-                pcap_file_name: req.file.filename,
-                date: Date.now(),
-                progress: 33
-            }
-        });
-        res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send();
-
-        logger('stream-pre-processor').info(`Command: ${streamPreProcessorCommand}`);
-        exec(streamPreProcessorCommand)
-            .then((output) => {
-                logger('stream-pre-process').info(output.stdout);
-
-                return Pcap.findOneAndUpdate({id: pcap_uuid},
-                    {file_name: req.file.originalname, pcap_file_name: req.file.filename, owner_id: userID}, {new: true}).exec();
-            })
-            .then((data) => {
-                websocketManager.instance().sendEventToUser(userID, {
-                    event: "PCAP_FILE_PROCESSED",
-                    data: Object.assign({}, data._doc, { progress: 66 })
-                });
-
-                logger('st2110_extractor').info(`Command: ${st2110ExtractorCommand}`);
-                return exec(st2110ExtractorCommand);
-            })
-            .then((output) => {
-                logger('st2110_extractor').info(output.stdout);
-                Pcap.findOne({id: pcap_uuid}).exec()
-                    .then(data => {
-                        websocketManager.instance().sendEventToUser(userID, {
-                            event: "DONE",
-                            data: Object.assign({}, data._doc, { progress: 100 })
-                        });
-                    });
-            })
-            .catch((output) => {
-                logger('upload-pcap').error(`exception: ${output} ${output.stderr}`);
-                //todo: delete pcap!!!
-            });
-    }
-});
+router.put('/', upload.single('pcap'), (req, res, next) => {
+    res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send();
+    next();
+}, pcapIngest);
 
 /* Get all Pcaps found */
 router.get('/', (req, res) => {
@@ -152,13 +79,23 @@ router.delete('/:pcapID/', (req, res) => {
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
+/* Download a PCAP File */
+router.get('/:pcapID/download', (req, res) => {
+    const { pcapID } = req.params;
+
+    Pcap.findOne({id: pcapID}).exec()
+        .then(data => {
+            const path = `${getUserFolder(req)}/${pcapID}/${data.pcap_file_name}`;
+            fs.downloadFile(path, `${data.file_name}.pcap`, res);
+        });
+});
 
 /* Get sdp.sdp file for a pcap */
 router.get('/:pcapID/sdp', (req, res) => {
     const { pcapID } = req.params;
     const path = `${getUserFolder(req)}/${pcapID}/sdp.sdp`;
 
-    fs.sendFileAsResponse(path, res);
+    fs.downloadFile(path, `${pcapID}_sdp.sdp`, res);
 });
 
 /* Get info from pcap */
@@ -219,12 +156,40 @@ router.patch('/:pcapID/stream/:streamID', (req, res) => {
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
-/* */
 router.get('/:pcapID/stream/:streamID/analytics/CInst/validation', (req, res) => {
     const { pcapID, streamID } = req.params;
 
     const path = `${getUserFolder(req)}/${pcapID}/${streamID}/${CONSTANTS.CINST_FILE}`;
     fs.sendFileAsResponse(path, res);
+});
+
+/* Audio Delays */
+router.get('/:pcapID/stream/:streamID/analytics/AudioTransitDelay', (req, res) => {
+    const { pcapID, streamID } = req.params;
+    const { from, to } = req.query;
+
+    chartData = influxDbManager.getAudioTransitDelay(pcapID, streamID, from, to);
+    chartData
+        .then(data => { res.json(data); })
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+});
+
+router.get('/:pcapID/stream/:streamID/analytics/AudioTimeStampedDelayFactor', (req, res) => {
+    const { pcapID, streamID } = req.params;
+    const { from, to, tolerance, tsdfmax } = req.query;
+    const limit = tolerance * 17; // EBU recommendation #3337
+
+    chartData = influxDbManager.getAudioTimeStampedDelayFactor(pcapID, streamID, from, to);
+    chartData
+        .then(data => {
+            data.forEach(e => {
+                e['tolerance'] = tolerance;
+                // display the red limit only when relevant
+                if (tsdfmax > 0.3 * limit) e['limit'] = limit;
+            });
+            res.json(data);
+        })
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
 /* */
@@ -240,14 +205,10 @@ router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
         chartData = influxDbManager.getCInstRaw(pcapID, streamID, from, to);
     } else if (measurement === 'VrxIdeal') {
         chartData = influxDbManager.getVrxIdeal(pcapID, streamID, from, to);
+    } else if (measurement === 'VrxIdealRaw') {
+        chartData = influxDbManager.getVrxIdealRaw(pcapID, streamID, from, to);
     } else if (measurement === 'VrxAdjustedAvgTro') {
         chartData = influxDbManager.getVrxAdjustedAvgTro(pcapID, streamID, from, to);
-    } else if (measurement === 'VrxFirstPacketFirstFrame') {
-        chartData = influxDbManager.getVrxFirstPacketFirstFrame(pcapID, streamID, from, to)
-    } else if (measurement === 'VrxFirstPacketEachFrame') {
-        chartData = influxDbManager.getVrxFirstPacketEachFrame(pcapID, streamID, from, to)
-    } else if (measurement === 'VrxFirstPacketEachFrameRaw') {
-        chartData = influxDbManager.getVrxFirstPacketEachFrameRaw(pcapID, streamID, from, to)
     } else if (measurement === 'DeltaToIdealTpr0Raw') {
         chartData = influxDbManager.getDeltaToIdealTpr0Raw(pcapID, streamID, from, to)
     } else if (measurement === 'DeltaToIdealTpr0AdjustedAvgTroRaw') {
@@ -259,16 +220,13 @@ router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
     } else if (measurement === 'DeltaRtpVsNt') {
         chartData = influxDbManager.getDeltaRtpVsNt(pcapID, streamID, from, to)
     }
-
     chartData.then(data => res.json(data));
 });
 
 /* PUT new help information for stream */
-router.put('/:pcapID/stream/:streamID/help', (req, res) => {
+router.put('/:pcapID/stream/:streamID/help', (req, res, next) => {
     const { pcapID, streamID } = req.params;
 
-    // todo: only change media_specific and media_type?
-    // todo: do we really need overwrite?
     Stream.findOneAndUpdate({id: streamID}, req.body, {new: true, overwrite: true}).exec()
         .then(() => {
             return Pcap.findOne({id: pcapID}).exec();
@@ -277,23 +235,28 @@ router.put('/:pcapID/stream/:streamID/help', (req, res) => {
             const pcap_folder = `${getUserFolder(req)}/${pcapID}`;
             const pcap_location = `${pcap_folder}/${pcap.pcap_file_name}`;
 
-            const {withMongo, withInflux} = argumentsToCmd();
+            // sets req.file, which is used by the ingest system
+            req.file = {
+                path: pcap_location,
+                originalname: pcap.file_name,
+                filename: pcap.pcap_file_name
+            };
 
-            const st2110ExtractorCommand =
-                `"${program.cpp}/st2110_extractor" ${pcapID} "${pcap_location}" "${pcap_folder}" ${withInflux} ${withMongo} -s "${streamID}"`;
+            // sets req.pcap, which is used by the ingest system
+            req.pcap = {
+                uuid: pcapID,
+                folder: pcap_folder
+            };
 
-            logger('st2110_extractor').info(`Command: ${st2110ExtractorCommand}`);
-            return exec(st2110ExtractorCommand);
-        })
-        .then((output) => {
-            logger('st2110_extractor').info(output.stdout);
-            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(true);
+            next();
         })
         .catch((output) => {
-            logger('st2110_extractor').error(`${output.stdout} ${output.stderr}`);
+            logger('Stream Re-ingest').error(`${output.stdout} ${output.stderr}`);
             res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR)
                 .send(API_ERRORS.PCAP_EXTRACT_METADATA_ERROR);
         });
+}, pcapSingleStreamIngest, (req, res) => {
+    res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
 });
 
 /* Get all frames for stream */

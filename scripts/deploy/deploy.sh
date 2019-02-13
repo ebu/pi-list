@@ -6,13 +6,14 @@ set -eu
 # Installs Deploy dependencies
 SCRIPT_DIR="$(dirname $(readlink -f $0))"
 TOP_DIR="$(readlink -f $SCRIPT_DIR/../..)"
+BUILD_DIR="$TOP_DIR/build"
 RELEASE_DIR="$TOP_DIR/release"
 
 # conan custom config
 conan config install https://github.com/bisect-pt/conan_config.git
 
 # Builds CPP code
-source $SCRIPT_DIR/build.sh "-DCMAKE_BUILD_TYPE=Release -DUSE_PCH=OFF -DBUILD_APPS=ON"
+$SCRIPT_DIR/build.sh $BUILD_DIR "-DCMAKE_BUILD_TYPE=Release -DUSE_PCH=OFF -DBUILD_APPS=ON"
 
 # Install the release directory
 echo

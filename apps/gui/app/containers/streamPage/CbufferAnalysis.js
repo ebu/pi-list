@@ -16,7 +16,7 @@ const CbufferAnalysis = (props) => {
                     request={() => api.getCInstHistogramForStream(pcapID, streamID)}
                     labels={chartFormatters.cinstHistogramValues}
                     formatData={chartFormatters.cinstHistogramCounts}
-                    xLabel=""
+                    xLabel="packets"
                     title="Cinst - Histogram"
                     height={300}
                     yLabel="Count"
@@ -27,6 +27,7 @@ const CbufferAnalysis = (props) => {
                     xAxis={chartFormatters.xAxisTimeDomain}
                     data={chartFormatters.stdDeviationMeanMinMaxLineChart}
                     title="Cinst - Timeline"
+                    yAxisLabel="packets"
                     height={300}
                     lineWidth={3}
                     legend

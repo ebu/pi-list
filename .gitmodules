@@ -10,3 +10,6 @@
 [submodule "third_party/influxdb-cpp-rest"]
 	path = third_party/influxdb-cpp-rest
 	url = https://github.com/bisect-pt/influxdb-cpp-rest.git
+[submodule "third_party/expected"]
+	path = third_party/expected
+	url = https://github.com/TartanLlama/expected.git

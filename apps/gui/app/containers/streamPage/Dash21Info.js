@@ -38,11 +38,11 @@ const Dash21Info = (props) => {
                 },
                 {
                     key: 'Cinst',
-                    value: `${cmin} .. ${cpeak}`
+                    value: `${cmin} .. ${cpeak} packets`
                 },
                 {
                     key: 'Vrx',
-                    value: `${vrxmin} .. ${vrxpeak}`
+                    value: `${vrxmin} .. ${vrxpeak} packets`
                 },
                 {
                     key: 'Average TROffset',
@@ -51,6 +51,10 @@ const Dash21Info = (props) => {
                 {
                     key: 'TRO Default',
                     value: `${(props.tro_default_ns / 1000).toFixed(3)} μs`
+                },
+                {
+                    key: translate('media_information.video.read_schedule'),
+                    value: props.schedule === 'gapped' ? 'Gapped' : 'Linear'
                 },
             ])}
         </Fragment>

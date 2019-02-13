@@ -1,6 +1,6 @@
 const { isObject, isNumber } = require('lodash');
 const winston = require('winston');
-const { removeLastLineBreak } = require('../helpers/string');
+const { removeLastLineBreak } = require('./string');
 const constantsEnum = require('../enums/constants');
 const programArguments = require('./programArguments');
 

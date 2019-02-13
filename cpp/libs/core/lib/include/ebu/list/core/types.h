@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ebu/list/config.h"
+#include "ebu/list/core/platform/config.h"
 #include "ebu/list/core/platform/time.h"
 #include "ebu/list/core/io/logger.h"
 #include "gsl/gsl_byte"
@@ -8,6 +8,7 @@
 #include "bisect/bimo/types.h"
 #include <cinttypes>
 #include <experimental/filesystem>
+#include "expected.hpp"
 
 //------------------------------------------------------------------------------
 
@@ -20,6 +21,9 @@ namespace ebu_list
     using bisect::bimo::to_byte_array;
 
     using path = std::experimental::filesystem::path;
+
+    // switch to std when available
+    using tl::expected;
 
     // network byte order
     enum class net_uint16_t : uint16_t;

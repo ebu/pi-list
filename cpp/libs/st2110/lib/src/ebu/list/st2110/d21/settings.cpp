@@ -226,7 +226,10 @@ fraction64 st2110::d21::get_tro_default(fraction64 tframe,
     media::video::scan_type scan,
     media::video::video_dimensions raster)
 {
-    return get_tro_default_multiplier(scan, raster) * tframe;
+    // tframe is the period of a field, if interlaced. TODO: make this consistent with the name
+    const auto interlaced_multiplier = scan == media::video::scan_type::INTERLACED ? 2 : 1;
+
+    return get_tro_default_multiplier(scan, raster) * tframe * interlaced_multiplier;
 }
 
 vrx_constants st2110::d21::calculate_vrx_constants(int npackets,

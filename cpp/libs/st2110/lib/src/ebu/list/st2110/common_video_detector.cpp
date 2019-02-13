@@ -91,7 +91,7 @@ detector::status common_video_detector::handle_data(const rtp::packet& packet)
 
         if (current_frame_rtp_timestamp_ != packet.info.rtp().timestamp())
         {
-            logger()->debug("INVALID: Different RTP timestamps in the same frame");
+            logger()->trace("INVALID: Different RTP timestamps in the same frame");
             status_ = detector::status::invalid;
             return status_;
         }

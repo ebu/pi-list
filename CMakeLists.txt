@@ -7,6 +7,12 @@ include(options)
 include(conan)
 include(cpp-requirements)
 include(ebu-list-cpp-requirements)
+include(list-version)
+
+configure_file(
+        "${PROJECT_SOURCE_DIR}/scripts/version.yml.in"
+        "${PROJECT_SOURCE_DIR}/apps/listwebserver/version.yml"
+)
 
 # -------------------------------------------------------------------------
 # conan
@@ -33,7 +39,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 add_subdirectory(third_party)
 
 if(BUILD_TESTS)
-    enable_testing ()
+    enable_testing()
 
     if(!WIN32)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage") # for coverage

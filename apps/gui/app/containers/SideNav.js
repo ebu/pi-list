@@ -73,9 +73,9 @@ class SideNav extends Component {
                 </div>
                 <ul className="lst-side-nav__items">
                     <AppContext.Consumer>
-                        {value => (
+                        {({ live }) => (
                             <React.Fragment>
-                                {sideNavItems.filter(item => item.liveOnly !== undefined ? value : true).map(item => (
+                                {sideNavItems.filter(item => item.liveOnly !== undefined ? live : true).map(item => (
                                     <MenuItem
                                         key={`lst-side-nav-${item.link}`}
                                         link={item.link}
@@ -108,6 +108,16 @@ class SideNav extends Component {
                     ) : null}
                 </div>
                 <div className="lst-side-nav__options">
+                    <AppContext.Consumer>
+                        {({ version }) => (
+                            <Button noStyle onClick={() => this.toggleSideNav()}>
+                                <div className="center-xs">
+                                    {`v${version.major}.${version.minor}`}
+                                    { this.state.showMenuItems && ` @ ${version.hash}`}
+                                </div>
+                            </Button>
+                        )}
+                    </AppContext.Consumer>
                     <ThemeContext.Consumer>
                         {({ theme, toggleTheme }) => (
                             <Button noStyle onClick={toggleTheme}>

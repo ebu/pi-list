@@ -46,7 +46,7 @@ const API_ERRORS = {
         code: 'PCAP_FILE_TO_UPLOAD_FAILED',
         message: 'Something went wrong during the PCAP upload.'
     },
-    PCAP_EXTRACT_METADATA_code: {
+    PCAP_EXTRACT_METADATA_ERROR: {
         code: 'PCAP_EXTRACT_METADATA_ERROR',
         message: 'Something went wrong during the PCAP metadata extraction.'
     },

@@ -150,7 +150,6 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
     if (sdu.view().size() < minimum_size) return;
 
     auto p = sdu.view().data();
-    const auto end = sdu.view().data() + sdu.view().size();
         
     const auto extended_sequence_number = to_native(reinterpret_cast<const raw_extended_sequence_number*>(p)->esn);
     const uint32_t full_sequence_number = (extended_sequence_number << 16) | packet.info.rtp.view().sequence_number();
@@ -164,6 +163,7 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
     {
         auto line_index = 0;
 
+        const auto end = sdu.view().data() + sdu.view().size();
         while (p < end)
         {
             const auto line_header = line_header_lens(*reinterpret_cast<const raw_line_header*>(p));

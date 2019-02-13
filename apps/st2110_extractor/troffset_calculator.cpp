@@ -84,9 +84,16 @@ void troffset_analyzer::on_data(const rtp::packet& p)
 
 void troffset_analyzer::on_complete()
 {
-    const auto total_ns = std::accumulate(tros_.begin(), tros_.end(), int64_t{ 0 });
-    const int64_t avg = total_ns / tros_.size();
-    tro_info_.insert({ stream_id_, tro_stream_info { to_ns(tro_default_), avg } });
+    if (tros_.empty())
+    {
+        tro_info_.insert({ stream_id_, tro_stream_info { to_ns(tro_default_), 0 } });
+    }
+    else
+    {
+        const auto total_ns = std::accumulate(tros_.begin(), tros_.end(), int64_t{ 0 });
+        const int64_t avg = total_ns / tros_.size();
+        tro_info_.insert({ stream_id_, tro_stream_info { to_ns(tro_default_), avg } });
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -135,7 +142,7 @@ tro_map ebu_list::calculate_average_troffset(ebu_list::path pcap_file,
     };
 
     auto handler = std::make_shared<rtp::udp_handler>(create_handler);
-    auto player = std::make_unique<pcap::pcap_player>(pcap_file, handler);
+    auto player = std::make_unique<pcap::pcap_player>(pcap_file, handler, on_error_exit);
 
     const auto start_time = std::chrono::steady_clock::now();
 

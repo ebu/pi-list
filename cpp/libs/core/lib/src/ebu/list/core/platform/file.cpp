@@ -17,7 +17,7 @@ namespace
         return handle;
 #else
         const auto mode_string = _mode == ebu_list::file_handle::mode::read ? "rb" : "wb";
-        FILE* handle = ::fopen(path.generic_u8string().c_str(), mode_string);
+        FILE* handle = ::fopen(path.c_str(), mode_string);
         LIST_ENFORCE(handle != nullptr, std::runtime_error, "Error opening '{}'", path);
         return handle;
 #endif
@@ -42,4 +42,9 @@ FILE* ebu_list::file_handle::handle()
 ebu_list::file_handle::operator bool() const
 {
     return handle_ != nullptr;
+}
+
+size_t ebu_list::write(file_handle& f, cbyte_span buffer)
+{
+    return fwrite(buffer.data(), 1, buffer.length_bytes(), f.handle());
 }

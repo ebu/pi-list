@@ -27,7 +27,7 @@ nlohmann::json stream_with_details_serializer::to_json(const stream_with_details
         j["media_specific"] = nullptr;
     }
 
-    logger()->debug("Stream info:\n {}", j.dump(2, ' '));
+    //logger()->debug("Stream info:\n {}", j.dump(2, ' '));
 
     return j;
 }

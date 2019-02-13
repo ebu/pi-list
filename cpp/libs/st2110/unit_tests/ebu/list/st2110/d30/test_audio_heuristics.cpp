@@ -52,32 +52,7 @@ SCENARIO("ST2110-30 heuristics")
 
     GIVEN("a audio stream")
     {
-        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-30/st2110-30_16bit_48khz_125us_2ch.pcap");
-        rtp_source source(pcap_file);
-
-        audio_format_detector detector;
-        const auto result = run_detector(detector, source);
-
-        WHEN("we check the format")
-        {
-            REQUIRE(result == detector::status::valid);
-
-            THEN("we get the correct format")
-            {
-                const auto details = detector.get_details();
-                REQUIRE(std::holds_alternative<audio_description>(details));
-                const auto audio_details = std::get<audio_description>(details);
-                REQUIRE(audio_details.sampling == media::audio::audio_sampling::_48kHz);
-                REQUIRE(audio_details.packet_time == audio_packet_time(std::chrono::microseconds(125)));
-                REQUIRE(audio_details.number_channels == 2);
-                REQUIRE(audio_details.encoding == media::audio::audio_encoding::L24);
-            }
-        }
-    }
-
-    GIVEN("a audio stream 2")
-    {
-        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-30/st2110-30_24bit_48khz_1ms_2ch.pcap");
+        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-30/l16_48000_2ch_1ms.pcap");
         rtp_source source(pcap_file);
 
         audio_format_detector detector;
@@ -95,6 +70,31 @@ SCENARIO("ST2110-30 heuristics")
                 REQUIRE(audio_details.sampling == media::audio::audio_sampling::_48kHz);
                 REQUIRE(audio_details.packet_time == audio_packet_time(std::chrono::milliseconds(1)));
                 REQUIRE(audio_details.number_channels == 2);
+                REQUIRE(audio_details.encoding == media::audio::audio_encoding::L16);
+            }
+        }
+    }
+
+    GIVEN("a audio stream 2")
+    {
+        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-30/l24_48000_8ch_0125.pcap");
+        rtp_source source(pcap_file);
+
+        audio_format_detector detector;
+        const auto result = run_detector(detector, source);
+
+        WHEN("we check the format")
+        {
+            REQUIRE(result == detector::status::valid);
+
+            THEN("we get the correct format")
+            {
+                const auto details = detector.get_details();
+                REQUIRE(std::holds_alternative<audio_description>(details));
+                const auto audio_details = std::get<audio_description>(details);
+                REQUIRE(audio_details.sampling == media::audio::audio_sampling::_48kHz);
+                REQUIRE(audio_details.packet_time == audio_packet_time(std::chrono::microseconds(125)));
+                REQUIRE(audio_details.number_channels == 8);
                 REQUIRE(audio_details.encoding == media::audio::audio_encoding::L24);
             }
         }

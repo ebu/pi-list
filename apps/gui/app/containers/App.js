@@ -35,9 +35,14 @@ class App extends Component {
     }
 
     render() {
+        const meta = {
+            live: this.props.features.liveFeatures,
+            version: this.props.version
+        };
+
         return (
             <ThemeContext.Provider value={this.state}>
-                <AppContext.Provider value={this.props.features.liveFeatures}>
+                <AppContext.Provider value={meta}>
                     <div className={`lst-app-container ${this.state.theme}`}>
                         <SideNav ref={sideNav => this.sideNav = sideNav} isOpen={false} user={this.props.user}/>
                         <div className="lst-main">
@@ -63,6 +68,7 @@ class App extends Component {
 export default asyncLoader(App, {
     asyncRequests: {
         user: () => api.getUser(),
-        features: () => api.getFeatures()
+        features: () => api.getFeatures(),
+        version: () => api.getVersion()
     }
 });

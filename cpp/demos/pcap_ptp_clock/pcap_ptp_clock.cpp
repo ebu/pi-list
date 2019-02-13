@@ -66,7 +66,7 @@ void run(const config& config)
     auto sm = std::make_shared<ptp::state_machine>();
     auto non_ptp_listener = std::make_shared<null_udp_listener>();
     auto filter = std::make_shared<ptp::udp_filter>(sm, non_ptp_listener);
-    auto player = std::make_unique<pcap::pcap_player>(path(config.pcap_file), filter);
+    auto player = std::make_unique<pcap::pcap_player>(path(config.pcap_file), filter, on_error_exit);
     auto launcher = launch(std::move(player));
 
     std::cin.ignore();

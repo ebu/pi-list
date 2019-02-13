@@ -58,13 +58,13 @@ class PcapUploader extends Component {
             this.setState({ uploadComplete: true, isUploading: false, uploadFailed: false });
             notifications.success({
                 title: translate('notifications.success.pcap_upload'),
-                message: translate('notifications.success.pcap_upload-message', { name: fileToUpload.name })
+                message: translate('notifications.success.pcap_upload_message', { name: fileToUpload.name })
             });
         }).catch(() => {
             this.setState({ uploadComplete: false, isUploading: false, uploadFailed: true });
             notifications.error({
                 title: translate('notifications.error.pcap_upload'),
-                message: translate('notifications.error.pcap_upload-message', { name: fileToUpload.name })
+                message: translate('notifications.error.pcap_upload_message', { name: fileToUpload.name })
             });
         });
     }

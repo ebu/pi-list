@@ -21,7 +21,7 @@ anc_stream_handler::anc_stream_handler(rtp::packet first_packet, serializable_st
 
     const auto& anc = this->info();
     nlohmann::json  j = anc_stream_details::to_json(anc);
-    logger()->info("Stream info:\n {}", j.dump(2, ' '));
+    //logger()->info("Stream info:\n {}", j.dump(2, ' '));
 }
 
 const anc_stream_details& anc_stream_handler::info() const

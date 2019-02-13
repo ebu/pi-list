@@ -72,7 +72,7 @@ SCENARIO("ST2110-20 heuristics")
 
     GIVEN("a audio stream")
     {
-        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-30/st2110-30_16bit_48khz_125us_2ch.pcap");
+        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-30/l16_48000_2ch_1ms.pcap");
         rtp_source source(pcap_file);
 
         video_format_detector detector;

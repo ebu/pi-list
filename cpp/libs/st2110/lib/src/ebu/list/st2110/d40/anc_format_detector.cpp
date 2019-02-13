@@ -62,7 +62,7 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
      */
     for (uint8_t i=0; i < anc_header.anc_count(); i++)
     {
-        logger()->debug("Ancillary: data count : {}", i);
+        logger()->trace("Ancillary: data count : {}", i);
 
         if (p > end)
         {
@@ -86,14 +86,13 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
 
         if ( !anc_packet.sanity_check() )
         {
-            logger()->error("Ancillary: sanity");
             return detector::status::detecting;
         }
 
         auto stream = anc_stream((anc_packet.did() << 8) + anc_packet.sdid(), anc_packet.stream_num());
         if (!stream.is_valid())
         {
-            logger()->error("Ancillary: stream invalid");
+            logger()->trace("Ancillary: stream invalid");
             return detector::status::detecting;
         }
 
@@ -147,6 +146,13 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
     }
 
     const auto res = detector_.handle_data(packet);
+
+    /* analysis terminated but no valid ancillary found */
+    if ((res != detector::status::detecting) && (! description_.streams.size()))
+    {
+        logger()->warn("Ancillary, no valid stream found");
+        return detector::status::invalid;
+    }
 
     return  res;
 }

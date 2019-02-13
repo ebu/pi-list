@@ -1,7 +1,7 @@
 const commander = require('commander');
 const yamlParser = require('read-yaml');
 const deepFreeze = require('deep-freeze');
-const path = require('../helpers/path');
+const path = require('./path');
 
 function parseNmosArguments(arguments) {
     if(!arguments.nmosRegistry) {
@@ -36,6 +36,7 @@ commander
     .option('--live', 'Live mode')
     .action((configFile, options) => {
         config = yamlParser.sync(configFile);
+        config = Object.assign(config, yamlParser.sync("version.yml"));
         config.dev = options.dev;
         config.live = options.live;
     })

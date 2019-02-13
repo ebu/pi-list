@@ -81,6 +81,17 @@ class InfluxDbManager {
         return this.sendQueryAndFormatResults(query);
     }
 
+    getVrxIdealRaw(pcapID, streamID, startTime, endTime) {
+        const query = `
+            select "gapped-ideal-vrx" as "value"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
+        `;
+
+        log.info(`Get VRX Ideal in the pcap ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
+
     getVrxAdjustedAvgTro(pcapID, streamID, startTime, endTime) {
         const query = `
             select max("gapped-adjusted-avg-tro-vrx"), min("gapped-adjusted-avg-tro-vrx")
@@ -89,43 +100,6 @@ class InfluxDbManager {
         `;
 
         log.info(`Get VRX adjusted average TRO for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
-
-        return this.sendQueryAndFormatResults(query);
-    }
-
-    getVrxFirstPacketFirstFrame(pcapID, streamID, startTime, endTime) {
-        const query = `
-            select max("gapped-first_packet_first_frame-vrx"), min("gapped-first_packet_first_frame-vrx")
-            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
-            group by time(2ms)
-        `;
-
-        log.info(`Get VRX First Packet First Frame for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
-
-        return this.sendQueryAndFormatResults(query);
-    }
-
-    getVrxFirstPacketEachFrame(pcapID, streamID, startTime, endTime) {
-        const wanted_resolution = Math.ceil((endTime - startTime) / 2000);
-        const resolution = wanted_resolution <= 1 ? "1ns" : `${wanted_resolution}ns`;
-        const query = `
-            select max("gapped-first_packet_each_frame-vrx"), min("gapped-first_packet_each_frame-vrx")
-            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
-            group by time(${resolution})
-        `;
-
-        log.info(`Get VRX First Packet Each Frame for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
-
-        return this.sendQueryAndFormatResults(query);
-    }
-
-    getVrxFirstPacketEachFrameRaw(pcapID, streamID, startTime, endTime) {
-        const query = `
-            select "gapped-first_packet_each_frame-vrx" as "value"
-            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
-        `;
-
-        log.info(`Get VRX First Packet Each Frame for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
 
         return this.sendQueryAndFormatResults(query);
     }
@@ -187,6 +161,42 @@ class InfluxDbManager {
         `;
 
         log.info(`Get DeltaRtpTsVsPacketTs for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
+
+    getAudioTransitDelay(pcapID, streamID, startTime, endTime) {
+        const query = `
+            select
+            "audio-transit-delay-min" as "min",
+            "audio-transit-delay-max" as "max",
+            "audio-transit-delay-mean" as "mean"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
+        `;
+
+        log.info(`Get Delay for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
+
+    getAudioTimeStampedDelayFactor(pcapID, streamID, startTime, endTime) {
+        const query = `
+            select "audio-tsdf" as "value"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
+        `;
+
+        log.info(`Get TSDF for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
+
+    getAudioTimeStampedDelayFactorAmp(pcapID, streamID) {
+        const query = `
+            select max("audio-tsdf") as "max", min("audio-tsdf") as "min"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}
+        `;
+
+        log.info(`Get Max Value of TSDF for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
 
         return this.sendQueryAndFormatResults(query);
     }

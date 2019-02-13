@@ -29,7 +29,8 @@ init() {
         mkdir -p $TOP_DIR/release/
         echo "Creating $DOCKERFILE"
         cat > $DOCKERFILE << EOF
-# This is the "builder" Dockerfile
+# This Dockerfile creates a environment to compile the CPP apps, build
+# the Node server, and the UI.
 
 FROM gcc:7.2
 
@@ -39,7 +40,7 @@ RUN adduser --uid $UID --home /home/$USER $USER
 
 ADD ./scripts/ /home/$USER/scripts/
 WORKDIR /home/$USER/
-RUN ./scripts/setup-dev-env.sh
+RUN ./scripts/setup_build_env.sh
 EOF
     else
         echo ""
@@ -64,7 +65,7 @@ release() {
 
 dev() {
     docker run -u $USER -v $TOP_DIR:/home/$USER -it $IMAGE:latest \
-        ./scripts/deploy/build.sh "-DCMAKE_BUILD_TYPE=Debug -DUSE_PCH=OFF -DBUILD_ALL=ON"
+        ./scripts/deploy/build.sh $TOP_DIR/build "-DCMAKE_BUILD_TYPE=Debug -DUSE_PCH=OFF -DBUILD_ALL=ON"
 }
 
 test() {

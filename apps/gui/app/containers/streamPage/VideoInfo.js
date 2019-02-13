@@ -36,10 +36,6 @@ const VideoInfo = (props) => {
                         translate('media_information.video.interlaced') :
                         translate('media_information.video.progressive')
                 },
-                {
-                    key: translate('media_information.video.read_schedule'),
-                    value: props.schedule === 'gapped' ? 'Gapped' : 'Linear'
-                },
             ])}
         </Fragment>
     );

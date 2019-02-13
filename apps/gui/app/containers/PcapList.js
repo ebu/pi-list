@@ -30,6 +30,7 @@ class PcapList extends Component {
         this.hideDeleteModal = this.hideDeleteModal.bind(this);
         this.onPcapReceived = this.onPcapReceived.bind(this);
         this.onPcapProcessed = this.onPcapProcessed.bind(this);
+        this.onPcapFailed = this.onPcapFailed.bind(this);
         this.onDone = this.onDone.bind(this);
     }
 
@@ -52,6 +53,15 @@ class PcapList extends Component {
     }
 
     onPcapProcessed(data) {
+        const pcaps = immutable.findAndUpdateElementInArray({ id: data.id }, this.state.pcaps, {
+            ...data,
+            stateLabel: translate('workflow.processing_streams')
+        });
+
+        this.setState({ pcaps });
+    }
+
+    onPcapFailed(data) {
         const pcaps = immutable.findAndUpdateElementInArray({ id: data.id }, this.state.pcaps, {
             ...data,
             stateLabel: translate('workflow.processing_streams')
@@ -102,6 +112,7 @@ class PcapList extends Component {
         websocket.on(websocketEventsEnum.PCAP.FILE_RECEIVED, this.onPcapReceived);
         websocket.on(websocketEventsEnum.PCAP.FILE_PROCESSED, this.onPcapProcessed);
         websocket.on(websocketEventsEnum.PCAP.ANALYZING, this.onPcapProcessed);
+        websocket.on(websocketEventsEnum.PCAP.FILE_FAILED, this.onPcapFailed);
         websocket.on(websocketEventsEnum.PCAP.DONE, this.onDone);
     }
 
@@ -109,6 +120,7 @@ class PcapList extends Component {
         websocket.off(websocketEventsEnum.PCAP.FILE_RECEIVED, this.onPcapReceived);
         websocket.off(websocketEventsEnum.PCAP.FILE_PROCESSED, this.onPcapProcessed);
         websocket.off(websocketEventsEnum.PCAP.ANALYZING, this.onPcapProcessed);
+        websocket.off(websocketEventsEnum.PCAP.FILE_FAILED, this.onPcapFailed);
         websocket.off(websocketEventsEnum.PCAP.DONE, this.onDone);
     }
 
@@ -123,7 +135,7 @@ class PcapList extends Component {
                         {
                             key: 'file_name',
                             header: 'PCAP',
-                            value: 'file_name',
+                            render: this.renderPcapFileName,
                             cellClassName: 'lst-truncate',
                             width: '30%'
                         },
@@ -162,15 +174,18 @@ class PcapList extends Component {
         let stateIcon;
         let stateType;
 
-        if (!rowData.analyzed) {
+        if (rowData.error) {
+            stateText = translate('pcap.state.failed');
+            stateIcon = 'close';
+            stateType = 'danger';
+        } else if (!rowData.analyzed) {
             stateText = translate('pcap.state.needs_user_input');
             stateIcon = 'warning';
             stateType = 'warning';
         } else {
             const hasError = rowData.not_compliant_streams !== 0;
-            const nrAnalyzedStreams = rowData.not_compliant_streams + rowData.narrow_streams + rowData.narrow_linear_streams + rowData.wide_streams;
 
-            if (nrAnalyzedStreams === 0) {
+            if (rowData.total_streams === 0) {
                 stateText = translate('pcap.state.no_analysis');
                 stateIcon = 'info';
                 stateType = 'info';
@@ -185,6 +200,18 @@ class PcapList extends Component {
             }
         }
 
+        if (rowData.error) {
+            return (
+                <Fragment>
+                    <Badge
+                        className="lst-table-configure-sdp-badge"
+                        type={stateType}
+                        text={stateText}
+                        icon={stateIcon}
+                    />
+                </Fragment>
+            );
+        }
         return (
             <Fragment>
                 {rowData.progress && rowData.progress < 100 ? (
@@ -196,43 +223,43 @@ class PcapList extends Component {
                         <ProgressBar percentage={rowData.progress} />
                     </Fragment>
                 ) : (
-                    <Fragment>
-                        <Badge
-                            className="lst-table-configure-sdp-badge"
-                            type={stateType}
-                            text={stateText}
-                            icon={stateIcon}
-                        />
-                        {rowData.offset_from_ptp_clock !== 0 && (
+                        <Fragment>
                             <Badge
                                 className="lst-table-configure-sdp-badge"
-                                type="success"
-                                icon="timer"
-                                text="PTP"
+                                type={stateType}
+                                text={stateText}
+                                icon={stateIcon}
                             />
-                        )}
-                        {rowData.truncated && (
-                            <Badge
-                                className="lst-table-configure-sdp-badge"
-                                type="warning"
-                                icon="warning"
-                                text={translate('pcap.truncated')}
-                            />
-                        )}
-                        <span className="stream-type-number">
-                            <Icon value="videocam" /> {rowData.video_streams}
-                        </span>
-                        <span className="stream-type-number">
-                            <Icon value="audiotrack" /> {rowData.audio_streams}
-                        </span>
-                        <span className="stream-type-number">
-                            <Icon value="assignment" /> {rowData.anc_streams}
-                        </span>
-                        <span className="stream-type-number">
-                            <Icon value="help" /> {rowData.total_streams - rowData.video_streams - rowData.audio_streams - rowData.anc_streams}
-                        </span>
-                    </Fragment>
-                )}
+                            {rowData.offset_from_ptp_clock !== 0 && (
+                                <Badge
+                                    className="lst-table-configure-sdp-badge"
+                                    type="success"
+                                    icon="timer"
+                                    text="PTP"
+                                />
+                            )}
+                            {rowData.truncated && (
+                                <Badge
+                                    className="lst-table-configure-sdp-badge"
+                                    type="warning"
+                                    icon="warning"
+                                    text={translate('pcap.truncated')}
+                                />
+                            )}
+                            <span className="stream-type-number">
+                                <Icon value="videocam" /> {rowData.video_streams}
+                            </span>
+                            <span className="stream-type-number">
+                                <Icon value="audiotrack" /> {rowData.audio_streams}
+                            </span>
+                            <span className="stream-type-number">
+                                <Icon value="assignment" /> {rowData.anc_streams}
+                            </span>
+                            <span className="stream-type-number">
+                                <Icon value="help" /> {rowData.total_streams - rowData.video_streams - rowData.audio_streams - rowData.anc_streams}
+                            </span>
+                        </Fragment>
+                    )}
             </Fragment>
         );
     }
@@ -243,6 +270,18 @@ class PcapList extends Component {
                 {moment(rowData.date).format('lll')}
             </span>
         );
+    }
+
+    renderPcapFileName(rowData) {
+        return rowData.generated_from_network ?
+            <Fragment>
+                {rowData.file_name}
+                <Badge
+                    className="lst-table-configure-sdp-badge"
+                    type="info"
+                    icon="settings_input_composite"
+                />
+            </Fragment> : rowData.file_name;
     }
 }
 

@@ -33,6 +33,9 @@ const StreamSchema = new mongoose.Schema({
     },
     global_video_analysis: {
         type: Object
+    },
+    global_audio_analysis: {
+        type: Object
     }
 });
 

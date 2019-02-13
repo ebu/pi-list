@@ -10,9 +10,27 @@ using namespace ebu_list::pcap;
 using namespace ebu_list;
 
 //------------------------------------------------------------------------------
+void ebu_list::on_error_exit(std::exception_ptr e)
+{
+    try
+    {
+        std::rethrow_exception(e);
+    }
+    catch (std::exception &ex)
+    {
+        logger()->info("on_error: {}", ex.what());
+        std::exit(-1);
+    }
+}
 
-pcap_player::pcap_player(path pcap_file, udp::listener_ptr listener, clock::duration packet_timestamp_correction)
+//------------------------------------------------------------------------------
+
+pcap_player::pcap_player(path pcap_file,
+    udp::listener_ptr listener,
+    on_error_t on_error,
+    clock::duration packet_timestamp_correction)
     : listener_(std::move(listener)),
+    on_error_(std::move(on_error)),
     packet_timestamp_correction_(packet_timestamp_correction),
     bf_(std::make_shared<malloc_sbuffer_factory>()),
     source_(bf_, std::make_unique<file_source>(bf_, pcap_file)),
@@ -26,8 +44,10 @@ pcap_player::pcap_player(path pcap_file, udp::listener_ptr listener, clock::dura
     }
 }
 
-pcap_player::pcap_player(path pcap_file, udp::listener_ptr listener)
-    : pcap_player(std::move(pcap_file), std::move(listener), clock::duration{})
+pcap_player::pcap_player(path pcap_file, 
+    udp::listener_ptr listener,
+    on_error_t on_error)
+    : pcap_player(std::move(pcap_file), std::move(listener), on_error, clock::duration{})
 {
 }
 
@@ -53,7 +73,7 @@ bool pcap_player::next()
     }
     catch (...)
     {
-        listener_->on_error(std::current_exception());
+        on_error_(std::current_exception());
         return false;
     }
 

@@ -114,12 +114,12 @@ From the top directory, use the docker wrapper script:
 Usage:  ./scripts/docker_build_wrapper.sh <init|build|bash>
     init   Generate a Dockerfile and the Docker image list_dev_env
     build  Build LIST project using a container based on list_dev_env
-    bash   Start bash in the conatiner for dev or troubleshoot.
+    bash   Start bash in the container for dev or troubleshoot.
 ```
 
 ### Output
 
-A new folder `release` will appear on the top-level directory of this repository. It contains the artefact to be installed on the LIST server and all docker-compose files to instanciate all the micros-services.
+A new folder `release` will appear on the top-level directory of this repository. It contains the artefact to be installed on the LIST server and all docker-compose files to instantiate all the micro-services.
 
 ```
 cd release
@@ -229,7 +229,8 @@ Just use cmake's `add_subdirectory()` and it will work out-of-the-box.
 
 ## Additional information
 
-[Cfull and Vrx Analysis](./docs/cfull_and_vrx_analysis.md)
+* [Cfull and Vrx analysis](./docs/cfull_and_vrx_analysis.md)
+* [Audio timing analysis](./docs/audio_timing_analysis.md)
 
 ## License
 

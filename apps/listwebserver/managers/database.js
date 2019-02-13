@@ -11,14 +11,27 @@ function createNewConnection(databaseHostname, databasePort, databaseName) {
         reconnectInterval: 500, // Reconnect every 500ms
     };
 
-    return mongoose.createConnection(mongoDatabaseUrl, options);
+    const conn = mongoose.createConnection(mongoDatabaseUrl, options);
+
+    conn.then(
+        connection => {
+            logger('database-manager').info('Connected to DB.');
+            return connection;
+        },
+        err => {
+            logger('database-manager').error('Failed to create a connection to DB. Exiting.');
+
+            process.exit(-1);
+        });
+
+    return conn;
 }
 
 const { hostname, port } = programArguments.database;
 let databases_ = new Map();
 
 module.exports = (databaseName) => {
-    if(!databases_.has(databaseName)) {
+    if (!databases_.has(databaseName)) {
         databases_.set(databaseName, createNewConnection(hostname, port, databaseName));
     }
 

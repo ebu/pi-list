@@ -1,5 +1,4 @@
 .lst-input {
-    width: calc(100% - 22px);
     border-radius: 5px;
     height: 21px;
     padding: 5px 10px;
@@ -12,6 +11,10 @@
         border-color: $blue;
         box-shadow: 0 0 0 2px $blue;
     }
+}
+
+.lst-input-full-width {
+    width: calc(100% - 22px);
 }
 
 .Select-control {

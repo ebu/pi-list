@@ -55,7 +55,25 @@ SCENARIO("ST2110-40 heuristics")
 
     GIVEN("a audio stream")
     {
-        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-30/st2110-30_16bit_48khz_125us_2ch.pcap");
+        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-30/l16_48000_2ch_1ms.pcap");
+
+        rtp_source source(pcap_file);
+
+        anc_format_detector detector;
+        const auto result = run_detector(detector, source);
+
+        WHEN("we check the status")
+        {
+            THEN("it is invalid")
+            {
+                REQUIRE(result == detector::status::invalid);
+            }
+        }
+    }
+
+    GIVEN("an ancillary stream with unknown DID/SDID")
+    {
+        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-40/forged_as_invalid_did-sdid=1.pcap");
 
         rtp_source source(pcap_file);
 

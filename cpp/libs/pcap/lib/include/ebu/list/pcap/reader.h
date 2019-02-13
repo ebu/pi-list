@@ -21,5 +21,5 @@ namespace ebu_list::pcap
 
     using maybe_packet = std::optional<packet>;
 
-    maybe_packet read_packet(const file_header_lens& header, chunked_data_source& source) noexcept;
+    maybe_packet read_packet(const file_header_lens& header, chunked_data_source& source);
 }
