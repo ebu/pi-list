@@ -40,7 +40,7 @@ RUN adduser --uid $UID --home /home/$USER $USER
 
 ADD ./scripts/ /home/$USER/scripts/
 WORKDIR /home/$USER/
-RUN ./scripts/setup_dev_env.sh
+RUN ./scripts/setup_build_env.sh
 EOF
     else
         echo ""
