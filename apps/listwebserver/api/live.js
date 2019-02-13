@@ -10,6 +10,7 @@ const program = require('../util/programArguments');
 const util = require('util');
 const child_process = require('child_process');
 const exec = util.promisify(child_process.exec);
+const jetpack = require('fs-jetpack');
 
 const { pcapIngest, generateRandomPcapDefinition, generateRandomPcapFilename } = require('../util/ingest');
 
@@ -18,6 +19,7 @@ function runTcpdump(req, res, next) {
     logger('live').info(`Received: ${JSON.stringify(req.body)}`);
 
     const new_pcap_filename = generateRandomPcapFilename();
+    const temp_file = `/tmp/${new_pcap_filename}`;
     const destination_file = `${req.pcap.folder}/${new_pcap_filename}`;
     const duration_ms = req.body.duration || 500;
 
@@ -34,10 +36,12 @@ function runTcpdump(req, res, next) {
 
     const dst_filter = req.body.destination_address ? `dst ${req.body.destination_address}` : '';
 
+    const tcpdumpProgram  = '/usr/sbin/tcpdump';
+
     const tcpdumpOptions = {
-        env: Object.assign({}, process.env, {
-            LD_PRELOAD: 'libvma.so'
-        })
+        // env: Object.assign({}, process.env, {
+        //     LD_PRELOAD: 'libvma.so'
+        // })
     };
 
     const tcpdumpArguments = [
@@ -46,10 +50,12 @@ function runTcpdump(req, res, next) {
         "--time-stamp-precision=nano",
         "-j", "adapter_unsynced",
         "-c", "5000000",
-        "-w", destination_file
+        "-w", temp_file
     ];
 
-    const childProcess = child_process.spawn('tcpdump',
+    console.log(`${tcpdumpProgram} ${tcpdumpArguments.join(' ')}`);
+
+    const childProcess = child_process.spawn(tcpdumpProgram,
         tcpdumpArguments,
         tcpdumpOptions
     );
@@ -60,8 +66,7 @@ function runTcpdump(req, res, next) {
     };
 
     childProcess.on('error', (err) => {
-        console.log('Failed to start subprocess.');
-        res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send(API_ERRORS.UNEXPECTED_ERROR);
+        console.log('error during capture:', err);
     });
 
     childProcess.stdout.on('data', appendToOutput);
@@ -81,6 +86,8 @@ function runTcpdump(req, res, next) {
         logger('live').info(tcpdumpOutput.join('\n'));
 
         clearTimeout(timer);
+
+        jetpack.move(temp_file, destination_file);
 
         if (code === 0 || killed) {
             res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send();
