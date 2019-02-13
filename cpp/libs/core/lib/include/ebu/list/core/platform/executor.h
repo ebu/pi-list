@@ -13,12 +13,12 @@ namespace ebu_list
 
         using F = std::function<void()>;
 
-        void execute(F f);
+        void execute(F&& f);
         void wait();
 
     private:
-        using FT = std::future<void>;
-        std::vector<FT> futures_;
+        struct impl;
+        std::unique_ptr<impl> impl_;
     };
 
     using executor_ptr = std::shared_ptr<executor>;
