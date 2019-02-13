@@ -19,6 +19,7 @@ usage(){
     init        Generate a Dockerfile and the Docker image $IMAGE
     release     Build and deploy LIST project using a container based on $IMAGE
     dev         Build for development, i.e. with debug profile, tests and demos included
+    test        Builds the dev target and runs the test suite
     bash        Start bash in the container for dev or troubleshoot."
 }
 
@@ -67,6 +68,11 @@ dev() {
         ./scripts/deploy/build.sh $TOP_DIR/build "-DCMAKE_BUILD_TYPE=Debug -DUSE_PCH=OFF -DBUILD_ALL=ON"
 }
 
+test() {
+    docker run -u $USER -v $TOP_DIR:/home/$USER -it $IMAGE:latest \
+        ./scripts/CI/test.sh
+}
+
 run_bash() {
     docker run -u $USER -v $TOP_DIR:/home/$USER -it $IMAGE:latest bash
 }
@@ -83,6 +89,12 @@ case $1 in
         check
         dev
         ;;
+    test)
+        check
+        dev
+        test
+        ;;
+
     bash)
         check
         run_bash
