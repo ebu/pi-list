@@ -1,9 +1,9 @@
 # Live IP Software Toolkit to assist EBU members in the implementation of IP based facilities
 
 
-| Windows | Linux | 
-|:--------:|:---------:|
-| [![Build status](https://ci.appveyor.com/api/projects/status/3e093kgfjv5bnpcx/branch/master?svg=true)](https://ci.appveyor.com/project/promgamer/pi-list/branch/master) | [![Build Status](https://travis-ci.com/ebu/pi-list.svg?branch=master)](https://travis-ci.com/ebu/pi-list) |
+| Linux | 
+|:---------:|
+| [![Build Status](https://travis-ci.com/ebu/pi-list.svg?branch=master)](https://travis-ci.com/ebu/pi-list) |
 
 ![overview](docs/overview.gif)
 
