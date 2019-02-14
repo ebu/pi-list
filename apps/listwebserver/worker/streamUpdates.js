@@ -7,7 +7,6 @@ const websocketManager = require('../managers/websocket');
 amqp.connect('amqp://localhost', (err, conn) => {
     if (err) {
         console.error('Error connecting to AMQP queue:', err);
-        process.exit(-1);
         return;
     }
 
