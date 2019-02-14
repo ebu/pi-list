@@ -3,17 +3,16 @@
 # Abort if anything goes wrong
 set -eu
 
+this_dir="$(dirname $(readlink -f $0))"
+source $this_dir/../path.sh || { echo "path.sh is missing"; exit 1; }
+
 # Installs Deploy dependencies
-SCRIPT_DIR="$(dirname $(readlink -f $0))"
-TOP_DIR="$(readlink -f $SCRIPT_DIR/../..)"
-BUILD_DIR="$TOP_DIR/build"
-RELEASE_DIR="$TOP_DIR/release"
 
 # conan custom config
 conan config install https://github.com/bisect-pt/conan_config.git
 
 # Builds CPP code
-$SCRIPT_DIR/build.sh $BUILD_DIR "-DCMAKE_BUILD_TYPE=Release -DUSE_PCH=OFF -DBUILD_APPS=ON"
+$DEPLOY_SCRIPT_DIR/build.sh "-DCMAKE_BUILD_TYPE=Release -DUSE_PCH=OFF -DBUILD_APPS=ON"
 
 # Install the release directory
 echo
@@ -43,10 +42,10 @@ echo "Copying apps... done"
 
 echo
 echo "Copying artifacts..."
-install -m 755 $SCRIPT_DIR/artifacts/*.sh $RELEASE_DIR/
-install -m 755 $SCRIPT_DIR/artifacts/docker-compose.yml $RELEASE_DIR/
-install -m 644 $SCRIPT_DIR/artifacts/listwebserver/Dockerfile $RELEASE_DIR/server/
-install -m 644 $SCRIPT_DIR/artifacts/listwebserver/config.yml $RELEASE_DIR/server/app/listwebserver
+install -m 755 $DEPLOY_SCRIPT_DIR/artifacts/*.sh $RELEASE_DIR/
+install -m 755 $DEPLOY_SCRIPT_DIR/artifacts/docker-compose.yml $RELEASE_DIR/
+install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/Dockerfile $RELEASE_DIR/server/
+install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/config.yml $RELEASE_DIR/server/app/listwebserver
 echo "Copying artifacts... done"
 
 echo

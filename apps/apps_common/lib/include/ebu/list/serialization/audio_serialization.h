@@ -17,9 +17,8 @@ namespace ebu_list
 
         int sample_size = 0;
         int samples_per_packet = 0;
-
-        unsigned long packet_count = 0;
-        unsigned long sample_count = 0;
+        int64_t packet_count = 0;
+        int64_t sample_count = 0;
 
         clock::time_point first_packet_ts {};
         clock::time_point last_packet_ts {};

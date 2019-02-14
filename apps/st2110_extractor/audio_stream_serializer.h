@@ -3,10 +3,10 @@
 #include "ebu/list/serialization/audio_serialization.h"
 #include "ebu/list/handlers/audio_stream_handler.h"
 #include "ebu/list/core/platform/executor.h"
+#include "ebu/list/core/io/file_sink.h"
 
 namespace ebu_list
 {
-
     class audio_stream_serializer : public audio_stream_handler
     {
     public:
@@ -14,10 +14,9 @@ namespace ebu_list
             completion_handler ch, path base_dir);
 
     private:
-        void on_sample(sample_uptr sample) override;
+        void on_sample_data(cbyte_span data) override;
         void on_stream_complete() override;
-
-        std::vector<sample_uptr> samples_;
-        const path base_dir_;
+        path base_dir_;
+        std::unique_ptr<file_sink> raw_data_;
     };
 }

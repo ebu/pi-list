@@ -2,10 +2,10 @@
 
 set -eu
 
-SCRIPT_DIR="$(dirname $(readlink -f $0))"
-TOP_DIR="$(readlink -f $SCRIPT_DIR/../..)"
-BUILD_DIR="$TOP_DIR/build"
+this_dir="$(dirname $(readlink -f $0))"
+source $this_dir/../path.sh || { echo "path.sh is missing"; exit 1; }
 
 cd $BUILD_DIR
 ctest
 
+set +eu
