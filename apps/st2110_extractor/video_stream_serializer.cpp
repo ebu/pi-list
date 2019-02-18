@@ -26,13 +26,6 @@ namespace
 
         return dimensions;
     }
-    // TODO: receive this externally
-    constexpr auto vrx_analysis_settings = d21::vrx_settings
-    {
-        d21::read_schedule::gapped,
-        d21::tvd_kind::ideal ,
-        std::nullopt
-    };
 }
 
 void ebu_list::write_frame_info(const path& base_dir, const std::string& stream_id, const frame_info& info)
@@ -66,7 +59,11 @@ video_stream_serializer::video_stream_serializer(rtp::packet first_packet,
     main_executor_(std::move(main_executor)),
     frame_size_(get_frame_size(details)),
     on_complete_callback_(on_complete_callback),
-    compliance_(d21::build_compliance_analyzer(details.video, vrx_analysis_settings))
+    compliance_(d21::build_compliance_analyzer(details.video, {
+		details.video.schedule,
+		d21::tvd_kind::ideal,
+		std::nullopt
+		}))
 {
 }
 
