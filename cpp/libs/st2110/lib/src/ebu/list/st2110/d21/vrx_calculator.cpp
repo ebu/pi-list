@@ -5,6 +5,13 @@ using namespace ebu_list;
 using namespace ebu_list::st2110::d21;
 
 //------------------------------------------------------------------------------
+template<typename T>
+constexpr double to_double(const fraction_t<T>& f) noexcept
+{
+	return f.numerator() / static_cast<double>(f.denominator());
+}
+
+//------------------------------------------------------------------------------
 
 vrx_calculator::vrx_calculator(int npackets,
     media::video::info video_info,
@@ -68,8 +75,18 @@ packet_info vrx_calculator::on_packet(const clock::time_point& packet_timestamp,
     // TODO: should we continue to drain packets after Tvd + Npackets * Trs?
     // TODO: should we disallow Vrx underflow?
 
-    const auto drained = static_cast<int>(floor((packet_time - tvd_ + constants_.trs) / constants_.trs));
+	const auto pt = to_double(packet_time);
+	const auto tvd_p = to_double(tvd_);
+	const auto trs_p = to_double(constants_.trs);
+	const auto drained = static_cast<int>((pt - tvd_p + trs_p) / trs_p);
+
+    //const auto drained = static_cast<int>(floor((packet_time - tvd_ + constants_.trs) / constants_.trs));
     current.vrx = vrx_prev_ + 1 - (drained - drained_prev_);
+
+	if(current.vrx > 1000)
+	{
+		logger()->info("Ping");
+	}
 
     vrx_prev_ = current.vrx;
 
