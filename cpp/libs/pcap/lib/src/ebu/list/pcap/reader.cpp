@@ -40,7 +40,7 @@ maybe_packet pcap::read_packet(const file_header_lens& header, chunked_data_sour
     if (size(data) != included_len) return std::nullopt;
 
     const auto payload_len = ph().orig_len();
-    if (data.view().size_bytes() == payload_len)
+    if (data.view().size_bytes() >= payload_len)
     {
         const auto was_padded = false;
         return packet{ std::move(ph),  std::move(data), was_padded };
