@@ -23,7 +23,10 @@ const AudioPage = (props) => {
             <Panel className="lst-stream-info-tab">
                 <div className="row lst-full-height">
                     <div className="col-xs-12 col-md-4">
-                        <NetworkInfo {...networkInfo} packet_count={statistics.packet_count} />
+                        <NetworkInfo {...networkInfo}
+                            packet_count={statistics.packet_count}
+                            dropped_packet_count={statistics.dropped_packet_count}
+                        />
                         <AudioInfo {...mediaInfo} />
                         <AudioStatistics {...statistics} tsdf_max={analysis.tsdf_max} />
                     </div>
