@@ -1,5 +1,6 @@
 #include "ebu/list/net/ipv4/multicast_subscriber.h"
 #include "ebu/list/core/io/logger.h"
+#include "ebu/list/core/idioms.h"
 
 #if defined(LIST_HAS_POSIX)
 #include <netinet/in.h>
@@ -19,103 +20,30 @@ using namespace ebu_list;
 multicast_subscription::multicast_subscription(const ipv4::address listen_address,
     ipv4::address multicast_address,
     port multicast_port)
+	: sd_(AF_INET, SOCK_DGRAM, 0)
 {
-#if defined(LIST_HAS_POSIX)
-    // TODO: review this code
-
-    struct sockaddr_in localSock;
+    LIST_ENFORCE(sd_.is_valid(), std::runtime_error, "Error creating socket");
+    
+    // Enable SO_REUSEADDR to allow multiple applications to receive copies of the multicast datagrams.
+    int reuse = 1;
+    const auto setsockopt_result = setsockopt(sd_.get_handle(), SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char*>(&reuse), sizeof(reuse));
+    LIST_ENFORCE(setsockopt_result >= 0, std::runtime_error, "Error setting SO_REUSEADDR");
+    
+    // Bind to the proper port number with the IP address specified as INADDR_ANY.
+    struct sockaddr_in localSockAddr;
+    memset(reinterpret_cast<char*>(&localSockAddr), 0, sizeof(localSockAddr));
+    localSockAddr.sin_family = AF_INET;
+    localSockAddr.sin_port = static_cast<uint16_t>(multicast_port);
+    localSockAddr.sin_addr.s_addr = INADDR_ANY;
+    const auto bind_result = bind(sd_.get_handle(), reinterpret_cast<struct sockaddr*>(&localSockAddr), sizeof(localSockAddr));
+    LIST_ENFORCE(bind_result >= 0, std::runtime_error, "Error binding datagram socket");
+    
     struct ip_mreq group;
-    int datalen;
-    char databuf[1024];
-
-    sd_ = socket(AF_INET, SOCK_DGRAM, 0);
-
-    if(sd_ < 0)
-    {
-        perror("Opening datagram socket error");
-        exit(1);
-    }
-    else
-    {
-        // printf("Opening datagram socket....OK.\n");
-    }
-    
-    /* Enable SO_REUSEADDR to allow multiple instances of this */
-    /* application to receive copies of the multicast datagrams. */
-    {
-        int reuse = 1;
-        if(setsockopt(sd_, SOL_SOCKET, SO_REUSEADDR, (char *)&reuse, sizeof(reuse)) < 0)
-        {
-            perror("Setting SO_REUSEADDR error");
-            close(sd_);
-            exit(1);
-        }
-        else
-        {
-            // printf("Setting SO_REUSEADDR...OK.\n");
-        }
-    }
-    
-    /* Bind to the proper port number with the IP address */
-    /* specified as INADDR_ANY. */
-    memset((char *) &localSock, 0, sizeof(localSock));
-    localSock.sin_family = AF_INET;
-    localSock.sin_port = static_cast<in_port_t>(multicast_port);
-    localSock.sin_addr.s_addr = INADDR_ANY;
-    if(bind(sd_, (struct sockaddr*)&localSock, sizeof(localSock)))
-    {
-        perror("Binding datagram socket error");
-        close(sd_);
-        exit(1);
-    }
-    else
-        // printf("Binding datagram socket...OK.\n");
-    
-    /* Join the multicast group 226.1.1.1 on the local 203.106.93.94 */
-    /* interface. Note that this IP_ADD_MEMBERSHIP option must be */
-    /* called for each local interface over which the multicast */
-    /* datagrams are to be received. */
     group.imr_multiaddr.s_addr = static_cast<uint32_t>(multicast_address);
     group.imr_interface.s_addr = static_cast<uint32_t>(listen_address);
-    if(setsockopt(sd_, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char *)&group, sizeof(group)) < 0)
-    {
-        perror("Adding multicast group error");
-        close(sd_);
-        exit(1);
-    }
-    else
-    {
-        logger()->info("Reporting to multicast group {}.\n", to_string(multicast_address));
-    }
-    
-    /* Read from the socket. */
-    datalen = sizeof(databuf);
-    const auto read_result = read(sd_, databuf, datalen);
-    if(read_result < 0)
-    {
-        perror("Reading datagram message error");
-        close(sd_);
-        exit(1);
-    }
-    else
-    {
-        // printf("Reading datagram message...OK.\n");
-        // printf("The message from multicast server is %ld bytes long.\n", read_result);
-    }
-
-#else // defined(LIST_HAS_POSIX)
-
-    // TODO: implement this for other platforms
-    static_cast<void>(listen_address, multicast_address, multicast_port);
-
-#endif // defined(LIST_HAS_POSIX)
-}
-
-multicast_subscription::~multicast_subscription()
-{
-#if defined(LIST_HAS_POSIX)
-    close(sd_);
-#endif // defined(LIST_HAS_POSIX)
+    const auto add_mc_result = setsockopt(sd_.get_handle(), IPPROTO_IP, IP_ADD_MEMBERSHIP, reinterpret_cast<const char*>(&group), sizeof(group));
+    LIST_ENFORCE(add_mc_result >= 0, std::runtime_error, "Error adding multicast group");
+    logger()->info("Reporting to multicast group {}.\n", to_string(multicast_address));
 }
 
 //------------------------------------------------------------------------------
@@ -129,11 +57,12 @@ void multicast_subscriber::subscribe_to(ipv4::address address, port port)
 {
     logger()->info("Subscribing to {}:{}\n", to_string(address), to_string(port));
 
+    // TODO: implement the socket's move constructor so that we can create it on the stack
     auto subscription = std::make_unique<multicast_subscription>(listen_address_,
         address,
         port);
 
-    subscriptions_.insert({ address, std::move(subscription) });
+    subscriptions_.emplace(address, std::move(subscription));
 }
 
 void multicast_subscriber::unsubscribe_from(ipv4::address address)
