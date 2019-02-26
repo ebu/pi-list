@@ -1,0 +1,28 @@
+version: "3"
+services:
+  influxdb:
+    image: influxdb:1.4.2
+    volumes:
+      - influxdb:/var/lib/influxdb
+
+  mongo:
+    image: mongo:latest
+    volumes:
+      - mongo:/data/db
+
+  list_server:
+    image: ebutech/pi-list:v1.3 #replace by any version available @ Docker Hub
+    ports:
+      - "8080:8080"
+      - "3030:3030"
+    links:
+      - influxdb
+      - mongo
+    volumes:
+      - listserver:/home/
+
+volumes:
+  mongo:
+  listserver:
+  influxdb:
+  
