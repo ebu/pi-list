@@ -36,6 +36,8 @@ You'll need:
 - **Docker** >= v15
 - **Docker-compose** >= v1.20
 
+Create a directory called `ebu-pi-list`, create a new file in that directory called `docker-compose.yml` and add the contents below. From the directory with the filled in contents you can run `docker-compose up` to run the application.
+
 ```
 version: "3"
 services:
