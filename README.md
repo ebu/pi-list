@@ -63,7 +63,7 @@ or in a Docker container that produces a reference environment.
 
 The project is made of a master repo plus third-party components.
 
-```sh
+```
 git clone https://github.com/ebu/pi-list.git
 git submodule update --init --recursive
 ```
@@ -77,7 +77,7 @@ Additional requirements:
 
 Fetch the project, build the dependencies and the project:
 
-```sh
+```
 ./scripts/setup-dev-env.sh
 ./scripts/deploy/deploy.sh
 ```
@@ -88,7 +88,7 @@ Fetch the project, build the dependencies and the project:
 
 From the top directory, use the docker wrapper script:
 
-```sh
+```
 ./scripts/docker_build_wrapper.sh
 Usage:  ./scripts/docker_build_wrapper.sh <init|build|bash>
     init   Generate a Dockerfile and the Docker image list_dev_env
@@ -100,7 +100,7 @@ Usage:  ./scripts/docker_build_wrapper.sh <init|build|bash>
 
 A new folder `release` will appear on the top-level directory of this repository. It contains the artefact to be installed on the LIST server and all docker-compose files to instantiate all the micro-services.
 
-```sh
+```
 cd release
 ./start.sh
 ```
@@ -129,14 +129,14 @@ In order to run and develop this application on your computer, you need this add
 
 If you meet all the pre-requisites, a quick way to start right away is:
 
-```sh
+```
 git clone
 git submodule update --init --recursive
 ```
 
 To run cmake, you can do:
 
-```sh
+```
 mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
@@ -145,7 +145,7 @@ cmake --build .
 
 Or with Visual Studio:
 
-```sh
+```
 mkdir build
 cd build
 cmake .. -G "Visual Studio 15 Win64"
