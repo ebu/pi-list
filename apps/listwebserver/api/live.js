@@ -34,28 +34,25 @@ function runTcpdump(req, res, next) {
         throw new Error('program.capture.interfaceName not set in configuration file');
     }
 
-    const dst_filter = req.body.destination_address ? `dst ${req.body.destination_address}` : '';
+    const snapshotLength = program.capture.snapshotLength 
+        ? [`--snapshot-length=${program.capture.snapshotLength}`]
+        : [];
 
-    const tcpdumpProgram  = '/usr/sbin/tcpdump';
-
-    const tcpdumpOptions = {
-        // env: Object.assign({}, process.env, {
-        //     LD_PRELOAD: 'libvma.so'
-        // })
-    };
+    const tcpdumpProgram = '/usr/sbin/tcpdump';
+    const tcpdumpOptions = {};
 
     const tcpdumpArguments = [
         "-i", program.capture.interfaceName,
-        dst_filter,
         "--time-stamp-precision=nano",
         "-j", "adapter_unsynced",
         "-c", "5000000",
+        ...snapshotLength,
         "-w", temp_file
     ];
 
     console.log(`${tcpdumpProgram} ${tcpdumpArguments.join(' ')}`);
 
-    const childProcess = child_process.spawn(tcpdumpProgram,
+    const tcpDumpProcess = child_process.spawn(tcpdumpProgram,
         tcpdumpArguments,
         tcpdumpOptions
     );
@@ -65,37 +62,91 @@ function runTcpdump(req, res, next) {
         tcpdumpOutput.push(new TextDecoder("utf-8").decode(data));
     };
 
-    childProcess.on('error', (err) => {
+    tcpDumpProcess.on('error', (err) => {
         console.log('error during capture:', err);
     });
 
-    childProcess.stdout.on('data', appendToOutput);
-    childProcess.stderr.on('data', appendToOutput);
+    tcpDumpProcess.stdout.on('data', appendToOutput);
+    tcpDumpProcess.stderr.on('data', appendToOutput);
+
+    const getDropInfo = (stdout) => {
+        const kernel_regex = /(\d+) *packets dropped by kernel/m;
+        const kernel_found = stdout.match(kernel_regex);
+        const kernel = kernel_found ? parseInt(kernel_found[1]) : 0;
+
+        const interface_regex = /(\d+) *packets dropped by interface/m;
+        const interface_found = stdout.match(interface_regex);
+        const interface = interface_found ? parseInt(interface_found[1]) : 0;
+
+        return { kernel, interface };
+    };
+
+    tcpDumpProcess.on('close', (code) => {
+        logger('live').info(`child process exited with code ${code}`);
+
+        const stdout = tcpdumpOutput.join('\n');
+
+        const dropInfo = getDropInfo(stdout);
+
+        logger('live').info('Drop info:', dropInfo);
+        logger('live').info(stdout);
+
+        clearTimeout(timer);
+
+        if (dropInfo.kernel > 0 || dropInfo.interface > 0) {
+            res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send(API_ERRORS.UNEXPECTED_ERROR);
+            jetpack.remove(temp_file);
+        } else {
+            jetpack.move(temp_file, destination_file);
+
+            if (code === 0 || killed) {
+                res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send();
+                next();
+            } else {
+                res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send(API_ERRORS.UNEXPECTED_ERROR);
+            }
+        }
+    });
+
+    const subscribeToProgram = `${program.cpp}/subscribe_to`;
+    const subscribeToOptions = {};
+
+    const destAddresses = req.body.destination_address.split(',');
+    const addressSubscription = [];
+    destAddresses.forEach(a => {
+        addressSubscription.push('-g');
+        addressSubscription.push(a.trim());
+    });
+
+    const subscribeToArguments = [
+        program.capture.interfaceName,
+        ...addressSubscription
+    ];
+
+    console.log(`${subscribeToProgram} ${subscribeToArguments.join(' ')}`);
+
+    const subscribeToProcess = child_process.spawn(subscribeToProgram,
+        subscribeToArguments,
+        subscribeToOptions
+    );
+
+    subscribeToProcess.on('error', (err) => {
+        console.log('error during capture:', err);
+    });
+
+    subscribeToProcess.on('close', (code) => {
+        logger('live').info(`subscribeTo process exited with code ${code}`);
+    });
 
     let killed = false;
     const onTimeout = () => {
         console.log('onTimeout');
         killed = true;
-        childProcess.kill();
+        tcpDumpProcess.kill();
+        subscribeToProcess.kill();
     };
 
     const timer = setTimeout(onTimeout, duration_ms);
-
-    childProcess.on('close', (code) => {
-        logger('live').info(`child process exited with code ${code}`);
-        logger('live').info(tcpdumpOutput.join('\n'));
-
-        clearTimeout(timer);
-
-        jetpack.move(temp_file, destination_file);
-
-        if (code === 0 || killed) {
-            res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send();
-            next();
-        } else {
-            res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send(API_ERRORS.UNEXPECTED_ERROR);
-        }
-    });
 }
 
 // Start a PCAP capture

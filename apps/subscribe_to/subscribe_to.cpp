@@ -1,6 +1,8 @@
 #include "ebu/list/version.h"
 #include "ebu/list/core/types.h"
 #include "ebu/list/net/ipv4/multicast_subscriber.h"
+#include "ebu/list/net/utils.h"
+#include "ebu/list/core/idioms.h"
 #include "bisect/bicla.h"
 
 using namespace ebu_list;
@@ -10,22 +12,19 @@ namespace
 	struct config
 	{
 		std::string local_interface_s;
-		std::string multicast_group_s;
-		std::optional<std::string> source_address_s;
+		std::vector<std::string> multicast_group_s;
 
 		ipv4::address local_interface;
-		ipv4::address multicast_group;
-		std::optional<ipv4::address> source_address;
+		std::vector<ipv4::address> multicast_group;
 	};
 
-	config parse_or_usage_and_exit(int argc, char const* const* argv)
+	config parse_or_usage_and_exit(int argc, char const *const *argv)
 	{
 		using namespace bisect::bicla;
 
-		auto[parse_result, config] = parse(argc, argv,
-			argument(&config::local_interface_s, "local interface", "the IP address of the local interface"),
-			argument(&config::multicast_group_s, "multicast group", "the multicast group to subscribe"),
-			option(&config::source_address_s, "s", "source address", "if specified, will use source-specific multicast, using that source address")
+		auto[parse_result, config] = parse(argc, argv
+			, argument(&config::local_interface_s, "local interface", "the IP address of the local interface")
+			, option(&config::multicast_group_s, "g", "multicast group", "the multicast group to subscribe")
 		);
 
 		if(!parse_result)
@@ -34,30 +33,34 @@ namespace
 			exit(-1);
 		}
 
-		config.local_interface = ipv4::from_dotted_string(config.local_interface_s);
-		config.multicast_group = ipv4::from_dotted_string(config.multicast_group_s);
-		if(config.source_address_s)
+		const auto maybe_local_addr = net::get_ipv4_interface_addr(config.local_interface_s.c_str());
+		if(!maybe_local_addr)
 		{
-			config.source_address = ipv4::from_dotted_string(*config.source_address_s);
+			logger()->error("invalid local interface: {}", config.local_interface_s);
+			exit(-1);
+		}
+
+		config.local_interface = *maybe_local_addr;
+
+		for(const auto& s : config.multicast_group_s)
+		{
+			config.multicast_group.push_back(ipv4::from_dotted_string(s));
 		}
 
 		return config;
 	}
 
-	void run(const config& config)
+	void run(const config &config)
 	{
-		logger()->info("Subscribing to {}, using interface {}",
-			to_string(config.multicast_group),
-			to_string(config.local_interface));
-
-		if(config.source_address)
-		{
-			logger()->info("SSM: {}",
-				to_string(*config.source_address));
-		}
-
 		ipv4::multicast_subscriber subscriber(config.local_interface);
-		subscriber.subscribe_to(config.multicast_group, port{});
+
+		for(const auto& group : config.multicast_group)
+		{
+			subscriber.subscribe_to(group, port{});
+			logger()->info("Subscribing to {}, using interface {}",
+				to_string(group),
+				to_string(config.local_interface));
+		}
 
 		fmt::print("Press a key to exit\n");
 		char c;
@@ -67,7 +70,7 @@ namespace
 
 //------------------------------------------------------------------------------
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 	auto console = logger();
 	console->info("Based on EBU LIST v{}", ebu_list::version());
@@ -78,7 +81,7 @@ int main(int argc, char* argv[])
 	{
 		run(config);
 	}
-	catch(std::exception& ex)
+	catch(std::exception &ex)
 	{
 		console->error("exception: {}", ex.what());
 		return -1;

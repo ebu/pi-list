@@ -266,7 +266,7 @@ namespace
 
                         {
                             auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(influx_db_url, pcap.id, stream_info.id, "gapped-ideal");
-                            const auto settings = vrx_settings{ in_video_info.video.schedule, tvd_kind::ideal };
+                            const auto settings = vrx_settings{ in_video_info.video.schedule, tvd_kind::ideal, std::nullopt };
                             auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info, settings);
                             framer_ml->add(std::move(analyzer));
                         }
