@@ -5,13 +5,6 @@ using namespace ebu_list;
 using namespace ebu_list::st2110::d21;
 
 //------------------------------------------------------------------------------
-template<typename T>
-constexpr double to_double(const fraction_t<T>& f) noexcept
-{
-	return f.numerator() / static_cast<double>(f.denominator());
-}
-
-//------------------------------------------------------------------------------
 
 vrx_calculator::vrx_calculator(int npackets,
     media::video::info video_info,

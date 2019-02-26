@@ -15,7 +15,7 @@ SCENARIO("Fraction is created")
 
         WHEN("we try to get the fraction value")
         {
-            auto value = f.to_float();
+            auto value = to_double(f);
 
             THEN("we get the right value")
             {
@@ -54,7 +54,7 @@ SCENARIO("Fraction is created")
 
         WHEN("we try to get the fraction value")
         {
-            auto value = f.to_float();
+            auto value = to_double(f);
 
             THEN("we get the right value")
             {
@@ -100,7 +100,7 @@ SCENARIO("Fraction is created")
 
         WHEN("we try to get the fraction value")
         {
-            auto value = f.to_float();
+            auto value = to_double(f);
 
             THEN("we get the right value")
             {
