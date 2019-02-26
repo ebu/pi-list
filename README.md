@@ -41,7 +41,7 @@ You can launch the docker containers with the following commands.
 ```sh
 mkdir ~/ebu-pi-list
 cd ~/ebu-pi-list
-https://raw.githubusercontent.com/prince-chrismc/pi-list/master/docker-compose.yml 
+https://raw.githubusercontent.com/ebu/pi-list/master/docker-compose.yml 
 docker-compose up
 ```
 
