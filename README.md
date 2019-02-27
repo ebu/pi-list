@@ -25,11 +25,9 @@ Drill drown on each stream and understand what's going on | ![](docs/stream_dril
 
 We deployed an [online version](http://list.ebu.io/) that you can start using right away.
 
-## Run - Quick-start
+## Quick start - Running a pre-built Docker image
 
-The easiest way to quickly use LIST application is via Docker. Choose one of the below's options that suits you the best.
-
-### Using [Docker Hub's Image](https://hub.docker.com/r/ebutech/pi-list/)
+The easiest way to run the LIST application locally is to use the [image in dockerhub](https://hub.docker.com/r/ebutech/pi-list/).
 
 You'll need:
 
