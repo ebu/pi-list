@@ -63,6 +63,7 @@
     },
 
     "rtp": {
+      "stream": "Stream",
       "source": "Source",
       "destination": "Destination",
       "ssrc": "SSRC",
@@ -103,8 +104,8 @@
 
   "notifications": {
     "success": {
-      "pcap_upload": "PCAP file uploaded",
-      "pcap_upload_message": "The %{name} file was successfully uploaded",
+      "file_upload": "file uploaded",
+      "file_upload_message": "The %{name} file was successfully uploaded",
 
       "pcap_deleted": "PCAP file deleted",
       "pcap_deleted_message": "The %{name} file was successfully deleted",
@@ -117,8 +118,8 @@
       "stream_capture_message": "The stream was successfully captured"
     },
     "error": {
-      "pcap_upload": "PCAP upload failed",
-      "pcap_upload_message": "An error occurred during the %{name} file upload process",
+      "file_upload": "upload failed",
+      "file_upload_message": "An error occurred during the %{name} file upload process",
 
       "pcap_deleted": "Error while deleting PCAP",
       "pcap_deleted_message": "The %{name} file cannot be deleted",
@@ -133,7 +134,7 @@
   },
 
   "workflow": {
-    "drop_files_here": "Drop your PCAP files here",
+    "drop_pcap_files_here": "Drop your PCAP files here",
     "select_from_drive": "or select them from your computer",
     "import_pcap": "Import PCAP files",
     "pcaps_to_be_imported": "PCAP files to be imported",
@@ -141,7 +142,9 @@
     "processing_streams": "Processing Streams...",
     "done": "Done",
     "capture_stream": "Capture Stream",
-    "start_capture": "Start"
+    "add_stream": "Add Stream",
+    "start_capture": "Start",
+    "drop_sdp_file_here": "Drop your SDP file here"
   },
 
   "user_account": {

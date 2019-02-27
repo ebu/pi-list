@@ -7,6 +7,7 @@ export default {
         DONE: 'PCAP_FILE_PROCESSING_DONE'
     },
     LIVE: {
+        IP_PARSED_FROM_SDP: 'IP_PARSED_FROM_SDP',
         STREAM_UPDATE: 'STREAM_UPDATE',
         NMOS_UPDATE: 'NMOS_UPDATE'
     }

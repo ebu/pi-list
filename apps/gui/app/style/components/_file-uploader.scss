@@ -1,4 +1,4 @@
-.lst-pcap-uploader {
+.lst-file-uploader {
   @extend .lst-text-center;
 
   display: flex;
@@ -24,24 +24,24 @@
     background-color: $blue-light-25;
   }
 
-  .lst-pcap-uploader__icon {
+  .lst-file-uploader__icon {
     font-size: 1.8rem;
   }
 
-  .lst-pcap-uploader__link {
+  .lst-file-uploader__link {
     text-decoration: underline;
     cursor: pointer;
     text-decoration-skip: ink;
   }
 }
 
-.lst-pcap-uploader-files {
+.lst-file-uploader-files {
   margin-bottom: $margin/2;
 
   li {
     margin: $margin/2 0;
 
-    .pcap-icon {
+    .file-icon {
       @extend .lst-text-blue;
       font-size: 26px;
       position: relative;
@@ -54,21 +54,21 @@
       top: 3px;
     }
 
-    .pcap-file-name,
-    .pcap-upload-file-info {
+    .file-file-name,
+    .file-upload-file-info {
       @extend .lst-no-padding;
       margin-bottom: 0;
     }
 
-    .pcap-upload-progress {
+    .file-upload-progress {
       @extend .lst-no-padding, .lst-text-right;
     }
 
-    .lst-pcap-uploader-bar {
+    .lst-file-uploader-bar {
       margin-top: 4px;
     }
 
-    .lst-pcap-uploader-file-size {
+    .lst-file-uploader-file-size {
       margin: 0 $margin/2;
       font-style: italic;
       font-size: $small-font-size;
@@ -76,7 +76,7 @@
   }
 }
 
-.lst-pcap-uploader-list {
+.lst-file-uploader-list {
   margin-top: $margin;
 }
 
