@@ -1,5 +1,8 @@
 const util = require('util');
 const child_process = require('child_process');
+const fs = require('fs');
+const sdp_parser = require('sdp-transform');
+const sdpoker = require('sdpoker');
 const uuidv1 = require('uuid/v1');
 const program = require('./programArguments');
 const websocketManager = require('../managers/websocket');
@@ -229,10 +232,70 @@ function pcapIngestEnd(req, res, next) {
         })
 }
 
+function sdpCheck(req, res, next){
+    sdpoker.getSDP(req.file.path, false)
+        .then(sdp => {
+            const rfcErrors = sdpoker.checkRFC4566(sdp, {});
+            const st2110Errors = sdpoker.checkST2110(sdp, {});
+            const errors = rfcErrors.concat(st2110Errors);
+            if (errors.length !== 0) {
+                // notify instead of printing
+                logger('sdp-check').error(`Found ${errors.length} error(s) in SDP file:`);
+                for ( let c in errors ) {
+                    logger('sdp-check').error(`${+c + 1}: ${errors[c].message}`);
+                }
+            }
+            next();
+        })
+        .catch(err => {
+            logger('sdp-check').error(`exception: ${err}`);
+        });
+}
+
+function sdpParseIp(req, res, next){
+    const userID = req.session.passport.user.id;
+    const readFileAsync = util.promisify(fs.readFile);
+
+    readFileAsync(req.file.path)
+        .then((sdp) => {
+            const parsed = sdp_parser.parse(sdp.toString());
+
+            console.log(parsed);
+            // grab src and dst IPs for each stream
+            const streams = parsed.media.map(function (media) {
+                return {
+                    dstAddr: media.sourceFilter.destAddress,
+                    dstPort: media.port,
+                    src: media.sourceFilter.srcList
+                };
+            });
+
+            // notify the live subscription panel
+            websocketManager.instance().sendEventToUser(userID, {
+                event: 'IP_PARSED_FROM_SDP',
+                data: {
+                    description: parsed.name,
+                    streams: streams
+                }
+            });
+        })
+        .then(() => {
+            next();
+        })
+        .catch(err => {
+            logger('sdp-parse').error(`exception: ${err}`);
+        });
+}
+
+function sdpDelete(req, res, next){
+    fs.unlinkSync(req.file.path);
+}
+
 module.exports = {
     getUserFolder,
     generateRandomPcapFilename,
     generateRandomPcapDefinition,
     pcapIngest: [pcapFileAvailableFromReq, pcapPreProcessing, pcapFullAnalysis, audioConsolidation, pcapIngestEnd],
-    pcapSingleStreamIngest: [pcapFileAvailableFromReq, singleStreamAnalysis, audioConsolidation]
+    pcapSingleStreamIngest: [pcapFileAvailableFromReq, singleStreamAnalysis, audioConsolidation],
+    sdpIngest: [sdpParseIp, sdpCheck, sdpDelete]
 };

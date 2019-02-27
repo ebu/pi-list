@@ -62,6 +62,7 @@
     },
 
     "rtp": {
+      "stream": "Stream",
       "source": "Origem",
       "destination": "Destino",
       "ssrc": "SSRC",
@@ -102,8 +103,8 @@
 
   "notifications": {
     "success": {
-      "pcap_upload": "Ficheiro PCAP submetido",
-      "pcap_upload_message": "O ficheiro %{name} foi submetido com sucesso",
+      "file_upload": "Ficheiro PCAP submetido",
+      "file_upload_message": "O ficheiro %{name} foi submetido com sucesso",
 
       "pcap_deleted": "Ficheiro PCAP apagado",
       "pcap_deleted_message": "O ficheiro %{name} foi apagado com sucesso",
@@ -116,8 +117,8 @@
       "stream_capture_message": "Captura terminada com sucesso"
     },
     "error": {
-      "pcap_upload": "O upload do PCAP falhou",
-      "pcap_upload_message": "Ocorreu um erro enquanto o ficheiro %{name} foi submetido",
+      "file_upload": "O upload do PCAP falhou",
+      "file_upload_message": "Ocorreu um erro enquanto o ficheiro %{name} foi submetido",
 
       "pcap_deleted": "Erro a apagar o PCAP",
       "pcap_deleted_message": "Não foi possível apagar o ficheiro %{name}",
@@ -132,7 +133,7 @@
   },
 
   "workflow": {
-    "drop_files_here": "Arraste para aqui os ficheiros PCAP",
+    "drop_pcap_files_here": "Arraste para aqui os ficheiros PCAP",
     "select_from_drive": "ou selecione-os a partir do seu PC",
     "import_pcap": "Importar ficheiros PCAP",
     "pcaps_to_be_imported": "PCAPs submetidos",
@@ -140,7 +141,9 @@
     "processing_streams": "A processar as Streams...",
     "done": "Concluído",
     "capture_stream": "Gravar Stream",
-    "start_capture": "Iniciar"
+    "add_stream": "Adicionar Stream",
+    "start_capture": "Iniciar",
+    "drop_sdp_file_here": "Arraste para aqui seu ficheiro SDP"
   },
 
   "user_account": {

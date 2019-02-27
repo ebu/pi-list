@@ -1,5 +1,5 @@
 # Configurations for LIST Web Server
-# Use this file for development mode
+# Modify and use this file for production mode
 
 # Filesystem related
 folder: /home/
@@ -19,3 +19,6 @@ influx:
   hostname: influxdb
   port: 8086
 
+# Live
+capture:
+  interfaceName: eth0
