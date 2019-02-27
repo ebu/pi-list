@@ -36,34 +36,13 @@ You'll need:
 - **Docker** >= v15
 - **Docker-compose** >= v1.20
 
-```
-version: "3"
-services:
-  influxdb:
-    image: influxdb:1.4.2
-    volumes:
-      - influxdb:/var/lib/influxdb
+You can launch the docker containers with the following commands.
 
-  mongo:
-    image: mongo:latest
-    volumes:
-      - mongo:/data/db
-
-  list_server:
-    image: ebutech/pi-list:v1.3 #replace by any version available @ Docker Hub
-    ports:
-      - "8080:8080"
-      - "3030:3030"
-    links:
-      - influxdb
-      - mongo
-    volumes:
-      - listserver:/home/
-
-volumes:
-  mongo:
-  listserver:
-  influxdb:
+```sh
+mkdir ~/ebu-pi-list
+cd ~/ebu-pi-list
+https://raw.githubusercontent.com/ebu/pi-list/master/docker-compose.yml 
+docker-compose up
 ```
 
 You're good to go: `http://localhost:8080`
