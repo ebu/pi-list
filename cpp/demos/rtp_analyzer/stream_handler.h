@@ -72,7 +72,7 @@ namespace ebu_list
         uint32_t ssrc;
         uint32_t first_frame_ts = 0;
         uint32_t last_frame_ts = 0;
-        float rate = 0.0;
+		double rate = 0.0;
         uint8_t payload_type = 0;
         histogram_data<size_t>::entries packet_sizes;
         histogram_data<int>::entries ts_deltas;

@@ -21,7 +21,7 @@ stream_handler::stream_handler(rtp::packet first_packet)
 
 const stream_info& stream_handler::info() const
 {
-    info_.rate = rate_.rate().value_or(media::video::Rate(0)).to_float();
+    info_.rate = to_double(rate_.rate().value_or(media::video::Rate(0)));
     info_.packet_sizes = packet_sizes_.results();
     info_.ts_deltas = timestamp_deltas_.results();
     return info_;

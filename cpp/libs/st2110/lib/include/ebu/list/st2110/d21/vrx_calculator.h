@@ -21,7 +21,9 @@ namespace ebu_list::st2110::d21
         packet_info on_packet(const clock::time_point& packet_timestamp, bool frame_start);
 
     private:
-        const vrx_settings settings_;
+		void on_frame_start(const fraction64& packet_time);
+		
+		const vrx_settings settings_;
         const fraction64 tframe_; // Period of a frame, in seconds
         const vrx_constants constants_;
         int64_t current_n_ = 0;
@@ -31,5 +33,6 @@ namespace ebu_list::st2110::d21
         std::optional<fraction64> start_draining_ts_;
         int drained_prev_ = 0;
         int vrx_prev_ = 0;
+		double trs_ns_ = 0;
     };
 }

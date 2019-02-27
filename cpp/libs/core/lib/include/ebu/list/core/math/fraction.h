@@ -18,12 +18,12 @@ namespace ebu_list
     template<typename T>
     class fraction_t
     {
-        /// used for constructing a fraction from a float
+        /// used for constructing a fraction from a double
         inline static const T ebu_list_fraction_precision{ 1000 };
 
     public:
         constexpr fraction_t() = default;
-        constexpr explicit fraction_t(float number) noexcept
+        constexpr explicit fraction_t(double number) noexcept
                 : fraction_t(static_cast<T>(number * ebu_list_fraction_precision), ebu_list_fraction_precision)
         {
         }
@@ -50,11 +50,6 @@ namespace ebu_list
         constexpr T denominator() const noexcept
         {
             return denominator_;
-        }
-
-        constexpr float to_float() const noexcept
-        {
-            return numerator_ / static_cast<float>(denominator_);
         }
 
         constexpr bool operator==(const fraction_t<T>& rhs) const noexcept
@@ -180,8 +175,20 @@ namespace ebu_list
     template<typename T>
     inline T ceil(const fraction_t<T>& f)
     {
-        return static_cast<T>(std::ceil(static_cast<double>(f.numerator()) / f.denominator()));
+        return static_cast<T>(std::ceil(to_double(f)));
     }
+
+	template<typename T>
+	constexpr double to_float(const fraction_t<T>& f) noexcept
+	{
+		return static_cast<float>(f);
+	}
+
+	template<typename T>
+	constexpr double to_double(const fraction_t<T>& f) noexcept
+	{
+		return static_cast<double>(f);
+	}
 
     /**
      * Converts a fraction to a string representation
@@ -201,9 +208,6 @@ namespace ebu_list
         }
     }
 
-    using fraction = fraction_t<int>;
-    using fraction64 = fraction_t<int64_t>;
-
     // TODO: make this generic
     template<typename T>
     T modulo_difference(T lhs, T rhs) noexcept
@@ -218,4 +222,7 @@ namespace ebu_list
             return static_cast<T>(lhs + d);
         }
     }
+
+	using fraction = fraction_t<int>;
+	using fraction64 = fraction_t<int64_t>;
 }

@@ -64,8 +64,7 @@ namespace ebu_list::st2110::d21
     enum tvd_kind
     {
         ideal,
-        first_packet_first_frame,
-        first_packet_each_frame
+        first_packet_first_frame
     };
 
     struct vrx_settings

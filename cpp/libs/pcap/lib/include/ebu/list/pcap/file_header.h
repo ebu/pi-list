@@ -22,6 +22,20 @@ namespace ebu_list::pcap
     static_assert(sizeof(raw_file_header) == 24);
 #pragma pack(pop)
 
+    // from https://wiki.wireshark.org/Development/LibpcapFileFormat
+
+    namespace version
+    {
+        constexpr uint32_t major = 0x02;
+        constexpr uint32_t minor = 0x04;
+    }
+
+    namespace magic_number
+    {
+        constexpr auto little_endian = to_byte_array(0xd4, 0xc3, 0xb2, 0xa1);
+        constexpr auto little_endian_nanosecond = to_byte_array(0x4d, 0x3c, 0xb2, 0xa1);
+    }
+
     // TODO: we are assuming version 2.4, little-endian and thiszone = GMT,
     // as hinted by https://wiki.wireshark.org/Development/LibpcapFileFormat 
     class file_header_lens

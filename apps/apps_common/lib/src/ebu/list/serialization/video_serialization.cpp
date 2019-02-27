@@ -10,7 +10,7 @@ nlohmann::json video_stream_details::to_json(const video_stream_details& details
     statistics["last_frame_ts"] = details.last_frame_ts;
     statistics["is_interlaced"] = details.video.scan_type == media::video::scan_type::INTERLACED;
     statistics["max_line_number"] = details.max_line_number;
-    statistics["rate"] = details.video.rate.to_float();
+    statistics["rate"] = to_double(details.video.rate);
     statistics["packet_count"] = details.packet_count;
     statistics["dropped_packet_count"] = details.dropped_packet_count;
     statistics["frame_count"] = details.frame_count;
