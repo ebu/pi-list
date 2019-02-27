@@ -25,45 +25,22 @@ Drill drown on each stream and understand what's going on | ![](docs/stream_dril
 
 We deployed an [online version](http://list.ebu.io/) that you can start using right away.
 
-## Run - Quick-start
+## Quick start - Running a pre-built Docker image
 
-The easiest way to quickly use LIST application is via Docker. Choose one of the below's options that suits you the best.
-
-### Using [Docker Hub's Image](https://hub.docker.com/r/ebutech/pi-list/)
+The easiest way to run the LIST application locally is to use the [image in dockerhub](https://hub.docker.com/r/ebutech/pi-list/).
 
 You'll need:
 
 - **Docker** >= v15
 - **Docker-compose** >= v1.20
 
-```
-version: "3"
-services:
-  influxdb:
-    image: influxdb:1.4.2
-    volumes:
-      - influxdb:/var/lib/influxdb
+You can launch the docker containers with the following commands.
 
-  mongo:
-    image: mongo:latest
-    volumes:
-      - mongo:/data/db
-
-  list_server:
-    image: ebutech/pi-list:v1.3 #replace by any version available @ Docker Hub
-    ports:
-      - "8080:8080"
-      - "3030:3030"
-    links:
-      - influxdb
-      - mongo
-    volumes:
-      - listserver:/home/
-
-volumes:
-  mongo:
-  listserver:
-  influxdb:
+```sh
+mkdir ~/ebu-pi-list
+cd ~/ebu-pi-list
+curl -O https://raw.githubusercontent.com/ebu/pi-list/master/docker-compose.yml 
+docker-compose up
 ```
 
 You're good to go: `http://localhost:8080`
