@@ -44,7 +44,7 @@ function runTcpdump(req, res, next) {
     const tcpdumpFilter = req.body.stream ?
         `${
             req.body.stream.map(stream => {
-                return stream.dst? "dst " + stream.dst : '';
+                return stream.dstAddr? "dst " + stream.dstAddr : '';
             })
         }`.replace(/,/g,' or ')
         : '';
@@ -132,7 +132,7 @@ function runTcpdump(req, res, next) {
     const subscribeToOptions = {};
     const addressSubscription = [];
     req.body.stream.forEach(s => {
-        addressSubscription.push('-g', s.dst);
+        addressSubscription.push('-g', s.dstAddr);
     });
 
     const subscribeToArguments = [
