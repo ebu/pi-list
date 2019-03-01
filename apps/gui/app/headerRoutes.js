@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Button from 'components/common/Button';
 import RealTimeDataStatus from 'containers/live/RealTimeDataStatus';
@@ -7,12 +7,17 @@ import api from 'utils/api';
 import { pluralize, translate } from 'utils/translation';
 import { LiveRoute } from 'utils/liveFeature';
 import routeBuilder from 'utils/routeBuilder';
+import PcapFileNameHeader from './components/PcapFileNameHeader';
+
 
 const Header = (props) => {
     return (
         <Fragment>
-            <h1 className="lst-header-title lst-no-margin">
-                <span>{props.label}</span>
+            <h1 className="lst-no-margin">
+                <div style={{ display: 'flex' }}>
+                    <span className="lst-header-title">{props.label}</span>
+                    <span>{props.item}</span>
+                </div>
             </h1>
             <div className="col-xs end-xs">
                 {props.children}
@@ -73,6 +78,7 @@ export default (
             render={props => (
                 <Header
                     {...props}
+                    item={<PcapFileNameHeader {...props} />}
                     label="PTP Analysis"
                     buttons={[
                         {
@@ -91,32 +97,35 @@ export default (
             exact
             path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}`}
             render={props => (
-                <Header
-                    {...props}
-                    label="Streams"
-                    buttons={[
-                        {
-                            label: translate('pcap.download_pcap'),
-                            icon: 'file download',
-                            downloadPath: api.downloadPcap(props.match.params.pcapID),
-                            onClick: () => {}
-                        },
-                        {
-                            label: translate('pcap.download_sdp'),
-                            icon: 'file download',
-                            downloadPath: api.downloadSDP(props.match.params.pcapID),
-                            onClick: () => {}
-                        },
-                        {
-                            label: translate('buttons.go_back'),
-                            icon: 'keyboard backspace',
-                            onClick: () => {
-                                props.history.push(routeBuilder.pcap_list());
+                <React.Fragment>
+                    <Header
+                        {...props}
+                        item={<PcapFileNameHeader {...props} />}
+                        label="Streams"
+                        buttons={[
+                            {
+                                label: translate('pcap.download_pcap'),
+                                icon: 'file download',
+                                downloadPath: api.downloadPcap(props.match.params.pcapID),
+                                onClick: () => { }
+                            },
+                            {
+                                label: translate('pcap.download_sdp'),
+                                icon: 'file download',
+                                downloadPath: api.downloadSDP(props.match.params.pcapID),
+                                onClick: () => { }
+                            },
+                            {
+                                label: translate('buttons.go_back'),
+                                icon: 'keyboard backspace',
+                                onClick: () => {
+                                    props.history.push(routeBuilder.pcap_list());
+                                }
                             }
-                        }
-                    ]}
-                />)
-            }
+                        ]}
+                    />
+                </React.Fragment>
+            )}
         />
         <Route
             exact
@@ -124,6 +133,7 @@ export default (
             render={props => (
                 <Header
                     {...props}
+                    item={<PcapFileNameHeader {...props} />}
                     label="Stream"
                     buttons={[
                         {
@@ -152,6 +162,7 @@ export default (
             render={props => (
                 <Header
                     {...props}
+                    item={<PcapFileNameHeader {...props} />}
                     label={pluralize('stream.configure_streams', 1)}
                     buttons={[
                         {

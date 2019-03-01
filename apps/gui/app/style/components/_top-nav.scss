@@ -26,8 +26,9 @@
     }
 
     .lst-header-title {
-        font-size: 1.25rem;
-        color: $black-light-20;
+        font-size: 1rem;
+        color: $yellow;
+        margin-right: 10px;
 
         .dark & {
             color: $white;
@@ -36,6 +37,11 @@
         .lst-icons {
             margin: 0 $margin / 2;
         }
+    }
+
+    .lst-header-item {
+        font-size: 1rem;
+        color: $yellow;
     }
 
     .lst-header-button {
