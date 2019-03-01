@@ -25,8 +25,8 @@ The steps above will restrict the usage of LIST on the machine where the docker 
 
 Linux/Mac:
 
-```export EBU_LIST_WEB_APP_DOMAIN="[http://192.168.1.1:8080]"```
+```export EBU_LIST_WEB_APP_DOMAIN="http://192.168.1.1:8080"```
 
 Windows:
 
-```set EBU_LIST_WEB_APP_DOMAIN="[http://192.168.1.1:8080]"```
+```set EBU_LIST_WEB_APP_DOMAIN="http://192.168.1.1:8080"```
