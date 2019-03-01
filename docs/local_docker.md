@@ -21,12 +21,12 @@ You're good to go: `http://localhost:8080`
 
 ## Exposing LIST to the network
 
-The steps above will restrict the usage of LIST on the machine where the docker containers are being run. In order to allow it to be used from other machines, you just need to set the following environment variable (replace 192.168.1.1 with the IP address of your machine, but keep the :8080):
+The steps above will restrict the usage of LIST on the machine where the docker containers are being run. In order to allow it to be used from other machines, you just need to edit the docker-compose.yml file and change the line indicated below, replacing ${EBU_LIST_WEB_APP_DOMAIN} with your URL (in the example below, replace 192.168.1.1 with the IP address of your machine, but keep the :8080):
 
-Linux/Mac:
+Change:
 
-```export EBU_LIST_WEB_APP_DOMAIN="http://192.168.1.1:8080"```
+```EBU_LIST_WEB_APP_DOMAIN=${EBU_LIST_WEB_APP_DOMAIN}```
 
-Windows:
+to
 
-```set EBU_LIST_WEB_APP_DOMAIN="http://192.168.1.1:8080"```
+```EBU_LIST_WEB_APP_DOMAIN=http://192.168.1.1:8080```
