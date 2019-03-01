@@ -18,6 +18,8 @@ const app = express();
 // Initialize the REST API logger
 app.use(morgan('short', { stream: logger('rest-api').restAPILogger }));
 
+logger('static-generator').info('CORS:', program.webappDomain);
+
 // User custom middleware in order to set the Access-Control-Allow-Credentials as true.
 app.use(cors({
     origin: program.webappDomain,
