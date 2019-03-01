@@ -113,9 +113,11 @@ export default function (AsyncComponent, options) {
         render() {
             if (this.state.loading) {
                 const props = isObject(options.loaderProps) ? options.loaderProps : {};
+                const loadingWidget = props.loadingWidget || <Loader {...props} />;
+
                 return (
                     <div className="lst-async-loader--loading">
-                        <Loader {...props} />
+                        {loadingWidget}
                     </div>
                 );
             } else if (this.state.asyncRequestsFailed) {

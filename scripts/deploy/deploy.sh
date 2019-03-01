@@ -49,7 +49,6 @@ install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/config.yml $RELEASE_DI
 echo "Copying artifacts... done"
 
 echo
-echo "Deploy is ready in $RELEASE_DIR.
-If you run the server in a container OR if you want to access this server from another machine, you should replace 'localhost' in $RELEASE_DIR/server/app/listwebserver/config.yml with appropriate address."
+echo "Deploy is ready in $RELEASE_DIR."
 
 set +eu
