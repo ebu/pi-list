@@ -11,6 +11,7 @@ using namespace ebu_list::st2110;
 using json =  nlohmann::json;
 
 //------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 class troffset_analyzer : public rtp::listener
 {
 public:
@@ -92,7 +93,14 @@ void troffset_analyzer::on_complete()
     {
         const auto total_ns = std::accumulate(tros_.begin(), tros_.end(), int64_t{ 0 });
         const int64_t avg = total_ns / tros_.size();
-        tro_info_.insert({ stream_id_, tro_stream_info { to_ns(tro_default_), avg } });
+
+		const auto max_el = std::max_element(tros_.begin(), tros_.end());
+		const auto max_value = max_el == tros_.end() ? 0 : *max_el;
+
+		const auto min_el = std::min_element(tros_.begin(), tros_.end());
+		const auto min_value = min_el == tros_.end() ? 0 : *min_el;
+
+        tro_info_.insert({ stream_id_, tro_stream_info { to_ns(tro_default_), avg, max_value, min_value } });
     }
 }
 
