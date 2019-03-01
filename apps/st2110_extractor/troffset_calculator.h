@@ -11,7 +11,9 @@ namespace ebu_list
     struct tro_stream_info
     {
         int64_t tro_default_ns;
-        int64_t avg_tro_ns;
+		int64_t avg_tro_ns;
+		int64_t max_tro_ns;
+		int64_t min_tro_ns;
     };
 
     // Maps stream ids to tro_info

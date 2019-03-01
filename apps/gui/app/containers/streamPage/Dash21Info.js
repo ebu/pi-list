@@ -41,16 +41,40 @@ const Dash21Info = (props) => {
                     value: `${cmin} .. ${cpeak} packets`
                 },
                 {
+                    key: 'CMax (narrow)',
+                    value: `${props.cinst.cmax_narrow} packets`
+                },
+                {
+                    key: 'CMax (wide)',
+                    value: `${props.cinst.cmax_wide} packets`
+                },
+                {
                     key: 'Vrx',
                     value: `${vrxmin} .. ${vrxpeak} packets`
+                },
+                {
+                    key: 'Vrx Full (narrow)',
+                    value: `${props.vrx.vrx_full_narrow} packets`
+                },
+                {
+                    key: 'Vrx Full (wide)',
+                    value: `${props.vrx.vrx_full_wide} packets`
+                },
+                {
+                    key: 'TRO Default',
+                    value: `${(props.tro_default_ns / 1000).toFixed(3)} μs`
+                },
+                {
+                    key: 'Max TROffset',
+                    value: `${(props.max_tro_ns / 1000).toFixed(3)} μs`
                 },
                 {
                     key: 'Average TROffset',
                     value: `${(props.avg_tro_ns / 1000).toFixed(3)} μs`
                 },
                 {
-                    key: 'TRO Default',
-                    value: `${(props.tro_default_ns / 1000).toFixed(3)} μs`
+                    key: 'Min TROffset',
+                    value: `${(props.min_tro_ns / 1000).toFixed(3)} μs`
                 },
                 {
                     key: translate('media_information.video.read_schedule'),
