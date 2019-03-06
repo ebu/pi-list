@@ -2,12 +2,12 @@ macro(list_set_target_cpp_properties)
     bimo_set_target_cpp_properties()
 endmacro()
 
-function(list_set_cpp_properties)
+macro(list_set_cpp_properties)
     bimo_set_cpp_properties()
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
         add_definitions(-D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS -DBOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE)
     endif()
-endfunction(list_set_cpp_properties)
+endmacro(list_set_cpp_properties)
 
 macro(define_pch PROJECT_NAME INCLUDES)
     if(USE_PCH)
@@ -16,9 +16,7 @@ macro(define_pch PROJECT_NAME INCLUDES)
     endif()
 endmacro()
 
-
-##
-    ##
+####
 macro(list_declare_library NAME)
     set(LIBRARY_NAME ${NAME})
     set(TEST_CASES_NAME ${NAME}_unit_tests)

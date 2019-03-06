@@ -11,7 +11,5 @@ add_subdirectory(influxdb-cpp-rest)
 # -------------------------------------------------------------------------
 add_subdirectory(GSL)
 # -------------------------------------------------------------------------
-add_subdirectory(expected)
-# -------------------------------------------------------------------------
 set_target_properties(bimo PROPERTIES FOLDER "third-party")
 set_target_properties(influxdb-cpp-rest PROPERTIES FOLDER "third-party")

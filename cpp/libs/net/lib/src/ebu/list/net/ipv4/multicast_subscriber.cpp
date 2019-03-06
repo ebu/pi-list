@@ -10,7 +10,9 @@
 #include <netinet/in.h>
 #include <net/if.h>
 #include <arpa/inet.h>
-#endif // defined(LIST_HAS_POSIX)
+#elif defined(LIST_HAS_WIN32)
+#include <ws2ipdef.h>
+#endif
 
 using namespace ebu_list::ipv4;
 using namespace ebu_list;
