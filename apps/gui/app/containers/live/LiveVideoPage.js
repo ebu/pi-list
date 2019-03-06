@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import Toggle from 'react-toggle';
 import NetworkInfo from 'containers/streamPage/NetworkInfo';
 import VideoInfo from 'containers/streamPage/VideoInfo';
-import VideoStatistics from 'containers/streamPage/VideoStatistics';
 import Dash21Info from 'containers/streamPage/Dash21Info';
 import Panel from 'components/common/Panel';
 import websocketEventsEnum from 'enums/websocketEventsEnum';
@@ -181,7 +180,6 @@ class VideoPage extends Component {
                         <Dash21Info {...globalVideoAnalysis} />
                         <NetworkInfo {...networkInfo} dropped_packet_count={statistics.dropped_packet_count} packet_count={statistics.packet_count} />
                         <VideoInfo {...mediaInfo} />
-                        <VideoStatistics {...statistics} />
                     </Panel>
                     <div className="col-xs-12 col-md-8">
                         <div className="row">

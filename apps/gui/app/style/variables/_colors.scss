@@ -3,6 +3,7 @@
 
 $white-blank: #fff;
 $white: #f7f7f7;
+$dark-white: darken($white, 30%);
 $white-perl: $nord4;
 
 $background-color-blue: #f5f6f7;
@@ -23,6 +24,8 @@ $green: #4caf4f;
 $green-hover: darken($green, 5%);
 
 $yellow: #ecb857;
+$light-yellow: lighten($yellow, 10%);
+$dark-yellow: darken($yellow, 20%);
 $yellow-hover: darken($yellow, 5%);
 
 $red: #d25b49;

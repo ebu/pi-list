@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <optional>
 #include "nlohmann/json.hpp"
 
 namespace ebu_list

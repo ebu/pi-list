@@ -7,8 +7,8 @@
       "configurationType": "Debug",
       "inheritEnvironments": [ "msvc_x64" ],
       "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "-v",
+      "cmakeCommandArgs": "-DBUILD_ALL=ON -DUSE_PCH=OFF",
+      "buildCommandArgs": "-v -j 8",
       "ctestCommandArgs": ""
     },
     {
@@ -17,8 +17,8 @@
       "configurationType": "Release",
       "inheritEnvironments": [ "msvc_x64" ],
       "buildRoot": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
-      "cmakeCommandArgs": "",
-      "buildCommandArgs": "-v",
+      "cmakeCommandArgs": "-DBUILD_ALL=ON -DUSE_PCH=OFF",
+      "buildCommandArgs": "-v -j 8",
       "ctestCommandArgs": ""
     },
     {
@@ -36,7 +36,7 @@
       "remoteCopySourcesOutputVerbosity": "Normal",
       "remoteCopySourcesConcurrentCopies": "100",
       "remoteCopySourcesMethod": "sftp",
-      "cmakeCommandArgs": "",
+      "cmakeCommandArgs": "-DBUILD_ALL=ON -DUSE_PCH=OFF",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "linux-x64" ]
@@ -56,7 +56,7 @@
       "remoteCopySourcesOutputVerbosity": "Normal",
       "remoteCopySourcesConcurrentCopies": "100",
       "remoteCopySourcesMethod": "sftp",
-      "cmakeCommandArgs": "",
+      "cmakeCommandArgs": "-DBUILD_ALL=ON -DUSE_PCH=OFF",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "linux-x64" ]

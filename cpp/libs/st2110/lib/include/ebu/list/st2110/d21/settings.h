@@ -2,6 +2,7 @@
 
 #include "ebu/list/core/math.h"
 #include "ebu/list/core/media/video_description.h"
+#include <optional>
 
 namespace ebu_list::st2110::d21
 {

@@ -83,7 +83,7 @@
     "analyze_stream": "Analyze Stream",
     "no_streams": "No Streams Found",
     "no_frames": "Stream without frames",
-    "detected_stream": "Detected Stream",
+    "detected_stream": "Protocol",
     "compliance": "Compliance"
   },
 

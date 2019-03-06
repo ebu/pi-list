@@ -5,7 +5,7 @@ const app = require('./app');
 const programArguments = require('./util/programArguments');
 const logger = require('./util/logger');
 const websocketManager = require('./managers/websocket');
-const {onError, onListening, onProcessClosed } = require('./util/serverUtils');
+const { onError, onListening, onProcessClosed } = require('./util/serverUtils');
 
 logger('server').info(`LIST web server root folder: ${programArguments.folder}`);
 logger('server').info(`Path for the executables directory: ${programArguments.cpp}`);
@@ -20,7 +20,7 @@ const httpServer = http.createServer(app);
 websocketManager.initialize(httpServer);
 httpServer.listen(programArguments.port);
 
-if(programArguments.liveMode) {
+if (programArguments.liveMode) {
     logger('server').info(`Starting StreamUpdates Worker`);
     require('./worker/streamUpdates');
     logger('server').info(`Starting NMOS Worker`);

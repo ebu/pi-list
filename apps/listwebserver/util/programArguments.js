@@ -2,7 +2,6 @@ const commander = require('commander');
 const yamlParser = require('read-yaml');
 const deepFreeze = require('deep-freeze');
 const path = require('./path');
-const logger = require('./logger');
 
 function parseNmosArguments(arguments) {
     if(!arguments.nmosRegistry) {
@@ -33,9 +32,9 @@ function parseArguments(arguments) {
     const webappDomain = process.env.EBU_LIST_WEB_APP_DOMAIN || config.webappDomain;
     config.webappDomain = webappDomain || 'http://localhost:8080';
 
-    logger('static-generator').info('process.env.EBU_LIST_WEB_APP_DOMAIN:', process.env.EBU_LIST_WEB_APP_DOMAIN);
-    logger('static-generator').info('arguments.webappDomain:', arguments.webappDomain);
-    logger('static-generator').info('config.webappDomain:', config.webappDomain);
+    console.log('process.env.EBU_LIST_WEB_APP_DOMAIN:', process.env.EBU_LIST_WEB_APP_DOMAIN);
+    console.log('arguments.webappDomain:', arguments.webappDomain);
+    console.log('config.webappDomain:', config.webappDomain);
 
     return config;
 }
