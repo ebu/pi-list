@@ -25,13 +25,13 @@ const Dashboard = () => (
                     <SdpUploader />
                     <PCAPSubscriptionPanel />
                 </Panel>
-                <Panel
+                {/* <Panel
                     className="col-xs-12 col-md-9 col-lg-8"
                     title={translate('headings.last_flows')}
                     rightToolbar={<RealTimeDataStatus />}
                 >
                     <FlowList limit={5} />
-                </Panel>
+                </Panel> */}
             </div>
         </LiveFeature>
 

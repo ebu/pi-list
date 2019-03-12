@@ -2,7 +2,7 @@ $badge-font-size: 12px;
 
 .lst-badge {
   display: inline-block;
-  border-radius: 6px;
+  border-radius: 2px;
   padding: $badge-font-size / 2;
   font-size: $badge-font-size;
   font-weight: 300;
@@ -21,13 +21,28 @@ $badge-font-size: 12px;
     @extend .lst-bg--green;
   }
 
-  &--warning{
-    @extend .lst-bg--yellow;
+  &--success2{
+    background-color: inherit;
+    color: $green;
+  }
+
+  &--warning {
+    background-color: $yellow;
     color: $black;
+  }
+
+  &--warning2 {
+    background-color: inherit;
+    color: $yellow;
   }
 
   &--danger {
     @extend .lst-bg--red;
+  }
+
+  &--danger2 {
+    background-color: inherit;
+    color: $red;
   }
 
   &--info {

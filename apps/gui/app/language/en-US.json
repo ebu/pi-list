@@ -159,11 +159,13 @@
 
   "pcap": {
     "delete_header": "Delete PCAP file",
-    "delete_message": "Are you sure you want to delete %{name} file?",
+    "delete_message": "Are you sure you want to delete %{name} file(s)?",
     "download_sdp": "Download SDP",
     "download_pcap": "Download PCAP",
-    "no_pcaps": "No PCAPs file found",
+    "no_pcaps": "No PCAP files found",
     "truncated": "Truncated",
+    "warnings": "Warnings",
+    "file_name": "File name",
 
     "state": {
       "failed": "Analysis failed",
