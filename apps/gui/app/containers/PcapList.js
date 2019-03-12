@@ -1,111 +1,258 @@
 import React, { Component, Fragment } from 'react';
-import moment from 'moment';
 import api from 'utils/api';
 import websocket from 'utils/websocket';
 import immutable from 'utils/immutable';
 import notifications from 'utils/notifications';
 import asyncLoader from 'components/asyncLoader';
 import PopUp from 'components/common/PopUp';
-import Icon from 'components/common/Icon';
-import Table from 'components/common/Table';
-import Badge from 'components/common/Badge';
-import ProgressBar from 'components/common/ProgressBar';
 import websocketEventsEnum from 'enums/websocketEventsEnum';
 import { translate } from 'utils/translation';
 import routeBuilder from 'utils/routeBuilder';
+import SimpleMessage from 'components/SimpleMessage';
+import "react-table/react-table.css";
+import PropTypes from 'prop-types';
+import PcapTable from '../components/pcap/PcapTable';
+import PcapActions from '../components/pcap/PcapActions';
+import pcapEnums from '../enums/pcap';
+
+const DeleteModal = (props) => (
+    <PopUp
+        type="delete"
+        visible={props.data !== null && props.data.length > 0}
+        label={translate('pcap.delete_header')}
+        message={translate('pcap.delete_message', { name: props.data ? props.data.length : 0 })}
+        onClose={() => props.onAction([])}
+        onDelete={() => props.onAction(props.data)}
+    />
+);
+
+DeleteModal.propTypes = {
+    data: PropTypes.arrayOf(PropTypes.string),
+    onAction: PropTypes.func
+};
+
+DeleteModal.defaultProps = {
+    data: [],
+    onAction: () => { },
+};
+
+function getFullInfoFromId(id, pcaps) {
+    const filtered = pcaps.filter(pcap => pcap.id === id);
+    return filtered.length > 0 ? filtered[0] : null;
+}
+
+function getStatusForPcapInfo(pcap) {
+    if (pcap.progress && pcap.progress < 100) {
+        return {
+            state: pcapEnums.state.processing,
+            progress: pcap.progress,
+            stateLabel: pcap.stateLabel
+        };
+    }
+
+    if (pcap.error) {
+        return {
+            state: pcapEnums.state.failed
+        };
+
+    }
+
+    if (!pcap.analyzed) {
+        return {
+            state: pcapEnums.state.needs_user_input
+        };
+
+    }
+
+    if (pcap.total_streams === 0) {
+        return {
+            state: pcapEnums.state.no_analysis
+        };
+    }
+
+    if (pcap.not_compliant_streams !== 0) {
+        return {
+            state: pcapEnums.state.not_compliant
+        };
+    }
+
+    return {
+        state: pcapEnums.state.compliant
+    };
+}
+
+function getPtpStateForPcapInfo(pcap) {
+    return (pcap.offset_from_ptp_clock !== 0); // Todo: add an alternative way of getting this information
+}
+
+function getWarningsForPcapInfo(pcap) {
+    const warnings = [];
+
+    if(pcap.truncated) {
+        warnings.push({ kind: pcapEnums.warnings.truncated });
+    }
+
+    return warnings;
+}
+
+function addStateToPcapInfo(pcap) {
+    return {
+        ...pcap,
+        status: getStatusForPcapInfo(pcap),
+        ptp: getPtpStateForPcapInfo(pcap),
+        warnings: getWarningsForPcapInfo(pcap),
+     };
+}
 
 class PcapList extends Component {
     constructor(props) {
         super(props);
 
+        this.toggleRow = this.toggleRow.bind(this);
+
         this.state = {
-            pcaps: this.props.pcaps,
-            pcapSelected: null,
-            showPcapDeleteModal: false
+            data: this.props.pcaps.map(addStateToPcapInfo),
+            selected: [],
+            selectAll: 0,
+            deleteModalData: null
         };
 
+        this.toggleRow = this.toggleRow.bind(this);
+        this.toggleSelectAll = this.toggleSelectAll.bind(this);
+        this.onDelete = this.onDelete.bind(this);
+        this.deletePcaps = this.deletePcaps.bind(this);
         this.onPcapClick = this.onPcapClick.bind(this);
-        this.showPcapDeleteModal = this.showPcapDeleteModal.bind(this);
-        this.deletePcapFile = this.deletePcapFile.bind(this);
-        this.hideDeleteModal = this.hideDeleteModal.bind(this);
         this.onPcapReceived = this.onPcapReceived.bind(this);
         this.onPcapProcessed = this.onPcapProcessed.bind(this);
         this.onPcapFailed = this.onPcapFailed.bind(this);
         this.onDone = this.onDone.bind(this);
+        this.onSelectBefore = this.onSelectBefore.bind(this);
+        this.onSelectAfter = this.onSelectAfter.bind(this);
     }
 
-    onPcapClick(rowData) {
-        const route = routeBuilder.pcap_stream_list(rowData.id);
-        window.appHistory.push(route);
-        //this.props.history.push(route); // todo: replace the line above by this one
-    }
+    toggleRow(id) {
+        const newSelected = this.state.selected.filter(item => item !== id);
 
-    onPcapReceived(data) {
+        if (newSelected.length === this.state.selected.length) {
+            newSelected.push(id);
+        }
+
         this.setState({
-            pcaps: [
-                {
-                    ...data,
-                    stateLabel: translate('workflow.reading_pcap')
-                },
-                ...this.state.pcaps
-            ]
+            selected: newSelected,
+            selectAll: 2
         });
     }
 
-    onPcapProcessed(data) {
-        const pcaps = immutable.findAndUpdateElementInArray({ id: data.id }, this.state.pcaps, {
-            ...data,
-            stateLabel: translate('workflow.processing_streams')
+    toggleSelectAll() {
+        let newSelected = [];
+
+        if (this.state.selectAll === 0) {
+            newSelected = this.state.data.map(item => item.id);
+        }
+
+        this.setState({
+            selected: newSelected,
+            selectAll: this.state.selectAll === 0 ? 1 : 0
+        });
+    }
+
+    onPcapClick(pcapId) {
+        const route = routeBuilder.pcap_stream_list(pcapId);
+        window.appHistory.push(route);
+    }
+
+    onDelete() {
+        const idsToDelete = this.state.selected;
+        this.setState({ deleteModalData: idsToDelete });
+    }
+
+    deletePcaps(idsToDelete) {
+        this.setState({
+            deleteModalData: null,
+            selected: [],
+            selectAll: 0
         });
 
-        this.setState({ pcaps });
+        // TODO: refactor this to delete all with a single call
+        idsToDelete.forEach(id => this.deletePcap(id));
     }
 
-    onPcapFailed(data) {
-        const pcaps = immutable.findAndUpdateElementInArray({ id: data.id }, this.state.pcaps, {
-            ...data,
-            stateLabel: translate('workflow.processing_streams')
-        });
+    deletePcap(id) {
+        const pcap = getFullInfoFromId(id, this.state.data);
+        const filename = pcap && pcap.file_name;
 
-        this.setState({ pcaps });
-    }
-
-    onDone(data) {
-        const pcaps = immutable.findAndUpdateElementInArray({ id: data.id }, this.state.pcaps, {
-            ...data,
-            stateLabel: translate('workflow.done')
-        });
-
-        this.setState({ pcaps });
-    }
-
-    showPcapDeleteModal(pcapData) {
-        this.setState({ resourceName: pcapData.file_name, showPcapDeleteModal: true, pcapSelected: pcapData });
-    }
-
-    deletePcapFile() {
-        api.deletePcap(this.state.pcapSelected.id)
+        api.deletePcap(id)
             .then(() => {
-                const pcaps = immutable.findAndRemoveElementInArray({ id: this.state.pcapSelected.id }, this.state.pcaps);
+                const newData = immutable.findAndRemoveElementInArray({ id }, this.state.data);
 
-                this.setState({ pcaps });
+                this.setState({ data: newData });
 
                 notifications.success({
                     title: translate('notifications.success.pcap_deleted'),
-                    message: translate('notifications.success.pcap_deleted_message', { name: this.state.pcapSelected.file_name })
+                    message: translate('notifications.success.pcap_deleted_message', { name: filename })
                 });
             })
             .catch(() => {
                 notifications.error({
                     title: translate('notifications.error.pcap_deleted'),
-                    message: translate('notifications.error.pcap_deleted_message', { name: this.state.pcapSelected.file_name })
+                    message: translate('notifications.error.pcap_deleted_message', { name: filename })
                 });
             });
-        this.hideDeleteModal();
     }
 
-    hideDeleteModal() {
-        this.setState({ showPcapDeleteModal: false });
+    onPcapReceived(newPcap) {
+        const info = addStateToPcapInfo(newPcap);
+        info.stateLabel = translate('workflow.reading_pcap');
+
+        this.setState({
+            data: [
+                info,
+                ...this.state.data
+            ]
+        });
+    }
+
+    updatePcap(pcap, newStateLabel) {
+        const info = addStateToPcapInfo(pcap);
+        info.stateLabel = translate(newStateLabel);
+
+        const data = immutable.findAndUpdateElementInArray({ id: pcap.id }, this.state.data, info);
+
+        this.setState({ data });
+    }
+
+    onPcapProcessed(pcap) {
+        this.updatePcap(pcap, 'workflow.processing_streams');
+    }
+
+    onPcapFailed(pcap) {
+        this.updatePcap(pcap, 'workflow.processing_streams');
+    }
+
+    onDone(pcap) {
+        this.updatePcap(pcap, 'workflow.done');
+    }
+
+    onSelectBefore(id) {
+        const pcap = getFullInfoFromId(id, this.state.data);
+        const baseDate = pcap.date;
+        const newSelected = this.state.data.filter(item => item.date <= baseDate).map(item => item.id);
+
+        this.setState({
+            selected: newSelected,
+            selectAll: this.state.selectAll === 0 ? 1 : 0
+        });
+    }
+
+    onSelectAfter(id) {
+        const pcap = getFullInfoFromId(id, this.state.data);
+        const baseDate = pcap.date;
+        const newSelected = this.state.data.filter(item => item.date >= baseDate).map(item => item.id);
+
+        this.setState({
+            selected: newSelected,
+            selectAll: this.state.selectAll === 0 ? 1 : 0
+        });
     }
 
     componentDidMount() {
@@ -125,163 +272,36 @@ class PcapList extends Component {
     }
 
     render() {
-        return (
-            <React.Fragment>
-                <Table
-                    orderBy="date"
-                    data={this.state.pcaps}
-                    noItemsMessage={translate('pcap.no_pcaps')}
-                    rows={[
-                        {
-                            key: 'file_name',
-                            header: 'PCAP',
-                            render: this.renderPcapFileName,
-                            cellClassName: 'lst-truncate',
-                            width: '30%'
-                        },
-                        {
-                            key: 'analyzed',
-                            header: '',
-                            render: this.renderPcapStatusCell,
-                            width: '45%'
-                        },
-                        {
-                            key: 'date',
-                            header: translate('date'),
-                            render: this.renderPcapDate,
-                            width: '20%'
-                        }
-                    ]}
-                    fixed
-                    showFirstElements={this.props.limit}
-                    onRowClick={this.onPcapClick}
-                    onItemDelete={this.showPcapDeleteModal}
-                />
-                <PopUp
-                    type="delete"
-                    visible={this.state.showPcapDeleteModal}
-                    label={translate('pcap.delete_header')}
-                    message={translate('pcap.delete_message', { name: this.state.resourceName })}
-                    onClose={this.hideDeleteModal}
-                    onDelete={this.deletePcapFile}
-                />
-            </React.Fragment>
+        const noData = (
+            <div className="lst-table-loading-data col-xs-12 center-xs">
+                <SimpleMessage icon="do not disturb" message={translate('pcap.no_pcaps')} />
+            </div>
         );
-    }
-
-    renderPcapStatusCell(rowData) {
-        let stateText;
-        let stateIcon;
-        let stateType;
-
-        if (rowData.error) {
-            stateText = translate('pcap.state.failed');
-            stateIcon = 'close';
-            stateType = 'danger';
-        } else if (!rowData.analyzed) {
-            stateText = translate('pcap.state.needs_user_input');
-            stateIcon = 'warning';
-            stateType = 'warning';
-        } else {
-            const hasError = rowData.not_compliant_streams !== 0;
-
-            if (rowData.total_streams === 0) {
-                stateText = translate('pcap.state.no_analysis');
-                stateIcon = 'info';
-                stateType = 'info';
-            } else if (hasError) {
-                stateText = translate('pcap.state.not_compliant');
-                stateIcon = 'close';
-                stateType = 'danger';
-            } else {
-                stateText = translate('pcap.state.compliant');
-                stateIcon = 'done all';
-                stateType = 'success';
-            }
-        }
-
-        if (rowData.error) {
-            return (
-                <Fragment>
-                    <Badge
-                        className="lst-table-configure-sdp-badge"
-                        type={stateType}
-                        text={stateText}
-                        icon={stateIcon}
-                    />
-                </Fragment>
-            );
-        }
-        return (
-            <Fragment>
-                {rowData.progress && rowData.progress < 100 ? (
-                    <Fragment>
-                        <div className="row lst-text-blue middle-xs lst-no-margin">
-                            <Icon value="autorenew" className="spin" />
-                            <span>{rowData.stateLabel}</span>
-                        </div>
-                        <ProgressBar percentage={rowData.progress} />
-                    </Fragment>
-                ) : (
-                        <Fragment>
-                            <Badge
-                                className="lst-table-configure-sdp-badge"
-                                type={stateType}
-                                text={stateText}
-                                icon={stateIcon}
-                            />
-                            {rowData.offset_from_ptp_clock !== 0 && (
-                                <Badge
-                                    className="lst-table-configure-sdp-badge"
-                                    type="success"
-                                    icon="timer"
-                                    text="PTP"
-                                />
-                            )}
-                            {rowData.truncated && (
-                                <Badge
-                                    className="lst-table-configure-sdp-badge"
-                                    type="warning"
-                                    icon="warning"
-                                    text={translate('pcap.truncated')}
-                                />
-                            )}
-                            <span className="stream-type-number">
-                                <Icon value="videocam" /> {rowData.video_streams}
-                            </span>
-                            <span className="stream-type-number">
-                                <Icon value="audiotrack" /> {rowData.audio_streams}
-                            </span>
-                            <span className="stream-type-number">
-                                <Icon value="assignment" /> {rowData.anc_streams}
-                            </span>
-                            <span className="stream-type-number">
-                                <Icon value="help" /> {rowData.total_streams - rowData.video_streams - rowData.audio_streams - rowData.anc_streams}
-                            </span>
-                        </Fragment>
-                    )}
-            </Fragment>
-        );
-    }
-
-    renderPcapDate(rowData) {
-        return (
-            <span>
-                {moment(rowData.date).format('lll')}
-            </span>
-        );
-    }
-
-    renderPcapFileName(rowData) {
-        return rowData.generated_from_network ?
-            <Fragment>
-                {rowData.file_name}
-                <Badge
-                    className="lst-table-configure-sdp-badge"
-                    type="info"
-                    icon="settings_input_composite"
+        const withData = (
+            <div>
+                <PcapActions
+                    selectedItems={this.state.selected}
+                    onDelete={this.onDelete}
+                    onSelectAfter={this.onSelectAfter}
+                    onSelectBefore={this.onSelectBefore}
                 />
-            </Fragment> : rowData.file_name;
+                <PcapTable
+                    pcaps={this.state.data}
+                    selectedIds={this.state.selected}
+                    selectAll={this.state.selectAll}
+                    onSelectId={this.toggleRow}
+                    onSelectAll={this.toggleSelectAll}
+                    onClickRow={this.onPcapClick}
+                />
+            </div>
+        );
+
+        return (
+            <div>
+                <DeleteModal data={this.state.deleteModalData} onAction={this.deletePcaps} />
+                {this.state.data.length > 0 ? withData : noData}
+            </div>
+        );
     }
 }
 
