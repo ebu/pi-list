@@ -30,7 +30,7 @@
     "passport-local": "^1.0.0",
     "read-yaml": "^1.1.0",
     "sdp-transform": "^2.7.0",
-    "sdpoker": "0.0.12",
+    "sdpoker": "0.1.0",
     "socket.io": "^2.0.4",
     "text-encoding": "^0.7.0",
     "uuid": "^3.2.1",

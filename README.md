@@ -1,6 +1,5 @@
 # Live IP Software Toolkit to assist EBU members in the implementation of IP based facilities
 
-
 | Linux |
 |:---------:|
 | [![Build Status](https://travis-ci.com/ebu/pi-list.svg?branch=master)](https://travis-ci.com/ebu/pi-list) |
@@ -20,11 +19,9 @@ See each individual stream | ![](docs/stream_overview.png)
 Analyse PTP | ![](docs/ptp_analysis.png)
 Drill drown on each stream and understand the details | ![](docs/stream_drilldown.png)
 
-
 ## Dematerialized version
 
 We deployed an [online version](http://list.ebu.io/) that you can start using right away.
-
 
 ## Your own instance of LIST
 
@@ -34,7 +31,6 @@ We deployed an [online version](http://list.ebu.io/) that you can start using ri
 
 * [How to compile LIST](./docs/compiling_list.md)
 * [How to further develop LIST](./docs/list_development.md)
-
 
 ## Additional information
 
