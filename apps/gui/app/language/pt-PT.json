@@ -33,13 +33,13 @@
     "media_time": "Duração",
 
     "audio": {
-      "number_channels": "Nº Canais",
+      "number_channels": "Nº de Canais",
       "encoding": "Codificação",
-      "packet_time": "Packet Time",
+      "packet_time": "Duração do pacote",
       "sampling": "Amostragem",
-      "number_samples": "Nº de Amostras",
-      "sample_size": "Tamanho da Amostra",
-      "samples_per_packet": "Nº Amostras por pacote RTP"
+      "number_samples": "Nº de amostras",
+      "sample_size": "Tamanho da amostra",
+      "samples_per_packet": "Nº de amostras por pacote RTP"
     },
 
     "video": {

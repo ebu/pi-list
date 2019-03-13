@@ -33,11 +33,11 @@
     "media_time": "Media Time",
 
     "audio": {
-      "number_channels": "Number of Channels",
+      "number_channels": "Number of channels",
       "encoding": "Encoding",
-      "packet_time": "Packet Time (ms)",
+      "packet_time": "Packet time",
       "sampling": "Sampling",
-      "number_samples": "Number of Samples",
+      "number_samples": "Number of samples",
       "sample_size": "Size of each sample",
       "samples_per_packet": "Number of samples per RTP packet",
       "tsdf_max": "Maximum of Timestamped Delay Factor"
