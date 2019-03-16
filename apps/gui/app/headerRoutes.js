@@ -46,11 +46,6 @@ export default (
     <Switch>
         <Route
             exact
-            path={routeNames.DASHBOARD}
-            render={() => (<Header label={translate('navigation.dashboard')} />)}
-        />
-        <Route
-            exact
             path={routeNames.PCAPS}
             render={() => (<Header label={translate('navigation.pcaps')} />)}
         />

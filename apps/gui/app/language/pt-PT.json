@@ -136,7 +136,6 @@
     "drop_pcap_files_here": "Arraste para aqui os ficheiros PCAP",
     "select_from_drive": "ou selecione-os a partir do seu PC",
     "import_pcap": "Importar ficheiros PCAP",
-    "pcaps_to_be_imported": "PCAPs submetidos",
     "reading_pcap": "A ler o ficheiro PCAP...",
     "processing_streams": "A processar as Streams...",
     "done": "Concluído",
@@ -189,8 +188,8 @@
   },
 
   "navigation": {
-    "dashboard": "Resumo",
-    "live_streams": "Em Direto",
+    "capture": "Captura",
+    "live_streams": "Live",
     "network": "Na Rede",
     "pcaps": "PCAPs & Streams",
     "help": "Precisa de ajuda?"

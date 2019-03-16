@@ -5,7 +5,7 @@ import api from 'utils/api';
 import MenuItem from 'components/MenuItem';
 import sideNavItems from 'config/sideNavList';
 import Icon from 'components/common/Icon';
-import Button from 'components/common/Button';
+import Button from '../components/common/Button';
 import PopUp from 'components/common/PopUp';
 import { translate } from 'utils/translation';
 import { AppContext } from 'utils/liveFeature';
@@ -123,11 +123,17 @@ class SideNav extends Component {
                             <Button noStyle onClick={toggleTheme}>
                                 <Icon value="opacity" />
                                 {this.state.showMenuItems && (
-                                    <div className="fade-in lst-no-margin">{`Use ${theme} theme`}</div>
+                                    <div className="fade-in lst-no-margin">{`Theme: ${theme}`}</div>
                                 )}
                             </Button>
                         )}
                     </ThemeContext.Consumer>
+                    <a className="row middle-xs" href="https://github.com/ebu/pi-list/issues">
+                        <Icon value="help" />
+                        {this.state.showMenuItems && (
+                            <div className="fade-in">{translate('navigation.help')}</div>
+                        )}
+                    </a>
                     <Button noStyle onClick={() => this.onClickDeleteUser()}>
                         <Icon value="delete" />
                         {this.state.showMenuItems && (

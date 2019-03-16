@@ -30,7 +30,7 @@
         margin-bottom: 0;
         padding: 5px;
         color: $dark-white;
-        font-weight: 300;
+        // font-weight: 300;
         font-size: 1em;
 
         a, button, button:hover {
@@ -41,8 +41,6 @@
         }
 
         button, button:hover {
-            font-weight: 600;
-
             i {
                 font-size: 17px !important;
                 padding-right: 0;

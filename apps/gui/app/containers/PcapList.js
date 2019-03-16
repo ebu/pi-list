@@ -8,8 +8,7 @@ import PopUp from 'components/common/PopUp';
 import websocketEventsEnum from 'enums/websocketEventsEnum';
 import { translate } from 'utils/translation';
 import routeBuilder from 'utils/routeBuilder';
-import SimpleMessage from 'components/SimpleMessage';
-import "react-table/react-table.css";
+import 'react-table/react-table.css';
 import PropTypes from 'prop-types';
 import PcapTable from '../components/pcap/PcapTable';
 import PcapActions from '../components/pcap/PcapActions';
@@ -272,11 +271,6 @@ class PcapList extends Component {
     }
 
     render() {
-        const noData = (
-            <div className="lst-table-loading-data col-xs-12 center-xs">
-                <SimpleMessage icon="do not disturb" message={translate('pcap.no_pcaps')} />
-            </div>
-        );
         const withData = (
             <div>
                 <PcapActions
@@ -292,6 +286,7 @@ class PcapList extends Component {
                     onSelectId={this.toggleRow}
                     onSelectAll={this.toggleSelectAll}
                     onClickRow={this.onPcapClick}
+                    noDataComponent={this.props.noDataComponent}
                 />
             </div>
         );
@@ -299,7 +294,7 @@ class PcapList extends Component {
         return (
             <div>
                 <DeleteModal data={this.state.deleteModalData} onAction={this.deletePcaps} />
-                {this.state.data.length > 0 ? withData : noData}
+                {withData}
             </div>
         );
     }

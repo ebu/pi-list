@@ -91,7 +91,7 @@ module.exports = {
             allChunks: true
         }),
         new HtmlWebpackPlugin({
-            title: 'Dashboard - Dev Mode',
+            title: 'EBU LIST (dev)',
             template: './index.html',
             inject: 'body'
         })
