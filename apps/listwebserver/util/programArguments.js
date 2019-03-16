@@ -31,9 +31,8 @@ function parseArguments(arguments) {
 
     const webappDomain = process.env.EBU_LIST_WEB_APP_DOMAIN || config.webappDomain;
     config.webappDomain = webappDomain || 'http://localhost:8080';
-
-    console.log('process.env.EBU_LIST_WEB_APP_DOMAIN:', process.env.EBU_LIST_WEB_APP_DOMAIN);
-    console.log('arguments.webappDomain:', arguments.webappDomain);
+    config.liveMode = (process.env.EBU_LIST_LIVE_MODE !== undefined)|| config.liveMode;
+    console.log('config.liveMode:', config.liveMode);
     console.log('config.webappDomain:', config.webappDomain);
 
     return config;
