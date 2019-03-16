@@ -5,8 +5,9 @@ import headerRoutes from 'headerRoutes';
 import asyncLoader from 'components/asyncLoader';
 import api from 'utils/api';
 import websocket from 'utils/websocket';
-import { AppContext } from 'utils/liveFeature';
+import { AppContext } from '../utils/liveFeature';
 import { ThemeContext } from 'utils/theme';
+import NotificationsProvider from '../utils/notifications/NotificationsProvider';
 
 class App extends Component {
     constructor(props) {
@@ -44,7 +45,7 @@ class App extends Component {
             <ThemeContext.Provider value={this.state}>
                 <AppContext.Provider value={meta}>
                     <div className={`lst-app-container ${this.state.theme}`}>
-                        <SideNav ref={sideNav => this.sideNav = sideNav} isOpen={false} user={this.props.user}/>
+                        <SideNav ref={sideNav => this.sideNav = sideNav} isOpen={false} user={this.props.user} />
                         <div className="lst-main">
                             <nav className="lst-top-nav row lst-no-margin">
                                 <button className="lst-top-nav__link" onClick={this.onMenuIconClick}>
@@ -54,9 +55,11 @@ class App extends Component {
                                     {headerRoutes}
                                 </div>
                             </nav>
-                            <div className="lst-main-container">
-                                {routes}
-                            </div>
+                            <NotificationsProvider>
+                                <div className="lst-main-container">
+                                    {routes}
+                                </div>
+                            </NotificationsProvider>
                         </div>
                     </div>
                 </AppContext.Provider>
