@@ -1,10 +1,14 @@
 .lst-panel {
-  margin-bottom: $margin;
 
   &:hover {
     .rightToolbar {
       opacity: 1;
     }
+  }
+
+  .lst-panel__header {
+    display: flex;
+    align-items: baseline;
   }
 
   .lst-panel__header h2{

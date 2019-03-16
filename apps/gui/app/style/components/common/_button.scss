@@ -52,7 +52,6 @@
   border-radius: 5px;
   border: 1px solid;
   cursor: pointer;
-  font-weight: 200;
   transition: color $fast-transition-time ease,
   background $fast-transition-time ease,
   box-shadow $fast-transition-time ease,
@@ -120,7 +119,7 @@
 a.lst-btn {
     display: inline-block;
     text-decoration: none;
-    font-weight: 300;
+    // font-weight: 300;
 }
 
 .lst-button-group {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const propTypes = {
     label: PropTypes.string,
-    value: PropTypes.oneOf(PropTypes.string, PropTypes.number),
+    value: PropTypes.oneOf([PropTypes.string, PropTypes.number]),
     units: PropTypes.string,
     labelWidth: PropTypes.number,
     valueWidth: PropTypes.number,

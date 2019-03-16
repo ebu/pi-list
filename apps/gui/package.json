@@ -1,7 +1,7 @@
 {
   "name": "list-ebu-gui",
   "version": "0.1.0",
-  "description": "LIST EBU Dashboard UI",
+  "description": "EBU LIST UI",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --config webpack.config.js --hot --colors --progress",

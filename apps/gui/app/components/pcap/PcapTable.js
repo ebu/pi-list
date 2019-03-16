@@ -277,6 +277,7 @@ const PcapTable = props => {
                 id: 'date',
                 desc: true,
             }]}
+            NoDataComponent={props.noDataComponent}
         />
     );
 }
@@ -288,6 +289,7 @@ PcapTable.propTypes = {
     onSelectId: PropTypes.func,
     onSelectAll: PropTypes.func,
     onClickRow: PropTypes.func,
+    noDataComponent: PropTypes.func
 };
 
 PcapTable.defaultProps = {
@@ -297,6 +299,7 @@ PcapTable.defaultProps = {
     onSelectId: () => { },
     onSelectAll: () => { },
     onClickRow: () => { },
+    noDataComponent: () => null
 };
 
 export default PcapTable;

@@ -5,8 +5,8 @@
     "audio_explorer": "Audio Explorer",
     "audio_measurements": "Audio Measurements",
     "video_measurements": "Video Measurements",
-    "last_pcaps": "Last PCAPs files",
-    "last_flows": "Last Live Flows",
+    "last_pcaps": "PCAP files",
+    "last_flows": "Live flows",
     "video": "Video",
     "audio": "Audio",
     "anc": "Ancillary Data",
@@ -104,7 +104,7 @@
 
   "notifications": {
     "success": {
-      "file_upload": "file uploaded",
+      "file_upload": "File uploaded",
       "file_upload_message": "The %{name} file was successfully uploaded",
 
       "pcap_deleted": "PCAP file deleted",
@@ -137,7 +137,6 @@
     "drop_pcap_files_here": "Drop your PCAP files here",
     "select_from_drive": "or select them from your computer",
     "import_pcap": "Import PCAP files",
-    "pcaps_to_be_imported": "PCAP files to be imported",
     "reading_pcap": "Reading PCAP file...",
     "processing_streams": "Processing Streams...",
     "done": "Done",
@@ -162,7 +161,7 @@
     "delete_message": "Are you sure you want to delete %{name} file(s)?",
     "download_sdp": "Download SDP",
     "download_pcap": "Download PCAP",
-    "no_pcaps": "No PCAP files found",
+    "no_pcaps": "No PCAP files found. Drag and drop files here, or used the upload button.",
     "truncated": "Truncated",
     "warnings": "Warnings",
     "file_name": "File name",
@@ -190,7 +189,7 @@
   },
 
   "navigation": {
-    "dashboard": "Dashboard",
+    "capture": "Capture",
     "live_streams": "Live Streams",
     "network": "Network",
     "pcaps": "PCAPs & Streams",
