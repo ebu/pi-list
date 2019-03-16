@@ -257,7 +257,9 @@ const PcapTable = props => {
                     return;
                 }
 
-                props.onClickRow(rowInfo.original.id);
+                if(rowInfo && rowInfo.original) {
+                    props.onClickRow(rowInfo.original.id);
+                }
 
                 if (handleOriginal) {
                     handleOriginal();

@@ -6,7 +6,7 @@ import notifications from '../../utils/notifications';
 import UploadProgress from './UploadProgress';
 import { translate } from '../../utils/translation';
 import Button from '../common/Button';
-
+import { withNotifications } from '../../utils/notifications/withNotifications';
 
 const PanelTitle = (props) => (
     <div className="row lst-panel__header lst-truncate">
@@ -52,37 +52,31 @@ class DragAndDropUploader extends Component {
         this.props.uploadApi(fileToUpload, (uploadPercentage) => {
             const newStateUploadProgress = this.state.uploadProgress;
             newStateUploadProgress[index] = uploadPercentage;
-            this.setState({
+
+            const newState = {
                 uploadProgress: newStateUploadProgress,
                 isUploading: true,
                 uploadComplete: false
-            });
+            };
+
+            this.setState(newState,
+                () => this.props.notificationsContext.updateUpload(this.state));
+
         }).then(() => {
-            this.setState({ uploadComplete: true, isUploading: false, uploadFailed: false });
-            notifications.success({
-                title: translate('notifications.success.file_upload'),
-                message: translate('notifications.success.file_upload_message', { name: fileToUpload.name })
-            });
+            const newState = { uploadComplete: true, isUploading: false, uploadFailed: false };
+
+            this.setState(newState,
+                () => this.props.notificationsContext.updateUpload(this.state));
         }).catch(() => {
-            this.setState({ uploadComplete: false, isUploading: false, uploadFailed: true });
-            notifications.error({
-                title: translate('notifications.error.file_upload'),
-                message: translate('notifications.error.file_upload_message', { name: fileToUpload.name })
-            });
+            const newState = { uploadComplete: false, isUploading: false, uploadFailed: true };
+
+            this.setState(newState,
+                () => this.props.notificationsContext.updateUpload(this.state));
         });
     }
 
     render() {
         const dropzoneClassName = classNames(this.props.className, 'lst-file-uploader2');
-        const uploadProgress = (
-            <UploadProgress
-                files={this.state.files}
-                isUploading={this.state.isUploading}
-                uploadComplete={this.state.uploadComplete}
-                uploadFailed={this.state.uploadFailed}
-                uploadProgress={this.state.uploadProgress}
-            />
-        );
 
         const cardClassNames = classNames(
             'lst-panel',
@@ -122,7 +116,6 @@ class DragAndDropUploader extends Component {
                             <hr />
                             <div onClick={(e) => e.stopPropagation()}>
                                 {this.props.children}
-                                {this.state.files.length > 0 && uploadProgress}
                             </div>
                         </div>
                     </div>
@@ -144,4 +137,4 @@ DragAndDropUploader.defaultProps = {
     uploadApi: () => { }
 };
 
-export default DragAndDropUploader;
+export default withNotifications(DragAndDropUploader);
