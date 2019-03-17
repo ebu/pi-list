@@ -9,7 +9,7 @@ const RtpAnalysisViewer = (props) => {
 
     return (
         <div className="row">
-            <div className="col-xs-12 col-md-12">
+            <div className="col-xs-12">
                 <LineChart
                     asyncData={() => api.getDeltaRtpTsVsPacketTsRaw(pcapID, streamID, first_packet_ts, last_packet_ts)}
                     xAxis={chartFormatters.getTimeLineLabel}

@@ -152,6 +152,16 @@ class InfluxDbManager {
         return this.sendQueryAndFormatResults(query);
     }
 
+    getDeltaRtpVsNtTicksMinMax(pcapID, streamID) {
+        const query = `
+            select MAX("delta_rtp_vs_NTs") as "max", MIN("delta_rtp_vs_NTs") as "min", MEAN("delta_rtp_vs_NTs") as "avg"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}`;
+
+        log.info(`Get DeltaRtpVsNtTicksMinMax for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
+
     getDeltaToPreviousRtpTsRaw(pcapID, streamID, startTime, endTime) {
         const wanted_resolution = Math.ceil((endTime - startTime) / 2000);
         const resolution = wanted_resolution <= 1 ? "1ns" : `${wanted_resolution}ns`;

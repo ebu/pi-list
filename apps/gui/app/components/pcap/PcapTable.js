@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import moment from 'moment';
-import Icon from 'components/common/Icon';
+import Icon from '../../components/common/Icon';
 import Badge from 'components/common/Badge';
 import ProgressBar from 'components/common/ProgressBar';
 import { translate } from 'utils/translation';
@@ -8,6 +8,52 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import PropTypes from 'prop-types';
 import pcapEnums from '../../enums/pcap';
+
+
+const getWEMessage = id => translate('analysis.' + id);
+
+class Tooltip extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            displayTooltip: false
+        }
+        this.hideTooltip = this.hideTooltip.bind(this)
+        this.showTooltip = this.showTooltip.bind(this)
+    }
+
+    hideTooltip() {
+        this.setState({ displayTooltip: false })
+
+    }
+    showTooltip() {
+        this.setState({ displayTooltip: true })
+    }
+
+    render() {
+        let message = this.props.message
+        let position = this.props.position
+        return (
+            <span className='tooltip'
+                onMouseLeave={this.hideTooltip}
+            >
+                {this.state.displayTooltip &&
+                    <div className={`tooltip-bubble tooltip-${position}`}>
+                        <div className='tooltip-message'>{message}</div>
+                    </div>
+                }
+                <span
+                    className='tooltip-trigger'
+                    onMouseOver={this.showTooltip}
+                >
+                    {this.props.children}
+                </span>
+            </span>
+        )
+    }
+}
+
 
 const statusSortMethod = (a, b, desc) => {
     // force null and undefined to the bottom
@@ -108,63 +154,52 @@ function renderPcapStatusCell(state) {
     );
 }
 
+function renderErrors({ value }) {
+    if (value.length === 0) {
+        return (<span />);
+    }
+
+    const tooltipMessage = (<span>{value.map((w) => {
+        return (<p>{getWEMessage(w.error.id)}</p>);
+    })}</span>);
+
+    const content = (<span className="lst-white-on-red">{value.length}</span>);
+
+    return (
+        <span className="lst-text-center">
+        <Tooltip message={tooltipMessage} position={'top'}>{content}</Tooltip>
+        </span>
+    );
+}
+
+
 function renderWarnings({ value }) {
     if (value.length === 0) {
         return (<span />);
     }
 
+    const tooltipMessage = (<span>{value.map((w) => {
+        return (<p>{getWEMessage(w.id)}</p>);
+    })}</span>);
+
+    const content = (<span className="lst-color-warning">{value.length}</span>);
+
     return (
-        <span className="lst-text-center" title={translate('pcap.truncated')}>
-            <Badge
-                className="lst-table-configure-sdp-badge"
-                type="warning2"
-                icon="warning"
-                text=""
-            />
+        <span className="lst-text-center">
+        <Tooltip message={tooltipMessage} position={'top'}>{content}</Tooltip>
         </span>
     );
 }
-
 function renderPtp({ value }) {
     if (value) {
-        return (
-            <div className="lst-text-center">
-                <Badge
-                    className="lst-table-configure-sdp-badge"
-                    type="success2"
-                    icon="timer"
-                    text=""
-                />
-            </div>
-        );
+        return (<Icon className="lst-color-ok" value="check" />);
     }
 
     return (<span />);
 }
 
-function renderStreamCount({ original }) {
-    if (!original.analyzed) {
-        return (<span></span>);
-    }
-
-    return (
-        <div className="lst-text-center">
-            <span className="stream-type-number">
-                <Icon value="videocam" /> {original.video_streams}
-            </span>
-            <span className="stream-type-number">
-                <Icon value="audiotrack" /> {original.audio_streams}
-            </span>
-            <span className="stream-type-number">
-                <Icon value="assignment" /> {original.anc_streams}
-            </span>
-            <span className="stream-type-number">
-                <Icon value="help" /> {original.total_streams - original.video_streams - original.audio_streams - original.anc_streams}
-            </span>
-
-        </div>
-    );
-}
+const getNumberUnknownStreams = (info) =>
+    (info.total_streams - info.video_streams - info.audio_streams - info.anc_streams);
 
 const isSelected = (id, all) => {
     return all.some(item => item === id);
@@ -209,35 +244,69 @@ const PcapTable = props => {
             Header: translate('pcap.file_name'),
             headerClassName: 'lst-text-left lst-table-header',
             accessor: 'file_name',
+            className: 'lst-text-left',
             Cell: renderPcapFileName
         },
         {
             Header: '',
             accessor: 'status',
+            className: 'lst-text-left',
             Cell: renderStatus,
             maxWidth: 180,
             sortMethod: statusSortMethod
         },
         {
-            Header: '',
-            accessor: 'all',
-            Cell: renderStreamCount,
-            maxWidth: 150,
-            sortable: false,
-        },
-        {
-            Header: 'PTP',
+            Header: (<span title={translate('pcap.errors')}><Icon value="close" /></span>),
             headerClassName: 'lst-text-center lst-table-header',
-            accessor: 'ptp',
-            Cell: renderPtp,
+            accessor: 'summary.error_list',
+            Cell: renderErrors,
+            className: 'lst-overflow-visible',
             minWidth: 50,
             maxWidth: 50,
         },
         {
-            Header: (<span title={translate('pcap.warnings')}>!</span>),
+            Header: (<span title={translate('pcap.warnings')}><Icon value="warning" /></span>),
             headerClassName: 'lst-text-center lst-table-header',
-            accessor: 'warnings',
+            accessor: 'summary.warning_list',
             Cell: renderWarnings,
+            className: 'lst-overflow-visible',
+            minWidth: 50,
+            maxWidth: 50,
+        },
+        {
+            Header: (<Icon value="videocam" />),
+            headerClassName: 'lst-text-center lst-table-header',
+            accessor: 'video_streams',
+            minWidth: 50,
+            maxWidth: 50,
+        },
+        {
+            Header: (<Icon value="audiotrack" />),
+            headerClassName: 'lst-text-center lst-table-header',
+            accessor: 'audio_streams',
+            minWidth: 50,
+            maxWidth: 50,
+        },
+        {
+            Header: (<Icon value="assignment" />),
+            headerClassName: 'lst-text-center lst-table-header',
+            accessor: 'anc_streams',
+            minWidth: 50,
+            maxWidth: 50,
+        },
+        {
+            id: 'unknwon_streams',
+            Header: (<Icon value="help" />),
+            headerClassName: 'lst-text-center lst-table-header',
+            accessor: info => getNumberUnknownStreams(info),
+            minWidth: 50,
+            maxWidth: 50,
+        },
+        {
+            Header: (<Icon value="timer" />),
+            headerClassName: 'lst-text-center lst-table-header',
+            accessor: 'ptp',
+            Cell: renderPtp,
             minWidth: 50,
             maxWidth: 50,
         },
@@ -257,7 +326,7 @@ const PcapTable = props => {
                     return;
                 }
 
-                if(rowInfo && rowInfo.original) {
+                if (rowInfo && rowInfo.original) {
                     props.onClickRow(rowInfo.original.id);
                 }
 
@@ -273,7 +342,7 @@ const PcapTable = props => {
             data={props.pcaps}
             columns={columns}
             defaultPageSize={10}
-            className="-highlight"
+            className="-highlight lst-text-center"
             getTdProps={getTdProps}
             defaultSorted={[{
                 id: 'date',

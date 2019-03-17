@@ -12,7 +12,7 @@ class PtpPage extends Component {
         return (
             <Panel className="col-xs-12">
                 <div className="row">
-                    <div className="col-xs-12 col-md-12">
+                    <div className="col-xs-12">
                         <Chart
                             type="line"
                             request={() => api.getPtpOffset(pcapID)}

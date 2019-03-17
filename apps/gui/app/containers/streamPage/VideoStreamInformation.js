@@ -1,7 +1,8 @@
 import React from 'react';
-import NetworkInfo from 'containers/streamPage/NetworkInfo';
-import VideoInfo from 'containers/streamPage/VideoInfo';
-import Dash21Info from 'containers/streamPage/Dash21Info';
+import NetworkInfo from './NetworkInfo';
+import VideoInfo from './VideoInfo';
+import Dash21Info from './Dash21Info';
+import RtpInfo from './RtpInfo';
 
 const VideoStreamInformation = (props) => {
     const streamInfo = props.streamInfo;
@@ -12,17 +13,14 @@ const VideoStreamInformation = (props) => {
 
     return (
         <div className="row">
-            <div className="col-xs-12 col-md-3">
+            <div className="col-xs-12 col-md-6">
                 <NetworkInfo {...networkInfo}
                     packet_count={statistics.packet_count}
                     dropped_packet_count={statistics.dropped_packet_count}
                 />
             </div>
-            <div className="col-xs-12 col-md-3">
-                <VideoInfo {...mediaInfo} {...statistics} />
-            </div>
             <div className="col-xs-12 col-md-6">
-                <Dash21Info {...globalVideoAnalysis} {...mediaInfo} />
+                <VideoInfo {...mediaInfo} {...statistics} />
             </div>
         </div>
     );

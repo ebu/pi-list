@@ -1,216 +1,200 @@
 {
-  "headings": {
-    "network_information": "Network Information",
-    "media_information": "Media Information",
-    "audio_explorer": "Audio Explorer",
-    "audio_measurements": "Audio Measurements",
-    "video_measurements": "Video Measurements",
-    "last_pcaps": "PCAP files",
-    "last_flows": "Live flows",
-    "video": "Video",
-    "audio": "Audio",
-    "anc": "Ancillary Data",
-    "unknown": "Unknown",
-    "filters": "Filters"
-  },
-
-  "audio_player": {
-    "play": "Play",
-    "pause": "Pause"
-  },
-
-  "filters": {
-    "show_error_only": "Only error streams",
-    "show_online_only": "Only active streams",
-    "show_video_only": "Only video streams",
-    "show_audio_only": "Only audio streams"
-  },
-
-  "media_information": {
-    "video_profiles": "Video Profiles",
-    "audio_profiles": "Audio Profiles",
-    "media_type": "Media Type",
-    "media_time": "Media Time",
-
-    "audio": {
-      "number_channels": "Number of channels",
-      "encoding": "Encoding",
-      "packet_time": "Packet time",
-      "sampling": "Sampling",
-      "number_samples": "Number of samples",
-      "sample_size": "Size of each sample",
-      "samples_per_packet": "Number of samples per RTP packet",
-      "tsdf_max": "Maximum of Timestamped Delay Factor"
+    "analysis": {
+        "warnings": {
+            "pcap": {
+                "truncated": "Truncated"
+            }
+        },
+        "errors": {
+            "invalid_delta_rtp_ts_vs_nt": "Invalid delta between RTP timestamp and N x Tframe"
+        }
     },
-
-    "video": {
-      "sampling": "Sampling",
-      "color_depth": "Color Depth",
-      "width": "Width",
-      "height": "Height",
-      "colorimetry": "Colorimetry",
-      "packets_per_frame": "Packets per Frame",
-      "scan_type": "Scan Type",
-      "rate": "Rate",
-      "dimensions": "Dimensions",
-      "field_rate": "Field Rate",
-      "frame_rate": "Frame Rate",
-      "interlaced": "Interlaced",
-      "progressive": "Progressive",
-      "read_schedule": "Read Schedule",
-      "fields": "Fields",
-      "frames": "Frames"
+    "headings": {
+        "network_information": "Network Information",
+        "media_information": "Media Information",
+        "audio_explorer": "Audio Explorer",
+        "audio_measurements": "Audio Measurements",
+        "video_measurements": "Video Measurements",
+        "last_pcaps": "PCAP files",
+        "last_flows": "Live flows",
+        "video": "Video",
+        "audio": "Audio",
+        "anc": "Ancillary Data",
+        "unknown": "Unknown",
+        "filters": "Filters"
     },
-
-    "rtp": {
-      "stream": "Stream",
-      "source": "Source",
-      "destination": "Destination",
-      "ssrc": "SSRC",
-      "packet_count": "Packets",
-      "dropped": "dropped",
-      "payload_type": "Payload Type",
-      "destination_address": "Destination Address",
-      "destination_port": "Destination Port",
-      "source_address": "Source Address",
-      "source_port": "Source Port",
-      "duration": "Duration"
-    }
-  },
-
-  "stream": {
-    "configure_streams": "Configure Stream |||| Configure Streams",
-    "analyze_stream": "Analyze Stream",
-    "no_streams": "No Streams Found",
-    "no_frames": "Stream without frames",
-    "detected_stream": "Protocol",
-    "compliance": "Compliance"
-  },
-
-  "alerts": {
-    "stream_missing_information": "Missing Stream Information",
-    "stream_already_analyzed": "Stream already analyzed",
-    "stream_not_analyzed": "Stream not analyzed",
-    "media_type_unknown": "The media type for this stream is unknown"
-  },
-
-  "information": {
-    "stream_missing_information": "This stream doesn't have all information needed to proceed for the stream analysis. Please give us more information in the Media Information.",
-    "stream_analyzed_information": "We already analyzed this stream. If the results didn't match your expectation, try to change the Media Settings and try again.",
-    "media_type_unknown": "By marking this stream as unknown, it will not be analyzed."
-  },
-
-  "date": "Date",
-
-  "notifications": {
-    "success": {
-      "file_upload": "File uploaded",
-      "file_upload_message": "The %{name} file was successfully uploaded",
-
-      "pcap_deleted": "PCAP file deleted",
-      "pcap_deleted_message": "The %{name} file was successfully deleted",
-
-      "stream_deleted": "Stream deleted",
-      "stream_deleted_message": "The stream was successfully deleted",
-
-      "stream_analysis": "Success",
-      "stream_analysis_message": "The stream was successfully analysed",
-      "stream_capture_message": "The stream was successfully captured"
+    "audio_player": {
+        "play": "Play",
+        "pause": "Pause"
     },
-    "error": {
-      "file_upload": "upload failed",
-      "file_upload_message": "An error occurred during the %{name} file upload process",
-
-      "pcap_deleted": "Error while deleting PCAP",
-      "pcap_deleted_message": "The %{name} file cannot be deleted",
-
-      "stream_deleted": "Error while deleting stream",
-      "stream_deleted_message": "The stream cannot be deleted",
-
-      "stream_analysis": "Error",
-      "stream_analysis_message": "Something went wrong during the stream analysis",
-      "stream_capture_message": "Something went wrong during the capture"
+    "filters": {
+        "show_error_only": "Only error streams",
+        "show_online_only": "Only active streams",
+        "show_video_only": "Only video streams",
+        "show_audio_only": "Only audio streams"
+    },
+    "media_information": {
+        "video_profiles": "Video Profiles",
+        "audio_profiles": "Audio Profiles",
+        "media_type": "Media Type",
+        "media_time": "Media Time",
+        "audio": {
+            "number_channels": "Number of channels",
+            "encoding": "Encoding",
+            "packet_time": "Packet time",
+            "sampling": "Sampling",
+            "number_samples": "Number of samples",
+            "sample_size": "Size of each sample",
+            "samples_per_packet": "Number of samples per RTP packet",
+            "tsdf_max": "Maximum of Timestamped Delay Factor"
+        },
+        "video": {
+            "sampling": "Sampling",
+            "color_depth": "Color Depth",
+            "width": "Width",
+            "height": "Height",
+            "colorimetry": "Colorimetry",
+            "packets_per_frame": "Packets per Frame",
+            "scan_type": "Scan Type",
+            "rate": "Rate",
+            "dimensions": "Dimensions",
+            "field_rate": "Field Rate",
+            "frame_rate": "Frame Rate",
+            "interlaced": "Interlaced",
+            "progressive": "Progressive",
+            "read_schedule": "Read Schedule",
+            "fields": "Fields",
+            "frames": "Frames"
+        },
+        "rtp": {
+            "stream": "Stream",
+            "source": "Source",
+            "destination": "Destination",
+            "ssrc": "SSRC",
+            "packet_count": "Packets",
+            "dropped": "dropped",
+            "payload_type": "Payload Type",
+            "destination_address": "Destination Address",
+            "destination_port": "Destination Port",
+            "source_address": "Source Address",
+            "source_port": "Source Port",
+            "duration": "Duration",
+            "delta_rtp_ts_vs_nt": "RTP TS delta"
+        }
+    },
+    "stream": {
+        "configure_streams": "Configure Stream |||| Configure Streams",
+        "analyze_stream": "Analyze Stream",
+        "no_streams": "No Streams Found",
+        "no_frames": "Stream without frames",
+        "detected_stream": "Protocol",
+        "compliance": "Compliance"
+    },
+    "alerts": {
+        "stream_missing_information": "Missing Stream Information",
+        "stream_already_analyzed": "Stream already analyzed",
+        "stream_not_analyzed": "Stream not analyzed",
+        "media_type_unknown": "The media type for this stream is unknown"
+    },
+    "information": {
+        "stream_missing_information": "This stream doesn't have all information needed to proceed for the stream analysis. Please give us more information in the Media Information.",
+        "stream_analyzed_information": "We already analyzed this stream. If the results didn't match your expectation, try to change the Media Settings and try again.",
+        "media_type_unknown": "By marking this stream as unknown, it will not be analyzed."
+    },
+    "date": "Date",
+    "notifications": {
+        "success": {
+            "file_upload": "File uploaded",
+            "file_upload_message": "The %{name} file was successfully uploaded",
+            "pcap_deleted": "PCAP file deleted",
+            "pcap_deleted_message": "The %{name} file was successfully deleted",
+            "stream_deleted": "Stream deleted",
+            "stream_deleted_message": "The stream was successfully deleted",
+            "stream_analysis": "Success",
+            "stream_analysis_message": "The stream was successfully analysed",
+            "stream_capture_message": "The stream was successfully captured"
+        },
+        "error": {
+            "file_upload": "upload failed",
+            "file_upload_message": "An error occurred during the %{name} file upload process",
+            "pcap_deleted": "Error while deleting PCAP",
+            "pcap_deleted_message": "The %{name} file cannot be deleted",
+            "stream_deleted": "Error while deleting stream",
+            "stream_deleted_message": "The stream cannot be deleted",
+            "stream_analysis": "Error",
+            "stream_analysis_message": "Something went wrong during the stream analysis",
+            "stream_capture_message": "Something went wrong during the capture"
+        }
+    },
+    "workflow": {
+        "drop_pcap_files_here": "Drop your PCAP files here",
+        "select_from_drive": "or select them from your computer",
+        "import_pcap": "Import PCAP files",
+        "reading_pcap": "Reading PCAP file...",
+        "processing_streams": "Processing Streams...",
+        "done": "Done",
+        "capture_stream": "Capture Stream",
+        "add_stream": "Add Stream",
+        "start_capture": "Start",
+        "drop_sdp_file_here": "Drop your SDP file here"
+    },
+    "user_account": {
+        "delete_user_account": "Delete Account",
+        "sign_in": "Sign In",
+        "logout": "Log Out",
+        "delete_confirmation": "Are you sure you want to delete your account? This action will delete all data and is irreversible",
+        "user_registered_message": "User successfully registered",
+        "email": "Email",
+        "password": "Password"
+    },
+    "pcap": {
+        "delete_header": "Delete PCAP file",
+        "delete_message": "Are you sure you want to delete %{name} file(s)?",
+        "download_sdp": "Download SDP",
+        "download_pcap": "Download PCAP",
+        "no_pcaps": "No PCAP files found. Drag and drop files here, or used the upload button.",
+        "warnings": "Warnings",
+        "errors": "Errors",
+        "file_name": "File name",
+        "state": {
+            "failed": "Analysis failed",
+            "no_analysis": "No analysis done",
+            "needs_user_input": "Configure Streams",
+            "compliant": "Compliant",
+            "not_compliant": "Not Compliant"
+        }
+    },
+    "flow": {
+        "no_flows": "No Flows found"
+    },
+    "buttons": {
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "reload": "Reload Page",
+        "go_back": "Go Back",
+        "login": "Login",
+        "register": "Register"
+    },
+    "navigation": {
+        "capture": "Capture",
+        "live_streams": "Live Streams",
+        "network": "Network",
+        "pcaps": "PCAPs & Streams",
+        "help": "Need some help?"
+    },
+    "realtime_feed": {
+        "ok": "Receiving information in real-time"
+    },
+    "live_stream": {
+        "no_streams": "No streams found",
+        "no_streams_message": "Start recording a live stream in order to see it here."
+    },
+    "errors": {
+        "anc_not_supported": "Format not yet supported",
+        "anc_not_supported_message": "This stream will not be analyzed.",
+        "stream_marked_as_unknown": "The Media Type for this stream was configured as \"Unknown\". To get more information about this stream change the Media Type in the stream configuration.",
+        "404_title": "Page not found",
+        "404_message": "The page you are looking for doesn't exist or another error occurred.",
+        "network_error_title": "Network Error"
     }
-  },
-
-  "workflow": {
-    "drop_pcap_files_here": "Drop your PCAP files here",
-    "select_from_drive": "or select them from your computer",
-    "import_pcap": "Import PCAP files",
-    "reading_pcap": "Reading PCAP file...",
-    "processing_streams": "Processing Streams...",
-    "done": "Done",
-    "capture_stream": "Capture Stream",
-    "add_stream": "Add Stream",
-    "start_capture": "Start",
-    "drop_sdp_file_here": "Drop your SDP file here"
-  },
-
-  "user_account": {
-    "delete_user_account": "Delete Account",
-    "sign_in": "Sign In",
-    "logout": "Log Out",
-    "delete_confirmation": "Are you sure you want to delete your account? This action will delete all data and is irreversible",
-    "user_registered_message": "User successfully registered",
-    "email": "Email",
-    "password": "Password"
-  },
-
-  "pcap": {
-    "delete_header": "Delete PCAP file",
-    "delete_message": "Are you sure you want to delete %{name} file(s)?",
-    "download_sdp": "Download SDP",
-    "download_pcap": "Download PCAP",
-    "no_pcaps": "No PCAP files found. Drag and drop files here, or used the upload button.",
-    "truncated": "Truncated",
-    "warnings": "Warnings",
-    "file_name": "File name",
-
-    "state": {
-      "failed": "Analysis failed",
-      "no_analysis": "No analysis done",
-      "needs_user_input": "Configure Streams",
-      "compliant": "Compliant",
-      "not_compliant": "Not Compliant"
-    }
-  },
-
-  "flow": {
-    "no_flows": "No Flows found"
-  },
-
-  "buttons": {
-    "delete": "Delete",
-    "cancel": "Cancel",
-    "reload": "Reload Page",
-    "go_back": "Go Back",
-    "login": "Login",
-    "register": "Register"
-  },
-
-  "navigation": {
-    "capture": "Capture",
-    "live_streams": "Live Streams",
-    "network": "Network",
-    "pcaps": "PCAPs & Streams",
-    "help": "Need some help?"
-  },
-
-  "realtime_feed": {
-    "ok": "Receiving information in real-time"
-  },
-
-  "live_stream": {
-    "no_streams": "No streams found",
-    "no_streams_message": "Start recording a live stream in order to see it here."
-  },
-
-  "errors": {
-    "anc_not_supported": "Format not yet supported",
-    "anc_not_supported_message": "This stream will not be analyzed.",
-    "stream_marked_as_unknown": "The Media Type for this stream was configured as \"Unknown\". To get more information about this stream change the Media Type in the stream configuration.",
-    "404_title": "Page not found",
-    "404_message": "The page you are looking for doesn't exist or another error occurred.",
-    "network_error_title": "Network Error"
-  }
 }

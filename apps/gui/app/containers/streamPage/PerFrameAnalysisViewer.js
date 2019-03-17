@@ -34,7 +34,7 @@ class PerFrameAnalysisViewer extends Component {
                     />
                 </div>
                 <div className="row">
-                    <div className="col-xs-12 col-md-12">
+                    <div className="col-xs-12">
                         <LineChart
                             key={this.state.first_packet_ts}
                             asyncData={() => api.getCInstRaw(this.props.pcapID, this.props.streamID, this.state.first_packet_ts, this.state.last_packet_ts)}

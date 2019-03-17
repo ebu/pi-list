@@ -69,7 +69,7 @@ function getStatusForPcapInfo(pcap) {
         };
     }
 
-    if (pcap.not_compliant_streams !== 0) {
+    if (pcap.summary.error_list.length > 0) {
         return {
             state: pcapEnums.state.not_compliant
         };
@@ -84,22 +84,11 @@ function getPtpStateForPcapInfo(pcap) {
     return (pcap.offset_from_ptp_clock !== 0); // Todo: add an alternative way of getting this information
 }
 
-function getWarningsForPcapInfo(pcap) {
-    const warnings = [];
-
-    if(pcap.truncated) {
-        warnings.push({ kind: pcapEnums.warnings.truncated });
-    }
-
-    return warnings;
-}
-
 function addStateToPcapInfo(pcap) {
     return {
         ...pcap,
         status: getStatusForPcapInfo(pcap),
         ptp: getPtpStateForPcapInfo(pcap),
-        warnings: getWarningsForPcapInfo(pcap),
      };
 }
 

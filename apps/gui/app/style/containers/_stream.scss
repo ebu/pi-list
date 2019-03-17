@@ -138,6 +138,6 @@
         align-items: flex-end;
     }
     &-divider {
-        border-top: 1px solid $grey-dark;
+        border-top: 1px solid darken($grey-dark, 50%);
     }
 }

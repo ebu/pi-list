@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Tabs from 'components/common/Tabs';
+import AnalysisPanel from 'containers/streamPage/AnalysisPanel';
 import VideoStreamInformation from 'containers/streamPage/VideoStreamInformation';
 import CbufferAnalysis from 'containers/streamPage/CbufferAnalysis';
 import VrxAnalysis from 'containers/streamPage/VrxAnalysis';
@@ -10,6 +11,7 @@ import PerFrameAnalysisViewer from 'containers/streamPage/PerFrameAnalysisViewer
 import RtpAnalysisViewer from 'containers/streamPage/RtpAnalysisViewer';
 
 const TABS = [
+    AnalysisPanel,
     VideoStreamInformation,
     VideoExplorer,
     CbufferAnalysis,
@@ -41,6 +43,10 @@ class VideoPage extends Component {
             <div className="lst-stream-info-tab lst-full-height">
                 <Tabs
                     headers={[
+                        {
+                            label: 'Analysis',
+                            icon: 'info'
+                        },
                         {
                             label: 'Information',
                             icon: 'info'
