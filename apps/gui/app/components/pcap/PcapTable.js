@@ -155,7 +155,7 @@ function renderPcapStatusCell(state) {
 }
 
 function renderErrors({ value }) {
-    if (value.length === 0) {
+    if (!value || value.length === 0) {
         return (<span />);
     }
 
@@ -174,7 +174,7 @@ function renderErrors({ value }) {
 
 
 function renderWarnings({ value }) {
-    if (value.length === 0) {
+    if (!value || value.length === 0) {
         return (<span />);
     }
 
