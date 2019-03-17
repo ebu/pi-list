@@ -3,7 +3,7 @@ import _ from 'lodash';
 import InfoPane from './components/InfoPane';
 import MinAvgMaxDisplay from './components/MinAvgMaxDisplay';
 import DataList from './components/DataList';
-import analysisConstants from '../../../../../js/common/enums/analysis';
+import analysisConstants from '../../enums/analysis';
 
 const isRtpCompliant = (info) => {
 }

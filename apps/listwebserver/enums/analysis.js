@@ -1,3 +1,8 @@
+// *********************************************************
+// ******************** ATTENTION **************************
+// This file has to be the same in listwebserver and gui
+// *********************************************************
+
 module.exports = {
     outcome: {
         not_compliant: 'not_compliant',
