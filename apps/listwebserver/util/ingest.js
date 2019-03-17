@@ -16,7 +16,7 @@ const Pcap = require('../models/pcap');
 const Stream = require('../models/stream');
 const WS_EVENTS = require('../enums/wsEvents');
 const { doVideoAnalysis } = require('../analyzers/video');
-const constants = require('../../../js/common/enums/analysis');
+const constants = require('../enums/analysis');
 
 function getUserFolder(req) {
     return `${program.folder}/${req.session.passport.user.id}`;

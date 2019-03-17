@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const influxDbManager = require('../managers/influx-db');
 const Stream = require('../models/stream');
-const constants = require('../../../js/common/enums/analysis');
+const constants = require('../enums/analysis');
 
 // Definitions
 const validation = {
