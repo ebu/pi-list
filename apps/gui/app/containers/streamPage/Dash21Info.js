@@ -3,6 +3,7 @@ import InfoPane from './components/InfoPane';
 import DataList from './components/DataList';
 import MultiValueDisplay from './components/MultiValueDisplay';
 import NarrowWideDisplay from './components/NarrowWideDisplay';
+import MinAvgMaxDisplay from './components/MinAvgMaxDisplay';
 
 const getLowestFromHistogram = (hist) => {
     if (!hist || hist.length === 0) return 0;
@@ -27,16 +28,6 @@ const getCompliance = (value) => {
 };
 
 const nsAsMicroseconds = value => (value / 1000).toFixed(3);
-
-const MinAvgMaxDisplay = ({ label, units, min, avg, max }) => {
-    const values = [
-        { label: 'min', value: min },
-        { label: 'avg', value: avg },
-        { label: 'max', value: max },
-    ];
-    return <MultiValueDisplay label={label} units={units} values={values} />;
-};
-
 
 const CinstDisplay = props => (
     <MinAvgMaxDisplay
@@ -91,48 +82,51 @@ const Dash21Info = (props) => {
         {
             labelTag: 'media_information.video.read_schedule',
             value: props.schedule === 'gapped' ? 'Gapped' : 'Linear'
-        }];
+        }
+    ];
 
     return (
         <div>
             <InfoPane
-                icon="ondemand_video"
+                icon="alarm_on"
                 heading="ST2110-21"
                 values={[]}
             />
             <div className="row">
-                <div className="col-xs-12 col-md-12">
+                <div className="col-xs-12">
                     <DataList values={summaryValues} />
                 </div>
             </div>
-            <hr className="lst-stream-info2-divider" />
             <div className="row">
-                <div className="col-xs-6 col-md-6">
+                <div className="col-xs-12">
                     <CinstDisplay min={cmin} avg={'---'} max={cpeak} />
                 </div>
-                <div className="col-xs-6 col-md-6">
+                </div>
+            <div className="row">
+                <div className="col-xs-12">
                     <NarrowWideDisplay label={<span>C<sub>MAX</sub></span>} units="packets" narrow={props.cinst.cmax_narrow} wide={props.cinst.cmax_wide} />
                 </div>
             </div>
-            <hr className="lst-stream-info2-divider" />
             <div className="row">
-                <div className="col-xs-6 col-md-6">
+                <div className="col-xs-12">
                     <VrxDisplay min={vrxmin} avg={'---'} max={vrxpeak} />
                 </div>
-                <div className="col-xs-6 col-md-6">
+                </div>
+            <div className="row">
+                <div className="col-xs-12">
                     <NarrowWideDisplay label={<span>VRX<sub>FULL</sub></span>} units="packets" narrow={props.vrx.vrx_full_narrow} wide={props.vrx.vrx_full_wide} />
                 </div>
             </div>
-            <hr className="lst-stream-info2-divider" />
             <div className="row lst-stream-info2-row">
-                <div className="col-xs-6 col-md-6">
+                <div className="col-xs-12">
                     <TpaDisplay {...props} />
                 </div>
-                <div className="col-xs-6 col-md-6">
+                </div>
+            <div className="row">
+                <div className="col-xs-12">
                     <TroDefaultDisplay value={props.tro_default_ns} />
                 </div>
             </div>
-            <hr className="lst-stream-info2-divider" />
         </div>
     );
 };

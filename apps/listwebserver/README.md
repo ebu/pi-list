@@ -17,3 +17,32 @@
     --live Live mode
     -h, --help  output usage information
 ```
+
+# DB Schema
+
+## Stream
+```
+- analyses
+  - rtp
+    - result : string // defined in enums/analysis - outcome
+    - details
+        - delta_rtp_ts_vs_nt_ticks // video only
+            - min : number
+            - max : number
+        - error_list : array of:
+            - {
+                - id : string // defined in enums/analysis/errors
+              }
+
+## PCAP
+- summary
+    - error_list : array of:
+        - {
+            - stream_id
+            - error : as defined in stream.error_list
+        }
+    - warning_list : array of:
+        - {
+            - id : string // defined in enums/analysis/warnings
+          }
+```

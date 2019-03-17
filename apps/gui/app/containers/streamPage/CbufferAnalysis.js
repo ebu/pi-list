@@ -10,7 +10,7 @@ const CbufferAnalysis = (props) => {
 
     return (
         <div className="row">
-            <div className="col-xs-12 col-md-12">
+            <div className="col-xs-12">
                 <Chart
                     type="bar"
                     request={() => api.getCInstHistogramForStream(pcapID, streamID)}

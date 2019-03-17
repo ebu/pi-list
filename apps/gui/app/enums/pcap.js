@@ -7,7 +7,4 @@ export default {
         compliant: 'pcap.state.compliant',
         processing: 'pcap.state.processing',
     },
-    warnings: {
-        truncated: 'pcap.warnings.truncated',
-    }
 };

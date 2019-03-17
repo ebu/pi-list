@@ -103,3 +103,26 @@ h2 > i.lst-center-icon {
 .lst-paragraph {
   padding: 10px 0;
 }
+
+.lst-color-ok {
+    color: $green;
+}
+
+.lst-color-warning {
+    color: $yellow;
+}
+
+.lst-color-error {
+    color: $red;
+}
+
+.lst-white-on-red {
+    background-color: $red;
+    color: $white-perl;
+    padding: 4px;
+}
+
+.lst-overflow-visible {
+    overflow: visible !important;
+}
+

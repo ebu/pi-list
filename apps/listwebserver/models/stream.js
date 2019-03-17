@@ -36,6 +36,12 @@ const StreamSchema = new mongoose.Schema({
     },
     global_audio_analysis: {
         type: Object
+    },
+    analyses: {
+        type: Object
+    },
+    error_list: {
+        type: Array
     }
 });
 
