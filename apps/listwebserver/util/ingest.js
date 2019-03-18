@@ -26,8 +26,8 @@ function generateRandomPcapFilename() {
     return `${Date.now()}_${uuidv1()}.pcap`;
 }
 
-function generateRandomPcapDefinition(req) {
-    const pcapId = uuidv1();
+function generateRandomPcapDefinition(req, optionalPcapId) {
+    const pcapId = optionalPcapId || uuidv1();
     return {
         uuid: pcapId,
         folder: `${getUserFolder(req)}/${pcapId}`
