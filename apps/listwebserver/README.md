@@ -38,11 +38,15 @@
 - summary
     - error_list : array of:
         - {
-            - stream_id
-            - error : as defined in stream.error_list
-        }
+            - stream_id // null if its an error on the pcap file
+            - value : as defined in stream.error_list
+          }
     - warning_list : array of:
         - {
-            - id : string // defined in enums/analysis/warnings
+            - stream_id // null if its a warning on the pcap file
+            - value:
+              {
+                - id : string // defined in enums/analysis/warnings
+              }
           }
 ```
