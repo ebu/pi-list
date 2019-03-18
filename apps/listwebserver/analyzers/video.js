@@ -55,7 +55,18 @@ function map2110d21Vrx(stream) {
 // Sets analyses.rtp.result to compliant or not_compliant
 // - if not compliant, adds and error to analyses.errors
 function validateRtp(stream) {
-    const { min, max, avg } = _.get(stream, 'analyses.rtp.details.delta_rtp_ts_vs_nt_ticks');
+    const delta = _.get(stream, 'analyses.rtp.details.delta_rtp_ts_vs_nt_ticks', null);
+    if (delta === null) {
+        _.set(stream, 'analyses.rtp.result', constants.outcome.not_compliant);
+        stream = appendError(stream, {
+            id: constants.errors.missing_information,
+            value: 'no value for "analyses.rtp.details.delta_rtp_ts_vs_nt_ticks"'
+        });
+
+        return stream;
+    }
+
+    const { min, max } = delta;
 
     if (min < validation.rtp.delta_rtp_ts_vs_nt_ticks_min
         || max > validation.rtp.delta_rtp_ts_vs_nt_ticks_max) {
@@ -74,6 +85,17 @@ function validateRtp(stream) {
 function doRtpAnalysis(pcapId, stream) {
     return influxDbManager.getDeltaRtpVsNtTicksMinMax(pcapId, stream.id)
         .then((value) => {
+            if (value === null || value === undefined
+                || value.length < 1
+                || value[0] === null || value[0] === undefined) {
+
+                stream = appendError(stream, {
+                    id: constants.errors.missing_information,
+                    value: 'no DeltaRtpVsNtTicksMinMax for stream `stream.id` in `pcapId`'
+                });
+                return stream;
+            }
+
             const { min, max, avg } = value[0];
             _.set(stream, 'analyses.rtp.details.delta_rtp_ts_vs_nt_ticks', { min, max, avg });
             return stream;
