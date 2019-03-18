@@ -179,14 +179,15 @@ function singleStreamAnalysis(req, res, next) {
 function addStreamErrorsToSummary(stream, error_list) {
     stream.error_list.forEach(error => error_list.push({
         stream_id: stream.id,
-        error
+        value: error
     }));
 }
 
 function addWarningsToSummary(pcap, warning_list) {
     if (pcap.truncated) {
         warning_list.push({
-            id: constants.warnings.pcap.truncated
+            stream_id: null,
+            value: { id: constants.warnings.pcap.truncated }
         });
     }
 }
@@ -290,6 +291,7 @@ function pcapIngestEnd(req, res, next) {
 }
 
 function sdpCheck(req, res, next) {
+    const userID = req.session.passport.user.id;
     sdpoker.getSDP(req.file.path, false)
         .then(sdp => {
             const rfcErrors = sdpoker.checkRFC4566(sdp, {});
@@ -302,6 +304,14 @@ function sdpCheck(req, res, next) {
                     logger('sdp-check').error(`${+c + 1}: ${errors[c].message}`);
                 }
             }
+
+            websocketManager.instance().sendEventToUser(userID, {
+                event: WS_EVENTS.SDP_VALIDATION_RESULTS,
+                data: {
+                    errors: errors.map(e => e.toString())
+                }
+            });
+
             next();
         })
         .catch(err => {
@@ -320,17 +330,17 @@ function sdpParseIp(req, res, next) {
             console.log(parsed);
             // grab src and dst IPs for each stream
             const streams = parsed.media.map(function (media) {
-                return {
-                    dstAddr: media.sourceFilter.destAddress,
-                    dstPort: media.port,
-                    src: media.sourceFilter.srcList
-                };
+                const dstAddr = _.get(media, 'sourceFilter.destAddress');
+                const dstPort = _.get(media, 'port');
+                const src = _.get(media, 'sourceFilter.srcList');
+                return { dstAddr, dstPort, src };
             });
 
             // notify the live subscription panel
             websocketManager.instance().sendEventToUser(userID, {
-                event: 'IP_PARSED_FROM_SDP',
+                event: WS_EVENTS.IP_PARSED_FROM_SDP,
                 data: {
+                    success: true,
                     description: parsed.name,
                     streams: streams
                 }
@@ -341,6 +351,14 @@ function sdpParseIp(req, res, next) {
         })
         .catch(err => {
             logger('sdp-parse').error(`exception: ${err}`);
+            websocketManager.instance().sendEventToUser(userID, {
+                event: WS_EVENTS.IP_PARSED_FROM_SDP,
+                data: {
+                    success: false,
+                }
+            });
+
+            next();
         });
 }
 

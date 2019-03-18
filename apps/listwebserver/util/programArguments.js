@@ -26,7 +26,7 @@ function parseArguments(arguments) {
         databaseURL: `mongodb://${arguments.database.hostname}:${arguments.database.port}`,
         nmos: nmosArguments,
         developmentMode: arguments.dev || false,
-        liveMode: arguments.live || false
+        liveMode: arguments.liveMode || arguments.live || false
     });
 
     const webappDomain = process.env.EBU_LIST_WEB_APP_DOMAIN || config.webappDomain;

@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import moment from 'moment';
+import _ from 'lodash';
 import Icon from '../../components/common/Icon';
 import Badge from 'components/common/Badge';
 import ProgressBar from 'components/common/ProgressBar';
@@ -8,50 +9,12 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import PropTypes from 'prop-types';
 import pcapEnums from '../../enums/pcap';
+import Tooltip from '../../components/common/Tooltip';
 
 
-const getWEMessage = id => translate('analysis.' + id);
-
-class Tooltip extends React.Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            displayTooltip: false
-        }
-        this.hideTooltip = this.hideTooltip.bind(this)
-        this.showTooltip = this.showTooltip.bind(this)
-    }
-
-    hideTooltip() {
-        this.setState({ displayTooltip: false })
-
-    }
-    showTooltip() {
-        this.setState({ displayTooltip: true })
-    }
-
-    render() {
-        let message = this.props.message
-        let position = this.props.position
-        return (
-            <span className='tooltip'
-                onMouseLeave={this.hideTooltip}
-            >
-                {this.state.displayTooltip &&
-                    <div className={`tooltip-bubble tooltip-${position}`}>
-                        <div className='tooltip-message'>{message}</div>
-                    </div>
-                }
-                <span
-                    className='tooltip-trigger'
-                    onMouseOver={this.showTooltip}
-                >
-                    {this.props.children}
-                </span>
-            </span>
-        )
-    }
+const getWEMessage = item => {
+    const id = _.get(item, ['value', 'id'], null);
+    return translate('analysis.' + id);
 }
 
 
@@ -154,32 +117,13 @@ function renderPcapStatusCell(state) {
     );
 }
 
-function renderErrors({ value }) {
+function renderWE(value, className) {
     if (!value || value.length === 0) {
         return (<span />);
     }
 
-    const tooltipMessage = (<span>{value.map((w) => {
-        return (<p>{getWEMessage(w.error.id)}</p>);
-    })}</span>);
-
-    const content = (<span className="lst-white-on-red">{value.length}</span>);
-
-    return (
-        <span className="lst-text-center">
-        <Tooltip message={tooltipMessage} position={'top'}>{content}</Tooltip>
-        </span>
-    );
-}
-
-
-function renderWarnings({ value }) {
-    if (!value || value.length === 0) {
-        return (<span />);
-    }
-
-    const tooltipMessage = (<span>{value.map((w) => {
-        return (<p>{getWEMessage(w.id)}</p>);
+    const tooltipMessage = (<span>{value.map((w, index) => {
+        return (<p key={index}>{getWEMessage(w)}</p>);
     })}</span>);
 
     const content = (<span className="lst-color-warning">{value.length}</span>);
@@ -190,6 +134,15 @@ function renderWarnings({ value }) {
         </span>
     );
 }
+
+function renderErrors({ value }) {
+    return renderWE(value, 'lst-white-on-red');
+}
+
+function renderWarnings({ value }) {
+    return renderWE(value, 'lst-color-warning');
+}
+
 function renderPtp({ value }) {
     if (value) {
         return (<Icon className="lst-color-ok" value="check" />);

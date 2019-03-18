@@ -10,6 +10,40 @@ import FormInput from '../../components/common/FormInput';
 import websocket from '../../utils/websocket';
 import websocketEventsEnum from '../../enums/websocketEventsEnum';
 import StreamsListPanel from './StreamsListPanel';
+import Icon from '../../components/common/Icon';
+
+const SdpStatus = ({ errors }) => {
+    if (errors === null || errors === undefined) {
+        return null;
+    }
+
+    if (errors.length === 0) {
+        return (
+            <div className="lst-sdp-result-pane">
+                <div className="lst-sdp-result-pane-header">
+                    <Icon className="lst-color-ok lst-margin--right-05" value="done_all" />
+                    <span>SDP OK</span>
+                </div>
+            </div>
+        );
+    }
+
+    const lines = errors.map((e, index) => (
+        <div className="lst-sdp-error-line" key={index}>
+            {e}
+        </div>
+    ));
+
+    return (
+        <div className="lst-sdp-result-pane">
+            <div className="lst-sdp-result-pane-header">
+                <Icon className="lst-sdp-result-pane-error-icon" value="close" />
+                <span>SDP has errors</span>
+            </div>
+            {lines}
+        </div>
+    );
+};
 
 class CapturePanel extends Component {
     constructor(props) {
@@ -21,28 +55,45 @@ class CapturePanel extends Component {
             ],
             duration: 1000,
             name: Date.now(),
-            capturing: false
+            capturing: false,
+            sdpErrors: null
         };
 
         this.startCapture = this.startCapture.bind(this);
         this.onSdpParsed = this.onSdpParsed.bind(this);
+        this.onSdpValidated = this.onSdpValidated.bind(this);
         this.onStreamsChanged = this.onStreamsChanged.bind(this);
     }
 
     componentDidMount() {
         websocket.on(websocketEventsEnum.LIVE.IP_PARSED_FROM_SDP, this.onSdpParsed);
+        websocket.on(websocketEventsEnum.LIVE.SDP_VALIDATION_RESULTS, this.onSdpValidated);
     }
 
     componentWillUnmount() {
         websocket.off(websocketEventsEnum.LIVE.IP_PARSED_FROM_SDP, this.onSdpParsed);
+        websocket.off(websocketEventsEnum.LIVE.SDP_VALIDATION_RESULTS, this.onSdpValidated);
     }
 
     onSdpParsed(data) {
+        if (data.success === false) {
+            this.setState({
+                sdpErrors: ['Error parsing SDP file']
+            });
+            return;
+        }
+
         this.setState({
             name: data.description,
             stream: data.streams.map(str => {
                 return { src: str.src, dstAddr: str.dstAddr, dstPort: str.dstPort };
             })
+        });
+    }
+
+    onSdpValidated(data) {
+        this.setState({
+            sdpErrors: data.errors
         });
     }
 
@@ -69,7 +120,11 @@ class CapturePanel extends Component {
     }
 
     onStreamsChanged(newStreams) {
-        this.setState({ stream: newStreams });
+        this.setState({
+            stream: newStreams,
+            sdpErrors: null,
+            name: '',
+        });
     }
 
     render() {
@@ -99,6 +154,7 @@ class CapturePanel extends Component {
                     </FormInput>
 
                 </div>
+                <SdpStatus errors={this.state.sdpErrors} />
                 <div className="row end-xs lst-text-right lst-no-margin">
                     <Button
                         type="info"
