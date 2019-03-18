@@ -18,7 +18,7 @@ const getCompliance = (info) => {
 
 const getTicksPropAsUs = (info, path) => {
     const v = _.get(info, path);
-    if (!v) return undefined;
+    if (v === null || v === undefined) return undefined;
     return (v * 1000000 / 90000).toFixed(0);
 };
 
