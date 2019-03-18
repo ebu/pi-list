@@ -63,7 +63,10 @@ function performCapture(req, res, next) {
         .catch(e => {
             logger('live').error(`Error capturing: ${e}`);
             jetpack.remove(captureOptions.file);
-            res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send(API_ERRORS.UNEXPECTED_ERROR);
+            res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send({
+                code: 'CAPTURE_ERROR',
+                message: e.toString()
+            });
         });
 };
 
