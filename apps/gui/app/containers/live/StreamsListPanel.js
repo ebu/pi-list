@@ -50,9 +50,8 @@ class StreamsListPanel extends Component {
 
         const rows = streams.map((stream, index) => (
             <div
-            className="row"
-            style={{alignItems: "baseline" }}
-            key={`item-${index}`}
+                className="row lst-align-items-baseline"
+                key={`item-${index}`}
             >
                 <div className="col-xs-6">
                     <Input
@@ -73,13 +72,13 @@ class StreamsListPanel extends Component {
                 </div>
 
                 <div className="col-xs-1">
-                <Button
-                    className="lst-table-delete-item-btn"
-                    icon="delete"
-                    type="danger"
-                    link
-                    onClick={() => this.onDelete(index)}
-                />
+                    <Button
+                        className="lst-table-delete-item-btn"
+                        icon="cancel"
+                        type="info"
+                        link
+                        onClick={() => this.onDelete(index)}
+                    />
                 </div>
             </div>)
         );

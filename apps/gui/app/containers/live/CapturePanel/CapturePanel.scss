@@ -1,0 +1,31 @@
+@import '../../../style/variables/index.scss';
+@import '../../../style/helpers.scss';
+
+.lst-sdp-result-pane {
+    background-color: $nord0;
+    padding: 0.5rem;
+    margin-bottom: 0rem;
+    &-header {
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        margin-bottom: 0.5rem;
+    }
+    &-error-icon {
+        @extend .lst-white-on-red;
+        @extend .lst-margin--right-05;
+        font-size: 10px;
+    }
+}
+
+.lst-sdp-error-list {
+    @extend .lst-margin--bottom-2;
+    flex-direction: column;
+}
+
+.lst-sdp-error-line {
+    @extend .lst-margin--bottom-1;
+    background-color: $nord0;
+    padding: 0.3rem;
+    line-height: 1.1rem;
+}
