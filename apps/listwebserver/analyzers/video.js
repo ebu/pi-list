@@ -6,8 +6,8 @@ const constants = require('../enums/analysis');
 // Definitions
 const validation = {
     rtp: {
-        delta_rtp_ts_vs_nt_ticks_min: -45000,
-        delta_rtp_ts_vs_nt_ticks_max: 2
+        delta_rtp_ts_vs_nt_ticks_min: -2,
+        delta_rtp_ts_vs_nt_ticks_max: 45000
     }
 }
 
