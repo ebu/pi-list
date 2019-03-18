@@ -69,6 +69,13 @@ function getStatusForPcapInfo(pcap) {
         };
     }
 
+    if(pcap.summary === undefined) {
+        // TODO: this is to deal with legacy
+        return {
+            state: pcapEnums.state.no_analysis
+        };
+    }
+
     if (pcap.summary.error_list.length > 0) {
         return {
             state: pcapEnums.state.not_compliant
