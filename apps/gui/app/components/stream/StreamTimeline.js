@@ -38,7 +38,7 @@ class StreamTimeline extends Component {
     }
 
     componentWillUnmount() {
-        document.removeEventListener('keydown', this.onNaviagtionKeyDown);
+        document.removeEventListener('keydown', this.onNavigationKeyDown);
     }
 
     onNavigationKeyDown(event) {

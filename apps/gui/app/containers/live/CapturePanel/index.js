@@ -37,6 +37,8 @@ class CapturePanel extends Component {
         this.onCaptureFullNameChanged = this.onCaptureFullNameChanged.bind(this);
         this.onCaptureDescriptionChanged = this.onCaptureDescriptionChanged.bind(this);
         this.updateNow = this.updateNow.bind(this);
+        this.getFullName = this.getFullName.bind(this);
+        this.onKeyDown = this.onKeyDown.bind(this);
     }
 
     componentDidMount() {
@@ -44,6 +46,7 @@ class CapturePanel extends Component {
         this.setState({ timer });
         websocket.on(websocketEventsEnum.LIVE.IP_PARSED_FROM_SDP, this.onSdpParsed);
         websocket.on(websocketEventsEnum.LIVE.SDP_VALIDATION_RESULTS, this.onSdpValidated);
+        document.addEventListener('keydown', this.onKeyDown);
     }
 
     componentWillUnmount() {
@@ -53,6 +56,13 @@ class CapturePanel extends Component {
 
         websocket.off(websocketEventsEnum.LIVE.IP_PARSED_FROM_SDP, this.onSdpParsed);
         websocket.off(websocketEventsEnum.LIVE.SDP_VALIDATION_RESULTS, this.onSdpValidated);
+        document.removeEventListener('keydown', this.onKeyDown);
+    }
+
+    onKeyDown(event) {
+        if (event.key === "Enter" && frameIndex > 0) {
+            this.startCapture();
+        }
     }
 
     getNow() {
@@ -101,10 +111,21 @@ class CapturePanel extends Component {
     }
 
     startCapture() {
+        const captureFullName = this.getFullName();
+        if (captureFullName === '') {
+            return;
+        }
+
+        const captureInfo = Object.assign({}, {
+            streams: this.state.streams,
+            duration: this.state.duration,
+            name: captureFullName
+        });
+
         this.setState(
             prevState => Object.assign({}, ...prevState, { capturing: true }),
             () => {
-                api.subscribePCAP(this.state)
+                api.subscribePCAP(captureInfo)
                     .then(() => {
                         notifications.success({
                             title: translate('notifications.success.stream_analysis'),
@@ -198,7 +219,7 @@ class CapturePanel extends Component {
                         type="info"
                         label={translate('workflow.start_capture')}
                         onClick={this.startCapture}
-                        disabled={this.state.capturing}
+                        disabled={this.state.capturing || this.getFullName() === ''}
                     />
                 </div>
             </div>

@@ -30,7 +30,7 @@ function performCapture(req, res, next) {
     captureOptions.durationMs = req.body.duration || 500;
     captureOptions.snapshotLengthBytes = program.capture.snapshotLength;
     captureOptions.interfaceName = program.capture.interfaceName;
-    captureOptions.streamEndpoints = req.body.stream ? req.body.stream.filter(f => f.dstAddr && f.dstPort) : [];
+    captureOptions.streamEndpoints = req.body.streams ? req.body.streams.filter(f => f.dstAddr && f.dstPort) : [];
 
     if (captureOptions.streamEndpoints == 0) {
         next('no endpoints');

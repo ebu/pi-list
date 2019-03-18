@@ -40,12 +40,8 @@ function renderPcapFileName({ original }) {
 
     return data.generated_from_network ?
         <Fragment>
+            <Icon value="input" className="lst-table-small-icon" />
             {data.file_name}
-            <Badge
-                className="lst-table-configure-sdp-badge"
-                type="info"
-                icon="settings_input_composite"
-            />
         </Fragment> : data.file_name;
 }
 
