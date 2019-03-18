@@ -9,7 +9,9 @@ module.exports = {
         compliant: 'compliant',
     },
     errors: {
-        invalid_delta_rtp_ts_vs_nt: 'errors.invalid_delta_rtp_ts_vs_nt'
+        invalid_delta_rtp_ts_vs_nt: 'errors.invalid_delta_rtp_ts_vs_nt',
+        cinst_above_maximum: 'errors.cinst_above_maximum',
+        vrx_above_maximum: 'errors.vrx_above_maximum',
     },
     warnings: {
         pcap: {

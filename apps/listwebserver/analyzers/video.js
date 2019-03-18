@@ -18,8 +18,41 @@ function appendError(stream, value) {
     return stream;
 }
 
-// Sets:
-// - analyses.rtp.result to compliant or not_compliant
+// Sets analyses.2110_21_cinst.result to compliant or not_compliant
+// - if not compliant, adds and error to analyses.errors
+function map2110d21Cinst(stream) {
+    const compliance = _.get(stream, 'global_video_analysis.cinst.compliance');
+
+    if (compliance === constants.outcome.not_compliant) {
+        stream = _.set(stream, 'analyses.2110_21_cinst.result', constants.outcome.not_compliant);
+        stream = appendError(stream, {
+            id: constants.errors.cinst_above_maximum
+        });
+    } else {
+        stream = _.set(stream, 'analyses.2110_21_cinst.result', constants.outcome.compliant);
+    }
+
+    return stream;
+}
+
+// Sets analyses.2110_21_vrx.result to compliant or not_compliant
+// - if not compliant, adds and error to analyses.errors
+function map2110d21Vrx(stream) {
+    const compliance = _.get(stream, 'global_video_analysis.vrx.compliance');
+
+    if (compliance === constants.outcome.not_compliant) {
+        stream = _.set(stream, 'analyses.2110_21_vrx.result', constants.outcome.not_compliant);
+        stream = appendError(stream, {
+            id: constants.errors.vrx_above_maximum
+        });
+    } else {
+        stream = _.set(stream, 'analyses.2110_21_vrx.result', constants.outcome.compliant);
+    }
+
+    return stream;
+}
+
+// Sets analyses.rtp.result to compliant or not_compliant
 // - if not compliant, adds and error to analyses.errors
 function validateRtp(stream) {
     const { min, max, avg } = _.get(stream, 'analyses.rtp.details.delta_rtp_ts_vs_nt_ticks');
@@ -51,6 +84,8 @@ function doRtpAnalysis(pcapId, stream) {
 function doVideoStreamAnalysis(pcapId, stream) {
     return doRtpAnalysis(pcapId, stream)
         .then(validateRtp)
+        .then(map2110d21Cinst)
+        .then(map2110d21Vrx)
         .then(info => Stream.findOneAndUpdate({ id: stream.id }, info, { new: true }));
 }
 
