@@ -98,32 +98,26 @@ const Dash21Info = (props) => {
                 </div>
             </div>
             <div className="row">
-                <div className="col-xs-12">
+                <div className="col-xs-6">
                     <CinstDisplay min={cmin} avg={'---'} max={cpeak} />
                 </div>
-                </div>
-            <div className="row">
-                <div className="col-xs-12">
+                <div className="col-xs-6">
                     <NarrowWideDisplay label={<span>C<sub>MAX</sub></span>} units="packets" narrow={props.cinst.cmax_narrow} wide={props.cinst.cmax_wide} />
                 </div>
             </div>
             <div className="row">
-                <div className="col-xs-12">
+                <div className="col-xs-6">
                     <VrxDisplay min={vrxmin} avg={'---'} max={vrxpeak} />
                 </div>
-                </div>
-            <div className="row">
-                <div className="col-xs-12">
+                <div className="col-xs-6">
                     <NarrowWideDisplay label={<span>VRX<sub>FULL</sub></span>} units="packets" narrow={props.vrx.vrx_full_narrow} wide={props.vrx.vrx_full_wide} />
                 </div>
             </div>
             <div className="row lst-stream-info2-row">
-                <div className="col-xs-12">
+                <div className="col-xs-6">
                     <TpaDisplay {...props} />
                 </div>
-                </div>
-            <div className="row">
-                <div className="col-xs-12">
+                <div className="col-xs-6">
                     <TroDefaultDisplay value={props.tro_default_ns} />
                 </div>
             </div>
