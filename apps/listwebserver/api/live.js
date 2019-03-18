@@ -13,6 +13,11 @@ router.put('/pcap/capture',
     (req, res, next) => {
         // sets req.pcap, which is used by the ingest system
         req.pcap = generateRandomPcapDefinition(req);
+
+        if(req.body.capture_id) {
+            req.pcap.uuid = req.body.capture_id;
+        }
+
         req.pcap.from_network = true; // sets this pcap as generated from network
         fs.createIfNotExists(req.pcap.folder);
         next();
