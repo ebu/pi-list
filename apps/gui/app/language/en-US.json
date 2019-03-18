@@ -6,7 +6,9 @@
             }
         },
         "errors": {
-            "invalid_delta_rtp_ts_vs_nt": "Invalid delta between RTP timestamp and N x Tframe"
+            "invalid_delta_rtp_ts_vs_nt": "Invalid delta between RTP timestamp and N x Tframe",
+            "cinst_above_maximum": "CInst is above the maximum allowed value (CMAX)",
+            "vrx_above_maximum": "VRX is above the maximum allowed value (VRXFULL)"
         }
     },
     "headings": {
