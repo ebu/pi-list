@@ -9,6 +9,7 @@ const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const CONSTANTS = require('../enums/constants');
 const Pcap = require('../models/pcap');
 const Stream = require('../models/stream');
+const streamsController = require('../controllers/streams');
 const { pcapSingleStreamIngest, pcapIngest,
     generateRandomPcapDefinition, generateRandomPcapFilename, getUserFolder } = require('../util/ingest');
 
@@ -131,7 +132,7 @@ router.get('/:pcapID/streams/', (req, res) => {
 router.get('/:pcapID/stream/:streamID', (req, res) => {
     const { streamID } = req.params;
 
-    Stream.findOne({ id: streamID }).exec()
+    streamsController.getStreamWithId(streamID)
         .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
@@ -140,7 +141,7 @@ router.get('/:pcapID/stream/:streamID', (req, res) => {
 router.get('/:pcapID/stream/:streamID/help', (req, res) => {
     const { streamID } = req.params;
 
-    Stream.findOne({ id: streamID }).exec()
+    streamsController.getStreamWithId(streamID)
         .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });

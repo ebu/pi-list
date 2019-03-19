@@ -2,6 +2,7 @@ const _ = require('lodash');
 const influxDbManager = require('../managers/influx-db');
 const Stream = require('../models/stream');
 const constants = require('../enums/analysis');
+const { appendError } = require('./utils');
 
 // Definitions
 const validation = {
@@ -9,13 +10,6 @@ const validation = {
         delta_rtp_ts_vs_nt_ticks_min: -2,
         delta_rtp_ts_vs_nt_ticks_max: 45000
     }
-}
-
-function appendError(stream, value) {
-    const errors = _.get(stream, 'error_list', []);
-    errors.push(value);
-    _.set(stream, 'error_list', errors);
-    return stream;
 }
 
 // Sets analyses.2110_21_cinst.result to compliant or not_compliant

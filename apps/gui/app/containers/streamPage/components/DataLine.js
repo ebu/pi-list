@@ -24,11 +24,11 @@ const renderValue = ({ value, units }) => units
     : <span className="lst-stream-info-value">{value}</span>;
 
 const DataLine = props => (
-    <div className="row lst-control-group">
-        <div className={`lst-stream-info-label col-xs-${props.labelWidth} middle-xs`}>
+    <div className="row col-xs-12 lst-no-padding">
+        <div className={`lst-stream-info-label col-xs-${props.labelWidth}`}>
             <span>{props.label}</span>
         </div>
-        <div className={`lst-form-value col-xs-${props.valueWidth} middle-xs`}>
+        <div className={`col-xs-${props.valueWidth}`}>
             {renderValue(props)}
         </div>
     </div>

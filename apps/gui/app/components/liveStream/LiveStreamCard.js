@@ -3,8 +3,6 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import Panel from 'components/common/Panel';
 import FormInput from 'components/common/FormInput';
-import StreamBadge from 'components/stream/StreamBadge';
-import AnalysisBadge from 'components/stream/AnalysisBadge';
 import EditableField from 'components/common/EditableField';
 import Button from 'components/common/Button';
 import api from 'utils/api';
@@ -68,13 +66,6 @@ const LiveStreamCard = (props) => {
                 <FormInput className="lst-no-margin" icon="arrow downward" labelColSize={2} valueColSize={10}>
                     {to}
                 </FormInput>
-                { mediaTypeIsKnown && (
-                    <div className="row lst-no-margin">
-                        {!props.lowInformation &&
-                        <StreamBadge media_type={props.media_type} media_specific={props.media_specific} />}
-                        <AnalysisBadge name="ST2110-21" compliance={globalStatus.compliance} />
-                    </div>
-                )}
             </Link>
         </Panel>
     );

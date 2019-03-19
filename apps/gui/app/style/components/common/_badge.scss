@@ -1,63 +1,52 @@
 $badge-font-size: 12px;
-
 .lst-badge {
-  display: inline-block;
-  border-radius: 2px;
-  padding: $badge-font-size / 2;
-  font-size: $badge-font-size;
-  font-weight: 300;
-  line-height: $badge-font-size;
-  white-space: nowrap;
-  margin: 0 $margin/2;
-  vertical-align: middle;
-  color: $white;
-
-  .lst-icons {
-    font-size: inherit;
-    line-height: inherit;
-  }
-
-  &--success{
-    @extend .lst-bg--green;
-  }
-
-  &--success2{
-    background-color: inherit;
-    color: $green;
-  }
-
-  &--warning {
-    background-color: $yellow;
-    color: $black;
-  }
-
-  &--warning2 {
-    background-color: inherit;
-    color: $yellow;
-  }
-
-  &--danger {
-    @extend .lst-bg--red;
-  }
-
-  &--danger2 {
-    background-color: inherit;
-    color: $red;
-  }
-
-  &--info {
-    @extend .lst-bg--blue;
-  }
-
-  &--mini {
-    padding: 4px;
-    font-size: 12px;
-    margin: 4px;
-
-    i {
-      padding: 0 4px;
-      top: 1px;
-      position: relative;
+    display: inline-block;
+    border-radius: 2px;
+    padding: $badge-font-size / 2;
+    font-size: $badge-font-size;
+    font-weight: 300;
+    line-height: $badge-font-size;
+    white-space: nowrap;
+    margin: 0 $margin/2;
+    vertical-align: middle;
+    color: $white;
+    .lst-icons {
+        font-size: inherit;
+        line-height: inherit;
     }
-  }
+    &--success {
+        @extend .lst-bg--green;
+    }
+    &--success2 {
+        background-color: inherit;
+        color: $green;
+    }
+    &--warning {
+        background-color: $yellow;
+        color: $black;
+    }
+    &--warning2 {
+        background-color: inherit;
+        color: $yellow;
+    }
+    &--danger {
+        @extend .lst-bg--red;
+    }
+    &--danger2 {
+        background-color: inherit;
+        color: $red;
+    }
+    &--info {
+        @extend .lst-bg--blue;
+    }
+    &--mini {
+        padding: 4px;
+        font-size: 12px;
+        margin: 4px;
+        i {
+            padding: 0 4px;
+            top: 1px;
+            position: relative;
+        }
+    }
 }

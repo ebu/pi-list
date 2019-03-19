@@ -33,6 +33,15 @@
             - {
                 - id : string // defined in enums/analysis/errors
               }
+  - 2110_21_cinst
+    - result : string // defined in enums/analysis/outcome
+  - 2110_21_vrx
+    - result : string // defined in enums/analysis/outcome
+  - tsdf
+    - result : string // defined in enums/analysis/outcome
+    - details:
+        - tsdf_max: Number // calculated as defined by the EBU recommendation
+        - level: string // enums/analysis/qualitative
 
 ## PCAP
 - summary
