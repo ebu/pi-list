@@ -17,11 +17,11 @@ const defaultProps = {
 };
 
 const renderValue = ({ value, units }) => units
-    ? <Fragment>
-        <span className="lst-stream-info-value">{value}</span>
-        <span className="lst-stream-info-units">{units}</span>
-    </Fragment>
-    : <span className="lst-stream-info-value">{value}</span>;
+    ? <div style={{ display: 'flex'}}>
+        <div className="lst-stream-info-value">{value}</div>
+        <div className="lst-stream-info-units">{units}</div>
+    </div>
+    : <div className="lst-stream-info-value">{value}</div>;
 
 const DataLine = props => (
     <div className="row col-xs-12 lst-no-padding">
