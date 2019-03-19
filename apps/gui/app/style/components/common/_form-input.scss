@@ -5,4 +5,8 @@
   .lst-form-label {
     @extend .lst-text-right, .lst-text-vertical-align;
   }
+
+  .lst-form-value {
+    @extend .lst-text-left, .lst-text-vertical-align;
+  }
 }

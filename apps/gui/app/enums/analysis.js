@@ -15,6 +15,12 @@ module.exports = {
         pcap: {
             truncated: 'warnings.pcap.truncated'
         }
+    },
+    analysesNames: {
+        'rtp': 'RTP',
+        '2110_21_cinst': 'SMPTE 2110-21 (Cinst)',
+        '2110_21_vrx': 'SMPTE 2110-21 (VRX)',
+        'tsdf': 'EBU TS-DF',
     }
 };
 

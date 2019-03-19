@@ -6,6 +6,7 @@ import Icon from 'components/common/Icon';
 
 const propTypes = {
     className: PropTypes.string,
+    titleClassName: PropTypes.string,
     containerClassName: PropTypes.string,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     children: PropTypes.oneOfType([
@@ -21,6 +22,7 @@ const propTypes = {
 
 const defaultProps = {
     className: '',
+    titleClassName: '',
     containerClassName: '',
     title: null,
     noPadding: false,
@@ -34,6 +36,11 @@ const Panel = (props) => {
     const cardClassNames = classNames(
         'lst-panel',
         props.className
+    );
+
+    const titleClassNames = classNames(
+        'fit-to-div',
+        props.titleClassName
     );
 
     const containerClassNames = classNames(
@@ -54,7 +61,7 @@ const Panel = (props) => {
                 {isString(props.title) ? (
                     <div className="row lst-panel__header lst-truncate">
                         <div className="col-xs-6">
-                            <h2 className="fit-to-div">{props.icon && <Icon value={props.icon} />}{props.title}</h2>
+                            <h2 className={titleClassNames}>{props.icon && <Icon value={props.icon} />}{props.title}</h2>
                         </div>
                         <div className="col-xs-6 end-xs">{props.rightToolbar}</div>
                     </div>

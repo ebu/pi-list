@@ -16,6 +16,7 @@ const Pcap = require('../models/pcap');
 const Stream = require('../models/stream');
 const WS_EVENTS = require('../enums/wsEvents');
 const { doVideoAnalysis } = require('../analyzers/video');
+const { doAudioAnalysis } = require('../analyzers/audio');
 const constants = require('../enums/analysis');
 
 function getUserFolder(req) {
@@ -233,46 +234,15 @@ function videoConsolidation(req, res, next) {
 
 function audioConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
-
-    // post-process every audio stream for delay analysis
     Stream.find({ pcap: pcapId, media_type: "audio" }).exec()
+        .then(streams => doAudioAnalysis(pcapId, streams))
         .then(streams => {
-            const influxPromises = [];
-            streams.forEach(stream => {
-                influxPromises.push(influxDbManager.getAudioTimeStampedDelayFactorAmp(pcapId, stream.id));
-                influxPromises.push(Stream.findOne({ id: stream.id }));
-            });
-            return Promise.all(influxPromises);
+            addStreamsToReq(streams, req);
         })
-        .then(values => {
-            let mongoPromises = [];
-            // values = [ [influx1], stream1, [influx2], stream2, ... ]
-            for (let i = 0; i < values.length; i += 2) {
-                let tsdf_max, res;
-                if (values[i] == false) res = 'undefined';
-                else tsdf_max = values[i][0].max;
-
-                const stream = values[i + 1];
-                if (!stream.media_specific) continue; // can't do anything without associated stream
-                const packet_time = stream.media_specific.packet_time * 1000; // usec
-
-                // determine compliance based on EBU's recommendation
-                if (tsdf_max < packet_time) res = 'narrow';
-                else if (tsdf_max > 17 * packet_time) res = 'not_compliant';
-                else if (!tsdf_max) res = 'undefined';
-                else res = 'wide';
-
-                mongoPromises.push(Stream.findOneAndUpdate({ id: stream.id },
-                    { global_audio_analysis: { tsdf_max: tsdf_max, tsdf_compliance: res } }, { new: true }));
-            }
-            return Promise.all(mongoPromises);
-        })
-        .then(values => {
-            next();
-        })
+        .then(() => next())
         .catch((output) => {
-            logger('audio-consolidation').error(`exception: ${output} ${output.stdout}`);
-            logger('audio-consolidation').error(`exception: ${output} ${output.stderr}`);
+            logger('video-consolidation').error(`exception: ${output}`);
+            logger('video-consolidation').error(`exception: ${output}`);
         });
 }
 

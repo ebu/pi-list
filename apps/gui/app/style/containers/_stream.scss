@@ -68,6 +68,8 @@
         }
     }
     &-value {
+        @extend .lst-text-left,
+        .lst-text-vertical-align;
         color: $black;
         .dark & {
             color: $white-blank;

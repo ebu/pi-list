@@ -11,8 +11,8 @@ const DataList = props => {
                 information.map(item => {
                     const label = item.label || translate(item.labelTag);
                     return (<DataLine
-                        labelColSize={6}
-                        valueColSize={6}
+                        labelWidth={props.labelWidth || 6}
+                        valueWidth={props.valueWidth || 6}
                         key={`${label}_${item.value}`}
                         label={label}
                         value={item.value}

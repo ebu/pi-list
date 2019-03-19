@@ -8,7 +8,8 @@ const propTypes = {
     icon: PropTypes.string,
     text: PropTypes.string,
     className: PropTypes.string,
-    mini: PropTypes.bool
+    mini: PropTypes.bool,
+    border: PropTypes.bool
 };
 
 const defaultProps = {
@@ -16,7 +17,8 @@ const defaultProps = {
     text: '',
     icon: '',
     className: '',
-    mini: false
+    mini: false,
+    border: false
 };
 
 const Badge = (props) => {

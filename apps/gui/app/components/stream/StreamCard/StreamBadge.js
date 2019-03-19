@@ -16,8 +16,8 @@ function renderVideoInfo(media) {
 
     return (
         <Fragment>
-            <Badge text={`${media.height}${scan}${rate}`} icon="videocam" mini />
-            <Badge text={`${media.sampling} ${media.color_depth} bits`} icon="filter" mini />
+            <Badge border text={`${media.height}${scan}${rate}`} icon="videocam" mini />
+            <Badge border text={`${media.sampling} ${media.color_depth} bits`} icon="filter" mini />
         </Fragment>
     );
 }
@@ -27,8 +27,8 @@ function renderAudioInfo(media) {
 
     return (
         <Fragment>
-            <Badge text={`${media.encoding} ${media.number_channels}ch`} icon="queue music" mini />
-            <Badge text={`${hz} kHz`} icon="surround sound" mini />
+            <Badge border text={`${media.encoding} ${media.number_channels}ch`} icon="queue music" mini />
+            <Badge border text={`${hz} kHz`} icon="surround sound" mini />
         </Fragment>
     );
 }
