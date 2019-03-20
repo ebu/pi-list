@@ -6,6 +6,26 @@
 
 namespace ebu_list::st2110::d40
 {
+    // from RFC8331 - 2.1. Payload Header Definitions
+    // These two bits relate to signaling the field specified by the
+    // RTP timestamp in an interlaced SDI raster.  A value of 0b00
+    // indicates that either the video format is progressive or that
+    // no field is specified.  A value of 0b10 indicates that the
+    // timestamp refers to the first field of an interlaced video
+    // signal.  A value of 0b11 indicates that the timestamp refers
+    // to the second field of an interlaced video signal.  The value
+    // 0b01 is not valid.  Receivers SHOULD ignore an ANC data
+    // packet with an F field value of 0b01 and SHOULD process any
+    // other ANC data packets with valid F field values that are
+    // present in the RTP payload.
+    enum class field_kind
+    {
+        progressive = 0b00,
+        interlaced_first_field = 0b10,
+        interlaced_second_field = 0b11,
+        invalid = 0b01
+    };
+
 #pragma pack(push, 1)
 
    /*
@@ -49,7 +69,7 @@ namespace ebu_list::st2110::d40
         uint8_t anc_count; // no restriction
 
         uint8_t reserved_0 : 6;
-        uint8_t field_identification : 2; // 0:invalid, 1:progr, 2:top, 3:bottom
+        uint8_t field_identification : 2; // See field_kind
 
         net_uint16_t reserved_1;
     };
