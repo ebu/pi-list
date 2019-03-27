@@ -12,7 +12,6 @@ import Button from 'components/common/Button';
 
 const AudioPage = (props) => {
     const streamInfo = props.streamInfo;
-    const networkInfo = streamInfo.network_information;
     const statistics = streamInfo.statistics;
     const analysis = streamInfo.global_audio_analysis;
     const mediaInfo = streamInfo.media_specific;
@@ -23,15 +22,12 @@ const AudioPage = (props) => {
             <Panel className="lst-stream-info-tab">
                 <div className="row lst-full-height">
                     <div className="col-xs-12 col-md-4">
-                        <NetworkInfo {...networkInfo}
-                            packet_count={statistics.packet_count}
-                            dropped_packet_count={statistics.dropped_packet_count}
-                        />
+                        <NetworkInfo stream={props.streamInfo} />
                         <AudioInfo {...mediaInfo} />
                         <AudioStatistics {...statistics} tsdf_max={analysis.tsdf_max} />
                     </div>
                     <div className="col-xs-12 col-md-8">
-                        <AudioExplorer pcapID={props.pcapID} streamID={props.streamID}/>
+                        <AudioExplorer pcapID={props.pcapID} streamID={props.streamID} />
                         <LineChart
                             asyncData={() => api.getAudioTransitDelay(props.pcapID, props.streamID, first_packet_ts, last_packet_ts)}
                             xAxis={chartFormatters.getTimeLineLabel}
@@ -54,7 +50,7 @@ const AudioPage = (props) => {
                             legend
                         />
                     </div>
-                    <Button type="info" label="See EBU's TR for TSDF" onClick={() => {window.open('https://tech.ebu.ch/docs/tech/tech3337.pdf', '_blank')}}/>
+                    <Button type="info" label="See EBU's TR for TSDF" onClick={() => { window.open('https://tech.ebu.ch/docs/tech/tech3337.pdf', '_blank') }} />
                 </div>
             </Panel>
         </Scrollbars>

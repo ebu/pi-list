@@ -11,10 +11,11 @@ import Alert from 'components/common/Alert';
 import ButtonGroup from 'components/common/ButtonGroup';
 import Button from 'components/common/Button';
 import keyEnum from 'enums/keyEnum';
-import { getVideoProfiles,
-         getAudioProfiles,
-         getMediaSpecificInformationByProfile,
-         getAudioInformationByProfile
+import {
+    getVideoProfiles,
+    getAudioProfiles,
+    getMediaSpecificInformationByProfile,
+    getAudioInformationByProfile
 } from 'code-for-demos/video-presets';
 import { deepClone } from 'utils/clone';
 import notifications from 'utils/notifications';
@@ -40,7 +41,7 @@ class StreamConfiguration extends Component {
     }
 
     updateStreamsConfigurationState(nextObject) {
-        this.setState( prevState => {
+        this.setState(prevState => {
             const stream = Object.assign({}, prevState.stream);
             merge(stream, nextObject);
             return { stream };
@@ -118,7 +119,7 @@ class StreamConfiguration extends Component {
                         searchable
                         clearable={true}
                         options={this.props.videoProfiles}
-                        onChange={ option => this.autoFillInfo(option, getMediaSpecificInformationByProfile)}
+                        onChange={option => this.autoFillInfo(option, getMediaSpecificInformationByProfile)}
                     />
                 </FormInput>
                 <FormInput label={translate('media_information.video.sampling')}>
@@ -200,7 +201,9 @@ class StreamConfiguration extends Component {
         const sampleRateOptions = find(this.props.availableAudioOptions, { key: 'sample_rate' }).value;
         const packetTimeOptions = find(this.props.availableAudioOptions, { key: 'packet_time' }).value;
         const mediaSpecific = this.state.stream.media_specific;
-
+        const number_channels = (mediaSpecific.number_channels === undefined || mediaSpecific.number_channels === null)
+            ?
+            1 : mediaSpecific.number_channels;
         return (
             <React.Fragment>
                 <FormInput label={translate('media_information.audio_profiles')}>
@@ -233,9 +236,9 @@ class StreamConfiguration extends Component {
                 <FormInput label={translate('media_information.audio.number_channels')}>
                     <Input
                         type="number"
-                        value={mediaSpecific.number_channels || 1}
-                        min="1"
-                        max="8"
+                        value={number_channels}
+                        min="0"
+                        max="64"
                         onChange={evt => this.updateMediaSpecific('number_channels', parseInt(evt.currentTarget.value, 10))}
                     />
                 </FormInput>
@@ -254,23 +257,23 @@ class StreamConfiguration extends Component {
 
     renderMediaTypeInformation(mediaType) {
         switch (mediaType) {
-        case 'video':
-            return this.renderVideoInformation();
-        case 'audio':
-            return this.renderAudioInformation();
-        case 'ancillary_data':
-            return (
-                <Alert type="info" showIcon>
-                    <strong>{translate('errors.anc_not_supported')}</strong>
-                    <p>{translate('errors.anc_not_supported_message')}</p>
-                </Alert>);
-        case 'unknown':
-        default:
-            return (
-                <Alert type="danger" showIcon>
-                    <strong>{translate('alerts.media_type_unknown')}</strong>
-                    <p>{translate('information.media_type_unknown')}</p>
-                </Alert>);
+            case 'video':
+                return this.renderVideoInformation();
+            case 'audio':
+                return this.renderAudioInformation();
+            case 'ancillary_data':
+                return (
+                    <Alert type="info" showIcon>
+                        <strong>{translate('errors.anc_not_supported')}</strong>
+                        <p>{translate('errors.anc_not_supported_message')}</p>
+                    </Alert>);
+            case 'unknown':
+            default:
+                return (
+                    <Alert type="danger" showIcon>
+                        <strong>{translate('alerts.media_type_unknown')}</strong>
+                        <p>{translate('information.media_type_unknown')}</p>
+                    </Alert>);
         }
     }
 

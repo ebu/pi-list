@@ -1,9 +1,11 @@
 import React, { Fragment } from 'react';
+import _ from 'lodash';
 import { translate } from 'utils/translation';
 import InfoPane from './components/InfoPane';
 
 const NetworkInfo = props => {
-    const dropped_count = props.dropped_packet_count || 0;
+    const packet_count = _.get(props.stream, ['analyses', 'rtp_sequence', 'details', 'packet_count'], 0);
+    const dropped_count = _.get(props.stream, ['analyses', 'rtp_sequence', 'details', 'dropped_packets'], 0);
     const droppedInfo = dropped_count == 0 ? '' : ` (${dropped_count} ${translate('media_information.rtp.dropped')})`;
 
     const values = [
@@ -13,19 +15,19 @@ const NetworkInfo = props => {
         },
         {
             labelTag: 'media_information.rtp.source',
-            value: `${props.source_address}:${props.source_port}`
+            value: `${props.stream.network_information.source_address}:${props.stream.network_information.source_port}`
         },
         {
             labelTag: 'media_information.rtp.destination',
-            value: `${props.destination_address}:${props.destination_port}`
+            value: `${props.stream.network_information.destination_address}:${props.stream.network_information.destination_port}`
         },
         {
             labelTag: 'media_information.rtp.ssrc',
-            value: props.ssrc
+            value: props.stream.network_information.ssrc
         },
         {
             labelTag: 'media_information.rtp.packet_count',
-            value: `${props.packet_count}${droppedInfo}`
+            value: `${packet_count}${droppedInfo}`
         }
     ];
 

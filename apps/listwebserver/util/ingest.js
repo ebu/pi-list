@@ -1,13 +1,14 @@
 const util = require('util');
+const fs = require('fs');
+const readFileAsync = util.promisify(fs.readFile);
+const writeFileAsync = util.promisify(fs.writeFile);
 const _ = require('lodash');
 const child_process = require('child_process');
-const fs = require('fs');
 const sdp_parser = require('sdp-transform');
 const sdpoker = require('sdpoker');
 const uuidv1 = require('uuid/v1');
 const program = require('./programArguments');
 const websocketManager = require('../managers/websocket');
-const influxDbManager = require('../managers/influx-db');
 const logger = require('./logger');
 const API_ERRORS = require('../enums/apiErrors');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
@@ -17,6 +18,7 @@ const Stream = require('../models/stream');
 const WS_EVENTS = require('../enums/wsEvents');
 const { doVideoAnalysis } = require('../analyzers/video');
 const { doAudioAnalysis } = require('../analyzers/audio');
+const { doRtpAnalysis } = require('../analyzers/rtp');
 const constants = require('../enums/analysis');
 
 function getUserFolder(req) {
@@ -117,23 +119,41 @@ function pcapPreProcessing(req, res, next) {
         });
 }
 
+function postProcessSdpFile(sdpPath, sdpInfo) {
+    readFileAsync(sdpPath, 'utf8')
+        .then(sdp => {
+            sdp = sdp.replace(/LIST Generated SDP/m, sdpInfo);
+            sdp = sdp.replace(/LIST SDP/m, sdpInfo);
+            return sdp;
+        })
+        .then(sdp => {
+            return writeFileAsync(sdpPath, sdp);
+        })
+        .catch((output) => {
+            logger('sdp-post-processing').error(`exception: ${output}`);
+        });
+}
+
 function pcapFullAnalysis(req, res, next) {
     const pcapId = req.pcap.uuid;
-    const pcap_folder = req.pcap.folder;
+    const pcapFolder = req.pcap.folder;
 
     const { withMongo, withInflux } = argumentsToCmd();
 
     const st2110ExtractorCommand =
-        `"${program.cpp}/st2110_extractor" ${pcapId} "${req.file.path}" "${pcap_folder}" ${withInflux} ${withMongo}`;
-
+        `"${program.cpp}/st2110_extractor" ${pcapId} "${req.file.path}" "${pcapFolder}" ${withInflux} ${withMongo}`;
 
     logger('st2110_extractor').info(`Command: ${st2110ExtractorCommand}`);
     exec(st2110ExtractorCommand)
         .then((output) => {
             logger('st2110_extractor').info(output.stdout);
             logger('st2110_extractor').info(output.stderr);
-            next();
         })
+        .then(() => {
+            const sdpPath = `${pcapFolder}/sdp.sdp`;
+            postProcessSdpFile(sdpPath, req.file.originalname);
+        })
+        .then(() => next())
         .catch((output) => {
             logger('pcap-full-analysis').error(`exception: ${output} ${output.stdout}`);
             logger('pcap-full-analysis').error(`exception: ${output} ${output.stderr}`);
@@ -156,13 +176,13 @@ function pcapFullAnalysis(req, res, next) {
 function singleStreamAnalysis(req, res, next) {
     const { streamID } = req.params;
     const pcapId = req.pcap.uuid;
-    const pcap_folder = req.pcap.folder;
+    const pcapFolder = req.pcap.folder;
     const pcap_location = req.file.path;
 
     const { withMongo, withInflux } = argumentsToCmd();
 
     const st2110ExtractorCommand =
-        `"${program.cpp}/st2110_extractor" ${pcapId} "${pcap_location}" "${pcap_folder}" ${withInflux} ${withMongo} -s "${streamID}"`;
+        `"${program.cpp}/st2110_extractor" ${pcapId} "${pcap_location}" "${pcapFolder}" ${withInflux} ${withMongo} -s "${streamID}"`;
 
     logger('st2110_extractor').info(`Command: ${st2110ExtractorCommand}`);
     exec(st2110ExtractorCommand)
@@ -241,8 +261,19 @@ function audioConsolidation(req, res, next) {
         })
         .then(() => next())
         .catch((output) => {
-            logger('video-consolidation').error(`exception: ${output}`);
-            logger('video-consolidation').error(`exception: ${output}`);
+            logger('audio-consolidation').error(`exception: ${output}`);
+            logger('audio-consolidation').error(`exception: ${output}`);
+        });
+}
+
+function commonConsolidation(req, res, next) {
+    const pcapId = req.pcap.uuid;
+    const streams = _.get(req, 'streams', []);
+    doRtpAnalysis(pcapId, streams)
+        .then(() => next())
+        .catch((output) => {
+            logger('audio-consolidation').error(`exception: ${output}`);
+            logger('audio-consolidation').error(`exception: ${output}`);
         });
 }
 
@@ -346,6 +377,7 @@ module.exports = {
         pcapFullAnalysis,
         videoConsolidation,
         audioConsolidation,
+        commonConsolidation,
         pcapConsolidation,
         pcapIngestEnd
     ],
@@ -354,6 +386,7 @@ module.exports = {
         singleStreamAnalysis,
         videoConsolidation,
         audioConsolidation,
+        commonConsolidation,
         pcapConsolidation
     ],
     sdpIngest: [

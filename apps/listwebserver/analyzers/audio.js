@@ -33,7 +33,7 @@ function getTsdfCompliance(tsdfMax, packet_time) {
 }
 
 function getTsdfMax(value) {
-    if (value === null || value === undefined) return null;
+    if (value === null || value === undefined || value[0] == null || value[0] == undefined) return null;
     return value[0].max;
 }
 

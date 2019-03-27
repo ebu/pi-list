@@ -6,7 +6,6 @@ const PcapActions = props => {
 
     const deleteButton = (
         <Button
-            className="lst-table-delete-item-btn"
             icon="delete"
             type="danger"
             link
@@ -20,7 +19,6 @@ const PcapActions = props => {
 
     const selectBefore = (
         <Button
-            className="lst-table-delete-item-btn"
             icon="navigate_before"
             type="info"
             link
@@ -34,7 +32,6 @@ const PcapActions = props => {
 
     const selectAfter = (
         <Button
-            className="lst-table-delete-item-btn"
             icon="navigate_next"
             type="info"
             link
@@ -46,11 +43,37 @@ const PcapActions = props => {
         />
     );
 
+    const downloadPcap = (
+        <Button
+            className="lst-header-button"
+            label="PCAP"
+            type="info"
+            link
+            icon="file_download"
+            disabled={props.selectedItems === null || props.selectedItems.length === 0}
+            onClick={() => props.onDownloadPcaps()}
+        />
+    );
+
+    const downloadSdp = (
+        <Button
+            className="lst-header-button"
+            label="SDP"
+            type="info"
+            link
+            icon="file_download"
+            disabled={props.selectedItems === null || props.selectedItems.length === 0}
+            onClick={props.onDownloadSdps}
+        />
+    );
+
     return (
         <div className="lst-table-actions">
-            { deleteButton }
-            { selectBefore }
-            { selectAfter }
+            {deleteButton}
+            {selectBefore}
+            {selectAfter}
+            {downloadPcap}
+            {downloadSdp}
         </div>
     );
 }
@@ -60,6 +83,8 @@ PcapActions.propTypes = {
     onDelete: PropTypes.func,
     onSelectBefore: PropTypes.func,
     onSelectAfter: PropTypes.func,
+    onDownloadPcaps: PropTypes.func,
+    onDownloadSdps: PropTypes.func,
 };
 
 PcapActions.defaultProps = {
@@ -67,6 +92,8 @@ PcapActions.defaultProps = {
     onDelete: () => { },
     onSelectBefore: () => { },
     onSelectAfter: () => { },
+    onDownloadPcaps: () => { },
+    onDownloadSdps: () => { },
 };
 
 export default PcapActions;

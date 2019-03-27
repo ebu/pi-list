@@ -41,6 +41,7 @@
     "react-select": "^1.2.1",
     "react-table": "^6.9.2",
     "react-toggle": "^4.0.2",
+    "replace-ext": "^1.0.0",
     "smpte-timecode": "^1.2.1",
     "socket.io-client": "^2.1.1",
     "wavesurfer.js": "^2.0.6"

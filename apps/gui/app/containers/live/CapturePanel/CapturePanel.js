@@ -49,7 +49,6 @@ class CapturePanel extends Component {
             duration: 1000,
             captureDescription: '',
             captureFullName: undefined,
-            capturing: false,
             sdpErrors: null,
             now: this.getNow(),
             timer: null,
@@ -71,8 +70,7 @@ class CapturePanel extends Component {
     }
 
     componentDidMount() {
-        const timer = setInterval(this.updateNow, 500);
-        this.setState({ timer });
+        this.startTimer();
         websocket.on(websocketEventsEnum.LIVE.IP_PARSED_FROM_SDP, this.onSdpParsed);
         websocket.on(websocketEventsEnum.LIVE.SDP_VALIDATION_RESULTS, this.onSdpValidated);
         websocket.on(websocketEventsEnum.PCAP.DONE, this.onPcapProcessingEnded);
@@ -80,14 +78,23 @@ class CapturePanel extends Component {
     }
 
     componentWillUnmount() {
-        if (this.state.timer) {
-            clearInterval(this.state.timer);
-        }
-
         websocket.off(websocketEventsEnum.LIVE.IP_PARSED_FROM_SDP, this.onSdpParsed);
         websocket.off(websocketEventsEnum.LIVE.SDP_VALIDATION_RESULTS, this.onSdpValidated);
         websocket.off(websocketEventsEnum.PCAP.DONE, this.onPcapProcessingEnded);
         websocket.off(websocketEventsEnum.PCAP.FILE_FAILED, this.onPcapProcessingEnded);
+    }
+
+    startTimer() {
+        const timer = setInterval(this.updateNow, 500);
+        this.setState({ timer });
+    }
+
+    stopTimer() {
+        if (this.state.timer) {
+            clearInterval(this.state.timer);
+        }
+
+        this.setState({ timer: null });
     }
 
     getNow() {
@@ -123,9 +130,10 @@ class CapturePanel extends Component {
 
         this.setState({
             captureFullName: data.description,
-            streams: data.streams.map(str => {
+            captureDescription: '',
+            streams: [...data.streams.map(str => {
                 return { src: str.src, dstAddr: str.dstAddr, dstPort: str.dstPort };
-            })
+            }), { src: '', dstAddr: '', dstPort: '' }]
         });
     }
 
@@ -139,10 +147,13 @@ class CapturePanel extends Component {
         const uuid = _.get(data, ['id']);
         if (uuid === this.state.captureId) {
             this.setState({ captureStatus: captureStatus.completed });
+            this.startTimer();
         }
     }
 
     startCapture() {
+        this.stopTimer();
+
         const captureFullName = this.getFullName();
         if (captureFullName === '') {
             return;
@@ -210,13 +221,16 @@ class CapturePanel extends Component {
                     <StreamsListPanel streams={this.state.streams} handleChange={this.onStreamsChanged} />
                     <hr />
                     <FormInput icon="timer" {...colSizes}>
-                        <Input
-                            width="4rem"
-                            type="number"
-                            min="0"
-                            value={this.state.duration}
-                            onChange={evt => this.setState({ duration: parseInt(evt.currentTarget.value, 10) })}
-                        /> <span>ms</span>
+                        <div>
+                            <Input
+                                width="4rem"
+                                type="number"
+                                min="0"
+                                value={this.state.duration}
+                                onChange={evt => this.setState({ duration: parseInt(evt.currentTarget.value, 10) })}
+                            />
+                            <span className="lst-stream-info-units">ms</span>
+                        </div>
                     </FormInput>
                     <FormInput icon="receipt" {...colSizes}>
                         <Input
@@ -227,9 +241,9 @@ class CapturePanel extends Component {
                     </FormInput>
                 </div>
                 <hr />
-                <div className="row lst-align-items-baseline">
+                <div className="row lst-align-items-center lst-no-margin lst-margin--bottom-1">
                     <div className="col-xs-11 lst-no-margin">
-                        <FormInput {...colSizes} icon="label">
+                        <FormInput {...colSizes} icon="label" className="lst-no-margin">
                             <Input
                                 type="text"
                                 value={captureFullName}
@@ -239,7 +253,7 @@ class CapturePanel extends Component {
                     </div>
                     <div className="col-xs-1">
                         <Button
-                            className="lst-table-delete-item-btn"
+                            className="lst-table-delete-item-btn lst-no-margin lst-no-padding"
                             icon="cancel"
                             type="info"
                             link
@@ -248,7 +262,7 @@ class CapturePanel extends Component {
                         />
                     </div>
                 </div>
-                <div className="row lst-no-margin lst-align-items-baseline">
+                <div className="row lst-align-items-center">
                     <div className="col-xs-10">
                         {getCaptureStatusMessage(this.state.captureStatus, this.state.captureErrorMessage)}
                     </div>
@@ -258,8 +272,8 @@ class CapturePanel extends Component {
                             label={translate('workflow.start_capture')}
                             onClick={this.startCapture}
                             disabled={
-                                this.state.captureStatus === captureStatus.inProgress 
-                                || this.state.captureStatus === captureStatus.analyzing 
+                                this.state.captureStatus === captureStatus.inProgress
+                                || this.state.captureStatus === captureStatus.analyzing
                                 || this.getFullName() === ''}
                         />
                     </div>

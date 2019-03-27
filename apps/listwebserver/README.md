@@ -24,15 +24,11 @@
 ```
 - analyses
   - rtp
-    - result : string // defined in enums/analysis - outcome
+    - result : string // defined in enums/analysis/outcome
     - details
         - delta_rtp_ts_vs_nt_ticks // video only
             - min : number
             - max : number
-        - error_list : array of:
-            - {
-                - id : string // defined in enums/analysis/errors
-              }
   - 2110_21_cinst
     - result : string // defined in enums/analysis/outcome
   - 2110_21_vrx
@@ -42,6 +38,16 @@
     - details:
         - tsdf_max: Number // calculated as defined by the EBU recommendation
         - level: string // enums/analysis/qualitative
+  - rtp_sequence:
+    - result : string // defined in enums/analysis/outcome
+    - details:
+        - packet_count: Number // the number of captured packets
+        - dropped_packets: Number // the number of dropped packets
+
+- error_list : array of:
+    - {
+        - id : string // defined in enums/analysis/errors
+      }
 
 ## PCAP
 - summary
