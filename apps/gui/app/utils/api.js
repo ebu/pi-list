@@ -46,7 +46,8 @@ export default {
     /* PCAP */
     getPcaps: () => request.get('pcap'),
     getPcap: pcapID => request.get(`pcap/${pcapID}`),
-    downloadPcap: pcapID => `${API_URL}/pcap/${pcapID}/download`,
+    downloadPcap: pcapID => request.get(`pcap/${pcapID}/download`),
+    downloadPcapUrl: pcapID => `${API_URL}/pcap/${pcapID}/download`,
     deletePcap: pcapID => request.delete(`pcap/${pcapID}`),
     getStreamsFromPcap: pcapID => request.get(`pcap/${pcapID}/streams`),
     sendPcapFile: (pcapFile, onUploadProgress) => {
@@ -65,7 +66,8 @@ export default {
     },
 
     /* SDP */
-    downloadSDP: pcapID => `${API_URL}/pcap/${pcapID}/sdp`,
+    downloadSDP: pcapID => request.get(`pcap/${pcapID}/sdp`),
+    downloadSDPUrl: pcapID => `${API_URL}/pcap/${pcapID}/sdp`,
     uploadSDP: (sdpFile, onUploadComplete) => {
         const data = new FormData();
         data.append('sdp', sdpFile);

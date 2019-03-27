@@ -10,11 +10,12 @@ module.exports = {
         undefined: 'undefined',
     },
     errors: {
-        missing_information: 'missing_information',
+        missing_information: 'errors.missing_information',
         invalid_delta_rtp_ts_vs_nt: 'errors.invalid_delta_rtp_ts_vs_nt',
         cinst_above_maximum: 'errors.cinst_above_maximum',
         vrx_above_maximum: 'errors.vrx_above_maximum',
-        tsdf_not_compliant: 'tsdf_not_compliant'
+        tsdf_not_compliant: 'errors.tsdf_not_compliant',
+        dropped_packets: 'errors.dropped_packets',
     },
     warnings: {
         pcap: {

@@ -101,13 +101,13 @@ export default (
                             {
                                 label: translate('pcap.download_pcap'),
                                 icon: 'file download',
-                                downloadPath: api.downloadPcap(props.match.params.pcapID),
+                                downloadPath: api.downloadPcapUrl(props.match.params.pcapID),
                                 onClick: () => { }
                             },
                             {
                                 label: translate('pcap.download_sdp'),
                                 icon: 'file download',
-                                downloadPath: api.downloadSDP(props.match.params.pcapID),
+                                downloadPath: api.downloadSDPUrl(props.match.params.pcapID),
                                 onClick: () => { }
                             },
                             {

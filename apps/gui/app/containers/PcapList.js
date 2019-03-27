@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import api from 'utils/api';
+import replaceExt from 'replace-ext';
+import api from '../utils/api';
 import websocket from 'utils/websocket';
 import immutable from 'utils/immutable';
 import notifications from 'utils/notifications';
@@ -13,6 +14,7 @@ import PropTypes from 'prop-types';
 import PcapTable from '../components/pcap/PcapTable';
 import PcapActions from '../components/pcap/PcapActions';
 import pcapEnums from '../enums/pcap';
+import { downloadFiles } from '../utils/download';
 
 const DeleteModal = (props) => (
     <PopUp
@@ -40,6 +42,14 @@ function getFullInfoFromId(id, pcaps) {
     return filtered.length > 0 ? filtered[0] : null;
 }
 
+function getTotalValidStreams(pcap) {
+    return pcap.video_streams + pcap.audio_streams + pcap.anc_streams;
+}
+
+function isAnyStreamIsValid(pcap) {
+    return getTotalValidStreams(pcap) > 0;
+}
+
 function getStatusForPcapInfo(pcap) {
     if (pcap.progress && pcap.progress < 100) {
         return {
@@ -56,7 +66,7 @@ function getStatusForPcapInfo(pcap) {
 
     }
 
-    if (!pcap.analyzed) {
+    if (!pcap.analyzed || !isAnyStreamIsValid(pcap)) {
         return {
             state: pcapEnums.state.needs_user_input
         };
@@ -69,7 +79,7 @@ function getStatusForPcapInfo(pcap) {
         };
     }
 
-    if(pcap.summary === undefined) {
+    if (pcap.summary === undefined) {
         // TODO: this is to deal with legacy
         return {
             state: pcapEnums.state.no_analysis
@@ -96,7 +106,7 @@ function addStateToPcapInfo(pcap) {
         ...pcap,
         status: getStatusForPcapInfo(pcap),
         ptp: getPtpStateForPcapInfo(pcap),
-     };
+    };
 }
 
 class PcapList extends Component {
@@ -123,6 +133,24 @@ class PcapList extends Component {
         this.onDone = this.onDone.bind(this);
         this.onSelectBefore = this.onSelectBefore.bind(this);
         this.onSelectAfter = this.onSelectAfter.bind(this);
+        this.onDownloadPcaps = this.onDownloadPcaps.bind(this);
+        this.onDownloadSdps = this.onDownloadSdps.bind(this);
+    }
+
+    componentDidMount() {
+        websocket.on(websocketEventsEnum.PCAP.FILE_RECEIVED, this.onPcapReceived);
+        websocket.on(websocketEventsEnum.PCAP.FILE_PROCESSED, this.onPcapProcessed);
+        websocket.on(websocketEventsEnum.PCAP.ANALYZING, this.onPcapProcessed);
+        websocket.on(websocketEventsEnum.PCAP.FILE_FAILED, this.onPcapFailed);
+        websocket.on(websocketEventsEnum.PCAP.DONE, this.onDone);
+    }
+
+    componentWillUnmount() {
+        websocket.off(websocketEventsEnum.PCAP.FILE_RECEIVED, this.onPcapReceived);
+        websocket.off(websocketEventsEnum.PCAP.FILE_PROCESSED, this.onPcapProcessed);
+        websocket.off(websocketEventsEnum.PCAP.ANALYZING, this.onPcapProcessed);
+        websocket.off(websocketEventsEnum.PCAP.FILE_FAILED, this.onPcapFailed);
+        websocket.off(websocketEventsEnum.PCAP.DONE, this.onDone);
     }
 
     toggleRow(id) {
@@ -250,20 +278,14 @@ class PcapList extends Component {
         });
     }
 
-    componentDidMount() {
-        websocket.on(websocketEventsEnum.PCAP.FILE_RECEIVED, this.onPcapReceived);
-        websocket.on(websocketEventsEnum.PCAP.FILE_PROCESSED, this.onPcapProcessed);
-        websocket.on(websocketEventsEnum.PCAP.ANALYZING, this.onPcapProcessed);
-        websocket.on(websocketEventsEnum.PCAP.FILE_FAILED, this.onPcapFailed);
-        websocket.on(websocketEventsEnum.PCAP.DONE, this.onDone);
+    onDownloadPcaps() {
+        const filesForDownload = this.state.selected.map(id => api.downloadPcapUrl(id));
+        downloadFiles(filesForDownload);
     }
 
-    componentWillUnmount() {
-        websocket.off(websocketEventsEnum.PCAP.FILE_RECEIVED, this.onPcapReceived);
-        websocket.off(websocketEventsEnum.PCAP.FILE_PROCESSED, this.onPcapProcessed);
-        websocket.off(websocketEventsEnum.PCAP.ANALYZING, this.onPcapProcessed);
-        websocket.off(websocketEventsEnum.PCAP.FILE_FAILED, this.onPcapFailed);
-        websocket.off(websocketEventsEnum.PCAP.DONE, this.onDone);
+    onDownloadSdps() {
+        const filesForDownload = this.state.selected.map(id => api.downloadSDPUrl(id));
+        downloadFiles(filesForDownload);
     }
 
     render() {
@@ -274,6 +296,8 @@ class PcapList extends Component {
                     onDelete={this.onDelete}
                     onSelectAfter={this.onSelectAfter}
                     onSelectBefore={this.onSelectBefore}
+                    onDownloadPcaps={this.onDownloadPcaps}
+                    onDownloadSdps={this.onDownloadSdps}
                 />
                 <PcapTable
                     pcaps={this.state.data}

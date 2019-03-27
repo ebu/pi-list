@@ -28,11 +28,24 @@ namespace
         case 2: return std::tuple{ 1, 16 };
         case 3: return std::tuple{ 1, 24 };
         case 4: return std::tuple{ 2, 16 };
-        case 6: return std::tuple{ 2, 24 };
+        case 6: return std::tuple{ 2, 24 }; // Could be { 3, 16 }
         case 8: return std::tuple{ 4, 16 };
-        case 12: return std::tuple{ 4, 24 };
+        case 9: return std::tuple{ 3, 24 };
+        case 10: return std::tuple{ 5, 16 };
+        case 12: return std::tuple{ 4, 24 }; // Could be { 6, 16 }
+        case 14: return std::tuple{ 7, 16 };
+        case 15: return std::tuple{ 5, 24 };
         case 16: return std::tuple{ 8, 16 };
+        case 18: return std::tuple{ 6, 24 }; // Could be { 9, 16 }
+        case 20: return std::tuple{ 10, 16 };
+        case 21: return std::tuple{ 7, 24 };
         case 24: return std::tuple{ 8, 24 };
+        case 28: return std::tuple{ 14, 16 };
+        case 30: return std::tuple{ 10, 24 };
+        case 32: return std::tuple{ 16, 16 };
+        case 36: return std::tuple{ 12, 24 };
+        case 42: return std::tuple{ 14, 24 };
+        case 48: return std::tuple{ 16, 24 };
         default: return std::nullopt;
         }
     }

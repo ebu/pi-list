@@ -94,9 +94,13 @@ router.get('/:pcapID/download', (req, res) => {
 /* Get sdp.sdp file for a pcap */
 router.get('/:pcapID/sdp', (req, res) => {
     const { pcapID } = req.params;
-    const path = `${getUserFolder(req)}/${pcapID}/sdp.sdp`;
 
-    fs.downloadFile(path, `${pcapID}_sdp.sdp`, res);
+    Pcap.findOne({ id: pcapID }).exec()
+        .then(data => {
+            const path = `${getUserFolder(req)}/${pcapID}/sdp.sdp`;
+            const fileName = data.file_name.replace(/\.[^\.]*$/, '') + '.sdp';
+            fs.downloadFile(path, fileName, res);
+        });
 });
 
 /* Get info from pcap */
