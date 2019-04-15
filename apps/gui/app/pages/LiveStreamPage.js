@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import api from 'utils/api';
-import { translate } from 'utils/translation';
-import asyncLoader from 'components/asyncLoader';
-import errorEnum from 'enums/errorEnum';
-import LiveVideoPage from 'containers/live/LiveVideoPage';
-import AudioPage from 'containers/AudioPage';
 import { withRouter } from 'react-router-dom';
+import api from '../utils/api';
+import asyncLoader from '../components/asyncLoader';
+import errorEnum from '../enums/errorEnum';
+import LiveVideoPage from '../containers/live/LiveVideoPage';
+import AudioPage from '../containers/AudioPage';
 
 class LiveStreamPage extends Component {
     isVideo() {
@@ -32,10 +31,5 @@ export default withRouter(asyncLoader(LiveStreamPage, {
             const { streamID } = props.match.params;
             return api.getLiveStream(streamID);
         }
-    },
-    errorPage: {
-        message: translate('errors.404_message'),
-        errorType: errorEnum.PAGE_NOT_FOUND,
-        icon: 'help'
     }
 }));

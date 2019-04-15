@@ -1,9 +1,6 @@
 import React, { Fragment } from 'react';
 import InfoPane from './components/InfoPane';
 import { find } from 'lodash';
-import Icon from 'components/common/Icon';
-import { renderInformationList } from 'containers/streamPage/utils';
-import { translate } from 'utils/translation';
 import DataList from './components/DataList';
 
 const AncillaryInfo = props => {

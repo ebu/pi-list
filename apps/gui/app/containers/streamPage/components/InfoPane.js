@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import DataList from './DataList';
-import { translate } from 'utils/translation';
+import { translateX } from 'utils/translation';
 
 const InfoPane = props => {
-    const heading = props.heading || translate(props.headingTag);
+    const heading = props.heading || translateX(props.headingTag);
     return (
         <Fragment>
             <div className="lst-stream-info-header">

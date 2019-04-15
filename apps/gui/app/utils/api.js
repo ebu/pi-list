@@ -35,6 +35,7 @@ export default {
 
     /* Auth */
     getUser: () => request.get('user'),
+    updateUserPreferences: (value) => request.patch('user/preferences', { value }),
     deleteUser: () => request.delete('user'),
 
     register: loginData => axios.post(`${REST_URL}/user/register`, loginData).then(response => response.data),

@@ -6,7 +6,7 @@ import StreamColumn from '../components/stream/StreamColumn';
 import StreamCard from '../components/stream/StreamCard';
 import PTPCard from '../components/stream/PTPCard';
 import { getIcon } from '../utils/mediaUtils';
-import { translate } from '../utils/translation';
+import { translateX } from '../utils/translation';
 
 function renderColumn(pcapID, title, icon, streams) {
     return (
@@ -41,18 +41,18 @@ const StreamList = (props) => {
                     <div className="col-xs-8">
                         <div className="row">
                             <div className="col-xs-12 col-md-4">
-                                {renderColumn(pcapID, translate('headings.video'), getIcon('video'), videoStreams)}
+                                {renderColumn(pcapID, translateX('headings.video'), getIcon('video'), videoStreams)}
                             </div>
                             <div className="col-xs-12 col-md-4">
-                                {renderColumn(pcapID, translate('headings.audio'), getIcon('audio'), audioStreams)}
+                                {renderColumn(pcapID, translateX('headings.audio'), getIcon('audio'), audioStreams)}
                             </div>
                             <div className="col-xs-12 col-md-4">
-                                {renderColumn(pcapID, translate('headings.anc'), getIcon('metadata'), metadataStreams)}
+                                {renderColumn(pcapID, translateX('headings.anc'), getIcon('metadata'), metadataStreams)}
                             </div>
                         </div>
                     </div>
                     <div className="col-xs-2">
-                        {renderColumn(pcapID, translate('headings.unknown'), getIcon('unknown'), unknownStreams)}
+                        {renderColumn(pcapID, translateX('headings.unknown'), getIcon('unknown'), unknownStreams)}
                     </div>
                 </div>
             </div>

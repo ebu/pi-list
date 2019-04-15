@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import api from 'utils/api';
 import websocket from 'utils/websocket';
 import websocketEventsEnum from 'enums/websocketEventsEnum';
-import { translate } from 'utils/translation';
+import { translateC } from 'utils/translation';
 import Icon from 'components/common/Icon';
 
 class DevicesList extends Component {
@@ -68,7 +68,7 @@ class DevicesList extends Component {
             <React.Fragment>
                 {/* <Table
                     data={this.state.streams}
-                    noItemsMessage={translate('flow.no_flows')}
+                    noItemsMessage={translateC('flow.no_flows')}
                     rows={[
                         {
                             key: 'icon',

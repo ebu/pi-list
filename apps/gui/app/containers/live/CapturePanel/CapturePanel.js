@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import Button from '../../../components/common/Button';
-import { translate } from '../../../utils/translation';
+import { translateC } from '../../../utils/translation';
 import api from '../../../utils/api';
-import notifications from '../../../utils/notifications';
 import Input from '../../../components/common/Input';
 import FormInput from '../../../components/common/FormInput';
 import websocket from '../../../utils/websocket';
@@ -269,7 +268,7 @@ class CapturePanel extends Component {
                     <div className="col-xs-2 lst-text-right end-xs">
                         <Button
                             type="info"
-                            label={translate('workflow.start_capture')}
+                            label={translateC('workflow.start_capture')}
                             onClick={this.startCapture}
                             disabled={
                                 this.state.captureStatus === captureStatus.inProgress

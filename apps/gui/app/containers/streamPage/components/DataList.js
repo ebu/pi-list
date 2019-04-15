@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { translate } from 'utils/translation';
+import { translateX } from 'utils/translation';
 import DataLine from './DataLine';
 
 const DataList = props => {
@@ -9,7 +9,7 @@ const DataList = props => {
         <Fragment>
             {
                 information.map(item => {
-                    const label = item.label || translate(item.labelTag);
+                    const label = item.label || translateX(item.labelTag);
                     return (<DataLine
                         labelWidth={props.labelWidth || 6}
                         valueWidth={props.valueWidth || 6}

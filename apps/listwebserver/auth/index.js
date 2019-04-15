@@ -1,4 +1,5 @@
 const passport = require('passport');
+const bcrypt = require('bcrypt');
 const setupLocalAuth = require('./local');
 const logger = require('../util/logger');
 const uuid = require('uuid/v4');
@@ -10,6 +11,9 @@ const API_ERRORS = require('../enums/apiErrors');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const program = require('../util/programArguments');
 const User = require('../models/user');
+const { promisify } = require('util');
+
+const bcryptHash = promisify(bcrypt.hash);
 
 module.exports = (app) => {
     app.use(passport.initialize());
@@ -29,7 +33,7 @@ module.exports = (app) => {
         tokenManager.storeToken(token);
 
         logger('auth-token').info(`Set token ${token} for the session ${req.session.id}`);
-        res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({t: token });
+        res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ t: token });
     });
 
     app.post('/user/register', (req, res) => {
@@ -47,16 +51,19 @@ module.exports = (app) => {
             return res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send(API_ERRORS.TOKEN_EXPIRED);
         }
 
-        User.create({
-            email,
-            password: rawPassword
-        }).then((user) => {
-            tokenManager.setTokenAsInvalid(token);
-            return res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send(user);
-        })
-        .catch(() => {
-            tokenManager.setTokenAsInvalid(token);
-            return res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send(API_ERRORS.USER_ALREADY_REGISTERED);
-        });
+        bcryptHash(rawPassword, 10)
+            .then((hash) => {
+                User.create({
+                    email,
+                    password: hash
+                }).then((user) => {
+                    tokenManager.setTokenAsInvalid(token);
+                    return res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send(user);
+                })
+            })
+            .catch(() => {
+                tokenManager.setTokenAsInvalid(token);
+                return res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send(API_ERRORS.USER_ALREADY_REGISTERED);
+            });
     });
 };

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Rodal from 'rodal';
-import Button from 'components/common/Button';
-import Icon from 'components/common/Icon';
 import 'rodal/lib/rodal.css';
-import { translate } from 'utils/translation';
+import Button from '../../components/common/Button';
+import Icon from '../../components/common/Icon';
+import { translateC } from '../../utils/translation';
 
 const propTypes = {
     visible: PropTypes.bool.isRequired,
@@ -55,10 +55,10 @@ class PopUp extends Component {
                     </h2>
                 );
                 buttons = [
-                    <Button key="cancel-btn" label={translate('buttons.cancel')} outline noAnimation onClick={this.props.onClose} />,
+                    <Button key="cancel-btn" label={translateC('buttons.cancel')} outline noAnimation onClick={this.props.onClose} />,
                     <Button
                         key="delete-btn"
-                        label={translate('buttons.delete')}
+                        label={translateC('buttons.delete')}
                         type="danger"
                         outline
                         noAnimation

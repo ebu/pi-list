@@ -1,20 +1,20 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import _ from 'lodash';
-import Icon from '../../components/common/Icon';
-import Badge from 'components/common/Badge';
-import ProgressBar from 'components/common/ProgressBar';
-import { translate } from 'utils/translation';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import PropTypes from 'prop-types';
+import Icon from '../../components/common/Icon';
+import Badge from '../../components/common/Badge';
+import ProgressBar from '../../components/common/ProgressBar';
+import { translateX } from '../../utils/translation';
 import pcapEnums from '../../enums/pcap';
 import Tooltip from '../../components/common/Tooltip';
 
 
 const getWEMessage = item => {
     const id = _.get(item, ['value', 'id'], null);
-    return translate('analysis.' + id);
+    return translateX('analysis.' + id);
 }
 
 
@@ -108,7 +108,7 @@ function renderPcapStatusCell(state) {
                 text=""
                 icon={getStateIcon(state)}
             />
-            <span>{translate(state)}</span>
+            <span>{translateX(state)}</span>
         </Fragment>
     );
 }
@@ -190,7 +190,7 @@ const PcapTable = props => {
             width: 45
         },
         {
-            Header: translate('pcap.file_name'),
+            Header: translateX('pcap.file_name'),
             headerClassName: 'lst-text-left lst-table-header',
             accessor: 'file_name',
             className: 'lst-text-left',
@@ -205,7 +205,7 @@ const PcapTable = props => {
             sortMethod: statusSortMethod
         },
         {
-            Header: (<span title={translate('pcap.errors')}><Icon value="close" /></span>),
+            Header: (<span title={translateX('pcap.errors')}><Icon value="close" /></span>),
             headerClassName: 'lst-text-center lst-table-header',
             accessor: 'summary.error_list',
             Cell: renderErrors,
@@ -214,7 +214,7 @@ const PcapTable = props => {
             maxWidth: 50,
         },
         {
-            Header: (<span title={translate('pcap.warnings')}><Icon value="warning" /></span>),
+            Header: (<span title={translateX('pcap.warnings')}><Icon value="warning" /></span>),
             headerClassName: 'lst-text-center lst-table-header',
             accessor: 'summary.warning_list',
             Cell: renderWarnings,
@@ -260,7 +260,7 @@ const PcapTable = props => {
             maxWidth: 50,
         },
         {
-            Header: translate('date'),
+            Header: translateX('date'),
             headerClassName: 'lst-text-center lst-table-header',
             accessor: 'date',
             Cell: renderPcapDate,
