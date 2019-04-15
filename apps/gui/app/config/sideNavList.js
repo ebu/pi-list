@@ -28,9 +28,7 @@ export default {
         //     labelTag: 'navigation.network',
         //     exact: true,
         //     liveOnly: true
-        // }
-    ],
-    bottom: [
+        // },
         {
             link: routeNames.SETTINGS,
             icon: 'settings',
@@ -38,5 +36,7 @@ export default {
             exact: false,
             liveOnly: false
         },
+    ],
+    bottom: [
     ]
 };
