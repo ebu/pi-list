@@ -16,14 +16,14 @@
 ### Assumptions
 
 We assume that:
-- The Vrx buffer should be empty at the begin of each frame. This is not necessarily correct and we will eventually remove this limitation. (see https://github.com/ebu/pi-list/issues/18)
+- The Vrx buffer should be empty at the begin of each frame. This is not necessarily correct and we may eventually remove this constraint. (see https://github.com/ebu/pi-list/issues/18)
 
 ### Algorithms
 
 - Since we don't read SDP files, we are not aware of any announced TRoffset.
 - Experience has shown that often the capture device is not correctly locked to the same PTP master as the sender device.
 
-In order to overcome these facts, we use 3 different algorithms to calculate Vrx, as explained below.
+In order to overcome these facts, we use 2 different algorithms to calculate Vrx, as explained below.
 
 #### Tvd = Ideal
 
@@ -37,23 +37,11 @@ Where:
 
 (when we say frame above shall be replaced by field for interlaced streams)
 
-#### Tvd = Tvd First Packet First Frame
+#### Tvd = with average TRoffset
 
 In order to deal with cases where TRoffset != TROdefault, we assume that:
 
-- TRoffset = Tp0f0 - N x Tframe
+- TRoffset = avg(TPR0 - N x Tframe)
 
 Where:
-- Tp0f0 is the capture time of the first packet of the first full frame
-
-#### Tvd = Tvd First Packet Each Frame
-
-In order to deal with cases where the capture clock is not PTP-locked, we assume that:
-
-- TRoffset = Tp0 - N x Tframe
-
-Where:
-- Tp0 is the capture time of the first packet, reset for every frame
-
-Where:
-- Tpacket0 is the capture time of the first packet of the first full frame
+- TPR0 is the capture time of the first packet of each frame
