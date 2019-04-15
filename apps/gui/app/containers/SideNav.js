@@ -35,7 +35,7 @@ class SideNav extends Component {
         return (
             <React.Fragment>
                 {items
-                    .filter(item => item.liveOnly === undefined ? true : live)
+                    .filter(item => (item.liveOnly === undefined || item.liveOnly === false) ? true : live)
                     .map(item => {
                         const label = (<T t={item.labelTag} />);
                         return (
