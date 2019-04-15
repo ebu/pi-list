@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { translate } from 'utils/translation';
+import { translateX } from '../../utils/translation';
 import Timecode from 'smpte-timecode';
 import InfoPane from './components/InfoPane';
 
@@ -26,7 +26,7 @@ const VideoInfo = (props) => {
         },
         {
             labelTag: 'media_information.video.scan_type',
-            value: translate(isInterlaced ?
+            value: translateX(isInterlaced ?
                 'media_information.video.interlaced' :
                 'media_information.video.progressive')
         },

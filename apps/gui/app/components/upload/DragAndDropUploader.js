@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Dropzone from 'react-dropzone';
-import notifications from '../../utils/notifications';
-import UploadProgress from './UploadProgress';
-import { translate } from '../../utils/translation';
 import Button from '../common/Button';
 import { withNotifications } from '../../utils/notifications/withNotifications';
 

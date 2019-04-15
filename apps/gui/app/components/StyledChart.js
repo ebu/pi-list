@@ -1,17 +1,15 @@
 import React from 'react';
-import { ThemeContext } from 'utils/theme';
+import { useStateValue } from '../utils/AppContext';
 import Chart from 'components/Chart';
 
 const StyledChart = (props) => {
+    const [{ theme }, dispatch] = useStateValue();
+
     return (
-        <ThemeContext.Consumer>
-            {value => (
-                <Chart
-                    {...props}
-                    colorScheme={value.theme}
-                />
-            )}
-        </ThemeContext.Consumer>
+        <Chart
+            {...props}
+            colorScheme={theme}
+        />
     );
 };
 

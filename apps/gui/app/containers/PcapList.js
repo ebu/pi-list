@@ -1,16 +1,15 @@
 import React, { Component, Fragment } from 'react';
-import replaceExt from 'replace-ext';
-import api from '../utils/api';
-import websocket from 'utils/websocket';
-import immutable from 'utils/immutable';
-import notifications from 'utils/notifications';
-import asyncLoader from 'components/asyncLoader';
-import PopUp from 'components/common/PopUp';
-import websocketEventsEnum from 'enums/websocketEventsEnum';
-import { translate } from 'utils/translation';
-import routeBuilder from 'utils/routeBuilder';
 import 'react-table/react-table.css';
 import PropTypes from 'prop-types';
+import api from '../utils/api';
+import websocket from '../utils/websocket';
+import immutable from '../utils/immutable';
+import notifications from '../utils/notifications';
+import asyncLoader from '../components/asyncLoader';
+import PopUp from '../components/common/PopUp';
+import websocketEventsEnum from '../enums/websocketEventsEnum';
+import { translate, translateX } from '../utils/translation';
+import routeBuilder from '../utils/routeBuilder';
 import PcapTable from '../components/pcap/PcapTable';
 import PcapActions from '../components/pcap/PcapActions';
 import pcapEnums from '../enums/pcap';
@@ -20,8 +19,8 @@ const DeleteModal = (props) => (
     <PopUp
         type="delete"
         visible={props.data !== null && props.data.length > 0}
-        label={translate('pcap.delete_header')}
-        message={translate('pcap.delete_message', { name: props.data ? props.data.length : 0 })}
+        label={translateX('pcap.delete_header')}
+        message={translateX('pcap.delete_message', { name: props.data ? props.data.length : 0 })}
         onClose={() => props.onAction([])}
         onDelete={() => props.onAction(props.data)}
     />

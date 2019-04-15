@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { isFunction, throttle } from 'lodash';
-import api from 'utils/api';
-import Icon from 'components/common/Icon';
-import { translate } from 'utils/translation';
+import api from '../../utils/api';
+import Icon from '../../components/common/Icon';
+import { translateC } from '../../utils/translation';
 
 const propTypes = {
     pcapID: PropTypes.string.isRequired,
@@ -135,7 +135,7 @@ class StreamTimeline extends Component {
             <div className="col-xs-12">
                 <h2 className="lst-text-dark-grey lst-text-center">
                     <Icon className="lst-center-icon" value="error outline" />
-                    <span>{translate('stream.no_frames')}</span>
+                    <span>{translateC('stream.no_frames')}</span>
                 </h2>
             </div>
         );

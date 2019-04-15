@@ -13,7 +13,7 @@ const propTypes = {
     disabled: PropTypes.bool,
     selected: PropTypes.bool,
     link: PropTypes.bool,
-    label: PropTypes.string,
+    label: PropTypes.any,
     icon: PropTypes.string,
     noAnimation: PropTypes.bool,
     onClick: PropTypes.func,

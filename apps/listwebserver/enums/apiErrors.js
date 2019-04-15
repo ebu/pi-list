@@ -11,8 +11,8 @@ const API_ERRORS = {
         message: 'User not authenticated. Please login in using the sign-in requests or LIST web application'
     },
 
-    USER_DOES_NOT_EXISTS: {
-        code: 'USER_DOES_NOT_EXISTS',
+    USER_DOES_NOT_EXIST: {
+        code: 'USER_DOES_NOT_EXIST',
         message: 'This e-mail does not exist in our system. Please register!'
     },
 

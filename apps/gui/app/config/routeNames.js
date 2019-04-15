@@ -1,5 +1,6 @@
 export default {
     HOME: '/',
+    SETTINGS: '/settings',
     PCAPS: '/pcaps',
     CAPTURE: '/capture',
     LIVE: '/live',

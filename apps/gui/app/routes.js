@@ -1,26 +1,27 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import routeNames from './config/routeNames';
-import StreamList from 'pages/StreamList';
-import ConfigureStreamsPage from 'pages/ConfigureStreams';
-import PtpPage from 'pages/PtpPage';
-import LiveStreamList from 'pages/LiveStreamList';
-import StreamPage from 'pages/StreamPage';
-import LiveStreamPage from 'pages/LiveStreamPage';
+import StreamList from './pages/StreamList';
+import ConfigureStreamsPage from './pages/ConfigureStreams';
+import PtpPage from './pages/PtpPage';
+import LiveStreamList from './pages/LiveStreamList';
+import StreamPage from './pages/StreamPage';
+import LiveStreamPage from './pages/LiveStreamPage';
 import PcapsPage from './pages/PcapsPage';
 import CapturePage from './pages/CapturePage';
-import FlowList from 'containers/live/FlowList';
-import ErrorPage from 'components/ErrorPage';
-import errorEnum from 'enums/errorEnum';
-import Panel from 'components/common/Panel';
-import { translate } from 'utils/translation';
-import { LiveRoute } from 'utils/liveFeature';
+import FlowList from './containers/live/FlowList';
+import ErrorPage from './components/ErrorPage';
+import errorEnum from './enums/errorEnum';
+import Panel from './components/common/Panel';
+import Settings from './pages/Settings';
+import { LiveRoute } from './utils/AppContext';
 
 const DB = () => (<Redirect to={routeNames.PCAPS}  />);
 
 export default (
     <Switch>
         <Route exact path={routeNames.HOME} component={DB} />
+        <Route exact path={routeNames.SETTINGS} component={Settings} />
         <Route exact path={routeNames.PCAPS} component={PcapsPage} />
         <Route exact path={routeNames.CAPTURE} component={CapturePage} />
         <Route path={`${routeNames.PCAPS}/:pcapID/ptp`} component={PtpPage} exact />
@@ -43,7 +44,7 @@ export default (
         <Route render={() => (
             <ErrorPage
                 errorType={errorEnum.PAGE_NOT_FOUND}
-                errorMessage={translate('errors.404_message')}
+                errorMessageTag="errors.404_message"
             />
         )}
         />

@@ -1,12 +1,12 @@
 import React from 'react';
-import { AppContext } from './NotificationsProvider';
+import { NotificationsContext } from './NotificationsProvider';
 
 export function withNotifications(Component) {
     return function WrapperComponent(props) {
         return (
-            <AppContext.Consumer>
+            <NotificationsContext.Consumer>
                 {state => <Component {...props} notificationsContext={state} />}
-            </AppContext.Consumer>
+            </NotificationsContext.Consumer>
         );
     };
 }

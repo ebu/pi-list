@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from 'utils/translation';
+import { translateX } from 'utils/translation';
 
 const SingleValueEntry = ({ label, value }) => (
     <div className="lst-stream-info2-value-group">
@@ -11,7 +11,7 @@ const SingleValueEntry = ({ label, value }) => (
 // values: [{ label: DOMNode, value: DOMNode }]
 const MultiValueDisplay = ({ label, labelTag, units, values }) => {
     const renderedValues = values.map((value, index) => <SingleValueEntry key={index} {...value} />);
-    label = label || translate(labelTag);
+    label = label || translateX(labelTag);
 
     return (
         <div className="lst-stream-info2-base">

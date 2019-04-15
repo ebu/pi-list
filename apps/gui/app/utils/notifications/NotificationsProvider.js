@@ -3,7 +3,7 @@ import _ from 'lodash';
 import UploadProgress from '../../components/upload/UploadProgress';
 
 // Create a new context for the app
-export const AppContext = React.createContext('app');
+export const NotificationsContext = React.createContext('app');
 
 class Notifications extends Component {
     render() {
@@ -65,7 +65,7 @@ class NotificationsProvider extends Component {
 
     render() {
         return (
-            <AppContext.Provider
+            <NotificationsContext.Provider
                 value={{
                     state: this.state,
                     updateUpload: this.updateUpload
@@ -80,7 +80,7 @@ class NotificationsProvider extends Component {
                     uploadProgress={this.state.uploads.uploadProgress}
                     visible={this.state.uploadsVisible}
                 />
-            </AppContext.Provider>
+            </NotificationsContext.Provider>
         );
     }
 }

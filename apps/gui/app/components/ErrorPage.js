@@ -3,15 +3,15 @@ import { isObject } from 'lodash';
 import Button from 'components/common/Button';
 import Icon from 'components/common/Icon';
 import errorEnum from 'enums/errorEnum';
-import { translate } from 'utils/translation';
+import { translateX, translateC } from 'utils/translation';
 
 function getButtonLabelForErrorType(errorType) {
     switch (errorType) {
     case errorEnum.NETWORK_ERROR:
-        return translate('buttons.reload_page');
+        return translateC('buttons.reload_page');
     case errorEnum.PAGE_NOT_FOUND:
     case errorEnum.NO_STREAMS:
-        return translate('buttons.go_back');
+        return translateC('buttons.go_back');
     default:
         return '';
     }
@@ -37,8 +37,9 @@ const ErrorPage = (props) => {
     ) || isObject(props.button);
 
     const icon = props.icon || 'error outline';
-    const title = props.errorType !== undefined ? props.errorType : props.title;
+    const title = props.errorType !== undefined ? translateX(props.errorType) : props.title;
 
+    const errorMessage = props.errorMessage || translateX(props.errorMessageTag);
     return (
         <div className="lst-error-page row center-xs">
             <div className="col-xs-12 col-lg-6">
@@ -49,7 +50,7 @@ const ErrorPage = (props) => {
                         </div>
                         <div className="lst-error-page__message lst-text-left col-xs-12 col-sm-9">
                             <h2 className="lst-error-page-heading">{title}</h2>
-                            <p>{props.errorMessage}</p>
+                            <p>{errorMessage}</p>
                         </div>
                     </div>
                     {showButton && (

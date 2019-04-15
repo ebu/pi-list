@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react';
 import _ from 'lodash';
-import { translate } from 'utils/translation';
+import { translateX } from 'utils/translation';
 import InfoPane from './components/InfoPane';
 
 const NetworkInfo = props => {
     const packet_count = _.get(props.stream, ['analyses', 'rtp_sequence', 'details', 'packet_count'], 0);
     const dropped_count = _.get(props.stream, ['analyses', 'rtp_sequence', 'details', 'dropped_packets'], 0);
-    const droppedInfo = dropped_count == 0 ? '' : ` (${dropped_count} ${translate('media_information.rtp.dropped')})`;
+    const droppedInfo = dropped_count == 0 ? '' : ` (${dropped_count} ${translateX('media_information.rtp.dropped')})`;
 
     const values = [
         {
