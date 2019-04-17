@@ -38,30 +38,27 @@ void influxdb_ptp_logger::on_error(std::exception_ptr)
 
 //------------------------------------------------------------------------------
 
-influxdb_c_inst_logger::influxdb_c_inst_logger(cinst_histogram_listener_ptr l,
-    std::string_view url, 
-    std::string_view pcap_id, 
+influxdb_c_inst_logger::influxdb_c_inst_logger(std::string_view url,
+    std::string_view pcap_id,
     std::string_view stream_id)
-    : listener_(std::move(l)),
-    db_(url, pcap_id, stream_id)
+    : db_(url, pcap_id, stream_id)
 {
 }
 
 void influxdb_c_inst_logger::on_data(const c_analyzer::packet_info& info)
 {
     db_.send_data("cinst", info.cinst, info.packet_time);
-    listener_->on_data(info.histogram);
 }
 
 void influxdb_c_inst_logger::on_complete()
 {
     db_.on_complete();
-    listener_->on_complete();
 }
 
 void influxdb_c_inst_logger::on_error(std::exception_ptr)
 {
 }
+
 //------------------------------------------------------------------------------
 
 influxdb_rtp_ts_logger::influxdb_rtp_ts_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id)

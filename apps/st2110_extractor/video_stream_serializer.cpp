@@ -14,8 +14,6 @@ using json = nlohmann::json;
 
 namespace
 {
-    constexpr auto cinst_file_name = "cinst.json";
-
     media::video::video_dimensions get_frame_size(const video_stream_details& info)
     {
         auto dimensions = info.video.dimensions;
@@ -154,24 +152,24 @@ st2110::d21::video_analysis_info video_stream_serializer::get_video_analysis_inf
 
 //------------------------------------------------------------------------------
 
-c_inst_histogram_writer::c_inst_histogram_writer(path info_path)
-    : info_path_(std::move(info_path))
+histogram_writer::histogram_writer(path info_path, std::string_view filename)
+    : info_path_(std::move(info_path)),
+    filename_(filename)
 {
 }
 
-void ebu_list::c_inst_histogram_writer::on_data(const st2110::d21::cinst_histogram_t& histogram)
-{
-    histogram_ = histogram;
-}
-
-void ebu_list::c_inst_histogram_writer::on_complete()
+void histogram_writer::on_data(const st2110::d21::cinst_histogram_t& histogram)
 {
     json j;
-    j["histogram"] = histogram_;
+    j["histogram"] = histogram;
 
-    write_json_to(info_path_, cinst_file_name, j);
+    write_json_to(info_path_, filename_, j);
 }
 
-void ebu_list::c_inst_histogram_writer::on_error(std::exception_ptr)
+void histogram_writer::on_complete()
+{
+}
+
+void histogram_writer::on_error(std::exception_ptr)
 {
 }
