@@ -99,7 +99,7 @@ const Dash21Info = (props) => {
                         label={<span>C<sub>INST</sub></span>}
                         units="packets"
                         min={cmin}
-                        avg={vrxavg.toFixed(3)}
+                        avg={cavg.toFixed(3)}
                         max={cpeak}
                     />
                 </div>
