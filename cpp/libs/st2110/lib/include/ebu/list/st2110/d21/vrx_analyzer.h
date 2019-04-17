@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ebu/list/st2110/d21/vrx_calculator.h"
+#include "ebu/list/st2110/d21/histogram_listener.h"
 
 namespace ebu_list::st2110::d21
 {
@@ -19,7 +20,7 @@ namespace ebu_list::st2110::d21
 
         using listener_uptr = std::unique_ptr<listener>;
 
-        vrx_analyzer(listener_uptr listener, int npackets, media::video::info video_info, vrx_settings settings);
+        vrx_analyzer(listener_uptr listener, histogram_listener_uptr histogram_listener, int npackets, media::video::info video_info, vrx_settings settings);
         ~vrx_analyzer();
 
         void on_data(const frame_start_filter::packet_info&) override;

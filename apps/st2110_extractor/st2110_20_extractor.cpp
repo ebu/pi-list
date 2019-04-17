@@ -30,6 +30,9 @@ namespace
 {
     constexpr auto MONGO_DEFAULT_URL = "mongodb://localhost:27017";
     constexpr auto INFLUX_DEFAULT_URL = "http://localhost:8086";
+    constexpr auto cinst_file_name = "cinst.json";
+    constexpr auto vrx_file_name = "vrx.json";
+
 
     struct config
     {
@@ -240,20 +243,20 @@ namespace
                     in_video_info.video.scan_type,
                     in_video_info.video.dimensions
                 };
-				
+
                 auto new_handler = std::make_unique<video_stream_serializer>(first_packet, stream_info, in_video_info, config.storage_folder, main_executor, video_dump_handler);
                 auto ml = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
                 ml->add(std::move(new_handler));
 
                 if (config.influxdb_url)
                 {
+                    const auto info_path = config.storage_folder / stream_info.id;
                     const auto influx_db_url = config.influxdb_url.value_or(INFLUX_DEFAULT_URL);
-                    {
-                        const auto info_path = config.storage_folder / stream_info.id;
 
-                        auto cinst_writer = std::make_shared<c_inst_histogram_writer>(info_path);
-                        auto db_logger = std::make_unique<influx::influxdb_c_inst_logger>(cinst_writer, influx_db_url, pcap.id, stream_info.id);
-                        auto analyzer = std::make_unique<c_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info.rate);
+                    {
+                        auto db_logger = std::make_unique<influx::influxdb_c_inst_logger>(influx_db_url, pcap.id, stream_info.id);
+                        auto cinst_writer = std::make_unique<histogram_writer>(info_path, cinst_file_name);
+                        auto analyzer = std::make_unique<c_analyzer>(std::move(db_logger), std::move(cinst_writer), in_video_info.video.packets_per_frame, video_info.rate);
                         ml->add(std::move(analyzer));
                     }
 
@@ -268,8 +271,9 @@ namespace
 
                         {
                             auto db_logger = std::make_unique<influx::influxdb_vrx_logger>(influx_db_url, pcap.id, stream_info.id, "gapped-ideal");
+                            auto vrx_writer = std::make_unique<histogram_writer>(info_path, vrx_file_name);
                             const auto settings = vrx_settings{ in_video_info.video.schedule, tvd_kind::ideal, std::nullopt };
-                            auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info, settings);
+                            auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), std::move(vrx_writer), in_video_info.video.packets_per_frame, video_info, settings);
                             framer_ml->add(std::move(analyzer));
                         }
 
@@ -278,7 +282,7 @@ namespace
                             const auto it = tro_info.find(stream_info.id);
                             const auto tro = it == tro_info.end() ? 0 : it->second.avg_tro_ns;
                             const auto settings = vrx_settings{ in_video_info.video.schedule, tvd_kind::ideal, std::chrono::nanoseconds(tro) };
-                            auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), in_video_info.video.packets_per_frame, video_info, settings);
+                            auto analyzer = std::make_unique<vrx_analyzer>(std::move(db_logger), histogram_listener_uptr(), in_video_info.video.packets_per_frame, video_info, settings);
                             framer_ml->add(std::move(analyzer));
                         }
 

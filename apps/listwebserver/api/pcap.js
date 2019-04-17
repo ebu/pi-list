@@ -161,10 +161,17 @@ router.patch('/:pcapID/stream/:streamID', (req, res) => {
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
-router.get('/:pcapID/stream/:streamID/analytics/CInst/validation', (req, res) => {
+router.get('/:pcapID/stream/:streamID/analytics/CInst/histogram', (req, res) => {
     const { pcapID, streamID } = req.params;
 
     const path = `${getUserFolder(req)}/${pcapID}/${streamID}/${CONSTANTS.CINST_FILE}`;
+    fs.sendFileAsResponse(path, res);
+});
+
+router.get('/:pcapID/stream/:streamID/analytics/Vrx/histogram', (req, res) => {
+    const { pcapID, streamID } = req.params;
+
+    const path = `${getUserFolder(req)}/${pcapID}/${streamID}/${CONSTANTS.VRX_FILE}`;
     fs.sendFileAsResponse(path, res);
 });
 

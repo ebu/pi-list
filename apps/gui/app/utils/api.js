@@ -88,13 +88,14 @@ export default {
     getPtpOffset: pcapID => request.get(`pcap/${pcapID}/analytics/PtpOffset`),
 
     /* Stream */
-    getCInstHistogramForStream: (pcapID, streamID, fromNs, toNs) =>
-        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/CInst/validation`),
-
+    getCInstHistogramForStream: (pcapID, streamID) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/CInst/histogram`),
     getCInstForStream: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/CInst?from=${fromNs}&to=${toNs}`),
     getCInstRaw: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/CInstRaw?from=${fromNs}&to=${toNs}`),
+    getVrxHistogramForStream: (pcapID, streamID) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/Vrx/histogram`),
     getVrxIdealForStream: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/VrxIdeal?from=${fromNs}&to=${toNs}`),
     getVrxIdealRaw: (pcapID, streamID, fromNs, toNs) =>
