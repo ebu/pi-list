@@ -1,5 +1,6 @@
 #include "ebu/list/core/platform/executor.h"
 #include "ebu/list/core/io/logger.h"
+#include <optional>
 using namespace ebu_list;
 
 //------------------------------------------------------------------------------

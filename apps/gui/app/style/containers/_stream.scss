@@ -1,22 +1,13 @@
-.lst-stream-info-item {
-    margin: 5px 0;
-
-    strong {
-        margin-right: 5px;
-    }
-}
-
 .lst-stream-timeline-image {
     padding: 0;
-
     img {
         width: 100%;
     }
-
     &.selected {
         border-bottom: 4px solid $blue;
     }
 }
+
 .explorer-sketch {
     height: 21rem;
 }
@@ -31,7 +22,6 @@
     font-size: 9px;
     width: 20px;
     cursor: pointer;
-
     .dark & {
         background: $nord1;
         color: $white-perl;
@@ -41,14 +31,115 @@
 .lst-timeline-bar {
     padding: 2px;
     background: $grey;
-
     .dark & {
         background: $nord1;
     }
-
     .lst-timeline-progress {
         height: 4px;
         background-color: $blue;
         transition: $fast-transition-time width;
+    }
+}
+
+.lst-stream-info {
+    &-header {
+        font-size: 1.2em;
+        display: flex;
+        align-items: flex-end;
+        color: $black;
+        .dark & {
+            color: $white-perl;
+        }
+        &-icon {
+            margin-right: 5px;
+        }
+        &-label {
+            @extend .lst-text-right,
+            .lst-text-vertical-align;
+        }
+    }
+    &-label {
+        @extend .lst-text-right,
+        .lst-text-vertical-align;
+        color: $dark-yellow;
+        font-weight: 300;
+        .dark & {
+            color: $light-yellow;
+        }
+    }
+    &-value {
+        @extend .lst-text-left,
+        .lst-text-vertical-align;
+        color: $black;
+        .dark & {
+            color: $white-blank;
+        }
+    }
+    &-units {
+        color: $dark-white;
+        margin-left: 0.5em;
+        .dark & {
+            color: $dark-white;
+        }
+    }
+}
+
+.lst-stream-info2 {
+    &-base {
+        padding: 5px;
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        margin: 0px;
+        padding: 5px;
+    }
+    &-label-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-right: 10px;
+        align-self: flex-end;
+    }
+    &-value-group {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-right: 15px;
+    }
+    &-label {
+        color: $light-yellow;
+    }
+    &-units {
+        color: $black;
+        .dark & {
+            color: $dark-white;
+        }
+        font-size: 90%;
+        display: flex;
+        align-self: flex-end;
+    }
+    &-measurement {
+        color: $black;
+        .dark & {
+            color: $dark-white;
+        }
+        font-size: 80%;
+        text-align: right;
+        width: 100%;
+        padding-bottom: 0.5em;
+    }
+    &-value {
+        .dark & {
+            color: $white-blank;
+        }
+        color: $black;
+        text-align: right;
+        min-width: 40px;
+    }
+    &-row {
+        align-items: flex-end;
+    }
+    &-divider {
+        border-top: 1px solid darken($grey-dark, 50%);
     }
 }

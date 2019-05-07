@@ -1,105 +1,148 @@
 @mixin border-solid($border-width, $border-color) {
-  border: 1px solid $border-color;
-  border-width: $border-width + 0px;
-  transform: scaleY($border-width);
+    border: 1px solid $border-color;
+    border-width: $border-width + 0px;
+    transform: scaleY($border-width);
 }
 
 @mixin flex {
-  display: flex;
+    display: flex;
 }
 
 @mixin flex-center-vertical {
-  align-items: center;
+    align-items: center;
 }
 
 @mixin flex-center-horizontal {
-  justify-content: center;
+    justify-content: center;
 }
 
 .lst-text-center {
-  text-align: center;
+    text-align: center;
 }
 
 .lst-text-right {
-  text-align: right;
+    text-align: right;
 }
 
 .lst-text-left {
-  text-align: left;
+    text-align: left;
 }
 
 .lst-text-vertical-align {
-  display: flex;
-  justify-content: center;
-  flex-flow: column nowrap;
-  align-items: stretch;
+    display: flex;
+    justify-content: center;
+    flex-flow: column nowrap;
+    align-items: stretch;
 }
 
 .lst-truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .lst-no-margin {
-  margin: 0 !important;
+    margin: 0 !important;
 }
 
 .lst-no-padding {
-  padding: 0 !important;
+    padding: 0 !important;
 }
 
 .lst-padding-right-30 {
-  padding-right: 30px;
+    padding-right: 30px;
 }
 
 .lst-padding--right-10 {
-  padding-right: 10px !important;;
+    padding-right: 10px !important;
+    ;
 }
 
 .lst-padding--left-10 {
-  padding-left: 10px !important;
+    padding-left: 10px !important;
+}
+
+.lst-margin--bottom-1 {
+    margin-bottom: 1em !important;
 }
 
 .lst-margin--bottom-2 {
-  margin-bottom: 2em !important;
+    margin-bottom: 2em !important;
+}
+
+.lst-margin--right-05 {
+    margin-right: 0.5rem !important;
 }
 
 .lst-full-height {
-  height: 100%;
+    height: 100%;
 }
-
 
 .lst-center-icon {
-  position: relative;
-  top: 5px;
-  margin: 0 $margin / 2;
+    position: relative;
+    top: 5px;
+    margin: 0 $margin / 2;
 }
 
-h2 > i.lst-center-icon {
-  top: 3px;
+h2>i.lst-center-icon {
+    top: 3px;
 }
 
 @media screen and (min-width: 0px) and (max-width: $xs-screen) {
-  .lst-hide-xs {
-    display: none;
-  }
+    .lst-hide-xs {
+        display: none;
+    }
 }
 
 .lst-hide {
-  display: none;
+    display: none;
 }
 
-.lst-href-no-style{
-  text-decoration: none;
-  color: inherit;
-
-  &:visited, &:hover, &:active {
+.lst-href-no-style {
     text-decoration: none;
     color: inherit;
-  }
+    &:visited,
+    &:hover,
+    &:active {
+        text-decoration: none;
+        color: inherit;
+    }
 }
 
 .lst-paragraph {
-  padding: 10px 0;
+    padding: 10px 0;
+}
+
+.lst-color-ok {
+    color: $green;
+}
+
+.lst-color-warning {
+    color: $yellow;
+}
+
+.lst-color-error {
+    color: $red;
+}
+
+.lst-white-on-red {
+    background-color: $red;
+    color: $white-perl;
+    padding: 4px;
+}
+
+.lst-overflow-visible {
+    overflow: visible !important;
+}
+
+.lst-align-items-baseline {
+    align-items: baseline;
+}
+
+.lst-align-items-center {
+    align-items: center;
+}
+
+.lst-font-size-08 {
+    font-size: 0.8rem;
 }

@@ -5,7 +5,7 @@ const passwordInterpreter = require('./passwordInterpreter');
 const tokenManager = require('../managers/token');
 const API_ERRORS = require('../enums/apiErrors');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
-const logger= require('../util/logger');
+const logger = require('../util/logger');
 const User = require('../models/user');
 
 module.exports = (app) => {
@@ -21,6 +21,12 @@ module.exports = (app) => {
             } else {
                 User.findOne({ email: username })
                     .then(user => {
+                        if (user === null) {
+                            logger('local-auth').error(`User '${username}' not found`);
+                            tokenManager.setTokenAsInvalid(token);
+                            done(null, false, API_ERRORS.USER_DOES_NOT_EXIST);
+                        }
+
                         bcrypt.compare(rawPassword, user.password)
                             .then((res) => {
                                 if (res) {
@@ -40,7 +46,7 @@ module.exports = (app) => {
                     .catch((err) => {
                         logger('local-auth').error(`Unable to run the findUserByEmail command. Error: ${err}`);
                         tokenManager.setTokenAsInvalid(token);
-                        done(null, false, API_ERRORS.USER_DOES_NOT_EXISTS);
+                        done(null, false, API_ERRORS.USER_DOES_NOT_EXIST);
                     });
             }
         })

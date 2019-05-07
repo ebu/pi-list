@@ -1,67 +1,63 @@
 import React, { Component } from 'react';
 import api from 'utils/api';
 import { Scrollbars } from 'react-custom-scrollbars';
-import asyncLoader from 'components/asyncLoader';
-import StreamColumn from 'components/stream/StreamColumn';
-import StreamCard from 'components/stream/StreamCard';
-import PTPCard from 'components/stream/PTPCard';
-import { getIcon } from 'utils/mediaUtils';
-import { translate } from '../utils/translation';
+import asyncLoader from '../components/asyncLoader';
+import StreamColumn from '../components/stream/StreamColumn';
+import StreamCard from '../components/stream/StreamCard';
+import PTPCard from '../components/stream/PTPCard';
+import { getIcon } from '../utils/mediaUtils';
+import { translateX } from '../utils/translation';
 
-class StreamList extends Component {
-    renderColumn(title, icon, streams) {
-        const { pcapID } = this.props.match.params;
+function renderColumn(pcapID, title, icon, streams) {
+    return (
+        <StreamColumn title={title} >
+            {
+                streams.map((stream, index) => {
+                    return (
+                        <StreamCard key={stream.id} title={`Stream #${index + 1}`} {...stream} pcapID={pcapID} />
+                    );
+                })
+            }
+        </StreamColumn>
+    );
+}
 
-        return (
-            <StreamColumn title={title} icon={icon} >
-                {
-                    streams.map((stream, index) => {
-                        return (
-                            <StreamCard key={stream.id} title={`Stream #${index + 1}`} {...stream} pcapID={pcapID} />
-                        );
-                    })
-                }
-            </StreamColumn>
-        );
-    }
+const StreamList = (props) => {
+    const videoStreams = props.availableStreams.filter(elem => elem.media_type === 'video');
+    const audioStreams = props.availableStreams.filter(elem => elem.media_type === 'audio');
+    const metadataStreams = props.availableStreams.filter(elem => elem.media_type === 'ancillary_data');
+    const unknownStreams = props.availableStreams.filter(elem => elem.media_type === 'unknown');
+    const { pcapID } = props.match.params;
 
-    render() {
-        const videoStreams = this.props.availableStreams.filter(elem => elem.media_type === 'video');
-        const audioStreams = this.props.availableStreams.filter(elem => elem.media_type === 'audio');
-        const metadataStreams = this.props.availableStreams.filter(elem => elem.media_type === 'ancillary_data');
-        const unknownStreams = this.props.availableStreams.filter(elem => elem.media_type === 'unknown');
-        const { pcapID } = this.props.match.params;
-
-        return (
-            <Scrollbars>
-                <div className="lst-js-stream-list-page fade-in">
-                    <div className="row">
-                        <div className="col-xs-2">
-                            <StreamColumn title="PTP" icon="timer" >
-                                { this.props.pcap.offset_from_ptp_clock !== 0 ? <PTPCard pcapID={pcapID} /> : null }
-                            </StreamColumn>
-                        </div>
-                        <div className="col-xs-8">
-                            <div className="row">
-                                <div className="col-xs-12 col-md-4">
-                                    {this.renderColumn(translate('headings.video'), getIcon('video'), videoStreams)}
-                                </div>
-                                <div className="col-xs-12 col-md-4">
-                                    {this.renderColumn(translate('headings.audio'), getIcon('audio'), audioStreams)}
-                                </div>
-                                <div className="col-xs-12 col-md-4">
-                                    {this.renderColumn(translate('headings.anc'), getIcon('metadata'), metadataStreams)}
-                                </div>
+    return (
+        <Scrollbars>
+            <div className="lst-js-stream-list-page fade-in">
+                <div className="row">
+                    <div className="col-xs-2">
+                        <StreamColumn title="PTP">
+                            {props.pcap.offset_from_ptp_clock !== 0 ? <PTPCard pcapID={pcapID} /> : null}
+                        </StreamColumn>
+                    </div>
+                    <div className="col-xs-8">
+                        <div className="row">
+                            <div className="col-xs-12 col-md-4">
+                                {renderColumn(pcapID, translateX('headings.video'), getIcon('video'), videoStreams)}
+                            </div>
+                            <div className="col-xs-12 col-md-4">
+                                {renderColumn(pcapID, translateX('headings.audio'), getIcon('audio'), audioStreams)}
+                            </div>
+                            <div className="col-xs-12 col-md-4">
+                                {renderColumn(pcapID, translateX('headings.anc'), getIcon('metadata'), metadataStreams)}
                             </div>
                         </div>
-                        <div className="col-xs-2">
-                            {this.renderColumn(translate('headings.unknown'), getIcon('unknown'), unknownStreams)}
-                        </div>
+                    </div>
+                    <div className="col-xs-2">
+                        {renderColumn(pcapID, translateX('headings.unknown'), getIcon('unknown'), unknownStreams)}
                     </div>
                 </div>
-            </Scrollbars>
-        );
-    }
+            </div>
+        </Scrollbars>
+    );
 }
 
 export default asyncLoader(StreamList, {

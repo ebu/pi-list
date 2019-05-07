@@ -1,9 +1,14 @@
 .lst-input {
-    border-radius: 5px;
-    height: 21px;
+    border-radius: 2px;
+    height: 1.2em;
     padding: 5px 10px;
     border: 1px solid $black-light-40;
     color: $black-light-20;
+
+    .dark & {
+        background-color: $nord0;
+        color: $white-perl;
+    }
 
     &:active,
     &:focus {

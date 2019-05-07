@@ -35,6 +35,7 @@ export default {
 
     /* Auth */
     getUser: () => request.get('user'),
+    updateUserPreferences: (value) => request.patch('user/preferences', { value }),
     deleteUser: () => request.delete('user'),
 
     register: loginData => axios.post(`${REST_URL}/user/register`, loginData).then(response => response.data),
@@ -46,7 +47,8 @@ export default {
     /* PCAP */
     getPcaps: () => request.get('pcap'),
     getPcap: pcapID => request.get(`pcap/${pcapID}`),
-    downloadPcap: pcapID => `${API_URL}/pcap/${pcapID}/download`,
+    downloadPcap: pcapID => request.get(`pcap/${pcapID}/download`),
+    downloadPcapUrl: pcapID => `${API_URL}/pcap/${pcapID}/download`,
     deletePcap: pcapID => request.delete(`pcap/${pcapID}`),
     getStreamsFromPcap: pcapID => request.get(`pcap/${pcapID}/streams`),
     sendPcapFile: (pcapFile, onUploadProgress) => {
@@ -65,7 +67,8 @@ export default {
     },
 
     /* SDP */
-    downloadSDP: pcapID => `${API_URL}/pcap/${pcapID}/sdp`,
+    downloadSDP: pcapID => request.get(`pcap/${pcapID}/sdp`),
+    downloadSDPUrl: pcapID => `${API_URL}/pcap/${pcapID}/sdp`,
     uploadSDP: (sdpFile, onUploadComplete) => {
         const data = new FormData();
         data.append('sdp', sdpFile);
@@ -85,13 +88,14 @@ export default {
     getPtpOffset: pcapID => request.get(`pcap/${pcapID}/analytics/PtpOffset`),
 
     /* Stream */
-    getCInstHistogramForStream: (pcapID, streamID, fromNs, toNs) =>
-        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/CInst/validation`),
-
+    getCInstHistogramForStream: (pcapID, streamID) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/CInst/histogram`),
     getCInstForStream: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/CInst?from=${fromNs}&to=${toNs}`),
     getCInstRaw: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/CInstRaw?from=${fromNs}&to=${toNs}`),
+    getVrxHistogramForStream: (pcapID, streamID) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/Vrx/histogram`),
     getVrxIdealForStream: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/VrxIdeal?from=${fromNs}&to=${toNs}`),
     getVrxIdealRaw: (pcapID, streamID, fromNs, toNs) =>

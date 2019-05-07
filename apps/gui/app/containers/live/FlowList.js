@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import api from 'utils/api';
 import websocket from 'utils/websocket';
 import websocketEventsEnum from 'enums/websocketEventsEnum';
-import { translate } from 'utils/translation';
+import { translateC } from 'utils/translation';
 import Icon from 'components/common/Icon';
-import Table from 'components/common/Table';
 
 class DevicesList extends Component {
     constructor(props) {
@@ -67,9 +66,9 @@ class DevicesList extends Component {
     render() {
         return (
             <React.Fragment>
-                <Table
+                {/* <Table
                     data={this.state.streams}
-                    noItemsMessage={translate('flow.no_flows')}
+                    noItemsMessage={translateC('flow.no_flows')}
                     rows={[
                         {
                             key: 'icon',
@@ -100,7 +99,7 @@ class DevicesList extends Component {
                         type: 'success',
                         onClick: item => this.onActionButton(item)
                     }}
-                />
+                /> */}
             </React.Fragment>
         );
     }

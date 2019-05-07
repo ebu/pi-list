@@ -1,45 +1,41 @@
 import React, { Fragment } from 'react';
-import Icon from 'components/common/Icon';
-import { renderInformationList } from 'containers/streamPage/utils';
-import { translate } from 'utils/translation';
+import _ from 'lodash';
+import { translateX } from 'utils/translation';
+import InfoPane from './components/InfoPane';
 
 const NetworkInfo = props => {
-    const dropped_count = props.dropped_packet_count || 0;
-    const droppedInfo = dropped_count == 0 ? '' : ` (${dropped_count} ${translate('media_information.rtp.dropped')})`;
+    const packet_count = _.get(props.stream, ['analyses', 'rtp_sequence', 'details', 'packet_count'], 0);
+    const dropped_count = _.get(props.stream, ['analyses', 'rtp_sequence', 'details', 'dropped_packets'], 0);
+    const droppedInfo = dropped_count == 0 ? '' : ` (${dropped_count} ${translateX('media_information.rtp.dropped')})`;
 
-    return (
-        <Fragment>
-            <h2>
-                <Icon value="settings ethernet" />
-                <span>{translate('headings.network_information')}</span>
-            </h2>
-            <hr />
-            {
-                renderInformationList([
-                    {
-                        key: translate('stream.detected_stream'),
-                        value: 'ST2110'
-                    },
-                    {
-                        key: translate('media_information.rtp.source'),
-                        value: `${props.source_address}:${props.source_port}`
-                    },
-                    {
-                        key: translate('media_information.rtp.destination'),
-                        value: `${props.destination_address}:${props.destination_port}`
-                    },
-                    {
-                        key: translate('media_information.rtp.ssrc'),
-                        value: props.ssrc
-                    },
-                    {
-                        key: translate('media_information.rtp.packet_count'),
-                        value: `${props.packet_count}${droppedInfo}`
-                    }
-                ])
-            }
-        </Fragment>
-    )
+    const values = [
+        {
+            labelTag: 'stream.detected_stream',
+            value: 'ST2110'
+        },
+        {
+            labelTag: 'media_information.rtp.source',
+            value: `${props.stream.network_information.source_address}:${props.stream.network_information.source_port}`
+        },
+        {
+            labelTag: 'media_information.rtp.destination',
+            value: `${props.stream.network_information.destination_address}:${props.stream.network_information.destination_port}`
+        },
+        {
+            labelTag: 'media_information.rtp.ssrc',
+            value: props.stream.network_information.ssrc
+        },
+        {
+            labelTag: 'media_information.rtp.packet_count',
+            value: `${packet_count}${droppedInfo}`
+        }
+    ];
+
+    return (<InfoPane
+        icon="settings_ethernet"
+        headingTag="headings.network_information"
+        values={values}
+    />);
 };
 
 export default NetworkInfo;

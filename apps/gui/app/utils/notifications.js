@@ -28,7 +28,11 @@ function notificationTemplate(title = '', message = '', icon) {
 }
 
 function showNoty(type, title, message, icon) {
-    const noty = new Noty({ type, text: notificationTemplate(title, message, icon) });
+    const noty = new Noty({
+        type,
+        text: notificationTemplate(title, message, icon),
+        layout: 'bottomRight'
+    });
 
     noty.show();
 }

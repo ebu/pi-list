@@ -30,7 +30,7 @@ namespace ebu_list::influx
     class influxdb_c_inst_logger : public st2110::d21::c_analyzer::listener
     {
     public:
-        influxdb_c_inst_logger(st2110::d21::cinst_histogram_listener_ptr listener, std::string_view url, std::string_view pcap_id, std::string_view stream_id);
+        influxdb_c_inst_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id);
 
     private:
         // calculator::listener
@@ -38,7 +38,6 @@ namespace ebu_list::influx
         void on_complete() override;
         void on_error(std::exception_ptr ptr) override;
 
-        st2110::d21::cinst_histogram_listener_ptr listener_;
         base_influx_logger db_;
     };
 

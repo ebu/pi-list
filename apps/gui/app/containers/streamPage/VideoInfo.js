@@ -1,44 +1,63 @@
 import React, { Fragment } from 'react';
-import Icon from 'components/common/Icon';
-import { renderInformationList } from 'containers/streamPage/utils';
-import { translate } from 'utils/translation';
+import { translateX } from '../../utils/translation';
+import Timecode from 'smpte-timecode';
+import InfoPane from './components/InfoPane';
+
+const getTimeCode = (props) => {
+    try {
+        return new Timecode(props.frame_count, Math.ceil(props.rate), false).toString();
+    } catch (e) {
+        return '00:00:00:00';
+    }
+};
 
 const VideoInfo = (props) => {
     const size = `${props.width}x${props.height}`;
-
     const isInterlaced = props.scan_type === 'interlaced';
 
-    return (
-        <Fragment>
-            <h2>
-                <Icon value="ondemand video" />
-                <span>{translate('headings.video')}</span>
-            </h2>
-            <hr />
-            {renderInformationList([
-                {
-                    key: translate('media_information.video.dimensions'),
-                    value: size
-                },
-                {
-                    key: translate('media_information.video.sampling'),
-                    value: props.sampling
-                },
-                {
-                    key: isInterlaced ?
-                        translate('media_information.video.field_rate') :
-                        translate('media_information.video.frame_rate'),
-                    value: props.rate
-                },
-                {
-                    key: translate('media_information.video.scan_type'),
-                    value: isInterlaced ?
-                        translate('media_information.video.interlaced') :
-                        translate('media_information.video.progressive')
-                },
-            ])}
-        </Fragment>
-    );
+    const values = [
+        {
+            labelTag: 'media_information.video.dimensions',
+            value: size
+        },
+        {
+            labelTag: 'media_information.video.sampling',
+            value: props.sampling
+        },
+        {
+            labelTag: 'media_information.video.scan_type',
+            value: translateX(isInterlaced ?
+                'media_information.video.interlaced' :
+                'media_information.video.progressive')
+        },
+        {
+            labelTag: props.is_interlaced ?
+                'media_information.video.field_rate' :
+                'media_information.video.frame_rate',
+            value: props.rate.toFixed(2).toString(),
+            units: 'Hz'
+        },
+        {
+            labelTag: 'media_information.media_time',
+            value: getTimeCode(props)
+        },
+        {
+            labelTag: props.is_interlaced ?
+                'media_information.video.fields' :
+                'media_information.video.frames',
+            value: props.frame_count
+        },
+        {
+            labelTag: 'media_information.video.packets_per_frame',
+            value: props.packets_per_frame
+        }
+    ];
+
+    return (<InfoPane
+        icon="ondemand_video"
+        headingTag="headings.video"
+        values={values}
+    />);
 };
 
 export default VideoInfo;

@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+const WebpackShellPlugin = require('webpack-shell-plugin');
 
 module.exports = {
     devtool: 'inline-source-map',
@@ -90,8 +91,11 @@ module.exports = {
             filename: '[name].dev.css',
             allChunks: true
         }),
+        new WebpackShellPlugin({
+            onBuildStart: ['node ./data/translationsGenerator']
+        }),
         new HtmlWebpackPlugin({
-            title: 'Dashboard - Dev Mode',
+            title: 'EBU LIST (dev)',
             template: './index.html',
             inject: 'body'
         })

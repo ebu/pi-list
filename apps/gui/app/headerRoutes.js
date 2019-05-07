@@ -2,30 +2,32 @@ import React, { Fragment, Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Button from 'components/common/Button';
 import RealTimeDataStatus from 'containers/live/RealTimeDataStatus';
-import routeNames from 'config/routeNames';
+import routeNames from './config/routeNames';
 import api from 'utils/api';
-import { pluralize, translate } from 'utils/translation';
-import { LiveRoute } from 'utils/liveFeature';
+import { T } from 'utils/translation';
+import { LiveRoute } from 'utils/AppContext';
 import routeBuilder from 'utils/routeBuilder';
 import PcapFileNameHeader from './components/PcapFileNameHeader';
 
 
-const Header = (props) => {
-    return (
-        <Fragment>
-            <h1 className="lst-no-margin">
-                <div style={{ display: 'flex' }}>
-                    <span className="lst-header-title">{props.label}</span>
-                    <span>{props.item}</span>
-                </div>
-            </h1>
-            <div className="col-xs end-xs">
-                {props.children}
-                {props.buttons && props.buttons.map(button => (
+const Header = (props) => (
+    <Fragment>
+        <h1 className="lst-no-margin">
+            <div style={{ display: 'flex' }}>
+                <span className="lst-header-title"><T t={props.labelTag} /></span>
+                <span>{props.item}</span>
+            </div>
+        </h1>
+        <div className="col-xs end-xs">
+            {props.children}
+            {props.buttons && props.buttons.map(button => {
+                const buttonLabel = (<T t={button.labelTag} />);
+
+                return (
                     <Button
-                        key={button.label}
+                        key={button.labelTag}
                         className="lst-header-button"
-                        label={button.label}
+                        label={buttonLabel}
                         type="info"
                         icon={button.icon}
                         outline
@@ -36,29 +38,34 @@ const Header = (props) => {
                         filename={button.filename}
                         onClick={() => button.onClick()}
                     />
-                ))}
-            </div>
-        </Fragment>
-    );
-};
+                );
+            })}
+        </div>
+    </Fragment>
+);
 
 export default (
     <Switch>
         <Route
             exact
-            path={routeNames.DASHBOARD}
-            render={() => (<Header label={translate('navigation.dashboard')} />)}
+            path={routeNames.PCAPS}
+            render={() => (<Header labelTag="navigation.pcaps" />)}
         />
         <Route
             exact
-            path={routeNames.PCAPS}
-            render={() => (<Header label={translate('navigation.pcaps')} />)}
+            path={routeNames.SETTINGS}
+            render={() => (<Header labelTag="navigation.settings" />)}
+        />
+        <Route
+            exact
+            path={routeNames.CAPTURE}
+            render={() => (<Header labelTag="workflow.capture_stream" />)}
         />
         <LiveRoute
             path={routeNames.LIVE}
             hideOnFalse
             render={() => (
-                <Header label={translate('navigation.live_streams')}>
+                <Header labelTag="navigation.live_streams">
                     <RealTimeDataStatus />
                 </Header>
             )}
@@ -67,7 +74,7 @@ export default (
             path={routeNames.NETWORK}
             hideOnFalse
             render={() => (
-                <Header label={translate('navigation.network')}>
+                <Header labelTag="navigation.network">
                     <RealTimeDataStatus />
                 </Header>
             )}
@@ -79,10 +86,10 @@ export default (
                 <Header
                     {...props}
                     item={<PcapFileNameHeader {...props} />}
-                    label="PTP Analysis"
+                    labelTag="navigation.ptp_analysis"
                     buttons={[
                         {
-                            label: translate('buttons.go_back'),
+                            labelTag: "buttons.go_back",
                             icon: 'keyboard backspace',
                             onClick: () => {
                                 const { pcapID } = props.match.params;
@@ -101,22 +108,22 @@ export default (
                     <Header
                         {...props}
                         item={<PcapFileNameHeader {...props} />}
-                        label="Streams"
+                        labelTag="navigation.streams"
                         buttons={[
                             {
-                                label: translate('pcap.download_pcap'),
+                                labelTag: "pcap.download_pcap",
                                 icon: 'file download',
-                                downloadPath: api.downloadPcap(props.match.params.pcapID),
+                                downloadPath: api.downloadPcapUrl(props.match.params.pcapID),
                                 onClick: () => { }
                             },
                             {
-                                label: translate('pcap.download_sdp'),
+                                labelTag: "pcap.download_sdp",
                                 icon: 'file download',
-                                downloadPath: api.downloadSDP(props.match.params.pcapID),
+                                downloadPath: api.downloadSDPUrl(props.match.params.pcapID),
                                 onClick: () => { }
                             },
                             {
-                                label: translate('buttons.go_back'),
+                                labelTag: "buttons.go_back",
                                 icon: 'keyboard backspace',
                                 onClick: () => {
                                     props.history.push(routeBuilder.pcap_list());
@@ -134,10 +141,10 @@ export default (
                 <Header
                     {...props}
                     item={<PcapFileNameHeader {...props} />}
-                    label="Stream"
+                    labelTag="navigation.stream"
                     buttons={[
                         {
-                            label: pluralize('stream.configure_streams', 1),
+                            labelTag: "stream.configure_streams",
                             icon: 'settings',
                             onClick: () => {
                                 const { pcapID, streamID } = props.match.params;
@@ -145,7 +152,7 @@ export default (
                             }
                         },
                         {
-                            label: translate('buttons.go_back'),
+                            labelTag: "buttons.go_back",
                             icon: 'keyboard backspace',
                             onClick: () => {
                                 const { pcapID } = props.match.params;
@@ -163,10 +170,10 @@ export default (
                 <Header
                     {...props}
                     item={<PcapFileNameHeader {...props} />}
-                    label={pluralize('stream.configure_streams', 1)}
+                    labelTag="stream.configure_streams"
                     buttons={[
                         {
-                            label: translate('buttons.go_back'),
+                            labelTag: "buttons.go_back",
                             icon: 'keyboard backspace',
                             onClick: () => {
                                 const { pcapID } = props.match.params;

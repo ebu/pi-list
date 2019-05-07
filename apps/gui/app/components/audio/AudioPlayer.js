@@ -4,7 +4,7 @@ import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js
 import PropTypes from 'prop-types';
 import Button from 'components/common/Button';
 import Loader from 'components/common/Loader';
-import { translate } from 'utils/translation';
+import { translateC } from 'utils/translation';
 
 const propTypes = {
     src: PropTypes.string.isRequired,
@@ -75,7 +75,7 @@ class AudioPlayer extends React.Component {
     }
 
     render() {
-        const buttonLabel = this.state.isPlaying ? translate('audio_player.pause') : translate('audio_player.play');
+        const buttonLabel = this.state.isPlaying ? translateC('audio_player.pause') : translateC('audio_player.play');
         const buttonType = this.state.isPlaying ? 'danger' : 'info';
         const buttonIcon = this.state.isPlaying ? 'pause' : 'play arrow';
 

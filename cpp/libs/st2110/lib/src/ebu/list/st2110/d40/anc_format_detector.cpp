@@ -43,9 +43,11 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
     const auto end = sdu.view().data() + sdu.view().size();
     const auto anc_header = anc_header_lens(*reinterpret_cast<const raw_anc_header*>(p));
 
-    if ( !anc_header.field_identification() )
+    // TODO: signal if the data is progressive or interlaced
+    // TODO: report if field is invalid
+    if (anc_header.field_identification() == static_cast<uint8_t>(field_kind::invalid))
     {
-        return detector::status::invalid;
+        logger()->trace("Ancillary: field identification is invalid");
     }
 
     p += sizeof(raw_anc_header);
@@ -146,13 +148,6 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
     }
 
     const auto res = detector_.handle_data(packet);
-
-    /* analysis terminated but no valid ancillary found */
-    if ((res != detector::status::detecting) && (! description_.streams.size()))
-    {
-        logger()->warn("Ancillary, no valid stream found");
-        return detector::status::invalid;
-    }
 
     return  res;
 }

@@ -3,19 +3,6 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import Icon from './common/Icon';
 
-const propTypes = {
-    link: PropTypes.string.isRequired,
-    icon: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    isOpen: PropTypes.bool.isRequired,
-    exact: PropTypes.bool,
-    external: PropTypes.bool
-};
-
-const defaultProps = {
-    exact: false,
-    external: false
-};
 
 const insideRender = (props) => (
     <React.Fragment>
@@ -51,7 +38,17 @@ const MenuItem = (props) => {
     );
 };
 
-MenuItem.propTypes = propTypes;
-MenuItem.defaultProps = defaultProps;
+MenuItem.propTypes = {
+    link: PropTypes.string.isRequired,
+    icon: PropTypes.string.isRequired,
+    label: PropTypes.object.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    exact: PropTypes.bool,
+    external: PropTypes.bool
+};
 
+MenuItem.defaultProps = {
+    exact: false,
+    external: false
+};
 export default MenuItem;

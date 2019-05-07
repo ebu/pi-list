@@ -8,6 +8,7 @@ export default {
     },
     LIVE: {
         IP_PARSED_FROM_SDP: 'IP_PARSED_FROM_SDP',
+        SDP_VALIDATION_RESULTS: 'SDP_VALIDATION_RESULTS',
         STREAM_UPDATE: 'STREAM_UPDATE',
         NMOS_UPDATE: 'NMOS_UPDATE'
     }

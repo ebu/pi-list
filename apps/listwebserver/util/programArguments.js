@@ -2,7 +2,6 @@ const commander = require('commander');
 const yamlParser = require('read-yaml');
 const deepFreeze = require('deep-freeze');
 const path = require('./path');
-const logger = require('./logger');
 
 function parseNmosArguments(arguments) {
     if(!arguments.nmosRegistry) {
@@ -27,15 +26,16 @@ function parseArguments(arguments) {
         databaseURL: `mongodb://${arguments.database.hostname}:${arguments.database.port}`,
         nmos: nmosArguments,
         developmentMode: arguments.dev || false,
-        liveMode: arguments.live || false
+        liveMode: arguments.liveMode || arguments.live || false
     });
 
     const webappDomain = process.env.EBU_LIST_WEB_APP_DOMAIN || config.webappDomain;
     config.webappDomain = webappDomain || 'http://localhost:8080';
+    console.log('config.webappDomain:', config.webappDomain);
 
-    logger('static-generator').info('process.env.EBU_LIST_WEB_APP_DOMAIN:', process.env.EBU_LIST_WEB_APP_DOMAIN);
-    logger('static-generator').info('arguments.webappDomain:', arguments.webappDomain);
-    logger('static-generator').info('config.webappDomain:', config.webappDomain);
+    const liveModeEnv = (process.env.EBU_LIST_LIVE_MODE !== undefined) && (process.env.EBU_LIST_LIVE_MODE === 'true');
+    config.liveMode = liveModeEnv || config.liveMode;
+    console.log('config.liveMode:', config.liveMode);
 
     return config;
 }

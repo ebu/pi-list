@@ -7,9 +7,19 @@ const Input = (props) => {
         'lst-input',
         props.className,
         {
-            'lst-input-full-width': !props.noFullWidth,
+            'lst-input-full-width': !props.noFullWidth && !props.width,
         }
     );
+
+    const attrs = {
+        style: {
+
+        }
+    };
+
+    if(props.width) {
+        attrs.style.width = props.width;
+    }
 
     return (
         <input
@@ -21,6 +31,7 @@ const Input = (props) => {
             max={props.max}
             onChange={props.onChange}
             disabled={props.disabled || false}
+            { ...attrs }
         />
     );
 };

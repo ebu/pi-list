@@ -8,14 +8,14 @@
 
 namespace ebu_list
 {
-    class c_inst_histogram_writer : public st2110::d21::cinst_histogram_listener
+    class histogram_writer : public st2110::d21::histogram_listener
     {
     public:
-        explicit c_inst_histogram_writer(path info_path);
+        explicit histogram_writer(path info_path, std::string_view filename);
 
     private:
         const path info_path_;
-        st2110::d21::cinst_histogram_t histogram_;
+        const std::string filename_;
 
         // Inherited via cinst_histogram_listener
         virtual void on_data(const st2110::d21::cinst_histogram_t&) override;
@@ -49,7 +49,7 @@ namespace ebu_list
         void on_frame_complete(frame_uptr&& f) override;
 
         void on_packet(const packet_info& p) override;
-        
+
         void on_complete(const video_stream_handler& handler);
 
         const path base_dir_;

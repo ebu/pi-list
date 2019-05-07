@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import Toggle from 'react-toggle';
 import NetworkInfo from 'containers/streamPage/NetworkInfo';
 import VideoInfo from 'containers/streamPage/VideoInfo';
-import VideoStatistics from 'containers/streamPage/VideoStatistics';
 import Dash21Info from 'containers/streamPage/Dash21Info';
 import Panel from 'components/common/Panel';
 import websocketEventsEnum from 'enums/websocketEventsEnum';
@@ -169,8 +168,6 @@ class VideoPage extends Component {
         const toRenderVrx = this.state.showGlobalValues ? streamInfo.global_video_analysis.vrx : streamInfo.current_video_analysis.vrx;
         const toRenderVrxTitle = this.state.showGlobalValues ? 'Global' : 'Last second';
 
-        const networkInfo = streamInfo.network_information;
-        const statistics = streamInfo.statistics;
         const mediaInfo = streamInfo.media_specific;
         const globalVideoAnalysis = streamInfo.global_video_analysis;
 
@@ -179,9 +176,8 @@ class VideoPage extends Component {
                 <div className="row">
                     <Panel className="col-xs-12 col-md-4">
                         <Dash21Info {...globalVideoAnalysis} />
-                        <NetworkInfo {...networkInfo} dropped_packet_count={statistics.dropped_packet_count} packet_count={statistics.packet_count} />
+                        <NetworkInfo stream={props.streamInfo} />
                         <VideoInfo {...mediaInfo} />
-                        <VideoStatistics {...statistics} />
                     </Panel>
                     <div className="col-xs-12 col-md-8">
                         <div className="row">

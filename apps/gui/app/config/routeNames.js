@@ -1,6 +1,8 @@
 export default {
-    DASHBOARD: '/',
+    HOME: '/',
+    SETTINGS: '/settings',
     PCAPS: '/pcaps',
+    CAPTURE: '/capture',
     LIVE: '/live',
     NETWORK: '/network',
     STREAMS_PAGE: 'streams',

@@ -1,32 +1,32 @@
 import React, { Component } from 'react';
-import { find, merge } from 'lodash';
-import asyncLoader from 'components/asyncLoader';
-import FormInput from 'components/common/FormInput';
-import { translate } from 'utils/translation';
+import { find, merge, cloneDeep } from 'lodash';
 import Select from 'react-select';
-import api from 'utils/api';
-import Icon from 'components/common/Icon';
-import Input from 'components/common/Input';
-import Alert from 'components/common/Alert';
-import ButtonGroup from 'components/common/ButtonGroup';
-import Button from 'components/common/Button';
-import keyEnum from 'enums/keyEnum';
-import { getVideoProfiles,
-         getAudioProfiles,
-         getMediaSpecificInformationByProfile,
-         getAudioInformationByProfile
-} from 'code-for-demos/video-presets';
-import { deepClone } from 'utils/clone';
-import notifications from 'utils/notifications';
-import Panel from 'components/common/Panel';
-import { renderInformationList } from 'containers/streamPage/utils';
+import asyncLoader from '../components/asyncLoader';
+import FormInput from '../components/common/FormInput';
+import api from '../utils/api';
+import Icon from '../components/common/Icon';
+import Input from '../components/common/Input';
+import Alert from '../components/common/Alert';
+import ButtonGroup from '../components/common/ButtonGroup';
+import Button from '../components/common/Button';
+import keyEnum from '../enums/keyEnum';
+import {
+    getVideoProfiles,
+    getAudioProfiles,
+    getMediaSpecificInformationByProfile,
+    getAudioInformationByProfile
+} from '../code-for-demos/video-presets';
+import notifications from '../utils/notifications';
+import Panel from '../components/common/Panel';
+import { renderInformationList } from '../containers/streamPage/utils';
+import { translate, translateC } from '../utils/translation';
 
 class StreamConfiguration extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            stream: deepClone(this.props.stream),
+            stream: cloneDeep(this.props.stream),
             profile: null,
             isSendingInformation: false
         };
@@ -40,7 +40,7 @@ class StreamConfiguration extends Component {
     }
 
     updateStreamsConfigurationState(nextObject) {
-        this.setState( prevState => {
+        this.setState(prevState => {
             const stream = Object.assign({}, prevState.stream);
             merge(stream, nextObject);
             return { stream };
@@ -79,7 +79,7 @@ class StreamConfiguration extends Component {
             <React.Fragment>
                 <h2>
                     <Icon value={icon} />
-                    <span>{translate(groupLabel)}</span>
+                    <span>{translateC(groupLabel)}</span>
                 </h2>
                 <hr />
             </React.Fragment>
@@ -112,16 +112,16 @@ class StreamConfiguration extends Component {
 
         return (
             <React.Fragment>
-                <FormInput label={translate('media_information.video_profiles')}>
+                <FormInput label={translateC('media_information.video_profiles')}>
                     <Select
                         value={this.state.profile}
                         searchable
                         clearable={true}
                         options={this.props.videoProfiles}
-                        onChange={ option => this.autoFillInfo(option, getMediaSpecificInformationByProfile)}
+                        onChange={option => this.autoFillInfo(option, getMediaSpecificInformationByProfile)}
                     />
                 </FormInput>
-                <FormInput label={translate('media_information.video.sampling')}>
+                <FormInput label={translateC('media_information.video.sampling')}>
                     <Select
                         value={mediaSpecific ? mediaSpecific.sampling : null}
                         searchable
@@ -130,7 +130,7 @@ class StreamConfiguration extends Component {
                         onChange={option => this.updateMediaSpecific('sampling', option ? option.value : null)}
                     />
                 </FormInput>
-                <FormInput label={translate('media_information.video.color_depth')}>
+                <FormInput label={translateC('media_information.video.color_depth')}>
                     <Input
                         type="number"
                         value={mediaSpecific.color_depth || 0}
@@ -139,7 +139,7 @@ class StreamConfiguration extends Component {
                         onChange={evt => this.updateMediaSpecific('color_depth', parseInt(evt.currentTarget.value, 10))}
                     />
                 </FormInput>
-                <FormInput label={translate('media_information.video.width')}>
+                <FormInput label={translateC('media_information.video.width')}>
                     <Input
                         type="number"
                         value={mediaSpecific.width || 0}
@@ -148,7 +148,7 @@ class StreamConfiguration extends Component {
                         onChange={evt => this.updateMediaSpecific('width', parseInt(evt.currentTarget.value, 10))}
                     />
                 </FormInput>
-                <FormInput label={translate('media_information.video.height')}>
+                <FormInput label={translateC('media_information.video.height')}>
                     <Input
                         type="number"
                         value={mediaSpecific.height || 0}
@@ -157,7 +157,7 @@ class StreamConfiguration extends Component {
                         onChange={evt => this.updateMediaSpecific('height', parseInt(evt.currentTarget.value, 10))}
                     />
                 </FormInput>
-                <FormInput label={translate('media_information.video.scan_type')}>
+                <FormInput label={translateC('media_information.video.scan_type')}>
                     <ButtonGroup
                         type="info"
                         options={scanOptions}
@@ -165,7 +165,7 @@ class StreamConfiguration extends Component {
                         onChange={option => this.updateMediaSpecific('scan_type', option ? option.value : null)}
                     />
                 </FormInput>
-                <FormInput label={translate('media_information.video.rate')}>
+                <FormInput label={translateC('media_information.video.rate')}>
                     <Select
                         value={mediaSpecific ? mediaSpecific.rate : null}
                         searchable
@@ -174,7 +174,7 @@ class StreamConfiguration extends Component {
                         onChange={option => this.updateMediaSpecific('rate', option ? option.value : null)}
                     />
                 </FormInput>
-                <FormInput label={translate('media_information.video.colorimetry')}>
+                <FormInput label={translateC('media_information.video.colorimetry')}>
                     <Select
                         value={mediaSpecific ? mediaSpecific.colorimetry : 'unknown'}
                         searchable
@@ -183,7 +183,7 @@ class StreamConfiguration extends Component {
                         onChange={option => this.updateMediaSpecific('colorimetry', option ? option.value : null)}
                     />
                 </FormInput>
-                <FormInput label={translate('media_information.video.packets_per_frame')}>
+                <FormInput label={translateC('media_information.video.packets_per_frame')}>
                     <Input
                         disabled
                         type="number"
@@ -200,10 +200,12 @@ class StreamConfiguration extends Component {
         const sampleRateOptions = find(this.props.availableAudioOptions, { key: 'sample_rate' }).value;
         const packetTimeOptions = find(this.props.availableAudioOptions, { key: 'packet_time' }).value;
         const mediaSpecific = this.state.stream.media_specific;
-
+        const number_channels = (mediaSpecific.number_channels === undefined || mediaSpecific.number_channels === null)
+            ?
+            1 : mediaSpecific.number_channels;
         return (
             <React.Fragment>
-                <FormInput label={translate('media_information.audio_profiles')}>
+                <FormInput label={translateC('media_information.audio_profiles')}>
                     <Select
                         value={this.state.profile}
                         searchable
@@ -212,7 +214,7 @@ class StreamConfiguration extends Component {
                         onChange={option => this.autoFillInfo(option, getAudioInformationByProfile)}
                     />
                 </FormInput>
-                <FormInput label={translate('media_information.audio.encoding')}>
+                <FormInput label={translateC('media_information.audio.encoding')}>
                     <Select
                         value={mediaSpecific ? mediaSpecific.encoding : null}
                         searchable
@@ -221,7 +223,7 @@ class StreamConfiguration extends Component {
                         onChange={option => this.updateMediaSpecific('encoding', option ? option.value : null)}
                     />
                 </FormInput>
-                <FormInput label={translate('media_information.audio.sampling')}>
+                <FormInput label={translateC('media_information.audio.sampling')}>
                     <Select
                         value={mediaSpecific ? mediaSpecific.sampling : null}
                         searchable
@@ -230,16 +232,16 @@ class StreamConfiguration extends Component {
                         onChange={option => this.updateMediaSpecific('sampling', option ? option.value : null)}
                     />
                 </FormInput>
-                <FormInput label={translate('media_information.audio.number_channels')}>
+                <FormInput label={translateC('media_information.audio.number_channels')}>
                     <Input
                         type="number"
-                        value={mediaSpecific.number_channels || 1}
-                        min="1"
-                        max="8"
+                        value={number_channels}
+                        min="0"
+                        max="64"
                         onChange={evt => this.updateMediaSpecific('number_channels', parseInt(evt.currentTarget.value, 10))}
                     />
                 </FormInput>
-                <FormInput label={translate('media_information.audio.packet_time')}>
+                <FormInput label={translateC('media_information.audio.packet_time')}>
                     <Select
                         value={mediaSpecific ? mediaSpecific.packet_time : null}
                         searchable
@@ -254,23 +256,19 @@ class StreamConfiguration extends Component {
 
     renderMediaTypeInformation(mediaType) {
         switch (mediaType) {
-        case 'video':
-            return this.renderVideoInformation();
-        case 'audio':
-            return this.renderAudioInformation();
-        case 'ancillary_data':
-            return (
-                <Alert type="info" showIcon>
-                    <strong>{translate('errors.anc_not_supported')}</strong>
-                    <p>{translate('errors.anc_not_supported_message')}</p>
-                </Alert>);
-        case 'unknown':
-        default:
-            return (
-                <Alert type="danger" showIcon>
-                    <strong>{translate('alerts.media_type_unknown')}</strong>
-                    <p>{translate('information.media_type_unknown')}</p>
-                </Alert>);
+            case 'video':
+                return this.renderVideoInformation();
+            case 'audio':
+                return this.renderAudioInformation();
+            case 'ancillary_data':
+                return (<div />);
+            case 'unknown':
+            default:
+                return (
+                    <Alert type="danger" showIcon>
+                        <strong>{translateC('alerts.media_type_unknown')}</strong>
+                        <p>{translateC('information.media_type_unknown')}</p>
+                    </Alert>);
         }
     }
 
@@ -278,7 +276,7 @@ class StreamConfiguration extends Component {
         return (
             <div className="col-xs-12 col-md-6">
                 {this.renderFormGroupHeader('headings.media_information', 'filter')}
-                <FormInput label={translate('media_information.media_type')}>
+                <FormInput label={translateC('media_information.media_type')}>
                     <ButtonGroup
                         type="info"
                         options={this.props.availableOptions}
@@ -300,19 +298,19 @@ class StreamConfiguration extends Component {
                 {
                     renderInformationList([
                         {
-                            key: translate('media_information.rtp.source'),
+                            key: translateC('media_information.rtp.source'),
                             value: `${netInfo.source_address}:${netInfo.source_port}`
                         },
                         {
-                            key: translate('media_information.rtp.destination'),
+                            key: translateC('media_information.rtp.destination'),
                             value: `${netInfo.destination_address}:${netInfo.destination_port}`
                         },
                         {
-                            key: translate('media_information.rtp.payload_type'),
+                            key: translateC('media_information.rtp.payload_type'),
                             value: netInfo.payload_type
                         },
                         {
-                            key: translate('media_information.rtp.ssrc'),
+                            key: translateC('media_information.rtp.ssrc'),
                             value: netInfo.ssrc
                         }
                     ])
@@ -353,13 +351,13 @@ class StreamConfiguration extends Component {
                 <Alert type={analyzed ? 'success' : 'warning'} showIcon>
                     <strong>
                         {analyzed
-                            ? translate('alerts.stream_already_analyzed')
-                            : translate('alerts.stream_missing_information')}!
+                            ? translateC('alerts.stream_already_analyzed')
+                            : translateC('alerts.stream_missing_information')}!
                     </strong>
                     <p>
                         {analyzed
-                            ? translate('information.stream_analyzed_information')
-                            : translate('information.stream_missing_information')}
+                            ? translateC('information.stream_analyzed_information')
+                            : translateC('information.stream_missing_information')}
                     </p>
                 </Alert>
                 <Panel>
@@ -370,7 +368,7 @@ class StreamConfiguration extends Component {
                     <div className="row end-xs lst-text-right lst-no-margin">
                         <Button
                             type="info"
-                            label={translate('stream.analyze_stream')}
+                            label={translateC('stream.analyze_stream')}
                             disabled={this.state.isSendingInformation}
                             loading={this.state.isSendingInformation}
                             onClick={this.sendStreamsConfiguration}

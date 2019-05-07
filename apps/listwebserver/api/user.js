@@ -4,15 +4,19 @@ const fs = require('../util/filesystem');
 const program = require('../util/programArguments');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const User = require('../models/user');
+const userController = require('../controllers/user');
 
 /**
  * GET /api/user
  *
  * Gets the information about current logged user
  */
-router.get('/', (req, res) => {
-    res.send(req.session.passport.user);
-});
+router.get('/',
+    userController.getUser,
+    (req, res) => {
+        res.send(req.userInfo);
+    }
+);
 
 /**
  * DELETE /api/user
@@ -22,7 +26,7 @@ router.get('/', (req, res) => {
  */
 router.delete('/', (req, res) => {
     const { user } = req.session.passport;
-    User.remove({ id: user.id })
+    User.remove({ _id: user.id })
         .then(() => {
             // delete folders
             fs.delete(`${program.folder}/${req.session.passport.user.id}`);
@@ -35,6 +39,18 @@ router.delete('/', (req, res) => {
             res.status(400).send(data);
         });
 });
+
+
+/**
+ * PATCH /api/user/preferences
+ *
+ * Updates the user preferences.
+ */
+router.patch('/preferences',
+    (req, res, next) => {
+        userController.updatePreferences(req, res, next)
+    }
+);
 
 
 module.exports = router;

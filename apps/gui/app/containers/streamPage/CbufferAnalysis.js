@@ -1,8 +1,8 @@
 import React from 'react';
-import api from 'utils/api';
-import chartFormatters from 'utils/chartFormatters';
-import Chart from 'components/StyledChart';
-import LineChart from 'components/LineChart';
+import api from '../../utils/api';
+import chartFormatters from '../../utils/chartFormatters';
+import Chart from '../../components/StyledChart';
+import LineChart from '../../components/LineChart';
 
 const CbufferAnalysis = (props) => {
     const {first_packet_ts, last_packet_ts} = props.streamInfo.statistics;
@@ -10,7 +10,7 @@ const CbufferAnalysis = (props) => {
 
     return (
         <div className="row">
-            <div className="col-xs-12 col-md-12">
+            <div className="col-xs-12">
                 <Chart
                     type="bar"
                     request={() => api.getCInstHistogramForStream(pcapID, streamID)}

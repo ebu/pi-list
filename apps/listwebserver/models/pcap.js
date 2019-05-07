@@ -72,6 +72,14 @@ const PcapSchema = new mongoose.Schema({
     generated_from_network: {
         type: Boolean,
         default: false
+    },
+    summary: {
+        type: Object,
+        default: {}
+    },
+    truncated: {
+        type: Boolean,
+        default: false
     }
 });
 

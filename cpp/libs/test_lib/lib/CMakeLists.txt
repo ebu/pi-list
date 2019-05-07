@@ -20,7 +20,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "libs")
 
 #-------------------------------------------------------------------------------
 # Create a config file for tests.
-file(TO_CMAKE_PATH "${ebu_list_core_SOURCE_DIR}/../../../sample_data" EBU_LIST_SAMPLE_DATA_ROOT)
+file(TO_CMAKE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../../sample_data" EBU_LIST_SAMPLE_DATA_ROOT)
 
 # create a header file to pass some settings to the source code
 configure_file(
@@ -28,7 +28,7 @@ configure_file(
   "${PROJECT_BINARY_DIR}/include/ebu/list/test_config.h"
   )
 #-------------------------------------------------------------------------------
-target_link_libraries (${PROJECT_NAME} 
+target_link_libraries (${PROJECT_NAME}
     ebu_list_core
     CONAN_PKG::catch2
     ${${PROJECT_NAME}_LINK_FLAGS}

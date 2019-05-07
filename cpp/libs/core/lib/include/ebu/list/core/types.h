@@ -8,7 +8,6 @@
 #include "bisect/bimo/types.h"
 #include <cinttypes>
 #include <experimental/filesystem>
-#include "expected.hpp"
 
 //------------------------------------------------------------------------------
 
@@ -21,9 +20,6 @@ namespace ebu_list
     using bisect::bimo::to_byte_array;
 
     using path = std::experimental::filesystem::path;
-
-    // switch to std when available
-    using tl::expected;
 
     // network byte order
     enum class net_uint16_t : uint16_t;

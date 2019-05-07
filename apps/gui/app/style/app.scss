@@ -1,58 +1,145 @@
 .lst-app-container {
-  @include flex;
-  min-height: 100%;
+    @include flex;
+    min-height: 100%;
 }
 
 .lst-main-container {
-  height: calc(100% - #{$main-container-height});
-  padding: $margin;
+    height: calc(100% - #{$main-container-height});
+    padding: $margin;
 }
 
 .lst-main {
-  flex: 1;
-  width: 100%;
-  background: $background-color-blue;
-
-  .dark & {
-    background: $nord1;
-  }
-}
-
-.lst-dashboard-wrapper {
-  margin: 0;
+    flex: 1;
+    width: 100%;
+    background: $background-color-blue;
+    .dark & {
+        background: $nord1;
+    }
 }
 
 .lst-async-loader--loading {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .lst-error-page {
-  height: 100%;
-  align-items: center;
-
-  &__icon i{
-    font-size: 7rem;
-  }
-
-  .lst-error-page-heading {
-    font-weight: 400;
-  }
+    height: 100%;
+    align-items: center;
+    &__icon i {
+        font-size: 7rem;
+    }
+    .lst-error-page-heading {
+        font-weight: 400;
+    }
 }
 
 #lst-landing-page-loader {
-  position: relative;
-  top: 42vh;
+    position: relative;
+    top: 42vh;
 }
 
 .inactive {
-  background-color: $grey !important;
-  border: 1px solid $grey-hover !important;
+    background-color: $grey !important;
+    border: 1px solid $grey-hover !important;
+    .dark & {
+        background-color: $nord0 !important;
+        border: 1px solid $nord0 !important;
+    }
+}
 
-  .dark & {
-    background-color: $nord0 !important;
-    border: 1px solid $nord0 !important;
-  }
+// TODO move this elsewhere
+$tooltip-color: rgba(0, 0, 0, .7);
+$tooltip-text-color: #fff;
+.tooltip {
+    position: relative;
+}
+
+.tooltip-trigger {
+    display: inline-block;
+}
+
+.tooltip-bubble {
+    min-width: 120px;
+    position: absolute;
+    z-index: 10;
+    &::after {
+        content: '';
+        position: absolute;
+    }
+}
+
+.tooltip-top {
+    bottom: 100%;
+    left: 50%;
+    padding-bottom: 9px;
+    transform: translateX(-50%);
+    &::after {
+        border-left: 9px solid transparent;
+        border-right: 9px solid transparent;
+        border-top: 9px solid $tooltip-color;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+.tooltip-bottom {
+    top: 100%;
+    left: 50%;
+    padding-top: 9px;
+    transform: translateX(-50%);
+    &::after {
+        border-left: 9px solid transparent;
+        border-right: 9px solid transparent;
+        border-bottom: 9px solid $tooltip-color;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+.tooltip-left {
+    top: 50%;
+    right: 100%;
+    padding-right: 9px;
+    transform: translateY(-50%);
+    &::after {
+        border-left: 9px solid $tooltip-color;
+        border-top: 9px solid transparent;
+        border-bottom: 9px solid transparent;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+    }
+}
+
+.tooltip-right {
+    top: 50%;
+    left: 100%;
+    padding-left: 9px;
+    transform: translateY(-50%);
+    &::after {
+        border-right: 9px solid $tooltip-color;
+        border-top: 9px solid transparent;
+        border-bottom: 9px solid transparent;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+    }
+}
+
+.tooltip-message {
+    background: $tooltip-color;
+    border-radius: 3px;
+    color: $tooltip-text-color;
+    font-size: .75rem;
+    line-height: 1.4;
+    padding: .75em;
+    text-align: center;
+}
+
+.rt-tbody {
+    overflow: visible !important;
 }

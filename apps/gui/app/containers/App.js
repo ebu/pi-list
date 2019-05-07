@@ -1,69 +1,138 @@
-import React, { Component } from 'react';
-import SideNav from 'containers/SideNav';
-import routes from 'app/routes';
-import headerRoutes from 'headerRoutes';
-import asyncLoader from 'components/asyncLoader';
-import api from 'utils/api';
-import websocket from 'utils/websocket';
-import { AppContext } from 'utils/liveFeature';
-import { ThemeContext } from 'utils/theme';
+import React, { Component, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
+import SideNav from './SideNav';
+import routes from '../routes';
+import headerRoutes from '../headerRoutes';
+import asyncLoader from '../components/asyncLoader';
+import api from '../utils/api';
+import websocket from '../utils/websocket';
+import { StateProvider, Actions, useStateValue } from '../utils/AppContext';
+import NotificationsProvider from '../utils/notifications/NotificationsProvider';
+import PopUp from '../components/common/PopUp';
+import { T } from '../utils/translation';
 
-class App extends Component {
-    constructor(props) {
-        super(props);
+const defaultTheme = 'dark';
 
-        websocket.initialize(this.props.user.id);
+const reducer = (state, action) => {
+    switch (action.type) {
+        case Actions.setLanguage:
+            return {
+                ...state,
+                language: action.value
+            };
 
-        this.onMenuIconClick = this.onMenuIconClick.bind(this);
-        this.toggleTheme = this.toggleTheme.bind(this);
+        case Actions.setTheme:
+            return {
+                ...state,
+                theme: action.value
+            };
 
-        this.state = {
-            theme: 'dark',
-            toggleTheme: this.toggleTheme
-        };
+        case Actions.deleteUserRequest:
+            return {
+                ...state,
+                showModal: true
+            };
+
+        case Actions.deleteUserDismiss:
+            return {
+                ...state,
+                showModal: false
+            };
+
+        default:
+            return state;
     }
+};
 
-    onMenuIconClick() {
-        this.sideNav.toggleSideNav();
+const middleware = (state, action) => {
+    switch (action.type) {
+        case Actions.setLanguage:
+            api.updateUserPreferences({ gui: { language: action.value } });
+            break;
+
+        case Actions.setTheme:
+            api.updateUserPreferences({ gui: { theme: action.value } });
+            break;
+
+        case Actions.deleteUserExecute:
+            api.deleteUser()
+                .then(() => {
+                    window.appHistory.push('/login');
+                });
+            break;
+
+        default:
+            break;
     }
+};
 
-    toggleTheme() {
-        this.setState(prevState => ({
-            theme:
-                prevState.theme === 'light' ? 'dark' : 'light'
-        }));
-    }
+const actionsWorkflow = (state, action) => {
+    middleware(state, action);
+    return reducer(state, action);
+};
 
-    render() {
-        const meta = {
-            live: this.props.features.liveFeatures,
-            version: this.props.version
-        };
 
-        return (
-            <ThemeContext.Provider value={this.state}>
-                <AppContext.Provider value={meta}>
-                    <div className={`lst-app-container ${this.state.theme}`}>
-                        <SideNav ref={sideNav => this.sideNav = sideNav} isOpen={false} user={this.props.user}/>
-                        <div className="lst-main">
-                            <nav className="lst-top-nav row lst-no-margin">
-                                <button className="lst-top-nav__link" onClick={this.onMenuIconClick}>
-                                    <i className="lst-top-nav__item-icon lst-icons">menu</i>
-                                </button>
-                                <div className="col-xs row lst-no-margin middle-xs">
-                                    {headerRoutes}
-                                </div>
-                            </nav>
-                            <div className="lst-main-container">
-                                {routes}
-                            </div>
-                        </div>
+const AppContainer = (props) => {
+    const sideNav = useRef(null);
+    const [{ theme, showModal }, dispatch] = useStateValue();
+
+    const account_delete_message = (<T t="user_account.delete_confirmation" />);
+    const account_delete_label = (<T t="user_account.delete_user_account" />);
+
+    return (
+        <div className={`lst-app-container ${theme}`}>
+            <SideNav ref={sideNav} isOpen={false} user={props.user} />
+            <div className="lst-main">
+                <nav className="lst-top-nav row lst-no-margin">
+                    <button className="lst-top-nav__link" onClick={() => sideNav.current.toggleSideNav()}>
+                        <i className="lst-top-nav__item-icon lst-icons">menu</i>
+                    </button>
+                    <div className="col-xs row lst-no-margin middle-xs">
+                        {headerRoutes}
                     </div>
-                </AppContext.Provider>
-            </ThemeContext.Provider>
-        );
-    }
-}
+                </nav>
+                <NotificationsProvider>
+                    <div className="lst-main-container">
+                        {routes}
+                    </div>
+                </NotificationsProvider>
+                <PopUp
+                    type="delete"
+                    visible={showModal}
+                    message={account_delete_message}
+                    label={account_delete_label}
+                    onClose={() => dispatch({ type: Actions.deleteUserDismiss })}
+                    onDelete={() => dispatch({ type: Actions.deleteUserExecute })}
+                />
+            </div>
+        </div>
+    );
+};
+
+AppContainer.propTypes = {
+    user: PropTypes.object.isRequired,
+};
+
+const App = (props) => {
+    useEffect(() => {
+        websocket.initialize(props.user.id);
+    }, []);
+
+    const initialState = {
+        language: props.user.preferences.gui.language,
+        theme: props.user.preferences.gui.theme || defaultTheme,
+        showModal: false,
+        version: props.version,
+        live: props.features.liveFeatures
+    };
+
+    return (
+        <StateProvider initialState={initialState} reducer={actionsWorkflow}>
+            <AppContainer user={props.user} />
+        </StateProvider>
+    );
+};
 
 export default asyncLoader(App, {
     asyncRequests: {

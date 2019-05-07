@@ -10,7 +10,7 @@ const PTPCard = (props) => {
                 <div className="row lst-no-margin">
                     <div className="row col-xs-8 lst-no-padding lst-no-margin">
                         <p className="lst-paragraph col-xs-12">
-                            <h2 className="lst-no-margin">PTP Stream</h2>
+                            <span className="lst-no-margin">PTP Stream</span>
                         </p>
                     </div>
                 </div>

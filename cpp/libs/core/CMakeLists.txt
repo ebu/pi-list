@@ -20,7 +20,6 @@ endif()
 target_link_libraries(ebu_list_core
     bimo
     GSL
-    expected
     CONAN_PKG::spdlog
     CONAN_PKG::fmt
 )

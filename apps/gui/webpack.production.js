@@ -96,7 +96,7 @@ module.exports = {
             }
         }),
         new HtmlWebpackPlugin({
-            title: 'Dashboard',
+            title: 'EBU LIST',
             template: './index.html',
             inject: 'body'
         })
