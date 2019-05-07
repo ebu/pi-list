@@ -76,7 +76,7 @@ class VideoExplorer extends Component {
 
                                     </li>
                                     <li>
-                                        <strong>RTP Timestap: </strong>
+                                        <strong>RTP Timestamp: </strong>
                                         <span>{this.state.packets[this.state.selectedPacket].rtp_timestamp}</span>
                                     </li>
                                 </ul>

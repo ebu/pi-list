@@ -19,7 +19,7 @@ namespace
         const auto output = folder / mp3_name;
 
         // ffmpeg -f s16be -ar 48k -ac 2 -i sample.pcm -codec:a libmp3lame -qscale:a 2 output.mp3
-        return fmt::format("ffmpeg -y -f s{}be -ar {}k -ac {} -i {} -codec:a libmp3lame -qscale:a 2 {}"
+        return fmt::format("ffmpeg -hide_banner -y -f s{}be -ar {}k -ac {} -i {} -codec:a libmp3lame -qscale:a 2 {}"
             , number_of_bits(audio.encoding)
             , to_int(audio.sampling) / 1000
             , audio.number_channels
