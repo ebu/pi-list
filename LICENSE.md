@@ -675,3 +675,6 @@ may consider it more useful to permit linking proprietary applications with
 the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 <https://www.gnu.org/licenses/why-not-lgpl.html>.
+
+
+The European Broadcast Union Reserves the right to change the license model at any time without notification or obligation. It is therefore your responsibility to check on a regular basis whether any changes have been made.
