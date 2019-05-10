@@ -1,10 +1,8 @@
 import React, { useState, useContext } from 'react';
 import 'react-table/react-table.css';
-import api from '../../utils/api';
 import routeBuilder from '../../utils/routeBuilder';
-import PcapTable from '../../components/pcap/PcapTable';
+import PcapTable from './PcapTable';
 import PcapToolbar from './PcapToolbar';
-import { downloadFiles } from '../../utils/download';
 import DeleteModal from './DeleteModal';
 import { StateContext } from './Context';
 import Actions from './Actions';

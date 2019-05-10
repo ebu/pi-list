@@ -29,19 +29,27 @@ const middleware = (state, action) => {
             break;
 
         case Actions.downloadSelectedPcap: {
-            const filesForDownload = state.selected.map(id => api.downloadPcapUrl(id));
+            const filesForDownload = state.selected.map(id => ({
+                url: api.downloadPcapUrl(id),
+                filename: `${id}.json`
+            }));
             downloadFiles(filesForDownload);
         }
             break;
 
         case Actions.downloadSelectedSdp: {
-            const filesForDownload = state.selected.map(id => api.downloadSDPUrl(id));
+            const filesForDownload = state.selected.map(id => ({
+                url: api.downloadSDPUrl(id),
+                filename: `${id}.json`
+            }));
             downloadFiles(filesForDownload);
         }
             break;
 
         case Actions.downloadSelectedReport: {
-            const filesForDownload = state.selected.map(id => api.downloadJsonUrl(id));
+            const filesForDownload = state.selected.map(id => ({
+                url: api.downloadJsonUrl(id)
+            }));
             downloadFiles(filesForDownload);
         }
             break;
