@@ -69,6 +69,7 @@ export default {
     /* SDP */
     downloadSDP: pcapID => request.get(`pcap/${pcapID}/sdp`),
     downloadSDPUrl: pcapID => `${API_URL}/pcap/${pcapID}/sdp`,
+    downloadJsonUrl: pcapID => `${API_URL}/pcap/${pcapID}/report`,
     uploadSDP: (sdpFile, onUploadComplete) => {
         const data = new FormData();
         data.append('sdp', sdpFile);

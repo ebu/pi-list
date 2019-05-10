@@ -31,6 +31,11 @@ function getStreamWithId(id) {
         .then(stream => upgradeStreamInfo(stream));
 }
 
+function getStreamsForPcap(pcapId) {
+    return Stream.find({ pcap: pcapId }).exec();
+}
+
 module.exports = {
-    getStreamWithId
+    getStreamWithId,
+    getStreamsForPcap
 };
