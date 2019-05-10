@@ -6,7 +6,7 @@ services:
       - influxdb:/var/lib/influxdb
 
   mongo:
-    image: mongo:latest
+    image: mongo:4.1.10
     volumes:
       - mongo:/data/db
 
