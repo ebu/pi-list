@@ -1,14 +1,14 @@
-export function downloadFiles(urls) {
+export function downloadFiles(targets) {
     function download_next(i) {
-        if (i >= urls.length) {
+        if (i >= targets.length) {
             return;
         }
         var a = document.createElement('a');
-        a.href = urls[i];
+        a.href = targets[i].url;
         a.target = '_parent';
         // Use a.download if available, it prevents plugins from opening.
         if ('download' in a) {
-            a.download = urls[i].filename;
+            a.download = targets[i].filename;
         }
         // Add a to the doc for click to work.
         (document.body || document.documentElement).appendChild(a);

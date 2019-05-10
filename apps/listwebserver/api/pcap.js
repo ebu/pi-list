@@ -95,6 +95,7 @@ router.get('/:pcapID/report', (req, res) => {
     const { pcapID } = req.params;
     pcapController.getReport(pcapID)
         .then((report) => {
+            res.setHeader('Content-disposition', `attachment; filename=${pcapID}.json`);
             res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(report);
         })
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
