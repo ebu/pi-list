@@ -5,6 +5,6 @@ influxdb:
     - "8086:8086"
 
 mongo:
-  image: mongo:latest
+    image: mongo:4.1.10
   ports:
     - "27017:27017"
