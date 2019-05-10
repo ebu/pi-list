@@ -8,10 +8,13 @@ const API_ERRORS = require('../enums/apiErrors');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const CONSTANTS = require('../enums/constants');
 const Pcap = require('../models/pcap');
+const pcapController = require('../controllers/pcap');
 const Stream = require('../models/stream');
 const streamsController = require('../controllers/streams');
 const { pcapSingleStreamIngest, pcapIngest,
     generateRandomPcapDefinition, generateRandomPcapFilename, getUserFolder } = require('../util/ingest');
+const websocketManager = require('../managers/websocket');
+const WS_EVENTS = require('../enums/wsEvents');
 
 function isAuthorized(req, res, next) {
     const { pcapID } = req.params;
@@ -77,6 +80,23 @@ router.delete('/:pcapID/', (req, res) => {
         .then(() => {
             res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
         })
+        .then(() => {
+            const userID = req.session.passport.user.id;
+            websocketManager.instance().sendEventToUser(userID, {
+                event: WS_EVENTS.PCAP_FILE_DELETED,
+                data: { id: pcapID }
+            });
+        })
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+});
+
+/* Get the report for a pcap */
+router.get('/:pcapID/report', (req, res) => {
+    const { pcapID } = req.params;
+    pcapController.getReport(pcapID)
+        .then((report) => {
+            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(report);
+        })
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
@@ -124,8 +144,7 @@ router.get('/:pcapID/analytics/PtpOffset', (req, res) => {
 /* Get all streams from a pcap */
 router.get('/:pcapID/streams/', (req, res) => {
     const { pcapID } = req.params;
-
-    Stream.find({ pcap: pcapID }).exec()
+    streamsController.getStreamsForPcap(pcapID)
         .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });

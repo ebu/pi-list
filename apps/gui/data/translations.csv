@@ -123,7 +123,7 @@ pcap.delete_header,Verwijder PCAP bestanden,Delete PCAP file,Apagar PCAP
 pcap.delete_message,Bent U zeker dat U %{name} betand(en) wenst te verwijderen?,Are you sure you want to delete %{name} file(s)?,Tem a certeza que quer apagar %{name} ficheiro(s)?
 pcap.download_sdp,Download SDP,Download SDP,Descarregar SDP
 pcap.download_pcap,Download PCAP,Download PCAP,Descarregar PCAP
-pcap.no_pcaps,Geen PCAP bestand gevonden,"No PCAP files found. Drag and drop files here, or used the upload button.",Não foram encontrados ficheiros PCAP
+pcap.no_pcaps,Geen PCAP bestand gevonden,"No PCAP files found. Drag and drop files here, or use the upload button.",Não foram encontrados ficheiros PCAP
 pcap.warnings,Waarschuwing,Warnings,Avisos
 pcap.errors,Fout,Errors,Erros
 pcap.file_name,Bestandsnaam,File name,Nome do ficheiro

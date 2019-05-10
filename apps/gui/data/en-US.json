@@ -120,7 +120,7 @@
   "pcap.delete_message": "Are you sure you want to delete %{name} file(s)?",
   "pcap.download_sdp": "Download SDP",
   "pcap.download_pcap": "Download PCAP",
-  "pcap.no_pcaps": "No PCAP files found. Drag and drop files here, or used the upload button.",
+  "pcap.no_pcaps": "No PCAP files found. Drag and drop files here, or use the upload button.",
   "pcap.warnings": "Warnings",
   "pcap.errors": "Errors",
   "pcap.file_name": "File name",
