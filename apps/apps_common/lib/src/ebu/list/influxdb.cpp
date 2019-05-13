@@ -24,7 +24,7 @@ caching_influx_writer::caching_influx_writer(std::string_view url)
 
 void caching_influx_writer::write(influxdb::api::line&& line)
 {
-    lines_ << line.get() << "\n";
+    lines_ += line.get() + "\n";
     ++count_;
     check_cache();
 }
@@ -44,7 +44,7 @@ void caching_influx_writer::check_cache()
 
 void caching_influx_writer::send_cache()
 {
-    api_.insert(influxdb::api::line(lines_.str()));
+    api_.insert(influxdb::api::line(lines_));
     lines_.clear();
     count_ = 0;
 }
