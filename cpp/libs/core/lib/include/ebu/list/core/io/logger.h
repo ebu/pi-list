@@ -1,6 +1,6 @@
 #pragma once
 
-#include "spdlog/spdlog.h"
+#include "spdlog/sinks/stdout_sinks.h"
 
 namespace ebu_list
 {

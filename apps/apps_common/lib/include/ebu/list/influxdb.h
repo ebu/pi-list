@@ -31,7 +31,7 @@ namespace ebu_list::influx
 
     private:
         influxdb::async_api::simple_db api_;
-        fmt::MemoryWriter lines_;
+        std::string lines_;
         int count_ = 0;
 
         void check_cache();
