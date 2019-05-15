@@ -17,7 +17,7 @@ const AudioInfo = props => {
         },
         {
             labelTag: 'media_information.audio.packet_time',
-            value: parseInt(props.packet_time).toFixed(3),
+            value: parseFloat(props.packet_time).toFixed(3),
             units: 'ms'
         }
     ];

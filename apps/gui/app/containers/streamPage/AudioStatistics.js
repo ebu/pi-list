@@ -3,6 +3,8 @@ import InfoPane from './components/InfoPane';
 
 const AudioStatistics = props => {
 
+    const tsdfMax = (props.tsdf_max === null || props.tsdf_max === undefined) ? '---' : props.tsdf_max;
+
     const values = [
         {
             labelTag: 'media_information.audio.number_samples',
@@ -19,7 +21,7 @@ const AudioStatistics = props => {
         },
         {
             labelTag: 'media_information.audio.tsdf_max',
-            value: props.tsdf_max,
+            value: tsdfMax,
             units: 'μs'
         }
     ];
