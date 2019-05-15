@@ -100,3 +100,34 @@ SCENARIO("ST2110-30 heuristics")
         }
     }
 }
+
+
+SCENARIO("ST2110-30 number of channels detection")
+{
+    REQUIRE(calculate_number_of_channels_and_depth(2, 1) == std::tuple(1, 16));
+    REQUIRE(calculate_number_of_channels_and_depth(3, 1) == std::tuple(1, 24));
+    REQUIRE(calculate_number_of_channels_and_depth(4, 1) == std::tuple(2, 16));
+    REQUIRE(calculate_number_of_channels_and_depth(6, 1) == std::tuple(2, 24));
+    REQUIRE(calculate_number_of_channels_and_depth(8, 1) == std::tuple(4, 16));
+    REQUIRE(calculate_number_of_channels_and_depth(9, 1) == std::tuple(3, 24));
+    REQUIRE(calculate_number_of_channels_and_depth(10, 1) == std::tuple(5, 16));
+    REQUIRE(calculate_number_of_channels_and_depth(12, 1) == std::tuple(4, 24));
+    REQUIRE(calculate_number_of_channels_and_depth(14, 1) == std::tuple(7, 16));
+    REQUIRE(calculate_number_of_channels_and_depth(15, 1) == std::tuple(5, 24));
+    REQUIRE(calculate_number_of_channels_and_depth(16, 1) == std::tuple(8, 16));
+    REQUIRE(calculate_number_of_channels_and_depth(18, 1) == std::tuple(6, 24));
+    REQUIRE(calculate_number_of_channels_and_depth(20, 1) == std::tuple(10, 16));
+    REQUIRE(calculate_number_of_channels_and_depth(21, 1) == std::tuple(7, 24));
+    REQUIRE(calculate_number_of_channels_and_depth(24, 1) == std::tuple(8, 24));
+    REQUIRE(calculate_number_of_channels_and_depth(28, 1) == std::tuple(14, 16));
+    REQUIRE(calculate_number_of_channels_and_depth(30, 1) == std::tuple(10, 24));
+    REQUIRE(calculate_number_of_channels_and_depth(32, 1) == std::tuple(16, 16));
+    REQUIRE(calculate_number_of_channels_and_depth(36, 1) == std::tuple(12, 24));
+    REQUIRE(calculate_number_of_channels_and_depth(42, 1) == std::tuple(14, 24));
+    REQUIRE(calculate_number_of_channels_and_depth(48, 1) == std::tuple(16, 24));
+    REQUIRE(calculate_number_of_channels_and_depth(96, 1) == std::tuple(32, 24));
+    REQUIRE(calculate_number_of_channels_and_depth(128, 1) == std::tuple(64, 16));
+    REQUIRE(calculate_number_of_channels_and_depth(192, 1) == std::tuple(64, 24));
+
+    REQUIRE(calculate_number_of_channels_and_depth(288, 48) == std::tuple(2, 24));
+}
