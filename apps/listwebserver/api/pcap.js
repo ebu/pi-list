@@ -78,6 +78,9 @@ router.delete('/:pcapID/', (req, res) => {
             return Stream.deleteMany({ pcap: pcapID }).exec(); // delete the associated streams
         })
         .then(() => {
+            return influxDbManager.deleteSeries(pcapID); // delete the associated streams
+        })
+        .then(() => {
             res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
         })
         .then(() => {
