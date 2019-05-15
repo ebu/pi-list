@@ -2,7 +2,7 @@
 
 #include <string>
 #include "ebu/list/core/platform/time.h"
-#include "influxdb_simple_async_api.h"
+#include "influxdb_simple_api.h"
 #include "influxdb_line.h"
 
 namespace ebu_list::influx
@@ -30,7 +30,7 @@ namespace ebu_list::influx
         void on_complete();
 
     private:
-        influxdb::async_api::simple_db api_;
+        influxdb::api::simple_db api_;
         std::string lines_;
         int count_ = 0;
 
