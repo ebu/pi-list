@@ -6,5 +6,5 @@ influxdb:
 
 mongo:
     image: mongo:4.1.10
-  ports:
+    ports:
     - "27017:27017"

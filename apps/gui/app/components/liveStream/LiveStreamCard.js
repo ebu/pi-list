@@ -3,9 +3,7 @@ import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import Panel from 'components/common/Panel';
 import FormInput from 'components/common/FormInput';
-import EditableField from 'components/common/EditableField';
 import Button from 'components/common/Button';
-import api from 'utils/api';
 import routeBuilder from 'utils/routeBuilder';
 
 const LiveStreamCard = (props) => {
@@ -36,11 +34,7 @@ const LiveStreamCard = (props) => {
                 <div className="row lst-panel__header lst-truncate">
                     <div className="col-xs-10">
                         <h2 className="lst-no-margin fit-to-div">
-                            <EditableField
-                                value={title}
-                                className="lst-no-margin"
-                                updateFunction={data => api.changeLiveStreamName(props.id, { name: data })}
-                            />
+                            {title}
                         </h2>
                     </div>
                     <div className="col-xs-2 end-xs lst-no-padding">
