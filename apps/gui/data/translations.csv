@@ -24,6 +24,7 @@ headings.unknown,Onbekend,Unknown,Desconhecido
 headings.filters,Filters,Filters,Filtros
 audio_player.play,Start,Play,Reproduzir
 audio_player.pause,Pause,Pause,Parar
+audio_player.render,Geven,Render,Renderizar
 filters.show_error_only,Enkel foutieve stromen,Only error streams,Apenas com Erros
 filters.show_online_only,Enkel actieve stromen,Only active streams,Apenas Online
 filters.show_video_only,Enkel video stromen,Only video streams,Apenas Vídeo
@@ -91,6 +92,7 @@ notifications.success.stream_deleted,Stroom verwijderd,Stream deleted,Stream apa
 notifications.success.stream_deleted_message,De stroom is verwijderd,The stream was successfully deleted,A stream foi apagada com sucesso
 notifications.success.stream_analysis,Success,Success,Sucesso
 notifications.success.stream_analysis_message,De stroom is succesvol geanalyseerd,The stream was successfully analysed,A Stream foi corretamente analisada
+notifications.success.mp3_render,Mp3-bestand gerenderd,Mp3 file rendered,Arquivo MP3 renderizado
 notifications.success.stream_capture_message,De stroom is succesvol opgenomen,The stream was successfully captured,Captura terminada com sucesso
 notifications.error.file_upload,inladen mislukt,upload failed,O upload do PCAP falhou
 notifications.error.file_upload_message,Er is een fout opgetreden voor %{name} tijdens het upload process,An error occurred during the %{name} file upload process,Ocorreu um erro enquanto o ficheiro %{name} foi submetido
@@ -101,6 +103,7 @@ notifications.error.stream_deleted,Fout tijdens het verwijderen van streamm,Erro
 notifications.error.stream_deleted_message,De stroom kan niet worden verwijderd,The stream cannot be deleted,Não foi possível apagar. Por favor verifique os logs.
 notifications.error.stream_analysis,Fout,Error,Erro
 notifications.error.stream_analysis_message,Er is iets mis gelopen tijdens de analyse van de stroom,Something went wrong during the stream analysis,Algo correu mal durante a análise da stream
+notifications.error.mp3_render,Kon mp3 niet weergeven,Could not render mp3,Não foi possível renderizar mp3
 notifications.error.stream_capture_message,Er is iets mis gelopen tijdens de opname,Something went wrong during the capture,Algo correu mal durante a captura
 workflow.drop_pcap_files_here,Sleep je PCAP-bestand(en) hier,Drop your PCAP files here,Arraste para aqui os ficheiros PCAP
 workflow.select_from_drive,of selecteer ze van je computer,or select them from your computer,ou selecione-os no seu computador
