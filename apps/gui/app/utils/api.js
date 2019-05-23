@@ -69,6 +69,7 @@ export default {
     /* SDP */
     downloadSDP: pcapID => request.get(`pcap/${pcapID}/sdp`),
     downloadSDPUrl: pcapID => `${API_URL}/pcap/${pcapID}/sdp`,
+    downloadJsonUrl: pcapID => `${API_URL}/pcap/${pcapID}/report`,
     uploadSDP: (sdpFile, onUploadComplete) => {
         const data = new FormData();
         data.append('sdp', sdpFile);
@@ -130,7 +131,8 @@ export default {
         .get(`pcap/${pcapID}/stream/${streamID}/frame/${frameNumber}/packets`),
 
     /* Audio */
-    downloadMP3: (pcapID, streamID) => `${API_URL}/pcap/${pcapID}/stream/${streamID}/mp3`,
+    downloadMp3Url: (pcapID, streamID, channelsString) => `${API_URL}/pcap/${pcapID}/stream/${streamID}/downloadmp3` + (channelsString ? `?channels=${channelsString}` : '' ),
+    renderMp3: (pcapID, streamID, channelsString) => request.get(`pcap/${pcapID}/stream/${streamID}/rendermp3?channels=${channelsString}`),
 
     /* Live */
     getLiveStreams: () => request.get('live/streams/'),

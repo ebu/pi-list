@@ -4,6 +4,8 @@
 
 namespace ebu_list::st2110::d30
 {
+    std::optional<std::tuple<int, int>> calculate_number_of_channels_and_depth(int packet_size, int ticks_per_packet);
+
     class timestamp_difference_checker
     {
     public:

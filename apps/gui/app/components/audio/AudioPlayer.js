@@ -1,97 +1,94 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
-import PropTypes from 'prop-types';
-import Button from 'components/common/Button';
-import Loader from 'components/common/Loader';
-import { translateC } from 'utils/translation';
+import Button from '../common/Button';
+import Loader from '../common/Loader';
+import { translateC } from '../../utils/translation';
 
-const propTypes = {
+const createWaveSurfer = (waveform, timeline) => {
+    const plugins = [];
+    if (timeline) {
+        plugins.push(TimelinePlugin.create({ container: '.wave-timeline' }));
+    }
+
+    const wavesurfer = WaveSurfer.create({
+        container: waveform,
+        waveColor: '#5086d8',
+        progressColor: '#2347fc',
+        splitChannels: true,
+        autoCenter: true,
+        barWidth: 1,
+        normalize: true,
+        hideScrollbar: false,
+        height: 80,
+        cursorWidth: 2,
+        plugins,
+        xhr: { withCredentials: true }
+    });
+
+    return wavesurfer;
+};
+
+const AudioPlayer = (props) => {
+    const [loading, setLoading] = useState(true);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const waveSurferRef = useRef(null);
+    const waveformRef = useRef(null);
+
+    const onPlayerReady = () => {
+        setLoading(false);
+    };
+
+    const onFinishPlay = () => {
+        setIsPlaying(false);
+    };
+
+    useEffect(() => {
+        const waveform = waveformRef.current.querySelector('.wave');
+        const wavesurfer = createWaveSurfer(waveform, props.timeline);
+        waveSurferRef.current = wavesurfer;
+
+        wavesurfer.load(props.src);
+        wavesurfer.on('ready', onPlayerReady);
+        wavesurfer.on('finish', onFinishPlay);
+
+        return () => {
+            wavesurfer.unAll();
+            wavesurfer.destroy();
+        };
+    },
+        [props.src]
+    );
+
+    const play = () => {
+        waveSurferRef.current.playPause();
+        setIsPlaying((prevIsPlaying) => !prevIsPlaying);
+    };
+
+    const buttonLabel = isPlaying ? translateC('audio_player.pause') : translateC('audio_player.play');
+    const buttonType = isPlaying ? 'danger' : 'info';
+    const buttonIcon = isPlaying ? 'pause' : 'play arrow';
+
+    return (
+        <div ref={waveformRef} className="waveform center-xs middle-xs" >
+            {loading && <Loader />}
+            <div className="wave" />
+            <div className="wave-timeline" />
+            {!loading &&
+                <Button type={buttonType} label={buttonLabel} icon={buttonIcon} outline onClick={play} />
+            }
+        </div >
+    );
+};
+
+AudioPlayer.propTypes = {
     src: PropTypes.string.isRequired,
     timeline: PropTypes.bool,
 };
 
-const defaultProps = {
+AudioPlayer.defaultProps = {
     timeline: false
 };
-
-class AudioPlayer extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            loading: true,
-            isPlaying: false
-        };
-
-        this.play = this.play.bind(this);
-    }
-
-    componentDidMount() {
-        const element = this.waveformComponent;
-        const waveform = element.querySelector('.wave');
-
-        const plugins = [];
-        if (this.props.timeline) {
-            plugins.push(TimelinePlugin.create({ container: '.wave-timeline' }));
-        }
-
-        this.wavesurfer = WaveSurfer.create({
-            container: waveform,
-            waveColor: '#5086d8',
-            progressColor: '#2347fc',
-            splitChannels: true,
-            autoCenter: true,
-            barWidth: 1,
-            normalize: true,
-            hideScrollbar: false,
-            height: 80,
-            cursorWidth: 2,
-            plugins,
-            xhr: { withCredentials: true }
-        });
-
-        this.wavesurfer.load(this.props.src);
-
-        this.wavesurfer.on('ready', () => {
-            this.setState({ loading: false });
-        });
-
-        this.wavesurfer.on('finish', () => {
-            this.setState({ isPlaying: false });
-        });
-    }
-
-    componentWillUnmount() {
-        this.wavesurfer.destroy();
-    }
-
-    play() {
-        this.wavesurfer.playPause();
-
-        this.setState(prevState => ({
-            isPlaying: !prevState.isPlaying
-        }));
-    }
-
-    render() {
-        const buttonLabel = this.state.isPlaying ? translateC('audio_player.pause') : translateC('audio_player.play');
-        const buttonType = this.state.isPlaying ? 'danger' : 'info';
-        const buttonIcon = this.state.isPlaying ? 'pause' : 'play arrow';
-
-        return (
-            <div ref={ref => this.waveformComponent = ref} className="waveform center-xs middle-xs">
-                { this.state.loading && <Loader />}
-                <div className="wave" />
-                <div className="wave-timeline" />
-                { !this.state.loading &&
-                <Button type={buttonType} label={buttonLabel} icon={buttonIcon} outline onClick={this.play} /> }
-            </div>
-        );
-    }
-}
-
-AudioPlayer.propTypes = propTypes;
-AudioPlayer.defaultProps = defaultProps;
 
 export default AudioPlayer;

@@ -103,11 +103,13 @@ namespace
         auto maybe_record = db.find_one(constants::db::offline, constants::db::collections::streams, stream_to_update);
         if (!maybe_record) return;
         auto record = maybe_record.value();
+
         nlohmann::json j;
-		j["tro_default_ns"] = info.tro_default_ns;
-		j["avg_tro_ns"] = info.avg_tro_ns;
-		j["max_tro_ns"] = info.max_tro_ns;
-		j["min_tro_ns"] = info.min_tro_ns;
+        j["tro_default_ns"] = info.tro_default_ns;
+        j["avg_tro_ns"] = info.avg_tro_ns;
+        j["max_tro_ns"] = info.max_tro_ns;
+        j["min_tro_ns"] = info.min_tro_ns;
+
         auto& media = record["media_specific"];
         media.merge_patch(j);
 

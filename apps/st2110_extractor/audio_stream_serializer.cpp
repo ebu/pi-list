@@ -11,22 +11,6 @@ using json = nlohmann::json;
 namespace
 {
     constexpr const char* raw_sample = "raw";
-    constexpr const char* mp3_name = "audio.mp3";
-
-    std::string ffmpeg_convert_to_mp3(const path& folder, const st2110::d30::audio_description& audio)
-    {
-        const auto input = folder / raw_sample;
-        const auto output = folder / mp3_name;
-
-        // ffmpeg -f s16be -ar 48k -ac 2 -i sample.pcm -codec:a libmp3lame -qscale:a 2 output.mp3
-        return fmt::format("ffmpeg -y -f s{}be -ar {}k -ac {} -i {} -codec:a libmp3lame -qscale:a 2 {}"
-            , number_of_bits(audio.encoding)
-            , to_int(audio.sampling) / 1000
-            , audio.number_channels
-            , input
-            , output
-        );
-    }
 
     path get_path_for_data_dir(path base_dir, std::string stream_id)
     {
@@ -62,12 +46,4 @@ void audio_stream_serializer::on_stream_complete()
 {
     // flush file
     raw_data_.reset();
-
-    // use ffmpeg to generate mp3
-    const auto cmd = ffmpeg_convert_to_mp3(base_dir_, this->info().audio);
-    fmt::print("{}", cmd);
-    if(native_exec(cmd) == exit_code::error)
-    {
-        logger()->error("Failed to execute command: {}", cmd);
-    }
 }

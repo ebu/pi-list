@@ -1,5 +1,7 @@
+const child_process = require('child_process');
 const router = require('express').Router();
 const multer = require('multer');
+const util = require('util');
 const program = require('../util/programArguments');
 const influxDbManager = require('../managers/influx-db');
 const fs = require('../util/filesystem');
@@ -8,10 +10,14 @@ const API_ERRORS = require('../enums/apiErrors');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const CONSTANTS = require('../enums/constants');
 const Pcap = require('../models/pcap');
+const pcapController = require('../controllers/pcap');
 const Stream = require('../models/stream');
 const streamsController = require('../controllers/streams');
 const { pcapSingleStreamIngest, pcapIngest,
     generateRandomPcapDefinition, generateRandomPcapFilename, getUserFolder } = require('../util/ingest');
+const websocketManager = require('../managers/websocket');
+const WS_EVENTS = require('../enums/wsEvents');
+const exec = util.promisify(child_process.exec);
 
 function isAuthorized(req, res, next) {
     const { pcapID } = req.params;
@@ -75,7 +81,28 @@ router.delete('/:pcapID/', (req, res) => {
             return Stream.deleteMany({ pcap: pcapID }).exec(); // delete the associated streams
         })
         .then(() => {
+            return influxDbManager.deleteSeries(pcapID); // delete the associated streams
+        })
+        .then(() => {
             res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
+        })
+        .then(() => {
+            const userID = req.session.passport.user.id;
+            websocketManager.instance().sendEventToUser(userID, {
+                event: WS_EVENTS.PCAP_FILE_DELETED,
+                data: { id: pcapID }
+            });
+        })
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+});
+
+/* Get the report for a pcap */
+router.get('/:pcapID/report', (req, res) => {
+    const { pcapID } = req.params;
+    pcapController.getReport(pcapID)
+        .then((report) => {
+            res.setHeader('Content-disposition', `attachment; filename=${pcapID}.json`);
+            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(report);
         })
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
@@ -124,8 +151,7 @@ router.get('/:pcapID/analytics/PtpOffset', (req, res) => {
 /* Get all streams from a pcap */
 router.get('/:pcapID/streams/', (req, res) => {
     const { pcapID } = req.params;
-
-    Stream.find({ pcap: pcapID }).exec()
+    streamsController.getStreamsForPcap(pcapID)
         .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
@@ -309,11 +335,72 @@ router.get('/:pcapID/stream/:streamID/frame/:frameID/png', (req, res) => {
 
 /*** Audio ***/
 /* Get mp3 file for an audio stream */
-router.get('/:pcapID/stream/:streamID/mp3', (req, res) => {
-    const { pcapID, streamID } = req.params;
-    const filePath = `${getUserFolder(req)}/${pcapID}/${streamID}/audio.mp3`;
 
-    fs.sendFileAsResponse(filePath, res);
+function renderMp3(req, res) {
+    const { pcapID, streamID } = req.params;
+    const folderPath = `${getUserFolder(req)}/${pcapID}/${streamID}/`;
+    var { channels } = req.query;
+
+    if ((channels === undefined) || (channels === '')) {
+        channels = '0,1'; // keep the 2 first channels by default
+    }
+
+    Stream.findOne({ id: streamID })
+        .exec()
+        .then((data) => {
+            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
+
+            const rawFilePath = `${folderPath}/raw`;
+            const mp3FilePath = `${folderPath}/audio-${channels}.mp3`;
+            const encodingBits = (data.media_specific.encoding == 'L24')? 24 : 16;
+            const sampling = parseInt(data.media_specific.sampling) / 1000;
+            const channelNumber = data.media_specific.number_channels;
+            // ffmpeg supports up to 16 input channels
+            const channelMapping = channels.split(',').slice(0,16).map( function(i) {
+                    return '-map_channel 0.0.' + i;
+                }).join(' ')
+            const ffmpegCommand = `ffmpeg -hide_banner -y -f s${encodingBits}be -ar ${sampling}k -ac ${channelNumber} -i "${rawFilePath}" ${channelMapping} -codec:a libmp3lame -qscale:a 2 "${mp3FilePath}"`;
+
+            logger('render-mp3').info(`Command: ${ffmpegCommand}`);
+            exec(ffmpegCommand)
+                .then((output) => {
+                    logger('render-mp3').info(output.stdout);
+                    logger('render-mp3').info(output.stderr);
+                    const userID = req.session.passport.user.id;
+                    websocketManager.instance().sendEventToUser(userID, {
+                        event: WS_EVENTS.MP3_FILE_RENDERED,
+                        data: { channels: channels }
+                    });
+                })
+                .catch((output) => {
+                    logger('render-mp3').error(output.stdout);
+                    logger('render-mp3').error(output.stderr);
+                });
+        })
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+}
+
+router.get('/:pcapID/stream/:streamID/downloadmp3', (req, res) => {
+    const { pcapID, streamID } = req.params;
+    var { channels } = req.query;
+    const folderPath = `${getUserFolder(req)}/${pcapID}/${streamID}`;
+    const filePath = `${folderPath}/audio-${channels}.mp3`;
+
+    if (fs.fileExists(filePath)) {
+        fs.sendFileAsResponse(filePath, res);
+        const userID = req.session.passport.user.id;
+        websocketManager.instance().sendEventToUser(userID, {
+            event: WS_EVENTS.MP3_FILE_RENDERED,
+            data: { channels: channels }
+        });
+    } else {
+        logger('download-mp3').info('File doesn`t exist');
+        renderMp3(req, res);
+    }
+});
+
+router.get('/:pcapID/stream/:streamID/rendermp3', (req, res) => {
+    renderMp3(req, res);
 });
 
 module.exports = router;

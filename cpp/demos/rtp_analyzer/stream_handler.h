@@ -4,6 +4,7 @@
 #include "ebu/list/st2110/rate_calculator.h"
 #include "ebu/list/st2110/d20/packet.h"
 #include <optional>
+#include <map>
 
 namespace ebu_list
 {
@@ -40,7 +41,7 @@ namespace ebu_list
             {
                 results_ = calculate_results();
             }
-            
+
             return results_.value();
         }
 

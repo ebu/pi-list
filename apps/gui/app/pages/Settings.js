@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Select from '../components/common/Select';
 import api from '../utils/api';
 import Button from '../components/common/Button';

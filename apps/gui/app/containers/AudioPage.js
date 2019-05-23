@@ -26,8 +26,9 @@ const AudioPage = (props) => {
                         <AudioInfo {...mediaInfo} />
                         <AudioStatistics {...statistics} tsdf_max={analysis.tsdf_max} />
                     </div>
+
                     <div className="col-xs-12 col-md-8">
-                        <AudioExplorer pcapID={props.pcapID} streamID={props.streamID} />
+                        <AudioExplorer pcapID={props.pcapID} streamID={props.streamID} channelNum={mediaInfo.number_channels} />
                         <LineChart
                             asyncData={() => api.getAudioTransitDelay(props.pcapID, props.streamID, first_packet_ts, last_packet_ts)}
                             xAxis={chartFormatters.getTimeLineLabel}

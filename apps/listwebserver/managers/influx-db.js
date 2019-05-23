@@ -210,6 +210,14 @@ class InfluxDbManager {
 
         return this.sendQueryAndFormatResults(query);
     }
+
+    deleteSeries(pcapID) {
+        const query = `drop series from /^${pcapID}$/`;
+
+        log.info(`Delete measurements for ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
 }
 
 
