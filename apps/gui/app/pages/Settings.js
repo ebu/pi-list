@@ -16,7 +16,8 @@ const Settings = (props) => {
         { value: 'light', label: 'Light' }
     ];
 
-    const languages = Object.keys(localeNames).map(key => {
+    const languageKeys = Object.keys(localeNames).sort();
+    const languages = languageKeys.map(key => {
         return { value: key, label: localeNames[key] };
     });
 
