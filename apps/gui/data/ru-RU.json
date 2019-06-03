@@ -158,5 +158,15 @@
   "errors.404_message": "Страница, которую вы ищете, не существует или произошла другая ошибка.",
   "errors.network_error_title": "Ошибка сети",
   "settings.theme": "Тема",
-  "settings.language": "Язык"
+  "settings.language": "Язык",
+  "live.sources.name": "*** live.sources.name",
+  "live.sources.delete_header": "*** live.sources.delete_header",
+  "live.sources.delete_message": "*** live.sources.delete_message",
+  "live.sources.destination_address": "Адрес назначения",
+  "live.sources.format": "*** format ***",
+  "live.sources.resolution": "*** resolution ***",
+  "notifications.success.live.sources.deleted": "*** notifications.success.live.sources.deleted",
+  "notifications.success.live.sources.delete_message": "*** notifications.success.live.sources.delete_message",
+  "notifications.error.live.sources.deleted": "*** notifications.error.live.sources.deleted",
+  "notifications.error.live.sources.delete_message": "*** notifications.error.live.sources.delete_message"
 }

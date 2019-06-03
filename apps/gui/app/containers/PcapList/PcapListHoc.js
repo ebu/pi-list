@@ -5,21 +5,21 @@ import asyncLoader from '../../components/asyncLoader';
 import api from '../../utils/api';
 import PcapWsEventListener from './PcapWsEventListener';
 import { addStateToPcapInfo } from './utils';
-
 import { reducer } from './reducer';
+import { tableInitialState, tableReducer } from '../../utils/models/table/tableReducer';
 import { middleware } from './middleware';
 
 const actionsWorkflow = (state, action) => {
     middleware(state, action);
-    return reducer(state, action);
+    return reducer(tableReducer(state, action), action);
 };
 
 const PcapListHoc = (props) => {
+    const _tableInitialState = tableInitialState();
+
     const initialState = {
-        selected: [],
-        selectAll: 0,
-        data: props.pcaps.map(addStateToPcapInfo),
-        itemsToDelete: [],
+        ..._tableInitialState,
+        data: props.pcaps.map(addStateToPcapInfo)
     };
 
     return (

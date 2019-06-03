@@ -6,6 +6,7 @@ const LiveStream = require('../models/liveStream');
 const fs = require('../util/filesystem');
 const { performCapture } = require('../controllers/capture');
 const { pcapIngest, generateRandomPcapDefinition } = require('../util/ingest');
+const liveSources = require('../controllers/live/sources');
 
 // Start a PCAP capture
 router.put('/pcap/capture',
@@ -69,6 +70,29 @@ router.put('/streams/subscribe', (req, res) => {
     logger('live').info(`Should subscribe: ${req.data}`);
 
     res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
+});
+
+
+// get all "live" sources
+router.get('/sources', (req, res) => {
+    liveSources.getLiveSources()
+        .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
+        .catch(() => res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(API_ERRORS.UNEXPECTED_ERROR));
+});
+
+// get all "live" sources
+router.put('/sources/delete', (req, res) => {
+    const { ids } = req.body;
+    if (ids === null || ids === undefined) {
+        res.status(HTTP_STATUS_CODE.SERVER_ERROR.BAD_REQUEST).send(API_ERRORS.RESOURCE_NOT_FOUND);
+        return;
+    };
+
+    liveSources.deleteLiveSources(ids)
+        .then(data => {
+            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data);
+        })
+        .catch(() => res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(API_ERRORS.UNEXPECTED_ERROR));
 });
 
 module.exports = router;

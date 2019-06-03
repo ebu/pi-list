@@ -158,5 +158,15 @@
   "errors.404_message": "The page you are looking for doesn't exist or another error occurred.",
   "errors.network_error_title": "Network Error",
   "settings.theme": "Theme",
-  "settings.language": "Language"
+  "settings.language": "Language",
+  "live.sources.name": "Name",
+  "live.sources.delete_header": "Delete source",
+  "live.sources.delete_message": "Are you sure you want to delete %{name} source(s)?",
+  "live.sources.destination_address": "Destination Address",
+  "live.sources.format": "Format",
+  "live.sources.resolution": "Resolution",
+  "notifications.success.live.sources.deleted": "Live sources deleted",
+  "notifications.success.live.sources.delete_message": "Live sources deleted successfully",
+  "notifications.error.live.sources.deleted": "Live source(s) not deleted",
+  "notifications.error.live.sources.delete_message": "Error deleting live sources"
 }

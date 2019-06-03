@@ -9,46 +9,8 @@ import {
 } from './utils';
 
 const reducer = (state, action) => {
-    console.table(action.type);
+
     switch (action.type) {
-        case Actions.toggleRow: {
-            const id = action.data.id;
-            const newSelected = state.selected.filter(item => item !== id);
-
-            if (newSelected.length === state.selected.length) {
-                newSelected.push(id);
-            }
-
-            console.table(newSelected);
-
-            return Object.assign({}, { ...state }, {
-                selected: newSelected,
-                selectAll: 2
-            });
-        }
-
-        case Actions.toggleSelectAll: {
-            let newSelected = [];
-
-            if (state.selectAll === 0) {
-                newSelected = state.data.map(item => item.id);
-            }
-
-            console.table(newSelected);
-
-            return Object.assign({}, { ...state }, {
-                selected: newSelected,
-                selectAll: state.selectAll === 0 ? 1 : 0
-            });
-        }
-
-        case Actions.clearSelection: {
-            return Object.assign({}, { ...state }, {
-                selected: [],
-                selectAll: 0
-            });
-        }
-
         case Actions.selectBefore: {
             const id = action.data.id;
             const pcap = getFullInfoFromId(id, state.data);
@@ -127,14 +89,7 @@ const reducer = (state, action) => {
             });
         }
 
-        case Actions.requestDelete: {
-            return Object.assign({}, { ...state }, {
-                itemsToDelete: _.cloneDeep(action.data.ids)
-            });
-        }
-
         default:
-            console.log(action.type, action.data);
             return state;
     }
 };

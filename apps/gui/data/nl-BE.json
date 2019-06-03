@@ -158,5 +158,15 @@
   "errors.404_message": "De gezochte pagina bestaat niet, of iets anders liep mis.",
   "errors.network_error_title": "Network Fout",
   "settings.theme": "Thema",
-  "settings.language": "Taal"
+  "settings.language": "Taal",
+  "live.sources.name": "*** live.sources.name",
+  "live.sources.delete_header": "*** live.sources.delete_header",
+  "live.sources.delete_message": "*** live.sources.delete_message",
+  "live.sources.destination_address": "Bestemming Adres",
+  "live.sources.format": "*** format ***",
+  "live.sources.resolution": "*** resolution ***",
+  "notifications.success.live.sources.deleted": "*** notifications.success.live.sources.deleted",
+  "notifications.success.live.sources.delete_message": "*** notifications.success.live.sources.delete_message",
+  "notifications.error.live.sources.deleted": "*** notifications.error.live.sources.deleted",
+  "notifications.error.live.sources.delete_message": "*** notifications.error.live.sources.delete_message"
 }

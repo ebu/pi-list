@@ -158,5 +158,15 @@
   "errors.404_message": "La page que vous cherchez n'existe pas ou une autre erreur est survenue.",
   "errors.network_error_title": "Erreur réseau",
   "settings.theme": "Thème",
-  "settings.language": "Langue"
+  "settings.language": "Langue",
+  "live.sources.name": "*** live.sources.name",
+  "live.sources.delete_header": "*** live.sources.delete_header",
+  "live.sources.delete_message": "*** live.sources.delete_header",
+  "live.sources.destination_address": "*** live.sources.destination_address ***",
+  "live.sources.format": "*** format ***",
+  "live.sources.resolution": "*** resolution ***",
+  "notifications.success.live.sources.deleted": "*** notifications.success.live.sources.deleted",
+  "notifications.success.live.sources.delete_message": "*** notifications.success.live.sources.delete_message",
+  "notifications.error.live.sources.deleted": "*** notifications.error.live.sources.deleted",
+  "notifications.error.live.sources.delete_message": "*** notifications.error.live.sources.delete_message"
 }

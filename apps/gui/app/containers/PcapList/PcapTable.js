@@ -10,6 +10,7 @@ import ProgressBar from '../../components/common/ProgressBar';
 import { translateX } from '../../utils/translation';
 import pcapEnums from '../../enums/pcap';
 import Tooltip from '../../components/common/Tooltip';
+import { isSelected, getGetTdProps, getCheckBoxColumn } from '../../components/table/utils';
 
 
 const getWEMessage = item => {
@@ -150,45 +151,9 @@ function renderPtp({ value }) {
 const getNumberUnknownStreams = (info) =>
     (info.total_streams - info.video_streams - info.audio_streams - info.anc_streams);
 
-const isSelected = (id, all) => {
-    return all.some(item => item === id);
-}
-
 const PcapTable = props => {
     const columns = [
-        {
-            id: "checkbox",
-            accessor: "",
-            Cell: ({ original }) => {
-                return (
-                    <div className="lst-text-center">
-                        <input
-                            type="checkbox"
-                            className="checkbox"
-                            checked={isSelected(original.id, props.selectedIds)}
-                            onChange={() => props.onSelectId(original.id)}
-                        />
-                    </div>
-                );
-            },
-            Header: x => {
-                return (
-                    <input
-                        type="checkbox"
-                        className="checkbox"
-                        checked={props.selectAll === 1}
-                        ref={input => {
-                            if (input) {
-                                input.indeterminate = props.selectAll === 2;
-                            }
-                        }}
-                        onChange={() => props.onSelectAll()}
-                    />
-                );
-            },
-            sortable: false,
-            width: 45
-        },
+        getCheckBoxColumn(props),
         {
             Header: translateX('pcap.file_name'),
             headerClassName: 'lst-text-left lst-table-header',
@@ -268,31 +233,13 @@ const PcapTable = props => {
         },
     ];
 
-    const getTdProps = (state, rowInfo, column, instance) => {
-        return {
-            onClick: (e, handleOriginal) => {
-                if (column.id === 'checkbox') {
-                    return;
-                }
-
-                if (rowInfo && rowInfo.original) {
-                    props.onClickRow(rowInfo.original.id);
-                }
-
-                if (handleOriginal) {
-                    handleOriginal();
-                }
-            }
-        };
-    };
-
     return (
         <ReactTable
             data={props.pcaps}
             columns={columns}
             defaultPageSize={10}
             className="-highlight lst-text-center"
-            getTdProps={getTdProps}
+            getTdProps={getGetTdProps(props)}
             defaultSorted={[{
                 id: 'date',
                 desc: true,

@@ -19,8 +19,7 @@ influx:
   hostname: localhost
   port: 8086
 
-nmosRegistry:
+# RabbitMQ
+rabbitmq:
   hostname: localhost
-  port: 8082
-  version: 1.2
-  refresh: 1
+  port: 5672

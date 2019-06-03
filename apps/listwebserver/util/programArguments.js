@@ -4,15 +4,11 @@ const deepFreeze = require('deep-freeze');
 const path = require('./path');
 
 function parseNmosArguments(arguments) {
-    if(!arguments.nmosRegistry) {
+    if(!arguments.nmos) {
         return null;
     }
 
-    return {
-        url: `http://${arguments.nmosRegistry.hostname}:${arguments.nmosRegistry.port}`,
-        refreshRate: parseFloat(arguments.nmosRegistry.refresh),
-        version: arguments.nmosRegistry.version
-    };
+    return arguments.nmos;
 }
 
 function parseArguments(arguments) {
