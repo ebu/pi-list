@@ -162,3 +162,13 @@ errors.404_message,La page que vous cherchez n'existe pas ou une autre erreur es
 errors.network_error_title,Erreur réseau,Ошибка сети,Помилка мережі,Network Fout,Network Error,Erro de Rede
 settings.theme,Thème,Тема,Тема,Thema,Theme,Tema
 settings.language,Langue,Язык,Мова,Taal,Language,Língua
+live.sources.name,*** live.sources.name,*** live.sources.name,*** live.sources.name,*** live.sources.name,Name,Nome
+live.sources.delete_header,*** live.sources.delete_header,*** live.sources.delete_header,*** live.sources.delete_header,*** live.sources.delete_header,Delete source,Apagar fonte
+live.sources.delete_message,*** live.sources.delete_header,*** live.sources.delete_message,*** live.sources.delete_message,*** live.sources.delete_message,Are you sure you want to delete %{name} source(s)?,Tem a certeza que pretende apagar %{name} fonte(s)?
+live.sources.destination_address,*** live.sources.destination_address ***,Адрес назначения,Адреса призначення,Bestemming Adres,Destination Address,Endereço de Destino
+live.sources.format,*** format ***,*** format ***,*** format ***,*** format ***,Format,Formato
+live.sources.resolution,*** resolution ***,*** resolution ***,*** resolution ***,*** resolution ***,Resolution,Resolução
+notifications.success.live.sources.deleted,*** notifications.success.live.sources.deleted,*** notifications.success.live.sources.deleted,*** notifications.success.live.sources.deleted,*** notifications.success.live.sources.deleted,Live sources deleted,Fonte apagada
+notifications.success.live.sources.delete_message,*** notifications.success.live.sources.delete_message,*** notifications.success.live.sources.delete_message,*** notifications.success.live.sources.delete_message,*** notifications.success.live.sources.delete_message,Live sources deleted successfully,Fontes apagadas com sucesso
+notifications.error.live.sources.deleted,*** notifications.error.live.sources.deleted,*** notifications.error.live.sources.deleted,*** notifications.error.live.sources.deleted,*** notifications.error.live.sources.deleted,Live source(s) not deleted,Fonte(s) não apagada(s)
+notifications.error.live.sources.delete_message,*** notifications.error.live.sources.delete_message,*** notifications.error.live.sources.delete_message,*** notifications.error.live.sources.delete_message,*** notifications.error.live.sources.delete_message,Error deleting live sources,Erro ao apagar fontes

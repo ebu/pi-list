@@ -18,6 +18,11 @@ influx:
   hostname: influxdb
   port: 8086
 
+# RabbitMQ
+rabbitmq:
+  hostname: localhost
+  port: 5672
+
 # Live
 capture:
   interfaceName: eth0

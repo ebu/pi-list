@@ -18,7 +18,7 @@ const request = {
     put: (url, data, config = null) => axios.put(`${API_URL}/${url}`, data, config),
     post: (url, data) => axios.post(`${API_URL}/${url}`, data),
     patch: (url, data) => axios.patch(`${API_URL}/${url}`, data),
-    delete: url => axios.delete(`${API_URL}/${url}`)
+    delete: (url, data) => axios.delete(`${API_URL}/${url}`, data)
 };
 
 export const WS_SERVER_URL = REST_URL;
@@ -140,5 +140,7 @@ export default {
     deleteLiveStream: streamID => request.delete(`live/streams/${streamID}`),
     changeLiveStreamName: (streamID, data) => request.patch(`live/streams/${streamID}/`, data),
     subscribeLiveStream: data => request.put('live/streams/subscribe/', data),
-    subscribePCAP: data => request.put('live/pcap/capture/', data)
+    subscribePCAP: data => request.put('live/pcap/capture/', data),
+    getLiveSources: () => request.get('live/sources/'),
+    deleteLiveSources: ids => request.put('live/sources/delete', { ids }),
 };

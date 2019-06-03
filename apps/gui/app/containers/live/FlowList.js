@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import api from 'utils/api';
 import websocket from 'utils/websocket';
 import websocketEventsEnum from 'enums/websocketEventsEnum';
-import { translateC } from 'utils/translation';
 import Icon from 'components/common/Icon';
 
 class DevicesList extends Component {

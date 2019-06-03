@@ -11,9 +11,7 @@ function onError(error) {
         throw error;
     }
 
-    const bind = typeof programArguments.port === 'string'
-        ? `Pipe ${programArguments.port}`
-        : `Port ${programArguments.port}`;
+    const bind = `Port ${programArguments.port}`;
 
     // handle specific listen errors with friendly messages
     switch (error.code) {

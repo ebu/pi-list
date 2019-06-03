@@ -10,7 +10,7 @@
     "amqplib": "^0.5.2",
     "axios": "^0.18.0",
     "base64-min": "^2.0.0",
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.18.2",
     "commander": "^2.12.2",
     "cookie-parser": "^1.4.3",
