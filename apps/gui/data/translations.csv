@@ -1,5 +1,5 @@
 *,fr-CA,ru-RU,uk-UA,nl-BE,en-US,pt-PT
-**,Français (CA),Русский (RU),Українська (UA),Nederlands (BE),English (US),Português (PT)
+**,Français (CA),Русский,Українська,Nederlands (BE),English (US),Português (PT)
 ,,,,,,
 test_key,test,тест_значение,тест_значення,test_waarde,test_value,test_value
 ,,,,,,
@@ -20,11 +20,11 @@ headings.last_flows,Flux en direct,Живые потоки,Живі потоки
 headings.video,Vidéo,Видео,Відео,Video,Video,Vídeo
 headings.audio,Audio,Аудио,Аудіо,Audio,Audio,Áudio
 headings.anc,Données ancilliaires,Вспомогательные данные,Допоміжні дані,Ancillary Data,Ancillary Data,Dados Auxiliares
-headings.unknown,Inconnu,Неизвестный,Невідомий,Onbekend,Unknown,Desconhecido
+headings.unknown,Inconnu,Неизвестные,Невідомі,Onbekend,Unknown,Desconhecido
 headings.filters,Filtres,Фильтры,Фільтри,Filters,Filters,Filtros
 audio_player.play,Jouer,Воспроизведение,Відтворення,Start,Play,Reproduzir
 audio_player.pause,Pause,Пауза,Пауза,Pause,Pause,Parar
-audio_player.render,Effectuer le rendu,Згенерувати,Сгенерировать,Geven,Render,Renderizar
+audio_player.render,Effectuer le rendu,Сгенерировать,Згенерувати,Geven,Render,Renderizar
 filters.show_error_only,Montrer les flux ayant des erreurs,Только потоки с ошибками,Тільки потоки з помилками,Enkel foutieve stromen,Only error streams,Apenas com Erros
 filters.show_online_only,Afficher les flux actif seulement,Только активные потоки,Тільки активні потоки,Enkel actieve stromen,Only active streams,Apenas Online
 filters.show_video_only,Afficher les flux videos,Только видеопотоки,Тільки відео потоки,Enkel video stromen,Only video streams,Apenas Vídeo
@@ -146,7 +146,7 @@ navigation.capture,Capturer,Захватить,Захопити,Capture,Capture,
 navigation.live_streams,Flux en direct,Живые потоки,Живі потоки,Live Streams,Live Streams,Live
 navigation.network,Réseau,Сеть,Мережа,Netwerk,Network,Na Rede
 navigation.pcaps,PCAPs et flux,PCAP файлы и потоки,PCAP файли та потоки,PCAPs & Stromen,PCAPs & Streams,PCAPs & Streams
-navigation.settings,Paramètres,Настройки,Налаштування потоку,Instellingen,Settings,Definições
+navigation.settings,Paramètres,Настройки,Налаштування,Instellingen,Settings,Definições
 navigation.help,Besoin d'aide?,Нужна помощь?,Потрібна допомога?,Hulp nodig?,Need some help?,Precisa de ajuda?
 navigation.ptp_analysis,Analyse PTP,Анализ PTP,Аналіз PTP,PTP Analyse,PTP Analysis,Análise PTP
 navigation.streams,Flux,Потоки,Потоки,Stromen,Streams,Streams
