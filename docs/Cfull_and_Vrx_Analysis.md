@@ -9,6 +9,7 @@
   - The capture must be done using nanosecond resolution pcap files.
 
 ## Heuristics
+
 - Schedule: LIST does not rely on SDP files, therefore it is doesn't know if the schedule is gapped or linear. Therefore, we use an heuristic to determine that. That heuristic is based on the gap between the capture time of the last packet of one frame and the first packet of the subsequent frame. If that gap is at least 10 times the inter packet spacing of all other packets, we assume the schedule is gapped.
 
 ## Vrx Analysis
@@ -16,6 +17,7 @@
 ### Assumptions
 
 We assume that:
+
 - The Vrx buffer should be empty at the begin of each frame. This is not necessarily correct and we may eventually remove this constraint. (see https://github.com/ebu/pi-list/issues/18)
 
 ### Algorithms
@@ -28,10 +30,12 @@ In order to overcome these facts, we use 2 different algorithms to calculate Vrx
 #### Tvd = Ideal
 
 In this case, we assume that:
+
 - TRoffset = TROdefault
 - Tvd = N x Tframe + TRoffset
 
 Where:
+
 - N is the frame index since the SMPTE epoch
 - Tframe is the frame period
 
@@ -44,4 +48,5 @@ In order to deal with cases where TRoffset != TROdefault, we assume that:
 - TRoffset = avg(TPR0 - N x Tframe)
 
 Where:
+
 - TPR0 is the capture time of the first packet of each frame
