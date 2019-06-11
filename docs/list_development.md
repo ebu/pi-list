@@ -1,4 +1,5 @@
 # Development
+
 ## Pre-requisites
 
 - **CMake** >= v3.9
@@ -16,7 +17,6 @@ In order to run and develop this application on your computer, you need this add
 - **FFmpeg** (only if you're going to run LIST locally - ignore this if you're going to run it on Docker)
 - **uuid-dev** (only on linux - sudo apt-get install uuid-dev)
 - **libpcap-dev** (only on linux)
-
 
 ## Quick-start
 
@@ -84,6 +84,7 @@ lib/            --> contains library files; nested folders represent namespaces
 unit_tests/     --> test files
 CMakeLists.txt  --> definitions for both lib and unit_tests
 ```
+
 ### Use LIST SDK as an external Library
 
 Just use cmake's `add_subdirectory()` and it will work out-of-the-box.

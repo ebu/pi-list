@@ -266,14 +266,28 @@ function audioConsolidation(req, res, next) {
         });
 }
 
+function ancillaryConsolidation(req, res, next) {
+    const pcapId = req.pcap.uuid;
+    Stream.find({ pcap: pcapId, media_type: "ancillary_data" }).exec()
+        .then(streams => {
+            addStreamsToReq(streams, req);
+        })
+        .then(() => next())
+        .catch((output) => {
+            logger('ancillary-consolidation').error(`exception: ${output}`);
+            logger('ancillary-consolidation').error(`exception: ${output}`);
+        });
+}
+
 function commonConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
     const streams = _.get(req, 'streams', []);
+
     doRtpAnalysis(pcapId, streams)
         .then(() => next())
         .catch((output) => {
-            logger('audio-consolidation').error(`exception: ${output}`);
-            logger('audio-consolidation').error(`exception: ${output}`);
+            logger('common-consolidation').error(`exception: ${output}`);
+            logger('common-consolidation').error(`exception: ${output}`);
         });
 }
 
@@ -377,6 +391,7 @@ module.exports = {
         pcapFullAnalysis,
         videoConsolidation,
         audioConsolidation,
+        ancillaryConsolidation,
         commonConsolidation,
         pcapConsolidation,
         pcapIngestEnd
@@ -386,6 +401,7 @@ module.exports = {
         singleStreamAnalysis,
         videoConsolidation,
         audioConsolidation,
+        ancillaryConsolidation,
         commonConsolidation,
         pcapConsolidation
     ],

@@ -17,11 +17,7 @@ function upgradeStreamInfo(stream) {
     if (stream.media_type == "audio") {
         stream = upgradeTsdfAnalysis(stream);
     }
-
-    if (_.get(stream, 'analyses.rtp_sequence', undefined) === undefined
-    || _.get(stream, 'statistics.packet_count', undefined) !== undefined) {
-        stream = addRtpSequenceAnalysisToStream(stream);
-    }
+    stream = addRtpSequenceAnalysisToStream(stream);
 
     return stream;
 }

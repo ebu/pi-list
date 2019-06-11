@@ -21,9 +21,6 @@ function addRtpSequenceAnalysisToStream(stream) {
         }
     };
 
-    _.set(stream, ['statistics', 'packet_count'], undefined);
-    _.set(stream, ['statistics', 'dropped_packet_count'], undefined);
-
     if (report.result === constants.outcome.not_compliant) {
         stream = appendError(stream, {
             id: constants.errors.dropped_packets

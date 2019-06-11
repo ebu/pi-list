@@ -38,6 +38,7 @@ namespace ebu_list
 
         serializable_stream_info info_;
         anc_stream_details anc_description_;
+        std::optional<uint32_t> last_sequence_number_;
 
         completion_handler completion_handler_;
     };

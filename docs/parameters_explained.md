@@ -12,12 +12,12 @@
 | TP<i>A</i><sub>0</sub> | This parameter gives the actual time a packet arrives. The index indicates the first packet of a field or frame. |
 | FPO | First Packet Offset is a calculated value for each field or frame and it calculated as follows: TP<i>A</i><sub>0</sub> - N * T<sub>FRAME</sub>. In theory this value is exact the same value as TRO<sub>Default</sub>. In practise this value will be a bit smaller, as a result of this difference some packets will be sinked into the VRX buffer.|
 | Margin | TP<i>A</i><sub>0</sub> - TP<i>R</i><sub>0</sub> |
+
 ## RTP Timestamps
+
 | Parameter | Explanation |
 | ------ | ------ |
 | RTP<sub>Time2Reference</sub> | RTP<sub>Time2Reference</sub> = RTP<sub>Timestamp</sub> - N*Tframe |
 | RTP<sub>Time2TP<i>A</i><sub>0</sub></sub>| RTP<sub>Time2TP<i>A</i><sub>0</sub></sub> = RTP<sub>Timestamp</sub> - TP<i>A</i><sub>0</sub> |
-
-
 
 ![Packet Arrival](parameters_explained_1.png)

@@ -43,7 +43,7 @@ namespace
 
 video_stream_handler::video_stream_handler(decode_video should_decode_video,
     rtp::packet first_packet,
-    serializable_stream_info info, 
+    serializable_stream_info info,
     video_stream_details details,
     completion_handler ch)
     : should_decode_video_(should_decode_video == decode_video::yes),
