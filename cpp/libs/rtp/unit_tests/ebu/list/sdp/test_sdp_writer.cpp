@@ -8,7 +8,7 @@ using namespace ebu_list::sdp;
 
 SCENARIO("SDP serialization")
 {
-    sdp_global_settings settings{"session name", "session information"};
+    sdp_global_settings settings{"session name", "session information", "/tmp/folder/sdp.sdp"};
 
     media::network_info network_info {
             ipv4::from_string("192.168.1.1", 52652),
@@ -51,7 +51,7 @@ SCENARIO("SDP serialization")
             THEN("we have an information line")
             {
                 const auto info_line = lines[3];
-                REQUIRE( info_line == "i=session information" );
+                REQUIRE( info_line.rfind("i=session information") == 0);
             }
 
             THEN("we have timming information")
@@ -73,9 +73,9 @@ SCENARIO("SDP serialization")
             auto initial_size = sdp.sdp().size();
             const auto lines = sdp.add_media(media).sdp();
 
-            THEN("two lines were added")
+            THEN("4 lines were added")
             {
-                REQUIRE( lines.size() - initial_size == 2 );
+                REQUIRE( lines.size() - initial_size == 4 );
             }
 
             THEN("the first added line is a media line")

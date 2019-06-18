@@ -50,7 +50,7 @@ SCENARIO("sdp creation for st2110 video")
             THEN("we get the correct information")
             {
                 const std::vector<std::string> expected = { "a=source-filter:incl IN IP4 255.10.10.1 192.168.1.10",
-                    "a=fmtp:96 sampling=YCbCr-4:2:2; width=1920; height=1080; exactframerate=50; depth=10; colorimetry=BT601; PM=2110GPM; SSN=ST2110-20:2017" };
+                    "a=fmtp:96 sampling=YCbCr-4:2:2; width=1920; height=1080; exactframerate=50; depth=10; colorimetry=BT601; PM=2110GPM; SSN=ST2110-20:2017;" };
 
                 REQUIRE( lines.size() == expected.size() );
                 REQUIRE( lines == expected );
@@ -66,7 +66,7 @@ SCENARIO("sdp creation for st2110 video")
             THEN("we get the correct information")
             {
                 const std::vector<std::string> expected = { "a=source-filter:incl IN IP4 255.10.10.1 192.168.1.10",
-                    "a=fmtp:96 sampling=YCbCr-4:2:2; width=1920; height=1080; exactframerate=60/1001; depth=10; colorimetry=BT601; PM=2110GPM; SSN=ST2110-20:2017" };
+                    "a=fmtp:96 sampling=YCbCr-4:2:2; width=1920; height=1080; exactframerate=60/1001; depth=10; colorimetry=BT601; PM=2110GPM; SSN=ST2110-20:2017;" };
 
                 REQUIRE( lines.size() == expected.size() );
                 REQUIRE( lines == expected );
