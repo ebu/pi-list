@@ -119,15 +119,12 @@ function pcapPreProcessing(req, res, next) {
         });
 }
 
-function postProcessSdpFile(sdpPath, sdpInfo) {
-    readFileAsync(sdpPath, 'utf8')
-        .then(sdp => {
-            sdp = sdp.replace(/LIST Generated SDP/m, sdpInfo);
-            sdp = sdp.replace(/LIST SDP/m, sdpInfo);
-            return sdp;
-        })
-        .then(sdp => {
-            return writeFileAsync(sdpPath, sdp);
+function postProcessSdpFiles(folder) {
+    const archiveCommand = `cd ${folder}; find  -name  "*.sdp" | zip sdp -@`;
+    logger('sdp-post-processing').info(archiveCommand);
+    exec(archiveCommand)
+        .then(output => {
+            logger('sdp-post-processing').info(output.stdout);
         })
         .catch((output) => {
             logger('sdp-post-processing').error(`exception: ${output}`);
@@ -148,12 +145,9 @@ function pcapFullAnalysis(req, res, next) {
         .then((output) => {
             logger('st2110_extractor').info(output.stdout);
             logger('st2110_extractor').info(output.stderr);
+            postProcessSdpFiles(pcapFolder);
+            next();
         })
-        .then(() => {
-            const sdpPath = `${pcapFolder}/sdp.sdp`;
-            postProcessSdpFile(sdpPath, req.file.originalname);
-        })
-        .then(() => next())
         .catch((output) => {
             logger('pcap-full-analysis').error(`exception: ${output} ${output.stdout}`);
             logger('pcap-full-analysis').error(`exception: ${output} ${output.stderr}`);
@@ -189,6 +183,7 @@ function singleStreamAnalysis(req, res, next) {
         .then((output) => {
             logger('st2110_extractor').info(output.stdout);
             logger('st2110_extractor').info(output.stderr);
+            postProcessSdpFiles(pcapFolder);
             next();
         })
         .catch((output) => {

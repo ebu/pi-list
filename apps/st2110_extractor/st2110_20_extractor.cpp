@@ -161,9 +161,6 @@ namespace
 
         const auto offset_from_ptp_clock = use_offset_from_ptp_clock ? -pcap.offset_from_ptp_clock : std::chrono::nanoseconds(0);
 
-        const auto sdp_path = config.storage_folder / "sdp.sdp";
-        ebu_list::sdp::sdp_writer sdp({"LIST Generated SDP", "LIST SDP"});
-
         auto main_executor = std::make_shared<executor>();
 
         auto video_dump_handler = [&](const video_stream_serializer& handler)
@@ -186,7 +183,9 @@ namespace
             db.update(constants::db::offline, constants::db::collections::streams, stream_to_update, j);
 
             st2110::d20::st2110_20_sdp_serializer s(handler.info().video);
+            ebu_list::sdp::sdp_writer sdp({"LIST Generated SDP", "Video flow", config.storage_folder / network_info.id / "video.sdp"});
             sdp.add_media(network_info, s);
+            sdp.write();
         };
 
         auto audio_dump_handler = [&](const audio_stream_handler& handler)
@@ -198,7 +197,9 @@ namespace
             db.update(constants::db::offline, constants::db::collections::streams, stream_to_update, j);
 
             st2110::d30::st2110_30_sdp_serializer s(handler.info().audio);
+            ebu_list::sdp::sdp_writer sdp({"LIST Generated SDP", "audio flow", config.storage_folder / network_info.id / "audio.sdp"});
             sdp.add_media(network_info, s);
+            sdp.write();
         };
 
         auto anc_dump_handler = [&](const anc_stream_handler& handler)
@@ -210,7 +211,9 @@ namespace
             db.update(constants::db::offline, constants::db::collections::streams, stream_to_update, j);
 
             st2110::d40::st2110_40_sdp_serializer s(handler.info().anc);
+            ebu_list::sdp::sdp_writer sdp({"LIST Generated SDP", "Ancillary flow", config.storage_folder / network_info.id / "ancillary.sdp"});
             sdp.add_media(network_info, s);
+            sdp.write();
         };
 
         auto create_handler = [&](rtp::packet first_packet) -> rtp::listener_uptr
@@ -345,8 +348,6 @@ namespace
         main_executor->wait();
 
         update_tr_info(db, tro_info);
-
-        sdp.write_to(sdp_path);
 
         pcap.analyzed = true;
         pcap.audio_streams = nr_audio.load();

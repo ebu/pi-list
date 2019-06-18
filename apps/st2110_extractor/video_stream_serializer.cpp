@@ -58,10 +58,10 @@ video_stream_serializer::video_stream_serializer(rtp::packet first_packet,
     frame_size_(get_frame_size(details)),
     on_complete_callback_(on_complete_callback),
     compliance_(d21::build_compliance_analyzer(details.video, {
-		details.video.schedule,
-		d21::tvd_kind::ideal,
-		std::nullopt
-		}))
+            details.video.schedule,
+            d21::tvd_kind::ideal,
+            std::nullopt
+            }))
 {
 }
 

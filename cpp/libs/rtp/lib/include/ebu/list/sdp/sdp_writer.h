@@ -10,6 +10,7 @@ namespace ebu_list::sdp
     {
         std::string session_name;
         std::string session_info;
+        ebu_list::path path;
     };
 
     class sdp_writer
@@ -19,7 +20,7 @@ namespace ebu_list::sdp
         explicit sdp_writer(const sdp_global_settings& settings);
 
         std::vector<std::string> sdp() const;
-        void write_to(const ebu_list::path& path) const;
+        void write(void) const;
 
         sdp_writer& add_media(const ebu_list::media::network_media_description& media_description);
 
@@ -37,8 +38,10 @@ namespace ebu_list::sdp
     private:
         void write_media_line(const ebu_list::media::network_media_description& media_description);
         void write_connection_line(const ebu_list::media::network_media_description& media_description);
+        void write_media_clock_lines();
 
     private:
+        ebu_list::path path_;
         std::vector<std::string> lines_;
     };
 }
