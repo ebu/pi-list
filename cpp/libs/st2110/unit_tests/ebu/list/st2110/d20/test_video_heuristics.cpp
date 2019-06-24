@@ -70,6 +70,33 @@ SCENARIO("ST2110-20 heuristics")
         }
     }
 
+    GIVEN("a 625i50 video stream")
+    {
+        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-20/2110-20_625i50.pcap");
+        rtp_source source(pcap_file);
+
+        video_format_detector detector;
+        const auto result = test::run_detector(detector, source);
+
+        WHEN("we check the format")
+        {
+            REQUIRE(result == detector::status::valid);
+
+            THEN("we get the correct format")
+            {
+                const auto details = detector.get_details();
+                REQUIRE(std::holds_alternative<video_description>(details));
+                const auto video_details = std::get<d20::video_description>(details);
+                REQUIRE(video_details.packets_per_frame == 384);
+                REQUIRE(video_details.rate == video::Rate(50));
+                REQUIRE(video_details.scan_type == video::scan_type::INTERLACED);
+                REQUIRE(video_details.dimensions.width == 720);
+                REQUIRE(video_details.dimensions.height == 576);
+                REQUIRE(video_details.sampling == video::video_sampling::YCbCr_4_2_2);
+            }
+        }
+    }
+
     GIVEN("a audio stream")
     {
         const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-30/l16_48000_2ch_1ms.pcap");

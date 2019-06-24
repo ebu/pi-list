@@ -46,6 +46,13 @@ void ebu_list::write_png(oview data, media::video::video_dimensions dimensions, 
     const auto w = dimensions.width;
     const auto h = dimensions.height;
 
+    if(w == 0 || h == 0)
+    {
+        logger()->error("Invalid dimensions: {}x{}", w, h);
+        // TODO: send error message
+        return;
+    }
+
     std::vector<uint8_t> out;
 
     void* user_error_ptr = nullptr; // TODO: fix error handling
