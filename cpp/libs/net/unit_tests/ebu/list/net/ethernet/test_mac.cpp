@@ -16,7 +16,7 @@ SCENARIO("mac to_string")
         {
             THEN("it is correctly represented")
             {
-                REQUIRE(to_string(a) == "A1:B2:C3:D4:E5:F6");
+                REQUIRE(to_string(a) == "a1:b2:c3:d4:e5:f6");
             }
         }
     }
