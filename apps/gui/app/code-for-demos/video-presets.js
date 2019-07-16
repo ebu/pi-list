@@ -1,6 +1,6 @@
 import { isString } from 'lodash';
 
-const MEDIA_SPECIFIC_PROFILES = {
+const VIDEO_PROFILES = {
     '1080i50-422-10bits': {
         sampling: 'YCbCr-4:2:2',
         color_depth: 10,
@@ -187,21 +187,21 @@ export function getAudioProfiles() {
     });
 }
 
-export function getMediaSpecificInformationByProfile(profile) {
+export function getVideoInformationByProfile(profile) {
     const defaults = isString(profile)
-        ? MEDIA_SPECIFIC_PROFILES[profile]
+        ? VIDEO_PROFILES[profile]
         : { colorimetry: 'unknown' };
 
-    const newMediaSpecific = Object.assign(
+    const newVideo = Object.assign(
         {},
         defaults
     );
 
-    if (newMediaSpecific.colorimetry === undefined) {
-        newMediaSpecific.colorimetry = 'unknown';
+    if (newVideo.colorimetry === undefined) {
+        newVideo.colorimetry = 'unknown';
     }
 
-    return newMediaSpecific;
+    return newVideo;
 }
 
 export function getAudioInformationByProfile(profile) {

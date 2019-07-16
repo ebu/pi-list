@@ -16,7 +16,6 @@ nlohmann::json video_stream_details::to_json(const video_stream_details& details
     statistics["frame_count"] = details.frame_count;
     statistics["first_packet_ts"] = std::to_string(chrono::duration_cast<chrono::nanoseconds>(details.first_packet_ts.time_since_epoch()).count());
     statistics["last_packet_ts"] = std::to_string(chrono::duration_cast<chrono::nanoseconds>(details.last_packet_ts.time_since_epoch()).count());
-    statistics["packets_per_frame"] = details.video.packets_per_frame;
 
     nlohmann::json j;
     j["media_specific"] = st2110::d20::to_json(details.video);
@@ -76,13 +75,24 @@ st2110::d20::video_description st2110::d20::from_json(const nlohmann::json& j)
     desc.dimensions = { j.at("width").get<uint16_t>(), j.at("height").get<uint16_t>() };
     desc.rate = media::video::parse_from_string(j.at("rate").get<string>());
     desc.colorimetry = media::video::parse_colorimetry(j.at("colorimetry").get<string>());
-    desc.packets_per_frame = j.at("packets_per_frame").get<int>();
-    desc.schedule = d21::read_schedule_from_string(j.at("schedule").get<string>());
 
-    const auto scan_type = j.find("scan_type");
-    if (scan_type != j.end())
+    // the following are not always populated
+    const auto scan_type_json = j.find("scan_type");
+    if (scan_type_json != j.end())
     {
-        desc.scan_type = media::video::parse_scan_type(scan_type->get<string>());
+        desc.scan_type = media::video::parse_scan_type(scan_type_json->get<string>());
+    }
+
+    const auto packets_per_frame_json = j.find("packets_per_frame");
+    if (packets_per_frame_json != j.end())
+    {
+        desc.packets_per_frame = packets_per_frame_json->get<int>();
+    }
+
+    const auto schedule_json = j.find("schedule");
+    if (schedule_json != j.end())
+    {
+        desc.schedule = d21::read_schedule_from_string(schedule_json->get<string>());
     }
 
     return desc;
