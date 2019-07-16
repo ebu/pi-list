@@ -171,12 +171,14 @@ function resetStreamCounters(req, res, next) {
     const { streamID } = req.params;
     Stream.findOne({ id: streamID }).exec()
         .then(data =>  {
-            data.statistics.packet_count = 0;
-            data.statistics.dropped_packet_count = 0;
-            if (data.media_type == 'audio') {
-                data.statistics.sample_count = 0;
-            } else {
-                data.statistics.frame_count = 0;
+            if (typeof data.statistics !== 'undefined') {
+                data.statistics.packet_count = 0;
+                data.statistics.dropped_packet_count = 0;
+                if (data.media_type == 'audio') {
+                    data.statistics.sample_count = 0;
+                } else {
+                    data.statistics.frame_count = 0;
+                }
             }
             Stream.findOneAndUpdate({ id: streamID }, data).exec()
                 .then(data =>  {

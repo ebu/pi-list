@@ -13,7 +13,7 @@ import keyEnum from '../enums/keyEnum';
 import {
     getVideoProfiles,
     getAudioProfiles,
-    getMediaSpecificInformationByProfile,
+    getVideoInformationByProfile,
     getAudioInformationByProfile
 } from '../code-for-demos/video-presets';
 import notifications from '../utils/notifications';
@@ -62,7 +62,7 @@ class StreamConfiguration extends Component {
         });
 
         if (option.value === 'video') {
-            this.autoFillInfo(null, getMediaSpecificInformationByProfile);
+            this.autoFillInfo(null, getVideoInformationByProfile);
         } else if (option.value === 'audio') {
             this.autoFillInfo(null, getAudioInformationByProfile);
         }
@@ -118,7 +118,7 @@ class StreamConfiguration extends Component {
                         searchable
                         clearable={true}
                         options={this.props.videoProfiles}
-                        onChange={option => this.autoFillInfo(option, getMediaSpecificInformationByProfile)}
+                        onChange={option => this.autoFillInfo(option, getVideoInformationByProfile)}
                     />
                 </FormInput>
                 <FormInput label={translateC('media_information.video.sampling')}>
@@ -185,9 +185,10 @@ class StreamConfiguration extends Component {
                 </FormInput>
                 <FormInput label={translateC('media_information.video.packets_per_frame')}>
                     <Input
-                        disabled
                         type="number"
-                        value={mediaSpecific.packets_per_frame || 0}
+                        value={mediaSpecific.packets_per_frame || 1}
+                        min="1"
+                        max="32"
                         onChange={evt => this.updateMediaSpecific('packets_per_frame', parseInt(evt.currentTarget.value, 10))}
                     />
                 </FormInput>
