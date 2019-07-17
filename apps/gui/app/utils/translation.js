@@ -6,7 +6,7 @@ const translations = {};
 export const localeNames = require('../../data/locales.json');
 export const locales = Object.keys(localeNames);
 
-locales.forEach((lc) => {
+locales.forEach(lc => {
     // eslint-disable-next-line
     const phrases = require(`../../data/${lc}.json`);
     translations[lc] = new Polyglot({ lc, phrases });
@@ -27,7 +27,7 @@ export function translateTo(phrase, lc, value) {
 
 export const T = props => {
     const [{ language }] = useStateValue();
-    return (<span>{translateTo(props.t, language, props.v)}</span>);
+    return <span>{translateTo(props.t, language, props.v)}</span>;
 };
 
 export function translate(phrase, value) {
@@ -42,5 +42,5 @@ export function translateX(phrase, value) {
 
 /// Returns a component that renders to a span.
 export function translateC(phrase, value) {
-    return (<T t={phrase} v={value} />);
+    return <T t={phrase} v={value} />;
 }

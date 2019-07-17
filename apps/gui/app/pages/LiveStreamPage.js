@@ -13,11 +13,17 @@ class LiveStreamPage extends Component {
 
     renderAudio() {
         const { streamID } = this.props.match.params;
-        return (<AudioPage streamInfo={this.props.streamInfo} pcapID="live-pcap" streamID={streamID} />);
+        return (
+            <AudioPage
+                streamInfo={this.props.streamInfo}
+                pcapID="live-pcap"
+                streamID={streamID}
+            />
+        );
     }
 
     renderVideo() {
-        return (<LiveVideoPage streamInfo={this.props.streamInfo} />);
+        return <LiveVideoPage streamInfo={this.props.streamInfo} />;
     }
 
     render() {
@@ -25,11 +31,13 @@ class LiveStreamPage extends Component {
     }
 }
 
-export default withRouter(asyncLoader(LiveStreamPage, {
-    asyncRequests: {
-        streamInfo: (props) => {
-            const { streamID } = props.match.params;
-            return api.getLiveStream(streamID);
-        }
-    }
-}));
+export default withRouter(
+    asyncLoader(LiveStreamPage, {
+        asyncRequests: {
+            streamInfo: props => {
+                const { streamID } = props.match.params;
+                return api.getLiveStream(streamID);
+            },
+        },
+    })
+);

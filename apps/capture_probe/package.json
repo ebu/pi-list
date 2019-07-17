@@ -1,0 +1,24 @@
+{
+  "name": "capture_probe",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "amqplib": "^0.5.2",
+    "axios": "^0.18.0",
+    "commander": "^2.12.2",
+    "ebu_list_common": "file:../../js/common",
+    "form-data": "^2.3.3",
+    "multer": "^1.4.1",
+    "read-yaml": "^1.1.0",
+    "request": "^2.88",
+    "winston": "^3.0.0-rc1"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "nodemon": "^1.19.1"
+  }
+}

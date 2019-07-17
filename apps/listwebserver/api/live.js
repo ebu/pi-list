@@ -25,7 +25,7 @@ router.put('/pcap/capture',
     ...pcapIngest
 );
 
-// get all "live" streams, active or not
+// get all live streams, active or not
 router.get('/streams', (req, res) => {
     LiveStream.find().exec()
         .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
@@ -73,14 +73,22 @@ router.put('/streams/subscribe', (req, res) => {
 });
 
 
-// get all "live" sources
+// get all live sources
 router.get('/sources', (req, res) => {
     liveSources.getLiveSources()
         .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(API_ERRORS.UNEXPECTED_ERROR));
 });
 
-// get all "live" sources
+// add a live sources. body : { source: <source to add> }
+router.post('/sources', (req, res) => {
+    liveSources.addLiveSource(req.body.source)
+        .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send(data))
+        .catch(() => res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(API_ERRORS.UNEXPECTED_ERROR));
+});
+
+
+// delete live sources
 router.put('/sources/delete', (req, res) => {
     const { ids } = req.body;
     if (ids === null || ids === undefined) {

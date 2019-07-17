@@ -6,7 +6,7 @@ import asyncLoader from 'components/asyncLoader';
 import api from 'utils/api';
 import AncillaryInfo from './streamPage/AncillaryInfo';
 
-const AncillaryPage = (props) => {
+const AncillaryPage = props => {
     const networkInfo = props.streamInfo.network_information;
 
     return (
@@ -28,5 +28,5 @@ const AncillaryPage = (props) => {
 export default asyncLoader(AncillaryPage, {
     asyncRequests: {
         availableAncOptions: () => api.getAvailableAncillaryOptions(),
-    }
+    },
 });

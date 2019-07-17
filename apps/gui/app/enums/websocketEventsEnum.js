@@ -3,7 +3,7 @@ export default {
         IP_PARSED_FROM_SDP: 'IP_PARSED_FROM_SDP',
         SDP_VALIDATION_RESULTS: 'SDP_VALIDATION_RESULTS',
         STREAM_UPDATE: 'STREAM_UPDATE',
-        NMOS_UPDATE: 'NMOS_UPDATE'
+        NMOS_UPDATE: 'NMOS_UPDATE',
     },
     MEDIA: {
         MP3_FILE_RENDERED: 'MP3_FILE_RENDERED',
@@ -15,5 +15,5 @@ export default {
         FILE_FAILED: 'PCAP_FILE_FAILED',
         DONE: 'PCAP_FILE_PROCESSING_DONE',
         DELETED: 'PCAP_FILE_DELETED',
-    }
+    },
 };

@@ -18,11 +18,11 @@ const TABS = [
     VrxAnalysis,
     TvdAnalysis,
     RtpAnalysisViewer,
-    PerFrameAnalysisViewer
+    PerFrameAnalysisViewer,
 ];
 
-const VideoPage = (props) => {
-    const [ tabIndex, setTabIndex ] = useState(0);
+const VideoPage = props => {
+    const [tabIndex, setTabIndex] = useState(0);
 
     const CurrentTabComponent = TABS[tabIndex];
 
@@ -32,36 +32,36 @@ const VideoPage = (props) => {
                 headers={[
                     {
                         label: 'Analysis',
-                        icon: 'info'
+                        icon: 'info',
                     },
                     {
                         label: 'Information',
-                        icon: 'info'
+                        icon: 'info',
                     },
                     {
                         label: 'Stream Explorer',
-                        icon: 'view module'
+                        icon: 'view module',
                     },
                     {
                         label: 'Cinst',
-                        icon: 'timeline'
+                        icon: 'timeline',
                     },
                     {
                         label: 'Vrx',
-                        icon: 'timeline'
+                        icon: 'timeline',
                     },
                     {
                         label: 'Tvd',
-                        icon: 'timeline'
+                        icon: 'timeline',
                     },
                     {
                         label: 'RTP',
-                        icon: 'timeline'
+                        icon: 'timeline',
                     },
                     {
                         label: 'Per-frame',
-                        icon: 'timeline'
-                    }
+                        icon: 'timeline',
+                    },
                 ]}
                 onTabChange={setTabIndex}
             >
@@ -71,6 +71,6 @@ const VideoPage = (props) => {
             </Tabs>
         </div>
     );
-}
+};
 
 export default VideoPage;

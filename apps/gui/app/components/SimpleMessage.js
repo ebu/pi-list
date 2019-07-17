@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 
-const SimpleMessage = (props) => {
+const SimpleMessage = props => {
     return (
         <h2 className="lst-no-margin lst-text-dark-grey">
             <Icon value={props.icon} />
@@ -17,7 +17,7 @@ SimpleMessage.propTypes = {
 };
 
 SimpleMessage.defaultProps = {
-    icon: ''
+    icon: '',
 };
 
 export default SimpleMessage;

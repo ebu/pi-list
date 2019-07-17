@@ -6,7 +6,7 @@ const logger = require('./logger');
 ///////////////////////////////////////////////////////////////////////////////
 
 const config = {
-    address: '192.168.1.86',
+    address: '0.0.0.0',
     port: 8765,
     nmos: {
         registrationUrl: 'http://localhost:8882/x-nmos/registration/v1.2',

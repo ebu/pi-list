@@ -1,43 +1,18 @@
 import _ from 'lodash';
 import Actions from './Actions';
-
-const getResolution = source => {
-    const frame_width = _.get(source, [
-        'nmos',
-        'sender',
-        'flow',
-        'frame_width',
-    ]);
-    const frame_height = _.get(source, [
-        'nmos',
-        'sender',
-        'flow',
-        'frame_height',
-    ]);
-    const interlace_mode = _.get(source, [
-        'nmos',
-        'sender',
-        'flow',
-        'interlace_mode',
-    ]);
-
-    if (
-        frame_width === undefined ||
-        frame_height === undefined ||
-        interlace_mode === undefined
-    )
-        return '';
-
-    const isInterlaced = interlace_mode === 'interlaced_tff'; // TODO: other alternatives
-    const interlacedTag = isInterlaced ? 'i' : 'p';
-
-    return `${frame_width}x${frame_height}${interlacedTag}`;
-};
+import { kinds, formats } from 'ebu_list_common/capture/sources';
 
 const getNetInfo = s => {
+    const invalidInfo = { source: 'not defined', destination: 'not defined' };
+
     const sdp = _.get(s, 'sdp');
+
+    if (sdp === undefined) {
+        return invalidInfo;
+    }
+
     const sdpStreams = _.get(sdp, 'streams');
-    if (sdpStreams === undefined) return { source: '', destination: '' };
+    if (sdpStreams === undefined || sdpStreams.length === 0) return invalidInfo;
 
     // TODO: deal with dual streams
     const data = sdpStreams[0];
@@ -48,16 +23,29 @@ const getNetInfo = s => {
     return { source, destination };
 };
 
+const getResolution = source => {
+    if (source.meta.format === formats.video) {
+        return _.get(source, ['meta', 'video', 'resolution']);
+    }
+
+    if (source.meta.format === formats.audio) {
+        return _.get(source, ['meta', 'audio', 'resolution']);
+    }
+
+    return '';
+};
+
 const mapBackendData = source => {
+    const resolution = getResolution(source);
     return {
         ...source,
         meta: {
-            format: _.get(source, ['nmos', 'sender', 'flow', 'format']),
+            ...source.meta,
             network: getNetInfo(source),
         },
         media_specific: {
-            resolution: getResolution(source)
-        }
+            resolution: getResolution(source),
+        },
     };
 };
 
@@ -74,6 +62,15 @@ const reducer = (state, { type, payload }) => {
 
             return { ...state, data: sources };
         }
+
+        case Actions.showAddSource:
+            return { ...state, addSourceModalVisible: true };
+
+        case Actions.addSources:
+            return { ...state, addSourceModalVisible: false };
+
+        case Actions.hideAddSource:
+            return { ...state, addSourceModalVisible: false };
 
         default:
             return state;

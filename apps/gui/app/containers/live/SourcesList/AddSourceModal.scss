@@ -1,0 +1,29 @@
+@import '../../../style/variables/index.scss';
+@import '../../../style/helpers.scss';
+
+.lst-add-source-modal {
+}
+
+.rodal-mask {
+    background: transparentize($background-color-blue, 0.2);
+    .dark & {
+        background: transparentize($nord1, 0.2);
+    }
+}
+
+.rodal-dialog {
+    background: $background-color-blue;
+    .dark & {
+        background: $nord1;
+    }
+}
+
+.lst-add-source-modal-header {
+    margin-bottom: 1rem;
+}
+
+.lst-add-source-modal-buttons {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}

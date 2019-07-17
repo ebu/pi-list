@@ -9,7 +9,7 @@ import AncillaryPage from '../containers/AncillaryPage';
 import ErrorPage from '../components/ErrorPage';
 import routeBuilder from '../utils/routeBuilder';
 
-const StreamPage = (props) => {
+const StreamPage = props => {
     // if the stream is not analyzed, we need to render an error
     if (props.streamInfo.state !== 'analyzed') {
         const errorMessage = translateX('errors.stream_marked_as_unknown');
@@ -24,8 +24,10 @@ const StreamPage = (props) => {
                     label: translateX('stream.configure_streams'),
                     onClick: () => {
                         const { pcapID, streamID } = props.match.params;
-                        props.history.push(routeBuilder.stream_config_page(pcapID, streamID));
-                    }
+                        props.history.push(
+                            routeBuilder.stream_config_page(pcapID, streamID)
+                        );
+                    },
                 }}
             />
         );
@@ -35,18 +37,38 @@ const StreamPage = (props) => {
 
     switch (props.streamInfo.media_type) {
         case 'video':
-            return (<VideoPage streamInfo={props.streamInfo} pcapID={pcapID} streamID={streamID} />);
+            return (
+                <VideoPage
+                    streamInfo={props.streamInfo}
+                    pcapID={pcapID}
+                    streamID={streamID}
+                />
+            );
 
         case 'audio':
-            return (<AudioPage streamInfo={props.streamInfo} pcapID={pcapID} streamID={streamID} />);
+            return (
+                <AudioPage
+                    streamInfo={props.streamInfo}
+                    pcapID={pcapID}
+                    streamID={streamID}
+                />
+            );
 
         case 'ancillary_data':
-            return (<AncillaryPage streamInfo={props.streamInfo} pcapID={pcapID} streamID={streamID} />);
+            return (
+                <AncillaryPage
+                    streamInfo={props.streamInfo}
+                    pcapID={pcapID}
+                    streamID={streamID}
+                />
+            );
 
         default:
             return (
                 <ErrorPage
-                    errorMessage={translateX('errors.not_supported_message', { name: props.streamInfo.media_type })}
+                    errorMessage={translateX('errors.not_supported_message', {
+                        name: props.streamInfo.media_type,
+                    })}
                     errorType={translateX('errors.not_supported')}
                     icon="feedback"
                 />
@@ -56,9 +78,9 @@ const StreamPage = (props) => {
 
 export default asyncLoader(StreamPage, {
     asyncRequests: {
-        streamInfo: (props) => {
+        streamInfo: props => {
             const { pcapID, streamID } = props.match.params;
             return api.getStreamInformation(pcapID, streamID);
-        }
-    }
+        },
+    },
 });

@@ -4,7 +4,7 @@ import SourcesList from '../containers/live/SourcesList';
 const LiveSourcesPage = props => (
     <div className="row">
         <div className="col-xs-12">
-                <SourcesList />
+            <SourcesList />
         </div>
     </div>
 );
