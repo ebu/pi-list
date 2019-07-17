@@ -17,7 +17,7 @@ class Login extends Component {
 
         this.state = {
             errors: [],
-            userSuccessfullyRegistered: false
+            userSuccessfullyRegistered: false,
         };
     }
 
@@ -31,12 +31,17 @@ class Login extends Component {
 
         api.getToken()
             .then(data => encrypt(password, data.t))
-            .then(passwordEncrypted => api.register({ email, password: passwordEncrypted }))
+            .then(passwordEncrypted =>
+                api.register({ email, password: passwordEncrypted })
+            )
             .then(() => {
                 this.setState({ userSuccessfullyRegistered: true, errors: [] });
             })
-            .catch((error) => {
-                this.setState({ errors: [error.response.data], userSuccessfullyRegistered: false });
+            .catch(error => {
+                this.setState({
+                    errors: [error.response.data],
+                    userSuccessfullyRegistered: false,
+                });
             });
     }
 
@@ -46,11 +51,13 @@ class Login extends Component {
 
         api.getToken()
             .then(data => encrypt(password, data.t))
-            .then(passwordEncrypted => api.login({ email, password: passwordEncrypted }))
+            .then(passwordEncrypted =>
+                api.login({ email, password: passwordEncrypted })
+            )
             .then(() => {
                 this.props.history.push('/');
             })
-            .catch((error) => {
+            .catch(error => {
                 this.setState({ errors: [error.response.data] });
             });
     }
@@ -69,17 +76,23 @@ class Login extends Component {
         return (
             <div className="lst-login--container row center-xs middle-xs fade-in">
                 <div className="lst-login--logo lst-text-center">
-                    <img src="/static/ebu_logo.svg" alt="EBU List logo" height="45px" />
+                    <img
+                        src="/static/ebu_logo.svg"
+                        alt="EBU List logo"
+                        height="45px"
+                    />
                 </div>
                 <div className="lst-login--logo lst-text-center">
                     <b>LIST</b> - LiveIP Software Toolkit
                 </div>
                 <div className="lst-login--form lst-text-center">
-                    <h1 className="lst-login--header">{translate('user_account.sign_in')}</h1>
+                    <h1 className="lst-login--header">
+                        {translate('user_account.sign_in')}
+                    </h1>
                     <div className="lst-login--group">
                         <input
                             className="lst-input"
-                            ref={ref => this.email = ref}
+                            ref={ref => (this.email = ref)}
                             type="email"
                             placeholder={translate('user_account.email')}
                         />
@@ -87,7 +100,7 @@ class Login extends Component {
                     <div className="lst-login--group">
                         <input
                             className="lst-input"
-                            ref={ref => this.password = ref}
+                            ref={ref => (this.password = ref)}
                             type="password"
                             placeholder={translate('user_account.password')}
                         />
@@ -96,7 +109,9 @@ class Login extends Component {
                     <div className="lst-login--group lst-no-margin">
                         {this.state.userSuccessfullyRegistered && (
                             <Alert type="success" showIcon>
-                                {translate('user_account.user_registered_message')}
+                                {translate(
+                                    'user_account.user_registered_message'
+                                )}
                             </Alert>
                         )}
                         <AsyncErrorsManager errors={this.state.errors} />

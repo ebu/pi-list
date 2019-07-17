@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import PopUp from './common/PopUp';
 import { translateX } from '../utils/translation';
 
-const DeleteModal = (props) => (
+const DeleteModal = props => (
     <PopUp
         type="delete"
         visible={props.data !== null && props.data.length > 0}
         label={translateX(props.label)}
-        message={translateX(props.message, { name: props.data ? props.data.length : 0 })}
+        message={translateX(props.message, {
+            name: props.data ? props.data.length : 0,
+        })}
         onClose={() => props.onDelete([])}
         onDelete={() => props.onDelete(props.data)}
     />
@@ -23,7 +25,7 @@ DeleteModal.propTypes = {
 
 DeleteModal.defaultProps = {
     data: [],
-    onDelete: () => { },
+    onDelete: () => {},
 };
 
 export default DeleteModal;

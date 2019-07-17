@@ -2,14 +2,14 @@ export const CHART_COLORS = {
     BLUE: '#5086d8',
     YELLOW: '#ecb857',
     GREEN: '#4caf4f',
-    RED: '#d25b49'
+    RED: '#d25b49',
 };
 
 export const DARK_CHART_COLORS = {
     BLUE: '#5E81AC',
     YELLOW: '#EBCB8B',
     GREEN: '#A3BE8C',
-    RED: '#BF616A'
+    RED: '#BF616A',
 };
 
 function getTimeLineLabel(chartData) {
@@ -19,7 +19,7 @@ function getTimeLineLabel(chartData) {
 function cinstHistogramValues(chartData) {
     const value = [];
 
-    chartData['histogram'].forEach((v) => {
+    chartData['histogram'].forEach(v => {
         value.push(v[0]);
     });
 
@@ -29,7 +29,7 @@ function cinstHistogramValues(chartData) {
 function cinstHistogramCounts(chartData) {
     const value = [];
 
-    chartData['histogram'].forEach((v) => {
+    chartData['histogram'].forEach(v => {
         value.push(v[1]);
     });
 
@@ -39,15 +39,15 @@ function cinstHistogramCounts(chartData) {
             backgroundColor: CHART_COLORS.GREEN,
             borderColor: CHART_COLORS.GREEN,
             data: value,
-            color: CHART_COLORS.GREEN
-        }
+            color: CHART_COLORS.GREEN,
+        },
     ];
 }
 
 function singleValueChart(chartData) {
     const value = [];
 
-    chartData.forEach((v) => {
+    chartData.forEach(v => {
         value.push(v.value);
     });
 
@@ -56,8 +56,8 @@ function singleValueChart(chartData) {
             label: 'Value',
             data: value,
             color: CHART_COLORS.GREEN,
-            backgroundColor: CHART_COLORS.GREEN
-        }
+            backgroundColor: CHART_COLORS.GREEN,
+        },
     ];
 }
 
@@ -65,7 +65,7 @@ function minMaxChart(chartData) {
     const min = [];
     const max = [];
 
-    chartData.forEach((value) => {
+    chartData.forEach(value => {
         min.push(value.min);
         max.push(value.max);
     });
@@ -74,13 +74,13 @@ function minMaxChart(chartData) {
         {
             label: 'Max',
             data: max,
-            color: CHART_COLORS.GREEN
+            color: CHART_COLORS.GREEN,
         },
         {
             label: 'Min',
             data: min,
-            color: CHART_COLORS.YELLOW
-        }
+            color: CHART_COLORS.YELLOW,
+        },
     ];
 }
 
@@ -90,7 +90,7 @@ function stdDeviationMeanMinMaxChart(chartData) {
     const min = [];
     const max = [];
 
-    chartData.forEach((value) => {
+    chartData.forEach(value => {
         stddev.push(value.stddev);
         mean.push(value.mean);
         min.push(value.min);
@@ -101,90 +101,89 @@ function stdDeviationMeanMinMaxChart(chartData) {
         {
             label: 'Std. Deviation',
             data: stddev,
-            color: CHART_COLORS.BLUE
+            color: CHART_COLORS.BLUE,
         },
         {
             label: 'Mean',
             data: mean,
-            color: CHART_COLORS.YELLOW
+            color: CHART_COLORS.YELLOW,
         },
         {
             label: 'Max',
             data: max,
-            color: CHART_COLORS.GREEN
+            color: CHART_COLORS.GREEN,
         },
         {
             label: 'Min',
             data: min,
-            color: CHART_COLORS.RED
+            color: CHART_COLORS.RED,
         },
     ];
 }
 
-
 const minMaxLineChart = [
     {
-        yValues: "max",
-        label: "Max",
-        color: CHART_COLORS.GREEN
+        yValues: 'max',
+        label: 'Max',
+        color: CHART_COLORS.GREEN,
     },
     {
-        yValues: "min",
-        label: "Min",
-        color: CHART_COLORS.YELLOW
-    }
+        yValues: 'min',
+        label: 'Min',
+        color: CHART_COLORS.YELLOW,
+    },
 ];
 
 const stdDeviationMeanMinMaxLineChart = [
     {
-        yValues: "max",
-        label: "Max",
-        color: CHART_COLORS.GREEN
+        yValues: 'max',
+        label: 'Max',
+        color: CHART_COLORS.GREEN,
     },
     {
-        yValues: "mean",
-        label: "Mean",
-        color: CHART_COLORS.YELLOW
+        yValues: 'mean',
+        label: 'Mean',
+        color: CHART_COLORS.YELLOW,
     },
     {
-        yValues: "min",
-        label: "Min",
-        color: CHART_COLORS.RED
+        yValues: 'min',
+        label: 'Min',
+        color: CHART_COLORS.RED,
     },
     {
-        yValues: "stddev",
-        label: "Std. Deviation",
-        color: CHART_COLORS.BLUE
-    }
+        yValues: 'stddev',
+        label: 'Std. Deviation',
+        color: CHART_COLORS.BLUE,
+    },
 ];
 
 const singleValueLineThresholdChart = [
     {
-        yValues: "limit",
-        label: "Limit",
-        color: CHART_COLORS.RED
+        yValues: 'limit',
+        label: 'Limit',
+        color: CHART_COLORS.RED,
     },
     {
-        yValues: "tolerance",
-        label: "Tolerance",
-        color: CHART_COLORS.YELLOW
+        yValues: 'tolerance',
+        label: 'Tolerance',
+        color: CHART_COLORS.YELLOW,
     },
     {
-        yValues: "value",
-        label: "Value",
-        color: CHART_COLORS.GREEN
-    }
+        yValues: 'value',
+        label: 'Value',
+        color: CHART_COLORS.GREEN,
+    },
 ];
 
 const singleValueLineChart = [
     {
-        yValues: "value",
-        label: "Value",
-        color: CHART_COLORS.GREEN
-    }
+        yValues: 'value',
+        label: 'Value',
+        color: CHART_COLORS.GREEN,
+    },
 ];
 
-const xAxisTimeDomain = (point) => point.time;
+const xAxisTimeDomain = point => point.time;
 
 export default {
     cinstHistogramValues,
@@ -199,5 +198,5 @@ export default {
     stdDeviationMeanMinMaxLineChart,
     singleValueLineThresholdChart,
     singleValueLineChart,
-    xAxisTimeDomain
+    xAxisTimeDomain,
 };

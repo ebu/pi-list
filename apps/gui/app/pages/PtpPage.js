@@ -5,7 +5,6 @@ import chartFormatters from 'utils/chartFormatters';
 import Chart from 'components/StyledChart';
 
 class PtpPage extends Component {
-
     render() {
         const { pcapID } = this.props.match.params;
 

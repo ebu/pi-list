@@ -15,6 +15,8 @@ const VideoInfo = (props) => {
     const size = `${props.width}x${props.height}`;
     const isInterlaced = props.scan_type === 'interlaced';
 
+    const rate = typeof(props.rate) === 'string' ? props.rate : props.rate.toFixed(2).toString();
+
     const values = [
         {
             labelTag: 'media_information.video.dimensions',
@@ -34,7 +36,7 @@ const VideoInfo = (props) => {
             labelTag: props.is_interlaced ?
                 'media_information.video.field_rate' :
                 'media_information.video.frame_rate',
-            value: props.rate.toFixed(2).toString(),
+            value: rate,
             units: 'Hz'
         },
         {

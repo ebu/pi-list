@@ -19,25 +19,25 @@ const reducer = (state, action) => {
         case Actions.setLanguage:
             return {
                 ...state,
-                language: action.value
+                language: action.value,
             };
 
         case Actions.setTheme:
             return {
                 ...state,
-                theme: action.value
+                theme: action.value,
             };
 
         case Actions.deleteUserRequest:
             return {
                 ...state,
-                showModal: true
+                showModal: true,
             };
 
         case Actions.deleteUserDismiss:
             return {
                 ...state,
-                showModal: false
+                showModal: false,
             };
 
         default:
@@ -56,10 +56,9 @@ const middleware = (state, action) => {
             break;
 
         case Actions.deleteUserExecute:
-            api.deleteUser()
-                .then(() => {
-                    window.appHistory.push('/login');
-                });
+            api.deleteUser().then(() => {
+                window.appHistory.push('/login');
+            });
             break;
 
         default:
@@ -72,20 +71,22 @@ const actionsWorkflow = (state, action) => {
     return reducer(state, action);
 };
 
-
-const AppContainer = (props) => {
+const AppContainer = props => {
     const sideNav = useRef(null);
     const [{ theme, showModal }, dispatch] = useStateValue();
 
-    const account_delete_message = (<T t="user_account.delete_confirmation" />);
-    const account_delete_label = (<T t="user_account.delete_user_account" />);
+    const account_delete_message = <T t="user_account.delete_confirmation" />;
+    const account_delete_label = <T t="user_account.delete_user_account" />;
 
     return (
         <div className={`lst-app-container ${theme}`}>
             <SideNav ref={sideNav} isOpen={false} user={props.user} />
             <div className="lst-main">
                 <nav className="lst-top-nav row lst-no-margin">
-                    <button className="lst-top-nav__link" onClick={() => sideNav.current.toggleSideNav()}>
+                    <button
+                        className="lst-top-nav__link"
+                        onClick={() => sideNav.current.toggleSideNav()}
+                    >
                         <i className="lst-top-nav__item-icon lst-icons">menu</i>
                     </button>
                     <div className="col-xs row lst-no-margin middle-xs">
@@ -93,17 +94,19 @@ const AppContainer = (props) => {
                     </div>
                 </nav>
                 <NotificationsProvider>
-                    <div className="lst-main-container">
-                        {routes}
-                    </div>
+                    <div className="lst-main-container">{routes}</div>
                 </NotificationsProvider>
                 <PopUp
                     type="delete"
                     visible={showModal}
                     message={account_delete_message}
                     label={account_delete_label}
-                    onClose={() => dispatch({ type: Actions.deleteUserDismiss })}
-                    onDelete={() => dispatch({ type: Actions.deleteUserExecute })}
+                    onClose={() =>
+                        dispatch({ type: Actions.deleteUserDismiss })
+                    }
+                    onDelete={() =>
+                        dispatch({ type: Actions.deleteUserExecute })
+                    }
                 />
             </div>
         </div>
@@ -114,7 +117,7 @@ AppContainer.propTypes = {
     user: PropTypes.object.isRequired,
 };
 
-const App = (props) => {
+const App = props => {
     useEffect(() => {
         websocket.initialize(props.user.id);
     }, []);
@@ -124,7 +127,7 @@ const App = (props) => {
         theme: props.user.preferences.gui.theme || defaultTheme,
         showModal: false,
         version: props.version,
-        live: props.features.liveFeatures
+        live: props.features.liveFeatures,
     };
 
     return (
@@ -138,6 +141,6 @@ export default asyncLoader(App, {
     asyncRequests: {
         user: () => api.getUser(),
         features: () => api.getFeatures(),
-        version: () => api.getVersion()
-    }
+        version: () => api.getVersion(),
+    },
 });

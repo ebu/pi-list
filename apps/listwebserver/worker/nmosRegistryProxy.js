@@ -111,7 +111,7 @@ const makeIs04Manager = () => {
                 onSendersData(response.data);
             })
             .catch(error => {
-                console.log(error);
+                console.log('Could not contact the NMOS registry');
                 setTimer();
             });
     };

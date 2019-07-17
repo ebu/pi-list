@@ -10,10 +10,8 @@ const PcapUploader = props => (
     />
 );
 
-PcapUploader.propTypes = {
-};
+PcapUploader.propTypes = {};
 
-PcapUploader.defaultProps = {
-};
+PcapUploader.defaultProps = {};
 
 export default PcapUploader;

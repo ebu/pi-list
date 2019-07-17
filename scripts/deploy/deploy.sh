@@ -37,6 +37,7 @@ echo "Copying binaries... done"
 echo
 echo "Copying apps..."
 cp -R $TOP_DIR/apps/listwebserver/* $RELEASE_DIR/server/app/listwebserver
+cp -R $TOP_DIR/js $RELEASE_DIR/server/js
 cp -R $TOP_DIR/apps/gui/dist/* $RELEASE_DIR/server/app/gui
 echo "Copying apps... done"
 

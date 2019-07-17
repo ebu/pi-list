@@ -7,3 +7,4 @@
 /.vs/*
 /.vscode
 apps/listwebserver/version.yml
+apps/listwebserver/.vscode/launch.json

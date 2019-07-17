@@ -64,11 +64,13 @@ function pcapPreProcessing(req, res, next) {
 
     const streamPreProcessorCommand = `"${program.cpp}/stream_pre_processor" "${req.file.path}" ${pcapId} ${withMongo}`;
 
+    const originalFilename = req.body.originalFilename || req.file.originalname;
+
     websocketManager.instance().sendEventToUser(userID, {
         event: WS_EVENTS.PCAP_FILE_RECEIVED,
         data: {
             id: pcapId,
-            file_name: req.file.originalname,
+            file_name: originalFilename,
             pcap_file_name: req.file.filename,
             date: Date.now(),
             progress: 33
@@ -83,7 +85,7 @@ function pcapPreProcessing(req, res, next) {
 
             return Pcap.findOneAndUpdate({ id: pcapId },
                 {
-                    file_name: req.file.originalname,
+                    file_name: originalFilename,
                     pcap_file_name: req.file.filename,
                     owner_id: userID,
                     generated_from_network: req.pcap.from_network ? true : false
@@ -104,7 +106,7 @@ function pcapPreProcessing(req, res, next) {
 
             Pcap.findOneAndUpdate({ id: pcapId },
                 {
-                    file_name: req.file.originalname,
+                    file_name: originalFilename,
                     pcap_file_name: req.file.filename,
                     owner_id: userID,
                     generated_from_network: req.pcap.from_network ? true : false,

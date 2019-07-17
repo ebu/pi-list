@@ -3,15 +3,18 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import Icon from './common/Icon';
 
-
-const insideRender = (props) => (
+const insideRender = props => (
     <React.Fragment>
         <Icon value={props.icon} className="lst-side-nav__item-icon" />
-        {props.isOpen && <span className="lst-side-nav__item-text fade-in">{props.label}</span>}
+        {props.isOpen && (
+            <span className="lst-side-nav__item-text fade-in">
+                {props.label}
+            </span>
+        )}
     </React.Fragment>
 );
 
-const internalLinkRender = (props) => (
+const internalLinkRender = props => (
     <NavLink
         to={props.link}
         className="lst-side-nav__link"
@@ -22,20 +25,16 @@ const internalLinkRender = (props) => (
     </NavLink>
 );
 
-const externalLinkRender = (props) => (
+const externalLinkRender = props => (
     <a href={props.link} rel="noopener noreferrer" target="_blank">
         {insideRender(props)}
     </a>
 );
 
-const MenuItem = (props) => {
-    const renderer = props.external ? (externalLinkRender) : (internalLinkRender);
+const MenuItem = props => {
+    const renderer = props.external ? externalLinkRender : internalLinkRender;
 
-    return (
-        <li className="lst-side-nav__item">
-            {renderer(props)}
-        </li>
-    );
+    return <li className="lst-side-nav__item">{renderer(props)}</li>;
 };
 
 MenuItem.propTypes = {
@@ -44,11 +43,11 @@ MenuItem.propTypes = {
     label: PropTypes.object.isRequired,
     isOpen: PropTypes.bool.isRequired,
     exact: PropTypes.bool,
-    external: PropTypes.bool
+    external: PropTypes.bool,
 };
 
 MenuItem.defaultProps = {
     exact: false,
-    external: false
+    external: false,
 };
 export default MenuItem;

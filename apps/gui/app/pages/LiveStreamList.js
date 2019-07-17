@@ -23,7 +23,7 @@ class LiveStreamList extends Component {
             showErrorOnly: false,
             showOnlineOnly: true,
             showVideoOnly: false,
-            showAudioOnly: false
+            showAudioOnly: false,
         };
 
         this.onStreamUpdate = this.onStreamUpdate.bind(this);
@@ -32,28 +32,40 @@ class LiveStreamList extends Component {
     }
 
     componentDidMount() {
-        websocket.on(websocketEventsEnum.LIVE.STREAM_UPDATE, this.onStreamUpdate);
+        websocket.on(
+            websocketEventsEnum.LIVE.STREAM_UPDATE,
+            this.onStreamUpdate
+        );
     }
 
     componentWillUnmount() {
-        websocket.off(websocketEventsEnum.LIVE.STREAM_UPDATE, this.onStreamUpdate);
+        websocket.off(
+            websocketEventsEnum.LIVE.STREAM_UPDATE,
+            this.onStreamUpdate
+        );
     }
 
     onStreamUpdate(data) {
-        const newStream = this.state.streams.findIndex(element => element.id === data.id) === -1;
+        const newStream =
+            this.state.streams.findIndex(element => element.id === data.id) ===
+            -1;
         if (newStream) {
             this.setState({
                 streams: [
                     ...this.state.streams,
                     {
-                        ...data
-                    }
-                ]
+                        ...data,
+                    },
+                ],
             });
         } else {
-            const streams = immutable.findAndUpdateElementInArray({ id: data.id }, this.state.streams, {
-                ...data
-            });
+            const streams = immutable.findAndUpdateElementInArray(
+                { id: data.id },
+                this.state.streams,
+                {
+                    ...data,
+                }
+            );
             this.setState({ streams });
         }
     }
@@ -65,18 +77,25 @@ class LiveStreamList extends Component {
     handleDeleteStream(streamID) {
         api.deleteLiveStream(streamID)
             .then(() => {
-                const streams = immutable.findAndRemoveElementInArray({ id: streamID }, this.state.streams);
+                const streams = immutable.findAndRemoveElementInArray(
+                    { id: streamID },
+                    this.state.streams
+                );
                 this.setState({ streams });
 
                 notifications.success({
                     title: translate('notifications.success.stream_deleted'),
-                    message: translate('notifications.success.stream_deleted_message')
+                    message: translate(
+                        'notifications.success.stream_deleted_message'
+                    ),
                 });
             })
             .catch(() => {
                 notifications.error({
                     title: translate('notifications.error.stream_deleted'),
-                    message: translate('notifications.error.stream_deleted_message')
+                    message: translate(
+                        'notifications.error.stream_deleted_message'
+                    ),
                 });
             });
     }
@@ -87,33 +106,38 @@ class LiveStreamList extends Component {
 
         return (
             <div className="row">
-                {
-                    streams.map((stream, index) => {
-                        return (
-                            <div className={`col-md-${perRow}`}>
-                                <LiveStreamCard
-                                    key={stream.id}
-                                    title={`Stream #${index + 1}`}
-                                    lowInformation={!normalSize}
-                                    onDeleteButtonClicked={this.handleDeleteStream}
-                                    {...stream}
-                                />
-                            </div>
-                        );
-                    })
-                }
+                {streams.map((stream, index) => {
+                    return (
+                        <div className={`col-md-${perRow}`}>
+                            <LiveStreamCard
+                                key={stream.id}
+                                title={`Stream #${index + 1}`}
+                                lowInformation={!normalSize}
+                                onDeleteButtonClicked={this.handleDeleteStream}
+                                {...stream}
+                            />
+                        </div>
+                    );
+                })}
             </div>
         );
     }
 
     renderFilters(filters) {
-        return filters.map((filter) => {
+        return filters.map(filter => {
             return (
                 <div className="col-xs-12">
-                    <FormInput label={filter.label} className="lst-no-margin" labelColSize={8} valueColSize={4}>
+                    <FormInput
+                        label={filter.label}
+                        className="lst-no-margin"
+                        labelColSize={8}
+                        valueColSize={4}
+                    >
                         <Toggle
                             checked={filter.value}
-                            onChange={e => this.handleSimpleChange(filter.valueName, e)}
+                            onChange={e =>
+                                this.handleSimpleChange(filter.valueName, e)
+                            }
                         />
                     </FormInput>
                 </div>
@@ -122,13 +146,19 @@ class LiveStreamList extends Component {
     }
 
     render() {
-        const filteredStreams = this.state.streams.filter((elem) => {
-            const errorOnly = this.state.showErrorOnly ?
-                elem.global_video_analysis.compliance === 'not_compliant' :
-                true;
-            const onlineOnly = this.state.showOnlineOnly ? elem.state === 'on_going_analysis' : true;
-            const videoOnly = this.state.showVideoOnly ? elem.media_type === 'video' : true;
-            const audioOnly = this.state.showAudioOnly ? elem.media_type === 'audio' : true;
+        const filteredStreams = this.state.streams.filter(elem => {
+            const errorOnly = this.state.showErrorOnly
+                ? elem.global_video_analysis.compliance === 'not_compliant'
+                : true;
+            const onlineOnly = this.state.showOnlineOnly
+                ? elem.state === 'on_going_analysis'
+                : true;
+            const videoOnly = this.state.showVideoOnly
+                ? elem.media_type === 'video'
+                : true;
+            const audioOnly = this.state.showAudioOnly
+                ? elem.media_type === 'audio'
+                : true;
 
             return errorOnly && onlineOnly && videoOnly && audioOnly;
         });
@@ -148,33 +178,45 @@ class LiveStreamList extends Component {
         return (
             <div className="row">
                 <div className="col-xs-12 col-md-10">
-                    <Scrollbars hideTracksWhenNotNeeded autoHeight autoHeightMax={maxHeight}>
-                        {this.renderColumn(translate('headings.video'), getIcon('video'), filteredStreams)}
+                    <Scrollbars
+                        hideTracksWhenNotNeeded
+                        autoHeight
+                        autoHeightMax={maxHeight}
+                    >
+                        {this.renderColumn(
+                            translate('headings.video'),
+                            getIcon('video'),
+                            filteredStreams
+                        )}
                     </Scrollbars>
                 </div>
                 <div className="col-xs-12 col-md-2">
-                    <Panel icon="filter_list" title={translate('headings.filters')} containerClassName="row lst-no-margin">
+                    <Panel
+                        icon="filter_list"
+                        title={translate('headings.filters')}
+                        containerClassName="row lst-no-margin"
+                    >
                         {this.renderFilters([
                             {
                                 label: translate('filters.show_error_only'),
                                 value: this.state.showErrorOnly,
-                                valueName: 'showErrorOnly'
+                                valueName: 'showErrorOnly',
                             },
                             {
                                 label: translate('filters.show_online_only'),
                                 value: this.state.showOnlineOnly,
-                                valueName: 'showOnlineOnly'
+                                valueName: 'showOnlineOnly',
                             },
                             {
                                 label: translate('filters.show_video_only'),
                                 value: this.state.showVideoOnly,
-                                valueName: 'showVideoOnly'
+                                valueName: 'showVideoOnly',
                             },
                             {
                                 label: translate('filters.show_audio_only'),
                                 value: this.state.showAudioOnly,
-                                valueName: 'showAudioOnly'
-                            }
+                                valueName: 'showAudioOnly',
+                            },
                         ])}
                     </Panel>
                 </div>
@@ -185,6 +227,6 @@ class LiveStreamList extends Component {
 
 export default asyncLoader(LiveStreamList, {
     asyncRequests: {
-        availableStreams: () => api.getLiveStreams()
-    }
+        availableStreams: () => api.getLiveStreams(),
+    },
 });

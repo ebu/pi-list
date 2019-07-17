@@ -15,7 +15,7 @@ class SideNav extends Component {
 
         this.state = {
             isOpen: this.props.isOpen,
-            showMenuItems: this.props.isOpen
+            showMenuItems: this.props.isOpen,
         };
 
         this.toggleSideNav = this.toggleSideNav.bind(this);
@@ -35,9 +35,13 @@ class SideNav extends Component {
         return (
             <React.Fragment>
                 {items
-                    .filter(item => (item.liveOnly === undefined || item.liveOnly === false) ? true : live)
+                    .filter(item =>
+                        item.liveOnly === undefined || item.liveOnly === false
+                            ? true
+                            : live
+                    )
                     .map(item => {
-                        const label = (<T t={item.labelTag} />);
+                        const label = <T t={item.labelTag} />;
                         return (
                             <MenuItem
                                 key={`lst-side-nav-${item.link}`}
@@ -56,11 +60,14 @@ class SideNav extends Component {
 
     renderMain(live, version) {
         const sideNavClassNames = classNames('lst-side-nav', {
-            'lst-side-nav__is-open': this.state.isOpen
+            'lst-side-nav__is-open': this.state.isOpen,
         });
 
         return (
-            <nav className={sideNavClassNames} ref={sideNav => (this.sideNav = sideNav)}>
+            <nav
+                className={sideNavClassNames}
+                ref={sideNav => (this.sideNav = sideNav)}
+            >
                 <div className="lst-side-nav-header center-xs middle-xs">
                     <img src="/static/ebu-white.png" alt="ebu logo" />
                 </div>
@@ -75,20 +82,27 @@ class SideNav extends Component {
                             {this.state.showMenuItems && ` @ ${version.hash}`}
                         </div>
                     </Button>
-                    <a className="row middle-xs" href="https://github.com/ebu/pi-list/issues">
+                    <a
+                        className="row middle-xs"
+                        href="https://github.com/ebu/pi-list/issues"
+                    >
                         <Icon value="help" />
                         {this.state.showMenuItems && (
-                            <div className="fade-in"><T t="navigation.help" /></div>
+                            <div className="fade-in">
+                                <T t="navigation.help" />
+                            </div>
                         )}
                     </a>
                     <a className="row middle-xs" href={api.logout()}>
                         <Icon value="power settings new" />
                         {this.state.showMenuItems && (
-                            <div className="fade-in"><T t="user_account.logout" /></div>
+                            <div className="fade-in">
+                                <T t="user_account.logout" />
+                            </div>
                         )}
                     </a>
                 </div>
-            </nav >
+            </nav>
         );
     }
 
@@ -105,11 +119,11 @@ class SideNav extends Component {
 }
 
 SideNav.propTypes = {
-    isOpen: PropTypes.bool
+    isOpen: PropTypes.bool,
 };
 
 SideNav.defaultProps = {
-    isOpen: true
+    isOpen: true,
 };
 
 export default SideNav;

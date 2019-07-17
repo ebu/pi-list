@@ -6,7 +6,10 @@ import SimpleMessage from '../components/SimpleMessage';
 
 const noData = () => (
     <div className="lst-table-loading-data col-xs-12 center-xs lst-table-nodata">
-        <SimpleMessage icon="do not disturb" message={translateX('pcap.no_pcaps')} />
+        <SimpleMessage
+            icon="do not disturb"
+            message={translateX('pcap.no_pcaps')}
+        />
     </div>
 );
 
