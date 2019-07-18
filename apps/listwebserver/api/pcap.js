@@ -124,8 +124,8 @@ router.get('/:pcapID/sdp', (req, res) => {
 
     Pcap.findOne({ id: pcapID }).exec()
         .then(data => {
-            const path = `${getUserFolder(req)}/${pcapID}/sdp.sdp`;
-            const fileName = data.file_name.replace(/\.[^\.]*$/, '') + '.sdp';
+            const path = `${getUserFolder(req)}/${pcapID}/sdp.zip`;
+            const fileName = data.file_name.replace(/\.[^\.]*$/, '') + '.zip';
             fs.downloadFile(path, fileName, res);
         });
 });

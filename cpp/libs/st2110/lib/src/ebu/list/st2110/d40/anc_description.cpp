@@ -78,14 +78,10 @@ void st2110_40_sdp_serializer::additional_attributes(std::vector<std::string>& c
                 std::to_string(static_cast<uint16_t>(s.did_sdid()) & 0xFF));
     }
     current_lines.emplace_back(fmtp);
-
-    // todo: add PTP
-    //current_lines.emplace_back("a=ts-refclk:ptp=IEEE1588-2008:39-A7-94-FF-FE-07-CB-D0:37");
-    //current_lines.emplace_back("a=mediaclk:direct=0");
 }
 
 void st2110_40_sdp_serializer::write_rtpmap_line(std::vector<std::string>& current_lines, const ebu_list::media::network_media_description& media_description)
 {
-    // "a=rtpmap:<payload_type> smpte291/<clock_rate>"
+    /** "a=rtpmap:<payload_type> smpte291/<clock_rate>" **/
     current_lines.emplace_back(fmt::format("a=rtpmap:{} smpte291/90000", media_description.network.payload_type));
 }

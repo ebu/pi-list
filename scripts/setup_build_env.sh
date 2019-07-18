@@ -1,11 +1,22 @@
 #!/bin/bash
 #
-# This script installs a build/dev environment on a Debian host.
+# This script installs a build environment.
 
-# get cmake 3.9
-echo "deb http://ftp.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/stretch-backports.list
+if ! which apt > /dev/null; then
+    echo "This distribution is not Debian-based. Exit."
+    exit 1
+fi
+
+# get cmake >=3.9
+if [ -f /etc/os-release ]; then
+    if grep -q stretch /etc/os-release; then
+        # at least support our ref dockerized distro, i.e. Debian Stretch where default cmake is v3.7
+        echo "deb http://ftp.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/stretch-backports.list
+        CMAKE_INSTALL_OPTIONS="-t stretch-backports --no-install-recommends"
+    fi
+fi
 apt update
-apt -t stretch-backports install -y --no-install-recommends cmake
+apt install -y $CMAKE_INSTALL_OPTIONS cmake
 
 # utilities
 apt install -y \
@@ -13,7 +24,6 @@ apt install -y \
     libpcap-dev \
     libssl-dev \
     python-pip \
-    rsync \
     uuid-dev
 
 # Conan is a python package used to build CPP dependencies

@@ -14,6 +14,13 @@ const WS_EVENTS = {
     PCAP_FILE_DELETED: 'PCAP_FILE_DELETED',
     IP_PARSED_FROM_SDP: 'IP_PARSED_FROM_SDP',
     SDP_VALIDATION_RESULTS: 'SDP_VALIDATION_RESULTS',
+
+    //  {
+    //      added: tbd,
+    //      updated: tbd,
+    //      removed: [ <source id> ],
+    //  }
+    LIVE_SOURCE_LIST_UPDATE: 'LIVE_SOURCE_LIST_UPDATE',
 };
 
 module.exports = deepFreeze(WS_EVENTS);

@@ -21,6 +21,7 @@
 # DB Schema
 
 ## Stream
+
 ```
 - analyses
   - rtp
@@ -29,6 +30,7 @@
         - delta_rtp_ts_vs_nt_ticks // video only
             - min : number
             - max : number
+            - avg : number
   - 2110_21_cinst
     - result : string // defined in enums/analysis/outcome
   - 2110_21_vrx
@@ -49,7 +51,11 @@
         - id : string // defined in enums/analysis/errors
       }
 
+```
+
 ## PCAP
+
+```
 - summary
     - error_list : array of:
         - {

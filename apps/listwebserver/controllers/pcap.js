@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const Pcap = require('../models/pcap');
 const Streams = require('./streams');
 

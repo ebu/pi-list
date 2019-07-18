@@ -8,3 +8,11 @@ mongo:
     image: mongo:4.1.10
     ports:
     - "27017:27017"
+
+rabbitmq:
+  image: pedroalvesferreira/rabbitmq-with-web-mqtt
+  container_name: rabbitmq
+  ports:
+    - "5672:5672"
+    - "15672:15672"
+    - "15675:15675"

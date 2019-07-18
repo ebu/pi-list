@@ -1,8 +1,11 @@
-const { isObject, isNumber } = require('lodash');
+const { isObject, isNumber, isString } = require('lodash');
 const winston = require('winston');
-const { removeLastLineBreak } = require('./string');
 const constantsEnum = require('../enums/constants');
 const programArguments = require('./programArguments');
+
+function removeLastLineBreak(string) {
+    return isString(string) ? string.replace(/\n$/, '') : '';
+}
 
 /**
  * Formats the log output, in order to include the timestamp, label, log level and the message. Also it's possible see

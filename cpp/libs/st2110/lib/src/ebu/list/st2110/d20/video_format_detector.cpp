@@ -18,6 +18,9 @@ namespace
         {
             switch (max_line)
             {
+            case 239: return { 720, 480 };
+            case 242: return { 720, 486 };
+            case 287: return { 720, 576 };
             case 539: return { 1920, 1080 };
 
             default:

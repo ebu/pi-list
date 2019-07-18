@@ -7,6 +7,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh
 RUN bash nodesource_setup.sh
 RUN apt-get install -y \
         ffmpeg \
+        zip \
         nodejs
 
 RUN npm install -g serve

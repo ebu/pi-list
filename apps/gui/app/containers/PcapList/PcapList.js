@@ -3,7 +3,7 @@ import 'react-table/react-table.css';
 import routeBuilder from '../../utils/routeBuilder';
 import PcapTable from './PcapTable';
 import PcapToolbar from './PcapToolbar';
-import DeleteModal from './DeleteModal';
+import DeleteModal from '../../components/DeleteModal';
 import { StateContext } from './Context';
 import Actions from './Actions';
 import { T } from '../../utils/translation';
@@ -19,15 +19,15 @@ const PcapList = (props) => {
     const toggleRow = (id) => dispatch({ type: Actions.toggleRow, data: { id } });
     const toggleSelectAll = () => dispatch({ type: Actions.toggleSelectAll });
 
-    const onPcapClick = (pcapId) => {
+    const onClickRow = (pcapId) => {
         const route = routeBuilder.pcap_stream_list(pcapId);
         window.appHistory.push(route);
     };
 
-    const deletePcaps = (idsToDelete) => {
+    const doDelete = (idsToDelete) => {
         dispatch({ type: Actions.requestDelete, data: { ids: [] } });
 
-        if(idsToDelete.length === 0) return;
+        if (idsToDelete.length === 0) return;
 
         dispatch({ type: Actions.clearSelection });
 
@@ -46,7 +46,7 @@ const PcapList = (props) => {
                 selectAll={state.selectAll}
                 onSelectId={toggleRow}
                 onSelectAll={toggleSelectAll}
-                onClickRow={onPcapClick}
+                onClickRow={onClickRow}
             />
         </div>
     );
@@ -55,7 +55,11 @@ const PcapList = (props) => {
 
     return (
         <div>
-            <DeleteModal data={state.itemsToDelete} onAction={deletePcaps} />
+            <DeleteModal
+                label="pcap.delete_header"
+                message="pcap.delete_message"
+                data={state.itemsToDelete}
+                onDelete={doDelete} />
             {state.data.length === 0 ? noData : withData}
         </div>
     );

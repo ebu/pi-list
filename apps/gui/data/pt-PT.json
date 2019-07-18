@@ -158,5 +158,15 @@
   "errors.404_message": "A página que tentou aceder não existe ou ocorreu um erro.",
   "errors.network_error_title": "Erro de Rede",
   "settings.theme": "Tema",
-  "settings.language": "Língua"
+  "settings.language": "Língua",
+  "live.sources.name": "Nome",
+  "live.sources.delete_header": "Apagar fonte",
+  "live.sources.delete_message": "Tem a certeza que pretende apagar %{name} fonte(s)?",
+  "live.sources.destination_address": "Endereço de Destino",
+  "live.sources.format": "Formato",
+  "live.sources.resolution": "Resolução",
+  "notifications.success.live.sources.deleted": "Fonte apagada",
+  "notifications.success.live.sources.delete_message": "Fontes apagadas com sucesso",
+  "notifications.error.live.sources.deleted": "Fonte(s) não apagada(s)",
+  "notifications.error.live.sources.delete_message": "Erro ao apagar fontes"
 }

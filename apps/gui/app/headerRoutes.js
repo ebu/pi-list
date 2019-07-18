@@ -53,6 +53,11 @@ export default (
         />
         <Route
             exact
+            path={routeNames.LIVE_SOURCES}
+            render={() => (<Header labelTag="navigation.live_sources" />)}
+        />
+        <Route
+            exact
             path={routeNames.SETTINGS}
             render={() => (<Header labelTag="navigation.settings" />)}
         />

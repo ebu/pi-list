@@ -9,6 +9,7 @@ import StreamPage from './pages/StreamPage';
 import LiveStreamPage from './pages/LiveStreamPage';
 import PcapsPage from './pages/PcapsPage';
 import CapturePage from './pages/CapturePage';
+import LiveSourcesPage from './pages/LiveSourcesPage';
 import FlowList from './containers/live/FlowList';
 import ErrorPage from './components/ErrorPage';
 import errorEnum from './enums/errorEnum';
@@ -28,7 +29,7 @@ export default (
         <Route path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}`} component={StreamList} exact />
         <Route path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}/:streamID`} component={StreamPage} exact />
         <Route path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}/:streamID/${routeNames.CONFIGURE}`} component={ConfigureStreamsPage} exact />
-
+        <Route exact path={routeNames.LIVE_SOURCES} component={LiveSourcesPage} />
         <LiveRoute path={routeNames.LIVE} component={LiveStreamList} exact />
         <LiveRoute
             path={routeNames.NETWORK}

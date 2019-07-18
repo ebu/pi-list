@@ -37,6 +37,7 @@ namespace ebu_list
         serializable_stream_info info_;
         audio_stream_details audio_description_;
         completion_handler completion_handler_;
+        std::optional<uint32_t> last_sequence_number_;
     };
 
     using audio_stream_handler_uptr = std::unique_ptr<audio_stream_handler>;

@@ -119,15 +119,12 @@ function pcapPreProcessing(req, res, next) {
         });
 }
 
-function postProcessSdpFile(sdpPath, sdpInfo) {
-    readFileAsync(sdpPath, 'utf8')
-        .then(sdp => {
-            sdp = sdp.replace(/LIST Generated SDP/m, sdpInfo);
-            sdp = sdp.replace(/LIST SDP/m, sdpInfo);
-            return sdp;
-        })
-        .then(sdp => {
-            return writeFileAsync(sdpPath, sdp);
+function postProcessSdpFiles(folder) {
+    const archiveCommand = `cd ${folder}; find  -name  "*.sdp" | zip sdp -@`;
+    logger('sdp-post-processing').info(archiveCommand);
+    exec(archiveCommand)
+        .then(output => {
+            logger('sdp-post-processing').info(output.stdout);
         })
         .catch((output) => {
             logger('sdp-post-processing').error(`exception: ${output}`);
@@ -148,12 +145,9 @@ function pcapFullAnalysis(req, res, next) {
         .then((output) => {
             logger('st2110_extractor').info(output.stdout);
             logger('st2110_extractor').info(output.stderr);
+            postProcessSdpFiles(pcapFolder);
+            next();
         })
-        .then(() => {
-            const sdpPath = `${pcapFolder}/sdp.sdp`;
-            postProcessSdpFile(sdpPath, req.file.originalname);
-        })
-        .then(() => next())
         .catch((output) => {
             logger('pcap-full-analysis').error(`exception: ${output} ${output.stdout}`);
             logger('pcap-full-analysis').error(`exception: ${output} ${output.stderr}`);
@@ -173,6 +167,27 @@ function pcapFullAnalysis(req, res, next) {
         });
 }
 
+function resetStreamCounters(req, res, next) {
+    const { streamID } = req.params;
+    Stream.findOne({ id: streamID }).exec()
+        .then(data =>  {
+            data.statistics.packet_count = 0;
+            data.statistics.dropped_packet_count = 0;
+            if (data.media_type == 'audio') {
+                data.statistics.sample_count = 0;
+            } else {
+                data.statistics.frame_count = 0;
+            }
+            Stream.findOneAndUpdate({ id: streamID }, data).exec()
+                .then(data =>  {
+                    next();
+            });
+        })
+        .catch(err => {
+            logger('stream-reset-counters').error(`exception: ${err}`);
+        });
+}
+
 function singleStreamAnalysis(req, res, next) {
     const { streamID } = req.params;
     const pcapId = req.pcap.uuid;
@@ -189,6 +204,7 @@ function singleStreamAnalysis(req, res, next) {
         .then((output) => {
             logger('st2110_extractor').info(output.stdout);
             logger('st2110_extractor').info(output.stderr);
+            postProcessSdpFiles(pcapFolder);
             next();
         })
         .catch((output) => {
@@ -266,14 +282,28 @@ function audioConsolidation(req, res, next) {
         });
 }
 
+function ancillaryConsolidation(req, res, next) {
+    const pcapId = req.pcap.uuid;
+    Stream.find({ pcap: pcapId, media_type: "ancillary_data" }).exec()
+        .then(streams => {
+            addStreamsToReq(streams, req);
+        })
+        .then(() => next())
+        .catch((output) => {
+            logger('ancillary-consolidation').error(`exception: ${output}`);
+            logger('ancillary-consolidation').error(`exception: ${output}`);
+        });
+}
+
 function commonConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
     const streams = _.get(req, 'streams', []);
+
     doRtpAnalysis(pcapId, streams)
         .then(() => next())
         .catch((output) => {
-            logger('audio-consolidation').error(`exception: ${output}`);
-            logger('audio-consolidation').error(`exception: ${output}`);
+            logger('common-consolidation').error(`exception: ${output}`);
+            logger('common-consolidation').error(`exception: ${output}`);
         });
 }
 
@@ -377,15 +407,18 @@ module.exports = {
         pcapFullAnalysis,
         videoConsolidation,
         audioConsolidation,
+        ancillaryConsolidation,
         commonConsolidation,
         pcapConsolidation,
         pcapIngestEnd
     ],
     pcapSingleStreamIngest: [
         pcapFileAvailableFromReq,
+        resetStreamCounters,
         singleStreamAnalysis,
         videoConsolidation,
         audioConsolidation,
+        ancillaryConsolidation,
         commonConsolidation,
         pcapConsolidation
     ],

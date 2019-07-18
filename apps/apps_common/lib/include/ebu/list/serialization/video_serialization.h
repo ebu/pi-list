@@ -18,9 +18,9 @@ namespace ebu_list
         uint32_t first_frame_ts = 0;
         uint32_t last_frame_ts = 0;
         int max_line_number = -1;
-        unsigned long packet_count = 0;
-        uint64_t dropped_packet_count = 0;
-        unsigned long frame_count = 0;
+        uint32_t packet_count = 0;
+        uint32_t dropped_packet_count = 0;
+        uint32_t frame_count = 0;
         clock::time_point first_packet_ts {};
         clock::time_point last_packet_ts {};
 

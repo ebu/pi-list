@@ -54,10 +54,10 @@ namespace ebu_list
         void parse_packet(const rtp::packet& packet);
         void detect_frame_transition(uint32_t timestamp);
 
-        const bool should_decode_video_; 
+        const bool should_decode_video_;
         st2110::rate_calculator rate_;
         frame_uptr current_frame_;
-        std::optional<int64_t> last_sequence_number_;
+        std::optional<uint32_t> last_sequence_number_;
         malloc_sbuffer_factory block_factory_;
 
         serializable_stream_info info_;
