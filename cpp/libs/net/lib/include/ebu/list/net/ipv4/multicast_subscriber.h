@@ -22,7 +22,7 @@ namespace ebu_list::ipv4
 	class multicast_subscriber
 	{
 	public:
-		multicast_subscriber(ipv4::address listen_address);
+		explicit multicast_subscriber(ipv4::address listen_address);
 
 		void subscribe_to(ipv4::address address, port port);
 		void unsubscribe_from(ipv4::address address);

@@ -49,7 +49,7 @@ function normalizeHistogramData(data) {
     return arrayData;
 }
 
-class VideoPage extends Component {
+class LiveVideoPage extends Component {
     constructor(props) {
         super(props);
 
@@ -176,7 +176,7 @@ class VideoPage extends Component {
                 <div className="row">
                     <Panel className="col-xs-12 col-md-4">
                         <Dash21Info {...globalVideoAnalysis} />
-                        <NetworkInfo stream={props.streamInfo} />
+                        <NetworkInfo stream={this.props.streamInfo} />
                         <VideoInfo {...mediaInfo} />
                     </Panel>
                     <div className="col-xs-12 col-md-8">
@@ -209,4 +209,4 @@ class VideoPage extends Component {
     }
 }
 
-export default VideoPage;
+export default LiveVideoPage;

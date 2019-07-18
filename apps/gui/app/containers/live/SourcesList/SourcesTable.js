@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import sources from 'ebu_list_common/capture/sources';
 import { translateX } from '../../../utils/translation';
 import Icon from '../../../components/common/Icon';
 
@@ -17,8 +18,24 @@ const SourcesTable = props => {
         {
             Header: translateX('live.sources.name'),
             headerClassName: 'lst-text-left lst-table-header',
-            accessor: 'label',
+            accessor: 'meta.label',
             className: 'lst-text-left',
+        },
+        {
+            Header: '',
+            headerClassName: 'lst-text-left lst-table-header',
+            accessor: 'kind',
+            className: 'lst-text-center',
+            Cell: renderKind,
+            width: 60,
+        },
+        {
+            Header: '',
+            headerClassName: 'lst-text-left lst-table-header',
+            accessor: 'meta.format',
+            className: 'lst-text-left',
+            Cell: renderIcon,
+            width: 40,
         },
         {
             Header: translateX('live.sources.destination_address'),
@@ -28,13 +45,6 @@ const SourcesTable = props => {
         },
         {
             Header: translateX('live.sources.format'),
-            headerClassName: 'lst-text-left lst-table-header',
-            accessor: 'meta.format',
-            className: 'lst-text-left',
-            Cell: renderIcon,
-        },
-        {
-            Header: translateX('live.sources.resolution'),
             headerClassName: 'lst-text-left lst-table-header',
             accessor: 'media_specific.resolution',
             className: 'lst-text-left',
@@ -59,10 +69,6 @@ const SourcesTable = props => {
     );
 };
 
-const renderKind = ({ value }) => {
-    return <Fragment>${JSON.stringify(value)}</Fragment>;
-};
-
 const getIconValue = value => {
     switch (value) {
         case 'urn:x-nmos:format:video':
@@ -70,18 +76,35 @@ const getIconValue = value => {
         case 'urn:x-nmos:format:audio':
             return 'audiotrack';
         case 'urn:x-nmos:format:data':
+            return 'description';
+
         default:
             return 'help';
     }
 };
 
 const renderIcon = ({ value }) => {
-    let iconValue;
     return (
         <span className="stream-type-number">
             <Icon value={getIconValue(value)} />
         </span>
     );
+};
+
+const renderKind = ({ value }) => {
+    switch (value) {
+        case sources.kinds.user_defined:
+            return <Icon value={'person'} />;
+
+        case sources.kinds.from_sdp:
+            return <span>SDP</span>;
+
+        case sources.kinds.nmos:
+            return <img src="/static/nmos.png" alt="NMOS logo" width="45px" />;
+
+        default:
+            return '';
+    }
 };
 
 SourcesTable.propTypes = {

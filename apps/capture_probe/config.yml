@@ -1,0 +1,15 @@
+probe:
+  # change this to a new UUID
+  id: 6cbf09dc-e602-45ee-9c70-0a0b3b1cf16e
+  label: "LIST probe #1"
+
+rabbitmq:
+  hostname: localhost
+  port: 5672
+
+capture:
+  interface: enp64s0f0
+  bin: /home/ebu/repos/ebu_list_live/build-release/bin
+
+# Uncomment this to use a dummy file rather than capturing using recorder
+dummy_pcap: /home/pedro/list_sample_files/pcap/eemebe_t_1080i59.pcap

@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import Toolbar from './Toolbar';
 import SourcesTable from './SourcesTable';
 import Actions from './Actions';
@@ -12,18 +12,27 @@ import tableactions from '../../../utils/models/table/actions';
 import routeBuilder from '../../../utils/routeBuilder';
 import DeleteModal from '../../../components/DeleteModal';
 import { useMqttMessages } from '../../../utils/mqtt';
-import mqtypes from '../../../common/mq/types';
+import mqtypes from 'ebu_list_common/mq/types';
 import api from '../../../utils/api';
+import DragAndDropUploader from '../../../components/upload/DragAndDropUploader';
+import { translateX } from '../../../utils/translation';
+import AddSourceModal from './AddSourceModal';
 
 const actionsWorkflow = (state, action) => {
     middleware(state, action);
     return reducer(tableReducer(state, action), action);
 };
+const initialState = {
+    ...tableInitialState(),
+    addSourceModalVisible: false,
+};
 
 const SourcesList = props => {
-    const [state, dispatch] = useReducer(actionsWorkflow, tableInitialState());
-    const toggleRow = id => dispatch({ type: tableactions.toggleRow, data: { id } });
-    const toggleSelectAll = () => dispatch({ type: tableactions.toggleSelectAll });
+    const [state, dispatch] = useReducer(actionsWorkflow, initialState);
+    const toggleRow = id =>
+        dispatch({ type: tableactions.toggleRow, data: { id } });
+    const toggleSelectAll = () =>
+        dispatch({ type: tableactions.toggleSelectAll });
     const onClickRow = id => {
         // const route = routeBuilder.live_flow_page(id);
         // window.appHistory.push(route);
@@ -59,12 +68,26 @@ const SourcesList = props => {
 
         dispatch({ type: tableactions.clearSelection });
 
-        // TODO: refactor this to delete all with a single call
         dispatch({
             type: Actions.deleteLiveSources,
             payload: { ids: idsToDelete },
         });
     };
+
+    const onUpload = async (data, onComplete) => {
+        try {
+            const sourceResponse = await api.sdpToSource(data, onComplete);
+            const source = sourceResponse.data.source;
+            const addedSource = await api.addLiveSource(source);
+        } catch (err) {
+            // TODO: show this to user
+            console.error('error adding source from SDP', err);
+        }
+    };
+
+    const onModalClose = () => dispatch({ type: Actions.hideAddSource });
+    const onModalAddSources = sources =>
+        dispatch({ type: Actions.addSources, payload: { sources } });
 
     return (
         <div>
@@ -74,14 +97,25 @@ const SourcesList = props => {
                 data={state.itemsToDelete}
                 onDelete={doDelete}
             />
-            <Toolbar dispatch={dispatch} selectedItems={state.selected} />
-            <SourcesTable
-                data={state.data}
-                selectedIds={state.selected}
-                selectAll={state.selectAll}
-                onSelectId={toggleRow}
-                onSelectAll={toggleSelectAll}
-                onClickRow={onClickRow}
+            <DragAndDropUploader
+                uploadButtonLabel="SDP"
+                uploadApi={onUpload}
+                title={translateX('navigation.live_sources')}
+            >
+                <Toolbar dispatch={dispatch} selectedItems={state.selected} />
+                <SourcesTable
+                    data={state.data}
+                    selectedIds={state.selected}
+                    selectAll={state.selectAll}
+                    onSelectId={toggleRow}
+                    onSelectAll={toggleSelectAll}
+                    onClickRow={onClickRow}
+                />
+            </DragAndDropUploader>
+            <AddSourceModal
+                visible={state.addSourceModalVisible}
+                onAdd={onModalAddSources}
+                onClose={onModalClose}
             />
         </div>
     );

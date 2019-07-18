@@ -15,9 +15,11 @@ RUN npm install -g serve
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib/
 
 ADD app/ /app
+ADD js/ /js
 ADD lib/ /usr/local/lib
 
 WORKDIR /app/listwebserver/
+RUN rm -rf node_modules
 RUN npm install
 
 CMD serve -s /app/gui -p 8080 & npm start -- config.yml --dev

@@ -10,7 +10,7 @@ import api from 'utils/api';
 import chartFormatters from 'utils/chartFormatters';
 import Button from 'components/common/Button';
 
-const AudioPage = (props) => {
+const AudioPage = props => {
     const streamInfo = props.streamInfo;
     const statistics = streamInfo.statistics;
     const analysis = streamInfo.global_audio_analysis;
@@ -24,15 +24,31 @@ const AudioPage = (props) => {
                     <div className="col-xs-12 col-md-4">
                         <NetworkInfo stream={props.streamInfo} />
                         <AudioInfo {...mediaInfo} />
-                        <AudioStatistics {...statistics} tsdf_max={analysis.tsdf_max} />
+                        <AudioStatistics
+                            {...statistics}
+                            tsdf_max={analysis.tsdf_max}
+                        />
                     </div>
 
                     <div className="col-xs-12 col-md-8">
-                        <AudioExplorer pcapID={props.pcapID} streamID={props.streamID} channelNum={mediaInfo.number_channels} />
+                        <AudioExplorer
+                            pcapID={props.pcapID}
+                            streamID={props.streamID}
+                            channelNum={mediaInfo.number_channels}
+                        />
                         <LineChart
-                            asyncData={() => api.getAudioTransitDelay(props.pcapID, props.streamID, first_packet_ts, last_packet_ts)}
+                            asyncData={() =>
+                                api.getAudioTransitDelay(
+                                    props.pcapID,
+                                    props.streamID,
+                                    first_packet_ts,
+                                    last_packet_ts
+                                )
+                            }
                             xAxis={chartFormatters.getTimeLineLabel}
-                            data={chartFormatters.stdDeviationMeanMinMaxLineChart}
+                            data={
+                                chartFormatters.stdDeviationMeanMinMaxLineChart
+                            }
                             title="Transit Time"
                             yAxisLabel="Delay (μs)"
                             height={300}
@@ -41,7 +57,16 @@ const AudioPage = (props) => {
                         />
                         <LineChart
                             // provide packet_time and tsdf to plot the yellow tolerance and red limit lines respectively
-                            asyncData={() => api.getAudioTimeStampedDelayFactor(props.pcapID, props.streamID, first_packet_ts, last_packet_ts, mediaInfo.packet_time * 1000, analysis.tsdf_max)}
+                            asyncData={() =>
+                                api.getAudioTimeStampedDelayFactor(
+                                    props.pcapID,
+                                    props.streamID,
+                                    first_packet_ts,
+                                    last_packet_ts,
+                                    mediaInfo.packet_time * 1000,
+                                    analysis.tsdf_max
+                                )
+                            }
                             xAxis={chartFormatters.getTimeLineLabel}
                             data={chartFormatters.singleValueLineThresholdChart}
                             title="TimeStamped Delay Factor"
@@ -51,7 +76,16 @@ const AudioPage = (props) => {
                             legend
                         />
                     </div>
-                    <Button type="info" label="See EBU's TR for TSDF" onClick={() => { window.open('https://tech.ebu.ch/docs/tech/tech3337.pdf', '_blank') }} />
+                    <Button
+                        type="info"
+                        label="See EBU's TR for TSDF"
+                        onClick={() => {
+                            window.open(
+                                'https://tech.ebu.ch/docs/tech/tech3337.pdf',
+                                '_blank'
+                            );
+                        }}
+                    />
                 </div>
             </Panel>
         </Scrollbars>

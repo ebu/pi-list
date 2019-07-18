@@ -51,7 +51,7 @@ import ErrorPage from 'components/ErrorPage';
  * @returns {React.Component}
  */
 
-export default function (AsyncComponent, options) {
+export default function(AsyncComponent, options) {
     return class extends Component {
         constructor() {
             super();
@@ -59,7 +59,7 @@ export default function (AsyncComponent, options) {
             this.state = {
                 loading: true,
                 asyncRequestsFailed: false,
-                error: null
+                error: null,
             };
         }
 
@@ -68,20 +68,23 @@ export default function (AsyncComponent, options) {
 
             if (isObject(options.asyncRequests)) {
                 // Build an array of promises by iterate all functions of `asyncRequests`.
-                const asyncRequests = map(options.asyncRequests, (asyncRequest) => {
-                    if (isFunction(asyncRequest)) {
-                        const promise = asyncRequest(this.props);
+                const asyncRequests = map(
+                    options.asyncRequests,
+                    asyncRequest => {
+                        if (isFunction(asyncRequest)) {
+                            const promise = asyncRequest(this.props);
 
-                        if (promise instanceof Promise) {
-                            functionNames.push(asyncRequest.name);
-                            return promise;
+                            if (promise instanceof Promise) {
+                                functionNames.push(asyncRequest.name);
+                                return promise;
+                            }
                         }
                     }
-                });
+                );
 
                 // Load all information requested
                 Promise.all(asyncRequests)
-                    .then((results) => {
+                    .then(results => {
                         this.setState({
                             loading: false,
                             // Lets assume that results are originated form 3 functions which return 3 promises
@@ -93,27 +96,34 @@ export default function (AsyncComponent, options) {
                             //     "pcaps":   { ... },
                             //     "streams": { ... }
                             // }
-                            asyncResults: zipObject(functionNames, results)
+                            asyncResults: zipObject(functionNames, results),
                         });
                     })
-                    .catch((e) => {
-                        this.setState({
-                            loading: false,
-                            asyncRequestsFailed: true,
-                            error: e
-                        }, () => {
-                            if (isFunction(options.onError)) {
-                                options.onError(this.props);
+                    .catch(e => {
+                        this.setState(
+                            {
+                                loading: false,
+                                asyncRequestsFailed: true,
+                                error: e,
+                            },
+                            () => {
+                                if (isFunction(options.onError)) {
+                                    options.onError(this.props);
+                                }
                             }
-                        });
+                        );
                     });
             }
         }
 
         render() {
             if (this.state.loading) {
-                const props = isObject(options.loaderProps) ? options.loaderProps : {};
-                const loadingWidget = props.loadingWidget || <Loader {...props} />;
+                const props = isObject(options.loaderProps)
+                    ? options.loaderProps
+                    : {};
+                const loadingWidget = props.loadingWidget || (
+                    <Loader {...props} />
+                );
 
                 return (
                     <div className="lst-async-loader--loading">
@@ -122,28 +132,36 @@ export default function (AsyncComponent, options) {
                 );
             } else if (this.state.asyncRequestsFailed) {
                 const errorConfiguration = {
-                    errorType: isObject(options.errorPage) ? options.errorPage.errorType : this.state.error.message,
+                    errorType: isObject(options.errorPage)
+                        ? options.errorPage.errorType
+                        : this.state.error.message,
                     message: isObject(options.errorPage)
                         ? options.errorPage.message
                         : `Cannot connect to ${this.state.error.config.url}`,
-                    icon: isObject(options.errorPage) ? options.errorPage.icon : null,
-                    button: isObject(options.errorPage) ? options.errorPage.button : null
+                    icon: isObject(options.errorPage)
+                        ? options.errorPage.icon
+                        : null,
+                    button: isObject(options.errorPage)
+                        ? options.errorPage.button
+                        : null,
                 };
 
-                return React.isValidElement(options.onErrorComponent)
-                    ? options.onErrorComponent
-                    : (
-                        <ErrorPage
-                            errorType={errorConfiguration.errorType}
-                            errorMessage={errorConfiguration.message}
-                            icon={errorConfiguration.icon}
-                            button={errorConfiguration.button}
-                            originalProps={this.props}
-                        />
-                    );
+                return React.isValidElement(options.onErrorComponent) ? (
+                    options.onErrorComponent
+                ) : (
+                    <ErrorPage
+                        errorType={errorConfiguration.errorType}
+                        errorMessage={errorConfiguration.message}
+                        icon={errorConfiguration.icon}
+                        button={errorConfiguration.button}
+                        originalProps={this.props}
+                    />
+                );
             }
 
-            return <AsyncComponent {...this.state.asyncResults} {...this.props} />;
+            return (
+                <AsyncComponent {...this.state.asyncResults} {...this.props} />
+            );
         }
     };
 }

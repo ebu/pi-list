@@ -13,8 +13,13 @@ const Pcap = require('../models/pcap');
 const pcapController = require('../controllers/pcap');
 const Stream = require('../models/stream');
 const streamsController = require('../controllers/streams');
-const { pcapSingleStreamIngest, pcapIngest,
-    generateRandomPcapDefinition, generateRandomPcapFilename, getUserFolder } = require('../util/ingest');
+const {
+    pcapSingleStreamIngest,
+    pcapIngest,
+    generateRandomPcapDefinition,
+    generateRandomPcapFilename,
+    getUserFolder,
+} = require('../util/ingest');
 const websocketManager = require('../managers/websocket');
 const WS_EVENTS = require('../enums/wsEvents');
 const exec = util.promisify(child_process.exec);
@@ -25,24 +30,32 @@ function isAuthorized(req, res, next) {
     if (pcapID) {
         const userID = req.session.passport.user.id;
 
-        Pcap.findOne({ owner_id: userID, id: pcapID }).exec()
-            .then((data) => {
+        Pcap.findOne({ owner_id: userID, id: pcapID })
+            .exec()
+            .then(data => {
                 if (data) next();
-                else res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND);
+                else
+                    res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(
+                        API_ERRORS.RESOURCE_NOT_FOUND
+                    );
             })
-            .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+            .catch(() =>
+                res
+                    .status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND)
+                    .send(API_ERRORS.RESOURCE_NOT_FOUND)
+            );
     } else next();
 }
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
+    destination: function(req, file, cb) {
         req.pcap = generateRandomPcapDefinition(req);
         fs.createIfNotExists(req.pcap.folder);
         cb(null, req.pcap.folder);
     },
-    filename: function (req, file, cb) {
-        cb(null, generateRandomPcapFilename())
-    }
+    filename: function(req, file, cb) {
+        cb(null, generateRandomPcapFilename());
+    },
 });
 
 const upload = multer({ storage: storage });
@@ -55,17 +68,27 @@ router.use('/:pcapID', isAuthorized);
  *  URL: /api/pcap/
  *  Method: PUT
  */
-router.put('/', upload.single('pcap'), (req, res, next) => {
-    res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send();
-    next();
-}, pcapIngest);
+router.put(
+    '/',
+    upload.single('pcap', 'originalFilename'),
+    (req, res, next) => {
+        res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send();
+        next();
+    },
+    pcapIngest
+);
 
 /* Get all Pcaps found */
 router.get('/', (req, res) => {
     const userID = req.session.passport.user.id;
-    Pcap.find({ owner_id: userID }).exec()
+    Pcap.find({ owner_id: userID })
+        .exec()
         .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
-        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+        .catch(() =>
+            res
+                .status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND)
+                .send(API_ERRORS.RESOURCE_NOT_FOUND)
+        );
 });
 
 /* Delete a PCAP */
@@ -73,7 +96,8 @@ router.delete('/:pcapID/', (req, res) => {
     const { pcapID } = req.params;
     const path = `${getUserFolder(req)}/${pcapID}`;
 
-    Pcap.deleteOne({ id: pcapID }).exec()
+    Pcap.deleteOne({ id: pcapID })
+        .exec()
         .then(() => {
             return fs.delete(path); // delete the whole pcap folder
         })
@@ -90,30 +114,45 @@ router.delete('/:pcapID/', (req, res) => {
             const userID = req.session.passport.user.id;
             websocketManager.instance().sendEventToUser(userID, {
                 event: WS_EVENTS.PCAP_FILE_DELETED,
-                data: { id: pcapID }
+                data: { id: pcapID },
             });
         })
-        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+        .catch(() =>
+            res
+                .status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND)
+                .send(API_ERRORS.RESOURCE_NOT_FOUND)
+        );
 });
 
 /* Get the report for a pcap */
 router.get('/:pcapID/report', (req, res) => {
     const { pcapID } = req.params;
-    pcapController.getReport(pcapID)
-        .then((report) => {
-            res.setHeader('Content-disposition', `attachment; filename=${pcapID}.json`);
+    pcapController
+        .getReport(pcapID)
+        .then(report => {
+            res.setHeader(
+                'Content-disposition',
+                `attachment; filename=${pcapID}.json`
+            );
             res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(report);
         })
-        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+        .catch(() =>
+            res
+                .status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND)
+                .send(API_ERRORS.RESOURCE_NOT_FOUND)
+        );
 });
 
 /* Download a PCAP File */
 router.get('/:pcapID/download', (req, res) => {
     const { pcapID } = req.params;
 
-    Pcap.findOne({ id: pcapID }).exec()
+    Pcap.findOne({ id: pcapID })
+        .exec()
         .then(data => {
-            const path = `${getUserFolder(req)}/${pcapID}/${data.pcap_file_name}`;
+            const path = `${getUserFolder(req)}/${pcapID}/${
+                data.pcap_file_name
+            }`;
             fs.downloadFile(path, `${data.file_name}.pcap`, res);
         });
 });
@@ -122,7 +161,8 @@ router.get('/:pcapID/download', (req, res) => {
 router.get('/:pcapID/sdp', (req, res) => {
     const { pcapID } = req.params;
 
-    Pcap.findOne({ id: pcapID }).exec()
+    Pcap.findOne({ id: pcapID })
+        .exec()
         .then(data => {
             const path = `${getUserFolder(req)}/${pcapID}/sdp.zip`;
             const fileName = data.file_name.replace(/\.[^\.]*$/, '') + '.zip';
@@ -134,9 +174,14 @@ router.get('/:pcapID/sdp', (req, res) => {
 router.get('/:pcapID/', (req, res) => {
     const { pcapID } = req.params;
 
-    Pcap.findOne({ id: pcapID }).exec()
+    Pcap.findOne({ id: pcapID })
+        .exec()
         .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
-        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+        .catch(() =>
+            res
+                .status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND)
+                .send(API_ERRORS.RESOURCE_NOT_FOUND)
+        );
 });
 
 router.get('/:pcapID/analytics/PtpOffset', (req, res) => {
@@ -145,15 +190,24 @@ router.get('/:pcapID/analytics/PtpOffset', (req, res) => {
     const chartData = influxDbManager.getPtpOffsetSamplesByPcap(pcapID);
     chartData
         .then(data => res.json(data))
-        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+        .catch(() =>
+            res
+                .status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND)
+                .send(API_ERRORS.RESOURCE_NOT_FOUND)
+        );
 });
 
 /* Get all streams from a pcap */
 router.get('/:pcapID/streams/', (req, res) => {
     const { pcapID } = req.params;
-    streamsController.getStreamsForPcap(pcapID)
+    streamsController
+        .getStreamsForPcap(pcapID)
         .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
-        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+        .catch(() =>
+            res
+                .status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND)
+                .send(API_ERRORS.RESOURCE_NOT_FOUND)
+        );
 });
 
 /*** STREAM ***/
@@ -162,18 +216,28 @@ router.get('/:pcapID/streams/', (req, res) => {
 router.get('/:pcapID/stream/:streamID', (req, res) => {
     const { streamID } = req.params;
 
-    streamsController.getStreamWithId(streamID)
+    streamsController
+        .getStreamWithId(streamID)
         .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
-        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+        .catch(() =>
+            res
+                .status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND)
+                .send(API_ERRORS.RESOURCE_NOT_FOUND)
+        );
 });
 
 /* Get _help.json file for stream */
 router.get('/:pcapID/stream/:streamID/help', (req, res) => {
     const { streamID } = req.params;
 
-    streamsController.getStreamWithId(streamID)
+    streamsController
+        .getStreamWithId(streamID)
         .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
-        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+        .catch(() =>
+            res
+                .status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND)
+                .send(API_ERRORS.RESOURCE_NOT_FOUND)
+        );
 });
 
 /* Patch the stream info with a new name */
@@ -182,53 +246,91 @@ router.patch('/:pcapID/stream/:streamID', (req, res) => {
     const alias = req.body.name;
 
     // todo: maybe check if it found a document (check data.n)?
-    Stream.updateOne({ id: streamID }, { alias: alias }).exec()
+    Stream.updateOne({ id: streamID }, { alias: alias })
+        .exec()
         .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
-        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+        .catch(() =>
+            res
+                .status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND)
+                .send(API_ERRORS.RESOURCE_NOT_FOUND)
+        );
 });
 
-router.get('/:pcapID/stream/:streamID/analytics/CInst/histogram', (req, res) => {
-    const { pcapID, streamID } = req.params;
+router.get(
+    '/:pcapID/stream/:streamID/analytics/CInst/histogram',
+    (req, res) => {
+        const { pcapID, streamID } = req.params;
 
-    const path = `${getUserFolder(req)}/${pcapID}/${streamID}/${CONSTANTS.CINST_FILE}`;
-    fs.sendFileAsResponse(path, res);
-});
+        const path = `${getUserFolder(req)}/${pcapID}/${streamID}/${
+            CONSTANTS.CINST_FILE
+        }`;
+        fs.sendFileAsResponse(path, res);
+    }
+);
 
 router.get('/:pcapID/stream/:streamID/analytics/Vrx/histogram', (req, res) => {
     const { pcapID, streamID } = req.params;
 
-    const path = `${getUserFolder(req)}/${pcapID}/${streamID}/${CONSTANTS.VRX_FILE}`;
+    const path = `${getUserFolder(req)}/${pcapID}/${streamID}/${
+        CONSTANTS.VRX_FILE
+    }`;
     fs.sendFileAsResponse(path, res);
 });
 
 /* Audio Delays */
-router.get('/:pcapID/stream/:streamID/analytics/AudioTransitDelay', (req, res) => {
-    const { pcapID, streamID } = req.params;
-    const { from, to } = req.query;
+router.get(
+    '/:pcapID/stream/:streamID/analytics/AudioTransitDelay',
+    (req, res) => {
+        const { pcapID, streamID } = req.params;
+        const { from, to } = req.query;
 
-    chartData = influxDbManager.getAudioTransitDelay(pcapID, streamID, from, to);
-    chartData
-        .then(data => { res.json(data); })
-        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
-});
+        chartData = influxDbManager.getAudioTransitDelay(
+            pcapID,
+            streamID,
+            from,
+            to
+        );
+        chartData
+            .then(data => {
+                res.json(data);
+            })
+            .catch(() =>
+                res
+                    .status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND)
+                    .send(API_ERRORS.RESOURCE_NOT_FOUND)
+            );
+    }
+);
 
-router.get('/:pcapID/stream/:streamID/analytics/AudioTimeStampedDelayFactor', (req, res) => {
-    const { pcapID, streamID } = req.params;
-    const { from, to, tolerance, tsdfmax } = req.query;
-    const limit = tolerance * 17; // EBU recommendation #3337
+router.get(
+    '/:pcapID/stream/:streamID/analytics/AudioTimeStampedDelayFactor',
+    (req, res) => {
+        const { pcapID, streamID } = req.params;
+        const { from, to, tolerance, tsdfmax } = req.query;
+        const limit = tolerance * 17; // EBU recommendation #3337
 
-    chartData = influxDbManager.getAudioTimeStampedDelayFactor(pcapID, streamID, from, to);
-    chartData
-        .then(data => {
-            data.forEach(e => {
-                e['tolerance'] = tolerance;
-                // display the red limit only when relevant
-                if (tsdfmax > 0.3 * limit) e['limit'] = limit;
-            });
-            res.json(data);
-        })
-        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
-});
+        chartData = influxDbManager.getAudioTimeStampedDelayFactor(
+            pcapID,
+            streamID,
+            from,
+            to
+        );
+        chartData
+            .then(data => {
+                data.forEach(e => {
+                    e['tolerance'] = tolerance;
+                    // display the red limit only when relevant
+                    if (tsdfmax > 0.3 * limit) e['limit'] = limit;
+                });
+                res.json(data);
+            })
+            .catch(() =>
+                res
+                    .status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND)
+                    .send(API_ERRORS.RESOURCE_NOT_FOUND)
+            );
+    }
+);
 
 /* */
 router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
@@ -238,7 +340,12 @@ router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
     let chartData = null;
 
     if (measurement === 'CInst') {
-        chartData = influxDbManager.getCInstByStream(pcapID, streamID, from, to);
+        chartData = influxDbManager.getCInstByStream(
+            pcapID,
+            streamID,
+            from,
+            to
+        );
     } else if (measurement === 'CInstRaw') {
         chartData = influxDbManager.getCInstRaw(pcapID, streamID, from, to);
     } else if (measurement === 'VrxIdeal') {
@@ -246,58 +353,98 @@ router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
     } else if (measurement === 'VrxIdealRaw') {
         chartData = influxDbManager.getVrxIdealRaw(pcapID, streamID, from, to);
     } else if (measurement === 'VrxAdjustedAvgTro') {
-        chartData = influxDbManager.getVrxAdjustedAvgTro(pcapID, streamID, from, to);
+        chartData = influxDbManager.getVrxAdjustedAvgTro(
+            pcapID,
+            streamID,
+            from,
+            to
+        );
     } else if (measurement === 'DeltaToIdealTpr0Raw') {
-        chartData = influxDbManager.getDeltaToIdealTpr0Raw(pcapID, streamID, from, to)
+        chartData = influxDbManager.getDeltaToIdealTpr0Raw(
+            pcapID,
+            streamID,
+            from,
+            to
+        );
     } else if (measurement === 'DeltaToIdealTpr0AdjustedAvgTroRaw') {
-        chartData = influxDbManager.getDeltaToIdealTpr0AdjustedAvgTroRaw(pcapID, streamID, from, to)
+        chartData = influxDbManager.getDeltaToIdealTpr0AdjustedAvgTroRaw(
+            pcapID,
+            streamID,
+            from,
+            to
+        );
     } else if (measurement === 'DeltaRtpTsVsPacketTsRaw') {
-        chartData = influxDbManager.getDeltaRtpTsVsPacketTsRaw(pcapID, streamID, from, to)
+        chartData = influxDbManager.getDeltaRtpTsVsPacketTsRaw(
+            pcapID,
+            streamID,
+            from,
+            to
+        );
     } else if (measurement === 'DeltaToPreviousRtpTsRaw') {
-        chartData = influxDbManager.getDeltaToPreviousRtpTsRaw(pcapID, streamID, from, to)
+        chartData = influxDbManager.getDeltaToPreviousRtpTsRaw(
+            pcapID,
+            streamID,
+            from,
+            to
+        );
     } else if (measurement === 'DeltaRtpVsNt') {
-        chartData = influxDbManager.getDeltaRtpVsNt(pcapID, streamID, from, to)
+        chartData = influxDbManager.getDeltaRtpVsNt(pcapID, streamID, from, to);
     } else if (measurement === 'DeltaRtpVsNtTicksMinMax') {
-        chartData = influxDbManager.getDeltaRtpVsNtTicksMinMax(pcapID, streamID)
+        chartData = influxDbManager.getDeltaRtpVsNtTicksMinMax(
+            pcapID,
+            streamID
+        );
     }
     chartData.then(data => res.json(data));
 });
 
 /* PUT new help information for stream */
-router.put('/:pcapID/stream/:streamID/help', (req, res, next) => {
-    const { pcapID, streamID } = req.params;
+router.put(
+    '/:pcapID/stream/:streamID/help',
+    (req, res, next) => {
+        const { pcapID, streamID } = req.params;
 
-    Stream.findOneAndUpdate({ id: streamID }, req.body, { new: true, overwrite: true }).exec()
-        .then(() => {
-            return Pcap.findOne({ id: pcapID }).exec();
+        Stream.findOneAndUpdate({ id: streamID }, req.body, {
+            new: true,
+            overwrite: true,
         })
-        .then(pcap => {
-            const pcap_folder = `${getUserFolder(req)}/${pcapID}`;
-            const pcap_location = `${pcap_folder}/${pcap.pcap_file_name}`;
+            .exec()
+            .then(() => {
+                return Pcap.findOne({ id: pcapID }).exec();
+            })
+            .then(pcap => {
+                const pcap_folder = `${getUserFolder(req)}/${pcapID}`;
+                const pcap_location = `${pcap_folder}/${pcap.pcap_file_name}`;
 
-            // sets req.file, which is used by the ingest system
-            req.file = {
-                path: pcap_location,
-                originalname: pcap.file_name,
-                filename: pcap.pcap_file_name
-            };
+                // sets req.file, which is used by the ingest system
+                req.file = {
+                    path: pcap_location,
+                    originalname: pcap.file_name,
+                    filename: pcap.pcap_file_name,
+                };
 
-            // sets req.pcap, which is used by the ingest system
-            req.pcap = {
-                uuid: pcapID,
-                folder: pcap_folder
-            };
+                // sets req.pcap, which is used by the ingest system
+                req.pcap = {
+                    uuid: pcapID,
+                    folder: pcap_folder,
+                };
 
-            next();
-        })
-        .catch((output) => {
-            logger('Stream Re-ingest').error(`${output.stdout} ${output.stderr}`);
-            res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR)
-                .send(API_ERRORS.PCAP_EXTRACT_METADATA_ERROR);
-        });
-}, pcapSingleStreamIngest, (req, res) => {
-    res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
-});
+                next();
+            })
+            .catch(output => {
+                logger('Stream Re-ingest').error(
+                    `${output.stdout} ${output.stderr}`
+                );
+                res.status(
+                    HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR
+                ).send(API_ERRORS.PCAP_EXTRACT_METADATA_ERROR);
+            });
+    },
+    pcapSingleStreamIngest,
+    (req, res) => {
+        res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
+    }
+);
 
 /* Get all frames for stream */
 router.get('/:pcapID/stream/:streamID/frames', (req, res) => {
@@ -306,12 +453,17 @@ router.get('/:pcapID/stream/:streamID/frames', (req, res) => {
     if (fs.folderExists(`${getUserFolder(req)}/${pcapID}`)) {
         const path = `${getUserFolder(req)}/${pcapID}/${streamID}`;
 
-        const frames = fs.getAllFirstLevelFolders(path)
-            .map(frame => fs.readFile(`${path}/${frame.id}/${CONSTANTS.META_FILE}`));
+        const frames = fs
+            .getAllFirstLevelFolders(path)
+            .map(frame =>
+                fs.readFile(`${path}/${frame.id}/${CONSTANTS.META_FILE}`)
+            );
 
         Promise.all(frames).then(data => res.send(data));
     } else {
-        res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND);
+        res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(
+            API_ERRORS.RESOURCE_NOT_FOUND
+        );
     }
 });
 
@@ -320,7 +472,9 @@ router.get('/:pcapID/stream/:streamID/frames', (req, res) => {
 /* Get packets.json file for a frame */
 router.get('/:pcapID/stream/:streamID/frame/:frameID/packets', (req, res) => {
     const { pcapID, streamID, frameID } = req.params;
-    const packetsFilePath = `${getUserFolder(req)}/${pcapID}/${streamID}/${frameID}/packets.json`;
+    const packetsFilePath = `${getUserFolder(
+        req
+    )}/${pcapID}/${streamID}/${frameID}/packets.json`;
 
     fs.sendFileAsResponse(packetsFilePath, res);
 });
@@ -328,7 +482,9 @@ router.get('/:pcapID/stream/:streamID/frame/:frameID/packets', (req, res) => {
 /* Get png file for a frame */
 router.get('/:pcapID/stream/:streamID/frame/:frameID/png', (req, res) => {
     const { pcapID, streamID, frameID } = req.params;
-    const pngFilePath = `${getUserFolder(req)}/${pcapID}/${streamID}/${frameID}/frame.png`;
+    const pngFilePath = `${getUserFolder(
+        req
+    )}/${pcapID}/${streamID}/${frameID}/frame.png`;
 
     fs.sendFileAsResponse(pngFilePath, res);
 });
@@ -341,43 +497,52 @@ function renderMp3(req, res) {
     const folderPath = `${getUserFolder(req)}/${pcapID}/${streamID}/`;
     var { channels } = req.query;
 
-    if ((channels === undefined) || (channels === '')) {
+    if (channels === undefined || channels === '') {
         channels = '0,1'; // keep the 2 first channels by default
     }
 
     Stream.findOne({ id: streamID })
         .exec()
-        .then((data) => {
+        .then(data => {
             res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
 
             const rawFilePath = `${folderPath}/raw`;
             const mp3FilePath = `${folderPath}/audio-${channels}.mp3`;
-            const encodingBits = (data.media_specific.encoding == 'L24')? 24 : 16;
+            const encodingBits =
+                data.media_specific.encoding == 'L24' ? 24 : 16;
             const sampling = parseInt(data.media_specific.sampling) / 1000;
             const channelNumber = data.media_specific.number_channels;
             // ffmpeg supports up to 16 input channels
-            const channelMapping = channels.split(',').slice(0,16).map( function(i) {
+            const channelMapping = channels
+                .split(',')
+                .slice(0, 16)
+                .map(function(i) {
                     return '-map_channel 0.0.' + i;
-                }).join(' ')
+                })
+                .join(' ');
             const ffmpegCommand = `ffmpeg -hide_banner -y -f s${encodingBits}be -ar ${sampling}k -ac ${channelNumber} -i "${rawFilePath}" ${channelMapping} -codec:a libmp3lame -qscale:a 2 "${mp3FilePath}"`;
 
             logger('render-mp3').info(`Command: ${ffmpegCommand}`);
             exec(ffmpegCommand)
-                .then((output) => {
+                .then(output => {
                     logger('render-mp3').info(output.stdout);
                     logger('render-mp3').info(output.stderr);
                     const userID = req.session.passport.user.id;
                     websocketManager.instance().sendEventToUser(userID, {
                         event: WS_EVENTS.MP3_FILE_RENDERED,
-                        data: { channels: channels }
+                        data: { channels: channels },
                     });
                 })
-                .catch((output) => {
+                .catch(output => {
                     logger('render-mp3').error(output.stdout);
                     logger('render-mp3').error(output.stderr);
                 });
         })
-        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+        .catch(() =>
+            res
+                .status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND)
+                .send(API_ERRORS.RESOURCE_NOT_FOUND)
+        );
 }
 
 router.get('/:pcapID/stream/:streamID/downloadmp3', (req, res) => {
@@ -391,7 +556,7 @@ router.get('/:pcapID/stream/:streamID/downloadmp3', (req, res) => {
         const userID = req.session.passport.user.id;
         websocketManager.instance().sendEventToUser(userID, {
             event: WS_EVENTS.MP3_FILE_RENDERED,
-            data: { channels: channels }
+            data: { channels: channels },
         });
     } else {
         logger('download-mp3').info('File doesn`t exist');

@@ -115,6 +115,12 @@ workflow.capture_stream,Capturer le flux,Захват потока,Захопл�
 workflow.add_stream,Ajouter le flux,Добавить поток,Додати потік,Stroom toevoegen,Add Stream,Adicionar Stream,Stream hinzufügen,Προσθήκη ροής
 workflow.start_capture,Commencer,Начать,Почати,Start,Start,Iniciar,Start,Εκκίνηση
 workflow.drop_sdp_file_here,Déposer votre fichier SDP ici,Перетащите свой файл SDP сюда,Перетягніть свій файл SDP сюди,Zet je SDP-bestand hier neer,Drop your SDP file here,Arraste para aqui seu ficheiro SDP,SDP Dateien hier ablegen,Αφήστε το αρχείο SDP εδώ
+workflow.add,*** workflow.add,*** workflow.add,*** workflow.add,*** workflow.add,Add,Adicionar,*** workflow.add,*** workflow.add
+workflow.added,*** workflow.added,*** workflow.added,*** workflow.added,*** workflow.added,Added,Adicionado,*** workflow.added,*** workflow.added
+workflow.add_failed,*** workflow.add_failed,*** workflow.add_failed,*** workflow.add_failed,*** workflow.add_failed,Failed to add,Falha ao adicionar,*** workflow.add_failed,*** workflow.add_failed
+workflow.cancel,*** workflow.cancel,*** workflow.cancel,*** workflow.cancel,*** workflow.cancel,Cancel,Cancelar,*** workflow.cancel,*** workflow.cancel
+workflow.requested,*** workflow.requested,*** workflow.requested,*** workflow.requested,*** workflow.requested,Workflow requested,Workflow iniciado,*** workflow.requested,*** workflow.requested
+workflow.request_failed,*** workflow.request_failed,*** workflow.request_failed,*** workflow.request_failed,*** workflow.request_failed,Workflow request failed,Falha ao iniciar workflow,*** workflow.request_failed,*** workflow.request_failed
 user_account.delete_user_account,Supprimer le compte,Удалить аккаунт,Видалити аккаунт,Verwijder Account,Delete Account,Apagar Conta,Account löschen,Διαγραφή λογαριασμού
 user_account.sign_in,Joindre,Войти,Увійти,Aanmelden,Sign In,Autenticação,Einloggen,Σύνδεση
 user_account.logout,Se déconnecter,Выйти,Вийти,Afmelden,Log Out,Sair,Ausloggen,Αποσύνδεση
@@ -144,6 +150,7 @@ buttons.login,Ouverture de session,Авторизоваться,Авториза
 buttons.register,S'enregistrer,Зарегистрироваться,Реєстрація,Registreer,Register,Registar,Resistrieren,Εγγραφή
 navigation.capture,Capturer,Захватить,Захопити,Capture,Capture,Captura,Aufnehmen,Πιάνω
 navigation.live_streams,Flux en direct,Живые потоки,Живі потоки,Live Streams,Live Streams,Live,Livestreams,Ζωντανές ροές
+navigation.live_sources,*** navigation.live_sources,*** navigation.live_sources,*** navigation.live_sources,*** navigation.live_sources,Live sources,Fontes live,*** navigation.live_sources,*** navigation.live_sources
 navigation.network,Réseau,Сеть,Мережа,Netwerk,Network,Na Rede,Netzwerk,Δίκτυο
 navigation.pcaps,PCAPs et flux,PCAP файлы и потоки,PCAP файли та потоки,PCAPs & Stromen,PCAPs & Streams,PCAPs & Streams,PCAPs & Streams,PCAPs & Streams
 navigation.settings,Paramètres,Настройки,Налаштування,Instellingen,Settings,Definições,Einstellungen,Ρυθμίσεις
@@ -167,7 +174,6 @@ live.sources.delete_header,*** live.sources.delete_header,*** live.sources.delet
 live.sources.delete_message,*** live.sources.delete_header,*** live.sources.delete_message,*** live.sources.delete_message,*** live.sources.delete_message,Are you sure you want to delete %{name} source(s)?,Tem a certeza que pretende apagar %{name} fonte(s)?,"Sind Sie sich sicher, dass Sie die Quelle(n) %{name} löschen möchten?",Είστε βέβαιοι ότι θέλετε να διαγράψετε την πηγή %{name};
 live.sources.destination_address,*** live.sources.destination_address ***,Адрес назначения,Адреса призначення,Bestemming Adres,Destination Address,Endereço de Destino,Zieladresse,Διεύθυνση προορισμού
 live.sources.format,*** format ***,*** format ***,*** format ***,*** format ***,Format,Formato,Format,Τύπος
-live.sources.resolution,*** resolution ***,*** resolution ***,*** resolution ***,*** resolution ***,Resolution,Resolução,Auflösung,Ανάλυση
 notifications.success.live.sources.deleted,*** notifications.success.live.sources.deleted,*** notifications.success.live.sources.deleted,*** notifications.success.live.sources.deleted,*** notifications.success.live.sources.deleted,Live sources deleted,Fonte apagada,Live-Quellen gelöscht,Ζωντανές πηγές διαγράφηκαν
 notifications.success.live.sources.delete_message,*** notifications.success.live.sources.delete_message,*** notifications.success.live.sources.delete_message,*** notifications.success.live.sources.delete_message,*** notifications.success.live.sources.delete_message,Live sources deleted successfully,Fontes apagadas com sucesso,Live-Quellen erfolgreich gelöscht,Οι ενεργές πηγές διαγράφηκαν με επιτυχία
 notifications.error.live.sources.deleted,*** notifications.error.live.sources.deleted,*** notifications.error.live.sources.deleted,*** notifications.error.live.sources.deleted,*** notifications.error.live.sources.deleted,Live source(s) not deleted,Fonte(s) não apagada(s),Live-Quelle(n) nicht gelöscht,Η πηγή/ες δεν έχουν διαγραφεί

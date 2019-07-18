@@ -6,8 +6,7 @@ import { WS_SERVER_URL } from 'utils/api';
 let socket = null;
 const eventManager = mitt();
 
-function initialize(userID){
-
+function initialize(userID) {
     if (socket !== null) {
         return;
     }
@@ -16,7 +15,7 @@ function initialize(userID){
 
     socket.emit('register', userID);
 
-    socket.on('message', (wsData) => {
+    socket.on('message', wsData => {
         eventManager.emit(wsData.event, wsData.data);
     });
 }
@@ -24,5 +23,5 @@ function initialize(userID){
 export default {
     initialize,
     on: eventManager.on,
-    off: eventManager.off
+    off: eventManager.off,
 };

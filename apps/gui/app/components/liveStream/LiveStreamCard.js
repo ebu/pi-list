@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
-import Panel from 'components/common/Panel';
-import FormInput from 'components/common/FormInput';
-import Button from 'components/common/Button';
-import routeBuilder from 'utils/routeBuilder';
+import Panel from '../../components/common/Panel';
+import FormInput from '../../components/common/FormInput';
+import Button from '../../components/common/Button';
+import routeBuilder from '../../utils/routeBuilder';
 
 const LiveStreamCard = (props) => {
     const net = props.network_information;

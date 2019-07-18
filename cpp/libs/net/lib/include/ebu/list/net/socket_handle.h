@@ -4,6 +4,8 @@
 
 #if defined(LIST_HAS_WIN32)
 #include <WinSock2.h>
+#else // defined(LIST_HAS_WIN32)
+#include <netinet/in.h>
 #endif // defined(LIST_HAS_WIN32)
 
 namespace ebu_list
@@ -19,7 +21,7 @@ namespace ebu_list
 #endif // defined(LIST_HAS_POSIX)
 
 		socket_handle();
-		socket_handle(int af, int type, int protocol);
+		socket_handle(int af, int type, int protocol = IPPROTO_IP);
 		~socket_handle();
 		socket_handle(const socket_handle&) = delete;
 		socket_handle& operator=(const socket_handle&) = delete;

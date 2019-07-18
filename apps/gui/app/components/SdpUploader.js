@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import api from 'utils/api';
 import DragAndDropUploader from './upload/DragAndDropUploader';
 
-
 const SdpUploader = props => (
     <DragAndDropUploader
         uploadButtonLabel="SDP"
@@ -11,11 +10,8 @@ const SdpUploader = props => (
     />
 );
 
-SdpUploader.propTypes = {
-};
+SdpUploader.propTypes = {};
 
-SdpUploader.defaultProps = {
-};
-
+SdpUploader.defaultProps = {};
 
 export default SdpUploader;

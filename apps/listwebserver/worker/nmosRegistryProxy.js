@@ -16,14 +16,7 @@ const is04_query_static_url = _.get(program, [
 ]);
 const version = '1.2';
 
-if (!is04_query_static_url) {
-    logger('nmos-crawler').info(
-        'No static configuration defined. No IS-04 registry.'
-    );
-    return;
-}
-
-const query_url = `${is04_query_static_url}/x-nmos/query/v${version}`;
+const query_url = is04_query_static_url ? `${is04_query_static_url}/x-nmos/query/v${version}` : null;
 
 const intervalToUpdate = 1000;
 
@@ -64,6 +57,17 @@ const getAdditionalSendersData = senders =>
     Promise.all(senders.map(sender => getAdditionalSenderData(sender)));
 
 const makeIs04Manager = () => {
+    if (query_url === null) {
+        logger('nmos-crawler').info(
+            'No static configuration defined. No IS-04 registry.'
+        );
+        
+        return {
+            getSenders: () => [],
+            onUpdate: new EventEmitter()
+        };
+    }
+
     let senders = [];
 
     const onUpdate = new EventEmitter();
@@ -107,7 +111,7 @@ const makeIs04Manager = () => {
                 onSendersData(response.data);
             })
             .catch(error => {
-                console.log(error);
+                console.log('Could not contact the NMOS registry');
                 setTimer();
             });
     };

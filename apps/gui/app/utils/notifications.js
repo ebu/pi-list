@@ -1,5 +1,5 @@
 import Noty from 'noty';
-
+import { translate } from './translation';
 import 'noty/lib/noty.css';
 
 Noty.overrideDefaults({
@@ -10,8 +10,8 @@ Noty.overrideDefaults({
     progressBar: false,
     animation: {
         open: 'lst-animated fade-in-right',
-        close: 'lst-animated fade-out-right'
-    }
+        close: 'lst-animated fade-out-right',
+    },
 });
 
 function notificationTemplate(title = '', message = '', icon) {
@@ -31,22 +31,25 @@ function showNoty(type, title, message, icon) {
     const noty = new Noty({
         type,
         text: notificationTemplate(title, message, icon),
-        layout: 'bottomRight'
+        layout: 'bottomRight',
     });
 
     noty.show();
 }
 
+const getTitle = obj => obj.title || translate(obj.titleTag);
+const getMessage = obj => obj.message || translate(obj.messageTag);
+
 export default {
-    success: (obj) => {
-        showNoty('success', obj.title, obj.message, 'check_circle');
+    success: obj => {
+        showNoty('success', getTitle(obj), getMessage(obj), 'check_circle');
     },
 
-    error: (obj) => {
-        showNoty('error', obj.title, obj.message, 'error');
+    error: obj => {
+        showNoty('error', getTitle(obj), getMessage(obj), 'error');
     },
 
-    warn: (obj) => {
-        showNoty('warn', obj.title, obj.message, 'warning');
-    }
+    warn: obj => {
+        showNoty('warn', getTitle(obj), getMessage(obj), 'warning');
+    },
 };

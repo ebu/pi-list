@@ -18,84 +18,95 @@ class Chart extends Component {
             backgroundColor: dataset.backgroundColor,
             fill: false,
             data: dataset.data,
-            lineTension: 0.25
+            lineTension: 0.25,
         }));
 
         const config = {
             type: this.props.type,
             data: {
                 labels,
-                datasets
+                datasets,
             },
             showTooltips: false,
             options: {
                 animation: {
                     onComplete: this.props.onAnimationComplete,
-                    duration: 2
+                    duration: 2,
                 },
                 responsive: true,
                 maintainAspectRatio: false,
                 title: {
                     display: true,
                     text: this.props.title,
-                    [this.props.colorScheme === 'dark' && 'fontColor']: '#D8DEE9'
+                    [this.props.colorScheme === 'dark' &&
+                    'fontColor']: '#D8DEE9',
                 },
                 elements: {
                     point: {
-                        radius: this.props.point_radius ? this.props.point_radius : 1
-                    }
+                        radius: this.props.point_radius
+                            ? this.props.point_radius
+                            : 1,
+                    },
                 },
                 scales: {
-                    yAxes: [{
-                        gridLines: {
+                    yAxes: [
+                        {
+                            gridLines: {
+                                display: true,
+                                [this.props.colorScheme === 'dark' &&
+                                'fontColor']: '#D8DEE9',
+                            },
+                            scaleLabel: {
+                                display: this.props.yLabel != null,
+                                labelString: this.props.yLabel,
+                                [this.props.colorScheme === 'dark' &&
+                                'fontColor']: '#D8DEE9',
+                            },
+                            ticks: {
+                                [this.props.colorScheme === 'dark' &&
+                                'fontColor']: '#D8DEE9',
+                            },
+                        },
+                    ],
+                    xAxes: [
+                        {
+                            gridLines: {
+                                display: false,
+                            },
                             display: true,
-                            [this.props.colorScheme === 'dark' && 'fontColor']: '#D8DEE9'
+                            scaleLabel: {
+                                display: true,
+                                labelString: this.props.xLabel,
+                            },
+                            ticks: {
+                                display: this.props.displayXTicks != null,
+                                [this.props.colorScheme === 'dark' &&
+                                'fontColor']: '#D8DEE9',
+                            },
                         },
-                        scaleLabel: {
-                            display: this.props.yLabel != null,
-                            labelString: this.props.yLabel,
-                            [this.props.colorScheme === 'dark' && 'fontColor']: '#D8DEE9'
-                        },
-                        ticks: {
-                            [this.props.colorScheme === 'dark' && 'fontColor']: '#D8DEE9'
-                        }
-                    }],
-                    xAxes: [{
-                        gridLines: {
-                            display: false
-                        },
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: this.props.xLabel
-                        },
-                        ticks: {
-                            display: this.props.displayXTicks != null,
-                            [this.props.colorScheme === 'dark' && 'fontColor']: '#D8DEE9'
-                        }
-                    }]
+                    ],
                 },
                 legend: {
                     display: this.props.legend != null,
                     position: 'right',
                     labels: {
-                        usePointStyle: true
-                    }
+                        usePointStyle: true,
+                    },
                 },
                 zoom: {
                     enabled: true,
                     drag: true,
-                }
-            }
+                },
+            },
         };
 
-        if(this.props.ticksMin) {
+        if (this.props.ticksMin) {
             const current = config.options.scales.yAxes[0].ticks || {};
             current.min = this.props.ticksMin;
             config.options.scales.yAxes[0].ticks = current;
         }
 
-        if(this.props.ticksMax) {
+        if (this.props.ticksMax) {
             const current = config.options.scales.yAxes[0].ticks || {};
             current.max = this.props.ticksMax;
             config.options.scales.yAxes[0].ticks = current;
@@ -124,14 +135,16 @@ class Chart extends Component {
         }
 
         const style = {
-            height: isNumber(this.props.height) ? `${this.props.height}px` : null
+            height: isNumber(this.props.height)
+                ? `${this.props.height}px`
+                : null,
         };
 
         return (
             <div style={style}>
                 <canvas
                     className={`lst-chart-${Date.now()} fade-in`}
-                    ref={ref => this.chart = ref}
+                    ref={ref => (this.chart = ref)}
                 />
             </div>
         );
@@ -140,6 +153,6 @@ class Chart extends Component {
 
 export default asyncLoader(Chart, {
     asyncRequests: {
-        rawData: props => props.request()
-    }
+        rawData: props => props.request(),
+    },
 });

@@ -5,7 +5,6 @@ import { translateX } from 'utils/translation';
 import errorEnum from 'enums/errorEnum';
 import ErrorPage from 'components/ErrorPage';
 
-
 // from https://medium.com/simply/state-management-with-react-hooks-and-context-api-at-10-lines-of-code-baf6be8302c
 
 export const StateContext = createContext();
@@ -29,12 +28,8 @@ export const Actions = {
 export const LiveFeature = props => {
     const [{ live }] = useStateValue();
 
-    return (
-        <If condition={live}>
-            {props.children}
-        </If>
-    );
-}
+    return <If condition={live}>{props.children}</If>;
+};
 
 export const LiveRoute = props => {
     const [{ live }] = useStateValue();
@@ -42,14 +37,20 @@ export const LiveRoute = props => {
         <ConditionalRoute
             path={props.path}
             exact={props.exact}
-            conditional={false}
-            trueComponent={props.component !== undefined ? props.component : props.render}
-            falseComponent={props.hideOnFalse ? null : () => (
-                <ErrorPage
-                    errorType={errorEnum.PAGE_NOT_FOUND}
-                    errorMessage={translateX('errors.404_message')}
-                />
-            )}
+            conditional={live}
+            trueComponent={
+                props.component !== undefined ? props.component : props.render
+            }
+            falseComponent={
+                props.hideOnFalse
+                    ? null
+                    : () => (
+                          <ErrorPage
+                              errorType={errorEnum.PAGE_NOT_FOUND}
+                              errorMessage={translateX('errors.404_message')}
+                          />
+                      )
+            }
         />
     );
-}
+};

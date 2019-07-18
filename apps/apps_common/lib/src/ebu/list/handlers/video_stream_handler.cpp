@@ -142,6 +142,7 @@ void video_stream_handler::on_error(std::exception_ptr)
 {
 }
 
+// #define LIST_TRACE
 void video_stream_handler::parse_packet(const rtp::packet& packet)
 {
     auto& sdu = packet.sdu;
@@ -163,6 +164,11 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
     {
         auto line_index = 0;
 
+#if defined(LIST_TRACE)
+        logger()->info("UDP packet size: {} SDU size: {}", packet.info.udp.datagram_size, sdu.view().size_bytes());
+        logger()->info("Offset before header: {}", p - sdu.view().data());
+#endif // defined(LIST_TRACE)
+
         const auto end = sdu.view().data() + sdu.view().size();
         while (p < end)
         {
@@ -182,9 +188,20 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
             info.line_info[line_index].offset = line_header.offset();
             info.line_info[line_index].valid = true;
 
+#if defined(LIST_TRACE)
+            logger()->info("Line in packet: {} Line no: {} Offset: {} Length: {}", line_index, info.line_info[line_index].line_number, info.line_info[line_index].offset, info.line_info[line_index].length);
+#endif // defined(LIST_TRACE)
+
             ++line_index;
             if (!line_header.continuation()) break;
         }
+
+#if defined(LIST_TRACE)
+        logger()->info("Offset after header: {}", p - sdu.view().data());
+
+        const auto available_size = end - p;
+        logger()->info("Available size: {}", available_size);
+#endif // defined(LIST_TRACE)
 
         for (const auto& line : info.line_info)
         {
@@ -192,7 +209,7 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
 
             if (p + line.length > end)
             {
-                logger()->error("buffer out of bounds");
+                logger()->error("buffer out of bounds. Line no: {} Offset: {} Length: {}", line.line_number, line.offset, line.length);
                 break;
             }
 
@@ -201,7 +218,7 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
             const auto target = current_frame_->buffer->begin() + get_line_size_bytes(video_description_.video) * line.line_number + byte_offset;
             if (target + line.length > current_frame_->buffer->end())
             {
-                logger()->error("buffer out of bounds");
+                logger()->error("buffer out of bounds. Line no: {} Offset: {} Length: {}", line.line_number, line.offset, line.length);
                 break;
             }
 
