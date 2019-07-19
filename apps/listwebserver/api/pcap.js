@@ -559,15 +559,7 @@ router.get('/:pcapID/stream/:streamID/downloadmp3', (req, res) => {
 
     if (fs.fileExists(filePath)) {
         fs.sendFileAsResponse(filePath, res);
-<<<<<<< HEAD
-        const userID = req.session.passport.user.id;
-        websocketManager.instance().sendEventToUser(userID, {
-            event: WS_EVENTS.MP3_FILE_RENDERED,
-            data: { channels: channels },
-        });
-=======
         logger('download-mp3').info('Mp3 file already exists');
->>>>>>> server: correctly verify a mp3 file exist before rendering
     } else {
         renderMp3(req, res);
     }
