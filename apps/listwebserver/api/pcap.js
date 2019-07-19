@@ -494,7 +494,6 @@ router.get('/:pcapID/stream/:streamID/frame/:frameID/png', (req, res) => {
 
 function renderMp3(req, res) {
     const { pcapID, streamID } = req.params;
-    const folderPath = `${getUserFolder(req)}/${pcapID}/${streamID}/`;
     var { channels } = req.query;
 
     if (channels === undefined || channels === '') {
@@ -503,9 +502,8 @@ function renderMp3(req, res) {
 
     Stream.findOne({ id: streamID })
         .exec()
-        .then(data => {
-            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
-
+        .then((data) => {
+            const folderPath = `${getUserFolder(req)}/${pcapID}/${streamID}/`;
             const rawFilePath = `${folderPath}/raw`;
             const mp3FilePath = `${folderPath}/audio-${channels}.mp3`;
             const encodingBits =
@@ -536,7 +534,12 @@ function renderMp3(req, res) {
                 .catch(output => {
                     logger('render-mp3').error(output.stdout);
                     logger('render-mp3').error(output.stderr);
+                    const userID = req.session.passport.user.id;
+                    websocketManager.instance().sendEventToUser(userID, {
+                        event: WS_EVENTS.MP3_FILE_FAILED,
+                    });
                 });
+            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
         })
         .catch(() =>
             res
@@ -548,18 +551,24 @@ function renderMp3(req, res) {
 router.get('/:pcapID/stream/:streamID/downloadmp3', (req, res) => {
     const { pcapID, streamID } = req.params;
     var { channels } = req.query;
+    if ((channels === undefined) || (channels === '')) {
+        channels = '0,1'; // keep the 2 first channels by default
+    }
     const folderPath = `${getUserFolder(req)}/${pcapID}/${streamID}`;
     const filePath = `${folderPath}/audio-${channels}.mp3`;
 
     if (fs.fileExists(filePath)) {
         fs.sendFileAsResponse(filePath, res);
+<<<<<<< HEAD
         const userID = req.session.passport.user.id;
         websocketManager.instance().sendEventToUser(userID, {
             event: WS_EVENTS.MP3_FILE_RENDERED,
             data: { channels: channels },
         });
+=======
+        logger('download-mp3').info('Mp3 file already exists');
+>>>>>>> server: correctly verify a mp3 file exist before rendering
     } else {
-        logger('download-mp3').info('File doesn`t exist');
         renderMp3(req, res);
     }
 });

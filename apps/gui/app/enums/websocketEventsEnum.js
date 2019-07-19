@@ -7,6 +7,7 @@ export default {
     },
     MEDIA: {
         MP3_FILE_RENDERED: 'MP3_FILE_RENDERED',
+        MP3_FILE_FAILED: 'MP3_FILE_FAILED',
     },
     PCAP: {
         FILE_RECEIVED: 'PCAP_FILE_RECEIVED',
