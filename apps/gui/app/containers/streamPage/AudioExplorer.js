@@ -24,15 +24,23 @@ const AudioExplorer = (props) => {
     const [selectedChannels, setSelectedChannels] = useState(Array.from([...Array(props.channelNum).keys()], x => true)); // select all
     const [mp3Url, setMp3Url] = useState(api.downloadMp3Url(props.pcapID, props.streamID));
 
-    const onRendered = (data) => {
+    const onMp3Rendered = (data) => {
         const { channels } = data;
         setMp3Url(api.downloadMp3Url(props.pcapID, props.streamID, channels));
         setSelectedChannels(getChannelsState(channels, props.channelNum));
     };
 
+    const onMp3Failed = () => {
+        setMp3Url("");
+    };
+
     useEffect(() => {
-        websocket.on(websocketEventsEnum.MEDIA.MP3_FILE_RENDERED, onRendered);
-        return () => websocket.off(websocketEventsEnum.MEDIA.MP3_FILE_RENDERED, onRendered);
+        websocket.on(websocketEventsEnum.MEDIA.MP3_FILE_RENDERED, onMp3Rendered);
+        websocket.on(websocketEventsEnum.MEDIA.MP3_FILE_FAILED, onMp3Failed);
+        return () =>  {
+            websocket.off(websocketEventsEnum.MEDIA.MP3_FILE_RENDERED, onMp3Rendered);
+            websocket.off(websocketEventsEnum.MEDIA.MP3_FILE_FAILED, onMp3Failed);
+        }
     }, []);
 
     const onRenderMp3 = () => {
