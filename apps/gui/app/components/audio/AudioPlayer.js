@@ -39,6 +39,7 @@ const AudioPlayer = (props) => {
 
     const onPlayerReady = () => {
         setisLoading(false);
+        setHasError(false)
     };
 
     const onFinishPlay = () => {
