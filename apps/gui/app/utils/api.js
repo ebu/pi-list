@@ -219,4 +219,5 @@ export default {
     deleteLiveSources: ids => request.put('live/sources/delete', { ids }),
 
     createWorkflow: info => request.post('workflow', info),
+    getWorkflows: () => request.get('workflow'),
 };

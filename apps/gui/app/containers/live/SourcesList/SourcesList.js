@@ -47,14 +47,14 @@ const SourcesList = props => {
 
     useEffect(() => {
         const disconnect = useMqttMessages(
-            mqtypes.topics.nmos.sender_list_update,
+            mqtypes.exchanges.mqtt.topics.nmos.sender_list_update,
             onMessage
         );
 
         api.getLiveSources().then(data => {
             dispatch({
                 type: Actions.updateSources,
-                payload: { added: data, removed: [] },
+                payload: { added: data, removedIds: [] },
             });
         });
 

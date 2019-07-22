@@ -1,0 +1,15 @@
+{
+  "name": "ebu_list_common_server",
+  "version": "1.0.0",
+  "description": "EBU LIST - Common server-side code",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pedro Ferreira",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "amqplib": "^0.5.3",
+    "lodash": "^4.17.14",
+    "winston": "^3.2.1"
+  }
+}

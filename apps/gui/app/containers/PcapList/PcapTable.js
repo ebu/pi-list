@@ -49,7 +49,7 @@ function renderPcapFileName({ original }) {
 function renderPcapDate({ original }) {
     return (
         <div className="lst-text-center">
-            {moment(original.date).format('YYYY-MM-DD hh:mm:ss')}
+            {moment(original.date).format('YYYY-MM-DD HH:mm:ss')}
         </div>
     );
 }

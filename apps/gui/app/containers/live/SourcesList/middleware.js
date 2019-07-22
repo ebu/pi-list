@@ -36,7 +36,7 @@ const middleware = (state, action) => {
             break;
 
         case Actions.captureFromSources:
-            const filename = moment(Date.now()).format('YYYYMMDD-hhmmss');
+            const filename = moment(Date.now()).format('YYYYMMDD-HHmmss');
 
             const workflowInfo = {
                 type: workflowTypes.captureAndIngest,
@@ -62,29 +62,37 @@ const middleware = (state, action) => {
             break;
 
         case Actions.addSources:
-            const source = {
-                id: uuidv1(),
-                meta: {
-                    label: 'User defined',
-                },
-                kind: sources.kinds.user_defined,
-                sdp: {
-                    streams: action.payload.sources,
-                },
-            };
+            const s = action.payload.sources || [];
 
-            api.addLiveSource(source)
-                .then(() => {
-                    notifications.success({
-                        titleTag: 'workflow.added',
-                        messageTag: 'workflow.added',
+            s.forEach(source => {
+                const descriptor = {
+                    id: uuidv1(),
+                    meta: {
+                        label: source.description || 'User defined',
+                    },
+                    kind: sources.kinds.user_defined,
+                    sdp: {
+                        streams: [{
+                            dstAddr: source.dstAddr,
+                            dstPort: source.dstPort,
+                        }],
+                    },
+                };
+    
+                api.addLiveSource(descriptor)
+                    .then(() => {
+                        notifications.success({
+                            titleTag: 'workflow.added',
+                            messageTag: 'workflow.added',
+                        });
+                    })
+                    .catch(() => {
+                        notifications.error({
+                            titleTag: 'workflow.add_failed',
+                            messageTag: 'workflow.add_failed',
+                        });
                     });
-                })
-                .catch(() => {
-                    notifications.error({
-                        titleTag: 'workflow.add_failed',
-                        messageTag: 'workflow.add_failed',
-                    });
+    
                 });
 
             break;
