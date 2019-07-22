@@ -1,62 +1,81 @@
 import React, { useState } from 'react';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import Rodal from 'rodal';
-import Input from '../../../components/common/Input';
 import Button from '../../../components/common/Button';
-import { translateC } from '../../../utils/translation';
+import { translateC, T } from '../../../utils/translation';
 import 'rodal/lib/rodal.css';
+import StreamEntry from './StreamEntry';
 import './AddSourceModal.scss';
 
+const isEmpty = stream =>
+    !stream.description && !stream.dstAddr && !stream.dstPort;
+
+const addTrailing = streams => {
+    streams.push({ description: '', dstAddr: '', dstPort: '' });
+    return streams;
+};
+
 const AddSourceModal = props => {
-    const [dstAddr, setDstAddr] = useState('');
-    const [dstPort, setDstPort] = useState('');
+    const [sources, setSources] = useState(addTrailing([]));
 
-    const isValid = dstAddr !== '' && dstPort !== '';
+    const onUpdate = data => {
+        const { index, property, value } = data;
 
-    const onAdd = () => props.onAdd([{ dstAddr, dstPort }]);
+        const n = _.cloneDeep(sources);
+        n[index][property] = value;
+
+        const newSources = n.filter((s, idx) => idx === index || !isEmpty(s));
+
+        setSources(addTrailing(newSources));
+    };
+
+    const rows = sources.map((stream, index) => (
+        <StreamEntry
+            key={index}
+            index={index}
+            {...stream}
+            onUpdate={onUpdate}
+        />
+    ));
+
+    const onAdd = () => {
+        const newSources = sources.filter(s => !isEmpty(s));
+        props.onAdd(newSources);
+    };
+
+    const handleKey = event => {
+        if (event.keyCode == 13) {
+            onAdd();
+        }
+    };
 
     return (
-        <Rodal
-            className="lst-add-source-modal"
-            visible={props.visible}
-            onClose={props.onClose}
-            closeOnEsc
-        >
-            <h2 className="lst-add-source-modal-header">Add source</h2>
-            <hr />
-            <div className="row lst-align-items-baseline lst-no-margin">
-                <div className="col-xs-6">
-                    <Input
-                        placeholder="Multicast address"
-                        value={dstAddr}
-                        type="text"
-                        onChange={e => setDstAddr(e.target.value)}
-                    />
-                </div>
-
-                <div className="col-xs-5">
-                    <Input
-                        placeholder="Port"
-                        value={dstPort}
-                        type="text"
-                        onChange={e => setDstPort(e.target.value)}
-                    />
-                </div>
-                <div className="row lst-text-right lst-add-source-modal-buttons">
-                    <Button
-                        type="info"
-                        label={translateC('workflow.add')}
-                        onClick={onAdd}
-                        disabled={!isValid}
-                    />
-                    <Button
-                        type="info"
-                        label={translateC('workflow.cancel')}
-                        onClick={props.onClose}
-                    />
-                </div>
-            </div>
-        </Rodal>
+        <div onKeyUp={handleKey}>
+            <Rodal
+                className="lst-add-source-modal"
+                visible={props.visible}
+                onClose={props.onClose}
+                closeOnEsc
+            >
+                <h2 className="lst-add-source-modal-header">
+                    <T t="live.sources.add_sources" />
+                </h2>
+                <hr />
+                {rows}
+                <Button
+                    type="info"
+                    label={translateC('workflow.add')}
+                    onClick={onAdd}
+                    de
+                />
+                <Button
+                    type="info"
+                    label={translateC('workflow.cancel')}
+                    onClick={props.onClose}
+                />
+            </Rodal>
+        </div>
     );
 };
 

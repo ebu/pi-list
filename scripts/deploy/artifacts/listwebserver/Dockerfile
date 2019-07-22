@@ -18,6 +18,10 @@ ADD app/ /app
 ADD js/ /js
 ADD lib/ /usr/local/lib
 
+WORKDIR /js/common_server
+RUN rm -rf node_modules
+RUN npm install
+
 WORKDIR /app/listwebserver/
 RUN rm -rf node_modules
 RUN npm install

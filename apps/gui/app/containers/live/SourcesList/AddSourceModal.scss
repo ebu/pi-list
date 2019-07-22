@@ -1,13 +1,14 @@
 @import '../../../style/variables/index.scss';
 @import '../../../style/helpers.scss';
 
-.lst-add-source-modal {
+.lst-add-source-modal > .rodal-dialog {
+    width: 50% !important;
 }
 
 .rodal-mask {
     background: transparentize($background-color-blue, 0.2);
     .dark & {
-        background: transparentize($nord1, 0.2);
+        background: transparentize($nord1, 0.1);
     }
 }
 

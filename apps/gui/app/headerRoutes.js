@@ -53,6 +53,11 @@ export default (
         />
         <Route
             exact
+            path={routeNames.WORKFLOWS}
+            render={() => (<Header labelTag="navigation.workflows" />)}
+        />
+        <Route
+            exact
             path={routeNames.LIVE_SOURCES}
             render={() => (<Header labelTag="navigation.live_sources" />)}
         />

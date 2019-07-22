@@ -8,3 +8,4 @@
 /.vscode
 apps/listwebserver/version.yml
 apps/listwebserver/.vscode/launch.json
+apps/capture_probe/.vscode/launch.json
