@@ -48,14 +48,7 @@ macro(list_add_library NAME)
     list_set_cpp_properties()
 
     file(GLOB_RECURSE ${NAME}_source_files lib/*.cpp lib/*.h)
-
-    if (UNIX)
-    add_library(${NAME} SHARED ${${NAME}_source_files})
-    set_property(TARGET ${NAME} PROPERTY POSITION_INDEPENDENT_CODE ON)
-    else (UNIX)
     add_library(${NAME} STATIC ${${NAME}_source_files})
-    endif (UNIX)
-
     source_group(TREE ${PROJECT_SOURCE_DIR}/lib FILES ${${NAME}_source_files})
 
     target_include_directories(${NAME}
