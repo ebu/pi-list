@@ -8,7 +8,8 @@ namespace ebu_list::ethernet
 {
     enum class payload_type : uint16_t
     {
-        IPv4 = 0x0800
+        IPv4 = 0x0800,
+        VLAN_802_1Q = 0x8100
     };
 
     struct header
