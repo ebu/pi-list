@@ -9,3 +9,4 @@
 apps/listwebserver/version.yml
 apps/listwebserver/.vscode/launch.json
 apps/capture_probe/.vscode/launch.json
+apps/stream_pre_processor/.vscode/launch.json
