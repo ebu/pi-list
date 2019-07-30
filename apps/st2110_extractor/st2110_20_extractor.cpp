@@ -312,8 +312,8 @@ namespace
                     {
                         const auto info_path = config.storage_folder / stream_info.id;
 
-                        auto db_logger = std::make_unique<influx::influxdb_audio_delay_logger>(influx_db_url, pcap.id, stream_info.id, "audio");
-                        auto analyzer = std::make_unique<audio_delay_analyser>(first_packet, std::move(db_logger), ebu_list::media::audio::to_int(audio_info.audio.sampling));
+                        auto db_logger = std::make_unique<influx::influxdb_audio_timing_logger>(influx_db_url, pcap.id, stream_info.id, "audio");
+                        auto analyzer = std::make_unique<audio_timing_analyser>(first_packet, std::move(db_logger), ebu_list::media::audio::to_int(audio_info.audio.sampling));
                         ml->add(std::move(analyzer));
                     }
                 }

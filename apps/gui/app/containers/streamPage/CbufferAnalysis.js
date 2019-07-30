@@ -25,7 +25,7 @@ const CbufferAnalysis = (props) => {
                 <LineChart
                     asyncData={() => api.getCInstForStream(pcapID, streamID, first_packet_ts, last_packet_ts)}
                     xAxis={chartFormatters.xAxisTimeDomain}
-                    data={chartFormatters.stdDeviationMeanMinMaxLineChart}
+                    data={chartFormatters.statsLineChart}
                     title="Cinst - Timeline"
                     yAxisLabel="packets"
                     height={300}
