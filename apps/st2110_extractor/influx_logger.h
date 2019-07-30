@@ -8,7 +8,7 @@
 #include "ebu/list/st2110/d21/rtp_ts_analyzer.h"
 #include "ebu/list/st2110/d21/vrx_analyzer.h"
 #include "ebu/list/influxdb.h"
-#include "ebu/list/handlers/audio_delay_analyser.h"
+#include "ebu/list/handlers/audio_timing_analyser.h"
 
 using namespace ebu_list;
 
@@ -70,14 +70,14 @@ namespace ebu_list::influx
         const std::string prefix_;
     };
 
-    class influxdb_audio_delay_logger : public ebu_list::audio_delay_analyser::listener
+    class influxdb_audio_timing_logger : public ebu_list::audio_timing_analyser::listener
     {
     public:
-        influxdb_audio_delay_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id, std::string prefix);
+        influxdb_audio_timing_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id, std::string prefix);
 
     private:
         // calculator::listener
-        void on_data(const ebu_list::audio_delay_analyser::delay_sample&) override;
+        void on_data(const ebu_list::audio_timing_analyser::delay_sample&) override;
         void on_complete() override;
         void on_error(std::exception_ptr ptr) override;
 

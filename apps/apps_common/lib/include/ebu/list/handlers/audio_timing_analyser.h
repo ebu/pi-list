@@ -21,7 +21,7 @@ namespace ebu_list
      * S(i): rtp time of the packet i
      *
      */
-    class audio_delay_analyser : public rtp::listener
+    class audio_timing_analyser : public rtp::listener
     {
     public:
         struct delay_sample
@@ -45,8 +45,8 @@ namespace ebu_list
 
         using listener_uptr = std::unique_ptr<listener>;
 
-        audio_delay_analyser(rtp::packet first_packet, listener_uptr listener, int sampling);
-        ~audio_delay_analyser();
+        audio_timing_analyser(rtp::packet first_packet, listener_uptr listener, int sampling);
+        ~audio_timing_analyser();
 
         void on_data(const rtp::packet&) override;
         void on_complete() override;
@@ -56,10 +56,10 @@ namespace ebu_list
         struct impl;
         const std::unique_ptr<impl> impl_;
 
-        int64_t get_transit_delay(const rtp::packet& packet);
+        int64_t get_delta_rtp_ts_vs_pkt_ts(const rtp::packet& packet);
 
         int sampling_;
         int64_t first_packet_ts_usec_;
-        std::vector<int64_t> delays_;
+        std::vector<int64_t> delta_rtp_ts_vs_pkt_ts;
     };
 }

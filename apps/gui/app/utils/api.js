@@ -159,9 +159,9 @@ export default {
         request.get(
             `pcap/${pcapID}/stream/${streamID}/analytics/DeltaRtpVsNt?from=${fromNs}&to=${toNs}`
         ),
-    getAudioTransitDelay: (pcapID, streamID, fromNs, toNs) =>
+    getAudioRtpTsVsPktTs: (pcapID, streamID, fromNs, toNs, low, high, min, max) =>
         request.get(
-            `pcap/${pcapID}/stream/${streamID}/analytics/AudioTransitDelay?from=${fromNs}&to=${toNs}`
+            `pcap/${pcapID}/stream/${streamID}/analytics/AudioRtpTsVsPktTs?from=${fromNs}&to=${toNs}&min=${min}&max=${max}`
         ),
     getAudioTimeStampedDelayFactor: (
         pcapID,
