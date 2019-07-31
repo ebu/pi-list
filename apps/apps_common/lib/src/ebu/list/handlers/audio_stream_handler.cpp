@@ -19,6 +19,8 @@ namespace
     {
         return desc.number_channels * channel_size_in_bytes(desc);
     }
+
+    constexpr uint32_t rtp_seqnum_window = 2048;
 }
 //------------------------------------------------------------------------------
 
@@ -51,26 +53,19 @@ const serializable_stream_info& audio_stream_handler::network_info() const
 void audio_stream_handler::on_data(const rtp::packet& packet)
 {
     ++audio_description_.packet_count;
-    const auto previous_sequence_number = last_sequence_number_;
     audio_description_.last_packet_ts = packet.info.udp.packet_time;
 
     parse_packet(packet);
-    if(previous_sequence_number)
-    {
-        const auto current_sequence_number = last_sequence_number_;
-        const auto sn_difference = *current_sequence_number - *previous_sequence_number;
-
-        // TODO: deal with wrap-around?
-        if(sn_difference > 1)
-        {
-            audio_description_.dropped_packet_count += sn_difference - 1;
-            logger()->info("audio rtp packet drop: {}", audio_description_.dropped_packet_count);
-        }
-    }
 }
 
 void audio_stream_handler::on_complete()
 {
+    if (rtp_seqnum_analyzer_.dropped_packets() > 0)
+    {
+        audio_description_.dropped_packet_count += rtp_seqnum_analyzer_.dropped_packets();
+        logger()->info("audio rtp packet drop: {}", audio_description_.dropped_packet_count);
+    }
+
     this->on_stream_complete();
     info_.state = StreamState::ANALYZED;
     completion_handler_(*this);
@@ -101,7 +96,7 @@ void audio_stream_handler::parse_packet(const rtp::packet& packet)
 
     auto p = sdu.view().data();
     const auto end = sdu.view().data() + sdu.view().size();
-    last_sequence_number_ =  packet.info.rtp.view().sequence_number(); // no extended sequence number for audio
+    rtp_seqnum_analyzer_.handle_packet(packet.info.rtp.view().sequence_number()); // no extended sequence number for audio
 
     this->on_sample_data(cbyte_span(p, end));
 
