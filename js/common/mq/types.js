@@ -62,6 +62,17 @@ const exchanges = {
             announce: 'announce',
         },
     },
+
+    liveStreamUpdates: {
+        name: 'stream_info',
+        type: 'topic',
+        options: {
+            durable: false,
+        },
+        topics: {
+            // TODO: add topics here
+        }
+    },
 };
 
 module.exports = {
