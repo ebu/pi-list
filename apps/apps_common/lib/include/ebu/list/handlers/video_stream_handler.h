@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ebu/list/rtp/listener.h"
+#include "ebu/list/rtp/sequence_number_analyzer.h"
 #include "ebu/list/st2110/rate_calculator.h"
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/serialization/serializable_stream_info.h"
@@ -57,7 +58,7 @@ namespace ebu_list
         const bool should_decode_video_;
         st2110::rate_calculator rate_;
         frame_uptr current_frame_;
-        std::optional<uint32_t> last_sequence_number_;
+        rtp::sequence_number_analyzer<uint32_t> rtp_seqnum_analyzer_;
         malloc_sbuffer_factory block_factory_;
 
         serializable_stream_info info_;

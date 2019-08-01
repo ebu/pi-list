@@ -31,7 +31,7 @@ launch () {
     cd "$SRC/$1" && gnome-terminal --window-with-profile=KeepOpen -- $2
 }
 
-declare -a INSTALLS=("js/common" "apps/listwebserver" "apps/gui" "apps/capture_probe")
+declare -a INSTALLS=("js/common_server" "apps/listwebserver" "apps/gui" "apps/capture_probe")
 
 if [ $INSTALL -eq 1 ] ; then
     echo "INSTALL"

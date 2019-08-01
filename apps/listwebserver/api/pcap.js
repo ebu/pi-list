@@ -279,12 +279,12 @@ router.get('/:pcapID/stream/:streamID/analytics/Vrx/histogram', (req, res) => {
 
 /* Audio Delays */
 router.get(
-    '/:pcapID/stream/:streamID/analytics/AudioTransitDelay',
+    '/:pcapID/stream/:streamID/analytics/AudioRtpTsVsPktTs',
     (req, res) => {
         const { pcapID, streamID } = req.params;
-        const { from, to } = req.query;
+        const { from, to, min, max } = req.query;
 
-        chartData = influxDbManager.getAudioTransitDelay(
+        chartData = influxDbManager.getAudioRtpTsVsPktTs(
             pcapID,
             streamID,
             from,
@@ -318,9 +318,9 @@ router.get(
         chartData
             .then(data => {
                 data.forEach(e => {
-                    e['tolerance'] = tolerance;
+                    e['high-tolerance'] = tolerance;
                     // display the red limit only when relevant
-                    if (tsdfmax > 0.3 * limit) e['limit'] = limit;
+                    if (tsdfmax > 0.3 * limit) e['high-limit'] = limit;
                 });
                 res.json(data);
             })

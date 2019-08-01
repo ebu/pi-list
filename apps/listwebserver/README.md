@@ -38,8 +38,15 @@
   - tsdf
     - result : string // defined in enums/analysis/outcome
     - details:
-        - tsdf_max: Number // calculated as defined by the EBU recommendation
+        - max: Number // calculated as defined by the EBU recommendation
+        - tolerance: Number // one packet time
+        - limit: Number // 17 * packet time
         - level: string // enums/analysis/qualitative
+  - rtp_ts_vs_pkt_ts:
+    - result : string // defined in enums/analysis/outcome
+    - details:
+        - range: Object // measured range
+        - limit: Object // permitted range
   - rtp_sequence:
     - result : string // defined in enums/analysis/outcome
     - details:

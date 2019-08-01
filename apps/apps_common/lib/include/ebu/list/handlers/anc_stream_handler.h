@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ebu/list/rtp/listener.h"
+#include "ebu/list/rtp/sequence_number_analyzer.h"
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/serialization/serializable_stream_info.h"
 #include "ebu/list/serialization/anc_serialization.h"
@@ -38,7 +39,7 @@ namespace ebu_list
 
         serializable_stream_info info_;
         anc_stream_details anc_description_;
-        std::optional<uint32_t> last_sequence_number_;
+        rtp::sequence_number_analyzer<uint32_t> rtp_seqnum_analyzer_;
 
         completion_handler completion_handler_;
     };

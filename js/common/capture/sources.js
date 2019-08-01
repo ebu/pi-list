@@ -2,11 +2,11 @@
     source: { 
         id: 'ec8bd040-8b6e-11e9-a800-8564b7e25089',
 
-        kind: 'nmos' | 'user_defined',
+        kind: string (see kinds),
 
         meta: {
             label: <textual>,
-            format: <one of urn:x-nmos:format:video, urn:x-nmos:format:audio, urn:x-nmos:format:data>,
+            format: string (see formats),
 
             /// if format is video
             video: {

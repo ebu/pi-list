@@ -1,16 +1,27 @@
 const axios = require('axios');
 const _ = require('lodash');
 const uuidv1 = require('uuid/v1');
-const { createMQTTSender } = require('../../util/mq');
+const {
+    createExchangeSender,
+} = require('../../../../js/common_server/mq/send');
 const { kinds, formats } = require('../../../../js/common/capture/sources');
 const mqtypes = require('../../../../js/common/mq/types');
 const logger = require('../../util/logger');
 const { getIpInfoFromSdp, getMediaSpecificMeta } = require('../../util/sdp');
 const sdpParser = require('sdp-transform');
 const LiveSource = require('../../models/liveSource');
+const programArguments = require('../../util/programArguments');
 
 let nmosSources = [];
-let sendMqtt = () => {};
+const mqttSender = createExchangeSender(
+    programArguments.rabbitmqUrl,
+    mqtypes.exchanges.mqtt
+);
+const sendMqttUpdate = payload =>
+    mqttSender.send({
+        key: mqtypes.exchanges.mqtt.topics.nmos.sender_list_update,
+        msg: payload,
+    });
 
 const getMetaForNmosSource = source => ({
     label: _.get(source, ['nmos', 'sender', 'label']),
@@ -48,7 +59,7 @@ function addLiveSource(_source) {
         removedIds: [],
     };
 
-    sendMqtt(mqtypes.topics.nmos.sender_list_update, changeSet);
+    sendMqttUpdate(changeSet);
 
     return Promise.resolve(source);
 }
@@ -63,7 +74,7 @@ function deleteLiveSources(ids) {
         removedIds: ids,
     };
 
-    sendMqtt(mqtypes.topics.nmos.sender_list_update, changeSet);
+    sendMqttUpdate(changeSet);
 
     return Promise.resolve({ ids });
 }
@@ -103,8 +114,8 @@ async function mapAddedNmosToSource(sender) {
         }
 
         const media = parsed.media[0];
-        const ssMeta  = getMediaSpecificMeta(media);
-        const nmMeta  = getMetaForNmosSource(source);
+        const ssMeta = getMediaSpecificMeta(media);
+        const nmMeta = getMetaForNmosSource(source);
 
         source.meta = {
             ...ssMeta,
@@ -123,33 +134,28 @@ if (!onUpdate) {
     return;
 }
 
-const senderPromise = createMQTTSender();
-senderPromise.then(({ send }) => {
-    sendMqtt = send;
+const onChanged = ({ added, removedIds }) => {
+    const removedIdsSet = new Set(removedIds);
 
-    const onChanged = ({ added, removedIds }) => {
-        const removedIdsSet = new Set(removedIds);
+    const notRemoved = nmosSources.filter(s => !removedIdsSet.has(s.id));
 
-        const notRemoved = nmosSources.filter(s => !removedIdsSet.has(s.id));
+    const addedSourcesPromises = added.map(a => mapAddedNmosToSource(a));
 
-        const addedSourcesPromises = added.map(a => mapAddedNmosToSource(a));
+    Promise.all(addedSourcesPromises).then(addedSources => {
+        nmosSources = [...notRemoved, ...addedSources];
 
-        Promise.all(addedSourcesPromises).then(addedSources => {
-            nmosSources = [...notRemoved, ...addedSources];
+        const changeSet = {
+            added: addedSources,
+            removedIds: removedIds,
+        };
 
-            const changeSet = {
-                added: addedSources,
-                removedIds: removedIds,
-            };
+        sendMqttUpdate(changeSet);
+    });
+};
 
-            send(mqtypes.topics.nmos.sender_list_update, changeSet);
-        });
-    };
+onUpdate.on(events.updateEvent, onChanged);
 
-    onUpdate.on(events.updateEvent, onChanged);
-});
-
-const findLiveSources = async (wantedIds) => {
+const findLiveSources = async wantedIds => {
     const sources = await getLiveSources();
     return sources.filter(source => wantedIds.includes(source.id));
 };
