@@ -50,7 +50,6 @@ httpServer.on('listening', onListening);
 
 const closeServer = async () => {
     logger('server').info('Shutting down');
-    await closeApp();
     if (programArguments.probesManager) {
         programArguments.probesManager.close();
     }

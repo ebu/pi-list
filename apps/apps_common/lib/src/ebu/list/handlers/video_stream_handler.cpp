@@ -38,6 +38,8 @@ namespace
         }
         // todo: detect streams marked as interlaced but is progressive
     }
+
+    constexpr uint32_t rtp_seqnum_window = 2048;
 }
 //------------------------------------------------------------------------------
 
@@ -106,22 +108,7 @@ void video_stream_handler::on_data(const rtp::packet& packet)
     const auto ts = packet.info.rtp.view().timestamp();
     detect_frame_transition(ts);
 
-    const auto previous_sequence_number = last_sequence_number_;
-
     parse_packet(packet); // todo: allow moving out of a packet
-
-    if(previous_sequence_number)
-    {
-        const auto current_sequence_number = last_sequence_number_;
-
-        const auto sn_difference = *current_sequence_number - *previous_sequence_number;
-
-        // TODO: deal with wrap-around?
-        if(sn_difference > 1)
-        {
-            video_description_.dropped_packet_count += sn_difference - 1;
-        }
-    }
 
     ++video_description_.packet_count;
     rate_.on_packet(ts);
@@ -130,6 +117,12 @@ void video_stream_handler::on_data(const rtp::packet& packet)
 void video_stream_handler::on_complete()
 {
     if (!current_frame_) return;
+
+    if (rtp_seqnum_analyzer_.dropped_packets() > 0)
+    {
+        video_description_.dropped_packet_count += rtp_seqnum_analyzer_.dropped_packets();
+        logger()->info("video rtp packet drop: {}", video_description_.dropped_packet_count);
+    }
 
     ++video_description_.frame_count;
     this->on_frame_complete(std::move(current_frame_));
@@ -230,7 +223,7 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
         }
     }
 
-    last_sequence_number_ = info.full_sequence_number;
+    rtp_seqnum_analyzer_.handle_packet(info.full_sequence_number);
     
     // todo: log number of packets lost
 

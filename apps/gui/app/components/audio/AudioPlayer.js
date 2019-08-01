@@ -47,7 +47,6 @@ const AudioPlayer = (props) => {
     };
 
     const onPlayerError = () => {
-        console.log("PPPPPlayer error")
         setHasError(true)
     };
 

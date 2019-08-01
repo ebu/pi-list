@@ -1,9 +1,3 @@
-const topics = {
-    nmos: {
-        sender_list_update: 'amq.topic.stream_updates',
-    },
-};
-
 const anySubtopic = topic => topic + '.*';
 const makeSubtopic = (topic, subTopic) => topic + '.' + subTopic;
 
@@ -14,6 +8,15 @@ const queues = {
             durable: true,
         },
     },
+
+    /* Schema:
+    {
+        id: string (workflow id)
+        status: string (see workflows.schema.status)
+        payload: 
+            - if status == failed, string (error message)
+    }
+    */
     workflowStatus: {
         name: 'ebu-list.workflow.status',
         options: {
@@ -23,20 +26,47 @@ const queues = {
 };
 
 const exchanges = {
-    probeStatus: 'ebu-list.probe',
-};
-
-const keys = {
+    mqtt: {
+        name: 'amq.topic',
+        type: 'topic',
+        topics: {
+            workflows: {
+                /* payload:
+                {
+                    added: undefined | [wf],
+                    removedIds: undefined | [string],
+                    updated: undefined | [wf],
+                }
+                */
+                update: 'amq.topic.workflows.update',
+            },
+            nmos: {
+                /* payload:
+                {
+                    added: undefined | [sender],
+                    removedIds: undefined | [string],
+                    updated: undefined | [sender],
+                }
+                */
+               sender_list_update: 'amq.topic.stream_updates',
+            },
+        },
+    },
     probeStatus: {
-        announce: 'announce',
-    }
+        name: 'ebu-list.probe',
+        type: 'fanout',
+        options: {
+            durable: false,
+        },
+        keys: {
+            announce: 'announce',
+        },
+    },
 };
 
 module.exports = {
     queues,
     exchanges,
-    topics,
-    keys,
     anySubtopic,
     makeSubtopic,
 };

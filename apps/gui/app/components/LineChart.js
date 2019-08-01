@@ -195,7 +195,10 @@ class LineChart extends Component {
                 .attr('clip-path', `url(#${this.graphID}`)
                 .attr('stroke', chart.color)
                 .attr('stroke-width', this.props.lineWidth)
-                .attr('d', line);
+                .attr('d', line)
+                .style('stroke-dasharray', () => {
+                    return (chart.type === 'dashed') ? ('3, 3') : ('3, 0');
+                });
         });
     }
 

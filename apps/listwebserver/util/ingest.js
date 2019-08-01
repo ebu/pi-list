@@ -169,8 +169,10 @@ function pcapFullAnalysis(req, res, next) {
         });
 }
 
-function resetStreamCounters(req, res, next) {
+function resetStreamCountersAndErrors(req, res, next) {
     const { streamID } = req.params;
+
+
     Stream.findOne({ id: streamID }).exec()
         .then(data =>  {
             if (typeof data.statistics !== 'undefined') {
@@ -182,6 +184,11 @@ function resetStreamCounters(req, res, next) {
                     data.statistics.frame_count = 0;
                 }
             }
+
+            if (typeof data.error_list !== 'undefined') {
+                data.error_list = [];
+            }
+
             Stream.findOneAndUpdate({ id: streamID }, data).exec()
                 .then(data =>  {
                     next();
@@ -418,7 +425,7 @@ module.exports = {
     ],
     pcapSingleStreamIngest: [
         pcapFileAvailableFromReq,
-        resetStreamCounters,
+        resetStreamCountersAndErrors,
         singleStreamAnalysis,
         videoConsolidation,
         audioConsolidation,

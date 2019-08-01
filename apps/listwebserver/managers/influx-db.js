@@ -175,16 +175,27 @@ class InfluxDbManager {
         return this.sendQueryAndFormatResults(query);
     }
 
-    getAudioTransitDelay(pcapID, streamID, startTime, endTime) {
+    getAudioRtpTsVsPktTs(pcapID, streamID, startTime, endTime) {
         const query = `
             select
-            "audio-transit-delay-min" as "min",
-            "audio-transit-delay-max" as "max",
-            "audio-transit-delay-mean" as "mean"
+            "audio-rtp-vs-pkt-min" as "min",
+            "audio-rtp-vs-pkt-max" as "max",
+            "audio-rtp-vs-pkt-mean" as "mean"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
         `;
 
         log.info(`Get Delay for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
+
+    getAudioRtpTsVsPktTsRange(pcapID, streamID) {
+        const query = `
+            select max("audio-rtp-vs-pkt-max") as "max", min("audio-rtp-vs-pkt-min") as "min"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}
+        `;
+
+        log.info(`Get range of Transit Delay for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
 
         return this.sendQueryAndFormatResults(query);
     }
@@ -200,13 +211,13 @@ class InfluxDbManager {
         return this.sendQueryAndFormatResults(query);
     }
 
-    getAudioTimeStampedDelayFactorAmp(pcapID, streamID) {
+    getAudioTimeStampedDelayFactorRange(pcapID, streamID) {
         const query = `
             select max("audio-tsdf") as "max", min("audio-tsdf") as "min"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}
         `;
 
-        log.info(`Get Max Value of TSDF for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+        log.info(`Get range of TSDF for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
 
         return this.sendQueryAndFormatResults(query);
     }

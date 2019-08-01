@@ -29,7 +29,7 @@ const VrxAnalysis = (props) => {
                 <LineChart
                     asyncData={() => api.getVrxIdealForStream(pcapID, streamID, first_packet_ts, last_packet_ts)}
                     xAxis={item => item.time}
-                    data={chartFormatters.minMaxLineChart}
+                    data={chartFormatters.statsLineChart}
                     title="VRX (with TRoffset = TROdefault)"
                     yAxisLabel="packets"
                     height={300}
@@ -39,7 +39,7 @@ const VrxAnalysis = (props) => {
                 <LineChart
                     asyncData={() => api.getVrxAdjustedAvgTro(pcapID, streamID, first_packet_ts, last_packet_ts)}
                     xAxis={item => item.time}
-                    data={chartFormatters.minMaxLineChart}
+                    data={chartFormatters.statsLineChart}
                     title="VRX (with TRoffset = Measured/Averaged)"
                     yAxisLabel="packets"
                     height={300}

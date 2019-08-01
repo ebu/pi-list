@@ -22,5 +22,6 @@ module.exports = {
         '2110_21_cinst': 'SMPTE 2110-21 (Cinst)',
         '2110_21_vrx': 'SMPTE 2110-21 (VRX)',
         tsdf: 'EBU TS-DF',
+        rtp_ts_vs_pkt_ts: 'RTP timestamps',
     },
 };

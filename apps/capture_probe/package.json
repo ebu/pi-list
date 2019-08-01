@@ -10,7 +10,6 @@
     "amqplib": "^0.5.2",
     "axios": "^0.18.0",
     "commander": "^2.12.2",
-    "ebu_list_common": "file:../../js/common",
     "form-data": "^2.3.3",
     "multer": "^1.4.1",
     "read-yaml": "^1.1.0",
