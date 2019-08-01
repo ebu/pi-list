@@ -31,17 +31,23 @@ const createWaveSurfer = (waveform, timeline) => {
 };
 
 const AudioPlayer = (props) => {
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setisLoading] = useState(true);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [hasError, setHasError] = useState(false);
     const waveSurferRef = useRef(null);
     const waveformRef = useRef(null);
 
     const onPlayerReady = () => {
-        setLoading(false);
+        setisLoading(false);
+        setHasError(false)
     };
 
     const onFinishPlay = () => {
         setIsPlaying(false);
+    };
+
+    const onPlayerError = () => {
+        setHasError(true)
     };
 
     useEffect(() => {
@@ -52,6 +58,7 @@ const AudioPlayer = (props) => {
         wavesurfer.load(props.src);
         wavesurfer.on('ready', onPlayerReady);
         wavesurfer.on('finish', onFinishPlay);
+        wavesurfer.on('error', onPlayerError);
 
         return () => {
             wavesurfer.unAll();
@@ -67,16 +74,17 @@ const AudioPlayer = (props) => {
     };
 
     const buttonLabel = isPlaying ? translateC('audio_player.pause') : translateC('audio_player.play');
-    const buttonType = isPlaying ? 'danger' : 'info';
+    const buttonType = (isPlaying || hasError) ? 'danger' : 'info';
     const buttonIcon = isPlaying ? 'pause' : 'play arrow';
+    const buttonDisabled = hasError;
 
     return (
         <div ref={waveformRef} className="waveform center-xs middle-xs" >
-            {loading && <Loader />}
+            {isLoading && <Loader />}
             <div className="wave" />
             <div className="wave-timeline" />
-            {!loading &&
-                <Button type={buttonType} label={buttonLabel} icon={buttonIcon} outline onClick={play} />
+            {!isLoading &&
+                <Button type={buttonType} label={buttonLabel} icon={buttonIcon} disabled={buttonDisabled} outline onClick={play} />
             }
         </div >
     );

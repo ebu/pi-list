@@ -15,6 +15,7 @@ module.exports = {
         cinst_above_maximum: 'errors.cinst_above_maximum',
         vrx_above_maximum: 'errors.vrx_above_maximum',
         tsdf_not_compliant: 'errors.tsdf_not_compliant',
+        audio_rtp_ts_not_compliant: 'errors.audio_rtp_ts_not_compliant',
         dropped_packets: 'errors.dropped_packets',
     },
     warnings: {

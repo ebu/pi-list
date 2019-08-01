@@ -279,12 +279,12 @@ router.get('/:pcapID/stream/:streamID/analytics/Vrx/histogram', (req, res) => {
 
 /* Audio Delays */
 router.get(
-    '/:pcapID/stream/:streamID/analytics/AudioTransitDelay',
+    '/:pcapID/stream/:streamID/analytics/AudioRtpTsVsPktTs',
     (req, res) => {
         const { pcapID, streamID } = req.params;
-        const { from, to } = req.query;
+        const { from, to, min, max } = req.query;
 
-        chartData = influxDbManager.getAudioTransitDelay(
+        chartData = influxDbManager.getAudioRtpTsVsPktTs(
             pcapID,
             streamID,
             from,
@@ -318,9 +318,9 @@ router.get(
         chartData
             .then(data => {
                 data.forEach(e => {
-                    e['tolerance'] = tolerance;
+                    e['high-tolerance'] = tolerance;
                     // display the red limit only when relevant
-                    if (tsdfmax > 0.3 * limit) e['limit'] = limit;
+                    if (tsdfmax > 0.3 * limit) e['high-limit'] = limit;
                 });
                 res.json(data);
             })
@@ -494,7 +494,6 @@ router.get('/:pcapID/stream/:streamID/frame/:frameID/png', (req, res) => {
 
 function renderMp3(req, res) {
     const { pcapID, streamID } = req.params;
-    const folderPath = `${getUserFolder(req)}/${pcapID}/${streamID}/`;
     var { channels } = req.query;
 
     if (channels === undefined || channels === '') {
@@ -503,9 +502,8 @@ function renderMp3(req, res) {
 
     Stream.findOne({ id: streamID })
         .exec()
-        .then(data => {
-            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
-
+        .then((data) => {
+            const folderPath = `${getUserFolder(req)}/${pcapID}/${streamID}/`;
             const rawFilePath = `${folderPath}/raw`;
             const mp3FilePath = `${folderPath}/audio-${channels}.mp3`;
             const encodingBits =
@@ -536,7 +534,12 @@ function renderMp3(req, res) {
                 .catch(output => {
                     logger('render-mp3').error(output.stdout);
                     logger('render-mp3').error(output.stderr);
+                    const userID = req.session.passport.user.id;
+                    websocketManager.instance().sendEventToUser(userID, {
+                        event: WS_EVENTS.MP3_FILE_FAILED,
+                    });
                 });
+            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
         })
         .catch(() =>
             res
@@ -548,18 +551,16 @@ function renderMp3(req, res) {
 router.get('/:pcapID/stream/:streamID/downloadmp3', (req, res) => {
     const { pcapID, streamID } = req.params;
     var { channels } = req.query;
+    if ((channels === undefined) || (channels === '')) {
+        channels = '0,1'; // keep the 2 first channels by default
+    }
     const folderPath = `${getUserFolder(req)}/${pcapID}/${streamID}`;
     const filePath = `${folderPath}/audio-${channels}.mp3`;
 
     if (fs.fileExists(filePath)) {
         fs.sendFileAsResponse(filePath, res);
-        const userID = req.session.passport.user.id;
-        websocketManager.instance().sendEventToUser(userID, {
-            event: WS_EVENTS.MP3_FILE_RENDERED,
-            data: { channels: channels },
-        });
+        logger('download-mp3').info('Mp3 file already exists');
     } else {
-        logger('download-mp3').info('File doesn`t exist');
         renderMp3(req, res);
     }
 });

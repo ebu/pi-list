@@ -3,8 +3,15 @@ import routeNames from './routeNames';
 export default {
     top: [
         {
+            link: routeNames.WORKFLOWS,
+            icon: 'playlist play',
+            labelTag: 'navigation.workflows',
+            exact: false,
+            liveOnly: true,
+        },
+        {
             link: routeNames.PCAPS,
-            icon: 'dvr',
+            icon: 'playlist add check',
             labelTag: 'navigation.pcaps',
             exact: false,
         },

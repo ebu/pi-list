@@ -109,7 +109,7 @@ class DragAndDropUploader extends Component {
                 <div className="lst-file-container">
                     <div className={cardClassNames}>
                         <div className={containerClassNames}>
-                            <PanelTitle {...this.props} rightToolbar={rightToolbar} />
+                            <PanelTitle rightToolbar={rightToolbar} />
                             <hr />
                             <div onClick={(e) => e.stopPropagation()}>
                                 {this.props.children}
