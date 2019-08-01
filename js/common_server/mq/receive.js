@@ -37,10 +37,60 @@ const doCreateQueueReceiver = async (
     };
 };
 
-const createQueueReceiver = (brokerUrl, queue) => {
+/* 
+exchangeInfo:
+    name : string
+    type : string
+    options : Object
+
+    onMessageCallback receives: { msg : any, ack : function }
+    ack MUST be called to confirm that the message has been processed
+*/
+const doCreateExchangeReceiver = async (
+    brokerUrl,
+    exchangeInfo,
+    topics,
+    onMessageCallback,
+    onChannelErrorCallback
+) => {
+    const { channel, close } = await setupChannel(
+        brokerUrl,
+        onChannelErrorCallback
+    );
+
+    await channel.assertExchange(
+        exchangeInfo.name,
+        exchangeInfo.type,
+        exchangeInfo.options
+    );
+
+    const queueName = ''; // unnamed queue
+    const queueOptions = { exclusive: true }; // unnamed queue
+    const q = await channel.assertQueue(queueName, queueOptions);
+    
+    topics.forEach(async key => await channel.bindQueue(q.queue, exchangeInfo.name, key));
+
+    channel.prefetch(1);
+    logger('mq').info(` [*] Waiting for messages in exchange ${exchangeInfo.name}`);
+
+    const onMessage = msg =>
+        onMessageCallback({
+            msg,
+            ack: () => channel.ack(msg),
+        });
+
+    await channel.consume(q.queue, onMessage, {
+        noAck: false,
+    });
+
+    return {
+        close: close,
+    };
+};
+
+const createGenericReceiver = creator => {
     const emitter = new EventEmitter();
     const onMessage = msg => {
-        logger('mq').info(` [*] Message received in ${queue.name}`);
         emitter.emit(onMessageKey, msg);
     };
 
@@ -52,7 +102,15 @@ const createQueueReceiver = (brokerUrl, queue) => {
         }
 
         logger('mq').info('Health checker: trying to create receiver');
-        await createReceiver();
+        try {
+            creatingNow = true;
+            receiver = await creator(onMessage, onChannelError);
+        } catch (err) {
+            logger('mq').error(`Error connecting to queue: ${queue.name}`);
+            receiver = null;
+        } finally {
+            creatingNow = false;
+        }
     };
 
     let healthCheckerTimerId = null;
@@ -78,23 +136,6 @@ const createQueueReceiver = (brokerUrl, queue) => {
         receiver && receiver.close();
     };
 
-    const createReceiver = async () => {
-        try {
-            creatingNow = true;
-            receiver = await doCreateQueueReceiver(
-                brokerUrl,
-                queue,
-                onMessage,
-                onChannelError
-            );
-        } catch (err) {
-            logger('mq').error(`Error connecting to queue: ${queue.name}`);
-            receiver = null;
-        } finally {
-            creatingNow = false;
-        }
-    };
-
     startHealthChecker();
 
     return {
@@ -103,9 +144,29 @@ const createQueueReceiver = (brokerUrl, queue) => {
     };
 };
 
+const createQueueReceiver = (brokerUrl, queue) => {
+    const creator = async (onMessage, onChannelError) =>
+        doCreateQueueReceiver(brokerUrl, queue, onMessage, onChannelError);
+
+    return createGenericReceiver(creator);
+};
+const createExchangeReceiver = (brokerUrl, exchangeInfo, topics) => {
+    const creator = async (onMessage, onChannelError) =>
+        doCreateExchangeReceiver(
+            brokerUrl,
+            exchangeInfo,
+            topics,
+            onMessage,
+            onChannelError
+        );
+
+    return createGenericReceiver(creator);
+};
+
 const onMessageKey = 'onMessage';
 
 module.exports = {
     createQueueReceiver,
+    createExchangeReceiver,
     onMessageKey,
 };
