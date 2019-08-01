@@ -1,9 +1,5 @@
 # Live IP Software Toolkit to assist EBU members in the implementation of IP based facilities
 
-| Linux |
-|:---------:|
-| [![Build Status](https://travis-ci.com/ebu/pi-list.svg?branch=master)](https://travis-ci.com/ebu/pi-list) |
-
 ![overview](docs/overview.gif)
 
 LIST is composed by:
