@@ -2,7 +2,13 @@ const amqp = require('amqplib');
 const logger = require('../logging/logger');
 
 const setupChannel = async (brokerUrl, onChannelErrorCallback) => {
-    if (!brokerUrl) throw new Error('AMQP broker URL not specified');
+    if (!brokerUrl){
+        const message = 'AMQP broker URL not specified';
+        logger('mq').error(message);
+        throw new Error(message);
+    }
+
+    logger('mq').info(`[AMQP] connecting to ${brokerUrl}`);
 
     const connection = await amqp.connect(brokerUrl);
     const channel = await connection.createChannel();
