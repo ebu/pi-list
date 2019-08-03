@@ -150,6 +150,7 @@ const createQueueReceiver = (brokerUrl, queue) => {
 
     return createGenericReceiver(creator);
 };
+
 const createExchangeReceiver = (brokerUrl, exchangeInfo, topics) => {
     const creator = async (onMessage, onChannelError) =>
         doCreateExchangeReceiver(
