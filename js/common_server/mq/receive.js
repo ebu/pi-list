@@ -106,7 +106,7 @@ const createGenericReceiver = creator => {
             creatingNow = true;
             receiver = await creator(onMessage, onChannelError);
         } catch (err) {
-            logger('mq').error(`Error connecting to queue: ${queue.name}`);
+            logger('mq').error(`Error connecting to AMQP broker`);
             receiver = null;
         } finally {
             creatingNow = false;
