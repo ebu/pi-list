@@ -1,4 +1,5 @@
 #!/bin/bash
+# Install the release directory
 
 # Abort if anything goes wrong
 set -eu
@@ -6,15 +7,9 @@ set -eu
 this_dir="$(dirname $(readlink -f $0))"
 source $this_dir/../path.sh || { echo "path.sh is missing"; exit 1; }
 
-# Installs Deploy dependencies
+$this_dir/../build_cpp release
+$this_dir/../build_node
 
-# conan custom config
-conan config install https://github.com/bisect-pt/conan_config.git
-
-# Builds CPP code
-$DEPLOY_SCRIPT_DIR/build.sh "-DCMAKE_BUILD_TYPE=Release -DUSE_PCH=OFF -DBUILD_APPS=ON"
-
-# Install the release directory
 echo
 echo "Deleting old release dir (if present)..."
 rm -rf $RELEASE_DIR
