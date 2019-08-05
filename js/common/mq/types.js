@@ -48,7 +48,7 @@ const exchanges = {
                     updated: undefined | [sender],
                 }
                 */
-               sender_list_update: 'amq.topic.stream_updates',
+                sender_list_update: 'amq.topic.stream_updates',
             },
         },
     },
@@ -59,6 +59,15 @@ const exchanges = {
             durable: false,
         },
         keys: {
+            /**
+             * Announce message: 
+             * {
+             *   probe: { 
+             *     id : string // probe's unique id
+             *     label : string // Human readable probe name 
+             *   }
+             * }
+             */
             announce: 'announce',
         },
     },
@@ -71,7 +80,7 @@ const exchanges = {
         },
         topics: {
             // TODO: add topics here
-        }
+        },
     },
 };
 

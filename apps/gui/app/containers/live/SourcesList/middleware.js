@@ -43,6 +43,7 @@ const middleware = (state, action) => {
                 configuration: {
                     ids: action.payload.ids,
                     filename: filename,
+                    durationMs: 2000,
                 },
             };
 

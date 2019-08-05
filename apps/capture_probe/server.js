@@ -67,7 +67,7 @@ const onWorkMessage = async (msgContext, sendStatus) => {
             if (
                 !configuration.id ||
                 !configuration.senders ||
-                !configuration.cookies ||
+                !configuration.cookie ||
                 !configuration.ingestPutUrl ||
                 !configuration.filename
             ) {

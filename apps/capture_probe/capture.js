@@ -38,7 +38,7 @@ const performCaptureAndIngest = async configuration => {
         await uploadFile(
             captureFile,
             configuration.ingestPutUrl,
-            configuration.cookies,
+            configuration.cookie,
             configuration.filename
         );
     } finally {

@@ -1,48 +1,32 @@
 const logger = require('../util/logger');
-const amqp = require('amqplib');
-const mq = require('../../../js/common/mq/types');
+const mqReceive = require('../../../js/common_server/mq/receive');
+const mqtypes = require('../../../js/common/mq/types');
+const programArguments = require('../util/programArguments');
 
-// logger('probes-manager').info('Monitoring probes');
+logger('probes-manager').info('Monitoring probes');
 
-// const createMqReceiver = async rabbitmqUrl => {
-//     const connection = await amqp.connect(rabbitmqUrl);
-//     const channel = await connection.createChannel();
-//     channel.assertExchange(mq.exchanges.probeStatus, 'fanout', {
-//         durable: false,
-//     });
+const announceReceiver = mqReceive.createExchangeReceiver(
+    programArguments.rabbitmqUrl,
+    mqtypes.exchanges.probeStatus,
+    [mqtypes.exchanges.probeStatus.keys.announce]
+);
 
-//     const close = () => connection.close();
+const handleAnnounceMessage = ({ msg, ack }) => {
+    try {
+        const message = JSON.parse(msg.content.toString());
+        const { id, status } = message;
+        logger('probes-manager').info(
+            `Status update - ${msg.content.toString()}`
+        );
+    } catch (err) {
+        const message = `Error processing probe status update: ${err.message}`;
+        logger('probes-manager').error(message);
+    } finally {
+        ack();
+    }
+};
 
-//     const queue = await channel.assertQueue('', { exclusive: true });
-
-//     channel.bindQueue(queue.queue, mq.exchanges.probeStatus, '');
-
-//     const onMessage = msg => {
-//         if (msg.content) {
-//             // logger('probes-manager').info(` [x] ${msg.fields.routingKey} ${msg.content.toString()}`);
-//         }
-//     };
-
-//     channel.consume(queue.queue, onMessage, {
-//         noAck: true,
-//     });
-
-//     return { close };
-// };
-
-// const createManager = async programArguments => {
-//     const probes = [];
-//     const getProbes = () => probes;
-
-//     const receiver = await createMqReceiver(programArguments.rabbitmqUrl);
-
-//     const close = () => {
-//         logger('probes-manager').info('Exiting probe manager');
-//         receiver.close();
-//     };
-
-//     return { getProbes, close };
-// };
+announceReceiver.emitter.on(mqReceive.onMessageKey, handleAnnounceMessage);
 
 const createManager = () => {
     return Promise.resolve({

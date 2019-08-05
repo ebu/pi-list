@@ -8,7 +8,7 @@ const ingestFromFile = async (configuration) => {
     uploadFile(
         sourceFile,
         configuration.ingestPutUrl,
-        configuration.cookies,
+        configuration.cookie,
         configuration.filename
     );
 };
