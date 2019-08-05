@@ -7,8 +7,8 @@ set -eu
 this_dir="$(dirname $(readlink -f $0))"
 source $this_dir/../path.sh || { echo "path.sh is missing"; exit 1; }
 
-$this_dir/../build_cpp release
-$this_dir/../build_node
+$this_dir/../build_cpp.sh release
+$this_dir/../build_node.sh
 
 echo
 echo "Deleting old release dir (if present)..."
