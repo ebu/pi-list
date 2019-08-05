@@ -21,6 +21,7 @@ usage(){
     init        Generate a Dockerfile and the Docker image $IMAGE
     release     Build and deploy LIST project using a container based on $IMAGE
     dev         Build for development, i.e. with debug profile, tests and demos included
+    clean       Remove build and release directories
     test        Build the dev target and runs the test suite
     bash        Start bash in the container for dev or troubleshoot."
 }
@@ -65,7 +66,13 @@ release() {
 }
 
 dev() {
-    $DOCKER_RUN_CMD ./scripts/deploy/build.sh "-DCMAKE_BUILD_TYPE=Debug -DUSE_PCH=OFF -DBUILD_ALL=ON"
+    $DOCKER_RUN_CMD ./scripts/build_cpp.sh dev
+    $DOCKER_RUN_CMD ./scripts/build_node.sh
+}
+
+clean()
+{
+    $DOCKER_RUN_CMD rm -rf ./build ./release
 }
 
 test() {
@@ -87,6 +94,10 @@ case $1 in
     dev)
         check
         dev
+        ;;
+    clean)
+        check
+        clean
         ;;
     test)
         check
