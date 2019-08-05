@@ -165,11 +165,10 @@ class CapturePanel extends Component {
             capture_id: uuid()
         });
 
-        this.setState(
-            prevState => Object.assign({}, ...prevState, {
+        this.setState({
                 captureStatus: captureStatus.inProgress,
                 captureId: captureInfo.capture_id
-            }),
+            },
             () => {
                 api.subscribePCAP(captureInfo)
                     .then(() => {
