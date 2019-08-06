@@ -46,13 +46,22 @@ const middleware = (state, action) => {
         }
             break;
 
-        case Actions.downloadSelectedReport: {
+        case Actions.downloadSelectedJsonReport: {
             const filesForDownload = state.selected.map(id => ({
                 url: api.downloadJsonUrl(id)
             }));
             downloadFiles(filesForDownload);
         }
             break;
+
+        case Actions.downloadSelectedPdfReport: {
+            const filesForDownload = state.selected.map(id => ({
+                url: api.downloadPdfUrl(id)
+            }));
+            downloadFiles(filesForDownload);
+        }
+            break;
+
 
         default:
             break;

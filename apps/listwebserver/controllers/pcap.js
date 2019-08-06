@@ -1,10 +1,19 @@
 const Pcap = require('../models/pcap');
+const pdfReport = require('../util/pdfReport');
 const Streams = require('./streams');
 
-function getReport(pcapID) {
-    const pcap = Pcap.findOne({ id: pcapID }).exec();
+function getReport(pcapID, type) {
 
-    const streams = Streams.getStreamsForPcap(pcapID);
+    if (type === 'json')
+        return getJsonReport(pcapID);
+    else if (type === 'pdf')
+        return getPdfReport(pcapID);
+}
+
+function getJsonReport (pcapId) {
+    const pcap = Pcap.findOne({ id: pcapId }).exec();
+
+    const streams = Streams.getStreamsForPcap(pcapId);
 
     return Promise.all([ pcap, streams ])
         .then(([ pcap, streams ]) => {
@@ -15,6 +24,14 @@ function getReport(pcapID) {
         });
 }
 
+function getPdfReport (pcapId) {
+
+    return getJsonReport(pcapId).then((jsonReport) => {
+            return pdfReport.generate(jsonReport);
+        })
+}
+
 module.exports = {
     getReport
 };
+
