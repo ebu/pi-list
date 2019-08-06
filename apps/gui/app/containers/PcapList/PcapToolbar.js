@@ -71,7 +71,19 @@ const PcapToolbar = props => {
             link
             icon="file_download"
             disabled={props.selectedItems === null || props.selectedItems.length !== 1}
-            onClick={() => dispatch({ type: Actions.downloadSelectedReport })}
+            onClick={() => dispatch({ type: Actions.downloadSelectedJsonReport })}
+        />
+    );
+
+    const downloadPdf = (
+        <Button
+            className="lst-header-button"
+            label="PDF"
+            type="info"
+            link
+            icon="file_download"
+            disabled={props.selectedItems === null || props.selectedItems.length !== 1}
+            onClick={() => dispatch({ type: Actions.downloadSelectedPdfReport })}
         />
     );
 
@@ -83,6 +95,7 @@ const PcapToolbar = props => {
             {downloadPcap}
             {downloadSdp}
             {downloadJson}
+            {downloadPdf}
         </div>
     );
 }

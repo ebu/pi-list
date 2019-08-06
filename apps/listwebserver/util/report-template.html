@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>EBU LIST Report</title>
+	<style type="text/css">
+		body {
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		#ebu-logo {
+			height: 30px;
+			width: 90px;
+		}
+
+		#title {
+			font-size: 16pt;
+			text-align: center;
+		}
+
+		#result {
+			font-size: 14pt;
+			text-align: center;
+			width: 100%;
+		}
+
+		#metadata {
+			font-size: 9pt;
+			width: 100%;
+		}
+		#metadata table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+		#metadata td {
+			padding: 2px;
+		}
+
+		#streams {
+			width: 100%;
+		}
+		#streams table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+		#streams th {
+			font-size: 10pt;
+			font-weight: bold;
+			background-color: #CCCCCC;
+			border: 1px solid #CCCCCC;
+		}
+		#streams td {
+			font-size: 9pt;
+			border: 1px solid #CCCCCC;
+		}
+		#streams td:nth-child(1) {
+			padding-left: 10px;
+		}
+		#streams td:nth-child(2) {
+			text-align: center;
+		}
+
+		.foreground-passed {
+			color: #449412
+		}
+		.foreground-warning {
+			color: #FF8C00;
+		}
+		.foreground-failed {
+			color: #FF4500;
+		}
+
+		.background-passed {
+			background-color: #449412
+		}
+		.background-warning {
+			background-color: #FF8C00;
+		}
+		.background-failed {
+			background-color: #FF4500;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="header">
+		<img id="ebu-logo" src="ebu.svg" type="image/svg+xml"></img>
+		<h1 id="title">LIST Test Report</h1>
+		<h2 id="result">PLACEHOLDER</h1>
+	</div>
+	<div id="metadata">
+		<table>
+			<tr><td>File name</td><td id="file-name">placeholder</td></tr>
+			<tr><td>Date tested</td><td id="date">placeholder</td></tr>
+			<tr><td>Analysis ID</td><td id="analysis-id">placeholder</td></tr>
+			<tr><td># Streams</td><td id="num-streams">placeholder</td></tr>
+		</table>
+	</div>
+
+	<p>Streams</p>
+	<div id="streams">
+		<table>
+			<thead>
+				<tr><th>Type</th><th>Result</th><th>Notes</th></tr>
+			</thead>
+			<tbody id="analysis"></tbody>
+		</table>
+	</div>
+
+</body>
+
+</html>
