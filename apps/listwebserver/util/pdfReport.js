@@ -1,5 +1,6 @@
 const fs = require('fs');
 const phantom = require('phantom');
+const analysis = require('../enums/analysis');
 
 function generate (jsonReport) {
     return phantom.create().then(function (ctx) {
@@ -13,20 +14,7 @@ function generate (jsonReport) {
                    pass in must go through as an argument to the callback, because it has to
                    be serialized before being available within that same context. */
 
-                page.evaluate(function (report) {
-                    // Set the analysis result
-                    if (report.summary.error_list.length > 0) {
-                        document.getElementById('result').innerHTML = 'FAILED';
-                        document.getElementById('result').className += 'background-failed';
-                    }
-                    else if (report.summary.warning_list.length > 0) {
-                        document.getElementById('result').innerHTML = 'PASSED WITH WARNINGS';
-                        document.getElementById('result').className += 'background-warning';
-                    }
-                    else {
-                        document.getElementById('result').innerHTML = 'PASSED';
-                        document.getElementById('result').className += 'background-passed';
-                    }
+                page.evaluate(function (report, analysis) {
 
                     // Fill the metada
                     document.getElementById('file-name').innerHTML = report.file_name;
@@ -36,15 +24,32 @@ function generate (jsonReport) {
 
                     // Fill the stream analysis details
                     const streamAnalysisElem = document.getElementById('streams-analysis');
+                    var numErrors = 0, numWarnings = 0;
                     for (var i = 0; i < report.streams.length; ++i) {
 
                         const stream = report.streams[i];
                         var innerHTML = '<tr>';
 
-                        const type = stream.media_type;
-                        const result = stream.error_list.length == 0 ? 'Passed' : 'Failed';
-                        const resultCssClass = result === 'Passed' ? 'foreground-passed' : 'foreground-failed';
-                        innerHTML += '<td>' + type + '</td>';
+                        const mediaType = stream.media_type;
+
+                        var result = null;
+                        var resultCssClass = null;
+                        if (stream.error_list.length > 0) {
+                            ++numErrors;
+                            result = 'Failed';
+                            resultCssClass = 'foreground-failed';
+                        }
+                        else if (mediaType.toLowerCase() === 'unknown') {
+                            ++numWarnings;
+                            result = 'Warning';
+                            resultCssClass = 'foreground-warning';
+                        }
+                        else {
+                            result = 'Passed';
+                            resultCssClass = 'foreground-passed';
+                        }
+
+                        innerHTML += '<td>' + mediaType + '</td>';
                         innerHTML += '<td class="' + resultCssClass + '">' + result + '</td>';
 
                         if (stream.error_list.length > 0) {
@@ -62,7 +67,42 @@ function generate (jsonReport) {
                         document.getElementById('analysis').innerHTML += innerHTML;
                     }
 
-                }, jsonReport);
+                    // Set the analysis result
+                    if (numErrors > 0) {
+                        document.getElementById('result').innerHTML = 'FAILED';
+                        document.getElementById('result').className += 'background-failed';
+                        document.getElementById('errors').className = 'show-row';
+                        document.getElementById('num-errors').innerHTML = numErrors.toString();
+                        if (numWarnings > 0) {
+                            document.getElementById('warnings').className = 'show-row';
+                            document.getElementById('num-warnings').innerHTML = numWarnings.toString();
+                        }
+                    }
+                    else if (numWarnings > 0) {
+                        document.getElementById('result').innerHTML = 'PASSED WITH WARNINGS';
+                        document.getElementById('result').className += 'background-warning';
+                        document.getElementById('warnings').className = 'show-row';
+                        document.getElementById('num-warnings').innerHTML = numWarnings.toString();
+                    }
+                    else if (report.summary.warning_list.length > 0) {
+                        document.getElementById('result').innerHTML = 'PASSED WITH WARNINGS';
+                        document.getElementById('result').className += 'background-warning';
+                        const warningsList = report.summary.warning_list;
+
+                        for (var w = 0; w < warningsList.length; ++w) {
+                            if (warningsList[w].stream_id == null &&
+                                warningsList[w].value.id === analysis.warnings.pcap.truncated) {
+                                document.getElementById('file-name').innerHTML += ' (truncated)';
+                                document.getElementById('file-name').className += 'foreground-warning';
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        document.getElementById('result').innerHTML = 'PASSED';
+                        document.getElementById('result').className += 'background-passed';
+                    }
+                }, jsonReport, analysis);
 
                 const reportName = jsonReport.file_name + '.pdf';
                 return page.render(reportName).then(function () {
