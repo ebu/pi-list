@@ -80,6 +80,12 @@
 		.background-failed {
 			background-color: #FF4500;
 		}
+		.hide-row {
+			display: none;
+		}
+		.show-row {
+			display: table-row;
+		}
 	</style>
 </head>
 
@@ -95,6 +101,8 @@
 			<tr><td>Date tested</td><td id="date">placeholder</td></tr>
 			<tr><td>Analysis ID</td><td id="analysis-id">placeholder</td></tr>
 			<tr><td># Streams</td><td id="num-streams">placeholder</td></tr>
+			<tr id="errors" class="hide-row"><td># Errors</td><td id="num-errors">placeholder</td></tr>
+			<tr id="warnings" class="hide-row"><td># Warnings</td><td id="num-warnings">placeholder</td></tr>
 		</table>
 	</div>
 
