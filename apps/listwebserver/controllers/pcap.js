@@ -8,6 +8,7 @@ function getReport(pcapID, type) {
         return getJsonReport(pcapID);
     else if (type === 'pdf')
         return getPdfReport(pcapID);
+    else return Promise.reject(new Error('Invalid or missing report type.'));
 }
 
 function getJsonReport (pcapId) {
@@ -26,9 +27,11 @@ function getJsonReport (pcapId) {
 
 function getPdfReport (pcapId) {
 
-    return getJsonReport(pcapId).then((jsonReport) => {
+    return getJsonReport(pcapId)
+        .then((jsonReport) => {
+            console.log(JSON.stringify(jsonReport, null, 2));
             return pdfReport.generate(jsonReport);
-        })
+        });
 }
 
 module.exports = {

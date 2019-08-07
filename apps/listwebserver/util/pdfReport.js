@@ -6,7 +6,7 @@ function generate (jsonReport) {
         return ctx.createPage().then(function (page) {
 
             page.property('paperSize', { format: 'A4', orientation: 'portrait', margin: '1cm' });
-            return page.open('./util/report-template.html').then(function (stat) {
+            return page.open('./util/reportTemplate.html').then(function (stat) {
 
                 /* ATTENTION: Inside the evaluate's callback, we're no longer in the NodeJS
                    context but inside a sandboxed browser environment. Any data we want to
