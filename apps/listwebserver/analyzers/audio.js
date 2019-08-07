@@ -73,7 +73,7 @@ function updateStreamWithTsdfMax(stream, tsdf_max) {
 }
 
 function getRtpTsVsPktTsCompliance(range, limit) {
-    if (range.min > limit.min && range.max < limit.max) {
+    if (range.min >= limit.min && range.max < limit.max) {
         return {
             result: constants.outcome.compliant,
         };
@@ -85,7 +85,7 @@ function getRtpTsVsPktTsCompliance(range, limit) {
 }
 
 function updateStreamWithRtpTsVsPktTs(stream, range) {
-    const limit = {min:0, max: 500000} //un-hardcode this in us
+    const limit = {min:0, max: 1000} //un-hardcode this in us
 
     global_audio_analysis = (stream.global_audio_analysis === undefined) ? {} : stream.global_audio_analysis
     var rtp_ts_vs_pkt_ts = {
