@@ -84,7 +84,7 @@ function getRtpTsVsPktTsCompliance(range, limit) {
         _.isNil(range.min) ||
         _.isNil(range.max) ||
         range.min < limit.min ||
-        range.max >= limit.max
+        range.max > limit.max
     ) {
         return {
             result: constants.outcome.not_compliant,
