@@ -73,6 +73,7 @@ detector::status timestamp_difference_checker::handle_data(uint32_t timestamp)
 
     if (current_difference != difference_.value())
     {
+        logger()->info("Timestamps are inconsistent. Current difference is {} while the previous was {}.", current_difference, difference_.value());
         status_ = detector::status::invalid;
     }
     else
