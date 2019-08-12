@@ -12,7 +12,7 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
     const { type, configuration } = req.body;
     logger('workflow-api').info(`Create workflow request for ${type}`);
-    configuration.cookies = req.cookies;
+    configuration.cookie = req.headers.cookie;
 
     const userId = req.session.passport.user.id;
     controller.createWorkflow(type, userId, configuration)

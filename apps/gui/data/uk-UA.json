@@ -6,7 +6,7 @@
   "analysis.errors.cinst_above_maximum": "Значення Cinst перевищує максимально допустиме (CMAX)",
   "analysis.errors.vrx_above_maximum": "Значення VRX перевищує максимально допустиме (VRXFULL)",
   "analysis.errors.tsdf_not_compliant": "Значення TS-DF не відповідає вимогам EBU TECH 3337",
-  "analysis.errors.audio_rtp_ts_not_compliant": "RTP тимчасові мітки не відповідає JT-NM TESDED",
+  "analysis.errors.audio_rtp_ts_not_compliant": "RTP тимчасові мітки не відповідає JT-NM Tested",
   "analysis.errors.dropped_packets": "Втрачені пакети. Виявлено непослідовність часових міток RTP. Це може бути викликано помилкою джерела або приймача, або перевантаженням мережі",
   "headings.network_information": "Інформація про мережу",
   "headings.media_information": "Інформація про медіа",

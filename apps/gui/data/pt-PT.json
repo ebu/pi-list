@@ -6,7 +6,7 @@
   "analysis.errors.cinst_above_maximum": "CInst está acima do valor máximo permitido (CMAX)",
   "analysis.errors.vrx_above_maximum": "VRX está acima do valor máximo permitido (VRXFULL)",
   "analysis.errors.tsdf_not_compliant": "O valor de TS-DF não está de acordo com a recomendação EBU TECH 3337",
-  "analysis.errors.audio_rtp_ts_not_compliant": "Timestamps RTP não compatíveis com JT-NM TESDED",
+  "analysis.errors.audio_rtp_ts_not_compliant": "Timestamps RTP não compatíveis com JT-NM Tested",
   "analysis.errors.dropped_packets": "Pacotes perdidos. Foram detetadas descontinuidades no timestamp RTP",
   "headings.network_information": "Informação de Rede",
   "headings.media_information": "Informação da Essência",

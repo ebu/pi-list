@@ -10,19 +10,15 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
     const outputConfiguration = {
         id: wf.id,
         ingestPutUrl: `${programArguments.apiUrl}/pcap`,
-        cookies: inputConfig.cookies,
+        cookie: inputConfig.cookie,
         senders: wantedSenders,
         filename: inputConfig.filename,
+        durationMs: inputConfig.durationMs,
     };
 
     wf.configuration = outputConfiguration;
 
-    const msg = {
-        type: wf.type,
-        configuration: wf.configuration,
-    };
-
-    await workSender.send({ msg, persistent });
+    await workSender.send({ msg: wf, persistent });
 };
 
 module.exports = {

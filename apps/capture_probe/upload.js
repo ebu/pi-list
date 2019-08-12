@@ -5,16 +5,13 @@ const requestPut = promisify(request.put);
 
 ///////////////////////////////////////////////////////////////////////////////
 
-const uploadFile = async (sourceFile, ingestPutUrl, cookies, filename) => {
-    const j = request.jar();
-    Object.keys(cookies).forEach(key => {
-        const cookie = request.cookie(`${key}=${cookies[key]}`);
-        j.setCookie(cookie, ingestPutUrl);
-    });
-
+const uploadFile = async (sourceFile, ingestPutUrl, cookie, filename) => {
     const putResult = await requestPut({
         url: ingestPutUrl,
-        jar: j,
+        headers: {
+            'User-Agent': 'request',
+            'Cookie': cookie
+        },
         formData: {
             pcap: fs.createReadStream(sourceFile),
             originalFilename: filename,
@@ -31,5 +28,5 @@ const uploadFile = async (sourceFile, ingestPutUrl, cookies, filename) => {
 };
 
 module.exports = {
-    uploadFile
+    uploadFile,
 };

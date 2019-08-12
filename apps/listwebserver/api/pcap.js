@@ -127,12 +127,14 @@ router.delete('/:pcapID/', (req, res) => {
 /* Get the report for a pcap */
 router.get('/:pcapID/report', (req, res) => {
     const { pcapID } = req.params;
+    const reportType = req.query.type;
+
     pcapController
-        .getReport(pcapID)
+        .getReport(pcapID, reportType)
         .then(report => {
             res.setHeader(
                 'Content-disposition',
-                `attachment; filename=${pcapID}.json`
+                `attachment; filename=${pcapID}.${reportType}`
             );
             res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(report);
         })
@@ -282,7 +284,7 @@ router.get(
     '/:pcapID/stream/:streamID/analytics/AudioRtpTsVsPktTs',
     (req, res) => {
         const { pcapID, streamID } = req.params;
-        const { from, to, min, max } = req.query;
+        const { from, to } = req.query;
 
         chartData = influxDbManager.getAudioRtpTsVsPktTs(
             pcapID,

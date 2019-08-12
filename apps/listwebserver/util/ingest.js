@@ -20,6 +20,7 @@ const { doVideoAnalysis } = require('../analyzers/video');
 const { doAudioAnalysis } = require('../analyzers/audio');
 const { doRtpAnalysis } = require('../analyzers/rtp');
 const constants = require('../enums/analysis');
+const glob = util.promisify(require('glob'));
 
 function getUserFolder(req) {
     return `${program.folder}/${req.session.passport.user.id}`;
@@ -33,7 +34,7 @@ function generateRandomPcapDefinition(req, optionalPcapId) {
     const pcapId = optionalPcapId || uuidv1();
     return {
         uuid: pcapId,
-        folder: `${getUserFolder(req)}/${pcapId}`
+        folder: `${getUserFolder(req)}/${pcapId}`,
     };
 }
 
@@ -44,14 +45,16 @@ function generateRandomPcapDefinition(req, optionalPcapId) {
 function argumentsToCmd() {
     return {
         withMongo: `-mongo_url ${program.databaseURL}`,
-        withInflux: `-influx_url ${program.influxURL}`
+        withInflux: `-influx_url ${program.influxURL}`,
     };
 }
 
 function pcapFileAvailableFromReq(req, res, next) {
     if (!req.file) {
         logger('ingest').error('Pcap file not received!');
-        res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send(API_ERRORS.PCAP_FILE_TO_UPLOAD_NOT_FOUND);
+        res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send(
+            API_ERRORS.PCAP_FILE_TO_UPLOAD_NOT_FOUND
+        );
     } else {
         next();
     }
@@ -62,7 +65,9 @@ function pcapPreProcessing(req, res, next) {
     const pcapId = req.pcap.uuid;
     const { withMongo } = argumentsToCmd();
 
-    const streamPreProcessorCommand = `"${program.cpp}/stream_pre_processor" "${req.file.path}" ${pcapId} ${withMongo}`;
+    const streamPreProcessorCommand = `"${program.cpp}/stream_pre_processor" "${
+        req.file.path
+    }" ${pcapId} ${withMongo}`;
 
     const originalFilename = req.body.originalFilename || req.file.originalname;
 
@@ -73,108 +78,139 @@ function pcapPreProcessing(req, res, next) {
             file_name: originalFilename,
             pcap_file_name: req.file.filename,
             date: Date.now(),
-            progress: 33
-        }
+            progress: 33,
+        },
     });
 
-    logger('stream-pre-processor').info(`Command: ${streamPreProcessorCommand}`);
+    logger('stream-pre-processor').info(
+        `Command: ${streamPreProcessorCommand}`
+    );
     exec(streamPreProcessorCommand)
-        .then((output) => {
+        .then(output => {
             logger('stream-pre-process').info(output.stdout);
             logger('stream-pre-process').info(output.stderr);
 
-            return Pcap.findOneAndUpdate({ id: pcapId },
+            return Pcap.findOneAndUpdate(
+                { id: pcapId },
                 {
                     file_name: originalFilename,
                     pcap_file_name: req.file.filename,
                     owner_id: userID,
-                    generated_from_network: req.pcap.from_network ? true : false
+                    generated_from_network: req.pcap.from_network
+                        ? true
+                        : false,
                 },
-                { new: true }).exec();
+                { new: true }
+            ).exec();
         })
-        .then((data) => {
+        .then(data => {
             websocketManager.instance().sendEventToUser(userID, {
                 event: WS_EVENTS.PCAP_FILE_PROCESSED,
-                data: Object.assign({}, data._doc, { progress: 66 })
+                data: Object.assign({}, data._doc, { progress: 66 }),
             });
 
             next();
         })
-        .catch((output) => {
-            logger('pcap-pre-processing').error(`exception: ${output} ${output.stdout}`);
-            logger('pcap-pre-processing').error(`exception: ${output} ${output.stderr}`);
+        .catch(output => {
+            logger('pcap-pre-processing').error(
+                `exception: ${output} ${output.stdout}`
+            );
+            logger('pcap-pre-processing').error(
+                `exception: ${output} ${output.stderr}`
+            );
 
-            Pcap.findOneAndUpdate({ id: pcapId },
+            Pcap.findOneAndUpdate(
+                { id: pcapId },
                 {
                     file_name: originalFilename,
                     pcap_file_name: req.file.filename,
                     owner_id: userID,
-                    generated_from_network: req.pcap.from_network ? true : false,
-                    error: output.stdout
+                    generated_from_network: req.pcap.from_network
+                        ? true
+                        : false,
+                    error: output.stdout,
                 },
-                { new: true }).exec();
+                { new: true }
+            ).exec();
 
             websocketManager.instance().sendEventToUser(userID, {
                 event: WS_EVENTS.PCAP_FILE_FAILED,
-                data: { id: pcapId, progress: 0, error: output.stdout }
+                data: { id: pcapId, progress: 0, error: output.stdout },
             });
         });
 }
 
-function postProcessSdpFiles(folder) {
-    const archiveCommand = `cd ${folder}; find  -name  "*.sdp" | zip sdp -@`;
-    logger('sdp-post-processing').info(archiveCommand);
-    exec(archiveCommand)
-        .then(output => {
-            logger('sdp-post-processing').info(output.stdout);
-        })
-        .catch((output) => {
-            logger('sdp-post-processing').error(`exception: ${output}`);
-        });
-}
+const zipfiles = async (files, outputPath) => {
+    const fs = require('fs');
+    const output = fs.createWriteStream(outputPath);
+    const archiver = require('archiver');
+    const zipArchive = archiver('zip');
+    const finalize = util.promisify(zipArchive.finalize);
 
-function pcapFullAnalysis(req, res, next) {
+    zipArchive.pipe(output);
+    zipArchive.bulk([{ src: files }]);
+    await finalize();
+    logger('zip-files').info(`zipped: ${files.length} files`);
+};
+
+const postProcessSdpFiles = async folder => {
+    const files = await glob('${folder}/*.sdp');
+
+    if (files && files.length > 0) {
+        await zipfiles(files, '${folder}/sdp.zip');
+    }
+};
+
+const pcapFullAnalysis = async (req, res, next) => {
     const pcapId = req.pcap.uuid;
     const pcapFolder = req.pcap.folder;
 
     const { withMongo, withInflux } = argumentsToCmd();
 
-    const st2110ExtractorCommand =
-        `"${program.cpp}/st2110_extractor" ${pcapId} "${req.file.path}" "${pcapFolder}" ${withInflux} ${withMongo}`;
+    const st2110ExtractorCommand = `"${
+        program.cpp
+    }/st2110_extractor" ${pcapId} "${
+        req.file.path
+    }" "${pcapFolder}" ${withInflux} ${withMongo}`;
 
     logger('st2110_extractor').info(`Command: ${st2110ExtractorCommand}`);
-    exec(st2110ExtractorCommand)
-        .then((output) => {
-            logger('st2110_extractor').info(output.stdout);
-            logger('st2110_extractor').info(output.stderr);
-            postProcessSdpFiles(pcapFolder);
-            next();
-        })
-        .catch((output) => {
-            logger('pcap-full-analysis').error(`exception: ${output} ${output.stdout}`);
-            logger('pcap-full-analysis').error(`exception: ${output} ${output.stderr}`);
 
-            Pcap.findOneAndUpdate({ id: pcapId },
-                {
-                    error: output.stdout
-                },
-                { new: true }).exec();
+    try {
+        const output = await exec(st2110ExtractorCommand);
+        logger('st2110_extractor').info(output.stdout);
+        logger('st2110_extractor').info(output.stderr);
+        postProcessSdpFiles(pcapFolder);
+        next();
+    } catch (err) {
+        logger('pcap-full-analysis').error(
+            `exception: ${output} ${output.stdout}`
+        );
+        logger('pcap-full-analysis').error(
+            `exception: ${output} ${output.stderr}`
+        );
 
+        Pcap.findOneAndUpdate(
+            { id: pcapId },
+            {
+                error: output.stdout,
+            },
+            { new: true }
+        ).exec();
 
-            const userID = req.session.passport.user.id;
-            websocketManager.instance().sendEventToUser(userID, {
-                event: WS_EVENTS.PCAP_FILE_FAILED,
-                data: { id: pcapId, progress: 0, error: output.stdout }
-            });
+        const userID = req.session.passport.user.id;
+        websocketManager.instance().sendEventToUser(userID, {
+            event: WS_EVENTS.PCAP_FILE_FAILED,
+            data: { id: pcapId, progress: 0, error: output.stdout },
         });
-}
+    }
+};
 
 function resetStreamCountersAndErrors(req, res, next) {
     const { streamID } = req.params;
 
-
-    Stream.findOne({ id: streamID }).exec()
-        .then(data =>  {
+    Stream.findOne({ id: streamID })
+        .exec()
+        .then(data => {
             if (typeof data.statistics !== 'undefined') {
                 data.statistics.packet_count = 0;
                 data.statistics.dropped_packet_count = 0;
@@ -189,10 +225,11 @@ function resetStreamCountersAndErrors(req, res, next) {
                 data.error_list = [];
             }
 
-            Stream.findOneAndUpdate({ id: streamID }, data).exec()
-                .then(data =>  {
+            Stream.findOneAndUpdate({ id: streamID }, data)
+                .exec()
+                .then(data => {
                     next();
-            });
+                });
         })
         .catch(err => {
             logger('stream-reset-counters').error(`exception: ${err}`);
@@ -207,35 +244,42 @@ function singleStreamAnalysis(req, res, next) {
 
     const { withMongo, withInflux } = argumentsToCmd();
 
-    const st2110ExtractorCommand =
-        `"${program.cpp}/st2110_extractor" ${pcapId} "${pcap_location}" "${pcapFolder}" ${withInflux} ${withMongo} -s "${streamID}"`;
+    const st2110ExtractorCommand = `"${
+        program.cpp
+    }/st2110_extractor" ${pcapId} "${pcap_location}" "${pcapFolder}" ${withInflux} ${withMongo} -s "${streamID}"`;
 
     logger('st2110_extractor').info(`Command: ${st2110ExtractorCommand}`);
     exec(st2110ExtractorCommand)
-        .then((output) => {
+        .then(output => {
             logger('st2110_extractor').info(output.stdout);
             logger('st2110_extractor').info(output.stderr);
             postProcessSdpFiles(pcapFolder);
             next();
         })
-        .catch((output) => {
-            logger('pcap-full-analysis').error(`exception: ${output} ${output.stdout}`);
-            logger('pcap-full-analysis').error(`exception: ${output} ${output.stderr}`);
+        .catch(output => {
+            logger('pcap-full-analysis').error(
+                `exception: ${output} ${output.stdout}`
+            );
+            logger('pcap-full-analysis').error(
+                `exception: ${output} ${output.stderr}`
+            );
         });
 }
 
 function addStreamErrorsToSummary(stream, error_list) {
-    stream.error_list.forEach(error => error_list.push({
-        stream_id: stream.id,
-        value: error
-    }));
+    stream.error_list.forEach(error =>
+        error_list.push({
+            stream_id: stream.id,
+            value: error,
+        })
+    );
 }
 
 function addWarningsToSummary(pcap, warning_list) {
     if (pcap.truncated) {
         warning_list.push({
             stream_id: null,
-            value: { id: constants.warnings.pcap.truncated }
+            value: { id: constants.warnings.pcap.truncated },
         });
     }
 }
@@ -249,9 +293,12 @@ function pcapConsolidation(req, res, next) {
     };
 
     const streams = _.get(req, 'streams', []);
-    streams.forEach(stream => addStreamErrorsToSummary(stream, summary.error_list));
+    streams.forEach(stream =>
+        addStreamErrorsToSummary(stream, summary.error_list)
+    );
 
-    return Pcap.findOne({ id: pcapId }).exec() // it returns the mongo db record of the PCAP
+    return Pcap.findOne({ id: pcapId })
+        .exec() // it returns the mongo db record of the PCAP
         .then(pcapData => {
             addWarningsToSummary(pcapData, summary.warning_list);
         })
@@ -267,13 +314,14 @@ function addStreamsToReq(streams, req) {
 
 function videoConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
-    Stream.find({ pcap: pcapId, media_type: "video" }).exec()
+    Stream.find({ pcap: pcapId, media_type: 'video' })
+        .exec()
         .then(streams => doVideoAnalysis(pcapId, streams))
         .then(streams => {
             addStreamsToReq(streams, req);
         })
         .then(() => next())
-        .catch((output) => {
+        .catch(output => {
             logger('video-consolidation').error(`exception: ${output}`);
             logger('video-consolidation').error(`exception: ${output}`);
         });
@@ -281,13 +329,14 @@ function videoConsolidation(req, res, next) {
 
 function audioConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
-    Stream.find({ pcap: pcapId, media_type: "audio" }).exec()
+    Stream.find({ pcap: pcapId, media_type: 'audio' })
+        .exec()
         .then(streams => doAudioAnalysis(pcapId, streams))
         .then(streams => {
             addStreamsToReq(streams, req);
         })
         .then(() => next())
-        .catch((output) => {
+        .catch(output => {
             logger('audio-consolidation').error(`exception: ${output}`);
             logger('audio-consolidation').error(`exception: ${output}`);
         });
@@ -295,12 +344,13 @@ function audioConsolidation(req, res, next) {
 
 function ancillaryConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
-    Stream.find({ pcap: pcapId, media_type: "ancillary_data" }).exec()
+    Stream.find({ pcap: pcapId, media_type: 'ancillary_data' })
+        .exec()
         .then(streams => {
             addStreamsToReq(streams, req);
         })
         .then(() => next())
-        .catch((output) => {
+        .catch(output => {
             logger('ancillary-consolidation').error(`exception: ${output}`);
             logger('ancillary-consolidation').error(`exception: ${output}`);
         });
@@ -312,7 +362,7 @@ function commonConsolidation(req, res, next) {
 
     doRtpAnalysis(pcapId, streams)
         .then(() => next())
-        .catch((output) => {
+        .catch(output => {
             logger('common-consolidation').error(`exception: ${output}`);
             logger('common-consolidation').error(`exception: ${output}`);
         });
@@ -322,36 +372,42 @@ function pcapIngestEnd(req, res, next) {
     const userID = req.session.passport.user.id;
     const pcapId = req.pcap.uuid;
 
-    Pcap.findOne({ id: pcapId }).exec() // it returns the mongo db record of the PCAP
+    Pcap.findOne({ id: pcapId })
+        .exec() // it returns the mongo db record of the PCAP
         .then(pcapData => {
             // Everything is done, we must notify the GUI
             websocketManager.instance().sendEventToUser(userID, {
                 event: WS_EVENTS.PCAP_FILE_PROCESSING_DONE,
-                data: Object.assign({}, pcapData._doc, { progress: 100 })
+                data: Object.assign({}, pcapData._doc, { progress: 100 }),
             });
         });
 }
 
 function sdpCheck(req, res, next) {
     const userID = req.session.passport.user.id;
-    sdpoker.getSDP(req.file.path, false)
+    sdpoker
+        .getSDP(req.file.path, false)
         .then(sdp => {
             const rfcErrors = sdpoker.checkRFC4566(sdp, {});
             const st2110Errors = sdpoker.checkST2110(sdp, {});
             const errors = rfcErrors.concat(st2110Errors);
             if (errors.length !== 0) {
                 // notify instead of printing
-                logger('sdp-check').error(`Found ${errors.length} error(s) in SDP file:`);
+                logger('sdp-check').error(
+                    `Found ${errors.length} error(s) in SDP file:`
+                );
                 for (let c in errors) {
-                    logger('sdp-check').error(`${+c + 1}: ${errors[c].message}`);
+                    logger('sdp-check').error(
+                        `${+c + 1}: ${errors[c].message}`
+                    );
                 }
             }
 
             websocketManager.instance().sendEventToUser(userID, {
                 event: WS_EVENTS.SDP_VALIDATION_RESULTS,
                 data: {
-                    errors: errors.map(e => e.toString())
-                }
+                    errors: errors.map(e => e.toString()),
+                },
             });
 
             next();
@@ -366,12 +422,12 @@ function sdpParseIp(req, res, next) {
     const readFileAsync = util.promisify(fs.readFile);
 
     readFileAsync(req.file.path)
-        .then((sdp) => {
+        .then(sdp => {
             const parsed = sdp_parser.parse(sdp.toString());
 
             console.log(parsed);
             // grab src and dst IPs for each stream
-            const streams = parsed.media.map(function (media) {
+            const streams = parsed.media.map(function(media) {
                 const dstAddr = _.get(media, 'sourceFilter.destAddress');
                 const dstPort = _.get(media, 'port');
                 const src = _.get(media, 'sourceFilter.srcList');
@@ -384,8 +440,8 @@ function sdpParseIp(req, res, next) {
                 data: {
                     success: true,
                     description: parsed.name,
-                    streams: streams
-                }
+                    streams: streams,
+                },
             });
         })
         .then(() => {
@@ -397,7 +453,7 @@ function sdpParseIp(req, res, next) {
                 event: WS_EVENTS.IP_PARSED_FROM_SDP,
                 data: {
                     success: false,
-                }
+                },
             });
 
             next();
@@ -421,7 +477,7 @@ module.exports = {
         ancillaryConsolidation,
         commonConsolidation,
         pcapConsolidation,
-        pcapIngestEnd
+        pcapIngestEnd,
     ],
     pcapSingleStreamIngest: [
         pcapFileAvailableFromReq,
@@ -431,11 +487,7 @@ module.exports = {
         audioConsolidation,
         ancillaryConsolidation,
         commonConsolidation,
-        pcapConsolidation
+        pcapConsolidation,
     ],
-    sdpIngest: [
-        sdpParseIp,
-        sdpCheck,
-        sdpDelete
-    ]
+    sdpIngest: [sdpParseIp, sdpCheck, sdpDelete],
 };

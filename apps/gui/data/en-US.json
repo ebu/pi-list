@@ -6,7 +6,7 @@
   "analysis.errors.cinst_above_maximum": "CInst is above the maximum allowed value (CMAX)",
   "analysis.errors.vrx_above_maximum": "VRX is above the maximum allowed value (VRXFULL)",
   "analysis.errors.tsdf_not_compliant": "TS-DF not compliant with EBU TECH 3337",
-  "analysis.errors.audio_rtp_ts_not_compliant": "RTP timestamps not compliant with JT-NM TESDED",
+  "analysis.errors.audio_rtp_ts_not_compliant": "RTP timestamps not compliant with JT-NM Tested",
   "analysis.errors.dropped_packets": "Dropped packets. RTP timestamp discontinuities were detected. This could be caused by a sender or receiver error, or by network congestion",
   "headings.network_information": "Network Information",
   "headings.media_information": "Media Information",

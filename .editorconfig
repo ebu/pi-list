@@ -1,0 +1,22 @@
+root = true
+
+[*.{c,cc,cpp,cxx,h,hpp,hxx}]
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+[*.{html,xml}]
+indent_style = tab
+indent_size = 2
+trim_trailing_whitespace = true
+
+[*.{js,json,css,cs}]
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+[*.{md,markdown}]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = false
+

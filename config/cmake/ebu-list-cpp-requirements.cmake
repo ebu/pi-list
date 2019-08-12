@@ -1,3 +1,7 @@
+include(CheckIPOSupported)
+
+check_ipo_supported(RESULT ipo_supported)
+
 macro(list_set_target_cpp_properties)
     bimo_set_target_cpp_properties()
 endmacro()
@@ -6,36 +10,36 @@ macro(list_set_cpp_properties)
     bimo_set_cpp_properties()
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
         add_definitions(-D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS -DBOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE)
-    endif()
+    endif ()
 endmacro(list_set_cpp_properties)
 
 macro(define_pch PROJECT_NAME INCLUDES)
-    if(USE_PCH)
+    if (USE_PCH)
         set_target_properties(${PROJECT_NAME} PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT ${INCLUDES})
         cotire(${PROJECT_NAME})
-    endif()
+    endif ()
 endmacro()
 
 ####
 macro(list_declare_library NAME)
     set(LIBRARY_NAME ${NAME})
     set(TEST_CASES_NAME ${NAME}_unit_tests)
-    set(HAVE_TESTS   OFF)
+    set(HAVE_TESTS OFF)
 
-    if(IS_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/unit_tests")
+    if (IS_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/unit_tests")
         set(HAVE_TESTS ON)
-    endif()
+    endif ()
 
-    if(BUILD_TESTS AND HAVE_TESTS)
+    if (BUILD_TESTS AND HAVE_TESTS)
         list_add_test(${TEST_CASES_NAME})
-    endif()
+    endif ()
 
     list_add_library(${LIBRARY_NAME})
 
     # Link unit tests with the library
-    if(BUILD_TESTS AND HAVE_TESTS)
-        target_link_libraries (${TEST_CASES_NAME} ${LIBRARY_NAME})
-    endif()
+    if (BUILD_TESTS AND HAVE_TESTS)
+        target_link_libraries(${TEST_CASES_NAME} ${LIBRARY_NAME})
+    endif ()
 
 endmacro()
 
@@ -58,12 +62,16 @@ macro(list_add_library NAME)
             $<INSTALL_INTERFACE:include>
             PRIVATE
             lib/src
-    )
+            )
 
     list_set_target_cpp_properties()
 
     set_target_properties(${NAME} PROPERTIES FOLDER "libs")
     message(STATUS "Found ${NAME}")
+
+    if (ipo_supported)
+        set_property(TARGET ${NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+    endif ()
 endmacro()
 
 ##
@@ -81,9 +89,9 @@ macro(list_add_test NAME)
     source_group(TREE ${PROJECT_SOURCE_DIR}/unit_tests FILES ${${NAME}_test_files})
 
     list_set_target_cpp_properties()
-    target_include_directories (${NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/unit_tests)
+    target_include_directories(${NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/unit_tests)
 
-    target_link_libraries (${NAME} ebu_list_test_lib)
+    target_link_libraries(${NAME} ebu_list_test_lib)
     set_target_properties(${NAME} PROPERTIES FOLDER "unit_tests")
 
     ParseAndAddCatchTests(${NAME})
@@ -100,11 +108,16 @@ macro(list_add_executable NAME)
     add_executable(${NAME} ${${NAME}_source_files})
     source_group(TREE ${PROJECT_SOURCE_DIR} FILES ${${NAME}_source_files})
 
-    target_include_directories (${PROJECT_NAME} PRIVATE .)
+    target_include_directories(${PROJECT_NAME} PRIVATE .)
 
     list_set_target_cpp_properties()
 
     set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "apps")
     define_pch(${NAME} pch.h)
     message(STATUS "Found ${NAME}")
+
+    if (ipo_supported)
+        set_property(TARGET ${NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+    endif ()
+
 endmacro()
