@@ -43,8 +43,6 @@ const AudioPage = props => {
                                     props.streamID,
                                     first_packet_ts,
                                     last_packet_ts,
-                                    analysis.rtp_ts_vs_pkt_ts.range.min,
-                                    analysis.rtp_ts_vs_pkt_ts.range.max,
                                 )
                             }
                             xAxis={ chartFormatters.getTimeLineLabel }

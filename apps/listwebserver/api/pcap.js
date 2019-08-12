@@ -284,7 +284,7 @@ router.get(
     '/:pcapID/stream/:streamID/analytics/AudioRtpTsVsPktTs',
     (req, res) => {
         const { pcapID, streamID } = req.params;
-        const { from, to, min, max } = req.query;
+        const { from, to } = req.query;
 
         chartData = influxDbManager.getAudioRtpTsVsPktTs(
             pcapID,

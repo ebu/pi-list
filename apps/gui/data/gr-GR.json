@@ -6,7 +6,7 @@
   "analysis.errors.cinst_above_maximum": "CInst πάνω από τη μέγιστη επιτρεπόμενη τιμή (CMAX)",
   "analysis.errors.vrx_above_maximum": "VRX πάνω από τη μέγιστη επιτρεπόμενη τιμή (VRXFULL)",
   "analysis.errors.tsdf_not_compliant": "Το TS-DF δεν συμμορφώνεται με το EBU TECH 3337",
-  "analysis.errors.audio_rtp_ts_not_compliant": "Τα χρονικά σήματα RTP δεν συμμορφώνονται με το JT-NM TESDED",
+  "analysis.errors.audio_rtp_ts_not_compliant": "Τα χρονικά σήματα RTP δεν συμμορφώνονται με το JT-NM Tested",
   "analysis.errors.dropped_packets": "Απόρριψη πακέτων. Έχουν ανιχνευθεί ασυνέπειες χρονισμού σήματος RTP. Αυτό μπορεί να οφείλεται σε σφάλμα αποστολέα ή δέκτη ή σε συμφόρηση δικτύου",
   "headings.network_information": "Πληροφορίες δικτύου",
   "headings.media_information": "Πληροφορίες για το περιεχόμενο",
