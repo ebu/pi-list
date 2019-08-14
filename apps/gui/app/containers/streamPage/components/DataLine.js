@@ -16,12 +16,16 @@ const defaultProps = {
     valueWidth: 6,
 };
 
-const renderValue = ({ value, units }) => units
-    ? <div style={{ display: 'flex'}}>
-        <div className="lst-stream-info-value">{value}</div>
-        <div className="lst-stream-info-units">{units}</div>
-    </div>
-    : <div className="lst-stream-info-value">{value}</div>;
+const renderValue = ({ value, units, attention }) => {
+    if (units)
+        return (<div style={{ display: 'flex'}}>
+                    <div className="lst-stream-info-value">{value}</div>
+                    <div className="lst-stream-info-units">{units}</div>
+                </div>);
+    else if (attention)
+        return (<div className="lst-stream-info-value-attention">{value}</div>);
+    else return (<div className="lst-stream-info-value">{value}</div>);
+}
 
 const DataLine = props => (
     <div className="row col-xs-12 lst-no-padding">

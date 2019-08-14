@@ -22,12 +22,15 @@ namespace ebu_list::ipv4
 
     using endpoint_list = std::vector<endpoint>;
 
+    bool operator>(const endpoint& lhs, const endpoint& rhs);
     bool operator<(const endpoint& lhs, const endpoint& rhs);
     bool operator==(const endpoint& lhs, const endpoint& rhs);
     bool operator!=(const endpoint& lhs, const endpoint& rhs);
+    bool operator>=(const endpoint& lhs, const endpoint& rhs);
+    bool operator<=(const endpoint& lhs, const endpoint& rhs);
 
     address from_dotted_string(std::string_view s);
- 
+
     std::string to_string(const address& a);
     std::ostream& operator<<(std::ostream& os, address a);
 

@@ -44,7 +44,7 @@ pcap_player::pcap_player(path pcap_file,
     }
 }
 
-pcap_player::pcap_player(path pcap_file, 
+pcap_player::pcap_player(path pcap_file,
     udp::listener_ptr listener,
     on_error_t on_error)
     : pcap_player(std::move(pcap_file), std::move(listener), on_error, clock::duration{})
@@ -109,6 +109,9 @@ void pcap_player::do_next()
         auto[udp_header, udp_payload] = udp::decode(std::move(ipv4_payload));
 
         auto datagram = udp::make_datagram(packet_timestamp,
+            ethernet_header.source_address,
+            ethernet_header.destination_address,
+            ethernet_header.type,
             ipv4_header.source_address, udp_header.source_port,
             ipv4_header.destination_address, udp_header.destination_port,
             std::move(udp_payload));

@@ -93,20 +93,22 @@ maybe_pdu rtp::decode(oview&& raw_pdu)
     return pdu{ std::move(h), std::move(sdu) };
 }
 
-maybe_packet rtp::decode(udp::datagram_info udp_info, oview&& raw_pdu)
+maybe_packet rtp::decode(ethernet::header ethernet_info, udp::datagram_info udp_info, oview&& raw_pdu)
 {
     auto p = decode(std::move(raw_pdu));
     if (!p) return std::nullopt;
 
     header& hl = std::get<0>(p.value());
-    auto info = packet_info(std::move(udp_info), std::move(hl));
+    auto info = packet_info(std::move(ethernet_info), std::move(udp_info), std::move(hl));
 
     return packet{ std::move(info), std::move(std::get<1>(p.value())) };
 }
 
-packet_info::packet_info(udp::datagram_info&& _udp,
-    header&& _rtp)
-    : udp(std::move(_udp)),
-    rtp(std::move(_rtp))
+packet_info::packet_info(ethernet::header&& _ethernet_info,
+                         udp::datagram_info&& _udp,
+                         header&& _rtp)
+    : ethernet_info(std::move(_ethernet_info)),
+      udp(std::move(_udp)),
+      rtp(std::move(_rtp))
 {
 }

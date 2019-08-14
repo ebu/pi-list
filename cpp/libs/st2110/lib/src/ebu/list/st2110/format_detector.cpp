@@ -23,8 +23,8 @@ void format_detector::on_data(const rtp::packet& packet)
     std::vector<const detector*> to_remove;
     const detector* one_valid = nullptr;
 
-    for(auto& d : detectors_) 
-    { 
+    for(auto& d : detectors_)
+    {
         if (one_valid)
         {
             to_remove.push_back(d.get());

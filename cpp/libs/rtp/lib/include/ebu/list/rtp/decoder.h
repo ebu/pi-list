@@ -36,8 +36,11 @@ namespace ebu_list::rtp
 
     struct packet_info
     {
-        packet_info(udp::datagram_info&& _udp, header&& _rtp);
+        packet_info(ethernet::header&& _ethernet_info,
+                    udp::datagram_info&& _udp,
+                    header&& _rtp);
 
+        ethernet::header ethernet_info;
         udp::datagram_info udp;
         header rtp;
     };
@@ -50,5 +53,7 @@ namespace ebu_list::rtp
 
     using maybe_packet = std::optional<packet>;
 
-    maybe_packet decode(udp::datagram_info udp_info, oview&& raw_pdu);
+    maybe_packet decode(ethernet::header ethernet_info,
+                        udp::datagram_info udp_info,
+                        oview&& raw_pdu);
 }

@@ -67,7 +67,13 @@ struct receiver::impl
                         auto udp_payload = bisect::bimo::owning_view(buffer, 0, length);
 
                         auto packet_timestamp = ebu_list::clock::now(); //todo: get me from IP header
+                        auto source_mac_address = to_byte_array(0, 0, 0, 0, 0, 0);
+                        auto destination_mac_address = to_byte_array(0, 0, 0, 0, 0, 0);
+                        auto payload_type = ethernet::payload_type::UNKNOWN;
                         auto datagram = udp::make_datagram(packet_timestamp,
+                                                           source_mac_address,
+                                                           destination_mac_address,
+                                                           payload_type,
                                                            source_addr, source_port,
                                                            dest_addr_, dest_port_,
                                                            std::move(udp_payload));
