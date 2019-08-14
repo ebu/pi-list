@@ -113,9 +113,7 @@ function pcapPreProcessing(req, res, next) {
             next();
         })
         .catch(err => {
-            logger('pcap-pre-processing').error(
-                `exception: ${err.toString()}`
-            );
+            logger('pcap-pre-processing').error(`exception: ${err.toString()}`);
 
             Pcap.findOneAndUpdate(
                 { id: pcapId },
@@ -180,9 +178,7 @@ const pcapFullAnalysis = async (req, res, next) => {
         await postProcessSdpFiles(pcapFolder);
         next();
     } catch (err) {
-        logger('pcap-full-analysis').error(
-            `exception: ${err}`
-        );
+        logger('pcap-full-analysis').error(`exception: ${err}`);
 
         Pcap.findOneAndUpdate(
             { id: pcapId },
@@ -252,9 +248,7 @@ function singleStreamAnalysis(req, res, next) {
             next();
         })
         .catch(err => {
-            logger('pcap-full-analysis').error(
-                `exception: ${err}`
-            );
+            logger('pcap-full-analysis').error(`exception: ${err}`);
         });
 }
 
@@ -304,19 +298,22 @@ function addStreamsToReq(streams, req) {
     req.streams = allStreams;
 }
 
-function videoConsolidation(req, res, next) {
-    const pcapId = req.pcap.uuid;
-    Stream.find({ pcap: pcapId, media_type: 'video' })
-        .exec()
-        .then(streams => doVideoAnalysis(pcapId, streams))
-        .then(streams => {
-            addStreamsToReq(streams, req);
-        })
-        .then(() => next())
-        .catch(err => {
-            logger('video-consolidation').error(`exception: ${err}`);
-        });
-}
+const videoConsolidation = async (req, res, next) => {
+    try {
+        const pcapId = req.pcap.uuid;
+        const streams = await Stream.find({
+            pcap: pcapId,
+            media_type: 'video',
+        }).exec();
+
+        await doVideoAnalysis(pcapId, streams);
+        addStreamsToReq(streams, req);
+
+        next();
+    } catch (err) {
+        logger('video-consolidation').error(`exception: ${err}`);
+    }
+};
 
 function audioConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
