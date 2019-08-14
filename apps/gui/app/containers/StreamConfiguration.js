@@ -435,6 +435,14 @@ class StreamConfiguration extends Component {
                 )}
                 {renderInformationList([
                     {
+                        key: translateC('media_information.rtp.source_mac'),
+                        value: `${netInfo.source_mac_address}`,
+                    },
+                    {
+                        key: translateC('media_information.rtp.destination_mac'),
+                        value: `${netInfo.destination_mac_address}`,
+                    },
+                    {
                         key: translateC('media_information.rtp.source'),
                         value: `${netInfo.source_address}:${
                             netInfo.source_port

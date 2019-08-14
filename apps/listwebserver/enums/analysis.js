@@ -17,6 +17,9 @@ module.exports = {
         tsdf_not_compliant: 'errors.tsdf_not_compliant',
         audio_rtp_ts_not_compliant: 'errors.audio_rtp_ts_not_compliant',
         dropped_packets: 'errors.dropped_packets',
+        invalid_multicast_mac_address: 'errors.invalid_multicast_mac_address',
+        invalid_multicast_ip_address: 'errors.invalid_multicast_ip_address',
+        unrelated_multicast_addresses: 'errors.unrelated_multicast_addresses',
     },
     warnings: {
         pcap: {

@@ -19,6 +19,7 @@ namespace ebu_list
         uint32_t dropped_packet_count = 0;
         uint32_t frame_count = 0; // frame concept applies to ancillary too
         uint32_t last_frame_ts = 0;
+
         clock::time_point first_packet_ts {};
         clock::time_point last_packet_ts {};
 

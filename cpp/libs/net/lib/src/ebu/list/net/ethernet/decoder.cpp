@@ -55,3 +55,21 @@ std::ostream& ethernet::operator<<(std::ostream& os, payload_type h)
     os << std::hex << std::setfill('0') << std::setw(4) << static_cast<int>(h);
     return os;
 }
+
+std::string ethernet::to_string(const payload_type ptype)
+{
+    switch (ptype) {
+        case payload_type::IPv4: return "IPv4";
+        case payload_type::VLAN_802_1Q: return "VLAN_802_1Q";
+        default: return "UNKNOWN";
+    }
+}
+
+payload_type ethernet::to_payload_type(std::string_view ptype_str)
+{
+    if (ptype_str == "IPv4")
+        return payload_type::IPv4;
+    else if (ptype_str == "VLAN_802_1Q")
+        return payload_type::VLAN_802_1Q;
+    else return payload_type::UNKNOWN;
+}

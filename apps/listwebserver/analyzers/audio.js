@@ -2,7 +2,7 @@ const _ = require('lodash');
 const influxDbManager = require('../managers/influx-db');
 const Stream = require('../models/stream');
 const constants = require('../enums/analysis');
-const { appendError } = require('./utils');
+const { appendError, validateMulticastAddresses } = require('./utils');
 const logger = require('../util/logger');
 
 const log = logger('audio');
@@ -154,6 +154,10 @@ function doAudioStreamAnalysis(pcapId, stream) {
             Stream.findOneAndUpdate({ id: stream.id }, info, { new: true })
         )
         .then(() => doCalculateRtpTsVsPktTsRange(pcapId, stream))
+        .then(info =>
+              Stream.findOneAndUpdate({ id: stream.id }, info, { new: true })
+        )
+        .then(validateMulticastAddresses(stream))
         .then(info =>
             Stream.findOneAndUpdate({ id: stream.id }, info, { new: true })
         );

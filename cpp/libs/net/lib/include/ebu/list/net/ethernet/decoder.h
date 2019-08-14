@@ -8,6 +8,7 @@ namespace ebu_list::ethernet
 {
     enum class payload_type : uint16_t
     {
+        UNKNOWN = 0x0000,
         IPv4 = 0x0800,
         VLAN_802_1Q = 0x8100
     };
@@ -23,4 +24,7 @@ namespace ebu_list::ethernet
 
     std::ostream& operator<<(std::ostream& os, const header& h);
     std::ostream& operator<<(std::ostream& os, payload_type h);
+
+    std::string to_string(const payload_type m);
+    payload_type to_payload_type(std::string_view address);
 }

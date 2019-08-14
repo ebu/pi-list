@@ -19,6 +19,11 @@ using namespace ebu_list;
 
 //------------------------------------------------------------------------------
 
+bool ipv4::operator>(const endpoint& lhs, const endpoint& rhs)
+{
+    return std::tie(lhs.addr, lhs.p) > std::tie(rhs.addr, rhs.p);
+}
+
 bool ipv4::operator<(const endpoint& lhs, const endpoint& rhs)
 {
     return std::tie(lhs.addr, lhs.p) < std::tie(rhs.addr, rhs.p);
@@ -32,6 +37,16 @@ bool ipv4::operator==(const endpoint& lhs, const endpoint& rhs)
 bool ipv4::operator!=(const endpoint& lhs, const endpoint& rhs)
 {
     return !(rhs == lhs);
+}
+
+bool ipv4::operator>=(const endpoint& lhs, const endpoint& rhs)
+{
+    return std::tie(lhs.addr, lhs.p) >= std::tie(rhs.addr, rhs.p);
+}
+
+bool ipv4::operator<=(const endpoint& lhs, const endpoint& rhs)
+{
+    return std::tie(lhs.addr, lhs.p) <= std::tie(rhs.addr, rhs.p);
 }
 
 address ipv4::from_dotted_string(std::string_view s)

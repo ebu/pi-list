@@ -11,6 +11,8 @@ SCENARIO("SDP serialization")
     sdp_global_settings settings{"session name", "session information", "/tmp/folder/sdp.sdp"};
 
     media::network_info network_info {
+            ethernet::to_mac_address("00:00:00:00:00:00").value(),
+            ethernet::to_mac_address("00:00:00:00:00:00").value(),
             ipv4::from_string("192.168.1.1", 52652),
             ipv4::from_string("234.0.0.1", 5000),
             96,

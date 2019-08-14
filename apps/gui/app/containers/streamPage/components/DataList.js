@@ -17,6 +17,7 @@ const DataList = props => {
                         label={label}
                         value={item.value}
                         units={item.units}
+                        attention={item.attention}
                     />);
                 })
             }

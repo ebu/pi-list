@@ -15,7 +15,7 @@ std::tuple<ipv4::header, oview> ipv4::decode(oview&& pdu)
     LIST_ENFORCE(size(pdu) >= sizeof(ipv4::packet_header), std::runtime_error, "packet is smaller than ipv4 header");
     const auto h = reinterpret_cast<const ipv4::packet_header*>(pdu.view().data());
     const auto header_length = h->ip_hl * 4; // ip_hl is the number of 32-bit words
-    
+
     const auto payload_length = to_native(h->ip_len) - header_length;
 
     using ipv4_header_slice = mapped_oview<ipv4::packet_header>;

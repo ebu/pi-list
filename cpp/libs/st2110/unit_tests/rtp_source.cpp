@@ -36,11 +36,17 @@ rtp::maybe_packet rtp_source::next()
         auto[udp_header, udp_payload] = udp::decode(std::move(ipv4_payload));
 
         auto datagram = udp::make_datagram(packet_timestamp,
+            ethernet_header.source_address,
+            ethernet_header.destination_address,
+            ethernet_header.type,
             ipv4_header.source_address, udp_header.source_port,
             ipv4_header.destination_address, udp_header.destination_port,
             std::move(udp_payload));
 
-        auto maybe_rtp_packet = rtp::decode(datagram.info, std::move(datagram.sdu));
+        auto maybe_rtp_packet = rtp::decode(datagram.ethernet_info,
+                                            datagram.info,
+                                            std::move(datagram.sdu));
+
         if (!maybe_rtp_packet) return std::nullopt;
 
         return std::move(maybe_rtp_packet.value());

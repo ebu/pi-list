@@ -2,7 +2,7 @@ const _ = require('lodash');
 const influxDbManager = require('../managers/influx-db');
 const Stream = require('../models/stream');
 const constants = require('../enums/analysis');
-const { appendError } = require('./utils');
+const { appendError, validateMulticastAddresses } = require('./utils');
 
 // Definitions
 const validation = {
@@ -197,6 +197,7 @@ const doVideoStreamAnalysis = async (pcapId, stream) => {
     await validateRtpTicks(stream);
     await map2110d21Cinst(stream);
     await map2110d21Vrx(stream);
+    await validateMulticastAddresses(stream);
     return await Stream.findOneAndUpdate({ id: stream.id }, stream, {
         new: true,
     });

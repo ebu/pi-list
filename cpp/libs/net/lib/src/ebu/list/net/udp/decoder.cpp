@@ -21,11 +21,17 @@ std::tuple<udp::header, oview> udp::decode(oview&& pdu)
 }
 
 udp::datagram udp::make_datagram(clock::time_point packet_time,
+    ethernet::mac_address source_mac_address,
+    ethernet::mac_address destination_mac_address,
+    ethernet::payload_type payload_type,
     ipv4::address source_address, port source_port,
     ipv4::address destination_address, port destination_port,
     oview&& payload)
 {
     auto d = udp::datagram{};
+    d.ethernet_info.source_address = source_mac_address;
+    d.ethernet_info.destination_address = destination_mac_address;
+    d.ethernet_info.type = payload_type;
     d.info.packet_time = packet_time;
     d.info.source_address = source_address;
     d.info.source_port = source_port;
