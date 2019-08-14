@@ -3,6 +3,7 @@
 using namespace influxdb::api;
 using namespace ebu_list;
 using namespace ebu_list::influx;
+using namespace ebu_list::st2110::d20;
 using namespace ebu_list::st2110::d21;
 using namespace std;
 
@@ -68,9 +69,10 @@ influxdb_rtp_ts_logger::influxdb_rtp_ts_logger(std::string_view url, std::string
 
 void influxdb_rtp_ts_logger::on_data(const rtp_ts_analyzer::packet_info& info)
 {
-    db_.send_data("delta_rtp_vs_NTs", info.delta_rtp_vs_NTs, info.timestamp);
-    db_.send_data("delta_rtp_vs_packet_time", info.delta_rtp_vs_packet_time, info.timestamp);
-    db_.send_data("delta_previous_rtp_ts", info.rtp_ts_delta, info.timestamp);
+    db_.send_data("delta_rtp_vs_NTs", from_ticks(info.delta_rtp_vs_NTs), info.timestamp);
+    db_.send_data("delta_rtp_vs_packet_time", from_ticks(info.delta_rtp_vs_packet_time), info.timestamp);
+    db_.send_data("delta_packet_time_vs_rtp_time_ns", info.delta_packet_time_vs_rtp_time.count(), info.timestamp);
+    db_.send_data("delta_previous_rtp_ts", from_ticks(info.rtp_ts_delta), info.timestamp);
 }
 
 void influxdb_rtp_ts_logger::on_complete()

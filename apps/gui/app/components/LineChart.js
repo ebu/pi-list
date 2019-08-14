@@ -114,14 +114,18 @@ class LineChart extends Component {
                         <g
                             ref={ref => (this.graphArea = ref)}
                             className="lst-svg-line-chart-area"
-                            transform={`translate(${this.margin.left}, ${this.margin.right})`}
+                            transform={`translate(${this.margin.left}, ${
+                                this.margin.right
+                            })`}
                         />
                         <rect
                             className="lst-svg-line-chart--zoom-area"
                             ref={ref => (this.graphInteractionArea = ref)}
                             width={this.state.chartWidth}
                             height={this.state.chartHeight}
-                            transform={`translate(${this.margin.left}, ${this.margin.right})`}
+                            transform={`translate(${this.margin.left}, ${
+                                this.margin.right
+                            })`}
                         />
                     </svg>
                     {this._renderChartLegend()}
@@ -197,7 +201,7 @@ class LineChart extends Component {
                 .attr('stroke-width', this.props.lineWidth)
                 .attr('d', line)
                 .style('stroke-dasharray', () => {
-                    return (chart.type === 'dashed') ? ('3, 3') : ('3, 0');
+                    return chart.type === 'dashed' ? '3, 3' : '3, 0';
                 });
         });
     }

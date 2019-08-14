@@ -9,23 +9,27 @@ const isRtpCompliant = (info) => {
 }
 
 const getCompliance = (info) => {
-    const v = _.get(info, ['analyses', 'rtp', 'result']);
+    const v = _.get(info, ['analyses', 'packet_ts_vs_rtp_ts', 'result']);
     if (v === analysisConstants.outcome.compliant) {
         return { value: 'Compliant' };
-        return { value: 'Not compliant' };
     }
+    return { value: 'Not compliant' };
 };
 
-const getTicksPropAsUs = (info, path) => {
-    const v = _.get(info, path);
-    if (v === null || v === undefined) return undefined;
-    return (v * 1000000 / 90000).toFixed(0);
+const nsPropAsMinMaxAvgUs = (info) => {
+    if (_.isNil(info)) return { min: '---', max: '---', avg: '---'};
+    const toUs = v => _.isNil(v) ? '---' : (v / 1000).toFixed(0);
+    return { min: toUs(info.min), max: toUs(info.max), avg: toUs(info.avg)};
+};
+
+const propAsMinMaxAvg = (info) => {
+    if (_.isNil(info)) return { min: '---', max: '---', avg: '---'};
+    return { min: info.min, max: info.max, avg: info.avg};
 };
 
 const RtpInfo = ({ info }) => {
-    const delta_rtp_ts_vs_nt_min = getTicksPropAsUs(info, ['analyses', 'rtp', 'details', 'delta_rtp_ts_vs_nt_ticks', 'min']);
-    const delta_rtp_ts_vs_nt_max = getTicksPropAsUs(info, ['analyses', 'rtp', 'details', 'delta_rtp_ts_vs_nt_ticks', 'max']);
-    const delta_rtp_ts_vs_nt_avg = getTicksPropAsUs(info, ['analyses', 'rtp', 'details', 'delta_rtp_ts_vs_nt_ticks', 'avg']);
+    const delta_packet_time_vs_rtp_time_ns = _.get(info, ['analyses', 'packet_ts_vs_rtp_ts', 'details', 'delta_packet_time_vs_rtp_time_ns'], undefined);
+    const delta_rtp_ts_vs_nt = _.get(info, ['analyses', 'rtp_ticks', 'details', 'delta_rtp_ts_vs_nt_ticks'], undefined);
 
     const summaryValues = [
         {
@@ -47,13 +51,18 @@ const RtpInfo = ({ info }) => {
                 </div>
             </div>
             <div className="row">
+            <div className="col-xs-12">
+                    <MinAvgMaxDisplay
+                        labelTag="media_information.rtp.delta_packet_time_vs_rtp_time_ns"
+                        units="ms"
+                        {...nsPropAsMinMaxAvgUs(delta_packet_time_vs_rtp_time_ns)}
+                    />
+                </div>
                 <div className="col-xs-12">
                     <MinAvgMaxDisplay
                         labelTag="media_information.rtp.delta_rtp_ts_vs_nt"
-                        units="μs"
-                        min={delta_rtp_ts_vs_nt_min}
-                        max={delta_rtp_ts_vs_nt_max}
-                        avg={delta_rtp_ts_vs_nt_avg}
+                        units="ticks"
+                        {...propAsMinMaxAvg(delta_rtp_ts_vs_nt)}
                     />
                 </div>
             </div>

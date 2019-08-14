@@ -122,13 +122,6 @@ compliance_parameters d21::calculate_wide_compliance_parameters(int n_packets,
     return { vrx_full, c_max };
 }
 
-int64_t st2110::d21::calculate_n(fraction64 packet_time, fraction64 tframe)
-{
-    // TODO: without casting to double, this would overflow int64 calculations
-    const auto n0 = static_cast<double>(packet_time) / static_cast<double>(tframe);
-    return static_cast<int64_t>(std::floor(n0));
-}
-
 std::string d21::to_string(read_schedule schedule)
 {
     switch (schedule)
