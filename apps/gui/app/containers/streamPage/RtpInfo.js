@@ -54,7 +54,7 @@ const RtpInfo = ({ info }) => {
             <div className="col-xs-12">
                     <MinAvgMaxDisplay
                         labelTag="media_information.rtp.delta_packet_time_vs_rtp_time_ns"
-                        units="ms"
+                        units="μs"
                         {...nsPropAsMinMaxAvgUs(delta_packet_time_vs_rtp_time_ns)}
                     />
                 </div>
