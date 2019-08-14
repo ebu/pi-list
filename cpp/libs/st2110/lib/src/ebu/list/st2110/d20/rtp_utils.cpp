@@ -36,15 +36,14 @@ delta_info d20::calculate_rtp_to_packet_deltas(fraction64 frame_period,
     const auto delta_t_ticks =
         static_cast<int>(rtp_ts_for_NTs) - static_cast<int>(rtp_timestamp);
 
-    const auto delta_t = fraction64(delta_t_ticks, RTP_CLOCK_RATE);
+    const auto n_ticks = n * static_cast<double>(frame_period) * RTP_CLOCK_RATE;
+    const auto tr_ticks = n_ticks - delta_t_ticks;
+    const auto tr = static_cast<double>(tr_ticks) / RTP_CLOCK_RATE;
 
-    const auto n_t = n * frame_period;
-    const auto tr = n_t - delta_t;
-
-    const auto delta_packet_time_vs_rtp_time = packet_time - tr;
+    const auto delta_packet_time_vs_rtp_time = static_cast<double>(packet_time) - tr;
     const auto delta_packet_time_vs_rtp_time_ns = std::giga::num * delta_packet_time_vs_rtp_time;
 
-    info.delta_packet_time_vs_rtp_time = std::chrono::nanoseconds(delta_packet_time_vs_rtp_time_ns);
+    info.delta_packet_time_vs_rtp_time = std::chrono::nanoseconds(std::llround(delta_packet_time_vs_rtp_time_ns));
 
     info.delta_rtp_vs_packet_time =
         to_ticks32(static_cast<int>(rtp_timestamp) -
