@@ -60,8 +60,6 @@ namespace ebu_list::st2110::d21
         media::video::scan_type scan,
         media::video::video_dimensions raster);
 
-    int64_t calculate_n(fraction64 packet_time, fraction64 tframe);
-
     enum tvd_kind
     {
         ideal,

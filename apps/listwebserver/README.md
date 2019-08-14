@@ -24,13 +24,25 @@
 
 ```
 - analyses
-  - rtp
+  - rtp_ticks
     - result : string // defined in enums/analysis/outcome
     - details
         - delta_rtp_ts_vs_nt_ticks // video only
             - min : number
             - max : number
             - avg : number
+  - packet_ts_vs_rtp_ts: (video)
+    - result : string // defined in enums/analysis/outcome
+    - details
+        - delta_packet_time_vs_rtp_time_ns
+            - min : number
+            - max : number
+            - avg : number
+  - packet_ts_vs_rtp_ts: (audio)
+    - result : string // defined in enums/analysis/outcome
+    - details:
+        - range: { min, max } // measured range
+        - limit: { min, max } // permitted range
   - 2110_21_cinst
     - result : string // defined in enums/analysis/outcome
   - 2110_21_vrx
@@ -42,11 +54,6 @@
         - tolerance: Number // one packet time
         - limit: Number // 17 * packet time
         - level: string // enums/analysis/qualitative
-  - rtp_ts_vs_pkt_ts:
-    - result : string // defined in enums/analysis/outcome
-    - details:
-        - range: Object // measured range
-        - limit: Object // permitted range
   - rtp_sequence:
     - result : string // defined in enums/analysis/outcome
     - details:
