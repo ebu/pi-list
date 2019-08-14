@@ -1,6 +1,6 @@
 #include "ebu/list/handlers/anc_stream_handler.h"
-#include "ebu/list/handlers/multicast_address_analyzer.h"
 #include "ebu/list/core/idioms.h"
+#include "ebu/list/net/multicast_address_analyzer.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110::d40;

@@ -1,7 +1,7 @@
 #include "ebu/list/handlers/video_stream_handler.h"
 #include "ebu/list/core/idioms.h"
 #include "ebu/list/core/memory/bimo.h"
-#include "ebu/list/handlers/multicast_address_analyzer.h"
+#include "ebu/list/net/multicast_address_analyzer.h"
 #include "ebu/list/rtp/decoder.h"
 #include "ebu/list/st2110/d20/packet.h"
 
