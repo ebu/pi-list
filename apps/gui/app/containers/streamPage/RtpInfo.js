@@ -24,7 +24,7 @@ const nsPropAsMinMaxAvgUs = (info) => {
 
 const propAsMinMaxAvg = (info) => {
     if (_.isNil(info)) return { min: '---', max: '---', avg: '---'};
-    return { min: info.min, max: info.max, avg: info.avg};
+    return { min: info.min, max: info.max, avg: info.avg.toFixed(0)};
 };
 
 const RtpInfo = ({ info }) => {

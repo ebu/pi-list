@@ -54,7 +54,7 @@ SCENARIO("test calculate_rtp_to_packet_deltas")
             {
                 REQUIRE(deltas.delta_rtp_vs_packet_time == to_ticks32(0));
                 REQUIRE(deltas.delta_rtp_vs_NTs == to_ticks32(65));
-                REQUIRE(deltas.delta_packet_time_vs_rtp_time == std::chrono::nanoseconds(4898));
+                REQUIRE(deltas.delta_packet_time_vs_rtp_time == std::chrono::nanoseconds(4768));
             }
         }
     }
