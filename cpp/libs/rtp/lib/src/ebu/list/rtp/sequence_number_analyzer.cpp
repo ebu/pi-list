@@ -4,6 +4,16 @@
 using namespace ebu_list;
 using namespace ebu_list::rtp;
 
+//#define LIST_LOG_SEQNR
+
+//------------------------------------------------------------------------------
+template<typename ...Ts>
+void log(Ts... ts)
+{
+#if defined(LIST_LOG_SEQNR)
+    logger()->info(ts...);
+#endif // defined(LIST_LOG_SEQNR)
+}
 //------------------------------------------------------------------------------
 
 template <typename Counter>
@@ -19,19 +29,21 @@ void sequence_number_analyzer<Counter>::handle_packet(Counter sequence_number) n
     {
         if (current_seqnum_ + 1 == sequence_number)
         {
-            current_seqnum_++;
         }
         else if (current_seqnum_ < sequence_number)
         {
-            num_dropped_ += sequence_number - current_seqnum_ - 1;
-            current_seqnum_ = sequence_number;
+            const auto dropped_now = sequence_number - current_seqnum_ - 1;
+            num_dropped_ += dropped_now;
+            log("Sequence number ({}) is larger than expected. Previous was ({}). Dropped now: {}. Accumulated: {}", sequence_number, current_seqnum_, dropped_now, num_dropped_);
         }
         else
         {
-            num_dropped_ += std::numeric_limits<Counter>::max() - current_seqnum_;
-            num_dropped_ += sequence_number;
-            current_seqnum_ = sequence_number; 
+            const auto dropped_now = std::numeric_limits<Counter>::max() - current_seqnum_ + sequence_number;
+            num_dropped_ += dropped_now;
+            log("Sequence number ({}) is smaller than the previous ({})", sequence_number, current_seqnum_, dropped_now, num_dropped_);
         }
+
+        current_seqnum_ = sequence_number;
     }
     else
     {
