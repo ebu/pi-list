@@ -17,6 +17,7 @@ import api from '../../../utils/api';
 import DragAndDropUploader from '../../../components/upload/DragAndDropUploader';
 import { translateX } from '../../../utils/translation';
 import AddSourceModal from './AddSourceModal';
+import StartCaptureModal from './StartCaptureModal';
 
 const actionsWorkflow = (state, action) => {
     middleware(state, action);
@@ -25,6 +26,7 @@ const actionsWorkflow = (state, action) => {
 const initialState = {
     ...tableInitialState(),
     addSourceModalVisible: false,
+    startCaptureModalVisible: false,
 };
 
 const SourcesList = props => {
@@ -85,7 +87,7 @@ const SourcesList = props => {
         }
     };
 
-    const onModalClose = () => dispatch({ type: Actions.hideAddSource });
+    const onAddSourceModalClose = () => dispatch({ type: Actions.hideAddSource });
     const onModalAddSources = sources =>
         dispatch({ type: Actions.addSources, payload: { sources } });
 
@@ -96,6 +98,17 @@ const SourcesList = props => {
                 message="live.sources.delete_message"
                 data={state.itemsToDelete}
                 onDelete={doDelete}
+            />
+            <AddSourceModal
+                visible={state.addSourceModalVisible}
+                onAdd={onModalAddSources}
+                onClose={onAddSourceModalClose}
+            />
+            <StartCaptureModal
+                visible={state.startCaptureModalVisible}
+                dispatch={dispatch}
+                sources={state.data}
+                selectedIds={state.selected}
             />
             <DragAndDropUploader
                 uploadButtonLabel="SDP"
@@ -112,11 +125,6 @@ const SourcesList = props => {
                     onClickRow={onClickRow}
                 />
             </DragAndDropUploader>
-            <AddSourceModal
-                visible={state.addSourceModalVisible}
-                onAdd={onModalAddSources}
-                onClose={onModalClose}
-            />
         </div>
     );
 };

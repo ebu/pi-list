@@ -6,7 +6,7 @@ import Button from '../../../components/common/Button';
 import { translateC, T } from '../../../utils/translation';
 import 'rodal/lib/rodal.css';
 import StreamEntry from './StreamEntry';
-import './AddSourceModal.scss';
+import './Modal.scss';
 
 const isEmpty = stream =>
     !stream.description && !stream.dstAddr && !stream.dstPort;
@@ -53,12 +53,12 @@ const AddSourceModal = props => {
     return (
         <div onKeyUp={handleKey}>
             <Rodal
-                className="lst-add-source-modal"
+                className="lst-sources-modal"
                 visible={props.visible}
                 onClose={props.onClose}
                 closeOnEsc
             >
-                <h2 className="lst-add-source-modal-header">
+                <h2 className="lst-sources-modal-header">
                     <T t="live.sources.add_sources" />
                 </h2>
                 <hr />
@@ -67,7 +67,6 @@ const AddSourceModal = props => {
                     type="info"
                     label={translateC('workflow.add')}
                     onClick={onAdd}
-                    de
                 />
                 <Button
                     type="info"
