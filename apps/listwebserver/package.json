@@ -39,6 +39,7 @@
     "text-encoding": "^0.7.0",
     "uuid": "^3.2.1",
     "validator": "^9.4.1",
+    "websocket": "^1.0.29",
     "winston": "^3.0.0-rc1"
   },
   "devDependencies": {

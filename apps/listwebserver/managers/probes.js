@@ -15,9 +15,9 @@ const handleAnnounceMessage = ({ msg, ack }) => {
     try {
         const message = JSON.parse(msg.content.toString());
         const { id, status } = message;
-        logger('probes-manager').info(
-            `Status update - ${msg.content.toString()}`
-        );
+        // logger('probes-manager').info(
+        //     `Status update - ${msg.content.toString()}`
+        // );
     } catch (err) {
         const message = `Error processing probe status update: ${err.message}`;
         logger('probes-manager').error(message);
