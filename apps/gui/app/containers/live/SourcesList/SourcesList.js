@@ -18,6 +18,8 @@ import DragAndDropUploader from '../../../components/upload/DragAndDropUploader'
 import { translateX } from '../../../utils/translation';
 import AddSourceModal from './AddSourceModal';
 import StartCaptureModal from './StartCaptureModal';
+import FormInput from '../../../components/common/FormInput';
+import Input from '../../../components/common/Input';
 
 const actionsWorkflow = (state, action) => {
     middleware(state, action);
@@ -87,9 +89,32 @@ const SourcesList = props => {
         }
     };
 
-    const onAddSourceModalClose = () => dispatch({ type: Actions.hideAddSource });
+    const onAddSourceModalClose = () =>
+        dispatch({ type: Actions.hideAddSource });
     const onModalAddSources = sources =>
         dispatch({ type: Actions.addSources, payload: { sources } });
+
+    const colSizes = { labelColSize: 1, valueColSize: 11 };
+
+    const [searchString, setSearchString] = useState(null);
+
+    const onSetSearchString = value => {
+        setSearchString(value);
+    };
+
+    const regSearch = new RegExp('.*' + searchString + '.*', "i");
+
+    const filterPredicate = v => {
+        const label = _.get(v, ['meta', 'label'], undefined);
+        if (label === undefined)
+        {
+            return false;
+        }
+
+        return label.match(regSearch);
+    }
+
+    const filteredData = searchString === null ? _.cloneDeep(state.data) : state.data.filter(filterPredicate);
 
     return (
         <div>
@@ -115,9 +140,21 @@ const SourcesList = props => {
                 uploadApi={onUpload}
                 title={translateX('navigation.live_sources')}
             >
+                <FormInput icon="search" {...colSizes}>
+                    <div>
+                        <Input
+                            type="text"
+                            value={searchString}
+                            onChange={evt =>
+                                onSetSearchString(evt.currentTarget.value)
+                            }
+                        />
+                    </div>
+                </FormInput>
+
                 <Toolbar dispatch={dispatch} selectedItems={state.selected} />
                 <SourcesTable
-                    data={state.data}
+                    data={filteredData}
                     selectedIds={state.selected}
                     selectAll={state.selectAll}
                     onSelectId={toggleRow}
