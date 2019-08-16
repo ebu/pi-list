@@ -97,7 +97,7 @@ function getRtpTsVsPktTsCompliance(range, limit) {
 }
 
 function updateStreamWithRtpTsVsPktTs(stream, range) {
-    const limit = { min: 0, max: 1000 }; //un-hardcode this in us
+    const limit = { min: 0, max: 2000 }; //un-hardcode this in us
 
     global_audio_analysis =
         stream.global_audio_analysis === undefined
