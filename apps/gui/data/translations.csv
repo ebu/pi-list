@@ -160,7 +160,7 @@ buttons.go_back,Arrière,Вернуться,Повернутись,Ga Terug,Go B
 buttons.login,Ouverture de session,Авторизоваться,Авторизація,Login,Login,Entrar,Login,Σύνδεση
 buttons.register,S'enregistrer,Зарегистрироваться,Реєстрація,Registreer,Register,Registar,Resistrieren,Εγγραφή
 navigation.capture,Capturer,Захватить,Захопити,Capture,Capture,Captura,Aufnehmen,Πιάνω
-navigation.live_streams,Flux en direct,Живые потоки,Живі потоки,Live Streams,Live Streams,Live,Livestreams,Ζωντανές ροές
+navigation.live_streams,Flux en direct,Живые потоки,Живі потоки,Live streams,Live streams,Live streams,Livestreams,Ζωντανές ροές
 navigation.live_sources,*** navigation.live_sources,*** navigation.live_sources,*** navigation.live_sources,*** navigation.live_sources,Live sources,Fontes live,*** navigation.live_sources,*** navigation.live_sources
 navigation.workflows,*** navigation.workflows,*** navigation.workflows,*** navigation.workflows,*** navigation.workflows,Workflows,Workflows,*** navigation.workflows,*** navigation.workflows
 navigation.network,Réseau,Сеть,Мережа,Netwerk,Network,Na Rede,Netzwerk,Δίκτυο

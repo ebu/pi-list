@@ -1,7 +1,7 @@
 @import '../../../style/variables/index.scss';
 @import '../../../style/helpers.scss';
 
-.lst-add-source-modal > .rodal-dialog {
+.lst-sources-modal > .rodal-dialog {
     width: 50% !important;
 }
 
@@ -19,11 +19,11 @@
     }
 }
 
-.lst-add-source-modal-header {
+.lst-sources-modal-header {
     margin-bottom: 1rem;
 }
 
-.lst-add-source-modal-buttons {
+.lst-sources-modal-buttons {
     position: absolute;
     bottom: 0;
     right: 0;
