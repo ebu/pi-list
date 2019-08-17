@@ -10,6 +10,10 @@ module.exports = {
         undefined: 'undefined',
     },
     errors: {
+        //
+        // Whenever a new value is added here, a corresponding translation must be added too
+        //
+        
         missing_information: 'errors.missing_information',
         invalid_delta_rtp_ts_vs_nt: 'errors.invalid_delta_rtp_ts_vs_nt',
         invalid_delta_packet_ts_vs_rtp_ts: 'invalid_delta_packet_ts_vs_rtp_ts',
