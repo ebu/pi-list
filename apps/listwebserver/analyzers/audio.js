@@ -2,7 +2,7 @@ const _ = require('lodash');
 const influxDbManager = require('../managers/influx-db');
 const Stream = require('../models/stream');
 const constants = require('../enums/analysis');
-const { appendError } = require('./utils');
+const { appendError, validateMulticastAddresses } = require('./utils');
 const logger = require('../util/logger');
 
 const log = logger('audio');
@@ -97,25 +97,25 @@ function getRtpTsVsPktTsCompliance(range, limit) {
 }
 
 function updateStreamWithRtpTsVsPktTs(stream, range) {
-    const limit = { min: 0, max: 1000 }; //un-hardcode this in us
+    const limit = { min: 0, max: 2000 }; //un-hardcode this in us
 
     global_audio_analysis =
         stream.global_audio_analysis === undefined
             ? {}
             : stream.global_audio_analysis;
-    var rtp_ts_vs_pkt_ts = {
+    const packet_ts_vs_rtp_ts = {
         range: range,
         limit: limit,
     };
-    global_audio_analysis['rtp_ts_vs_pkt_ts'] = rtp_ts_vs_pkt_ts;
+    global_audio_analysis['packet_ts_vs_rtp_ts'] = packet_ts_vs_rtp_ts;
     stream = _.set(stream, 'global_audio_analysis', global_audio_analysis);
 
     const { result } = getRtpTsVsPktTsCompliance(range, limit);
     const report = {
         result,
-        details: rtp_ts_vs_pkt_ts,
+        details: packet_ts_vs_rtp_ts,
     };
-    stream = _.set(stream, 'analyses.rtp_ts_vs_pkt_ts', report);
+    stream = _.set(stream, 'analyses.packet_ts_vs_rtp_ts', report);
 
     if (result === constants.outcome.not_compliant) {
         stream = appendError(stream, {
@@ -154,6 +154,10 @@ function doAudioStreamAnalysis(pcapId, stream) {
             Stream.findOneAndUpdate({ id: stream.id }, info, { new: true })
         )
         .then(() => doCalculateRtpTsVsPktTsRange(pcapId, stream))
+        .then(info =>
+              Stream.findOneAndUpdate({ id: stream.id }, info, { new: true })
+        )
+        .then(validateMulticastAddresses(stream))
         .then(info =>
             Stream.findOneAndUpdate({ id: stream.id }, info, { new: true })
         );

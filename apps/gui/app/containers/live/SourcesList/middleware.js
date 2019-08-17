@@ -36,14 +36,12 @@ const middleware = (state, action) => {
             break;
 
         case Actions.captureFromSources:
-            const filename = moment(Date.now()).format('YYYYMMDD-HHmmss');
-
             const workflowInfo = {
                 type: workflowTypes.captureAndIngest,
                 configuration: {
                     ids: action.payload.ids,
-                    filename: filename,
-                    durationMs: 2000,
+                    filename: action.payload.filename,
+                    durationMs: action.payload.durationMs,
                 },
             };
 

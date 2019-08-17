@@ -18,6 +18,7 @@ const Stream = require('../models/stream');
 const WS_EVENTS = require('../enums/wsEvents');
 const { doVideoAnalysis } = require('../analyzers/video');
 const { doAudioAnalysis } = require('../analyzers/audio');
+const { doAncillaryAnalysis } = require('../analyzers/ancillary');
 const { doRtpAnalysis } = require('../analyzers/rtp');
 const constants = require('../enums/analysis');
 const glob = util.promisify(require('glob'));
@@ -111,13 +112,8 @@ function pcapPreProcessing(req, res, next) {
 
             next();
         })
-        .catch(output => {
-            logger('pcap-pre-processing').error(
-                `exception: ${output} ${output.stdout}`
-            );
-            logger('pcap-pre-processing').error(
-                `exception: ${output} ${output.stderr}`
-            );
+        .catch(err => {
+            logger('pcap-pre-processing').error(`exception: ${err.toString()}`);
 
             Pcap.findOneAndUpdate(
                 { id: pcapId },
@@ -128,14 +124,14 @@ function pcapPreProcessing(req, res, next) {
                     generated_from_network: req.pcap.from_network
                         ? true
                         : false,
-                    error: output.stdout,
+                    error: err.toString(),
                 },
                 { new: true }
             ).exec();
 
             websocketManager.instance().sendEventToUser(userID, {
                 event: WS_EVENTS.PCAP_FILE_FAILED,
-                data: { id: pcapId, progress: 0, error: output.stdout },
+                data: { id: pcapId, progress: 0, error: err.toString() },
             });
         });
 }
@@ -179,20 +175,15 @@ const pcapFullAnalysis = async (req, res, next) => {
         const output = await exec(st2110ExtractorCommand);
         logger('st2110_extractor').info(output.stdout);
         logger('st2110_extractor').info(output.stderr);
-        postProcessSdpFiles(pcapFolder);
+        await postProcessSdpFiles(pcapFolder);
         next();
     } catch (err) {
-        logger('pcap-full-analysis').error(
-            `exception: ${output} ${output.stdout}`
-        );
-        logger('pcap-full-analysis').error(
-            `exception: ${output} ${output.stderr}`
-        );
+        logger('pcap-full-analysis').error(`exception: ${err}`);
 
         Pcap.findOneAndUpdate(
             { id: pcapId },
             {
-                error: output.stdout,
+                error: err.toString(),
             },
             { new: true }
         ).exec();
@@ -200,7 +191,7 @@ const pcapFullAnalysis = async (req, res, next) => {
         const userID = req.session.passport.user.id;
         websocketManager.instance().sendEventToUser(userID, {
             event: WS_EVENTS.PCAP_FILE_FAILED,
-            data: { id: pcapId, progress: 0, error: output.stdout },
+            data: { id: pcapId, progress: 0, error: err.toString() },
         });
     }
 };
@@ -256,13 +247,8 @@ function singleStreamAnalysis(req, res, next) {
             postProcessSdpFiles(pcapFolder);
             next();
         })
-        .catch(output => {
-            logger('pcap-full-analysis').error(
-                `exception: ${output} ${output.stdout}`
-            );
-            logger('pcap-full-analysis').error(
-                `exception: ${output} ${output.stderr}`
-            );
+        .catch(err => {
+            logger('pcap-full-analysis').error(`exception: ${err}`);
         });
 }
 
@@ -312,20 +298,22 @@ function addStreamsToReq(streams, req) {
     req.streams = allStreams;
 }
 
-function videoConsolidation(req, res, next) {
-    const pcapId = req.pcap.uuid;
-    Stream.find({ pcap: pcapId, media_type: 'video' })
-        .exec()
-        .then(streams => doVideoAnalysis(pcapId, streams))
-        .then(streams => {
-            addStreamsToReq(streams, req);
-        })
-        .then(() => next())
-        .catch(output => {
-            logger('video-consolidation').error(`exception: ${output}`);
-            logger('video-consolidation').error(`exception: ${output}`);
-        });
-}
+const videoConsolidation = async (req, res, next) => {
+    try {
+        const pcapId = req.pcap.uuid;
+        const streams = await Stream.find({
+            pcap: pcapId,
+            media_type: 'video',
+        }).exec();
+
+        await doVideoAnalysis(pcapId, streams);
+        addStreamsToReq(streams, req);
+
+        next();
+    } catch (err) {
+        logger('video-consolidation').error(`exception: ${err}`);
+    }
+};
 
 function audioConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
@@ -336,9 +324,8 @@ function audioConsolidation(req, res, next) {
             addStreamsToReq(streams, req);
         })
         .then(() => next())
-        .catch(output => {
-            logger('audio-consolidation').error(`exception: ${output}`);
-            logger('audio-consolidation').error(`exception: ${output}`);
+        .catch(err => {
+            logger('audio-consolidation').error(`exception: ${err}`);
         });
 }
 
@@ -346,13 +333,13 @@ function ancillaryConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
     Stream.find({ pcap: pcapId, media_type: 'ancillary_data' })
         .exec()
+        .then(streams => doAncillaryAnalysis(pcapId, streams))
         .then(streams => {
             addStreamsToReq(streams, req);
         })
         .then(() => next())
-        .catch(output => {
-            logger('ancillary-consolidation').error(`exception: ${output}`);
-            logger('ancillary-consolidation').error(`exception: ${output}`);
+        .catch(err => {
+            logger('ancillary-consolidation').error(`exception: ${err}`);
         });
 }
 
@@ -362,9 +349,8 @@ function commonConsolidation(req, res, next) {
 
     doRtpAnalysis(pcapId, streams)
         .then(() => next())
-        .catch(output => {
-            logger('common-consolidation').error(`exception: ${output}`);
-            logger('common-consolidation').error(`exception: ${output}`);
+        .catch(err => {
+            logger('common-consolidation').error(`exception: ${err}`);
         });
 }
 

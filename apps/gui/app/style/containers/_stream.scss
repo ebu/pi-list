@@ -82,6 +82,14 @@
             color: $dark-white;
         }
     }
+    &-value-attention{
+        @extend .lst-text-left,
+        .lst-text-vertical-align;
+        color: $red;
+        .dark & {
+            color: $red;
+        }
+    }
 }
 
 .lst-stream-info2 {
@@ -96,9 +104,10 @@
     &-label-group {
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: right;
         margin-right: 10px;
         align-self: flex-end;
+        text-align: right;
     }
     &-value-group {
         display: flex;

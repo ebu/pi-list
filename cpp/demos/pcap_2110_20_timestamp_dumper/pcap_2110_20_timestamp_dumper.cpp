@@ -39,8 +39,8 @@ namespace
 
         auto file = std::make_shared<ebu_list::file_handle>(*output_file, ebu_list::file_handle::mode::write);
 
-        return [f = std::move(file)](uint64_t ts_ns, uint32_t ext_seq_no) { 
-            auto s = fmt::format("{}\t{}\n", ext_seq_no, ts_ns); 
+        return [f = std::move(file)](uint64_t ts_ns, uint32_t ext_seq_no) {
+            auto s = fmt::format("{}\t{}\n", ext_seq_no, ts_ns);
             const auto b = reinterpret_cast<const byte*>(s.data());
             cbyte_span data(b, s.length());
             write(*f, data);
@@ -135,13 +135,16 @@ namespace
             }
 
             auto datagram = udp::make_datagram(packet.pcap_header().timestamp(),
+                ethernet_header.source_address,
+                ethernet_header.destination_address,
+                ethernet_header.type,
                 ipv4_header.source_address,
                 udp_header.source_port,
                 ipv4_header.destination_address,
                 udp_header.destination_port,
                 std::move(udp_payload));
 
-            auto maybe_rtp_packet = rtp::decode(datagram.info, std::move(datagram.sdu));
+            auto maybe_rtp_packet = rtp::decode(datagram.ethernet_info, datagram.info, std::move(datagram.sdu));
             if (!maybe_rtp_packet)
             {
                 continue;

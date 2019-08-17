@@ -139,6 +139,29 @@ class InfluxDbManager {
         return this.sendQueryAndFormatResults(query);
     }
 
+    getDeltaPacketTimeVsRtpTimeRaw(pcapID, streamID, startTime, endTime) {
+        const wanted_resolution = Math.ceil((endTime - startTime) / 2000);
+        const resolution = wanted_resolution <= 1 ? "1ns" : `${wanted_resolution}ns`;
+        const query = `
+            select "delta_packet_time_vs_rtp_time_ns" as "value"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
+        `;
+
+        log.info(`Get DeltaRtpTsVsPacketTs for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
+
+    getDeltaPacketTimeVsRtpTimeMinMax(pcapID, streamID) {
+        const query = `
+            select MAX("delta_packet_time_vs_rtp_time_ns") as "max", MIN("delta_packet_time_vs_rtp_time_ns") as "min", MEAN("delta_packet_time_vs_rtp_time_ns") as "avg"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}`;
+
+        log.info(`Get DeltaPacketTimeVsRtpTimeMinMax for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
+
     getDeltaRtpVsNt(pcapID, streamID, startTime, endTime) {
         const wanted_resolution = Math.ceil((endTime - startTime) / 2000);
         const resolution = wanted_resolution <= 1 ? "1ns" : `${wanted_resolution}ns`;

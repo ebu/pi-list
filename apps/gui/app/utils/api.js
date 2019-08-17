@@ -152,6 +152,10 @@ export default {
         request.get(
             `pcap/${pcapID}/stream/${streamID}/analytics/DeltaRtpTsVsPacketTsRaw?from=${fromNs}&to=${toNs}`
         ),
+    getDeltaPacketTimeVsRtpTimeRaw: (pcapID, streamID, fromNs, toNs) =>
+        request.get(
+            `pcap/${pcapID}/stream/${streamID}/analytics/DeltaPacketTimeVsRtpTimeRaw?from=${fromNs}&to=${toNs}`
+        ),
     getDeltaToPreviousRtpTsRaw: (pcapID, streamID, fromNs, toNs) =>
         request.get(
             `pcap/${pcapID}/stream/${streamID}/analytics/DeltaToPreviousRtpTsRaw?from=${fromNs}&to=${toNs}`

@@ -30,6 +30,7 @@ const Input = (props) => {
             min={props.min}
             max={props.max}
             onChange={props.onChange}
+            onFocus={props.onFocus}
             disabled={props.disabled || false}
             { ...attrs }
         />

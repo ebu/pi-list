@@ -2,39 +2,27 @@ const Pcap = require('../models/pcap');
 const pdfReport = require('../util/pdfReport');
 const Streams = require('./streams');
 
-function getReport(pcapID, type) {
-
-    if (type === 'json')
-        return getJsonReport(pcapID);
-    else if (type === 'pdf')
-        return getPdfReport(pcapID);
+async function getReport(pcapID, type) {
+    if (type === 'json') return await getJsonReport(pcapID);
+    else if (type === 'pdf') return await getPdfReport(pcapID);
     else return Promise.reject(new Error('Invalid or missing report type.'));
 }
 
-function getJsonReport (pcapId) {
-    const pcap = Pcap.findOne({ id: pcapId }).exec();
+async function getJsonReport(pcapId) {
+    const pcap = await Pcap.findOne({ id: pcapId }).exec();
 
-    const streams = Streams.getStreamsForPcap(pcapId);
-
-    return Promise.all([ pcap, streams ])
-        .then(([ pcap, streams ]) => {
-            const pcapJ = pcap.toObject();
-            const streamsJ = streams.map(o=> o.toObject());
-            pcapJ.streams = streamsJ;
-            return pcapJ;
-        });
+    const streams = await Streams.getStreamsForPcap(pcapId);
+    const pcapJ = pcap.toObject();
+    const streamsJ = streams.map(o => o.toObject());
+    pcapJ.streams = streamsJ;
+    return pcapJ;
 }
 
-function getPdfReport (pcapId) {
-
-    return getJsonReport(pcapId)
-        .then((jsonReport) => {
-            console.log(JSON.stringify(jsonReport, null, 2));
-            return pdfReport.generate(jsonReport);
-        });
+async function getPdfReport(pcapId) {
+    const jsonReport = await getJsonReport(pcapId);
+    return await pdfReport.generate(jsonReport);
 }
 
 module.exports = {
-    getReport
+    getReport,
 };
-

@@ -18,7 +18,9 @@ stream_listener::stream_listener(rtp::packet first_packet, std::string pcap_id, 
     : detector_(first_packet)
     , db_(std::move(mongo_url))
 {
+    stream_id_.network.source_mac = first_packet.info.ethernet_info.source_address;
     stream_id_.network.source = source(first_packet.info.udp);
+    stream_id_.network.destination_mac = first_packet.info.ethernet_info.destination_address;
     stream_id_.network.destination = destination(first_packet.info.udp);
     stream_id_.network.ssrc = first_packet.info.rtp.view().ssrc();
     stream_id_.network.payload_type = first_packet.info.rtp.view().payload_type();

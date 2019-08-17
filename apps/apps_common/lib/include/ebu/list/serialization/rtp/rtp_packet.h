@@ -6,7 +6,7 @@
 
 namespace ebu_list
 {
-    struct rtp_packet : udp::datagram_info
+    struct rtp_packet : udp::datagram_info, ethernet::header
     {
         bool marker;
         uint8_t payload_type;

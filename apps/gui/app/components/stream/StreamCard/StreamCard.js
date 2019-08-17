@@ -23,6 +23,8 @@ function renderNeedsInfo() {
 const StreamCard = (props) => {
     const net = props.network_information;
 
+    const from_mac = `${net.source_mac_address}`.toUpperCase();
+    const to_mac = `${net.destination_mac_address}`.toUpperCase();
     const from = `${net.source_address}:${net.source_port}`;
     const to = `${net.destination_address}:${net.destination_port}`;
 
@@ -37,7 +39,7 @@ const StreamCard = (props) => {
     }
 
     const analyses = _.get(props, 'analyses', []);
-    const badges = Object.keys(analyses).map(analysis => {
+    const badges = Object.keys(analyses).sort().map(analysis => {
         const compliance = analyses[analysis].result;
         const name = analysisConstants.analysesNames[analysis];
         return (<AnalysisBadge key={analysis} name={name} compliance={compliance} />);
@@ -46,11 +48,11 @@ const StreamCard = (props) => {
     const netValues = [
         {
             label: 'S',
-            value: from
+            value: from + ' / ' + from_mac
         },
         {
             label: 'D',
-            value: to
+            value: to + ' / ' + to_mac
         },
     ];
 

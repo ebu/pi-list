@@ -21,8 +21,8 @@ const Toolbar = props => {
             icon="fiber_manual_record"
             type="info"
             link
-            disabled={props.selectedItems === null || props.selectedItems.length === 0}
-            onClick={() => props.dispatch({ type: Actions.captureFromSources, payload: { ids: props.selectedItems } })}
+            disabled={props.selectedItems === null || props.selectedItems.length !== 1}
+            onClick={() => props.dispatch({ type: Actions.showStartCapture, payload: { ids: props.selectedItems } })}
         />
     );
 
@@ -38,8 +38,8 @@ const Toolbar = props => {
     return (
         <div className="lst-table-actions">
             {deleteButton}
-            {captureButton}
             {addSourceButton}
+            {captureButton}
         </div>
     );
 }

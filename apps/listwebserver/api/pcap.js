@@ -382,6 +382,13 @@ router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
             from,
             to
         );
+    } else if (measurement === 'DeltaPacketTimeVsRtpTimeRaw') {
+        chartData = influxDbManager.getDeltaPacketTimeVsRtpTimeRaw(
+            pcapID,
+            streamID,
+            from,
+            to
+        );
     } else if (measurement === 'DeltaToPreviousRtpTsRaw') {
         chartData = influxDbManager.getDeltaToPreviousRtpTsRaw(
             pcapID,

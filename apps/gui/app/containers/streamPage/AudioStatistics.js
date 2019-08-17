@@ -6,8 +6,8 @@ const AudioStatistics = props => {
     const tsdf_limit = props.analysis.tsdf.limit;
     const tsdf_msg = (tsdf_max > tsdf_limit)? `(out of range: > ${props.analysis.tsdf.limit})` : '';
 
-    const rtp_ts_vs_pkt_ts_range = (props.analysis.rtp_ts_vs_pkt_ts.range === null || props.analysis.rtp_ts_vs_pkt_ts.range === undefined) ? '---' : props.analysis.rtp_ts_vs_pkt_ts.range;
-    const rtp_ts_vs_pkt_ts_limit = props.analysis.rtp_ts_vs_pkt_ts.limit;
+    const rtp_ts_vs_pkt_ts_range = (props.analysis.packet_ts_vs_rtp_ts.range === null || props.analysis.packet_ts_vs_rtp_ts.range === undefined) ? '---' : props.analysis.packet_ts_vs_rtp_ts.range;
+    const rtp_ts_vs_pkt_ts_limit = props.analysis.packet_ts_vs_rtp_ts.limit;
     const rtp_ts_vs_pkt_ts_msg = (rtp_ts_vs_pkt_ts_range.min < rtp_ts_vs_pkt_ts_limit.min || rtp_ts_vs_pkt_ts_range.max > rtp_ts_vs_pkt_ts_limit.max) ? `(out of range [${rtp_ts_vs_pkt_ts_limit.min}, ${rtp_ts_vs_pkt_ts_limit.max}])` : ''
 
     const values = [
