@@ -8,7 +8,6 @@ import LiveStreamList from './pages/LiveStreamList';
 import StreamPage from './pages/StreamPage';
 import LiveStreamPage from './pages/LiveStreamPage';
 import PcapsPage from './pages/PcapsPage';
-import CapturePage from './pages/CapturePage';
 import LiveSourcesPage from './pages/LiveSourcesPage';
 import WorkflowsPage from './pages/WorkflowsPage';
 
@@ -26,7 +25,6 @@ export default (
         <Route exact path={routeNames.HOME} component={DB} />
         <Route exact path={routeNames.SETTINGS} component={Settings} />
         <Route exact path={routeNames.PCAPS} component={PcapsPage} />
-        <Route exact path={routeNames.CAPTURE} component={CapturePage} />
         <Route path={`${routeNames.PCAPS}/:pcapID/ptp`} component={PtpPage} exact />
         <Route path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}`} component={StreamList} exact />
         <Route path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}/:streamID`} component={StreamPage} exact />
