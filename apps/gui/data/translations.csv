@@ -46,7 +46,6 @@ media_information.audio.number_samples,Nombre d'échantillons,Количеств
 media_information.audio.sample_size,Taille de chaque échantillon,Размер каждого сэмпла,Розмір кожного семплу,Size of each sample,Size of each sample,Tamanho da amostra,Größe jedes Samples,Μέγεθος κάθε δείγματος
 media_information.audio.samples_per_packet,Nombre d'échantillons par paquet RTP,Количество сэмплов в RTP-пакете,Кількість семплів в RTP-пакеті,Number of samples per RTP packet,Number of samples per RTP packet,Nº de amostras por pacote RTP,Anzahl der Samples pro RTP-Paket,Αριθμός δειγμάτων ανά πακέτο RTP
 media_information.audio.tsdf_max,"""Timestamp Delay Factor"" maximum",Максимальный коэффициент задержки по меткам времени,Максимальний коефіцієнт затримки за мітками часу,Maximum Timestamped Delay Factor,Maximum Timestamped Delay Factor,TSDF Máximo,TSDF Maximum,Μέγιστος συντελεστής καθυστέρησης με χρονική σήμανση
-media_information.audio.rtp_ts_vs_pkt_ts_range,Interval d’écart entre le temps RTP et le temps d’arrivée de paquet,Диапазон дельт от TS RTP до TS пакета,Діапазон дельт від RTP TS до пакету TS,Range of deltas from RTP TS to packet TS,Range of deltas from RTP TS to packet TS,Faixa de deltas do TS da RTP para o TS do pacote,Deltabereich von RTP TS bis Paket TS,Εύρος από delta από RTP TS σε πακέτο TS
 media_information.video.sampling,Échantillonage,Сэмплирование,Семплування,Sampling,Sampling,Amostragem,Abtastung,Δειγματοληψία εικόνας
 media_information.video.color_depth,Profondeur de couleurs,Глубина цвета,Глибина кольору,Color Depth,Color Depth,Profundidade de Cor,Farbtiefe,Βάθος χρώματος
 media_information.video.width,Largeur,Ширина,Ширина,Width,Width,Largura,Breite,Πλάτος
@@ -76,11 +75,11 @@ media_information.rtp.destination_address,Adresse de destination,Адрес на
 media_information.rtp.destination_mac_address,,,,,Destination MAC Address,Endereço MAC de Destino,,
 media_information.rtp.destination_port,Port de destination,Порт назначения,Порт призначення,Bestemming Poort,Destination Port,Porto de Destino,Ziel Port,Θύρα προορισμού
 media_information.rtp.source_address,Adresse source,Адрес источника,Адреса джерела,Bron Adres,Source Address,Endereço de Origem,Quelladresse,Διεύθυνση πηγής
-media_information.rtp.source_mac_address,,,,,Source MAC Address,Endereço MAC de Origem,,
+media_information.rtp.source_mac_address,,,,,Source MAC Address,Endereço MAC de Origem,,delta_packet_time_vs_rtp_time_ns
 media_information.rtp.source_port,Port de source,Порт источника,Порт джерела,Bron Poort,Source Port,Porto de Origem,Quell Port,Θύρα πηγής
 media_information.rtp.duration,Durée,Продолжительность,Тривалість,Duur,Duration,Duração,Dauer,Διάρκεια
 media_information.rtp.delta_rtp_ts_vs_nt,Différence RTP - TS,Дельта меток времени RTP,Дельта міток часу RTP,RTP TS delta,RTP TS delta,RTP TS delta,RTP TS delta,RTP TS δ έλτα
-media_information.rtp.delta_packet_time_vs_rtp_time_ns,"*** delta_packet_time_vs_rtp_time_ns ***","*** delta_packet_time_vs_rtp_time_ns ***","*** delta_packet_time_vs_rtp_time_ns ***","*** delta_packet_time_vs_rtp_time_ns ***","Packet time - RTP time","Packet time - RTP time","*** delta_packet_time_vs_rtp_time_ns ***","*** delta_packet_time_vs_rtp_time_ns ***"
+media_information.rtp.delta_packet_time_vs_rtp_time_ns,Écart entre le temps RTP et le temps d’arrivée de paquet,Диапазон дельт от TS пакета до TS RTP,Діапазон дельт від пакету TS до RTP TS,Packet TS to RTP TS delta,Packet TS to RTP TS delta,Delta do TS do pacote e o TS RTP,Deltabereich Paket TS von bis RTP TS,Εύρος από delta από πακέτο TS σε RTP TS
 stream.configure_streams,Configurer les flux,Настройки потока,Налаштування потоку,Configureer stroom,Configure Stream,Configurar Stream,Konfiguriere Stream,Ρύθμιση παραμέτρων ροής
 stream.analyze_stream,Analyser les flux,Анализ потока,Аналіз потоку,Analyse van de stroom,Analyze Stream,Analisar Stream,Analysiere Stream,Ανάλυση ροής
 stream.no_streams,Pas de flux trouvé,Потоки не найдены,Потоки не знайдені,Geen stroom gevonden,No Streams Found,Sem Streams,Keine Streams gefunden,Δεν υπάρχουν ροές
