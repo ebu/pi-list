@@ -9,7 +9,7 @@ const SingleValueEntry = ({ label, value }) => (
 );
 
 // values: [{ label: DOMNode, value: DOMNode }]
-const MultiValueDisplay = ({ label, labelTag, units, values }) => {
+const MultiValueDisplay = ({ label, labelTag, units, values, message }) => {
     const renderedValues = values.map((value, index) => (
         <SingleValueEntry key={index} {...value} />
     ));
@@ -23,6 +23,7 @@ const MultiValueDisplay = ({ label, labelTag, units, values }) => {
             <div className="col-xs-8 lst-stream-info2-base">
                 {renderedValues}
                 <span className="lst-stream-info2-units">{units}</span>
+                <span className="lst-stream-info2-message">{message}</span>
             </div>
         </div>
     );

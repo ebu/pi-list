@@ -9,4 +9,5 @@ export default {
     NETWORK: '/network',
     LIVE_SENDERS_PAGE: '/live/senders',
     CONFIGURE: 'configure',
+    STREAMS_PAGE: 'streams',
 };

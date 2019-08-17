@@ -4,7 +4,7 @@ import api from '../utils/api';
 import asyncLoader from '../components/asyncLoader';
 import errorEnum from '../enums/errorEnum';
 import LiveVideoPage from '../containers/live/LiveVideoPage';
-import AudioPage from '../containers/AudioPage';
+import AudioPage from '../containers/AudioPage/index';
 
 class LiveStreamPage extends Component {
     isVideo() {
