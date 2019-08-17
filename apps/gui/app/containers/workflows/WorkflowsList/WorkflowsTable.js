@@ -1,13 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import _ from 'lodash';
+import moment from 'moment';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import sources from 'ebu_list_common/capture/sources';
-import { translateX } from '../../../utils/translation';
+import wfSchema from 'ebu_list_common/workflows/schema';
 import Icon from '../../../components/common/Icon';
-
+import Badge from '../../../components/common/Badge';
+import { T, translateX } from '../../../utils/translation';
 import {
     getGetTdProps,
     getCheckBoxColumn,
@@ -19,29 +20,80 @@ function renderDate({ original }) {
         <div className="lst-text-center">
             {moment(created).format('YYYY-MM-DD HH:mm:ss')}
         </div>
-    ) : '---';
+    ) : (
+        '---'
+    );
+}
+
+function getStatusIcon(state) {
+    if (state === wfSchema.status.requested) {
+        return 'pause';
+    } else if (state === wfSchema.status.started) {
+        return 'play arrow';
+    } else if (state === wfSchema.status.completed) {
+        return 'stop';
+    } else {
+        if (state !== wfSchema.status.failed) {
+            throw new Error(`unexpected state ${state}`);
+        }
+        return 'close';
+    }
+}
+
+function getStatusType(state) {
+    if (state === wfSchema.status.requested) {
+        return 'warning';
+    } else if (state === wfSchema.status.started) {
+        return 'success';
+    } else if (state === wfSchema.status.completed) {
+        return 'passive';
+    } else {
+        if (state !== wfSchema.status.failed) {
+            throw new Error(`unexpected state ${state}`);
+        }
+        return 'danger';
+    }
+}
+
+function renderStatus({ value }) {
+    return (
+        <Fragment>
+            <Badge
+                className="lst-table-configure-sdp-badge"
+                type={getStatusType(value)}
+                text=""
+                icon={getStatusIcon(value)}
+            />
+        </Fragment>
+    );
+}
+
+function renderLabel({ value }) {
+    const name = `workflow.names.${value}`;
+    return <T t={name} />;
 }
 
 const WorkflowsTable = props => {
     const columns = [
         getCheckBoxColumn(props),
-        {
-            Header: translateX('live.sources.name'),
-            headerClassName: 'lst-text-left lst-table-header',
-            accessor: 'meta.label',
-            className: 'lst-text-left',
-        },
+        // {
+        //     Header: translateX('live.sources.name'),
+        //     headerClassName: 'lst-text-left lst-table-header',
+        //     accessor: 'meta.label',
+        //     className: 'lst-text-left',
+        // },
         {
             Header: '',
             headerClassName: 'lst-text-left lst-table-header',
             accessor: 'type',
             className: '',
+            Cell: renderLabel,
         },
         {
             Header: '',
             headerClassName: 'lst-text-left lst-table-header',
             accessor: 'state.status',
-            className: '',
+            Cell: renderStatus,
         },
         {
             Header: '',

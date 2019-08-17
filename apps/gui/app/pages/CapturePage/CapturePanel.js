@@ -1,73 +1,47 @@
 import React, { useState, useEffect, useRef } from 'react';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-import Rodal from 'rodal';
+import Panel from '../../components/common/Panel';
 import moment from 'moment';
-import Button from '../../../components/common/Button';
-import { translateC, T } from '../../../utils/translation';
-import FormInput from '../../../components/common/FormInput';
-import Input from '../../../components/common/Input';
+import Button from '../../components/common/Button';
+import { translateC, T } from '../../utils/translation';
+import FormInput from '../../components/common/FormInput';
+import Input from '../../components/common/Input';
 import Actions from './Actions';
 import 'rodal/lib/rodal.css';
-import './Modal.scss';
 
 const defaultDuration = 2000;
 
-const getDescriptionFromSource = source => {
+const getDescription = source => {
     const label = _.get(source, ['meta', 'label']);
+    const l = label ? `_${label}` : '';
     const dstAddr = _.get(source, 'sdp.streams[0].dstAddr');
-    return `${label}-${dstAddr}`;
+    return `${dstAddr}${l}`;
 };
 
-const getSource = (id, sources) => {
-    const wanted = sources.find(source => source.id === id);
-    return wanted ? wanted : {};
-};
-
-const getDescription = (selectedIds, sources) => {
-    const descriptions = selectedIds.map(id =>
-        getDescriptionFromSource(getSource(id, sources))
-    );
-    return descriptions.join('-');
-};
-
-const StartCaptureModal = props => {
+const CapturePanel = props => {
     const [duration, setDuration] = useState(defaultDuration);
     const [description, setDescription] = useState('');
-    const [dirty, setDirty] = useState(false);
 
     const colSizes = { labelColSize: 1, valueColSize: 11 };
 
-    const [now, setNow] = useState(Date.now());
+    const startOne = (source) => {
+        const now = moment(Date.now()).format('YYYYMMDD_HHmmss');
+        const d = description ? `${description}_` : '';
+        const filename = `${now}_${d}${getDescription(source)}`;
 
-    const onTimer = () => {
-        setNow(Date.now());
-    };
-
-    useEffect(() => {
-        const d = getDescription(props.selectedIds, props.sources);
-        const nowS = moment(Date.now()).format('YYYYMMDD-hhmmss');
-        setDescription(`${nowS}-${d}`);
-    }, [props.selectedIds, props.sources, now]);
-
-    useEffect(() => {
-        if (dirty) return;
-        const timer = setInterval(onTimer, 500);
-        return () => {
-            clearInterval(timer);
-        };
-    }, [dirty]);
-
-    const onStart = () => {
-        props.dispatch({ type: Actions.hideStartCapture });
         props.dispatch({
             type: Actions.captureFromSources,
             payload: {
-                ids: props.selectedIds,
-                filename: description,
+                ids: [source.id],
+                filename: filename,
                 durationMs: duration,
             },
         });
+    };
+
+    const onStart = () => {
+        props.sources.forEach(startOne);
     };
 
     const handleKey = event => {
@@ -76,35 +50,18 @@ const StartCaptureModal = props => {
         }
     };
 
-    const onClose = () => {
-        props.dispatch({ type: Actions.hideStartCapture });
-    };
-
-    const onDescriptionFocus = value => {
-        console.log('onDescriptionFocus');
-        setDirty(true);
-    };
-
     const onChangeDescription = value => {
-        setDirty(true);
         setDescription(value);
     };
+
     const clearDescription = () => {
-        setDirty(true);
         setDescription('');
     };
 
+    const title = <T t="navigation.capture" />;
     return (
-        <div onKeyUp={handleKey}>
-            <Rodal
-                className="lst-sources-modal"
-                visible={props.visible}
-                onClose={onClose}
-                closeOnEsc
-            >
-                <h2 className="lst-sources-modal-header">
-                    <T t="navigation.capture" />
-                </h2>
+        <Panel containerClassName="slow-fade-in" title={title}>
+            <div onKeyUp={handleKey}>
                 <hr />
                 <FormInput icon="timer" {...colSizes}>
                     <div>
@@ -135,7 +92,6 @@ const StartCaptureModal = props => {
                                 onChange={evt =>
                                     onChangeDescription(evt.target.value)
                                 }
-                                onFocus={onDescriptionFocus}
                             />
                         </FormInput>
                     </div>
@@ -154,25 +110,19 @@ const StartCaptureModal = props => {
                     type="info"
                     label={translateC('workflow.start_capture')}
                     onClick={onStart}
-                    disabled={!description}
+                    disabled={props.sources.length === 0}
                 />
-                <Button
-                    type="info"
-                    label={translateC('workflow.cancel')}
-                    onClick={onClose}
-                />
-            </Rodal>
-        </div>
+            </div>
+        </Panel>
     );
 };
 
-StartCaptureModal.propTypes = {
+CapturePanel.propTypes = {
     visible: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired,
     sources: PropTypes.array.isRequired,
-    selectedIds: PropTypes.array.isRequired,
 };
 
-StartCaptureModal.defaultProps = {};
+CapturePanel.defaultProps = {};
 
-export default StartCaptureModal;
+export default CapturePanel;

@@ -93,6 +93,8 @@ const onWorkMessage = async (msgContext, sendStatus) => {
             }
 
             try {
+                // await sleep(1000);
+
                 sendStatus({
                     msg: {
                         id: workflowConfig.id,
@@ -100,6 +102,12 @@ const onWorkMessage = async (msgContext, sendStatus) => {
                     },
                     persistent,
                 });
+
+                // await sleep(1000);
+
+                // if(Math.random() > 0.6) {
+                //     throw new Error("Boom!");
+                // }
 
                 if (globalConfig.dummy_pcap) {
                     await ingestFromFile(globalConfig, workflowConfig);
