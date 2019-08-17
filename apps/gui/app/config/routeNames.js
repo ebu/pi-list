@@ -2,7 +2,6 @@ export default {
     HOME: '/',
     SETTINGS: '/settings',
     PCAPS: '/pcaps',
-    CAPTURE: '/capture',
     LIVE_SOURCES: '/live_sources',
     WORKFLOWS: '/workflows',
     LIVE: '/live',

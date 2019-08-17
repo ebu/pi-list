@@ -37,10 +37,6 @@ const SourcesList = props => {
         dispatch({ type: tableactions.toggleRow, data: { id } });
     const toggleSelectAll = () =>
         dispatch({ type: tableactions.toggleSelectAll });
-    const onClickRow = id => {
-        // const route = routeBuilder.live_flow_page(id);
-        // window.appHistory.push(route);
-    };
 
     const onMessage = (topic, message) => {
         dispatch({
@@ -159,7 +155,7 @@ const SourcesList = props => {
                     selectAll={state.selectAll}
                     onSelectId={toggleRow}
                     onSelectAll={toggleSelectAll}
-                    onClickRow={onClickRow}
+                    onClickRow={toggleRow}
                 />
             </DragAndDropUploader>
         </div>

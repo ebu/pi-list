@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+/*
+For information about the configuration file, see config.yml
+*/
+
 const amqp = require('amqplib');
 const logger = require('./logger');
 const workflowTypes = require('../../js/common/workflows/types');
@@ -22,23 +26,23 @@ const yamlParser = require('read-yaml');
 commander
     .arguments('<configFile>')
     .action(configFile => {
-        config = yamlParser.sync(configFile);
+        globalConfig = yamlParser.sync(configFile);
 
         if (
-            config.rabbitmq.hostname === undefined ||
-            config.rabbitmq.port === undefined
+            globalConfig.rabbitmq.hostname === undefined ||
+            globalConfig.rabbitmq.port === undefined
         ) {
             console.error('RabbitMQ is not configured in config file');
             process.exit(-1);
         }
 
-        config.rabbitmqUrl = `amqp://${config.rabbitmq.hostname}:${
-            config.rabbitmq.port
+        globalConfig.rabbitmqUrl = `amqp://${globalConfig.rabbitmq.hostname}:${
+            globalConfig.rabbitmq.port
         }`;
     })
     .parse(process.argv);
 
-if (typeof config === 'undefined') {
+if (typeof globalConfig === 'undefined') {
     console.error('no config file given!');
     process.exit(1);
 }
@@ -46,7 +50,7 @@ if (typeof config === 'undefined') {
 ///////////////////////////////////////////////////////////////////////////////
 
 logger('server').info(`Starting server`);
-logger('server').info(`Connecting to ${config.rabbitmqUrl}`);
+logger('server').info(`Connecting to ${globalConfig.rabbitmqUrl}`);
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -62,22 +66,24 @@ const onWorkMessage = async (msgContext, sendStatus) => {
         const message = JSON.parse(msg.content.toString());
 
         const { type, configuration } = message;
+        const workflowConfig = configuration;
 
         if (type === workflowTypes.types.captureAndIngest) {
             if (
-                !configuration.id ||
-                !configuration.senders ||
-                !configuration.cookie ||
-                !configuration.ingestPutUrl ||
-                !configuration.filename
+                !workflowConfig.id ||
+                !workflowConfig.senders ||
+                !workflowConfig.cookie ||
+                !workflowConfig.ingestPutUrl ||
+                !workflowConfig.durationMs ||
+                !workflowConfig.filename
             ) {
                 const event = {
-                    id: configuration.id,
+                    id: workflowConfig.id,
                     status: workflowsSchema.status.failed,
                     payload: {
                         // TODO: error code ased on HTTP error codes
                         message: `invalid configuration: ${JSON.stringify(
-                            configuration
+                            workflowConfig
                         )}`,
                     },
                 };
@@ -89,23 +95,21 @@ const onWorkMessage = async (msgContext, sendStatus) => {
             try {
                 sendStatus({
                     msg: {
-                        id: configuration.id,
+                        id: workflowConfig.id,
                         status: workflowsSchema.status.started,
                     },
                     persistent,
                 });
 
-                await sleep(2000);
-
-                if (config.dummy_pcap) {
-                    await ingestFromFile(configuration);
+                if (globalConfig.dummy_pcap) {
+                    await ingestFromFile(globalConfig, workflowConfig);
                 } else {
-                    await performCaptureAndIngest(configuration);
+                    await performCaptureAndIngest(globalConfig, workflowConfig);
                 }
 
                 sendStatus({
                     msg: {
-                        id: configuration.id,
+                        id: workflowConfig.id,
                         status: workflowsSchema.status.completed,
                     },
                     persistent,
@@ -118,7 +122,7 @@ const onWorkMessage = async (msgContext, sendStatus) => {
                 );
                 sendStatus({
                     msg: {
-                        id: configuration.id,
+                        id: workflowConfig.id,
                         status: workflowsSchema.status.failed,
                         payload: {
                             message: err.message,
@@ -137,17 +141,17 @@ const onWorkMessage = async (msgContext, sendStatus) => {
 
 const run = async () => {
     const heartBeatSender = createExchangeSender(
-        config.rabbitmqUrl,
+        globalConfig.rabbitmqUrl,
         mq.exchanges.probeStatus
     );
 
     const statusSender = createQueueSender(
-        config.rabbitmqUrl,
+        globalConfig.rabbitmqUrl,
         mq.queues.workflowStatus
     );
 
     const workReceiver = mqReceive.createQueueReceiver(
-        config.rabbitmqUrl,
+        globalConfig.rabbitmqUrl,
         mq.queues.workflowRequest
     );
     const handleMessage = msgContext =>
@@ -169,7 +173,7 @@ const run = async () => {
     const timer = setInterval(async () => {
         try {
             const data = {
-                probe: { id: config.probe.id, label: config.probe.label },
+                probe: { id: globalConfig.probe.id, label: globalConfig.probe.label },
             };
 
             await heartBeatSender.send({

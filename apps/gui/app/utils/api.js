@@ -218,7 +218,6 @@ export default {
     changeLiveStreamName: (streamID, data) =>
         request.patch(`live/streams/${streamID}/`, data),
     subscribeLiveStream: data => request.put('live/streams/subscribe/', data),
-    subscribePCAP: data => request.put('live/pcap/capture/', data),
     getLiveSources: () => request.get('live/sources/'),
     addLiveSource: source => request.post('live/sources', { source }),
     deleteLiveSources: ids => request.put('live/sources/delete', { ids }),

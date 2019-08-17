@@ -66,11 +66,6 @@ export default (
             path={routeNames.SETTINGS}
             render={() => (<Header labelTag="navigation.settings" />)}
         />
-        <Route
-            exact
-            path={routeNames.CAPTURE}
-            render={() => (<Header labelTag="workflow.capture_stream" />)}
-        />
         <LiveRoute
             path={routeNames.LIVE}
             hideOnFalse
