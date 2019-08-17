@@ -12,6 +12,7 @@
   "analysis.errors.invalid_multicast_mac_address": "*** invalid_multicast_mac_address ***",
   "analysis.errors.invalid_multicast_ip_address": " *** invalid_multicast_ip_address ***",
   "analysis.errors.unrelated_multicast_addresses": " *** unrelated_multicast_addresses ***",
+  "analysis.errors.shared_multicast_destination_ip_address": " *** shared_multicast_destination_ip_address ***",
   "headings.network_information": "Πληροφορίες δικτύου",
   "headings.media_information": "Πληροφορίες για το περιεχόμενο",
   "headings.audio_explorer": "Ήχος",

@@ -12,6 +12,7 @@
   "analysis.errors.invalid_multicast_mac_address": "O endereço MAC não é um endereço de multicast válido",
   "analysis.errors.invalid_multicast_ip_address": "O endereço IP não é um endereço de multicast válido",
   "analysis.errors.unrelated_multicast_addresses": "Os endereços IP e MAC não estão relacionados",
+  "analysis.errors.shared_multicast_destination_ip_address": "Colisão de endereços IP: há mais do que uma fonte a enviar dados para o mesmo destino.",
   "headings.network_information": "Informação de Rede",
   "headings.media_information": "Informação da Essência",
   "headings.audio_explorer": "Explorador de Áudio",
