@@ -20,14 +20,16 @@ namespace ebu_list::rtp
         void on_error(std::exception_ptr e) override;
 #pragma endregion udp::listener events
 
-    private:
+      private:
         rtp::listener* find_or_create(const rtp::packet& packet);
 
-    private:
         handler_creator creator_;
 
-        // destination endpoint
-        using handler_map = std::map<ipv4::endpoint, rtp::listener_uptr>;
+
+        // first: source;
+        // second: destination;
+        using stream_key = std::pair<ipv4::endpoint, ipv4::endpoint>;
+        using handler_map = std::map<stream_key, rtp::listener_uptr>;
         handler_map handlers_;
     };
 }

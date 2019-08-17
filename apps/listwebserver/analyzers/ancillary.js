@@ -5,11 +5,11 @@ function doAncillaryStreamAnalysis (pcapId, stream) {
     return new Promise((resolve, reject) => {
 		resolve(validateMulticastAddresses(stream));
 	})
-        .then(info => Stream.findOneAndUpdate({ id: stream.id }, info, { new: true }))
+    .then(info => Stream.findOneAndUpdate({ id: stream.id }, info, { new: true }))
 }
 
-function doAncillaryAnalysis (pcapId, stream) {
-    const promises = stream.map(stream => doAncillaryStreamAnalysis(pcapId, stream));
+function doAncillaryAnalysis (pcapId, streams) {
+    const promises = streams.map(stream => doAncillaryStreamAnalysis(pcapId, stream));
     return Promise.all(promises);
 }
 

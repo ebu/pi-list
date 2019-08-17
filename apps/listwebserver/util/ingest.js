@@ -20,6 +20,7 @@ const { doVideoAnalysis } = require('../analyzers/video');
 const { doAudioAnalysis } = require('../analyzers/audio');
 const { doAncillaryAnalysis } = require('../analyzers/ancillary');
 const { doRtpAnalysis } = require('../analyzers/rtp');
+const { doMulticastAddressAnalysis } = require('../analyzers/multicast.js');
 const constants = require('../enums/analysis');
 const glob = util.promisify(require('glob'));
 
@@ -343,11 +344,25 @@ function ancillaryConsolidation(req, res, next) {
         });
 }
 
+function unknownConsolidation(req, res, next) {
+    const pcapId = req.pcap.uuid;
+    Stream.find({ pcap: pcapId, media_type: 'unknown' })
+        .exec()
+        .then(streams => {
+            addStreamsToReq(streams, req);
+        })
+        .then(() => next())
+        .catch(err => {
+            logger('unknown-consolidation').error(`exception: ${err}`);
+        });
+}
+
 function commonConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
     const streams = _.get(req, 'streams', []);
 
     doRtpAnalysis(pcapId, streams)
+        .then(() => doMulticastAddressAnalysis(pcapId, streams))
         .then(() => next())
         .catch(err => {
             logger('common-consolidation').error(`exception: ${err}`);
@@ -461,6 +476,7 @@ module.exports = {
         videoConsolidation,
         audioConsolidation,
         ancillaryConsolidation,
+        unknownConsolidation,
         commonConsolidation,
         pcapConsolidation,
         pcapIngestEnd,
@@ -472,6 +488,7 @@ module.exports = {
         videoConsolidation,
         audioConsolidation,
         ancillaryConsolidation,
+        unknownConsolidation,
         commonConsolidation,
         pcapConsolidation,
     ],

@@ -99,13 +99,15 @@ void udp_handler::on_error(std::exception_ptr e)
 
 rtp::listener *udp_handler::find_or_create(const rtp::packet &packet)
 {
+    const auto s = source(packet.info.udp);
     const auto d = destination(packet.info.udp);
 
-    auto it = handlers_.find(d);
+    const stream_key key = { s, d };
+
+    auto it = handlers_.find(key);
 
     if (it == handlers_.end())
     {
-
         auto new_handler = creator_(packet);
 
 // #define LIST_USE_ANALYZER
@@ -114,7 +116,7 @@ rtp::listener *udp_handler::find_or_create(const rtp::packet &packet)
 #endif // defined LIST_USE_ANALYZER
 
         const auto p_handler = new_handler.get();
-        handlers_.emplace(d, std::move(new_handler));
+        handlers_.emplace(key, std::move(new_handler));
         return p_handler;
     }
 

@@ -21,6 +21,7 @@ module.exports = {
         invalid_multicast_mac_address: 'errors.invalid_multicast_mac_address',
         invalid_multicast_ip_address: 'errors.invalid_multicast_ip_address',
         unrelated_multicast_addresses: 'errors.unrelated_multicast_addresses',
+        shared_multicast_destination_ip_address: 'errors.shared_multicast_destination_ip_address',
     },
     warnings: {
         pcap: {
