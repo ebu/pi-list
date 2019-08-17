@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import { Scrollbars } from 'react-custom-scrollbars';
 import SideNav from './SideNav';
 import routes from '../routes';
 import headerRoutes from '../headerRoutes';
@@ -94,7 +95,9 @@ const AppContainer = props => {
                     </div>
                 </nav>
                 <NotificationsProvider>
-                    <div className="lst-main-container">{routes}</div>
+                    <Scrollbars>
+                        <div className="lst-main-container">{routes}</div>
+                    </Scrollbars>
                 </NotificationsProvider>
                 <PopUp
                     type="delete"

@@ -39,6 +39,14 @@ $badge-font-size: 12px;
     &--info {
         @extend .lst-bg--blue;
     }
+    &--passive {
+        background-color: inherit;
+        color: $black;
+
+        .dark & {
+            color: $white;
+        }
+    }
     &--mini {
         padding: 4px;
         font-size: 12px;

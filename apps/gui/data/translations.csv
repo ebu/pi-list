@@ -132,6 +132,7 @@ workflow.add_failed,*** workflow.add_failed,*** workflow.add_failed,*** workflow
 workflow.cancel,*** workflow.cancel,*** workflow.cancel,*** workflow.cancel,*** workflow.cancel,Cancel,Cancelar,*** workflow.cancel,*** workflow.cancel
 workflow.requested,*** workflow.requested,*** workflow.requested,*** workflow.requested,*** workflow.requested,Workflow requested,Workflow iniciado,*** workflow.requested,*** workflow.requested
 workflow.request_failed,*** workflow.request_failed,*** workflow.request_failed,*** workflow.request_failed,*** workflow.request_failed,Workflow request failed,Falha ao iniciar workflow,*** workflow.request_failed,*** workflow.request_failed
+workflow.names.captureAndIngest,*** captureAndIngest,*** captureAndIngest,*** captureAndIngest,*** captureAndIngest,Capture and analysis,Captura e análise,*** captureAndIngest,*** captureAndIngest 
 user_account.delete_user_account,Supprimer le compte,Удалить аккаунт,Видалити аккаунт,Verwijder Account,Delete Account,Apagar Conta,Account löschen,Διαγραφή λογαριασμού
 user_account.sign_in,Joindre,Войти,Увійти,Aanmelden,Sign In,Autenticação,Einloggen,Σύνδεση
 user_account.logout,Se déconnecter,Выйти,Вийти,Afmelden,Log Out,Sair,Ausloggen,Αποσύνδεση
@@ -161,7 +162,7 @@ buttons.login,Ouverture de session,Авторизоваться,Авториза
 buttons.register,S'enregistrer,Зарегистрироваться,Реєстрація,Registreer,Register,Registar,Resistrieren,Εγγραφή
 navigation.capture,Capturer,Захватить,Захопити,Capture,Capture,Captura,Aufnehmen,Πιάνω
 navigation.live_streams,Flux en direct,Живые потоки,Живі потоки,Live streams,Live streams,Live streams,Livestreams,Ζωντανές ροές
-navigation.live_sources,*** navigation.live_sources,*** navigation.live_sources,*** navigation.live_sources,*** navigation.live_sources,Live sources,Fontes live,*** navigation.live_sources,*** navigation.live_sources
+navigation.live_sources,*** navigation.capture,*** navigation.capture,*** navigation.capture,*** navigation.capture,Sources,Fontes,*** navigation.capture,*** navigation.capture
 navigation.workflows,*** navigation.workflows,*** navigation.workflows,*** navigation.workflows,*** navigation.workflows,Workflows,Workflows,*** navigation.workflows,*** navigation.workflows
 navigation.network,Réseau,Сеть,Мережа,Netwerk,Network,Na Rede,Netzwerk,Δίκτυο
 navigation.pcaps,PCAPs et flux,PCAP файлы и потоки,PCAP файли та потоки,PCAPs & Stromen,PCAPs & Streams,PCAPs & Streams,PCAPs & Streams,PCAPs & Streams
