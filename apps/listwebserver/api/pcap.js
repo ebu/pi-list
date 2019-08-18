@@ -163,6 +163,8 @@ router.get('/:pcapID/download', (req, res) => {
 router.get('/:pcapID/sdp', (req, res) => {
     const { pcapID } = req.params;
 
+    logger('sdp-get').info(`Getting SDP for ${pcapID}`);
+
     Pcap.findOne({ id: pcapID })
         .exec()
         .then(data => {
@@ -511,7 +513,7 @@ function renderMp3(req, res) {
 
     Stream.findOne({ id: streamID })
         .exec()
-        .then((data) => {
+        .then(data => {
             const folderPath = `${getUserFolder(req)}/${pcapID}/${streamID}/`;
             const rawFilePath = `${folderPath}/raw`;
             const mp3FilePath = `${folderPath}/audio-${channels}.mp3`;
@@ -560,7 +562,7 @@ function renderMp3(req, res) {
 router.get('/:pcapID/stream/:streamID/downloadmp3', (req, res) => {
     const { pcapID, streamID } = req.params;
     var { channels } = req.query;
-    if ((channels === undefined) || (channels === '')) {
+    if (channels === undefined || channels === '') {
         channels = '0,1'; // keep the 2 first channels by default
     }
     const folderPath = `${getUserFolder(req)}/${pcapID}/${streamID}`;

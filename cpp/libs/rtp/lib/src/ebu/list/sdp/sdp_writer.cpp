@@ -27,6 +27,7 @@ std::vector<std::string> sdp_writer::sdp() const
 
 void sdp_writer::write(void) const
 {
+    logger()->info("Writing SDP file to {}", path_);
     std::experimental::filesystem::create_directory(path_.parent_path());
     std::ofstream o(path_.string());
 
