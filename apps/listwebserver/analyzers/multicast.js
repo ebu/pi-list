@@ -1,40 +1,64 @@
 const _ = require('lodash');
-const { appendError} = require('./utils');
+const { appendError } = require('./utils');
 const constants = require('../enums/analysis');
 const Stream = require('../models/stream');
 
-async function doMulticastAddressAnalysis (pcapId, streams) {
-
+async function doMulticastAddressAnalysis(pcapId, streams) {
     let dstMulticastMap = {};
 
-    streams.forEach((stream) => {
+    streams.forEach(stream => {
         const address = stream.network_information.destination_address;
-        const reusedAddress = Object.keys(dstMulticastMap).find(value => value === address);
+        const port = stream.network_information.destination_port;
+        const key = `${address}:${port}`;
+        const reusedAddress = Object.keys(dstMulticastMap).find(
+            value => value === key
+        );
 
-        if (!reusedAddress)
-            dstMulticastMap[address] = [stream];
-        else dstMulticastMap[address].push(stream);
+        if (!reusedAddress) dstMulticastMap[key] = [stream];
+        else dstMulticastMap[key].push(stream);
     });
 
     for (let [key, streamsArray] of Object.entries(dstMulticastMap)) {
         if (streamsArray.length > 1) {
-            streamsArray.forEach(async (stream) => {
-                stream = _.set(stream, 'analyses.unique_multicast_destination_ip_address.result', constants.outcome.not_compliant);
-                stream = appendError(stream, {
-                    id: constants.errors.shared_multicast_destination_ip_address
+            streamsArray.forEach(async stream => {
+                const analysis = {
+                    result: constants.outcome.not_compliant,
+                    details: {
+                        destination: key,
+                    },
+                };
+                _.set(
+                    stream,
+                    'analyses.unique_multicast_destination_ip_address',
+                    analysis
+                );
+                appendError(stream, {
+                    id:
+                        constants.errors
+                            .shared_multicast_destination_ip_address,
                 });
-                await Stream.findOneAndUpdate({ id: stream.id }, stream, { new: true });
+                await Stream.findOneAndUpdate({ id: stream.id }, stream, {
+                    new: true,
+                });
             });
-        }
-        else {
-            let stream = streamsArray[0];
-            stream = _.set(stream, 'analyses.unique_multicast_destination_ip_address.result', constants.outcome.compliant);
-            await Stream.findOneAndUpdate({ id: stream.id }, stream, { new: true });
+        } else {
+            const stream = streamsArray[0];
+            const analysis = {
+                result: constants.outcome.compliant,
+            };
+
+            _.set(
+                stream,
+                'analyses.unique_multicast_destination_ip_address',
+                analysis
+            );
+            await Stream.findOneAndUpdate({ id: stream.id }, stream, {
+                new: true,
+            });
         }
     }
 }
 
 module.exports = {
-    doMulticastAddressAnalysis
+    doMulticastAddressAnalysis,
 };
-
