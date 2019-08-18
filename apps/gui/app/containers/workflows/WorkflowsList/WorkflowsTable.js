@@ -73,9 +73,16 @@ function renderLabel({ value }) {
     return <T t={name} />;
 }
 
+function renderMessage({ value }) {
+    if (value.status === wfSchema.status.failed) {
+        return <span>{value.errorMessage}</span>;
+    }
+    return <span />;
+}
+
 const WorkflowsTable = props => {
     const columns = [
-        getCheckBoxColumn(props),
+        // getCheckBoxColumn(props),
         // {
         //     Header: translateX('live.sources.name'),
         //     headerClassName: 'lst-text-left lst-table-header',
@@ -88,12 +95,23 @@ const WorkflowsTable = props => {
             accessor: 'type',
             className: '',
             Cell: renderLabel,
+            minWidth: 150,
+            maxWidth: 150,
         },
         {
             Header: '',
             headerClassName: 'lst-text-left lst-table-header',
             accessor: 'state.status',
             Cell: renderStatus,
+            minWidth: 50,
+            maxWidth: 50,
+        },
+        {
+            Header: '',
+            headerClassName: 'lst-text-left lst-table-header',
+            accessor: 'state',
+            className: '',
+            Cell: renderMessage,
         },
         {
             Header: '',
