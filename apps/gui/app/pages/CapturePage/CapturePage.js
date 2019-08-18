@@ -23,14 +23,20 @@ const CapturePage = props => {
     };
 
     return (
-        <div className="row">
-            <div className="col-xs-8">
-                <SourcesList onSelectedSendersChanged={onChange} />
-                <PcapList />
+        <div>
+            <div className="row">
+                <div className="col-xs-6">
+                    <SourcesList onSelectedSendersChanged={onChange} />
+                </div>
+                <div className="col-xs-6">
+                    <CapturePanel dispatch={dispatch} sources={selected} />
+                    <WorkflowsList />
+                </div>
             </div>
-            <div className="col-xs-4">
-                <CapturePanel dispatch={dispatch} sources={selected} />
-                <WorkflowsList />
+            <div className="row">
+                <div className="col-xs-12">
+                    <PcapList />
+                </div>
             </div>
         </div>
     );

@@ -3,7 +3,7 @@
   "analysis.warnings.pcap.truncated": "Truncated",
   "analysis.errors.missing_information": "Internal error: information is missing",
   "analysis.errors.invalid_delta_rtp_ts_vs_nt": "Invalid delta between RTP timestamp and N x Tframe",
-  "analysis.errors.invalid_delta_packet_ts_vs_rtp_ts": " *** invalid_delta_packet_ts_vs_rtp_ts ***",
+  "analysis.errors.invalid_delta_packet_ts_vs_rtp_ts": "Invalid delta between Packet TS and RTP TS",
   "analysis.errors.cinst_above_maximum": "CInst is above the maximum allowed value (CMAX)",
   "analysis.errors.vrx_above_maximum": "VRX is above the maximum allowed value (VRXFULL)",
   "analysis.errors.tsdf_not_compliant": "TS-DF not compliant with EBU TECH 3337",

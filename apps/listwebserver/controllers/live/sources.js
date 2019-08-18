@@ -37,7 +37,8 @@ const getMetaForUserDefinedSource = source => {
 };
 
 const getLiveSources = async () => {
-    const local = await LiveSource.find().exec();
+    const localP = await LiveSource.find().exec();
+    const local = localP.map(s => s.toJSON());
     return [...local, ...nmosSources];
 };
 
@@ -157,7 +158,7 @@ onUpdate.on(events.updateEvent, onChanged);
 
 const findLiveSources = async wantedIds => {
     const sources = await getLiveSources();
-    return sources.filter(source => wantedIds.includes(source.id)).map(s => s.toJSON());
+    return sources.filter(source => wantedIds.includes(source.id));
 };
 
 module.exports = {
