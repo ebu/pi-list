@@ -125,6 +125,8 @@ workflow.done,Complété,Готово,Готово,Afgewerkt,Done,Concluído,Fer
 workflow.capture_stream,Capturer le flux,Захват потока,Захоплення потоку,Stroom Opnemen,Capture Stream,Gravar Stream,Stream aufnehmen,Εγγραφή ροής
 workflow.add_stream,Ajouter le flux,Добавить поток,Додати потік,Stroom toevoegen,Add Stream,Adicionar Stream,Stream hinzufügen,Προσθήκη ροής
 workflow.start_capture,Commencer,Начать,Почати,Start,Start,Iniciar,Start,Εκκίνηση
+workflow.start_capture.serial,*** Commencer,*** Начать,*** Почати,*** Start,Start (serial),Iniciar (paralelo),*** Start,*** Εκκίνηση
+workflow.start_capture.parallel,*** Commencer,*** Начать,*** Почати,*** Start,Start (parallel),Iniciar (paralelo),*** Start,*** Εκκίνηση
 workflow.drop_sdp_file_here,Déposer votre fichier SDP ici,Перетащите свой файл SDP сюда,Перетягніть свій файл SDP сюди,Zet je SDP-bestand hier neer,Drop your SDP file here,Arraste para aqui seu ficheiro SDP,SDP Dateien hier ablegen,Αφήστε το αρχείο SDP εδώ
 workflow.add,*** workflow.add,*** workflow.add,*** workflow.add,*** workflow.add,Add,Adicionar,*** workflow.add,*** workflow.add
 workflow.added,*** workflow.added,*** workflow.added,*** workflow.added,*** workflow.added,Added,Adicionado,*** workflow.added,*** workflow.added

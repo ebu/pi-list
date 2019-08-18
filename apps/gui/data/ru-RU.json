@@ -122,6 +122,8 @@
   "workflow.capture_stream": "Захват потока",
   "workflow.add_stream": "Добавить поток",
   "workflow.start_capture": "Начать",
+  "workflow.start_capture.serial": "*** Начать",
+  "workflow.start_capture.parallel": "*** Начать",
   "workflow.drop_sdp_file_here": "Перетащите свой файл SDP сюда",
   "workflow.add": "*** workflow.add",
   "workflow.added": "*** workflow.added",

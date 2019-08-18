@@ -122,6 +122,8 @@
   "workflow.capture_stream": "Εγγραφή ροής",
   "workflow.add_stream": "Προσθήκη ροής",
   "workflow.start_capture": "Εκκίνηση",
+  "workflow.start_capture.serial": "*** Εκκίνηση",
+  "workflow.start_capture.parallel": "*** Εκκίνηση",
   "workflow.drop_sdp_file_here": "Αφήστε το αρχείο SDP εδώ",
   "workflow.add": "*** workflow.add",
   "workflow.added": "*** workflow.added",

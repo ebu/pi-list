@@ -40,13 +40,28 @@ const CapturePanel = props => {
         });
     };
 
-    const onStart = () => {
+    const onStartSerial = () => {
         props.sources.forEach(startOne);
+    };
+
+    const onStartParallel = () => {
+        const now = moment(Date.now()).format('YYYYMMDD_HHmmss');
+        const d = description ? `_${description}_` : '';
+        const filename = `${now}${d}`;
+
+        props.dispatch({
+            type: Actions.captureFromSources,
+            payload: {
+                ids: props.sources.map(source => source.id),
+                filename: filename,
+                durationMs: duration,
+            },
+        });
     };
 
     const handleKey = event => {
         if (event.keyCode == 13) {
-            onStart();
+            // onStartSerial();
         }
     };
 
@@ -108,9 +123,15 @@ const CapturePanel = props => {
                 </div>
                 <Button
                     type="info"
-                    label={translateC('workflow.start_capture')}
-                    onClick={onStart}
+                    label={translateC('workflow.start_capture.serial')}
+                    onClick={onStartSerial}
                     disabled={props.sources.length === 0}
+                />
+                <Button
+                    type="info"
+                    label={translateC('workflow.start_capture.parallel')}
+                    onClick={onStartParallel}
+                    disabled={props.sources.length < 2}
                 />
             </div>
         </Panel>

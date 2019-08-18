@@ -157,7 +157,7 @@ onUpdate.on(events.updateEvent, onChanged);
 
 const findLiveSources = async wantedIds => {
     const sources = await getLiveSources();
-    return sources.filter(source => wantedIds.includes(source.id));
+    return sources.filter(source => wantedIds.includes(source.id)).map(s => s.toJSON());
 };
 
 module.exports = {
