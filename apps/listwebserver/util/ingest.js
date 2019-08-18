@@ -137,25 +137,53 @@ function pcapPreProcessing(req, res, next) {
         });
 }
 
-const zipfiles = async (files, outputPath) => {
-    const fs = require('fs');
-    const output = fs.createWriteStream(outputPath);
-    const archiver = require('archiver');
-    const zipArchive = archiver('zip');
-    const finalize = util.promisify(zipArchive.finalize);
+// async
+const zipSdpFiles = (files, outputPath) =>
+    new Promise((resolve, reject) => {
+        const fs = require('fs');
+        const path = require('path');
+        const archiver = require('archiver');
 
-    zipArchive.pipe(output);
-    zipArchive.bulk([{ src: files }]);
-    await finalize();
-    logger('zip-files').info(`zipped: ${files.length} files`);
-};
+        const output = fs.createWriteStream(outputPath);
+        const archive = archiver('zip', {
+            zlib: { level: 9 }, // Sets the compression level.
+        });
+
+        output.on('close', function() {
+            logger('zip-files').info(
+                `zipped ${files.length} SDP files. Total size: ${archive.pointer()} bytes`
+            );
+
+            resolve();
+        });
+
+        archive.on('warning', function(err) {
+            if (err.code === 'ENOENT') {
+                logger('zip-files').info(`warning: ${err.message}`);
+            } else {
+                logger('zip-files').error(`warning: ${err.message}`);
+                reject(err);
+            }
+        });
+
+        archive.on('error', function(err) {
+            logger('zip-files').error(`warning: ${err.message}`);
+            reject(err);
+        });
+
+        archive.pipe(output);
+        files.forEach((file, i) => {
+            const base = path.basename(file, '.sdp');
+            const name = `${i}-${base}.sdp`;
+
+            archive.file(file, { name });
+        });
+        archive.finalize();
+    });
 
 const postProcessSdpFiles = async folder => {
-    const files = await glob('${folder}/*.sdp');
-
-    if (files && files.length > 0) {
-        await zipfiles(files, '${folder}/sdp.zip');
-    }
+    const files = await glob(`${folder}/**/*.sdp`);
+    await zipSdpFiles(files, `${folder}/sdp.zip`);
 };
 
 const pcapFullAnalysis = async (req, res, next) => {
