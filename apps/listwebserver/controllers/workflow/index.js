@@ -68,9 +68,11 @@ const statusReceiver = mqReceive.createQueueReceiver(
 const handleStatusMessage = ({ msg, ack }) => {
     try {
         const message = JSON.parse(msg.content.toString());
-        const { id, status } = message;
+        const { id, status, payload } = message;
+        const error_message = status !== workflows.status.failed ? '' : `; message: ${payload}` ;
+
         logger('workflow-controller').info(
-            `Status update - id: ${id}; status: ${status}`
+            `Status update - id: ${id}; status: ${status}${error_message}`
         );
         updateWorkflow(message);
     } catch (err) {

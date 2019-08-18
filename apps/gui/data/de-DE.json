@@ -122,6 +122,8 @@
   "workflow.capture_stream": "Stream aufnehmen",
   "workflow.add_stream": "Stream hinzufügen",
   "workflow.start_capture": "Start",
+  "workflow.start_capture.serial": "*** Start",
+  "workflow.start_capture.parallel": "*** Start",
   "workflow.drop_sdp_file_here": "SDP Dateien hier ablegen",
   "workflow.add": "*** workflow.add",
   "workflow.added": "*** workflow.added",

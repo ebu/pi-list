@@ -122,6 +122,8 @@
   "workflow.capture_stream": "Захоплення потоку",
   "workflow.add_stream": "Додати потік",
   "workflow.start_capture": "Почати",
+  "workflow.start_capture.serial": "*** Почати",
+  "workflow.start_capture.parallel": "*** Почати",
   "workflow.drop_sdp_file_here": "Перетягніть свій файл SDP сюди",
   "workflow.add": "*** workflow.add",
   "workflow.added": "*** workflow.added",

@@ -122,6 +122,8 @@
   "workflow.capture_stream": "Stroom Opnemen",
   "workflow.add_stream": "Stroom toevoegen",
   "workflow.start_capture": "Start",
+  "workflow.start_capture.serial": "*** Start",
+  "workflow.start_capture.parallel": "*** Start",
   "workflow.drop_sdp_file_here": "Zet je SDP-bestand hier neer",
   "workflow.add": "*** workflow.add",
   "workflow.added": "*** workflow.added",
