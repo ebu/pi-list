@@ -59,6 +59,16 @@
     - details:
         - packet_count: Number // the number of captured packets
         - dropped_packets: Number // the number of dropped packets
+  - destination_multicast_mac_address:
+    - result : string // defined in enums/analysis/outcome
+  - destination_multicast_ip_address:
+    - result : string // defined in enums/analysis/outcome
+  - unrelated_multicast_addresses:
+    - result : string // defined in enums/analysis/outcome
+  - unique_multicast_destination_ip_address:
+    - result : string // defined in enums/analysis/outcome
+    - details:
+        - destination: { address : string, port : string }
 
 - error_list : array of:
     - {
