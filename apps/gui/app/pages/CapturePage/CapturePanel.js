@@ -46,7 +46,7 @@ const CapturePanel = props => {
 
     const onStartParallel = () => {
         const now = moment(Date.now()).format('YYYYMMDD_HHmmss');
-        const d = description ? `_${description}_` : '';
+        const d = description ? `_${description}` : '';
         const filename = `${now}${d}`;
 
         props.dispatch({
