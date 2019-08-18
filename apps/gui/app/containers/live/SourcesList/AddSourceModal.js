@@ -41,6 +41,7 @@ const AddSourceModal = props => {
 
     const onAdd = () => {
         const newSources = sources.filter(s => !isEmpty(s));
+        setSources(addTrailing([]));
         props.onAdd(newSources);
     };
 
@@ -50,12 +51,17 @@ const AddSourceModal = props => {
         }
     };
 
+    const beforeClose = () => {
+        setSources(addTrailing([]));
+        props.onClose();
+    };
+    
     return (
         <div onKeyUp={handleKey}>
             <Rodal
                 className="lst-sources-modal"
                 visible={props.visible}
-                onClose={props.onClose}
+                onClose={beforeClose}
                 closeOnEsc
             >
                 <h2 className="lst-sources-modal-header">
@@ -71,7 +77,7 @@ const AddSourceModal = props => {
                 <Button
                     type="info"
                     label={translateC('workflow.cancel')}
-                    onClick={props.onClose}
+                    onClick={beforeClose}
                 />
             </Rodal>
         </div>
