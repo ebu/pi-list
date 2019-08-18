@@ -78,7 +78,7 @@ const getAudioMeta = media => {
         rtp0.encoding !== undefined &&
         rtp0.rate !== undefined
     ) {
-        properties.resolution = `${rtp0.encoding} bit / ${
+        properties.resolution = `${rtp0.codec} / ${rtp0.encoding} ch / ${
             rtp0.rate
         } Hz`;
     }
