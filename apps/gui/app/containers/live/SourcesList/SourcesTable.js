@@ -30,18 +30,19 @@ const SourcesTable = props => {
             width: 60,
         },
         {
+            Header: translateX('live.sources.destination_address'),
+            headerClassName: 'lst-text-left lst-table-header',
+            accessor: 'meta.network.destination',
+            className: 'lst-text-left',
+            width: 150,
+        },
+        {
             Header: '',
             headerClassName: 'lst-text-left lst-table-header',
             accessor: 'meta.format',
             className: 'lst-text-left',
             Cell: renderIcon,
             width: 40,
-        },
-        {
-            Header: translateX('live.sources.destination_address'),
-            headerClassName: 'lst-text-left lst-table-header',
-            accessor: 'meta.network.destination',
-            className: 'lst-text-left',
         },
         {
             Header: translateX('live.sources.format'),

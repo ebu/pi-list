@@ -12,7 +12,6 @@ const Actions = {
     showAddSource: 'showAddSource',
     hideAddSource: 'hideAddSource',
     addSources: 'addSources', // payload: { sources: [ { dstAddr, dstPort } ] },
-    setSearchString: 'setSearchString', // payload: { value : String },
 };
 
 export default Actions;
