@@ -73,7 +73,7 @@ const middleware = (state, action) => {
                     sdp: {
                         streams: [{
                             dstAddr: source.dstAddr,
-                            dstPort: source.dstPort,
+                            dstPort: parseInt(source.dstPort),
                         }],
                     },
                 };
