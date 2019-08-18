@@ -42,10 +42,10 @@ const Toolbar = props => {
                 <Input
                     className="lst-toolbar-search-input"
                     type="text"
-                    value={props.searchString}
+                    value={props.filterString}
                     onChange={evt =>
                         props.dispatch({
-                            type: Actions.setSearchString,
+                            type: actions.setFilterString,
                             payload: { value: evt.currentTarget.value },
                         })
                     }
@@ -54,8 +54,8 @@ const Toolbar = props => {
             <button
                 onClick={() =>
                     props.dispatch({
-                        type: Actions.setSearchString,
-                        payload: { value: null },
+                        type: actions.setFilterString,
+                        payload: { value: '' },
                     })
                 }
             >
@@ -76,11 +76,11 @@ const Toolbar = props => {
 Toolbar.propTypes = {
     dispatch: PropTypes.func.isRequired,
     selectedItems: PropTypes.array.isRequired,
-    searchString: PropTypes.string,
+    filterString: PropTypes.string,
 };
 
 Toolbar.defaultProps = {
-    searchString: '',
+    filterString: '',
 };
 
 export default Toolbar;

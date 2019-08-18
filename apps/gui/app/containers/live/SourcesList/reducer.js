@@ -72,9 +72,6 @@ const reducer = (state, { type, payload }) => {
         case Actions.addSources:
             return { ...state, addSourceModalVisible: false };
 
-        case Actions.setSearchString:
-            return { ...state, searchString: payload.value };
-
         default:
             return state;
     }

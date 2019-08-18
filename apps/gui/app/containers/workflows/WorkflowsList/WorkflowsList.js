@@ -6,12 +6,14 @@ import { reducer } from './reducer';
 import { middleware } from './middleware';
 import {
     tableInitialState,
-    tableReducer,
+    makeTableReducer,
 } from '../../../utils/models/table/tableReducer';
 import tableactions from '../../../utils/models/table/actions';
 import api from '../../../utils/api';
 import { useMqttMessages } from '../../../utils/mqtt';
 import mqtypes from 'ebu_list_common/mq/types';
+
+const tableReducer = makeTableReducer();
 
 const actionsWorkflow = (state, action) => {
     middleware(state, action);

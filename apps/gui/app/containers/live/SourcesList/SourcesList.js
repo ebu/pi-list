@@ -7,7 +7,7 @@ import { reducer } from './reducer';
 import { middleware } from './middleware';
 import {
     tableInitialState,
-    tableReducer,
+    makeTableReducer,
 } from '../../../utils/models/table/tableReducer';
 import tableactions from '../../../utils/models/table/actions';
 import DeleteModal from '../../../components/DeleteModal';
@@ -18,6 +18,16 @@ import DragAndDropUploader from '../../../components/upload/DragAndDropUploader'
 import { translateX } from '../../../utils/translation';
 import AddSourceModal from './AddSourceModal';
 
+const filterFunction = (state) => {
+    return state.data;
+};
+
+const reducerOptions = {
+    filterFunction: filterFunction
+};
+
+const tableReducer = makeTableReducer(reducerOptions);
+
 const actionsWorkflow = (state, action) => {
     middleware(state, action);
     return reducer(tableReducer(state, action), action);
@@ -25,15 +35,14 @@ const actionsWorkflow = (state, action) => {
 const initialState = {
     ...tableInitialState(),
     addSourceModalVisible: false,
-    searchString: null,
 };
 
-const filterData = (data, searchString) => {
-    if (!searchString) {
+const filterData = (data, filterString) => {
+    if (!filterString) {
         return data;
     }
 
-    const regSearch = new RegExp('.*' + searchString + '.*', 'i');
+    const regSearch = new RegExp('.*' + filterString + '.*', 'i');
 
     const filterPredicate = v => {
         const label = _.get(v, ['meta', 'label'], undefined);
@@ -106,7 +115,7 @@ const SourcesList = props => {
     const onModalAddSources = sources =>
         dispatch({ type: Actions.addSources, payload: { sources } });
 
-    const filteredData = filterData(state.data, state.searchString);
+    const filteredData = filterData(state.data, state.filterString);
 
     useEffect(() => {
         const selectedSources = state.data.filter(source => state.selected.includes(source.id));
@@ -134,7 +143,7 @@ const SourcesList = props => {
                 <Toolbar
                     dispatch={dispatch}
                     selectedItems={state.selected}
-                    searchString={state.searchString}
+                    filterString={state.filterString}
                 />
                 <SourcesTable
                     data={filteredData}
