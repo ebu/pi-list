@@ -2,6 +2,7 @@ const util = require('util');
 const fs = require('fs');
 const logger = require('../util/logger');
 const sdpParser = require('sdp-transform');
+const sdpoker = require('sdpoker');
 const uuidv1 = require('uuid/v1');
 const sourcesModel = require('../../../js/common/capture/sources');
 const { getMediaSpecificMeta, getIpInfoFromSdp } = require('../util/sdp');
@@ -9,7 +10,23 @@ const { getMediaSpecificMeta, getIpInfoFromSdp } = require('../util/sdp');
 const readFileAsync = util.promisify(fs.readFile);
 
 const sdpToSource = sdpText => {
+    const rfcErrors = sdpoker.checkRFC4566(sdpText, {});
+    const st2110Errors = sdpoker.checkST2110(sdpText, {});
+    const errors = rfcErrors.concat(st2110Errors);
+    if (errors.length !== 0) {
+        // notify instead of printing
+        logger('sdp-check').error(
+            `Found ${errors.length} error(s) in SDP file:`
+        );
+        for (let c in errors) {
+            logger('sdp-check').error(
+                `${+c + 1}: ${errors[c].message}`
+            );
+        }
+    }
+
     const parsed = sdpParser.parse(sdpText);
+    logger('sdp-parse').info(`sdpToSource - Parsed: ${JSON.stringify(parsed)}`);
 
     // grab src and dst IPs for each stream
     const streams = getIpInfoFromSdp(parsed);
@@ -23,6 +40,7 @@ const sdpToSource = sdpText => {
         sdp: {
             raw: sdpText,
             streams,
+            errors: errors
         },
     };
 
