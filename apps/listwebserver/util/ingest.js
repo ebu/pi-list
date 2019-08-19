@@ -453,8 +453,7 @@ function sdpParseIp(req, res, next) {
     readFileAsync(req.file.path)
         .then(sdp => {
             const parsed = sdp_parser.parse(sdp.toString());
-
-            console.log(parsed);
+            
             // grab src and dst IPs for each stream
             const streams = parsed.media.map(function(media) {
                 const dstAddr = _.get(media, 'sourceFilter.destAddress');

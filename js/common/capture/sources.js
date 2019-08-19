@@ -21,7 +21,12 @@
                 dstAddr: '239.20.112.1',
                 dstPort: 50020,
                 srcAddr: '192.168.8.34' 
-            } ] 
+            } ],
+            errors: [
+                {
+                    // as received from SDPoker
+                }
+            ]
         }
 
         /// if kind === 'nmos'

@@ -133,6 +133,7 @@ const CapturePanel = props => {
                     onClick={onStartParallel}
                     disabled={props.sources.length < 2}
                 />
+                <span>{props.sources.length} sources</span>
             </div>
         </Panel>
     );
