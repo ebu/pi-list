@@ -2,6 +2,7 @@ const commander = require('commander');
 const yamlParser = require('read-yaml');
 const deepFreeze = require('deep-freeze');
 const path = require('./path');
+const { URL } = require('url');
 
 function parseNmosArguments(args) {
     return args.nmos || null;
