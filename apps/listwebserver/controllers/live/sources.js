@@ -23,10 +23,21 @@ const sendMqttUpdate = payload =>
         msg: payload,
     });
 
-const getMetaForNmosSource = source => ({
-    label: _.get(source, ['nmos', 'sender', 'label']),
-    format: _.get(source, ['nmos', 'sender', 'flow', 'format']),
-});
+const getMetaForNmosSource = source => {
+    const device = _.get(source, ['nmos', 'sender', 'device', 'label']);
+    const flow = _.get(source, ['nmos', 'sender', 'flow', 'label']);
+    const sender = _.get(source, ['nmos', 'sender', 'label']);
+
+    const label = [device, flow, sender].join('-');
+    if (!label) {
+        logger('live-sources').info(`No label for sender: ${_source.id}`);
+    }
+
+    return {
+        label: label,
+        format: _.get(source, ['nmos', 'sender', 'flow', 'format']),
+    };
+};
 
 const getMetaForUserDefinedSource = source => {
     const meta = {
@@ -91,6 +102,11 @@ async function mapAddedNmosToSource(sender) {
         meta: {},
     };
 
+    const nmMeta = getMetaForNmosSource(source);
+    source.meta = {
+        ...nmMeta,
+    };
+
     try {
         const url = sender.manifest_href;
         if (sender.manifest_href === undefined) {
@@ -103,6 +119,9 @@ async function mapAddedNmosToSource(sender) {
         const getConfig = { timeout: 1000 };
         const response = await axios.get(url, getConfig);
         source.sdp = { raw: response.data.toString() };
+        logger('live-sources').info(
+            `Getting SDP for ${sender.id}:\n${source.sdp.raw}`
+        );
         const parsed = sdpParser.parse(source.sdp.raw);
         source.sdp.parsed = parsed;
 
@@ -116,11 +135,10 @@ async function mapAddedNmosToSource(sender) {
 
         const media = parsed.media[0];
         const ssMeta = getMediaSpecificMeta(media);
-        const nmMeta = getMetaForNmosSource(source);
 
         source.meta = {
+            ...source.meta,
             ...ssMeta,
-            ...nmMeta,
         };
     } catch (err) {
         logger('live-sources').error(`Error getting SDP file: ${err.message}`);
@@ -135,12 +153,14 @@ if (!onUpdate) {
     return;
 }
 
-const onChanged = ({ added, removedIds }) => {
+const onChanged = async ({ added, removedIds }) => {
     const removedIdsSet = new Set(removedIds);
 
     const notRemoved = nmosSources.filter(s => !removedIdsSet.has(s.id));
 
-    const addedSourcesPromises = added.map(a => mapAddedNmosToSource(a));
+    const addedSourcesPromises = added.map(
+        async a => await mapAddedNmosToSource(a)
+    );
 
     Promise.all(addedSourcesPromises).then(addedSources => {
         nmosSources = [...notRemoved, ...addedSources];

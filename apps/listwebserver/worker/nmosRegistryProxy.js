@@ -39,6 +39,7 @@ const getAdditionalSenderData = async (sender) => {
                 })
             )
             .catch(error => {
+                logger("nmos-crawler").error(`Error getting flow or device information for ${sender.id}`);
                 reject(error);
             });
     });
