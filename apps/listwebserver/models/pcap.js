@@ -17,6 +17,10 @@ const PcapSchema = new mongoose.Schema({
         unique: false,
         required: true
     },
+    capture_file_name: {
+        type: String,
+        required: true
+    },
     pcap_file_name: {
         type: String,
         required: true

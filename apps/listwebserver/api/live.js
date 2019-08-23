@@ -4,7 +4,6 @@ const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const API_ERRORS = require('../enums/apiErrors');
 const LiveStream = require('../models/liveStream');
 const fs = require('../util/filesystem');
-const { pcapIngest, generateRandomPcapDefinition } = require('../util/ingest');
 const liveSources = require('../controllers/live/sources');
 
 // get all live streams, active or not

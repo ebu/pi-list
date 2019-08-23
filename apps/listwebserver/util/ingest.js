@@ -28,8 +28,12 @@ function getUserFolder(req) {
     return `${program.folder}/${req.session.passport.user.id}`;
 }
 
-function generateRandomPcapFilename() {
-    return `${Date.now()}_${uuidv1()}.pcap`;
+function generateRandomPcapFilename (file) {
+    const extensionCharIdx = file.originalname.lastIndexOf('.');
+    const fileExtension =
+        extensionCharIdx > -1 ? '.' + file.originalname.substring(extensionCharIdx + 1) : '';
+
+    return `${Date.now()}_${uuidv1()}${fileExtension}`;
 }
 
 function generateRandomPcapDefinition(req, optionalPcapId) {
@@ -62,15 +66,12 @@ function pcapFileAvailableFromReq(req, res, next) {
     }
 }
 
-function pcapPreProcessing(req, res, next) {
+/**
+ * Given a network capture file, convert it to PCAP format before ingestion.
+ */
+function pcapFormatConversion (req, res, next) {
     const userID = req.session.passport.user.id;
     const pcapId = req.pcap.uuid;
-    const { withMongo } = argumentsToCmd();
-
-    const streamPreProcessorCommand = `"${program.cpp}/stream_pre_processor" "${
-        req.file.path
-    }" ${pcapId} ${withMongo}`;
-
     const originalFilename = req.body.originalFilename || req.file.originalname;
 
     websocketManager.instance().sendEventToUser(userID, {
@@ -81,12 +82,73 @@ function pcapPreProcessing(req, res, next) {
             pcap_file_name: req.file.filename,
             date: Date.now(),
             progress: 33,
-        },
+        }
     });
+
+    const uploadedFilePath = req.file.path;
+    const extensionCharIdx = uploadedFilePath.lastIndexOf('.');
+    const uploadedFileExtension =
+        extensionCharIdx > -1 ? uploadedFilePath.substring(extensionCharIdx + 1) : '';
+
+    if (uploadedFileExtension.toLowerCase() !== 'pcap') {
+
+        const fileExtensionRegex = new RegExp(uploadedFileExtension + '$', 'i');
+        let convertedFilePath = '';
+        if (uploadedFileExtension !== '') {
+            convertedFilePath = uploadedFilePath.replace(fileExtensionRegex, 'pcap');
+        }
+        else convertedFilePath = uploadedFilePath + '.pcap';
+
+        const editcapConversionCommand = `editcap ${uploadedFilePath} ${convertedFilePath} -F pcap`;
+        logger('pcap-format-conversion').info(`Command: ${editcapConversionCommand}`);
+
+        exec(editcapConversionCommand)
+            .then (output => {
+
+                if (output.stdout.length > 0)
+                    logger('pcap-conversion-process').info(output.stdout);
+                if (output.stderr.length > 0)
+                    logger('pcap-conversion-process').info(output.stderr);
+
+                res.locals.pcapFileName =
+                    uploadedFileExtension !== '' ?
+                        req.file.filename.replace(fileExtensionRegex, 'pcap') :
+                        req.file.filename + '.pcap';
+                res.locals.pcapFilePath = convertedFilePath;
+                next();
+            })
+            .catch (err => {
+                logger('pcap-conversion-process').info("Failed to convert capture file");
+                logger('pcap-conversion--process').info(err.toString());
+
+                websocketManager.instance().sendEventToUser(userID, {
+                    event: WS_EVENTS.PCAP_FILE_FAILED,
+                    data: { id: pcapId, progress: 0, error: err.toString() },
+                });
+            });
+    }
+    else {
+        res.locals.pcapFileName = req.file.filename;
+        res.locals.pcapFilePath = uploadedFilePath;
+        next();
+    }
+}
+
+function pcapPreProcessing(req, res, next) {
+    const userID = req.session.passport.user.id;
+    const pcapId = req.pcap.uuid;
+    const { withMongo } = argumentsToCmd();
+
+    const streamPreProcessorCommand = `"${program.cpp}/stream_pre_processor" "${
+        res.locals.pcapFilePath
+    }" ${pcapId} ${withMongo}`;
+
+    const originalFilename = req.body.originalFilename || req.file.originalname;
 
     logger('stream-pre-processor').info(
         `Command: ${streamPreProcessorCommand}`
     );
+
     exec(streamPreProcessorCommand)
         .then(output => {
             logger('stream-pre-process').info(output.stdout);
@@ -96,7 +158,8 @@ function pcapPreProcessing(req, res, next) {
                 { id: pcapId },
                 {
                     file_name: originalFilename,
-                    pcap_file_name: req.file.filename,
+                    capture_file_name: req.file.filename,
+                    pcap_file_name: res.locals.pcapFileName,
                     owner_id: userID,
                     generated_from_network: req.pcap.from_network
                         ? true
@@ -120,7 +183,8 @@ function pcapPreProcessing(req, res, next) {
                 { id: pcapId },
                 {
                     file_name: originalFilename,
-                    pcap_file_name: req.file.filename,
+                    capture_file_name: req.file.filename,
+                    pcap_file_name: res.locals.pcapFileName,
                     owner_id: userID,
                     generated_from_network: req.pcap.from_network
                         ? true
@@ -195,7 +259,7 @@ const pcapFullAnalysis = async (req, res, next) => {
     const st2110ExtractorCommand = `"${
         program.cpp
     }/st2110_extractor" ${pcapId} "${
-        req.file.path
+        res.locals.pcapFilePath
     }" "${pcapFolder}" ${withInflux} ${withMongo}`;
 
     logger('st2110_extractor').info(`Command: ${st2110ExtractorCommand}`);
@@ -498,6 +562,7 @@ module.exports = {
     generateRandomPcapDefinition,
     pcapIngest: [
         pcapFileAvailableFromReq,
+        pcapFormatConversion,
         pcapPreProcessing,
         pcapFullAnalysis,
         videoConsolidation,

@@ -65,6 +65,7 @@ export default {
     getPcaps: () => request.get('pcap'),
     getPcap: pcapID => request.get(`pcap/${pcapID}`),
     downloadPcap: pcapID => request.get(`pcap/${pcapID}/download`),
+    downloadOriginalCaptureUrl: pcapID => `${API_URL}/pcap/${pcapID}/download_original`,
     downloadPcapUrl: pcapID => `${API_URL}/pcap/${pcapID}/download`,
     deletePcap: pcapID => request.delete(`pcap/${pcapID}`),
     getStreamsFromPcap: pcapID => request.get(`pcap/${pcapID}/streams`),
