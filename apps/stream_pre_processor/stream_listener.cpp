@@ -8,16 +8,27 @@ using namespace ebu_list::st2110;
 
 namespace
 {
-    void save_on_db(const db_serializer& db, const stream_with_details& stream_info)
+    void save_on_db(const db_serializer& db, const stream_with_details& stream_info,
+                    int64_t num_packets = 0, uint16_t num_dropped_packets = 0)
     {
-        db.insert(constants::db::offline, constants::db::collections::streams, stream_with_details_serializer::to_json(stream_info));
+
+        nlohmann::json serialized_streams_details = stream_with_details_serializer::to_json(stream_info);
+        if (num_packets > 0) {
+            serialized_streams_details["statistics"]["packet_count"] = num_packets;
+            serialized_streams_details["statistics"]["dropped_packet_count"] = num_dropped_packets;
+        }
+
+        db.insert(constants::db::offline, constants::db::collections::streams, serialized_streams_details);
     }
 }
 
 stream_listener::stream_listener(rtp::packet first_packet, std::string pcap_id, std::string mongo_url)
-    : detector_(first_packet)
-    , db_(std::move(mongo_url))
+    : detector_(first_packet),
+      num_packets_(1),
+      db_(std::move(mongo_url))
 {
+    seqnum_analyzer_.handle_packet(static_cast<uint16_t>(first_packet.info.rtp.view().sequence_number()));
+
     stream_id_.network.source_mac = first_packet.info.ethernet_info.source_address;
     stream_id_.network.source = source(first_packet.info.udp);
     stream_id_.network.destination_mac = first_packet.info.ethernet_info.destination_address;
@@ -30,6 +41,12 @@ stream_listener::stream_listener(rtp::packet first_packet, std::string pcap_id, 
 void stream_listener::on_data(const rtp::packet& packet)
 {
     detector_.on_data(packet);
+
+    // NOTE: seqnum_analyzer_ is looking for dropped packets but only for
+    // streams of unkown types. Therefore it only assumes the presence of
+    // RTP's sequence number field, hence the uint16_t qualification.
+    seqnum_analyzer_.handle_packet(static_cast<uint16_t>(packet.info.rtp.view().sequence_number()));
+    num_packets_++;
 }
 
 void stream_listener::on_complete()
@@ -88,7 +105,10 @@ void stream_listener::on_complete()
     if (is_valid)
     {
         stream_with_details swd{ stream_id_, details };
-        save_on_db(db_, swd);
+
+        if (stream_id_.state != StreamState::NEEDS_INFO)
+            save_on_db(db_, swd);
+        else save_on_db(db_, swd, num_packets_, static_cast<uint16_t>(seqnum_analyzer_.dropped_packets()));
     }
 
     return;
