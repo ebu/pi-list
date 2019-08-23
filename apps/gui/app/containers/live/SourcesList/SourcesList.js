@@ -17,6 +17,7 @@ import api from '../../../utils/api';
 import DragAndDropUploader from '../../../components/upload/DragAndDropUploader';
 import { translateX } from '../../../utils/translation';
 import AddSourceModal from './AddSourceModal';
+import './SourcesList.scss';
 
 const filterFunction = (state) => {
     return state.data;
@@ -131,7 +132,7 @@ const SourcesList = props => {
     }, [state.selected]);
 
     return (
-        <div>
+        <div className="lst-sources-list">
             <DeleteModal
                 label="live.sources.delete_header"
                 message="live.sources.delete_message"

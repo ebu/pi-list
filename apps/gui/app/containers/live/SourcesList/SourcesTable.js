@@ -34,7 +34,7 @@ const SourcesTable = props => {
             headerClassName: 'lst-text-left lst-table-header',
             accessor: 'meta.network.destination',
             className: 'lst-text-left',
-            width: 150,
+            width: 200,
         },
         {
             Header: '',
