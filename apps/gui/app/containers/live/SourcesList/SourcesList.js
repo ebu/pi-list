@@ -42,7 +42,15 @@ const filterData = (data, filterString) => {
         return data;
     }
 
-    const regSearch = new RegExp('.*' + filterString + '.*', 'i');
+    const tokens = filterString.split(' ').filter(v => v !== '');
+    console.dir(tokens);
+
+    const match = (label) => {
+        return !tokens.some(token => {
+            const regSearch = new RegExp('.*' + token + '.*', 'i');
+            return !label.match(regSearch);
+        });
+    };
 
     const filterPredicate = v => {
         const label = _.get(v, ['meta', 'label'], undefined);
@@ -50,7 +58,7 @@ const filterData = (data, filterString) => {
             return false;
         }
 
-        return label.match(regSearch);
+        return match(label);
     };
 
     return data.filter(filterPredicate);
