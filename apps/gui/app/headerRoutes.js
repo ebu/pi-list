@@ -116,6 +116,12 @@ export default (
                         labelTag="navigation.streams"
                         buttons={[
                             {
+                                labelTag: "pcap.download_networkcapture",
+                                icon: 'file download',
+                                downloadPath: api.downloadOriginalCaptureUrl(props.match.params.pcapID),
+                                onClick: () => { }
+                            },
+                            {
                                 labelTag: "pcap.download_pcap",
                                 icon: 'file download',
                                 downloadPath: api.downloadPcapUrl(props.match.params.pcapID),

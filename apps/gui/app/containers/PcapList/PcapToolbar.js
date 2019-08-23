@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import Button from '../../components/common/Button';
 import { WS_SERVER_URL } from '../../utils/api';
+import { translateX } from '../../utils/translation';
 import Actions from './Actions';
 import { StateContext } from './Context';
 
@@ -36,6 +37,18 @@ const PcapToolbar = props => {
             link
             disabled={props.selectedItems === null || props.selectedItems.length !== 1}
             onClick={() => dispatch({ type: Actions.selectAfter, data: { id: props.selectedItems[0] } })}
+        />
+    );
+
+    const downloadOriginalCapture = (
+        <Button
+            className="lst-header-button"
+            label={translateX('workflow.download_networkcapture')}
+            type="info"
+            link
+            icon="file_download"
+            disabled={props.selectedItems === null || props.selectedItems.length !== 1}
+            onClick={() => dispatch({ type: Actions.downloadSelectOriginalCapture })}
         />
     );
 
@@ -92,6 +105,7 @@ const PcapToolbar = props => {
             {deleteButton}
             {selectBefore}
             {selectAfter}
+            {downloadOriginalCapture}
             {downloadPcap}
             {downloadSdp}
             {downloadJson}

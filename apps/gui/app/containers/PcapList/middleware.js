@@ -28,6 +28,15 @@ const middleware = (state, action) => {
         }
             break;
 
+        case Actions.downloadSelectOriginalCapture: {
+            const filesForDownload = state.selected.map(id => ({
+                url: api.downloadOriginalCaptureUrl(id),
+                filename: `${id}.json`
+            }));
+            downloadFiles(filesForDownload);
+        }
+            break;
+
         case Actions.downloadSelectedPcap: {
             const filesForDownload = state.selected.map(id => ({
                 url: api.downloadPcapUrl(id),

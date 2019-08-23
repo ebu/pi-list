@@ -1,6 +1,6 @@
 import React from 'react';
 import PcapList from '../containers/PcapList';
-import PcapUploader from '../components/PcapUploader';
+import NetworkCaptureUploader from '../components/NetworkCaptureUploader';
 import { translateX } from '../utils/translation';
 import SimpleMessage from '../components/SimpleMessage';
 
@@ -16,9 +16,9 @@ const noData = () => (
 const PcapsPage = props => (
     <div className="row">
         <div className="col-xs-12">
-            <PcapUploader title={translateX('workflow.import_pcap')}>
+            <NetworkCaptureUploader title={translateX('workflow.import_networkcapture')}>
                 <PcapList noDataComponent={noData} />
-            </PcapUploader>
+            </NetworkCaptureUploader>
         </div>
     </div>
 );
