@@ -1,0 +1,20 @@
+@import '../../../style/_animations.scss';
+
+.lst-sources-list .rt-tr {
+    border: 0px solid #ffffff00;
+}
+
+.lst-rt-row {
+    animation-duration: $super-slow-time;
+    margin: 2px 0px 2px 0px;
+    padding: 2px 0px 2px 0px;
+}
+
+.lst-sources-list .rt-tr.-odd {
+    @extend .fade-in;
+    @extend .lst-rt-row;
+}
+.lst-sources-list .rt-tr.-even {
+    @extend .fade-in;
+    @extend .lst-rt-row;
+}
