@@ -21,8 +21,8 @@ function renderDate({ original }) {
             {moment(created).format('YYYY-MM-DD HH:mm:ss')}
         </div>
     ) : (
-        '---'
-    );
+            '---'
+        );
 }
 
 function getStatusIcon(state) {
@@ -75,7 +75,7 @@ function renderLabel({ value }) {
 
 function renderMessage({ value }) {
     if (value.status === wfSchema.status.failed) {
-        return <span>{value.errorMessage}</span>;
+        return <span>{value.errorMessage.toString()}</span>;
     }
     return <span />;
 }
@@ -192,9 +192,9 @@ WorkflowsTable.defaultProps = {
     data: [],
     selectedIds: [],
     selectAll: 0,
-    onSelectId: () => {},
-    onSelectAll: () => {},
-    onClickRow: () => {},
+    onSelectId: () => { },
+    onSelectAll: () => { },
+    onClickRow: () => { },
     noDataComponent: () => null,
 };
 
