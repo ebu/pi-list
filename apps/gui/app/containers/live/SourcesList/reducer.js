@@ -69,12 +69,6 @@ const reducer = (state, { type, payload }) => {
         case Actions.hideAddSource:
             return { ...state, addSourceModalVisible: false };
 
-        case Actions.showStartCapture:
-            return { ...state, startCaptureModalVisible: true };
-
-        case Actions.hideStartCapture:
-            return { ...state, startCaptureModalVisible: false };
-
         case Actions.addSources:
             return { ...state, addSourceModalVisible: false };
 

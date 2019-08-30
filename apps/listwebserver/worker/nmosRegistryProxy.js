@@ -23,7 +23,7 @@ const query_url = is04_query_static_url
     ? `${is04_query_static_url}/x-nmos/query/v${version}`
     : null;
 
-const getAdditionalSenderData = sender => {
+const getAdditionalSenderData = async (sender) => {
     return new Promise((resolve, reject) => {
         const flowUrl = `${query_url}/flows/${sender.flow_id}`;
         const deviceUrl = `${query_url}/devices/${sender.device_id}`;
@@ -39,6 +39,7 @@ const getAdditionalSenderData = sender => {
                 })
             )
             .catch(error => {
+                logger("nmos-crawler").error(`Error getting flow or device information for ${sender.id}`);
                 reject(error);
             });
     });
@@ -59,8 +60,10 @@ const makeIs04Manager = () => {
     let senders = [];
     const onUpdate = new EventEmitter();
 
-    const appendSender = sender => {
+    const appendSender = async (sender) => {
         logger('nmos-crawler').info(`Appending sender ${sender.id}.`);
+
+        await getAdditionalSenderData(sender);
 
         senders.push(sender);
 
@@ -78,17 +81,16 @@ const makeIs04Manager = () => {
     };
 
     const handleCreate = async ({ post }) => {
-        await getAdditionalSenderData(post);
-        appendSender(post);
+        await appendSender(post);
     };
 
     const handleDelete = ({ pre }) => {
         removeSender(pre.id);
     };
 
-    const handleUpdate = ({ pre, post }) => {
+    const handleUpdate = async ({ pre, post }) => {
         removeSender(pre.id);
-        appendSender(post);
+        await appendSender(post);
     };
 
     const createResult = webSocketMonitor.createMonitor(query_url);

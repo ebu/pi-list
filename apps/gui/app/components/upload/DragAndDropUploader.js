@@ -109,7 +109,7 @@ class DragAndDropUploader extends Component {
                 <div className="lst-file-container">
                     <div className={cardClassNames}>
                         <div className={containerClassNames}>
-                            <PanelTitle rightToolbar={rightToolbar} />
+                            <PanelTitle rightToolbar={rightToolbar} {...this.props} />
                             <hr />
                             <div onClick={(e) => e.stopPropagation()}>
                                 {this.props.children}
@@ -125,13 +125,15 @@ class DragAndDropUploader extends Component {
 DragAndDropUploader.propTypes = {
     className: PropTypes.string,
     uploadButtonLabel: PropTypes.string,
-    uploadApi: PropTypes.func
+    uploadApi: PropTypes.func,
+    title: PropTypes.string,
 };
 
 DragAndDropUploader.defaultProps = {
     className: '',
     uploadButtonLabel: '',
-    uploadApi: () => { }
+    uploadApi: () => { },
+    title: null,
 };
 
 export default withNotifications(DragAndDropUploader);

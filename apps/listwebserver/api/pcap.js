@@ -54,7 +54,7 @@ const storage = multer.diskStorage({
         cb(null, req.pcap.folder);
     },
     filename: function(req, file, cb) {
-        cb(null, generateRandomPcapFilename());
+        cb(null, generateRandomPcapFilename(file));
     },
 });
 
@@ -145,6 +145,20 @@ router.get('/:pcapID/report', (req, res) => {
         );
 });
 
+/* Download a original capture file */
+router.get('/:pcapID/download_original', (req, res) => {
+    const { pcapID } = req.params;
+
+    Pcap.findOne({ id: pcapID })
+        .exec()
+        .then(data => {
+            const path = `${getUserFolder(req)}/${pcapID}/${
+                data.capture_file_name
+            }`;
+            fs.downloadFile(path, `${data.file_name}`, res);
+        });
+});
+
 /* Download a PCAP File */
 router.get('/:pcapID/download', (req, res) => {
     const { pcapID } = req.params;
@@ -155,13 +169,26 @@ router.get('/:pcapID/download', (req, res) => {
             const path = `${getUserFolder(req)}/${pcapID}/${
                 data.pcap_file_name
             }`;
-            fs.downloadFile(path, `${data.file_name}.pcap`, res);
+
+            let filename = data.file_name;
+            const extensionCharIdx = filename.lastIndexOf('.');
+            const fileExtension = extensionCharIdx > -1 ? filename.substring(extensionCharIdx + 1) : '';
+
+            if (fileExtension !== '') {
+                const fileExtensionRegex = new RegExp(fileExtension + '$', 'i');
+                filename = filename.replace(fileExtensionRegex, 'pcap');
+            }
+            else filename = filename + '.pcap';
+
+            fs.downloadFile(path, filename, res);
         });
 });
 
 /* Get sdp.sdp file for a pcap */
 router.get('/:pcapID/sdp', (req, res) => {
     const { pcapID } = req.params;
+
+    logger('sdp-get').info(`Getting SDP for ${pcapID}`);
 
     Pcap.findOne({ id: pcapID })
         .exec()
@@ -511,7 +538,7 @@ function renderMp3(req, res) {
 
     Stream.findOne({ id: streamID })
         .exec()
-        .then((data) => {
+        .then(data => {
             const folderPath = `${getUserFolder(req)}/${pcapID}/${streamID}/`;
             const rawFilePath = `${folderPath}/raw`;
             const mp3FilePath = `${folderPath}/audio-${channels}.mp3`;
@@ -560,7 +587,7 @@ function renderMp3(req, res) {
 router.get('/:pcapID/stream/:streamID/downloadmp3', (req, res) => {
     const { pcapID, streamID } = req.params;
     var { channels } = req.query;
-    if ((channels === undefined) || (channels === '')) {
+    if (channels === undefined || channels === '') {
         channels = '0,1'; // keep the 2 first channels by default
     }
     const folderPath = `${getUserFolder(req)}/${pcapID}/${streamID}`;

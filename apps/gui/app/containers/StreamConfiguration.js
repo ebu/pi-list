@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { find, merge, cloneDeep } from 'lodash';
+import { find, get, merge, cloneDeep } from 'lodash';
 import Select from 'react-select';
 import asyncLoader from '../components/asyncLoader';
 import FormInput from '../components/common/FormInput';
@@ -19,7 +19,7 @@ import {
 import notifications from '../utils/notifications';
 import Panel from '../components/common/Panel';
 import { renderInformationList } from '../containers/streamPage/utils';
-import { translate, translateC } from '../utils/translation';
+import { translate, translateC, translateX } from '../utils/translation';
 
 class StreamConfiguration extends Component {
     constructor(props) {
@@ -426,6 +426,10 @@ class StreamConfiguration extends Component {
 
     renderNetworkInformation() {
         const netInfo = this.props.stream.network_information;
+        const stats = this.props.stream.statistics;
+        const packet_count = get(this.props.stream, ['analyses', 'rtp_sequence', 'details', 'packet_count'], 0);
+        const dropped_count = get(this.props.stream, ['analyses', 'rtp_sequence', 'details', 'dropped_packets'], 0);
+        const droppedInfo = dropped_count == 0 ? '' : ` (${dropped_count} ${translate('media_information.rtp.dropped')})`;
 
         return (
             <div className="col-xs-12 col-md-6">
@@ -461,6 +465,10 @@ class StreamConfiguration extends Component {
                     {
                         key: translateC('media_information.rtp.ssrc'),
                         value: netInfo.ssrc,
+                    },
+                    {
+                        key: translateC('media_information.rtp.packet_count'),
+                        value: `${packet_count}${droppedInfo}`,
                     },
                 ])}
             </div>

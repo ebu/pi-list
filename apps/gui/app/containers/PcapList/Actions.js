@@ -10,6 +10,7 @@ const Actions = {
     pcapDone: 'pcapDone',
     deletePcap: 'deletePcap', // data: { id : String },
     pcapDeleted: 'pcapDeleted', // data: { id : String },
+    downloadSelectOriginalCapture: 'downloadSelectOriginalCapture', // data: { ids : [ String ] },
     downloadSelectedPcap: 'downloadSelectedPcap', // data: { ids : [ String ] },
     downloadSelectedSdp: 'downloadSelectedSdp', // data: { ids : [ String ] },
     downloadSelectedJsonReport: 'downloadSelectedJsonReport', // data: { ids : [ String ] },

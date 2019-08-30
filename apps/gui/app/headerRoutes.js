@@ -66,11 +66,6 @@ export default (
             path={routeNames.SETTINGS}
             render={() => (<Header labelTag="navigation.settings" />)}
         />
-        <Route
-            exact
-            path={routeNames.CAPTURE}
-            render={() => (<Header labelTag="workflow.capture_stream" />)}
-        />
         <LiveRoute
             path={routeNames.LIVE}
             hideOnFalse
@@ -120,6 +115,12 @@ export default (
                         item={<PcapFileNameHeader {...props} />}
                         labelTag="navigation.streams"
                         buttons={[
+                            {
+                                labelTag: "pcap.download_networkcapture",
+                                icon: 'file download',
+                                downloadPath: api.downloadOriginalCaptureUrl(props.match.params.pcapID),
+                                onClick: () => { }
+                            },
                             {
                                 labelTag: "pcap.download_pcap",
                                 icon: 'file download',

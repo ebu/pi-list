@@ -65,6 +65,7 @@ export default {
     getPcaps: () => request.get('pcap'),
     getPcap: pcapID => request.get(`pcap/${pcapID}`),
     downloadPcap: pcapID => request.get(`pcap/${pcapID}/download`),
+    downloadOriginalCaptureUrl: pcapID => `${API_URL}/pcap/${pcapID}/download_original`,
     downloadPcapUrl: pcapID => `${API_URL}/pcap/${pcapID}/download`,
     deletePcap: pcapID => request.delete(`pcap/${pcapID}`),
     getStreamsFromPcap: pcapID => request.get(`pcap/${pcapID}/streams`),
@@ -218,7 +219,6 @@ export default {
     changeLiveStreamName: (streamID, data) =>
         request.patch(`live/streams/${streamID}/`, data),
     subscribeLiveStream: data => request.put('live/streams/subscribe/', data),
-    subscribePCAP: data => request.put('live/pcap/capture/', data),
     getLiveSources: () => request.get('live/sources/'),
     addLiveSource: source => request.post('live/sources', { source }),
     deleteLiveSources: ids => request.put('live/sources/delete', { ids }),

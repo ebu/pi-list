@@ -2,14 +2,14 @@ const { uploadFile } = require('./upload');
 
 ///////////////////////////////////////////////////////////////////////////////
 
-const ingestFromFile = async (configuration) => {
-    const sourceFile = config.dummy_pcap;
+const ingestFromFile = async (globalConfig, workflowConfig) => {
+    const sourceFile = globalConfig.dummy_pcap;
 
     uploadFile(
         sourceFile,
-        configuration.ingestPutUrl,
-        configuration.cookie,
-        configuration.filename
+        workflowConfig.ingestPutUrl,
+        workflowConfig.cookie,
+        workflowConfig.filename
     );
 };
 

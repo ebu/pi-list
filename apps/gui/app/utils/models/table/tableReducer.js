@@ -6,9 +6,11 @@ const tableInitialState = () => ({
     selected: [],
     selectAll: 0,
     itemsToDelete: [],
+    filterString: null,
 });
 
-const tableReducer = (state, action) => {
+
+const makeTableReducer = (options) => (state, action) => {
     switch (action.type) {
         case actions.toggleRow: {
             const id = action.data.id;
@@ -50,6 +52,9 @@ const tableReducer = (state, action) => {
             });
         }
 
+        case actions.setFilterString:
+            return { ...state, filterString: action.payload.value };
+
         default:
             return state;
     };
@@ -57,5 +62,5 @@ const tableReducer = (state, action) => {
 
 export {
     tableInitialState,
-    tableReducer
+    makeTableReducer
 };

@@ -4,7 +4,7 @@ import { translateX } from '../utils/translation';
 import asyncLoader from '../components/asyncLoader';
 import errorEnum from '../enums/errorEnum';
 import VideoPage from '../containers/VideoPage';
-import AudioPage from '../containers/AudioPage';
+import AudioPage from '../containers/AudioPage/index';
 import AncillaryPage from '../containers/AncillaryPage';
 import ErrorPage from '../components/ErrorPage';
 import routeBuilder from '../utils/routeBuilder';

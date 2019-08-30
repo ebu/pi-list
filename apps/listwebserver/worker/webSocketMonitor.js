@@ -84,6 +84,8 @@ const createMonitor = query_url => {
                     return;
                 }
 
+                // logger("nmos-ws").info("WS message");
+                // logger("nmos-ws").info(e.data);
                 const event = JSON.parse(e.data);
 
                 if (

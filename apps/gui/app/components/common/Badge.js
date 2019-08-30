@@ -33,6 +33,7 @@ const Badge = (props) => {
             'lst-badge--warning': props.type === 'warning',
             'lst-badge--warning2': props.type === 'warning2',
             'lst-badge--info': props.type === 'info',
+            'lst-badge--passive': props.type === 'passive',
             'lst-badge--mini': props.mini
         }
     );
