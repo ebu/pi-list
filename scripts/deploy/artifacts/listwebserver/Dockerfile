@@ -8,11 +8,10 @@ RUN bash nodesource_setup.sh
 RUN apt-get install -y \
         ffmpeg \
         zip \
-        nodejs
+        nodejs \
+        wireshark
 
 RUN npm install -g serve
-RUN apt update
-RUN apt install wireshark
 
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib/
 
