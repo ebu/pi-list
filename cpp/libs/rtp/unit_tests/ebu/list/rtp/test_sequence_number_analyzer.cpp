@@ -8,7 +8,7 @@ using namespace ebu_list::rtp;
 //------------------------------------------------------------------------------
 
 SCENARIO("Sequence number analyser")
-{  
+{
     GIVEN("an empty sequence")
     {
         sequence_number_analyzer<uint32_t> analyzer;
@@ -28,6 +28,25 @@ SCENARIO("Sequence number analyser")
 
         analyzer.handle_packet(0);
         analyzer.handle_packet(1);
+        analyzer.handle_packet(2);
+        analyzer.handle_packet(3);
+
+        WHEN("we check the dropped count")
+        {
+            THEN("it is 0")
+            {
+                REQUIRE(analyzer.dropped_packets() == 0);
+            }
+        }
+    }
+
+    GIVEN("a continuous sequence with a repeated packet")
+    {
+        sequence_number_analyzer<uint32_t> analyzer;
+
+        analyzer.handle_packet(0);
+        analyzer.handle_packet(1);
+        analyzer.handle_packet(2);
         analyzer.handle_packet(2);
         analyzer.handle_packet(3);
 

@@ -66,10 +66,10 @@ const reducer = (state, { type, payload }) => {
         case Actions.showAddSource:
             return { ...state, addSourceModalVisible: true };
 
-        case Actions.addSources:
+        case Actions.hideAddSource:
             return { ...state, addSourceModalVisible: false };
 
-        case Actions.hideAddSource:
+        case Actions.addSources:
             return { ...state, addSourceModalVisible: false };
 
         default:

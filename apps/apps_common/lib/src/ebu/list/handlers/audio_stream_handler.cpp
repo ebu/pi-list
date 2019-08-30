@@ -1,8 +1,9 @@
-#include "pch.h"
 #include "ebu/list/handlers/audio_stream_handler.h"
-#include "ebu/list/st2110/d30/audio_description.h"
 #include "ebu/list/core/idioms.h"
 #include "ebu/list/core/math.h"
+#include "ebu/list/net/multicast_address_analyzer.h"
+#include "ebu/list/st2110/d30/audio_description.h"
+#include "pch.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110::d30;
@@ -32,7 +33,17 @@ audio_stream_handler::audio_stream_handler(rtp::packet first_packet, serializabl
 {
     logger()->info("created handler for {:08x}, {}->{}", info_.network.ssrc, to_string(info_.network.source), to_string(info_.network.destination));
 
-    info.state = StreamState::ON_GOING_ANALYSIS;
+    info_.state = StreamState::ON_GOING_ANALYSIS;
+
+    info_.network.valid_multicast_mac_address =
+        is_multicast_address(first_packet.info.ethernet_info.destination_address);
+
+    info_.network.valid_multicast_ip_address =
+        is_multicast_address(first_packet.info.udp.destination_address);
+
+    info_.network.multicast_address_match =
+        is_same_multicast_address(first_packet.info.ethernet_info.destination_address,
+                                  first_packet.info.udp.destination_address);
 
     audio_description_.first_packet_ts = first_packet.info.udp.packet_time;
     using float_sec = std::chrono::duration<float, std::ratio<1, 1>>;

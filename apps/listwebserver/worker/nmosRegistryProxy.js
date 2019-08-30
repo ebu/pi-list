@@ -4,6 +4,9 @@ const _ = require('lodash');
 const logger = require('../util/logger');
 const websocketManager = require('../managers/websocket');
 const program = require('../util/programArguments');
+const WebSocketClient = require('websocket').client;
+const W3CWebSocket = require('websocket').w3cwebsocket;
+const webSocketMonitor = require('./webSocketMonitor');
 
 const updateEvent = 'updateEvent';
 
@@ -16,23 +19,11 @@ const is04_query_static_url = _.get(program, [
 ]);
 const version = '1.2';
 
-const query_url = is04_query_static_url ? `${is04_query_static_url}/x-nmos/query/v${version}` : null;
+const query_url = is04_query_static_url
+    ? `${is04_query_static_url}/x-nmos/query/v${version}`
+    : null;
 
-const intervalToUpdate = 1000;
-
-const getIds = data => new Set(data.map(d => d.id));
-const difference = (sa, sb) => [...sa].filter(x => !sb.has(x));
-
-const calculateDelta = (prev, current) => {
-    const prevIds = getIds(prev);
-    const currentIds = getIds(current);
-    const removedIds = difference(prevIds, currentIds);
-    const addedIds = difference(currentIds, prevIds);
-
-    return { addedIds, removedIds };
-};
-
-const getAdditionalSenderData = sender => {
+const getAdditionalSenderData = async (sender) => {
     return new Promise((resolve, reject) => {
         const flowUrl = `${query_url}/flows/${sender.flow_id}`;
         const deviceUrl = `${query_url}/devices/${sender.device_id}`;
@@ -48,77 +39,72 @@ const getAdditionalSenderData = sender => {
                 })
             )
             .catch(error => {
+                logger("nmos-crawler").error(`Error getting flow or device information for ${sender.id}`);
                 reject(error);
             });
     });
 };
-
-const getAdditionalSendersData = senders =>
-    Promise.all(senders.map(sender => getAdditionalSenderData(sender)));
 
 const makeIs04Manager = () => {
     if (query_url === null) {
         logger('nmos-crawler').info(
             'No static configuration defined. No IS-04 registry.'
         );
-        
+
         return {
             getSenders: () => [],
-            onUpdate: new EventEmitter()
+            onUpdate: new EventEmitter(),
         };
     }
 
     let senders = [];
-
     const onUpdate = new EventEmitter();
-    const getSenders = () => senders;
 
-    const onSendersData = data => {
-        const newSenders = _.cloneDeep(data);
-        const { addedIds, removedIds } = calculateDelta(senders, newSenders);
+    const appendSender = async (sender) => {
+        logger('nmos-crawler').info(`Appending sender ${sender.id}.`);
 
-        const addedIdsSet = new Set(addedIds);
-        getAdditionalSendersData(
-            newSenders.filter(sender => addedIdsSet.has(sender.id))
-        )
-            .then(addedSenders => {
-                if (addedIds.length !== 0 || removedIds.length !== 0) {
-                    const data = { added: addedSenders, removedIds };
-                    onUpdate.emit(updateEvent, data);
-                }
-                senders = newSenders;
-            })
-            .catch(err => console.log('Error getting senders:', err));
+        await getAdditionalSenderData(sender);
+
+        senders.push(sender);
+
+        const data = { added: [sender], removedIds: [] };
+        onUpdate.emit(updateEvent, data);
     };
 
-    const setTimer = () => {
-        setTimeout(checkRegistry, 1000);
+    const removeSender = senderId => {
+        logger('nmos-crawler').info(`Removing sender ${senderId}.`);
+
+        senders = senders.filter(s => s.id !== senderId);
+        
+        const data = { added: [], removedIds: [senderId] };
+        onUpdate.emit(updateEvent, data);
     };
 
-    const checkRegistry = () => {
-        // logger('nmos-crawler').info('Checking registry for senders');
-        const query_all_senders_url = `${query_url}/senders`;
-
-        axios
-            .get(query_all_senders_url)
-            .then(response => {
-                setTimer();
-
-                if (!response.data) {
-                    return;
-                }
-
-                onSendersData(response.data);
-            })
-            .catch(error => {
-                console.log('Could not contact the NMOS registry');
-                setTimer();
-            });
+    const handleCreate = async ({ post }) => {
+        await appendSender(post);
     };
 
-    checkRegistry();
+    const handleDelete = ({ pre }) => {
+        removeSender(pre.id);
+    };
 
-    return { getSenders, onUpdate };
+    const handleUpdate = async ({ pre, post }) => {
+        removeSender(pre.id);
+        await appendSender(post);
+    };
+
+    const createResult = webSocketMonitor.createMonitor(query_url);
+    const wsEvents = createResult.eventEmitter;
+    wsEvents.on(webSocketMonitor.events.create, handleCreate);
+    wsEvents.on(webSocketMonitor.events.delete, handleDelete);
+    wsEvents.on(webSocketMonitor.events.update, handleUpdate);
+
+    ///////////////////////////////////////////////////
+
+    return {
+        getSenders: () => senders,
+        onUpdate,
+    };
 };
 
 const { getSenders, onUpdate } = makeIs04Manager();

@@ -1,13 +1,11 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { isString, isObject, pick, omit } from 'lodash';
 import * as d3 from 'd3';
 import classnames from 'classnames';
 import asyncLoader from 'components/asyncLoader';
 import Button from 'components/common/Button';
-
-const defaultProps = {
-    yAxisTick: 7,
-};
+import { translateC } from '../utils/translation';
 
 class LineChart extends Component {
     constructor(props) {
@@ -95,9 +93,12 @@ class LineChart extends Component {
     }
 
     render() {
+        const title = this.props.title
+            ? this.props.title
+            : translateC(this.props.titleTag);
         return (
             <Fragment>
-                {this._renderTitle(this.props.title)}
+                {this._renderTitle(title)}
                 <div
                     className="lst-css-line-chart"
                     ref={ref => (this.chartContainer = ref)}
@@ -114,14 +115,18 @@ class LineChart extends Component {
                         <g
                             ref={ref => (this.graphArea = ref)}
                             className="lst-svg-line-chart-area"
-                            transform={`translate(${this.margin.left}, ${this.margin.right})`}
+                            transform={`translate(${this.margin.left}, ${
+                                this.margin.right
+                            })`}
                         />
                         <rect
                             className="lst-svg-line-chart--zoom-area"
                             ref={ref => (this.graphInteractionArea = ref)}
                             width={this.state.chartWidth}
                             height={this.state.chartHeight}
-                            transform={`translate(${this.margin.left}, ${this.margin.right})`}
+                            transform={`translate(${this.margin.left}, ${
+                                this.margin.right
+                            })`}
                         />
                     </svg>
                     {this._renderChartLegend()}
@@ -131,15 +136,9 @@ class LineChart extends Component {
     }
 
     _renderTitle(title) {
-        if (isString(title)) {
-            return (
-                <h4 className="lst-css-line-chart--title lst-no-margin">
-                    {title}
-                </h4>
-            );
-        }
-
-        return null;
+        return (
+            <h4 className="lst-css-line-chart--title lst-no-margin">{title}</h4>
+        );
     }
 
     _renderAxis() {
@@ -197,7 +196,7 @@ class LineChart extends Component {
                 .attr('stroke-width', this.props.lineWidth)
                 .attr('d', line)
                 .style('stroke-dasharray', () => {
-                    return (chart.type === 'dashed') ? ('3, 3') : ('3, 0');
+                    return chart.type === 'dashed' ? '3, 3' : '3, 0';
                 });
         });
     }
@@ -355,7 +354,15 @@ class LineChart extends Component {
     }
 }
 
-LineChart.defaultProps = defaultProps;
+LineChart.defaultProps = {
+    yAxisTick: 7,
+};
+
+LineChart.propTypes = {
+    title: PropTypes.string,
+    titleTag: PropTypes.string,
+    yAxisTick: PropTypes.number,
+};
 
 export default asyncLoader(LineChart, {
     asyncRequests: {

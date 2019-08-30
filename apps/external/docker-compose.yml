@@ -1,6 +1,5 @@
 influxdb:
   image: influxdb:1.4.2
-  container_name: influxdb
   ports:
     - "8086:8086"
 
@@ -11,7 +10,6 @@ mongo:
 
 rabbitmq:
   image: pedroalvesferreira/rabbitmq-with-web-mqtt
-  container_name: rabbitmq
   ports:
     - "5672:5672"
     - "15672:15672"

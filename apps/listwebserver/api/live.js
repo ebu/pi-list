@@ -4,26 +4,7 @@ const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const API_ERRORS = require('../enums/apiErrors');
 const LiveStream = require('../models/liveStream');
 const fs = require('../util/filesystem');
-const { performCapture } = require('../controllers/capture');
-const { pcapIngest, generateRandomPcapDefinition } = require('../util/ingest');
 const liveSources = require('../controllers/live/sources');
-
-// Start a PCAP capture
-router.put('/pcap/capture',
-    // generate pcap information
-    (req, res, next) => {
-        // sets req.pcap, which is used by the ingest system
-        req.pcap = generateRandomPcapDefinition(req, req.body.capture_id);
-
-        req.pcap.from_network = true; // sets this pcap as generated from network
-        fs.createIfNotExists(req.pcap.folder);
-        next();
-    },
-    // do the capture
-    performCapture,
-    // do the ingest
-    ...pcapIngest
-);
 
 // get all live streams, active or not
 router.get('/streams', (req, res) => {

@@ -16,15 +16,8 @@ export default {
             exact: false,
         },
         {
-            link: routeNames.CAPTURE,
-            icon: 'fiber_manual_record',
-            labelTag: 'navigation.capture',
-            exact: false,
-            liveOnly: true,
-        },
-        {
             link: routeNames.LIVE_SOURCES,
-            icon: 'settings_input_antenna',
+            icon: 'fiber_manual_record',
             labelTag: 'navigation.live_sources',
             exact: false,
             liveOnly: true,

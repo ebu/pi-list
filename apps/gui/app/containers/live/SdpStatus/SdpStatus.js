@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import Icon from '../../../components/common/Icon';
-import './CapturePanel.scss';
+import './SdpStatus.scss';
 
 const SdpStatus = ({ errors }) => {
     if (errors === null || errors === undefined) {

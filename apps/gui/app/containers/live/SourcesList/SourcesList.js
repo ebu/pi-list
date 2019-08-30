@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer, useState } from 'react';
+import PropTypes from 'prop-types';
 import Toolbar from './Toolbar';
 import SourcesTable from './SourcesTable';
 import Actions from './Actions';
@@ -6,10 +7,9 @@ import { reducer } from './reducer';
 import { middleware } from './middleware';
 import {
     tableInitialState,
-    tableReducer,
+    makeTableReducer,
 } from '../../../utils/models/table/tableReducer';
 import tableactions from '../../../utils/models/table/actions';
-import routeBuilder from '../../../utils/routeBuilder';
 import DeleteModal from '../../../components/DeleteModal';
 import { useMqttMessages } from '../../../utils/mqtt';
 import mqtypes from 'ebu_list_common/mq/types';
@@ -17,6 +17,17 @@ import api from '../../../utils/api';
 import DragAndDropUploader from '../../../components/upload/DragAndDropUploader';
 import { translateX } from '../../../utils/translation';
 import AddSourceModal from './AddSourceModal';
+import './SourcesList.scss';
+
+const filterFunction = (state) => {
+    return state.data;
+};
+
+const reducerOptions = {
+    filterFunction: filterFunction
+};
+
+const tableReducer = makeTableReducer(reducerOptions);
 
 const actionsWorkflow = (state, action) => {
     middleware(state, action);
@@ -27,16 +38,39 @@ const initialState = {
     addSourceModalVisible: false,
 };
 
+const filterData = (data, filterString) => {
+    if (!filterString) {
+        return data;
+    }
+
+    const tokens = filterString.split(' ').filter(v => v !== '');
+    console.dir(tokens);
+
+    const match = (label) => {
+        return !tokens.some(token => {
+            const regSearch = new RegExp('.*' + token + '.*', 'i');
+            return !label.match(regSearch);
+        });
+    };
+
+    const filterPredicate = v => {
+        const label = _.get(v, ['meta', 'label'], undefined);
+        if (label === undefined) {
+            return false;
+        }
+
+        return match(label);
+    };
+
+    return data.filter(filterPredicate);
+};
+
 const SourcesList = props => {
     const [state, dispatch] = useReducer(actionsWorkflow, initialState);
     const toggleRow = id =>
         dispatch({ type: tableactions.toggleRow, data: { id } });
     const toggleSelectAll = () =>
         dispatch({ type: tableactions.toggleSelectAll });
-    const onClickRow = id => {
-        // const route = routeBuilder.live_flow_page(id);
-        // window.appHistory.push(route);
-    };
 
     const onMessage = (topic, message) => {
         dispatch({
@@ -85,40 +119,60 @@ const SourcesList = props => {
         }
     };
 
-    const onModalClose = () => dispatch({ type: Actions.hideAddSource });
+    const onAddSourceModalClose = () =>
+        dispatch({ type: Actions.hideAddSource });
     const onModalAddSources = sources =>
         dispatch({ type: Actions.addSources, payload: { sources } });
 
+    const filteredData = filterData(state.data, state.filterString);
+
+    useEffect(() => {
+        const selectedSources = state.data.filter(source => state.selected.includes(source.id));
+        props.onSelectedSendersChanged({selectedSources: selectedSources});
+    }, [state.selected]);
+
     return (
-        <div>
+        <div className="lst-sources-list">
             <DeleteModal
                 label="live.sources.delete_header"
                 message="live.sources.delete_message"
                 data={state.itemsToDelete}
                 onDelete={doDelete}
             />
+            <AddSourceModal
+                visible={state.addSourceModalVisible}
+                onAdd={onModalAddSources}
+                onClose={onAddSourceModalClose}
+            />
             <DragAndDropUploader
                 uploadButtonLabel="SDP"
                 uploadApi={onUpload}
                 title={translateX('navigation.live_sources')}
             >
-                <Toolbar dispatch={dispatch} selectedItems={state.selected} />
+                <Toolbar
+                    dispatch={dispatch}
+                    selectedItems={state.selected}
+                    filterString={state.filterString}
+                />
                 <SourcesTable
-                    data={state.data}
+                    data={filteredData}
                     selectedIds={state.selected}
                     selectAll={state.selectAll}
                     onSelectId={toggleRow}
                     onSelectAll={toggleSelectAll}
-                    onClickRow={onClickRow}
+                    onClickRow={toggleRow}
                 />
             </DragAndDropUploader>
-            <AddSourceModal
-                visible={state.addSourceModalVisible}
-                onAdd={onModalAddSources}
-                onClose={onModalClose}
-            />
         </div>
     );
+};
+
+SourcesList.propTypes = {
+    onSelectedSendersChanged: PropTypes.func
+};
+
+SourcesList.defaultProps = {
+    onSelectedSendersChanged: () => {}
 };
 
 export default SourcesList;

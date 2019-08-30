@@ -1,5 +1,6 @@
 const os = require('os');
 const path = require('path');
+const _ = require('lodash');
 const fs = require('fs');
 const util = require('util');
 const recorder = require('./recorder');
@@ -8,38 +9,32 @@ const unlink = util.promisify(fs.unlink);
 
 ///////////////////////////////////////////////////////////////////////////////
 
-const performCaptureAndIngest = async configuration => {
-    const endpoints = configuration.senders
+const performCaptureAndIngest = async (globalConfig, workflowConfig) => {
+    const endpoints = workflowConfig.senders
         // .map(sender => _.get(sender, ['sdp', 'streams[0]'], null)) // lodash is not doing this
         .map(sender => sender.sdp)
         .map(sdp => sdp.streams[0]);
 
-    const captureFile = path.join(os.tmpdir(), configuration.id + '.pcap');
-
-    const interface = config.capture.interface;
-    const recorderBinPath = config.capture.bin;
-
-    if (!interface || !recorderBinPath) {
-        throw new Error(
-            'capture interface or recorder bin path not defined in configuration file'
-        );
-    }
+    const captureFile = path.join(os.tmpdir(), workflowConfig.id + '.pcap');
 
     const captureConfig = {
         endpoints: endpoints,
-        durationMs: 1000,
-        interfaceName: config.capture.interface,
+        durationMs: workflowConfig.durationMs,
         file: captureFile,
     };
 
-    await recorder.runRecorder(recorderBinPath, captureConfig);
+    if (globalConfig.recorder) {
+        await recorder.runRecorder(globalConfig, captureConfig);
+    } else if (globalConfig.tcpdump) {
+        await recorder.runTcpdump(globalConfig, captureConfig);
+    }
 
     try {
         await uploadFile(
             captureFile,
-            configuration.ingestPutUrl,
-            configuration.cookies,
-            configuration.filename
+            workflowConfig.ingestPutUrl,
+            workflowConfig.cookie,
+            workflowConfig.filename
         );
     } finally {
         await unlink(captureFile);

@@ -9,7 +9,7 @@ const config = {
     address: '0.0.0.0',
     port: 8765,
     nmos: {
-        registrationUrl: 'http://localhost:8882/x-nmos/registration/v1.2',
+        registrationUrl: 'http://localhost:8235/x-nmos/registration/v1.2',
     },
     heartbeatPeriodMs: 5000,
 };

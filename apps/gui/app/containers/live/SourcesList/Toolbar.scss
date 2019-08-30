@@ -1,0 +1,31 @@
+@import '../../../style/variables/index.scss';
+
+.lst-toolbar-search > .lst-control-group {
+    margin: 0;
+}
+
+.lst-toolbar-search > i {
+    color: #ffffff !important;
+}
+
+.lst-toolbar-search > button {
+    border: none;
+    background: none;
+    color: $black;
+
+    &:hover {
+      background: none;
+      color: lighten($black, 5%);
+      box-shadow: none;
+      transform: none;
+    }
+}
+
+.lst-toolbar-search {
+    display: flex;
+}
+
+.lst-toolbar-search-input {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}

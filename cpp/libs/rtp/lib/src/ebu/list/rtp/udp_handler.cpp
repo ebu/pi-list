@@ -41,12 +41,12 @@ void rtp_analyzer::on_data(const packet &p)
     next_->on_data(p);
 }
 
-void rtp_analyzer::on_complete() 
+void rtp_analyzer::on_complete()
 {
     next_->on_complete();
 }
 
-void rtp_analyzer::on_error(std::exception_ptr e) 
+void rtp_analyzer::on_error(std::exception_ptr e)
 {
         next_->on_error(e);
 }
@@ -61,7 +61,7 @@ udp_handler::udp_handler(handler_creator creator)
 
 void udp_handler::on_data(udp::datagram &&datagram)
 {
-    auto maybe_rtp_packet = rtp::decode(datagram.info, std::move(datagram.sdu));
+    auto maybe_rtp_packet = rtp::decode(datagram.ethernet_info, datagram.info, std::move(datagram.sdu));
     if (!maybe_rtp_packet)
     {
         // logger()->trace("Non-RTP datagram from {} to {}", to_string(source(datagram.info)), to_string(destination(datagram.info)));
@@ -99,13 +99,15 @@ void udp_handler::on_error(std::exception_ptr e)
 
 rtp::listener *udp_handler::find_or_create(const rtp::packet &packet)
 {
+    const auto s = source(packet.info.udp);
     const auto d = destination(packet.info.udp);
 
-    auto it = handlers_.find(d);
+    const stream_key key = { s, d };
+
+    auto it = handlers_.find(key);
 
     if (it == handlers_.end())
     {
-
         auto new_handler = creator_(packet);
 
 // #define LIST_USE_ANALYZER
@@ -114,7 +116,7 @@ rtp::listener *udp_handler::find_or_create(const rtp::packet &packet)
 #endif // defined LIST_USE_ANALYZER
 
         const auto p_handler = new_handler.get();
-        handlers_.emplace(d, std::move(new_handler));
+        handlers_.emplace(key, std::move(new_handler));
         return p_handler;
     }
 

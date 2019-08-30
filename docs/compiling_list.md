@@ -43,6 +43,7 @@ Use the docker wrapper script:
     init        Generate a Dockerfile and the Docker image list_builder
     release     Build and deploy LIST project using a container based on list_builder
     dev         Build for development, i.e. with debug profile, tests and demos included
+    clean       Remove build and release directories
     test        Build the dev target and runs the test suite
     bash        Start bash in the container for dev or troubleshoot.
 ```

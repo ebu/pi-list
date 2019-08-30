@@ -1,5 +1,6 @@
 #include "ebu/list/handlers/anc_stream_handler.h"
 #include "ebu/list/core/idioms.h"
+#include "ebu/list/net/multicast_address_analyzer.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110::d40;
@@ -22,11 +23,22 @@ anc_stream_handler::anc_stream_handler(rtp::packet first_packet,
                    to_string(info_.network.source),
                    to_string(info_.network.destination));
 
-    info.state = StreamState::ON_GOING_ANALYSIS;
+    info_.state = StreamState::ON_GOING_ANALYSIS;
 
     anc_description_.first_packet_ts = first_packet.info.udp.packet_time;
     anc_description_.last_frame_ts = first_packet.info.rtp.view().timestamp();
 
+    info_.network.valid_multicast_mac_address =
+        is_multicast_address(first_packet.info.ethernet_info.destination_address);
+
+    info_.network.valid_multicast_ip_address =
+        is_multicast_address(first_packet.info.udp.destination_address);
+
+    info_.network.multicast_address_match =
+        is_same_multicast_address(first_packet.info.ethernet_info.destination_address,
+                                  first_packet.info.udp.destination_address);
+
+    info_.state = StreamState::ON_GOING_ANALYSIS; // mark as analysis started
     const auto &anc = this->info();
     nlohmann::json j = anc_stream_details::to_json(anc);
     // logger()->info("Stream info:\n {}", j.dump(2, ' '));

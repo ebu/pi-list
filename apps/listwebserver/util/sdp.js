@@ -2,10 +2,28 @@ const _ = require('lodash');
 const sdpParser = require('sdp-transform');
 const logger = require('../util/logger');
 
+function getDestAddress(media) {
+    const inSrcFilter = _.get(media, 'sourceFilter.destAddress');
+    if (inSrcFilter) {
+        return inSrcFilter;
+    }
+
+    const inConnection = _.get(media, 'connection');
+    if (!inConnection) {
+        return undefined;
+    }
+    
+    if(!inConnection.ip) {
+        return undefined;
+    }
+
+    return inConnection.ip.replace(/\/.*$/, '');
+}
+
 function getIpInfoFromSdp(sdp) {
     // grab src and dst IPs for each stream
     const streams = sdp.media.map(function(media) {
-        const dstAddr = _.get(media, 'sourceFilter.destAddress');
+        const dstAddr = getDestAddress(media);
         const dstPort = _.get(media, 'port');
         const srcAddr = _.get(media, 'sourceFilter.srcList');
         return { dstAddr, dstPort, srcAddr };
@@ -74,11 +92,8 @@ const getAudioMeta = media => {
         ...rtp0,
     };
 
-    if (
-        rtp0.encoding !== undefined &&
-        rtp0.rate !== undefined
-    ) {
-        properties.resolution = `${rtp0.encoding} bit / ${
+    if (rtp0.encoding !== undefined && rtp0.rate !== undefined) {
+        properties.resolution = `${rtp0.codec} / ${rtp0.encoding} ch / ${
             rtp0.rate
         } Hz`;
     }
@@ -108,10 +123,10 @@ const getMediaSpecificMeta = media => {
                     };
 
                 case 'smpte291':
-                        return {
-                            format: 'urn:x-nmos:format:data',
-                            data: getDataMeta(media),
-                        };
+                    return {
+                        format: 'urn:x-nmos:format:data',
+                        data: getDataMeta(media),
+                    };
 
                 default:
                     logger('sdp-controller').error(
@@ -124,7 +139,7 @@ const getMediaSpecificMeta = media => {
         case 'audio':
             return {
                 format: 'urn:x-nmos:format:audio',
-                audio: getAudioMeta(media)    
+                audio: getAudioMeta(media),
             };
 
         default:

@@ -2,6 +2,7 @@
 
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/core/types.h"
+#include "ebu/list/net/ethernet/decoder.h"
 #include "ebu/list/net/ipv4/decoder.h"
 #include <tuple>
 
@@ -20,6 +21,7 @@ namespace ebu_list::udp
 
     struct datagram
     {
+        ethernet::header ethernet_info;
         datagram_info info;
         oview sdu;
     };
@@ -27,6 +29,9 @@ namespace ebu_list::udp
     std::tuple<header, oview> decode(oview&& pdu);
 
     udp::datagram make_datagram(clock::time_point packet_time,
+        ethernet::mac_address source_mac_address,
+        ethernet::mac_address destination_mac_address,
+        ethernet::payload_type payload_type,
         ipv4::address source_address, port source_port,
         ipv4::address destination_address, port destination_port,
         oview&& payload);

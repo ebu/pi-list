@@ -2,6 +2,7 @@ const commander = require('commander');
 const yamlParser = require('read-yaml');
 const deepFreeze = require('deep-freeze');
 const path = require('./path');
+const { URL } = require('url');
 
 function parseNmosArguments(args) {
     return args.nmos || null;
@@ -35,7 +36,8 @@ function parseArguments(args) {
     config.liveMode = liveModeEnv || config.liveMode;
     console.log('config.liveMode:', config.liveMode);
 
-    const apiUrl = `http://localhost:${config.port}/api`;
+    const baseUrl = new URL(config.webappDomain);
+    const apiUrl = `${baseUrl.protocol}//${baseUrl.hostname}:${config.port}/api`;
     config.apiUrl = apiUrl;
 
     return config;

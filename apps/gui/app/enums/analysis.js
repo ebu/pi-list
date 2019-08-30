@@ -17,11 +17,15 @@ module.exports = {
         },
     },
     analysesNames: {
-        rtp: 'RTP',
+        rtp_ticks: 'RTP ticks',
+        packet_ts_vs_rtp_ts: 'RTP timestamps',
         rtp_sequence: 'RTP sequence',
         '2110_21_cinst': 'SMPTE 2110-21 (Cinst)',
         '2110_21_vrx': 'SMPTE 2110-21 (VRX)',
         tsdf: 'EBU TS-DF',
-        rtp_ts_vs_pkt_ts: 'RTP timestamps',
+        destination_multicast_mac_address: 'Destination Multicast MAC address',
+        destination_multicast_ip_address: 'Destination Multicast IP address',
+        unrelated_multicast_addresses: 'Multicast MAC and IP addresses mapping',
+        unique_multicast_destination_ip_address: 'Unique destination Multicast IP address',
     },
 };

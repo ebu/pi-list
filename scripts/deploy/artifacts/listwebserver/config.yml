@@ -20,7 +20,7 @@ influx:
 
 # RabbitMQ
 rabbitmq:
-  hostname: localhost
+  hostname: rabbitmq
   port: 5672
 
 # Live

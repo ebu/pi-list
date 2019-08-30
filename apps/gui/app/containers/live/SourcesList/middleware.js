@@ -36,13 +36,12 @@ const middleware = (state, action) => {
             break;
 
         case Actions.captureFromSources:
-            const filename = moment(Date.now()).format('YYYYMMDD-HHmmss');
-
             const workflowInfo = {
                 type: workflowTypes.captureAndIngest,
                 configuration: {
                     ids: action.payload.ids,
-                    filename: filename,
+                    filename: action.payload.filename,
+                    durationMs: action.payload.durationMs,
                 },
             };
 
@@ -74,7 +73,7 @@ const middleware = (state, action) => {
                     sdp: {
                         streams: [{
                             dstAddr: source.dstAddr,
-                            dstPort: source.dstPort,
+                            dstPort: parseInt(source.dstPort),
                         }],
                     },
                 };

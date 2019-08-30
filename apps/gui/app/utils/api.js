@@ -65,6 +65,7 @@ export default {
     getPcaps: () => request.get('pcap'),
     getPcap: pcapID => request.get(`pcap/${pcapID}`),
     downloadPcap: pcapID => request.get(`pcap/${pcapID}/download`),
+    downloadOriginalCaptureUrl: pcapID => `${API_URL}/pcap/${pcapID}/download_original`,
     downloadPcapUrl: pcapID => `${API_URL}/pcap/${pcapID}/download`,
     deletePcap: pcapID => request.delete(`pcap/${pcapID}`),
     getStreamsFromPcap: pcapID => request.get(`pcap/${pcapID}/streams`),
@@ -88,7 +89,8 @@ export default {
     /* SDP */
     downloadSDP: pcapID => request.get(`pcap/${pcapID}/sdp`),
     downloadSDPUrl: pcapID => `${API_URL}/pcap/${pcapID}/sdp`,
-    downloadJsonUrl: pcapID => `${API_URL}/pcap/${pcapID}/report`,
+    downloadJsonUrl: pcapID => `${API_URL}/pcap/${pcapID}/report?type=json`,
+    downloadPdfUrl: pcapID => `${API_URL}/pcap/${pcapID}/report?type=pdf`,
     uploadSDP: (sdpFile, onUploadComplete) => {
         const data = new FormData();
         data.append('sdp', sdpFile);
@@ -151,6 +153,10 @@ export default {
         request.get(
             `pcap/${pcapID}/stream/${streamID}/analytics/DeltaRtpTsVsPacketTsRaw?from=${fromNs}&to=${toNs}`
         ),
+    getDeltaPacketTimeVsRtpTimeRaw: (pcapID, streamID, fromNs, toNs) =>
+        request.get(
+            `pcap/${pcapID}/stream/${streamID}/analytics/DeltaPacketTimeVsRtpTimeRaw?from=${fromNs}&to=${toNs}`
+        ),
     getDeltaToPreviousRtpTsRaw: (pcapID, streamID, fromNs, toNs) =>
         request.get(
             `pcap/${pcapID}/stream/${streamID}/analytics/DeltaToPreviousRtpTsRaw?from=${fromNs}&to=${toNs}`
@@ -159,9 +165,9 @@ export default {
         request.get(
             `pcap/${pcapID}/stream/${streamID}/analytics/DeltaRtpVsNt?from=${fromNs}&to=${toNs}`
         ),
-    getAudioRtpTsVsPktTs: (pcapID, streamID, fromNs, toNs, low, high, min, max) =>
+    getAudioRtpTsVsPktTs: (pcapID, streamID, fromNs, toNs) =>
         request.get(
-            `pcap/${pcapID}/stream/${streamID}/analytics/AudioRtpTsVsPktTs?from=${fromNs}&to=${toNs}&min=${min}&max=${max}`
+            `pcap/${pcapID}/stream/${streamID}/analytics/AudioRtpTsVsPktTs?from=${fromNs}&to=${toNs}`
         ),
     getAudioTimeStampedDelayFactor: (
         pcapID,
@@ -213,7 +219,6 @@ export default {
     changeLiveStreamName: (streamID, data) =>
         request.patch(`live/streams/${streamID}/`, data),
     subscribeLiveStream: data => request.put('live/streams/subscribe/', data),
-    subscribePCAP: data => request.put('live/pcap/capture/', data),
     getLiveSources: () => request.get('live/sources/'),
     addLiveSource: source => request.post('live/sources', { source }),
     deleteLiveSources: ids => request.put('live/sources/delete', { ids }),

@@ -6,8 +6,10 @@ import api from '../../utils/api';
 import PcapWsEventListener from './PcapWsEventListener';
 import { addStateToPcapInfo } from './utils';
 import { reducer } from './reducer';
-import { tableInitialState, tableReducer } from '../../utils/models/table/tableReducer';
+import { tableInitialState, makeTableReducer } from '../../utils/models/table/tableReducer';
 import { middleware } from './middleware';
+
+const tableReducer = makeTableReducer();
 
 const actionsWorkflow = (state, action) => {
     middleware(state, action);
