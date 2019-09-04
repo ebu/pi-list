@@ -11,6 +11,7 @@ namespace ebu_list
         std::string id = newGuid().str();
         std::string filename;
         std::string pcap_file_name;
+        std::string analyzer_version;
         std::chrono::system_clock::time_point date = std::chrono::system_clock::now();
         bool analyzed = false;
         bool truncated = false; // True iff the pcap file only has partial packets

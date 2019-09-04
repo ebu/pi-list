@@ -33,6 +33,10 @@ const PcapSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    analyzer_version: {
+        type: String,
+        required: true
+    },
     error: {
         type: String,
         default: ''
