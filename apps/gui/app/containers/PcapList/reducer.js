@@ -89,6 +89,13 @@ const reducer = (state, action) => {
             });
         }
 
+        case Actions.requestPcapReanalysis: {
+            const id = action.data.id;
+            return Object.assign({}, { ...state }, {
+                itemToReanalyze: id
+            });
+        }
+
         default:
             return state;
     }

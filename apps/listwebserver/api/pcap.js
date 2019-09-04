@@ -16,6 +16,7 @@ const streamsController = require('../controllers/streams');
 const {
     pcapSingleStreamIngest,
     pcapIngest,
+    pcapReanalyze,
     generateRandomPcapDefinition,
     generateRandomPcapFilename,
     getUserFolder,
@@ -76,6 +77,55 @@ router.put(
         next();
     },
     pcapIngest
+);
+
+/* Reanalyze an existing PCAP file */
+router.patch('/:pcapId', (req, res, next) => {
+    const { pcapId } = req.params;
+    console.log(req.params);
+
+    Stream.deleteMany({ pcap: pcapId })
+        .exec()
+        .then(() => {
+            return influxDbManager.deleteSeries(pcapId);
+        })
+        .then(() => {
+            return Pcap.findOne({ id: pcapId }).exec();
+        })
+        .then(pcap => {
+            const pcapFolder = `${getUserFolder(req)}/${pcapId}`;
+            const pcapLocation = `${pcapFolder}/${pcap.pcap_file_name}`;
+
+            req.file = {
+                path: pcapLocation,
+                originalname: pcap.file_name,
+                filename: pcap.pcap_file_name,
+            };
+            req.pcap = {
+                uuid: pcapId,
+                folder: pcapFolder,
+            };
+
+            res.locals = {
+                pcapFileName: pcap.pcap_file_name,
+                pcapFilePath: pcapLocation,
+            };
+
+            next();
+        })
+        .catch(output => {
+            logger('Stream Re-ingest').error(
+                `${output}`
+            );
+            res.status(
+                HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR
+            ).send(API_ERRORS.PCAP_EXTRACT_METADATA_ERROR);
+        });
+    },
+    pcapReanalyze,
+    (req, res) => {
+        res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
+    }
 );
 
 /* Get all Pcaps found */
