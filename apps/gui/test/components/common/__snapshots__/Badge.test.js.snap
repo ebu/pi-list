@@ -4,14 +4,16 @@ exports[`components/common/Badge Badge Snapshots should render a default badge (
 <span
   className="lst-badge lst-badge--info"
 >
+  
   Just a badge
 </span>
 `;
 
 exports[`components/common/Badge Badge Snapshots should render a error badge with the correct text 1`] = `
 <span
-  className="lst-badge"
+  className="lst-badge lst-badge--danger"
 >
+  
   Just a badge
 </span>
 `;
@@ -20,6 +22,7 @@ exports[`components/common/Badge Badge Snapshots should render a info badge with
 <span
   className="lst-badge lst-badge--info"
 >
+  
   Just a badge
 </span>
 `;
@@ -28,6 +31,7 @@ exports[`components/common/Badge Badge Snapshots should render a success badge w
 <span
   className="lst-badge lst-badge--success"
 >
+  
   Just a badge
 </span>
 `;
@@ -36,6 +40,7 @@ exports[`components/common/Badge Badge Snapshots should render a warning badge w
 <span
   className="lst-badge lst-badge--warning"
 >
+  
   Just a badge
 </span>
 `;

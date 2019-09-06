@@ -83,7 +83,7 @@ test('sdp getAudioMeta: sample_1', () => {
         rtp: [
             {
                 codec: 'L24',
-                encoding: 10,
+                encoding: 8,
                 rate: 48000,
             },
         ],
@@ -91,9 +91,9 @@ test('sdp getAudioMeta: sample_1', () => {
 
     const expected = {
         codec: 'L24',
-        encoding: 10,
+        encoding: 8,
         rate: 48000,
-        resolution: 'L24 / 10 bit / 48000 Hz',
+        resolution: 'L24 / 8 ch / 48000 Hz',
     };
 
     expect(getAudioMeta(m)).toStrictEqual(expected);
