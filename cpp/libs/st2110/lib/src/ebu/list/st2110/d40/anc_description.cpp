@@ -73,9 +73,15 @@ void st2110_40_sdp_serializer::additional_attributes(std::vector<std::string>& c
     std::string fmtp = fmt::format("a=fmtp:{} ", network_info.network.payload_type);
     for (const auto s : anc_desc_.streams)
     {
-        fmtp += fmt::format("DID_SDID={{0x{},0x{}}};",
-                std::to_string((static_cast<uint16_t>(s.did_sdid()) >> 8) & 0xFF),
-                std::to_string(static_cast<uint16_t>(s.did_sdid()) & 0xFF));
+        std::ostringstream stream_did;
+        stream_did << std::hex << ((static_cast<uint16_t>(s.did_sdid()) >> 8) & 0xFF);
+        const std::string hex_did = stream_did.str();
+
+        std::ostringstream stream_sdid;
+        stream_sdid << std::hex << (static_cast<uint16_t>(s.did_sdid()) & 0xFF);
+        const std::string hex_sdid = stream_sdid.str();
+
+        fmtp += fmt::format("DID_SDID={{0x{},0x{}}};", hex_did, hex_sdid);
     }
     current_lines.emplace_back(fmtp);
 }

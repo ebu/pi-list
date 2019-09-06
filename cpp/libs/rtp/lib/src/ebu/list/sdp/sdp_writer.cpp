@@ -47,8 +47,12 @@ void sdp_writer::write_media_line(const media::network_media_description &media_
             "Only ancillary, audio and video supported on SDP serialization"
     );
 
-    const std::string media_type_string = media_description.type == media::media_type::VIDEO ? "video" :
-        media_description.type == media::media_type::AUDIO ? "audio" : "ancillary";
+    const auto media_type_string = [&media_description] () -> std::string {
+        if (media_description.type == media::media_type::VIDEO ||
+            media_description.type == media::media_type::ANCILLARY_DATA)
+            return "video";
+        else return "audio";
+    }();
     const auto port = ebu_list::to_string(media_description.network.destination.p);
 
     /** "m=<media_type> <port> RTP/AVP <payload_type>" **/
@@ -65,7 +69,7 @@ void sdp_writer::write_media_clock_lines()
 {
     /** Add fake clock info **/
     lines_.emplace_back("a=mediaclk:direct=0");
-    lines_.emplace_back("a=ts-refclk:ptp=IEEE1588-2008:00-00-00-00-00-00-00-00:00");
+    lines_.emplace_back("a=ts-refclk:ptp=IEEE1588-2008:00-00-00-00-00-00-00-00:0");
 }
 
 sdp_writer& sdp_writer::add_media(const ebu_list::media::network_media_description& media_description)
