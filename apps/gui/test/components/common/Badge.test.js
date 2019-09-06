@@ -51,7 +51,7 @@ describe('components/common/Badge', () => {
 
         it('should render a error badge with the correct text', () => {
             const tree = renderer
-                .create(<Badge text="Just a badge" type="error" />)
+                .create(<Badge text="Just a badge" type="danger" />)
                 .toJSON();
 
             expect(tree).toMatchSnapshot();
