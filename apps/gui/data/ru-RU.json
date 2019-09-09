@@ -5,7 +5,7 @@
   "analysis.errors.invalid_delta_rtp_ts_vs_nt": "Недействительная дельта между меткой времени RTP и N x Tframe",
   "analysis.errors.invalid_delta_packet_ts_vs_rtp_ts": " *** invalid_delta_packet_ts_vs_rtp_ts ***",
   "analysis.errors.cinst_above_maximum": "Значение CInst превышает максимально допустимое (CMAX)",
-  "analysis.errors.vrx_above_maximum": "Значение VRX превышает максимально допустимое (VRXFULL)",
+  "analysis.errors.vrx_above_maximum": "*** Значение VRX превышает максимально допустимое (VRXFULL)",
   "analysis.errors.tsdf_not_compliant": "Значение TS-DF не отвечает требованиям EBU TECH 3337",
   "analysis.errors.audio_rtp_ts_not_compliant": "RTP временные метки не соответствует JT-NM TESTED",
   "analysis.errors.dropped_packets": "Потеряны пакеты. Обнаружена непоследовательность меток времени RTP. Это может быть вызвано ошибкой источника или получателя, или перегрузкой сети",
