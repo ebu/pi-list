@@ -26,6 +26,7 @@ headings.last_flows,Flux en direct,Живые потоки,Живі потоки
 headings.video,Vidéo,Видео,Відео,Video,Video,Vídeo,Video,Εικόνα
 headings.audio,Audio,Аудио,Аудіо,Audio,Audio,Áudio,Audio,Ήχος
 headings.anc,Données ancilliaires,Вспомогательные данные,Допоміжні дані,Ancillary Data,Ancillary Data,Dados Auxiliares,Ancillary Daten,Συμπληρωματικά δεδομένα
+headings.payload,Charge utile,полезная нагрузка,корисне навантаження,payload,Payload,Payload,Nutzlast,φορτίο επί πληρωμή
 headings.unknown,Inconnu,Неизвестные,Невідомі,Onbekend,Unknown,Desconhecido,Unbekannt,Αγνωστος
 headings.filters,Filtres,Фильтры,Фільтри,Filters,Filters,Filtros,Filter,Φίλτρα
 audio_player.play,Jouer,Воспроизведение,Відтворення,Start,Play,Reproduzir,Abspielen,Αναπαραγωγή

@@ -5,6 +5,9 @@
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/serialization/serializable_stream_info.h"
 #include "ebu/list/serialization/anc_serialization.h"
+#include "libklvanc/vanc.h"
+
+static struct klvanc_callbacks_s klvanc_callbacks;
 
 namespace ebu_list
 {
@@ -17,6 +20,7 @@ namespace ebu_list
             serializable_stream_info info,
             anc_stream_details details,
             completion_handler ch = [](const anc_stream_handler&) {});
+        ~anc_stream_handler(void);
 
         const anc_stream_details& info() const;
         const serializable_stream_info& network_info() const;
@@ -40,9 +44,12 @@ namespace ebu_list
         serializable_stream_info info_;
         anc_stream_details anc_description_;
         rtp::sequence_number_analyzer<uint32_t> rtp_seqnum_analyzer_;
+        struct klvanc_context_s *klvanc_ctx;
 
         completion_handler completion_handler_;
     };
 
     using anc_stream_handler_uptr = std::unique_ptr<anc_stream_handler>;
 }
+
+typedef int (*callback_klvanc_smpte_12_2_t)(void *, struct klvanc_context_s *, struct klvanc_packet_smpte_12_2_s *);

@@ -222,13 +222,15 @@ router.get('/:pcapID/download', (req, res) => {
 
             let filename = data.file_name;
             const extensionCharIdx = filename.lastIndexOf('.');
-            const fileExtension = extensionCharIdx > -1 ? filename.substring(extensionCharIdx + 1) : '';
+            const fileExtension =
+                extensionCharIdx > -1
+                    ? filename.substring(extensionCharIdx + 1)
+                    : '';
 
             if (fileExtension !== '') {
                 const fileExtensionRegex = new RegExp(fileExtension + '$', 'i');
                 filename = filename.replace(fileExtensionRegex, 'pcap');
-            }
-            else filename = filename + '.pcap';
+            } else filename = filename + '.pcap';
 
             fs.downloadFile(path, filename, res);
         });
@@ -653,6 +655,23 @@ router.get('/:pcapID/stream/:streamID/downloadmp3', (req, res) => {
 
 router.get('/:pcapID/stream/:streamID/rendermp3', (req, res) => {
     renderMp3(req, res);
+});
+
+router.get('/:pcapID/stream/:streamID/ancillary/:filename', (req, res) => {
+    const { pcapID, streamID, filename } = req.params;
+    const filePath = `${getUserFolder(
+        req
+    )}/${pcapID}/${streamID}/${filename}`;
+    logger('ancillary').info(`${filePath}`);
+
+    if (fs.fileExists(filePath)) {
+        fs.sendFileAsResponse(filePath, res);
+    } else {
+        logger('ancillary').warn(`File ${filePath} does not exist`);
+        res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(
+            API_ERRORS.RESOURCE_NOT_FOUND
+        );
+    }
 });
 
 module.exports = router;

@@ -23,6 +23,7 @@
   "headings.video": "Vidéo",
   "headings.audio": "Audio",
   "headings.anc": "Données ancilliaires",
+  "headings.payload": "Charge utile",
   "headings.unknown": "Inconnu",
   "headings.filters": "Filtres",
   "audio_player.play": "Jouer",

@@ -53,14 +53,12 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
     p += sizeof(raw_anc_header);
 
     /*
-     * for every embedded stream in the packet:
+     * for every embedded sub-stream in the packet:
      * - get the header
      * - discard the whole rtp stream if the header doesn't match ancillary
      * - walk through the payload+checksum+padding
-     * - verify the parity for every word and checksum
-     * - increment an error counter for every stream
      * - return if error detected but do not invalidate because the
-     *   capture may still contains valid other streams
+     *   capture may still contains valid other sub-streams
      */
     for (uint8_t i=0; i < anc_header.anc_count(); i++)
     {
@@ -86,45 +84,33 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
         const auto anc_packet = anc_packet_header_lens(anc_packet_header);
         anc_packet.dump();
 
+        /* let's give a chance */
         if ( !anc_packet.sanity_check() )
         {
             return detector::status::detecting;
         }
 
-        auto stream = anc_stream((anc_packet.did() << 8) + anc_packet.sdid(), anc_packet.stream_num());
-        if (!stream.is_valid())
+        auto s = anc_sub_stream((anc_packet.did() << 8) + anc_packet.sdid(), anc_packet.stream_num());
+        if (!s.is_valid())
         {
             logger()->trace("Ancillary: stream invalid");
+            /* it could be worth trying to return invalid */
             return detector::status::detecting;
         }
 
-        auto it = std::find(description_.streams.begin(), description_.streams.end(), stream);
-        if (it == description_.streams.end())
+        /* detect and save new sub-streams */
+        auto it = std::find(description_.sub_streams.begin(), description_.sub_streams.end(), s);
+        if (it == description_.sub_streams.end())
         {
-            logger()->info("Ancillary: new stream: {}: {}", to_string(stream.did_sdid()), to_description(stream.did_sdid()));
-            description_.streams.push_back(stream);
-            it = std::find(description_.streams.begin(), description_.streams.end(), stream);
+            logger()->info("Ancillary: new stream: {}: {}", to_string(s.did_sdid()), to_description(s.did_sdid()));
+            description_.sub_streams.push_back(s);
+            it = std::find(description_.sub_streams.begin(), description_.sub_streams.end(), s);
         }
-
-        /* checksum must be perform on 9-bit so raw header is used here */
-        uint16_t sum = anc_packet_header.did + anc_packet_header.sdid + anc_packet_header.data_count;
-        uint16_t errors = it->errors();
 
         /* walkthrough the payload */
         for (uint8_t j=0; j < anc_packet.data_count(); j++)
         {
-            const uint16_t word = get_bits<10>(&p, &bit_counter);
-            if (! sanity_check_word(word))
-            {
-                errors++;
-            }
-            sum += word;
-        }
-
-        /* validate the checksum */
-        if (! sanity_check_sum(get_bits<10>(&p, &bit_counter), sum))
-        {
-            errors++;
+            get_bits<10>(&p, &bit_counter);
         }
 
         /* skip the padding */
@@ -132,12 +118,6 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
         {
             get_bits<1>(&p, &bit_counter);
         }
-
-        if(errors)
-        {
-            logger()->warn("Ancillary stream payload has {} error ", errors);
-        }
-        it->errors(errors);
     }
 
     if (p > end)

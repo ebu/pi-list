@@ -11,31 +11,49 @@ namespace ebu_list::st2110::d40
     namespace video = ebu_list::media::video;
     namespace anc = ebu_list::media::anc;
 
-    class anc_stream
+    class anc_sub_sub_stream
     {
         public:
-            anc_stream(uint16_t did_sdid, uint8_t num);
+            anc_sub_sub_stream(std::string type);
+            std::string type() const;
+            std::string filename() const;
+            bool operator==(const anc_sub_sub_stream& other);
+            void write(ebu_list::path path) const;
+            std::string decoded_data;
+
+        private:
+            std::string type_;
+            ebu_list::path filename_;
+    };
+
+    class anc_sub_stream
+    {
+        public:
+            anc_sub_stream(uint16_t did_sdid, uint8_t num);
             anc::did_sdid did_sdid() const;
             uint8_t num() const;
             uint16_t errors() const;
             void errors(uint16_t err);
             std::string type() const;
-            bool operator==(const anc_stream& other);
+            bool operator==(const anc_sub_stream& other);
             bool is_valid() const;
+            void write(ebu_list::path path) const;
+
+            uint16_t packet_count;
+            std::vector<anc_sub_sub_stream> anc_sub_sub_streams;
 
         private:
             void check();
             anc::did_sdid did_sdid_;
             uint8_t num_;
             uint16_t errors_;
-            // add payload_
     };
 
     struct anc_description : d10::stream_information
     {
         video::Rate rate = video::Rate(0,1);
         int packets_per_frame = 0;
-        std::vector<anc_stream> streams;
+        std::vector<anc_sub_stream> sub_streams;
     };
 
     struct st2110_40_sdp_serializer

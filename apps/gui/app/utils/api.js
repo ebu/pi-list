@@ -225,6 +225,14 @@ export default {
             `pcap/${pcapID}/stream/${streamID}/rendermp3?channels=${channelsString}`
         ),
 
+    /* Ancillary */
+    downloadAncillaryUrl: (pcapID, streamID, filename) =>
+        `pcap/${pcapID}/stream/${streamID}/ancillary/${filename}`,
+
+    /* Txt files */
+    downloadText: (path) =>
+        request.get(`${path}`),
+
     /* Live */
     getLiveStreams: () => request.get('live/streams/'),
     getLiveStream: streamID => request.get(`live/streams/${streamID}`),

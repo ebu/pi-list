@@ -23,6 +23,7 @@
   "headings.video": "Видео",
   "headings.audio": "Аудио",
   "headings.anc": "Вспомогательные данные",
+  "headings.payload": "полезная нагрузка",
   "headings.unknown": "Неизвестные",
   "headings.filters": "Фильтры",
   "audio_player.play": "Воспроизведение",

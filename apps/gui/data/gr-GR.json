@@ -23,6 +23,7 @@
   "headings.video": "Εικόνα",
   "headings.audio": "Ήχος",
   "headings.anc": "Συμπληρωματικά δεδομένα",
+  "headings.payload": "φορτίο επί πληρωμή",
   "headings.unknown": "Αγνωστος",
   "headings.filters": "Φίλτρα",
   "audio_player.play": "Αναπαραγωγή",
