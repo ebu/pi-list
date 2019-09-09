@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { map, isObject, isFunction, zipObject } from 'lodash';
 import Loader from 'components/common/Loader';
 import ErrorPage from 'components/ErrorPage';
@@ -43,8 +43,10 @@ import ErrorPage from 'components/ErrorPage';
  * * Data/dependencies loading process fails
  *   Renders an error page component, with the information about the error.
  *
- * The other possible settings:
+ * Other possible settings:
  *  - `loaderProps`
+ * 
+ * - `dependencyProps`: what should cause the async methods to be run again (see useEffect)
  *
  * @param {React.Component} Component
  * @param {Object} options
@@ -52,18 +54,19 @@ import ErrorPage from 'components/ErrorPage';
  */
 
 export default function(AsyncComponent, options) {
-    return class extends Component {
-        constructor() {
-            super();
+    return props => {
+        const [isLoading, setIsLoading] = useState(true);
+        const [asyncRequestsFailed, setAsyncRequestsFailed] = useState(false);
+        const [asyncResults, setAsyncResults] = useState(null);
+        const [error, setError] = useState(null);
 
-            this.state = {
-                loading: true,
-                asyncRequestsFailed: false,
-                error: null,
-            };
-        }
+        const reloadTriggerProps = options.dependencyProps || [];
+        const dependencyValues = reloadTriggerProps.map(v => props[v]);
 
-        componentDidMount() {
+        useEffect(() => {
+            setIsLoading(true);
+            setAsyncRequestsFailed(false);
+
             const functionNames = [];
 
             if (isObject(options.asyncRequests)) {
@@ -72,7 +75,7 @@ export default function(AsyncComponent, options) {
                     options.asyncRequests,
                     asyncRequest => {
                         if (isFunction(asyncRequest)) {
-                            const promise = asyncRequest(this.props);
+                            const promise = asyncRequest(props);
 
                             if (promise instanceof Promise) {
                                 functionNames.push(asyncRequest.name);
@@ -85,83 +88,72 @@ export default function(AsyncComponent, options) {
                 // Load all information requested
                 Promise.all(asyncRequests)
                     .then(results => {
-                        this.setState({
-                            loading: false,
-                            // Lets assume that results are originated form 3 functions which return 3 promises
-                            // and the functions names are: user, pcaps, streams.
-                            // results = [ { ... }, { ... }, { ... } ]
-                            // the zipObject will create a object with the following structure.
-                            // {
-                            //     "user":    { ... },
-                            //     "pcaps":   { ... },
-                            //     "streams": { ... }
-                            // }
-                            asyncResults: zipObject(functionNames, results),
-                        });
+                        // Lets assume that results are originated form 3 functions which return 3 promises
+                        // and the functions names are: user, pcaps, streams.
+                        // results = [ { ... }, { ... }, { ... } ]
+                        // the zipObject will create a object with the following structure.
+                        // {
+                        //     "user":    { ... },
+                        //     "pcaps":   { ... },
+                        //     "streams": { ... }
+                        // }
+                        const zippedResults = zipObject(functionNames, results);
+                        setAsyncResults(zippedResults);
+                        setIsLoading(false);
                     })
                     .catch(e => {
-                        this.setState(
-                            {
-                                loading: false,
-                                asyncRequestsFailed: true,
-                                error: e,
-                            },
-                            () => {
-                                if (isFunction(options.onError)) {
-                                    options.onError(this.props);
-                                }
-                            }
-                        );
+                        setAsyncRequestsFailed(true);
+                        setError(e);
+                        if (isFunction(options.onError)) {
+                            options.onError(props);
+                        }
+                        setIsLoading(false);
                     });
             }
-        }
+        }, dependencyValues);
 
-        render() {
-            if (this.state.loading) {
-                const props = isObject(options.loaderProps)
-                    ? options.loaderProps
-                    : {};
-                const loadingWidget = props.loadingWidget || (
-                    <Loader {...props} />
-                );
-
-                return (
-                    <div className="lst-async-loader--loading">
-                        {loadingWidget}
-                    </div>
-                );
-            } else if (this.state.asyncRequestsFailed) {
-                const errorConfiguration = {
-                    errorType: isObject(options.errorPage)
-                        ? options.errorPage.errorType
-                        : this.state.error.message,
-                    message: isObject(options.errorPage)
-                        ? options.errorPage.message
-                        : `Cannot connect to ${this.state.error.config.url}`,
-                    icon: isObject(options.errorPage)
-                        ? options.errorPage.icon
-                        : null,
-                    button: isObject(options.errorPage)
-                        ? options.errorPage.button
-                        : null,
-                };
-
-                return React.isValidElement(options.onErrorComponent) ? (
-                    options.onErrorComponent
-                ) : (
-                    <ErrorPage
-                        errorType={errorConfiguration.errorType}
-                        errorMessage={errorConfiguration.message}
-                        icon={errorConfiguration.icon}
-                        button={errorConfiguration.button}
-                        originalProps={this.props}
-                    />
-                );
-            }
+        if (isLoading) {
+            const props = isObject(options.loaderProps)
+                ? options.loaderProps
+                : {};
+            const loadingWidget = props.loadingWidget || <Loader {...props} />;
 
             return (
-                <AsyncComponent {...this.state.asyncResults} {...this.props} />
+                <div className="lst-async-loader--loading">{loadingWidget}</div>
             );
         }
+
+        if (asyncRequestsFailed) {
+            const errorConfiguration = {
+                errorType: isObject(options.errorPage)
+                    ? options.errorPage.errorType
+                    : error.message,
+                message: isObject(options.errorPage)
+                    ? options.errorPage.message
+                    : `Cannot connect to ${error.config.url}`,
+                icon: isObject(options.errorPage)
+                    ? options.errorPage.icon
+                    : null,
+                button: isObject(options.errorPage)
+                    ? options.errorPage.button
+                    : null,
+            };
+
+            return React.isValidElement(options.onErrorComponent) ? (
+                options.onErrorComponent
+            ) : (
+                <ErrorPage
+                    errorType={errorConfiguration.errorType}
+                    errorMessage={errorConfiguration.message}
+                    icon={errorConfiguration.icon}
+                    button={errorConfiguration.button}
+                    originalProps={props}
+                />
+            );
+        }
+
+        console.log('*** asyncResults');
+        console.dir(asyncResults);
+        return <AsyncComponent {...asyncResults} {...props} />;
     };
 }

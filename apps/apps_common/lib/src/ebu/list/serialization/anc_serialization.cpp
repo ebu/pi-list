@@ -48,12 +48,27 @@ nlohmann::json st2110::d40::to_json(const st2110::d40::anc_description& desc)
 {
     nlohmann::json j;
 
-    for(auto &it : desc.streams) {
-        nlohmann::json stream;
-        stream["num"] = it.num();
-        stream["did_sdid"] = it.did_sdid();
-        stream["errors"] = it.errors();
-        j["streams"].push_back(stream);
+    for(auto &it : desc.sub_streams) {
+        nlohmann::json sub_stream = to_json(it);
+        j["sub_streams"].push_back(sub_stream);
+    }
+
+    return j;
+}
+
+nlohmann::json st2110::d40::to_json(const st2110::d40::anc_sub_stream& s)
+{
+    nlohmann::json j;
+    j["num"] = s.num();
+    j["did_sdid"] = s.did_sdid();
+    j["errors"] = s.errors();
+    j["packet_count"] = s.packet_count;
+
+    for(auto &it : s.anc_sub_sub_streams) {
+        nlohmann::json ss;
+        ss["type"] = it.type();
+        ss["filename"] = it.filename();
+        j["sub_sub_streams"].push_back(ss);
     }
 
     return j;
@@ -63,13 +78,28 @@ st2110::d40::anc_description st2110::d40::from_json(const nlohmann::json& j)
 {
     anc_description desc{};
 
-    if (const auto dump = j.find("streams"); dump != j.end()) {
-        for(auto it : j.at("streams")) {
-            auto s = anc_stream(it.at("did_sdid"), it.at("num"));
-            s.errors(it.at("errors"));
-            desc.streams.push_back(s);
+    if (const auto dump = j.find("sub_streams"); dump != j.end()) {
+        for(auto it : j.at("sub_streams")) {
+            anc_sub_stream s = from_json(it, 0); //TODO, fix this workaround
+            desc.sub_streams.push_back(s);
         }
     }
 
     return desc;
+}
+
+st2110::d40::anc_sub_stream st2110::d40::from_json(const nlohmann::json& j, uint8_t i)
+{
+    auto s = anc_sub_stream(j.at("did_sdid"), j.at("num"));
+    s.errors(j.at("errors"));
+    s.packet_count = j.at("packet_count");
+
+    if (const auto dump = j.find("sub_sub_streams"); dump != j.end()) {
+        for(auto it : j.at("sub_sub_streams")) {
+            auto ss = anc_sub_sub_stream(it.at("type").get<string>());
+            s.anc_sub_sub_streams.push_back(ss);
+        }
+    }
+
+    return s;
 }

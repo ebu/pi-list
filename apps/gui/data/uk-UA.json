@@ -23,6 +23,7 @@
   "headings.video": "Відео",
   "headings.audio": "Аудіо",
   "headings.anc": "Допоміжні дані",
+  "headings.payload": "корисне навантаження",
   "headings.unknown": "Невідомі",
   "headings.filters": "Фільтри",
   "audio_player.play": "Відтворення",

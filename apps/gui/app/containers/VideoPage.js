@@ -27,9 +27,9 @@ const VideoPage = props => {
     const CurrentTabComponent = TABS[tabIndex];
 
     return (
-        <div className="lst-stream-info-tab lst-full-height">
+        <div className = "lst-stream-info-tab lst-full-height">
             <Tabs
-                headers={[
+                headers = {[
                     {
                         label: 'Analysis',
                         icon: 'info',
@@ -63,10 +63,10 @@ const VideoPage = props => {
                         icon: 'timeline',
                     },
                 ]}
-                onTabChange={setTabIndex}
+                onTabChange = { setTabIndex }
             >
                 <Scrollbars>
-                    <CurrentTabComponent {...props} />
+                    <CurrentTabComponent { ...props } />
                 </Scrollbars>
             </Tabs>
         </div>

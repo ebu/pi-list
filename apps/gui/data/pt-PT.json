@@ -23,6 +23,7 @@
   "headings.video": "Vídeo",
   "headings.audio": "Áudio",
   "headings.anc": "Dados Auxiliares",
+  "headings.payload": "Payload",
   "headings.unknown": "Desconhecido",
   "headings.filters": "Filtros",
   "audio_player.play": "Reproduzir",
