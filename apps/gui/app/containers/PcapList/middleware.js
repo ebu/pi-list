@@ -7,6 +7,20 @@ import { downloadFiles } from '../../utils/download';
 
 const middleware = (state, action) => {
     switch (action.type) {
+
+        case Actions.reanalyzePcap: {
+            const id = action.data.id;
+            const pcap = getFullInfoFromId(id, state.data);
+            const filename = pcap && pcap.file_name;
+
+            api.updatePcapAnalysis(id)
+                .then(() => {
+                })
+                .catch(() => {
+                });
+        }
+            break;
+
         case Actions.deletePcap: {
             const id = action.data.id;
             const pcap = getFullInfoFromId(id, state.data);

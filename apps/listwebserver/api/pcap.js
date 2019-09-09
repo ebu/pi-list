@@ -16,6 +16,7 @@ const streamsController = require('../controllers/streams');
 const {
     pcapSingleStreamIngest,
     pcapIngest,
+    pcapReanalyze,
     generateRandomPcapDefinition,
     generateRandomPcapFilename,
     getUserFolder,
@@ -76,6 +77,55 @@ router.put(
         next();
     },
     pcapIngest
+);
+
+/* Reanalyze an existing PCAP file */
+router.patch('/:pcapId', (req, res, next) => {
+    const { pcapId } = req.params;
+    console.log(req.params);
+
+    Stream.deleteMany({ pcap: pcapId })
+        .exec()
+        .then(() => {
+            return influxDbManager.deleteSeries(pcapId);
+        })
+        .then(() => {
+            return Pcap.findOne({ id: pcapId }).exec();
+        })
+        .then(pcap => {
+            const pcapFolder = `${getUserFolder(req)}/${pcapId}`;
+            const pcapLocation = `${pcapFolder}/${pcap.pcap_file_name}`;
+
+            req.file = {
+                path: pcapLocation,
+                originalname: pcap.file_name,
+                filename: pcap.pcap_file_name,
+            };
+            req.pcap = {
+                uuid: pcapId,
+                folder: pcapFolder,
+            };
+
+            res.locals = {
+                pcapFileName: pcap.pcap_file_name,
+                pcapFilePath: pcapLocation,
+            };
+
+            next();
+        })
+        .catch(output => {
+            logger('Stream Re-ingest').error(
+                `${output}`
+            );
+            res.status(
+                HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR
+            ).send(API_ERRORS.PCAP_EXTRACT_METADATA_ERROR);
+        });
+    },
+    pcapReanalyze,
+    (req, res) => {
+        res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
+    }
 );
 
 /* Get all Pcaps found */
@@ -172,13 +222,15 @@ router.get('/:pcapID/download', (req, res) => {
 
             let filename = data.file_name;
             const extensionCharIdx = filename.lastIndexOf('.');
-            const fileExtension = extensionCharIdx > -1 ? filename.substring(extensionCharIdx + 1) : '';
+            const fileExtension =
+                extensionCharIdx > -1
+                    ? filename.substring(extensionCharIdx + 1)
+                    : '';
 
             if (fileExtension !== '') {
                 const fileExtensionRegex = new RegExp(fileExtension + '$', 'i');
                 filename = filename.replace(fileExtensionRegex, 'pcap');
-            }
-            else filename = filename + '.pcap';
+            } else filename = filename + '.pcap';
 
             fs.downloadFile(path, filename, res);
         });
@@ -603,6 +655,23 @@ router.get('/:pcapID/stream/:streamID/downloadmp3', (req, res) => {
 
 router.get('/:pcapID/stream/:streamID/rendermp3', (req, res) => {
     renderMp3(req, res);
+});
+
+router.get('/:pcapID/stream/:streamID/ancillary/:filename', (req, res) => {
+    const { pcapID, streamID, filename } = req.params;
+    const filePath = `${getUserFolder(
+        req
+    )}/${pcapID}/${streamID}/${filename}`;
+    logger('ancillary').info(`${filePath}`);
+
+    if (fs.fileExists(filePath)) {
+        fs.sendFileAsResponse(filePath, res);
+    } else {
+        logger('ancillary').warn(`File ${filePath} does not exist`);
+        res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(
+            API_ERRORS.RESOURCE_NOT_FOUND
+        );
+    }
 });
 
 module.exports = router;

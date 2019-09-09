@@ -517,7 +517,7 @@ function sdpParseIp(req, res, next) {
     readFileAsync(req.file.path)
         .then(sdp => {
             const parsed = sdp_parser.parse(sdp.toString());
-            
+
             // grab src and dst IPs for each stream
             const streams = parsed.media.map(function(media) {
                 const dstAddr = _.get(media, 'sourceFilter.destAddress');
@@ -563,6 +563,17 @@ module.exports = {
     pcapIngest: [
         pcapFileAvailableFromReq,
         pcapFormatConversion,
+        pcapPreProcessing,
+        pcapFullAnalysis,
+        videoConsolidation,
+        audioConsolidation,
+        ancillaryConsolidation,
+        unknownConsolidation,
+        commonConsolidation,
+        pcapConsolidation,
+        pcapIngestEnd,
+    ],
+    pcapReanalyze: [
         pcapPreProcessing,
         pcapFullAnalysis,
         videoConsolidation,

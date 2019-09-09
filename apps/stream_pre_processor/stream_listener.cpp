@@ -83,7 +83,7 @@ void stream_listener::on_complete()
     else if (std::holds_alternative<d40::anc_description>(format))
     {
         const auto anc_format = std::get<d40::anc_description>(format);
-        if (anc_format.streams.empty())
+        if (anc_format.sub_streams.empty())
         {
             is_valid = false;
         }

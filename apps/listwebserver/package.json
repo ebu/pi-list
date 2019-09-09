@@ -34,7 +34,7 @@
     "read-yaml": "^1.1.0",
     "request": "^2.88",
     "sdp-transform": "^2.7.0",
-    "sdpoker": "0.1.0",
+    "sdpoker": "Streampunk/sdpoker#6cf3966dffb9e4d3cb16b89f24a03dd3542e177b",
     "socket.io": "^2.0.4",
     "text-encoding": "^0.7.0",
     "url": "^0.11.0",

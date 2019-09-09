@@ -43,9 +43,7 @@ const Badge = (props) => {
             {props.icon && (
                 <Icon value={props.icon} />
             )}
-            {props.text && (
-                <span>{props.text}</span>
-            )}
+            {props.text}
         </span>
     );
 };

@@ -6,6 +6,7 @@ target_link_libraries(apps_common
         ebu_list_core
         ebu_list_st2110
         influxdb-cpp-rest
+        libklvanc
         CONAN_PKG::jsonformoderncpp
         CONAN_PKG::mongo-cxx-driver
 )
