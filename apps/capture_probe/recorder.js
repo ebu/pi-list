@@ -88,7 +88,7 @@ const runTcpdump = async (globalConfig, captureOptions) => {
         VMA_HW_TS_CONVERSION: '4',
     };
 
-    const tcpdumpProgram = '/usr/sbin/tcpdump';
+    const tcpdumpProgram = 'tcpdump';
     const tcpdumpOptions = {};
 
     const duration = ['-G', captureOptions.durationMs];
