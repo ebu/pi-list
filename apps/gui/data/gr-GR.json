@@ -5,7 +5,7 @@
   "analysis.errors.invalid_delta_rtp_ts_vs_nt": "Μη έγκυρα δ ιαφορά μεταξύ της χρονικής σήμανσης RTP και του N x Tframe",
   "analysis.errors.invalid_delta_packet_ts_vs_rtp_ts": " *** invalid_delta_packet_ts_vs_rtp_ts ***",
   "analysis.errors.cinst_above_maximum": "CInst πάνω από τη μέγιστη επιτρεπόμενη τιμή (CMAX)",
-  "analysis.errors.vrx_above_maximum": "VRX πάνω από τη μέγιστη επιτρεπόμενη τιμή (VRXFULL)",
+  "analysis.errors.vrx_above_maximum": "*** VRX πάνω από τη μέγιστη επιτρεπόμενη τιμή (0..VRXFULL)",
   "analysis.errors.tsdf_not_compliant": "Το TS-DF δεν συμμορφώνεται με το EBU TECH 3337",
   "analysis.errors.audio_rtp_ts_not_compliant": "Τα χρονικά σήματα RTP δεν συμμορφώνονται με το JT-NM Tested",
   "analysis.errors.dropped_packets": "Απόρριψη πακέτων. Έχουν ανιχνευθεί ασυνέπειες χρονισμού σήματος RTP. Αυτό μπορεί να οφείλεται σε σφάλμα αποστολέα ή δέκτη ή σε συμφόρηση δικτύου",

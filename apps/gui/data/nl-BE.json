@@ -5,7 +5,7 @@
   "analysis.errors.invalid_delta_rtp_ts_vs_nt": "Invalid delta between RTP timestamp and N x Tframe",
   "analysis.errors.invalid_delta_packet_ts_vs_rtp_ts": " *** invalid_delta_packet_ts_vs_rtp_ts ***",
   "analysis.errors.cinst_above_maximum": "CInst is above the maximum allowed value (CMAX)",
-  "analysis.errors.vrx_above_maximum": "VRX is above the maximum allowed value (VRXFULL)",
+  "analysis.errors.vrx_above_maximum": "VRX is outside of the valid bounds (0..VRXFULL)",
   "analysis.errors.tsdf_not_compliant": "TS-DF not compliant with EBU TECH 3337",
   "analysis.errors.audio_rtp_ts_not_compliant": "TS-DF not compliant with EBU TECH 3337",
   "analysis.errors.dropped_packets": "Dropped packets. RTP timestamp discontinuities were detected. This could be caused by a sender or receiver error, or by network congestion",

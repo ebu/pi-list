@@ -5,7 +5,7 @@
   "analysis.errors.invalid_delta_rtp_ts_vs_nt": "Delta entre o timestamp RTP e o valor de N x Tframe inválido",
   "analysis.errors.invalid_delta_packet_ts_vs_rtp_ts": "Delta entre o TS do pacote e o RTP TS inválido",
   "analysis.errors.cinst_above_maximum": "CInst está acima do valor máximo permitido (CMAX)",
-  "analysis.errors.vrx_above_maximum": "VRX está acima do valor máximo permitido (VRXFULL)",
+  "analysis.errors.vrx_above_maximum": "VRX está fora dos limites permitidos (0..VRXFULL)",
   "analysis.errors.tsdf_not_compliant": "O valor de TS-DF não está de acordo com a recomendação EBU TECH 3337",
   "analysis.errors.audio_rtp_ts_not_compliant": "Timestamps RTP não compatíveis com JT-NM Tested",
   "analysis.errors.dropped_packets": "Pacotes perdidos. Foram detetadas descontinuidades no timestamp RTP",
