@@ -22,6 +22,42 @@ const getGetTdProps = (props) => (state, rowInfo, column, instance) => {
     };
 };
 
+const getKindColumn = sources => ({
+    Header: '',
+    headerClassName: 'lst-text-left lst-table-header',
+    accessor: 'kind',
+    className: 'lst-text-center',
+    Cell: ({ original }) => {
+        switch (original.kind) {
+            case sources.kinds.user_defined:
+                return <Icon value={'person'} />;
+
+            case sources.kinds.from_sdp:
+                if (original.sdp.errors.length > 0) {
+                    return (
+                        <span
+                            title={original.sdp.errors}
+                            style={{ color: 'red' }}
+                        >
+                            SDP
+                        </span>
+                    );
+                } else {
+                    return <span style={{ color: 'green' }}>SDP</span>;
+                }
+
+            case sources.kinds.nmos:
+                return (
+                    <img src="/static/nmos.png" alt="NMOS logo" width="45px" />
+                );
+
+            default:
+                return '';
+        }
+    },
+    width: 60,
+});
+
 const getCheckBoxColumn = (props) => (
     {
         id: "checkbox",
@@ -61,5 +97,6 @@ const getCheckBoxColumn = (props) => (
 export {
     isSelected,
     getGetTdProps,
+    getKindColumn,
     getCheckBoxColumn
 }
