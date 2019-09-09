@@ -24,7 +24,8 @@ const request = {
     put: (url, data, config = null) =>
         axios.put(`${API_URL}/${url}`, data, config),
     post: (url, data) => axios.post(`${API_URL}/${url}`, data),
-    patch: (url, data) => axios.patch(`${API_URL}/${url}`, data),
+    patch: (url, data, config = null) =>
+        axios.patch(`${API_URL}/${url}`, data, config),
     delete: (url, data) => axios.delete(`${API_URL}/${url}`, data),
 };
 
@@ -69,6 +70,18 @@ export default {
     downloadPcapUrl: pcapID => `${API_URL}/pcap/${pcapID}/download`,
     deletePcap: pcapID => request.delete(`pcap/${pcapID}`),
     getStreamsFromPcap: pcapID => request.get(`pcap/${pcapID}/streams`),
+    updatePcapAnalysis: (pcapId, onAnalysisProgress) => {
+        const config = {
+            onAnalysisProgress: progressEvent => {
+                const percentCompleted = Math.floor(
+                    (progressEvent.loaded * 100) / progressEvent.total
+                );
+
+                onUploadProgress(percentCompleted);
+            },
+        };
+        return request.patch(`pcap/${pcapId}`, null, config);
+    },
     sendPcapFile: (pcapFile, onUploadProgress) => {
         const data = new FormData();
         data.append('pcap', pcapFile);
@@ -211,6 +224,14 @@ export default {
         request.get(
             `pcap/${pcapID}/stream/${streamID}/rendermp3?channels=${channelsString}`
         ),
+
+    /* Ancillary */
+    downloadAncillaryUrl: (pcapID, streamID, filename) =>
+        `pcap/${pcapID}/stream/${streamID}/ancillary/${filename}`,
+
+    /* Txt files */
+    downloadText: (path) =>
+        request.get(`${path}`),
 
     /* Live */
     getLiveStreams: () => request.get('live/streams/'),

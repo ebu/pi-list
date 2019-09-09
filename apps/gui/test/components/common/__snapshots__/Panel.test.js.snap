@@ -5,14 +5,24 @@ exports[`components/common/Panel Panel Snapshots should render a panel with head
   className="lst-panel"
 >
   <div
-    className="lst-panel__container lst-panel--no-padding"
+    className="lst-panel__container lst-panel--no-padding lst-panel--border"
   >
     <div
-      className="lst-panel__header lst-truncate"
+      className="row lst-panel__header lst-truncate"
     >
-      <h2>
-        test title
-      </h2>
+      <div
+        className="col-xs-6"
+      >
+        <h2
+          className="fit-to-div"
+        >
+          
+          test title
+        </h2>
+      </div>
+      <div
+        className="col-xs-6 end-xs"
+      />
     </div>
     Just a panel!
   </div>
@@ -24,9 +34,8 @@ exports[`components/common/Panel Panel Snapshots should render a panel with no p
   className="lst-panel"
 >
   <div
-    className="lst-panel__container lst-panel--no-padding"
+    className="lst-panel__container lst-panel--no-padding lst-panel--border"
   >
-    
     Just a panel!
   </div>
 </div>
@@ -37,9 +46,8 @@ exports[`components/common/Panel Panel Snapshots should render a panel with padd
   className="lst-panel"
 >
   <div
-    className="lst-panel__container lst-panel--padding"
+    className="lst-panel__container lst-panel--padding lst-panel--border"
   >
-    
     Just a panel!
   </div>
 </div>

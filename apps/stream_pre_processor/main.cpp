@@ -45,6 +45,7 @@ namespace
         auto info = pcap_info{};
         info.id = pcap_uuid;
         info.filename = pcap_file.filename().string();
+        info.analyzer_version = ebu_list::version();
         return info;
     }
 
@@ -83,7 +84,19 @@ namespace
 
         fi.offset_from_ptp_clock = offset_calculator_p->get_average_offset();
         db_serializer db {mongo_db_url};
-        db.insert(constants::db::offline, constants::db::collections::pcaps, pcap_info::to_json(fi));
+
+        if (db.find_one(constants::db::offline,
+                        constants::db::collections::pcaps,
+                        nlohmann::json{{"id", config.pcap_uuid}})) {
+
+            db.update(constants::db::offline,
+                      constants::db::collections::pcaps,
+                      nlohmann::json{{"id", config.pcap_uuid}},
+                      pcap_info::to_json(fi));
+        }
+        else db.insert(constants::db::offline,
+                       constants::db::collections::pcaps,
+                       pcap_info::to_json(fi));
 
         logger()->info("----------------------------------------");
         logger()->info("PTP average offset: {} ns", offset_calculator_p->get_average_offset().count());

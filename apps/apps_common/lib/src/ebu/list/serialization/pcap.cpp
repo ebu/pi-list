@@ -8,6 +8,7 @@ nlohmann::json pcap_info::to_json(const pcap_info& info)
     j["id"] = info.id;
     j["file_name"] = info.filename;
     j["pcap_file_name"] = info.pcap_file_name;
+    j["analyzer_version"] = info.analyzer_version;
     j["date"] = std::chrono::duration_cast<std::chrono::milliseconds>(info.date.time_since_epoch()).count();
     j["analyzed"] = info.analyzed;
     j["truncated"] = info.truncated;
@@ -30,6 +31,12 @@ pcap_info pcap_info::from_json(const nlohmann::json& j)
     pcap.id = j.at("id").get<std::string>();
     pcap.filename = j.at("file_name").get<std::string>();
     pcap.pcap_file_name = j.at("pcap_file_name").get<std::string>();
+
+    auto analyzer_version_json = j.find("analyzer_version");
+    if (analyzer_version_json != j.end())
+        pcap.analyzer_version = analyzer_version_json->get<std::string>();
+    else pcap.analyzer_version = "";
+
     const auto duration = std::chrono::duration<clock::rep, std::milli>(j.at("date").get<clock::rep>());
     pcap.date = std::chrono::system_clock::time_point(duration);
     pcap.analyzed = j.at("analyzed").get<bool>();

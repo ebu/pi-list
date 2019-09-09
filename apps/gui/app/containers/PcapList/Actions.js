@@ -2,6 +2,8 @@ import tableActions from '../../utils/models/table/actions';
 
 const Actions = {
     ...tableActions,
+    requestPcapReanalysis: 'requestPcapReanalysis', // data: { id : String }
+    reanalyzePcap: 'reanalyzePcap', // data: { id : String }
     selectBefore: 'selectBefore', // data: { id : String }
     selectAfter: 'selectAfter', // data: { id : String }
     pcapReceived: 'pcapReceived', // data: { pcap : {} }

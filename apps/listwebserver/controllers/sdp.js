@@ -40,7 +40,7 @@ const sdpToSource = sdpText => {
         sdp: {
             raw: sdpText,
             streams,
-            errors: errors
+            errors: errors.map(err => err.message),
         },
     };
 

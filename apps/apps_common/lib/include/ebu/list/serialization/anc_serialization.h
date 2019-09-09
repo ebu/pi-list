@@ -8,7 +8,9 @@ namespace ebu_list
     namespace st2110::d40
     {
         nlohmann::json to_json(const anc_description& desc);
+        nlohmann::json to_json(const anc_sub_stream& s);
         anc_description from_json(const nlohmann::json& j);
+        anc_sub_stream from_json(const nlohmann::json& j, uint8_t i);
     }
 
     struct anc_stream_details

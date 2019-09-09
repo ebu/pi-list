@@ -3,10 +3,12 @@ import 'react-table/react-table.css';
 import routeBuilder from '../../utils/routeBuilder';
 import PcapTable from './PcapTable';
 import PcapToolbar from './PcapToolbar';
+import PopUp from '../../components/common/PopUp';
 import DeleteModal from '../../components/DeleteModal';
 import { StateContext } from './Context';
 import Actions from './Actions';
 import { T } from '../../utils/translation';
+import api from '../../utils/api';
 
 const NoData = () => (
     <div className="lst-text-center"><T t="pcap.no_pcaps" /></div>
@@ -15,13 +17,31 @@ const NoData = () => (
 const PcapList = (props) => {
 
     const [state, dispatch] = useContext(StateContext);
+    let version = '';
+    api.getVersion().then(ver => version = `${ver.major}.${ver.minor}.${ver.patch}`);
 
     const toggleRow = (id) => dispatch({ type: Actions.toggleRow, data: { id } });
     const toggleSelectAll = () => dispatch({ type: Actions.toggleSelectAll });
 
     const onClickRow = (pcapId) => {
-        const route = routeBuilder.pcap_stream_list(pcapId);
-        window.appHistory.push(route);
+        const pcapInfo = state.data.find(element => {
+            return element.id === pcapId;
+        });
+
+        if (pcapInfo.analyzer_version !== version) {
+            dispatch({ type: Actions.requestPcapReanalysis, data: { id: pcapId } });
+        }
+        else {
+            const route = routeBuilder.pcap_stream_list(pcapId);
+            window.appHistory.push(route);
+        }
+    };
+
+    const doPcapReanalysis = (pcapId) => {
+        if (pcapId)
+            dispatch({ type: Actions.reanalyzePcap, data: { id: pcapId } });
+
+        dispatch({ type: Actions.requestPcapReanalysis, data: { id: undefined } });
     };
 
     const doDelete = (idsToDelete) => {
@@ -55,6 +75,13 @@ const PcapList = (props) => {
 
     return (
         <div>
+            <PopUp
+                type="delete"
+                visible={state.itemToReanalyze != undefined}
+                label="Information"
+                message="Do you wish to reanalyze this capture?"
+                onClose={() => doPcapReanalysis(undefined)}
+                onDelete={() => doPcapReanalysis(state.itemToReanalyze)} />
             <DeleteModal
                 label="pcap.delete_header"
                 message="pcap.delete_message"

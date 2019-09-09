@@ -9,6 +9,7 @@ import Icon from '../../../components/common/Icon';
 
 import {
     getGetTdProps,
+    getKindColumn,
     getCheckBoxColumn,
 } from '../../../components/table/utils';
 
@@ -21,14 +22,7 @@ const SourcesTable = props => {
             accessor: 'meta.label',
             className: 'lst-text-left',
         },
-        {
-            Header: '',
-            headerClassName: 'lst-text-left lst-table-header',
-            accessor: 'kind',
-            className: 'lst-text-center',
-            Cell: renderKind,
-            width: 60,
-        },
+        getKindColumn(sources, props),
         {
             Header: translateX('live.sources.destination_address'),
             headerClassName: 'lst-text-left lst-table-header',
@@ -90,22 +84,6 @@ const renderIcon = ({ value }) => {
             <Icon value={getIconValue(value)} />
         </span>
     );
-};
-
-const renderKind = ({ value }) => {
-    switch (value) {
-        case sources.kinds.user_defined:
-            return <Icon value={'person'} />;
-
-        case sources.kinds.from_sdp:
-            return <span>SDP</span>;
-
-        case sources.kinds.nmos:
-            return <img src="/static/nmos.png" alt="NMOS logo" width="45px" />;
-
-        default:
-            return '';
-    }
 };
 
 SourcesTable.propTypes = {
