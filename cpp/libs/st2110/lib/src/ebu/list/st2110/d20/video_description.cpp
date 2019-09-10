@@ -22,7 +22,7 @@ st2110_20_sdp_serializer::st2110_20_sdp_serializer(const d20::video_description&
 
 void st2110_20_sdp_serializer::additional_attributes(std::vector<std::string>& current_lines, const ebu_list::media::network_media_description& media_description)
 {
-    current_lines.emplace_back(fmt::format("a=source-filter:incl IN IP4 {} {}",
+    current_lines.emplace_back(fmt::format("a=source-filter: incl IN IP4 {} {}",
                 ipv4::to_string(media_description.network.destination.addr),
                 ipv4::to_string(media_description.network.source.addr)));
 
