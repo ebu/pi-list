@@ -152,8 +152,6 @@ export default function(AsyncComponent, options) {
             );
         }
 
-        console.log('*** asyncResults');
-        console.dir(asyncResults);
         return <AsyncComponent {...asyncResults} {...props} />;
     };
 }
