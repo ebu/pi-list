@@ -75,7 +75,10 @@ function renderLabel({ value }) {
 
 function renderMessage({ value }) {
     if (value.status === wfSchema.status.failed) {
-        return <span>{value.errorMessage.toString()}</span>;
+        if(typeof(value.errorMessage) == "string") {
+            return <span>{value.errorMessage}</span>;
+        }
+        return <span>{value.errorMessage.message ? value.errorMessage.message : value.errorMessage.toString()}</span>;
     }
     return <span />;
 }

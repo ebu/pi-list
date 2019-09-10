@@ -10,7 +10,7 @@ const runCapture = async (
     maxDurationMs
 ) => {
     return new Promise((resolve, reject) => {
-        logger('live').error(
+        logger('live').info(
             `command line: ${recorderProgram} ${recorderArguments.join(' ')}`
         );
 
@@ -74,58 +74,18 @@ const runCapture = async (
 };
 
 // Returns a promise
-const runTcpdump = async (globalConfig, captureOptions) => {
-    const interfaceName = _.get(globalConfig, ['tcpdump', 'interface']);
-
-    const tcpdumpFilter = captureOptions.endpoints
-        ? `${captureOptions.endpoints.map(endpoint => {
-              return endpoint.dstAddr ? 'dst ' + endpoint.dstAddr : '';
-          })}`.replace(/,/g, ' or ')
-        : '';
-
-    const captureEnv = {
-        LD_PRELOAD: 'libvma.so',
-        VMA_HW_TS_CONVERSION: '4',
-    };
-
-    const tcpdumpProgram = 'tcpdump';
-    const tcpdumpOptions = {};
-
-    const duration = ['-G', captureOptions.durationMs];
-    const snapshotLength = captureOptions.snapshotLengthBytes
-        ? [`--snapshot-length=${captureOptions.snapshotLengthBytes}`]
-        : [];
-
-    const tcpdumpArguments = [
-        '-i',
-        interfaceName,
-        '--time-stamp-precision=nano',
-        '-j',
-        'adapter_unsynced',
-        ...duration,
-        ...snapshotLength,
-        '-w',
-        captureOptions.file,
-        tcpdumpFilter,
-    ];
-
-    const maxDurationMs = captureOptions.durationMs * 3 + 10000;
-    await runCapture(tcpdumpProgram, tcpdumpArguments, tcpdumpOptions, maxDurationMs);
-};
-
-// Returns a promise
 const runRecorder = async (globalConfig, captureOptions) => {
     const interfaceName = _.get(globalConfig, ['recorder', 'interface']);
-    const recorderBinPath = _.get(globalConfig, ['recorder', 'bin']);
+    const recorderBinPath = _.get(globalConfig, ['list', 'bin']);
 
     if (!recorderBinPath) {
         throw new Error(
-            `Invalid global configuration: ${JSON.stringify(globalConfig)}`
+            `Invalid global configuration. list.bin not found: ${JSON.stringify(globalConfig)}`
         );
     }
 
     const endpoints = [];
-    const es = captureOptions.endpoints.forEach(endpoint => {
+    captureOptions.endpoints.forEach(endpoint => {
         endpoints.push('-e');
         endpoints.push(`${endpoint.dstAddr}:${endpoint.dstPort}`);
     });
@@ -157,5 +117,4 @@ const runRecorder = async (globalConfig, captureOptions) => {
 
 module.exports = {
     runRecorder,
-    runTcpdump,
 };

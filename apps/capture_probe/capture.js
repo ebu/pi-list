@@ -4,6 +4,7 @@ const _ = require('lodash');
 const fs = require('fs');
 const util = require('util');
 const recorder = require('./recorder');
+const tcpdump = require('./tcpdump');
 const { uploadFile } = require('./upload');
 const unlink = util.promisify(fs.unlink);
 
@@ -26,7 +27,7 @@ const performCaptureAndIngest = async (globalConfig, workflowConfig) => {
     if (globalConfig.recorder) {
         await recorder.runRecorder(globalConfig, captureConfig);
     } else if (globalConfig.tcpdump) {
-        await recorder.runTcpdump(globalConfig, captureConfig);
+        await tcpdump.runTcpdump(globalConfig, captureConfig);
     }
 
     try {

@@ -1,4 +1,5 @@
 import React from 'react';
+import Icon from '../../components/common/Icon';
 
 const isSelected = (id, all) => {
     return all.some(item => item === id);

@@ -7,25 +7,25 @@ rabbitmq:
   hostname: localhost
   port: 5672
 
+list:
+  # Path to the LIST binary files
+  bin: /home/ebu/repos/ebu_list_live/build-release/bin
+
 ###############################################################################
-# Uncomment this section to use "capture" to performe the capture 
+# Uncomment this section to use "capture" to performe the capture
 
 # recorder:
 #  # The interface to use for capture
 #  interface: enp64s0f0
-#  # Path to the LIST binary files
-#  bin: /home/ebu/repos/ebu_list_live/build-release/bin
-
 
 ###############################################################################
-# Uncomment this section to use "tcpdump" to performe the capture 
+# Uncomment this section to use "tcpdump" to performe the capture
 
-# tcpdump:
-#   # The interface to use for capture
-#   interface: enp3s0f1
+tcpdump:
+ # The interface to use for capture
+ interface: enp64s0f0
 
-
-###############################################################################
+ ###############################################################################
 # Uncomment this section to upload a pre-recorded file rather than capturing
 
-dummy_pcap: /home/ebu/emb1080i59all1400.pcap
+# dummy_pcap: /home/ebu/emb1080i59all1400.pcap

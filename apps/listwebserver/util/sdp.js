@@ -130,7 +130,7 @@ const getMediaSpecificMeta = media => {
 
                 default:
                     logger('sdp-controller').error(
-                        'Unknown coded for media type video in SDP: ${codec}'
+                        `Unknown codec for media type video in SDP: ${codec}`
                     );
                     return undefined;
             }
