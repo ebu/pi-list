@@ -106,7 +106,7 @@ st2110_40_sdp_serializer::st2110_40_sdp_serializer(const d40::anc_description& a
 
 void st2110_40_sdp_serializer::additional_attributes(std::vector<std::string>& current_lines, const ebu_list::media::network_media_description& network_info)
 {
-    current_lines.emplace_back(fmt::format("a=source-filter:incl IN IP4 {} {}",
+    current_lines.emplace_back(fmt::format("a=source-filter: incl IN IP4 {} {}",
                 ipv4::to_string(network_info.network.destination.addr),
                 ipv4::to_string(network_info.network.source.addr)));
 
