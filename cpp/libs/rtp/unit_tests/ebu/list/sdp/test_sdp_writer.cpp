@@ -91,9 +91,53 @@ SCENARIO("SDP serialization")
                 const auto line = lines[initial_size + 1];
                 REQUIRE( line == "c=IN IP4 234.0.0.1/32" );
             }
+
+            THEN("the third and fourth lines identify the reference clock")
+            {
+                const auto line3 = lines[initial_size + 2];
+                const auto line4 = lines[initial_size + 3];
+                REQUIRE( line3 == "a=mediaclk:direct=0" );
+                REQUIRE( line4 == "a=ts-refclk:ptp=IEEE1588-2008:00-00-00-00-00-00-00-00:0" );
+            }
         }
     }
 
+    GIVEN("a generic anc stream")
+    {
+        media::network_media_description media { network_info, media::media_type::ANCILLARY_DATA};
+
+        WHEN("we try to serialize it into SDP format")
+        {
+            auto sdp = sdp_writer(settings);
+            auto initial_size = sdp.sdp().size();
+            const auto lines = sdp.add_media(media).sdp();
+
+            THEN("4 lines were added")
+            {
+                REQUIRE( lines.size() - initial_size == 4 );
+            }
+
+            THEN("the first added line is a media line")
+            {
+                const auto line = lines[initial_size];
+                REQUIRE( line == "m=video 5000 RTP/AVP 96" );
+            }
+
+            THEN("the second line is a connection line")
+            {
+                const auto line = lines[initial_size + 1];
+                REQUIRE( line == "c=IN IP4 234.0.0.1/32" );
+            }
+
+            THEN("the third and fourth lines identify the reference clock")
+            {
+                const auto line3 = lines[initial_size + 2];
+                const auto line4 = lines[initial_size + 3];
+                REQUIRE( line3 == "a=mediaclk:direct=0" );
+                REQUIRE( line4 == "a=ts-refclk:ptp=IEEE1588-2008:00-00-00-00-00-00-00-00:0" );
+            }
+        }
+    }
     GIVEN("an unknown stream")
     {
         auto sdp = sdp_writer(settings);
