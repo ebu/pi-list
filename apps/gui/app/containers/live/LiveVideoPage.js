@@ -1,13 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import Toggle from 'react-toggle';
-import NetworkInfo from 'containers/streamPage/NetworkInfo';
-import VideoInfo from 'containers/streamPage/VideoInfo';
-import Dash21Info from 'containers/streamPage/Dash21Info';
-import Panel from 'components/common/Panel';
-import websocketEventsEnum from 'enums/websocketEventsEnum';
-import websocket from 'utils/websocket';
-import chartFormatters from 'utils/chartFormatters';
-import Chart from 'components/StyledChart';
+import NetworkInfo from '../../containers/streamPage/NetworkInfo';
+import VideoInfo from '../../containers/streamPage/VideoInfo';
+import Dash21Info from '../../containers/streamPage/Dash21Info';
+import Panel from '../../components/common/Panel';
+import websocketEventsEnum from '../../enums/websocketEventsEnum';
+import websocket from '../../utils/websocket';
+import chartFormatters from '../../utils/chartFormatters';
+import Chart from '../../components/StyledChart';
 
 const maxHistoryArraySize = 60;
 const fillArray = () => Array(maxHistoryArraySize).fill({ value: 0, time: 1 });
@@ -175,7 +175,7 @@ class LiveVideoPage extends Component {
             <div className="lst-stream-info-tab lst-full-height">
                 <div className="row">
                     <Panel className="col-xs-12 col-md-4">
-                        <Dash21Info {...globalVideoAnalysis} />
+                        <Dash21Info {...globalVideoAnalysis} {...mediaInfo} />
                         <NetworkInfo stream={this.props.streamInfo} />
                         <VideoInfo {...mediaInfo} />
                     </Panel>
