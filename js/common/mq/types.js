@@ -60,11 +60,11 @@ const exchanges = {
         },
         keys: {
             /**
-             * Announce message: 
+             * Announce message:
              * {
-             *   probe: { 
+             *   probe: {
              *     id : string // probe's unique id
-             *     label : string // Human readable probe name 
+             *     label : string // Human readable probe name
              *   }
              * }
              */
@@ -79,7 +79,7 @@ const exchanges = {
             durable: false,
         },
         topics: {
-            // TODO: add topics here
+            stream_update: 'stream_update',
         },
     },
 };

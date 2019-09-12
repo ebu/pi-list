@@ -1,0 +1,3 @@
+rabbitmq:
+  hostname: localhost
+  port: 5672
