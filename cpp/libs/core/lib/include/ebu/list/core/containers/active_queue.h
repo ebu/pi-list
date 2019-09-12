@@ -4,6 +4,7 @@
 #include <queue>
 #include <mutex>
 #include <optional>
+#include <future>
 
 namespace ebu_list
 {

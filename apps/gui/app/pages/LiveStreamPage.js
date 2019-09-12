@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import api from '../utils/api';
 import asyncLoader from '../components/asyncLoader';
-import errorEnum from '../enums/errorEnum';
 import LiveVideoPage from '../containers/live/LiveVideoPage';
 import AudioPage from '../containers/AudioPage/index';
 
@@ -11,23 +10,25 @@ class LiveStreamPage extends Component {
         return this.props.streamInfo.media_type === 'video';
     }
 
-    renderAudio() {
-        const { streamID } = this.props.match.params;
-        return (
-            <AudioPage
-                streamInfo={this.props.streamInfo}
-                pcapID="live-pcap"
-                streamID={streamID}
-            />
-        );
-    }
-
-    renderVideo() {
-        return <LiveVideoPage streamInfo={this.props.streamInfo} />;
+    isAudio() {
+        return this.props.streamInfo.media_type === 'audio';
     }
 
     render() {
-        return this.isVideo() ? this.renderVideo() : this.renderAudio();
+        if (this.isVideo()) {
+            return <LiveVideoPage streamInfo={this.props.streamInfo} />;
+        } else if (this.isAudio()) {
+            const { streamID } = this.props.match.params;
+            return (
+                <AudioPage
+                    streamInfo={this.props.streamInfo}
+                    pcapID="live-pcap"
+                    streamID={streamID}
+                />
+            );
+        } else {
+            return <div>Unknown stream type</div>;
+        }
     }
 }
 

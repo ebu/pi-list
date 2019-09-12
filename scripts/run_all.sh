@@ -5,6 +5,7 @@ SRC=$DIR/..
 
 INSTALL=0
 RUN_ALL=0
+RUN_TESTS=0
 
 usage() { echo "$0 usage:" && grep " .)\ #" $0; exit 0; }
 [ $# -eq 0 ] && usage
@@ -40,7 +41,7 @@ run () {
     cd "$SRC/$1" && $2
 }
 
-declare -a INSTALLS=("js/common_server" "apps/listwebserver" "apps/gui" "apps/capture_probe")
+declare -a INSTALLS=("js/common_server" "apps/listwebserver" "apps/gui" "apps/capture_probe" "apps/live_generator")
 
 if [ $INSTALL -eq 1 ] ; then
     echo "INSTALL"
