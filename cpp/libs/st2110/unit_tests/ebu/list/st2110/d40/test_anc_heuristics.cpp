@@ -26,7 +26,7 @@ SCENARIO("ST2110-40 heuristics")
 
         WHEN("we check the format")
         {
-            REQUIRE(result == detector::status::valid);
+            REQUIRE(result.state == detector::state::valid);
 
             THEN("we get the correct format")
             {
@@ -48,7 +48,7 @@ SCENARIO("ST2110-40 heuristics")
         {
             THEN("it is invalid")
             {
-                REQUIRE(result == detector::status::invalid);
+                REQUIRE(result.state == detector::state::invalid);
             }
         }
     }
@@ -66,7 +66,7 @@ SCENARIO("ST2110-40 heuristics")
         {
             THEN("it is invalid")
             {
-                REQUIRE(result == detector::status::invalid);
+                REQUIRE(result.state == detector::state::invalid);
             }
         }
     }
@@ -84,7 +84,7 @@ SCENARIO("ST2110-40 heuristics")
         {
             THEN("it is invalid")
             {
-                REQUIRE(result == detector::status::invalid);
+                REQUIRE(result.state == detector::state::invalid);
             }
         }
     }

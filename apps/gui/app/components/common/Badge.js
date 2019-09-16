@@ -38,8 +38,13 @@ const Badge = (props) => {
         }
     );
 
+    let title = ""
+    if (props.title != "undefined") {
+        title = props.title
+    }
+
     return (
-        <span className={badgeClassName}>
+        <span title={title} className={badgeClassName}>
             {props.icon && (
                 <Icon value={props.icon} />
             )}

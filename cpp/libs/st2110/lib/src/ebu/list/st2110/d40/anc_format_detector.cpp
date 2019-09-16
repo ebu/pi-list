@@ -23,19 +23,21 @@ anc_format_detector::anc_format_detector()
 {
 }
 
-detector::status anc_format_detector::handle_data(const rtp::packet& packet)
+detector::status_description anc_format_detector::handle_data(const rtp::packet& packet)
 {
     auto& sdu = packet.sdu;
 
-    if (spacing_analyzer_.handle_data(packet) == detector::status::invalid)
-    {
-        return detector::status::invalid;
-    }
+    const auto result = spacing_analyzer_.handle_data(packet);
+
+    if (result.state == detector::state::invalid) return result;
 
     constexpr auto minimum_size = sizeof(raw_extended_sequence_number) + sizeof(raw_anc_header);
     if (sdu.view().size() < minimum_size)
     {
-        return detector::status::invalid;
+        return detector::status_description {
+            /*.state*/ detector::state::invalid,
+            /*.error_code*/ "STATUS_CODE_ANC_NO_MINIMUM_SIZE"
+        };
     }
 
     // start after esn
@@ -67,7 +69,10 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
         if (p > end)
         {
             /* could be truncated */
-            return detector::status::detecting;
+            return detector::status_description {
+                /*.state*/ detector::state::detecting,
+                /*.error_code*/ "STATUS_CODE_ANC_DETECTING"
+            };
         }
 
         uint16_t bit_counter = 0;
@@ -87,7 +92,10 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
         /* let's give a chance */
         if ( !anc_packet.sanity_check() )
         {
-            return detector::status::detecting;
+            return detector::status_description {
+                /*.state*/ detector::state::detecting,
+                /*.error_code*/ "STATUS_CODE_ANC_DETECTING"
+            };
         }
 
         auto s = anc_sub_stream((anc_packet.did() << 8) + anc_packet.sdid(), anc_packet.stream_num());
@@ -95,7 +103,10 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
         {
             logger()->trace("Ancillary: stream invalid");
             /* it could be worth trying to return invalid */
-            return detector::status::detecting;
+            return detector::status_description {
+                /*.state*/ detector::state::detecting,
+                /*.error_code*/ "STATUS_CODE_ANC_DETECTING"
+            };
         }
 
         /* detect and save new sub-streams */
@@ -124,7 +135,10 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
     {
         /* could be truncated */
         logger()->warn("Ancillary stream shorter than expected");
-        return detector::status::detecting;
+        return detector::status_description {
+            /*.state*/ detector::state::detecting,
+            /*.error_code*/ "STATUS_CODE_ANC_DETECTING"
+        };
     }
 
     const auto res = detector_.handle_data(packet);

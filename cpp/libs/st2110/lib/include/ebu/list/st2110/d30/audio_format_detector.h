@@ -9,12 +9,15 @@ namespace ebu_list::st2110::d30
     class timestamp_difference_checker
     {
     public:
-        detector::status handle_data(uint32_t timestamp);
+        detector::status_description handle_data(uint32_t timestamp);
 
         uint32_t get_difference() const;
 
     private:
-        detector::status status_ = detector::status::detecting;
+        detector::status_description status_description_ = detector::status_description {
+            /*.state*/ detector::state::detecting,
+            /*.error_code*/ "STATUS_CODE_AUDIO_DETECTING"
+        };
         std::optional<uint32_t> difference_ {};
         std::optional<uint32_t> last_timestamp_ {};
         int valid_samples_ = 0;
@@ -23,12 +26,15 @@ namespace ebu_list::st2110::d30
     class packet_size_calculator
     {
     public:
-        detector::status handle_data(int packet_size);
+        detector::status_description handle_data(int packet_size);
 
         int get_packet_size() const;
 
     private:
-        detector::status status_ = detector::status::detecting;
+        detector::status_description status_description_ = detector::status_description {
+            /*.state*/ detector::state::detecting,
+            /*.error_code*/ "STATUS_CODE_AUDIO_DETECTING"
+        };
         std::optional<int> packet_size_ {};
         int valid_samples_ = 0;
     };
@@ -38,12 +44,14 @@ namespace ebu_list::st2110::d30
     public:
         audio_format_detector();
 
-        status handle_data(const rtp::packet& packet) override;
+        detector::status_description handle_data(const rtp::packet& packet) override;
         virtual details get_details() const override;
 
     private:
-        status status_ = status::detecting;
-
+        detector::status_description status_description_ = detector::status_description {
+            /*.state*/ detector::state::detecting,
+            /*.error_code*/ "STATUS_CODE_AUDIO_DETECTING"
+        };
         audio_description description_ {};
         timestamp_difference_checker ts_checker_ {};
         packet_size_calculator packet_sizes_ {};

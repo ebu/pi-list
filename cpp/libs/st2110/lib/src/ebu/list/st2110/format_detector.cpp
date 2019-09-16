@@ -6,7 +6,6 @@
 
 using namespace ebu_list;
 using namespace ebu_list::st2110;
-
 //////////////////////////////////////////////////////////////////////
 
 format_detector::format_detector(rtp::packet /*first_packet*/)
@@ -18,30 +17,37 @@ format_detector::format_detector(rtp::packet /*first_packet*/)
 
 void format_detector::on_data(const rtp::packet& packet)
 {
-    if (status_ != detector::status::detecting) return;
+    if (status_description_.state != detector::state::detecting) return;
 
     std::vector<const detector*> to_remove;
     const detector* one_valid = nullptr;
 
     for(auto& d : detectors_)
     {
-        if (one_valid)
-        {
-            to_remove.push_back(d.get());
-            continue;
-        }
-
         const auto result = d->handle_data(packet);
-        if (result == detector::status::invalid)
+        if (result.state == detector::state::invalid)
         {
             //logger()->debug("Detector marked this stream as not target format");
 
+            if (dynamic_cast<d20::video_format_detector *>(d.get()) != nullptr)
+            {
+                error_codes_list_["video"].push_back(result.error_code);
+            }
+            else if (dynamic_cast<d30::audio_format_detector *>(d.get()) != nullptr)
+            {
+                error_codes_list_["audio"].push_back(result.error_code);
+            }
+            else if (dynamic_cast<d40::anc_format_detector *>(d.get()) != nullptr)
+            {
+                error_codes_list_["anc"].push_back(result.error_code);
+            }
+
             to_remove.push_back(d.get());
         }
 
-        if (result == detector::status::valid)
+        if (result.state == detector::state::valid)
         {
-            status_ = detector::status::valid;
+            status_description_ = result;
             one_valid = d.get();
         }
     }
@@ -61,7 +67,8 @@ void format_detector::on_data(const rtp::packet& packet)
 
     if (detectors_.empty())
     {
-        status_ = detector::status::invalid;
+        status_description_.state = detector::state::invalid;
+        status_description_.error_code = "STATUS_CODE_FORMAT_NO_DETECTORS_FOUND";
     }
 }
 
@@ -73,15 +80,21 @@ void format_detector::on_error(std::exception_ptr)
 {
 }
 
-detector::status format_detector::status() const noexcept
+detector::status_description format_detector::status() const noexcept
 {
-    return status_;
+    return status_description_;
 }
 
 detector::details format_detector::get_details() const
 {
-    if (status_ != detector::status::valid) return std::nullopt;
+    if (status_description_.state != detector::state::valid) return std::nullopt;
 
     assert(detectors_.size() == 1);
     return detectors_[0]->get_details();
 }
+
+std::map<std::string, std::vector<std::string>> format_detector::get_error_codes()
+{
+    return error_codes_list_;
+}
+
