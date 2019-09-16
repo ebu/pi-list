@@ -19,6 +19,7 @@ const AnalysisBadge = (props) => {
             icon="assignment"
             type={`${type}`}
             text={`${props.name}`}
+            title={`${props.title}`}
             mini
             border
         />

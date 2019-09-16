@@ -47,14 +47,17 @@ namespace
 
 //------------------------------------------------------------------------------
 
-detector::status line_data_analyzer::handle_data(const rtp::packet& packet)
+detector::status_description line_data_analyzer::handle_data(const rtp::packet& packet)
 {
     auto& sdu = packet.sdu;
 
     constexpr auto minimum_size = sizeof(raw_extended_sequence_number) + sizeof(raw_line_header);
     if (sdu.view().size() < minimum_size)
     {
-        return detector::status::invalid;
+        return detector::status_description {
+            /*.state*/ detector::state::invalid,
+            /*.error_code*/ "STATUS_CODE_FORMAT_NO_MINIMUM_SIZE"
+        };
     }
 
     auto p = sdu.view().data();
@@ -75,7 +78,10 @@ detector::status line_data_analyzer::handle_data(const rtp::packet& packet)
         if (!line_header.continuation()) break;
     }
 
-    return detector::status::detecting;
+    return detector::status_description {
+        /*.state*/ detector::state::detecting,
+        /*.error_code*/ "STATUS_CODE_FORMAT_DETECTING"
+    };
 }
 
 int line_data_analyzer::max_line_number() const noexcept
@@ -95,12 +101,12 @@ video_format_detector::video_format_detector()
 {
 }
 
-detector::status video_format_detector::handle_data(const rtp::packet& packet)
+detector::status_description video_format_detector::handle_data(const rtp::packet& packet)
 {
     const auto la_result = line_analyzer_.handle_data(packet);
-    if (la_result == detector::status::invalid) return detector::status::invalid;
+    if (la_result.state == detector::state::invalid) return la_result;
     const auto sa_result = spacing_analyzer_.handle_data(packet);
-    if (sa_result == detector::status::invalid) return detector::status::invalid;
+    if (sa_result.state == detector::state::invalid) return sa_result;
 
     return detector_.handle_data(packet);
 }

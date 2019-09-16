@@ -10,7 +10,7 @@ namespace ebu_list::st2110::d40
     public:
         anc_format_detector();
 
-        status handle_data(const rtp::packet& packet) override;
+        detector::status_description handle_data(const rtp::packet& packet) override;
         virtual details get_details() const override;
 
     private:
