@@ -109,25 +109,44 @@ void influxdb_vrx_logger::on_error(std::exception_ptr)
 
 //------------------------------------------------------------------------------
 
-influxdb_audio_timing_logger::influxdb_audio_timing_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id, std::string prefix)
+influxdb_audio_rtp_logger::influxdb_audio_rtp_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id, std::string prefix)
     : db_(url, pcap_id, stream_id),
     prefix_(std::move(prefix))
 {
 }
 
-void influxdb_audio_timing_logger::on_data(const ebu_list::audio_timing_analyser::delay_sample& sample)
+void influxdb_audio_rtp_logger::on_data(const ebu_list::audio_timing_analyser::delay_sample& sample)
 {
-    db_.send_data(prefix_ + "-rtp-vs-pkt-min", sample.delay_min, sample.timestamp);
-    db_.send_data(prefix_ + "-rtp-vs-pkt-max", sample.delay_max, sample.timestamp);
-    db_.send_data(prefix_ + "-rtp-vs-pkt-mean", sample.delay_mean, sample.timestamp);
-    db_.send_data(prefix_ + "-tsdf", sample.time_stamped_delay_factor, sample.timestamp);
+    db_.send_data(prefix_ + "-rtp-vs-pkt", sample.rtp_ts_vs_pkt_ts, sample.timestamp);
 }
 
-void influxdb_audio_timing_logger::on_complete()
+void influxdb_audio_rtp_logger::on_complete()
 {
     db_.on_complete();
 }
 
-void influxdb_audio_timing_logger::on_error(std::exception_ptr)
+void influxdb_audio_rtp_logger::on_error(std::exception_ptr)
+{
+}
+
+//------------------------------------------------------------------------------
+
+influxdb_audio_tsdf_logger::influxdb_audio_tsdf_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id, std::string prefix)
+    : db_(url, pcap_id, stream_id),
+    prefix_(std::move(prefix))
+{
+}
+
+void influxdb_audio_tsdf_logger::on_data(const ebu_list::audio_timing_analyser::delay_sample& sample)
+{
+    db_.send_data(prefix_ + "-tsdf", sample.time_stamped_delay_factor, sample.timestamp);
+}
+
+void influxdb_audio_tsdf_logger::on_complete()
+{
+    db_.on_complete();
+}
+
+void influxdb_audio_tsdf_logger::on_error(std::exception_ptr)
 {
 }

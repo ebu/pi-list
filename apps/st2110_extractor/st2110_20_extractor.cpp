@@ -408,11 +408,16 @@ namespace
                         const auto info_path =
                             config.storage_folder / stream_info.id;
 
-                        auto db_logger = std::make_unique<
-                            influx::influxdb_audio_timing_logger>(
+                        auto db_rtp_logger = std::make_unique<
+                            influx::influxdb_audio_rtp_logger>(
+                            influx_db_url, pcap.id, stream_info.id, "audio");
+                        auto db_tsdf_logger = std::make_unique<
+                            influx::influxdb_audio_tsdf_logger>(
                             influx_db_url, pcap.id, stream_info.id, "audio");
                         auto analyzer = std::make_unique<audio_timing_analyser>(
-                            first_packet, std::move(db_logger),
+                            first_packet,
+                            std::move(db_rtp_logger),
+                            std::move(db_tsdf_logger),
                             ebu_list::media::audio::to_int(
                                 audio_info.audio.sampling));
                         ml->add(std::move(analyzer));
