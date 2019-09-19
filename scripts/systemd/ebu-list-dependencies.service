@@ -1,0 +1,15 @@
+[Unit]
+Description=Services used by EBU LIST
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=ebu
+WorkingDirectory=/home/ebu/repos/ebu_list/apps/external
+ExecStart=/usr/bin/env docker-compose up
+
+[Install]
+WantedBy=multi-user.target
