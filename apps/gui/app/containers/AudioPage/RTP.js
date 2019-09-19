@@ -21,7 +21,7 @@ const RTP = props => {
                             )
                         }
                         xAxis={chartFormatters.getTimeLineLabel}
-                        data={chartFormatters.statsLineChart}
+                        data={chartFormatters.singleValueLineChart}
                         titleTag="media_information.rtp.delta_packet_time_vs_rtp_time_ns"
                         yAxisLabel="Delay (μs)"
                         height={300}

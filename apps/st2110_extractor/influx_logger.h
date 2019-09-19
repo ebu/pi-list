@@ -70,10 +70,25 @@ namespace ebu_list::influx
         const std::string prefix_;
     };
 
-    class influxdb_audio_timing_logger : public ebu_list::audio_timing_analyser::listener
+    class influxdb_audio_rtp_logger : public ebu_list::audio_timing_analyser::listener
     {
     public:
-        influxdb_audio_timing_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id, std::string prefix);
+        influxdb_audio_rtp_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id, std::string prefix);
+
+    private:
+        // calculator::listener
+        void on_data(const ebu_list::audio_timing_analyser::delay_sample&) override;
+        void on_complete() override;
+        void on_error(std::exception_ptr ptr) override;
+
+        base_influx_logger db_;
+        const std::string prefix_;
+    };
+
+    class influxdb_audio_tsdf_logger : public ebu_list::audio_timing_analyser::listener
+    {
+    public:
+        influxdb_audio_tsdf_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id, std::string prefix);
 
     private:
         // calculator::listener
