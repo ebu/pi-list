@@ -1,0 +1,16 @@
+[Unit]
+Description=EBU LIST Server
+After=network.target
+Requires=ebu-list-dependencies.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=ebu
+WorkingDirectory=/home/ebu/repos/ebu_list/apps/listwebserver
+ExecStart=/usr/bin/env node server.js /home/ebu/.list/config.yml --live --dev
+
+[Install]
+WantedBy=multi-user.target
