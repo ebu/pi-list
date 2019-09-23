@@ -182,7 +182,7 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
     auto& sdu = packet.sdu;
 
     constexpr auto minimum_size =
-        sizeof(raw_extended_sequence_number) + sizeof(raw_line_header);
+        ssizeof<raw_extended_sequence_number>() + ssizeof<raw_line_header>();
     if (sdu.view().size() < minimum_size) return;
 
     auto p = sdu.view().data();
@@ -201,7 +201,7 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
 
     if (should_decode_video_)
     {
-        auto line_index = 0;
+        size_t line_index = 0;
 
 #if defined(LIST_TRACE)
         logger()->info("UDP packet size: {} SDU size: {}",

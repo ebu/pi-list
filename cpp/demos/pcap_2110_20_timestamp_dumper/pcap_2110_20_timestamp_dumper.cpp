@@ -1,6 +1,7 @@
 #include "ebu/list/version.h"
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/core/io/file_source.h"
+#include "ebu/list/core/idioms.h"
 #include "ebu/list/pcap/reader.h"
 #include "ebu/list/net/ethernet/decoder.h"
 #include "ebu/list/net/ipv4/decoder.h"
@@ -80,11 +81,11 @@ namespace
         return config;
     }
 
-    void dump_packet_info(const pcap::packet& /*packet*/, const int /*packet_count*/)
-    {
-        //const auto ts = to_date_time_string(packet.pcap_header().timestamp());
-        //std::cout << "Packet #" << packet_count << ", size: 0x" << size(packet.data) << ", timestamp: " << ts << "\n";
-    }
+    // void dump_packet_info(const pcap::packet& /*packet*/, const int /*packet_count*/)
+    // {
+    //     //const auto ts = to_date_time_string(packet.pcap_header().timestamp());
+    //     //std::cout << "Packet #" << packet_count << ", size: 0x" << size(packet.data) << ", timestamp: " << ts << "\n";
+    // }
 
     void run(const config& config)
     {
@@ -154,7 +155,7 @@ namespace
 
             auto& sdu = rtp_packet.sdu;
 
-            constexpr auto minimum_size = sizeof(d20::raw_extended_sequence_number) + sizeof(d20::raw_line_header);
+            constexpr auto minimum_size = ssizeof<d20::raw_extended_sequence_number>() + ssizeof<d20::raw_line_header>();
             if (sdu.view().size() < minimum_size) continue;
 
             auto p = sdu.view().data();

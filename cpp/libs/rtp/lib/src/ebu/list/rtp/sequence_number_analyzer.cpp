@@ -8,7 +8,7 @@ using namespace ebu_list::rtp;
 
 //------------------------------------------------------------------------------
 template<typename ...Ts>
-void log(Ts... ts)
+void log([[ maybe_unused ]]Ts... ts)
 {
 #if defined(LIST_LOG_SEQNR)
     logger()->info(ts...);

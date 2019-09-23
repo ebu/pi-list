@@ -26,8 +26,8 @@ struct c_analyzer::impl
 
 //------------------------------------------------------------------------------
 
-c_analyzer::c_analyzer(listener_uptr listener, histogram_listener_uptr histogram_listener, int64_t npackets, media::video::Rate rate)
-    : impl_(std::make_unique<impl>(std::move(listener),
+c_analyzer::c_analyzer(listener_uptr _listener, histogram_listener_uptr histogram_listener, int64_t npackets, media::video::Rate rate)
+    : impl_(std::make_unique<impl>(std::move(_listener),
     histogram_listener ? std::move(histogram_listener) : std::make_unique<null_histogram_listener>(),
     npackets,
     rate))

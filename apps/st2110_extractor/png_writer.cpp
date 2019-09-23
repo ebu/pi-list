@@ -74,7 +74,7 @@ void ebu_list::write_png(oview data, media::video::video_dimensions dimensions, 
     //png_set_compression_level(p, 1);
     std::vector<uint8_t*> rows(h);
     for (size_t y = 0; y < h; ++y)
-        rows[y] = (uint8_t*)buffer + y * w * 4;
+        rows[y] = const_cast<uint8_t*>(buffer) + y * w * 4;
     png_set_rows(p, info_ptr, &rows[0]);
     png_set_write_fn(p, &out, PngWriteCallback, nullptr);
     png_write_png(p, info_ptr, PNG_TRANSFORM_IDENTITY, nullptr);

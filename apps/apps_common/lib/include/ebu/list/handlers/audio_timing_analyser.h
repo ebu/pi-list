@@ -57,8 +57,8 @@ namespace ebu_list
 
         int64_t get_delta_rtp_ts_vs_pkt_ts(const rtp::packet& packet);
 
-        int sampling_;
         int64_t first_packet_ts_usec_;
+        int sampling_;
         std::vector<int64_t> delta_rtp_ts_vs_pkt_ts_buffer;
     };
 }

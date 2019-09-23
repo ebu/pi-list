@@ -12,7 +12,7 @@ constexpr auto max_packet_size = 0x40000;
 maybe_header pcap::read_header(chunked_data_source& source) noexcept
 {
     auto s = source.try_read_exactly(sizeof(raw_file_header));
-    if (size(s) < sizeof(raw_file_header)) return std::nullopt;
+    if (size(s) < ssizeof<raw_file_header>()) return std::nullopt;
 
     auto h = file_header(std::move(s));
     if(!h().is_valid()) return std::nullopt;
@@ -23,7 +23,7 @@ maybe_header pcap::read_header(chunked_data_source& source) noexcept
 maybe_packet pcap::read_packet(const file_header_lens& header, chunked_data_source& source)
 {
     auto s = source.try_read_exactly(sizeof(raw_packet_header));
-    if (size(s) < sizeof(raw_packet_header)) return std::nullopt;
+    if (size(s) < ssizeof<raw_packet_header>()) return std::nullopt;
 
     auto ph = packet_header(std::move(s), header);
 

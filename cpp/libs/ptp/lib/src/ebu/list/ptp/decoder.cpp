@@ -19,7 +19,7 @@ namespace
 
     maybe_message decode_v2(clock::time_point packet_timestamp, oview&& pdu)
     {
-        LIST_ASSERT(size(pdu) >= sizeof(v2::message_header));
+        LIST_ASSERT(size(pdu) >= ssizeof<v2::message_header>());
         auto[header, remainder] = v2::take_header(std::move(pdu));
 
         switch (header.value().type())
@@ -65,7 +65,7 @@ bool ptp::may_be_ptp(port p)
 
 maybe_message ptp::decode(clock::time_point packet_timestamp, oview&& pdu)
 {
-    if (size(pdu) < sizeof(common_message_header)) return std::nullopt;
+    if (size(pdu) < ssizeof<common_message_header>()) return std::nullopt;
     const auto common = reinterpret_cast<const common_message_header*>(pdu.view().data());
     
     if (common->version_ptp == 2)

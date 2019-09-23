@@ -5,9 +5,10 @@
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/serialization/serializable_stream_info.h"
 #include "ebu/list/serialization/anc_serialization.h"
-#include "libklvanc/vanc.h"
 
-static struct klvanc_callbacks_s klvanc_callbacks;
+#pragma GCC diagnostic ignored "-Wpedantic"
+#include "libklvanc/vanc.h"
+#pragma GCC diagnostic pop
 
 namespace ebu_list
 {
