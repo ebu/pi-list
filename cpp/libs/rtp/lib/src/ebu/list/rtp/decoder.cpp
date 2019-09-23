@@ -1,4 +1,5 @@
 #include "ebu/list/rtp/decoder.h"
+#include "ebu/list/core/idioms.h"
 
 using namespace ebu_list;
 using namespace ebu_list::rtp;
@@ -71,7 +72,7 @@ namespace
 
 maybe_pdu rtp::decode(oview&& raw_pdu)
 {
-    if (size(raw_pdu) < sizeof(raw_header)) return std::nullopt;
+    if (size(raw_pdu) < ssizeof<raw_header>()) return std::nullopt;
     auto header_p = reinterpret_cast<const byte*>(raw_pdu.view().data());
     auto header = reinterpret_cast<const raw_header*>(header_p);
 

@@ -12,7 +12,7 @@ using namespace ebu_list;
 
 std::tuple<ipv4::header, oview> ipv4::decode(oview&& pdu)
 {
-    LIST_ENFORCE(size(pdu) >= sizeof(ipv4::packet_header), std::runtime_error, "packet is smaller than ipv4 header");
+    LIST_ENFORCE(size(pdu) >= ssizeof<ipv4::packet_header>(), std::runtime_error, "packet is smaller than ipv4 header");
     const auto h = reinterpret_cast<const ipv4::packet_header*>(pdu.view().data());
     const auto header_length = h->ip_hl * 4; // ip_hl is the number of 32-bit words
 
@@ -24,6 +24,7 @@ std::tuple<ipv4::header, oview> ipv4::decode(oview&& pdu)
     header header{ s.value().ip_dst, s.value().ip_src, static_cast<protocol_type>(s.value().ip_p) };
 
     auto[payload, fcs] = split(std::move(ipv4_payload), payload_length);
+    (void)fcs; // [[maybe_unused]]
     return { header, payload };
 }
 

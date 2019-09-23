@@ -88,7 +88,7 @@ st2110::d40::anc_description st2110::d40::from_json(const nlohmann::json& j)
     return desc;
 }
 
-st2110::d40::anc_sub_stream st2110::d40::from_json(const nlohmann::json& j, uint8_t i)
+st2110::d40::anc_sub_stream st2110::d40::from_json(const nlohmann::json& j, [[ maybe_unused]] uint8_t i)
 {
     auto s = anc_sub_stream(j.at("did_sdid"), j.at("num"));
     s.errors(j.at("errors"));

@@ -33,7 +33,6 @@ else()
 endif()
 
 list_set_cpp_properties()
-set(CMAKE_CXX_FLAGS "${LOCAL_CMAKE_CXX_FLAGS}")
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 

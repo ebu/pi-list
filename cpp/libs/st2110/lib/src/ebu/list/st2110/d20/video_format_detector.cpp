@@ -51,7 +51,7 @@ detector::status_description line_data_analyzer::handle_data(const rtp::packet& 
 {
     auto& sdu = packet.sdu;
 
-    constexpr auto minimum_size = sizeof(raw_extended_sequence_number) + sizeof(raw_line_header);
+    constexpr auto minimum_size = ssizeof<raw_extended_sequence_number>() + ssizeof<raw_line_header>();
     if (sdu.view().size() < minimum_size)
     {
         return detector::status_description {

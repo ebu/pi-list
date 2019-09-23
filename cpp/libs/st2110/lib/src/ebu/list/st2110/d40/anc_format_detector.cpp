@@ -31,7 +31,7 @@ detector::status_description anc_format_detector::handle_data(const rtp::packet&
 
     if (result.state == detector::state::invalid) return result;
 
-    constexpr auto minimum_size = sizeof(raw_extended_sequence_number) + sizeof(raw_anc_header);
+    constexpr auto minimum_size = ssizeof<raw_extended_sequence_number>() + ssizeof<raw_anc_header>();
     if (sdu.view().size() < minimum_size)
     {
         return detector::status_description {

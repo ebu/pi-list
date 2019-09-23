@@ -28,6 +28,12 @@ namespace ebu_list::st2110::d40
 
     class anc_sub_stream
     {
+        private:
+            void check();
+            anc::did_sdid did_sdid_;
+            uint8_t num_;
+            uint16_t errors_;
+
         public:
             anc_sub_stream(uint16_t did_sdid, uint8_t num);
             anc::did_sdid did_sdid() const;
@@ -42,11 +48,6 @@ namespace ebu_list::st2110::d40
             uint16_t packet_count;
             std::vector<anc_sub_sub_stream> anc_sub_sub_streams;
 
-        private:
-            void check();
-            anc::did_sdid did_sdid_;
-            uint8_t num_;
-            uint16_t errors_;
     };
 
     struct anc_description : d10::stream_information

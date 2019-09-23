@@ -16,7 +16,7 @@ namespace ebu_list::st2110::d20
             rtp::ticks32 delta_rtp_vs_packet_time{};
             rtp::ticks32 delta_rtp_vs_NTs{};
             std::optional<rtp::ticks32> rtp_ts_delta{};
-            clock::duration delta_packet_time_vs_rtp_time;
+            clock::duration delta_packet_time_vs_rtp_time{};
         };
 
         class listener
