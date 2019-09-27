@@ -5,14 +5,14 @@ import { translateX } from '../utils/translation';
 
 const DeleteModal = props => (
     <PopUp
-        type="delete"
+        type="deletecancel"
         visible={props.data !== null && props.data.length > 0}
         label={translateX(props.label)}
         message={translateX(props.message, {
             name: props.data ? props.data.length : 0,
         })}
         onClose={() => props.onDelete([])}
-        onDelete={() => props.onDelete(props.data)}
+        onDoAction={() => props.onDelete(props.data)}
     />
 );
 
