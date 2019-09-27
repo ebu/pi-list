@@ -100,14 +100,14 @@ const AppContainer = props => {
                     </Scrollbars>
                 </NotificationsProvider>
                 <PopUp
-                    type="delete"
+                    type="deletecancel"
                     visible={showModal}
                     message={account_delete_message}
                     label={account_delete_label}
                     onClose={() =>
                         dispatch({ type: Actions.deleteUserDismiss })
                     }
-                    onDelete={() =>
+                    onDoAction={() =>
                         dispatch({ type: Actions.deleteUserExecute })
                     }
                 />

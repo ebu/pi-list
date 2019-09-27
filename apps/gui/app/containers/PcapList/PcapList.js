@@ -76,12 +76,12 @@ const PcapList = (props) => {
     return (
         <div>
             <PopUp
-                type="delete"
+                type="okcancel"
                 visible={state.itemToReanalyze != undefined}
                 label="Information"
                 message="Do you wish to reanalyze this capture?"
                 onClose={() => doPcapReanalysis(undefined)}
-                onDelete={() => doPcapReanalysis(state.itemToReanalyze)} />
+                onDoAction={() => doPcapReanalysis(state.itemToReanalyze)} />
             <DeleteModal
                 label="pcap.delete_header"
                 message="pcap.delete_message"
