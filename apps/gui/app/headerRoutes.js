@@ -134,6 +134,18 @@ export default (
                                 onClick: () => { }
                             },
                             {
+                                labelTag: "pcap.download_json",
+                                icon: 'file download',
+                                downloadPath: api.downloadJsonUrl(props.match.params.pcapID),
+                                onClick: () => { }
+                            },
+                            {
+                                labelTag: "pcap.download_pdf",
+                                icon: 'file download',
+                                downloadPath: api.downloadPdfUrl(props.match.params.pcapID),
+                                onClick: () => { }
+                            },
+                            {
                                 labelTag: "buttons.go_back",
                                 icon: 'keyboard backspace',
                                 onClick: () => {
