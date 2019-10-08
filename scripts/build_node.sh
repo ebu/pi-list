@@ -24,6 +24,12 @@ npm install
 echo "Compiling capture probe... done"
 
 echo
+echo "Generating translation..."
+cd $TOP_DIR/apps/gui/data/
+node ./translationsGenerator.js
+echo "Generating translation... done"
+
+echo
 echo "Compiling GUI..."
 cd $TOP_DIR/apps/gui/
 npm install && npm run production
