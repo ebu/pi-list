@@ -25,6 +25,8 @@ echo "Compiling capture probe... done"
 
 echo
 echo "Generating translation..."
+cd $TOP_DIR/apps/gui
+npm install
 cd $TOP_DIR/apps/gui/data/
 node ./translationsGenerator.js
 echo "Generating translation... done"
