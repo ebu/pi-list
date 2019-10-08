@@ -48,6 +48,9 @@ nlohmann::json st2110::d40::to_json(const st2110::d40::anc_description& desc)
 {
     nlohmann::json j;
 
+    j["packets_per_frame"] = desc.packets_per_frame;
+    j["rate"] = to_string(desc.rate);
+    j["scan_type"] = to_string(desc.scan_type);
     for(auto &it : desc.sub_streams) {
         nlohmann::json sub_stream = to_json(it);
         j["sub_streams"].push_back(sub_stream);
@@ -77,6 +80,10 @@ nlohmann::json st2110::d40::to_json(const st2110::d40::anc_sub_stream& s)
 st2110::d40::anc_description st2110::d40::from_json(const nlohmann::json& j)
 {
     anc_description desc{};
+
+    desc.packets_per_frame = j.find("packets_per_frame")->get<int>();
+    desc.rate = media::video::parse_from_string(j.at("rate").get<string>());
+    desc.scan_type = media::video::parse_scan_type(j.find("scan_type")->get<string>());
 
     if (const auto dump = j.find("sub_streams"); dump != j.end()) {
         for(auto it : j.at("sub_streams")) {

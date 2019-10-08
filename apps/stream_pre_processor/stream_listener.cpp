@@ -93,19 +93,13 @@ void stream_listener::on_complete()
     else if (std::holds_alternative<d40::anc_description>(format))
     {
         const auto anc_format = std::get<d40::anc_description>(format);
-        if (anc_format.sub_streams.empty())
-        {
-            is_valid = false;
-        }
-        else
-        {
-            stream_id_.type = media::media_type::ANCILLARY_DATA;
-            stream_id_.state = StreamState::ANALYZED; // todo: remove me when we process anc data
 
-            anc_stream_details anc_details{};
-            anc_details.anc = anc_format;
-            details = anc_details;
-        }
+        stream_id_.type = media::media_type::ANCILLARY_DATA;
+        stream_id_.state = StreamState::READY;
+
+        anc_stream_details anc_details{};
+        anc_details.anc = anc_format;
+        details = anc_details;
     }
     else
     {

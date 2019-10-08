@@ -27,14 +27,12 @@ void format_detector::on_data(const rtp::packet& packet)
         const auto result = d->handle_data(packet);
         if (result.state == detector::state::invalid)
         {
-            // logger()->debug("Detector marked this stream as not target
-            // format");
             const auto kind = d->get_kind();
+            logger()->debug("This stream has not {} valid format ({})", kind, result.error_code);
             error_codes_list_[kind].push_back(result.error_code);
             to_remove.push_back(d.get());
         }
-
-        if (result.state == detector::state::valid)
+        else if (result.state == detector::state::valid)
         {
             status_description_ = result;
             one_valid = d.get();

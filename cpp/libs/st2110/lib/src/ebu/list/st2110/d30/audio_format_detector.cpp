@@ -73,7 +73,7 @@ detector::status_description timestamp_difference_checker::handle_data(uint32_t 
 
     if (current_difference != difference_.value())
     {
-        logger()->info("Timestamps are inconsistent. Current difference is {} while the previous was {}.", current_difference, difference_.value());
+        logger()->info("Audio: timestamps are inconsistent. Current difference is {} while the previous was {}.", current_difference, difference_.value());
         status_description_.state = detector::state::invalid;
         status_description_.error_code = "STATUS_CODE_AUDIO_TIMESTAMPS_INCONSISTENCY";
     }

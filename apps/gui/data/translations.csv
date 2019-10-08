@@ -39,7 +39,7 @@ filters.show_audio_only,Afficher les flux audios,Только аудио пот�
 media_information.video_profiles,Profiles videos,Видео профили,Відео профілі,Video Profiel,Video Profiles,Perfis de Vídeo,Video Profile,Προφίλ εικόνας
 media_information.audio_profiles,profiles audios,Аудио профили,Аудіо профілі,Audio Profiel,Audio Profiles,Perfis de Áudio,Audio Profile,Προφίλ ήχου
 media_information.media_type,Type de média,Тип медиа,Тип медиа,Media Type,Media Type,Tipo de Essência,Medien Typ,Τύπος μέσων
-media_information.media_time,Durée du média,Время медиа,Час медіа,Media Tijd,Media Time,Duração,Medien Zeit,Χρόνος μέσων
+media_information.media_duration,Durée du média,Время медиа,Час медіа,Media Tijd,Media Duration,Duração,Medien Zeit,Χρόνος μέσων
 media_information.audio.number_channels,Nombre de canaux,Количество каналов,Кількість каналів,Aantal kanalen,Number of channels,Nº de Canais,Anzahl der Kanäle,Αριθμός καναλιών
 media_information.audio.encoding,Encodage,Кодирование,Кодування,Encoding,Encoding,Codificação,Codierung,Κωδικοποίηση
 media_information.audio.packet_time,Durée de paquet,Пакетное время,Пакетний час,Packet time,Packet time,Duração do pacote,Paketzeit,Χρόνος πακέτων

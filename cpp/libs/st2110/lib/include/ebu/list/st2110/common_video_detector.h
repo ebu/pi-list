@@ -42,7 +42,7 @@ namespace ebu_list::st2110
 
         detector::status_description handle_data(const rtp::packet& packet);
 
-        int packets_pre_frame() const;
+        int packets_per_frame() const;
         media::video::Rate rate() const;
 
     private:

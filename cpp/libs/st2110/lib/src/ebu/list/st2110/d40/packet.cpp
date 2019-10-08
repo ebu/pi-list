@@ -62,7 +62,7 @@ bool anc_packet_header_lens::sanity_check() const
 
 void anc_packet_header_lens::dump() const
 {
-    logger()->trace("Ancillary packet: color_channel={}, line_num={}, offset={}, stream={}, did={}, sdid={}, data_count={}",
+    logger()->debug("Ancillary header: color_channel={}, line_num={}, offset={}, stream={}, did={}, sdid={}, data_count={}",
             color_channel(),
             line_num(),
             horizontal_offset(),
@@ -90,4 +90,10 @@ uint8_t anc_header_lens::anc_count() const
 uint8_t anc_header_lens::field_identification() const
 {
     return raw_header_.field_identification;
+}
+
+uint32_t anc_header_lens::reserved_bit() const
+{
+    return (static_cast<uint32_t>(raw_header_.reserved_0) << 16) + \
+        static_cast<uint32_t>(raw_header_.reserved_1);
 }

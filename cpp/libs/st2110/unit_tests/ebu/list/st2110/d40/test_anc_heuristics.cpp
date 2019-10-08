@@ -88,4 +88,44 @@ SCENARIO("ST2110-40 heuristics")
             }
         }
     }
+
+    GIVEN("a valid ancillary stream with no data inside")
+    {
+        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-40/empty_data_but_valid.pcap");
+
+        rtp_source source(pcap_file);
+
+        anc_format_detector detector;
+        const auto result = run_detector(detector, source);
+
+        WHEN("we check the status")
+        {
+            THEN("it is invalid")
+            {
+                REQUIRE(result.state == detector::state::valid);
+            }
+        }
+    }
+
+    GIVEN("an ancillary stream with 4 valid types inside")
+    {
+        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-40/anc_with_timecode+CC+AFD.pcap");
+
+        rtp_source source(pcap_file);
+
+        anc_format_detector detector;
+        const auto result = run_detector(detector, source);
+
+        WHEN("we check the format")
+        {
+            REQUIRE(result.state == detector::state::valid);
+            THEN("it is invalid")
+            {
+                const auto details = detector.get_details();
+                const auto anc_details = std::get<d40::anc_description>(details);
+                REQUIRE(anc_details.packets_per_frame == 5);
+                REQUIRE(anc_details.sub_streams.size() == 3);
+            }
+        }
+    }
 }

@@ -1,8 +1,6 @@
 import React from 'react';
 import NetworkInfo from './NetworkInfo';
 import VideoInfo from './VideoInfo';
-import Dash21Info from './Dash21Info';
-import RtpInfo from './RtpInfo';
 
 const VideoStreamInformation = (props) => {
     const streamInfo = props.streamInfo;

@@ -114,7 +114,7 @@ detector::status_description video_format_detector::handle_data(const rtp::packe
 detector::details video_format_detector::get_details() const
 {
     auto result = video_description{};
-    result.packets_per_frame = detector_.packets_pre_frame();
+    result.packets_per_frame = detector_.packets_per_frame();
     result.rate = detector_.rate();
 
     result.scan_type = (line_analyzer_.is_field_based() ? media::video::scan_type::INTERLACED : media::video::scan_type::PROGRESSIVE);

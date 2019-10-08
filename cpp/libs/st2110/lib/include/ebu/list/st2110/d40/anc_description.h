@@ -54,6 +54,7 @@ namespace ebu_list::st2110::d40
     {
         video::Rate rate = video::Rate(0,1);
         int packets_per_frame = 0;
+        video::scan_type scan_type = video::scan_type::PROGRESSIVE;
         std::vector<anc_sub_stream> sub_streams;
     };
 

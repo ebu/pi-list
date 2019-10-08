@@ -136,12 +136,14 @@ detector::status_description common_video_detector::handle_data(const rtp::packe
 
             status_description_.state = detector::state::valid;
             status_description_.error_code = "STATUS_CODE_VIDEO_VALID";
-            logger()->debug("Rate: {}", to_string(r.value()));
 
+            logger()->debug("Video or ancillary: valid");
+            logger()->debug("  Rate: {}", to_string(r.value()));
             if (packets)
             {
-                logger()->debug("Packets per frame: {}", packets.value());
+                logger()->debug("  Packets per frame: {}", packets.value());
             }
+
             return status_description_;
         }
     }
@@ -149,7 +151,7 @@ detector::status_description common_video_detector::handle_data(const rtp::packe
     return status_description_;
 }
 
-int common_video_detector::packets_pre_frame() const
+int common_video_detector::packets_per_frame() const
 {
     return packets_per_frame_.count().value_or(0);
 }
