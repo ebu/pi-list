@@ -27,9 +27,7 @@ namespace ebu_list
         struct delay_sample
         {
             clock::time_point timestamp;
-            int64_t delay_min;
-            int64_t delay_max;
-            int64_t delay_mean;
+            int64_t rtp_ts_vs_pkt_ts;
             int64_t time_stamped_delay_factor;
         };
 
@@ -45,7 +43,7 @@ namespace ebu_list
 
         using listener_uptr = std::unique_ptr<listener>;
 
-        audio_timing_analyser(rtp::packet first_packet, listener_uptr listener, int sampling);
+        audio_timing_analyser(rtp::packet first_packet, listener_uptr listener_rtp_, listener_uptr listener_tsdf,int sampling);
         ~audio_timing_analyser();
 
         void on_data(const rtp::packet&) override;
@@ -54,12 +52,13 @@ namespace ebu_list
 
     private:
         struct impl;
-        const std::unique_ptr<impl> impl_;
+        const std::unique_ptr<impl> impl_rtp_;
+        const std::unique_ptr<impl> impl_tsdf_;
 
         int64_t get_delta_rtp_ts_vs_pkt_ts(const rtp::packet& packet);
 
-        int sampling_;
         int64_t first_packet_ts_usec_;
-        std::vector<int64_t> delta_rtp_ts_vs_pkt_ts;
+        int sampling_;
+        std::vector<int64_t> delta_rtp_ts_vs_pkt_ts_buffer;
     };
 }

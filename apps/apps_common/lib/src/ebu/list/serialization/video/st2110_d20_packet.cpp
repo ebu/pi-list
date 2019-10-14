@@ -20,7 +20,7 @@ st2110_d20_packet st2110_d20_packet::from_json(const nlohmann::json& j)
     lines_info lines;
     LIST_ENFORCE( lines_j.size() <= lines.size(), std::invalid_argument, "Only three lines per packet allowed by ST2110-20");
 
-    for(auto i = 0; i < lines_j.size(); i++)
+    for(size_t i = 0; i < lines_j.size(); i++)
     {
         lines[i] = line_info::from_json(lines_j[i]);
     }

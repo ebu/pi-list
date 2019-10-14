@@ -12,11 +12,14 @@ using namespace ebu_list::st2110::d40;
 namespace
 {
     constexpr uint32_t rtp_seqnum_window = 2048;
+
+    // TODO: replace this global variable by a proper alternative
+    static struct klvanc_callbacks_s klvanc_callbacks;
 }
 
 // #define LIBVANC_DEBUG
 
-static int cb_smpte_12_2(void *callback_context, struct klvanc_context_s *ctx,
+static int cb_smpte_12_2(void *callback_context, [[maybe_unused]] struct klvanc_context_s *ctx,
         struct klvanc_packet_smpte_12_2_s *pkt)
 {
 #ifdef LIBVANC_DEBUG
@@ -100,7 +103,7 @@ std::string cc_608_decode(uint8_t *cc)
 
 }
 
-static int cb_eia_708(void *callback_context, struct klvanc_context_s *ctx,
+static int cb_eia_708(void *callback_context, [[maybe_unused]] struct klvanc_context_s *ctx,
         struct klvanc_packet_eia_708b_s *pkt)
 {
     auto s = static_cast<anc_sub_stream*>(callback_context);
@@ -215,9 +218,9 @@ footer:\n\
     /* Save individuals CC tracks */
     if (pkt->header.ccdata_present) {
         for (int i = 0; i < pkt->ccdata.cc_count; i++) {
-            auto ss = anc_sub_sub_stream(cc_type_lookup(pkt->ccdata.cc[i].cc_type));
+            ss = anc_sub_sub_stream(cc_type_lookup(pkt->ccdata.cc[i].cc_type));
 
-            auto it = std::find(s->anc_sub_sub_streams.begin(), s->anc_sub_sub_streams.end(), ss);
+            it = std::find(s->anc_sub_sub_streams.begin(), s->anc_sub_sub_streams.end(), ss);
             if (it == s->anc_sub_sub_streams.end())
             {
                 logger()->info("Ancillary: new sub-sub-stream: EIA 608 track ({})",

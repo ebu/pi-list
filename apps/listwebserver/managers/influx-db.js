@@ -201,24 +201,22 @@ class InfluxDbManager {
     getAudioRtpTsVsPktTs(pcapID, streamID, startTime, endTime) {
         const query = `
             select
-            "audio-rtp-vs-pkt-min" as "min",
-            "audio-rtp-vs-pkt-max" as "max",
-            "audio-rtp-vs-pkt-mean" as "mean"
+            "audio-rtp-vs-pkt" as "value"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
         `;
 
-        log.info(`Get Delay for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+        log.info(`Get RTP-TS vs PKT-TS for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
 
         return this.sendQueryAndFormatResults(query);
     }
 
     getAudioRtpTsVsPktTsRange(pcapID, streamID) {
         const query = `
-            select max("audio-rtp-vs-pkt-max") as "max", min("audio-rtp-vs-pkt-min") as "min"
+            select max("audio-rtp-vs-pkt") as "max", min("audio-rtp-vs-pkt") as "min"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}
         `;
 
-        log.info(`Get range of Transit Delay for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+        log.info(`Get range of RTP-TS vs PKT-TS for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
 
         return this.sendQueryAndFormatResults(query);
     }

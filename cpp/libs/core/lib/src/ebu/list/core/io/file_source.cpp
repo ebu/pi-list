@@ -15,7 +15,7 @@ file_source::file_source(sbuffer_factory_ptr factory, const path& path)
 
 oview file_source::read_next()
 {
-    constexpr size_t read_size = 4096;
+    constexpr ptrdiff_t read_size = 4096;
 
     auto block = factory_->get_buffer(read_size);
     LIST_ASSERT(block);

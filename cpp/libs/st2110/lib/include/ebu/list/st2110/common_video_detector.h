@@ -9,7 +9,7 @@ namespace ebu_list::st2110
     class packet_spacing_analyzer
     {
     public:
-        detector::status handle_data(const rtp::packet& packet);
+        detector::status_description handle_data(const rtp::packet& packet);
 
         st2110::d21::read_schedule get_schedule() const noexcept;
 
@@ -17,7 +17,10 @@ namespace ebu_list::st2110
         clock::duration average_frame_start_packet_spacing() const noexcept;
 
     private:
-        detector::status status_ = detector::status::detecting;
+        detector::status_description status_description_ = detector::status_description {
+            /*.state*/ detector::state::detecting,
+            /*.error_code*/ "STATUS_CODE_VIDEO_DETECTING"
+        };
         std::optional<clock::time_point> last_packet_timestamp_;
         bool last_frame_was_marked_ = false;
         uint64_t regular_packet_count_ = 0;
@@ -37,15 +40,17 @@ namespace ebu_list::st2110
 
         explicit common_video_detector(settings _settings);
 
-        detector::status handle_data(const rtp::packet& packet);
+        detector::status_description handle_data(const rtp::packet& packet);
 
-        int packets_pre_frame() const;
+        int packets_per_frame() const;
         media::video::Rate rate() const;
 
     private:
         const settings settings_;
-        detector::status status_ = detector::status::detecting;
-    
+        detector::status_description status_description_ = detector::status_description {
+            /*.state*/ detector::state::detecting,
+            /*.error_code*/ "STATUS_CODE_VIDEO_DETECTING"
+        };
         int current_frame_ = 0;
         int current_frame_packets_ = 0;
         std::optional<uint32_t> current_frame_rtp_timestamp_ {};

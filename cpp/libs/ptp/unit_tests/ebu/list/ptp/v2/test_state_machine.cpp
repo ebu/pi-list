@@ -30,7 +30,7 @@ private:
         ++on_complete_count;
     }
 
-    void on_error(std::exception_ptr e)
+    void on_error([[ maybe_unused ]] std::exception_ptr e)
     {
         ++on_error_count;
     }

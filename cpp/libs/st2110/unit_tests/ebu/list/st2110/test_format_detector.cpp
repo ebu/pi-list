@@ -38,7 +38,7 @@ SCENARIO("format detector")
 
         WHEN("we check the format")
         {
-            REQUIRE(fd->status() == detector::status::valid);
+            REQUIRE(fd->status().state == detector::state::valid);
 
             THEN("we get video")
             {
@@ -62,7 +62,7 @@ SCENARIO("format detector")
 
         WHEN("we check the format")
         {
-            REQUIRE(fd->status() == detector::status::valid);
+            REQUIRE(fd->status().state == detector::state::valid);
 
             THEN("we get audio")
             {
@@ -88,7 +88,7 @@ SCENARIO("format detector")
 
         WHEN("we check the format")
         {
-            REQUIRE(fd->status() == detector::status::valid);
+            REQUIRE(fd->status().state == detector::state::valid);
 
             THEN("we get audio")
             {

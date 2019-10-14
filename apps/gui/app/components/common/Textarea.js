@@ -10,8 +10,8 @@ const Textarea = props => {
                 { props.title }:
             </label>
             <textarea
-                className="lst-textarea"
-                type="textarea"
+                className='lst-textarea'
+                type='textarea'
                 value={ props.value  }
             ></textarea>
         </div>
@@ -27,7 +27,6 @@ Textarea.defaultProps = {
     title: '',
     value: '',
 };
-
 
 export default asyncLoader(Textarea, {
     asyncRequests: {

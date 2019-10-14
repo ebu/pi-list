@@ -39,7 +39,7 @@ filters.show_audio_only,Afficher les flux audios,Только аудио пот�
 media_information.video_profiles,Profiles videos,Видео профили,Відео профілі,Video Profiel,Video Profiles,Perfis de Vídeo,Video Profile,Προφίλ εικόνας
 media_information.audio_profiles,profiles audios,Аудио профили,Аудіо профілі,Audio Profiel,Audio Profiles,Perfis de Áudio,Audio Profile,Προφίλ ήχου
 media_information.media_type,Type de média,Тип медиа,Тип медиа,Media Type,Media Type,Tipo de Essência,Medien Typ,Τύπος μέσων
-media_information.media_time,Durée du média,Время медиа,Час медіа,Media Tijd,Media Time,Duração,Medien Zeit,Χρόνος μέσων
+media_information.media_duration,Durée du média,Время медиа,Час медіа,Media Tijd,Media Duration,Duração,Medien Zeit,Χρόνος μέσων
 media_information.audio.number_channels,Nombre de canaux,Количество каналов,Кількість каналів,Aantal kanalen,Number of channels,Nº de Canais,Anzahl der Kanäle,Αριθμός καναλιών
 media_information.audio.encoding,Encodage,Кодирование,Кодування,Encoding,Encoding,Codificação,Codierung,Κωδικοποίηση
 media_information.audio.packet_time,Durée de paquet,Пакетное время,Пакетний час,Packet time,Packet time,Duração do pacote,Paketzeit,Χρόνος πακέτων
@@ -136,7 +136,7 @@ workflow.add_failed,*** workflow.add_failed,*** workflow.add_failed,*** workflow
 workflow.cancel,*** workflow.cancel,*** workflow.cancel,*** workflow.cancel,*** workflow.cancel,Cancel,Cancelar,*** workflow.cancel,*** workflow.cancel
 workflow.requested,*** workflow.requested,*** workflow.requested,*** workflow.requested,*** workflow.requested,Workflow requested,Workflow iniciado,*** workflow.requested,*** workflow.requested
 workflow.request_failed,*** workflow.request_failed,*** workflow.request_failed,*** workflow.request_failed,*** workflow.request_failed,Workflow request failed,Falha ao iniciar workflow,*** workflow.request_failed,*** workflow.request_failed
-workflow.names.captureAndIngest,*** captureAndIngest,*** captureAndIngest,*** captureAndIngest,*** captureAndIngest,Capture and analysis,Captura e análise,*** captureAndIngest,*** captureAndIngest 
+workflow.names.captureAndIngest,*** captureAndIngest,*** captureAndIngest,*** captureAndIngest,*** captureAndIngest,Capture and analysis,Captura e análise,*** captureAndIngest,*** captureAndIngest
 workflow.download_networkcapture,,,,,Original Capture,Descarregar Captura Orignal,,
 user_account.delete_user_account,Supprimer le compte,Удалить аккаунт,Видалити аккаунт,Verwijder Account,Delete Account,Apagar Conta,Account löschen,Διαγραφή λογαριασμού
 user_account.sign_in,Joindre,Войти,Увійти,Aanmelden,Sign In,Autenticação,Einloggen,Σύνδεση
@@ -160,6 +160,9 @@ pcap.state.needs_user_input,Configurer les flux,Настроить потоки,
 pcap.state.compliant,Conforme,Соответствует,Відповідає,Compliant,Compliant,Compatível,Konform,Συμβατότητα
 pcap.state.not_compliant,Non conforme,Не соответствует,Не відповідає,Niet Compliant,Not Compliant,Não compatível,Nicht konform,Δεν είναι συμβατό
 flow.no_flows,Pas de flux trouvé,Потоки не найдены,Потоки не знайдено,Geen Flow gevonden,No Flows found,Não foram encontrados Flows,Keine Flows gefunden,Δεν βρέθηκαν Ροές
+buttons.ok,buttons.ok,buttons.ok,buttons.ok,buttons.ok,Ok,Ok,buttons.ok,buttons.ok
+buttons.yes,buttons.yes,buttons.yes,buttons.yes,buttons.yes,Yes,Sim,buttons.yes,buttons.yes
+buttons.no,buttons.no,buttons.no,buttons.no,buttons.no,No,Não,buttons.no,buttons.no
 buttons.delete,Supprimer,Удалить,Видалити,Verwijder,Delete,Apagar,Löschen,Διαγραφή
 buttons.cancel,Annuler,Отменить,Скасувати,Cancel,Cancel,Cancelar,Abbrechen,Ακύρωση
 buttons.reload,Recharger la page,Перезагрузить страницу,Перезавантажити сторінку,Herlaad Pagina,Reload Page,Recarregar a Página,Seite neuladen,Επαναφόρτωση σελίδας

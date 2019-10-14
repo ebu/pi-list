@@ -5,54 +5,6 @@ using namespace ebu_list;
 using namespace ebu_list::rtp;
 
 ///////////////////////////////////////////////////////////////////////////////
-namespace
-{
-class rtp_analyzer : public rtp::listener
-{
-  public:
-    explicit rtp_analyzer(const rtp::packet &first_packet, rtp::listener_uptr next);
-
-    void on_data(const packet &p) override;
-    void on_complete() override;
-    void on_error(std::exception_ptr) override;
-
-  private:
-    uint16_t last_sequence_number_;
-    rtp::listener_uptr next_;
-};
-
-rtp_analyzer::rtp_analyzer(const rtp::packet &first_packet, rtp::listener_uptr next)
-    : last_sequence_number_(first_packet.info.rtp.view().sequence_number() - 1),
-    next_(std::move(next))
-{
-}
-
-void rtp_analyzer::on_data(const packet &p)
-{
-    const auto sn = p.info.rtp.view().sequence_number();
-
-    ++last_sequence_number_;
-    if (sn != last_sequence_number_)
-    {
-        // fmt::print("Dropped - expected: {:x} actual: {:x}\n", last_sequence_number_, sn);
-        last_sequence_number_ = sn;
-    }
-
-    next_->on_data(p);
-}
-
-void rtp_analyzer::on_complete()
-{
-    next_->on_complete();
-}
-
-void rtp_analyzer::on_error(std::exception_ptr e)
-{
-        next_->on_error(e);
-}
-} // namespace
-
-///////////////////////////////////////////////////////////////////////////////
 
 udp_handler::udp_handler(handler_creator creator)
     : creator_(std::move(creator))
@@ -109,12 +61,6 @@ rtp::listener *udp_handler::find_or_create(const rtp::packet &packet)
     if (it == handlers_.end())
     {
         auto new_handler = creator_(packet);
-
-// #define LIST_USE_ANALYZER
-#if defined LIST_USE_ANALYZER
-        new_handler = std::make_unique<rtp_analyzer>(packet, std::move(new_handler));
-#endif // defined LIST_USE_ANALYZER
-
         const auto p_handler = new_handler.get();
         handlers_.emplace(key, std::move(new_handler));
         return p_handler;

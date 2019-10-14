@@ -1,0 +1,16 @@
+[Unit]
+Description=EBU LIST GUI Server
+After=network.target
+Requires=ebu-list-server.service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=ebu
+WorkingDirectory=/home/ebu/repos/ebu_list/apps/gui
+ExecStart=/usr/bin/env npm start
+
+[Install]
+WantedBy=multi-user.target

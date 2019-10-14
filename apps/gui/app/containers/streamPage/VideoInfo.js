@@ -5,19 +5,19 @@ import InfoPane from './components/InfoPane';
 
 const getTimeCode = (props) => {
     try {
-        return new Timecode(props.frame_count, Math.ceil(props.rate), false).toString();
+        return new Timecode(props.frame_count, Math.ceil(eval(props.rate)), false).toString();
     } catch (e) {
         return '00:00:00:00';
     }
 };
 
+/* VideoInfo can serve as AncillaryInfo too */
 const VideoInfo = (props) => {
+    const isAncillary = typeof props.width === 'undefined';
     const size = `${props.width}x${props.height}`;
     const isInterlaced = props.scan_type === 'interlaced';
-
     const rate = typeof(props.rate) === 'string' ? props.rate : props.rate.toFixed(2).toString();
-
-    const values = [
+    const video_values = isAncillary? [] : [
         {
             labelTag: 'media_information.video.dimensions',
             value: size
@@ -25,7 +25,10 @@ const VideoInfo = (props) => {
         {
             labelTag: 'media_information.video.sampling',
             value: props.sampling
-        },
+        }
+    ]
+
+    const values = video_values.concat([
         {
             labelTag: 'media_information.video.scan_type',
             value: translateX(isInterlaced ?
@@ -40,7 +43,7 @@ const VideoInfo = (props) => {
             units: 'Hz'
         },
         {
-            labelTag: 'media_information.media_time',
+            labelTag: 'media_information.media_duration',
             value: getTimeCode(props)
         },
         {
@@ -53,12 +56,12 @@ const VideoInfo = (props) => {
             labelTag: 'media_information.video.packets_per_frame',
             value: props.packets_per_frame
         }
-    ];
+    ]);
 
     return (<InfoPane
-        icon="ondemand_video"
-        headingTag="headings.video"
-        values={values}
+        icon='ondemand_video'
+        headingTag='headings.media_information'
+        values={ values }
     />);
 };
 

@@ -7,6 +7,7 @@ macro(list_set_target_cpp_properties)
 endmacro()
 
 macro(list_set_cpp_properties)
+    set(CMAKE_CXX_FLAGS "${LOCAL_CMAKE_CXX_FLAGS} -Werror")
     bimo_set_cpp_properties()
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
         add_definitions(-D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS -DBOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE)
@@ -70,7 +71,7 @@ macro(list_add_library NAME)
     message(STATUS "Found ${NAME}")
 
     if (ipo_supported)
-        set_property(TARGET ${NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+#        set_property(TARGET ${NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
     endif ()
 endmacro()
 
@@ -117,7 +118,7 @@ macro(list_add_executable NAME)
     message(STATUS "Found ${NAME}")
 
     if (ipo_supported)
-        set_property(TARGET ${NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+#        set_property(TARGET ${NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
     endif ()
 
 endmacro()

@@ -18,19 +18,21 @@ struct audio_timing_analyser::impl
     const listener_uptr listener_;
 };
 
-audio_timing_analyser::audio_timing_analyser(rtp::packet first_packet, listener_uptr l, int sampling)
-    : impl_(std::make_unique<impl>(std::move(l))),
+audio_timing_analyser::audio_timing_analyser(rtp::packet first_packet, listener_uptr l_rtp, listener_uptr l_tsdf, int sampling)
+    : impl_rtp_(std::make_unique<impl>(std::move(l_rtp))),
+    impl_tsdf_(std::make_unique<impl>(std::move(l_tsdf))),
     first_packet_ts_usec_(std::chrono::duration_cast<std::chrono::microseconds>(first_packet.info.udp.packet_time.time_since_epoch()).count()),
     sampling_(sampling)
 {
-    delta_rtp_ts_vs_pkt_ts.clear();
+    delta_rtp_ts_vs_pkt_ts_buffer.clear();
 }
 
 audio_timing_analyser::~audio_timing_analyser() = default;
 
 void audio_timing_analyser::on_complete()
 {
-    impl_->listener_->on_complete();
+    impl_rtp_->listener_->on_complete();
+    impl_tsdf_->listener_->on_complete();
 }
 
 void audio_timing_analyser::on_error(std::exception_ptr)
@@ -48,29 +50,31 @@ void audio_timing_analyser::on_data(const rtp::packet& packet)
         first_packet_ts_usec_ = packet_ts_usec;
 
         /* get min, max, mean of delays */
-        const auto minmax = std::minmax_element(delta_rtp_ts_vs_pkt_ts.begin(), delta_rtp_ts_vs_pkt_ts.end());
+        const auto minmax = std::minmax_element(delta_rtp_ts_vs_pkt_ts_buffer.begin(), delta_rtp_ts_vs_pkt_ts_buffer.end());
         const auto min = minmax.first[0];
         const auto max = minmax.second[0];
-        const auto mean = std::accumulate(delta_rtp_ts_vs_pkt_ts.begin(), delta_rtp_ts_vs_pkt_ts.end(), 0.0) / delta_rtp_ts_vs_pkt_ts.size();
+        const auto mean = std::accumulate(delta_rtp_ts_vs_pkt_ts_buffer.begin(), delta_rtp_ts_vs_pkt_ts_buffer.end(), 0.0) / delta_rtp_ts_vs_pkt_ts_buffer.size();
 
         /* TS-DF is the amplitude of relative transit delay based on a
          * reference delay, i.e. the first delay of the measurement window */
-        const auto init = delta_rtp_ts_vs_pkt_ts[0];
+        const auto init = delta_rtp_ts_vs_pkt_ts_buffer[0];
         const auto tsdf = (max - init) - (min - init);
 
         logger()->trace("audio: new delay=[{},{},{}] TS-DF=[{},{}]={}",
                 min, mean, max, (max - init), (min - init), tsdf);
 
         /* shoot to influxdb */
-        impl_->listener_->on_data({packet.info.udp.packet_time, min, max, static_cast<int64_t>(mean), tsdf});
+        impl_tsdf_->listener_->on_data({packet.info.udp.packet_time, 0, tsdf});
 
         /* reinit measurement the window with the new reference transit
          * delay for TS-DF, i.e. (R(0)-S(0)) */
-        delta_rtp_ts_vs_pkt_ts.clear();
+        delta_rtp_ts_vs_pkt_ts_buffer.clear();
     }
 
     /* save every delay */
-    delta_rtp_ts_vs_pkt_ts.push_back(get_delta_rtp_ts_vs_pkt_ts(packet));
+    const auto new_delta_rtp_ts_vs_pkt_ts_buffer = get_delta_rtp_ts_vs_pkt_ts(packet);
+    delta_rtp_ts_vs_pkt_ts_buffer.push_back(new_delta_rtp_ts_vs_pkt_ts_buffer);
+    impl_rtp_->listener_->on_data({packet.info.udp.packet_time, new_delta_rtp_ts_vs_pkt_ts_buffer, 0});
 }
 
 /*

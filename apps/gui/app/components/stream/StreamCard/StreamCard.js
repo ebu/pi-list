@@ -23,6 +23,26 @@ function renderNeedsInfo() {
     );
 }
 
+const getValidationBadges = props => {
+    if (props.state !== 'needs_info') return [];
+    const mediaTypeValidationList = _.get(props, 'media_type_validation', []);
+    return Object.keys(mediaTypeValidationList)
+        .sort()
+        .map(error_codes => {
+            const compliance = '';
+            const name = error_codes;
+            const title = mediaTypeValidationList[error_codes];
+            return (
+                <AnalysisBadge
+                    key={error_codes}
+                    name={name}
+                    compliance={compliance}
+                    title={title}
+                />
+            );
+        });
+};
+
 const StreamCard = props => {
     const net = props.network_information;
 
@@ -55,6 +75,8 @@ const StreamCard = props => {
                 />
             );
         });
+
+    const badgesMediaTypeValidation = getValidationBadges(props);
 
     const netValues = [
         {
@@ -90,6 +112,7 @@ const StreamCard = props => {
                         media_specific={props.media_specific}
                     />
                     {badges}
+                    {badgesMediaTypeValidation}
                 </div>
             </Panel>
         </Link>

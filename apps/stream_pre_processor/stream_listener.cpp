@@ -9,6 +9,7 @@ using namespace ebu_list::st2110;
 namespace
 {
     void save_on_db(const db_serializer& db, const stream_with_details& stream_info,
+                    std::map<std::string, std::vector<std::string>>& detectors_error_codes,
                     int64_t num_packets = 0, uint16_t num_dropped_packets = 0)
     {
 
@@ -17,6 +18,13 @@ namespace
             serialized_streams_details["statistics"]["packet_count"] = num_packets;
             serialized_streams_details["statistics"]["dropped_packet_count"] = num_dropped_packets;
         }
+
+        if (detectors_error_codes["video"].size() > 0)
+            serialized_streams_details["media_type_validation"]["video"] = detectors_error_codes["video"];
+        if (detectors_error_codes["audio"].size() > 0)
+            serialized_streams_details["media_type_validation"]["audio"] = detectors_error_codes["audio"];
+        if (detectors_error_codes["anc"].size() > 0)
+            serialized_streams_details["media_type_validation"]["anc"] = detectors_error_codes["anc"];
 
         db.insert(constants::db::offline, constants::db::collections::streams, serialized_streams_details);
     }
@@ -54,6 +62,8 @@ void stream_listener::on_complete()
     detector_.on_complete();
 
     const auto format = detector_.get_details();
+    std::map<std::string, std::vector<std::string>> detectors_error_codes = detector_.get_error_codes();
+
     media_stream_details details;
 
     bool is_valid = true;
@@ -83,19 +93,13 @@ void stream_listener::on_complete()
     else if (std::holds_alternative<d40::anc_description>(format))
     {
         const auto anc_format = std::get<d40::anc_description>(format);
-        if (anc_format.sub_streams.empty())
-        {
-            is_valid = false;
-        }
-        else
-        {
-            stream_id_.type = media::media_type::ANCILLARY_DATA;
-            stream_id_.state = StreamState::ANALYZED; // todo: remove me when we process anc data
 
-            anc_stream_details anc_details{};
-            anc_details.anc = anc_format;
-            details = anc_details;
-        }
+        stream_id_.type = media::media_type::ANCILLARY_DATA;
+        stream_id_.state = StreamState::READY;
+
+        anc_stream_details anc_details{};
+        anc_details.anc = anc_format;
+        details = anc_details;
     }
     else
     {
@@ -107,8 +111,8 @@ void stream_listener::on_complete()
         stream_with_details swd{ stream_id_, details };
 
         if (stream_id_.state != StreamState::NEEDS_INFO)
-            save_on_db(db_, swd);
-        else save_on_db(db_, swd, num_packets_, static_cast<uint16_t>(seqnum_analyzer_.dropped_packets()));
+            save_on_db(db_, swd, detectors_error_codes);
+        else save_on_db(db_, swd, detectors_error_codes, num_packets_, static_cast<uint16_t>(seqnum_analyzer_.dropped_packets()));
     }
 
     return;

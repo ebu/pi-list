@@ -23,19 +23,21 @@ anc_format_detector::anc_format_detector()
 {
 }
 
-detector::status anc_format_detector::handle_data(const rtp::packet& packet)
+detector::status_description anc_format_detector::handle_data(const rtp::packet& packet)
 {
     auto& sdu = packet.sdu;
 
-    if (spacing_analyzer_.handle_data(packet) == detector::status::invalid)
-    {
-        return detector::status::invalid;
-    }
+    const auto result = spacing_analyzer_.handle_data(packet);
 
-    constexpr auto minimum_size = sizeof(raw_extended_sequence_number) + sizeof(raw_anc_header);
+    if (result.state == detector::state::invalid) return result;
+
+    constexpr auto minimum_size = ssizeof<raw_extended_sequence_number>() + ssizeof<raw_anc_header>();
     if (sdu.view().size() < minimum_size)
     {
-        return detector::status::invalid;
+        return detector::status_description {
+            /*.state*/ detector::state::invalid,
+            /*.error_code*/ "STATUS_CODE_ANC_NO_MINIMUM_SIZE"
+        };
     }
 
     // start after esn
@@ -43,14 +45,42 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
     const auto end = sdu.view().data() + sdu.view().size();
     const auto anc_header = anc_header_lens(*reinterpret_cast<const raw_anc_header*>(p));
 
-    // TODO: signal if the data is progressive or interlaced
-    // TODO: report if field is invalid
-    if (anc_header.field_identification() == static_cast<uint8_t>(field_kind::invalid))
+    switch (anc_header.field_identification())
     {
-        logger()->trace("Ancillary: field identification is invalid");
+        case static_cast<uint8_t>(field_kind::invalid):
+            return detector::status_description {
+                /*.state*/ detector::state::invalid,
+                /*.error_code*/ "STATUS_CODE_ANC_WRONG_FIELD_VALUE"
+            };
+            break;
+        case 0:
+            description_.scan_type = video::scan_type::PROGRESSIVE;
+            break;
+        default:
+            description_.scan_type = video::scan_type::INTERLACED;
+            break;
+    }
+
+
+
+    if (anc_header.reserved_bit())
+    {
+        return detector::status_description {
+            /*.state*/ detector::state::invalid,
+            /*.error_code*/ "STATUS_CODE_ANC_WRONG_RESERVED_BIT"
+        };
     }
 
     p += sizeof(raw_anc_header);
+
+    /* empty data is ok but must announced as such */
+    if (!anc_header.anc_count() && !anc_header.length() && (p != end))
+    {
+        return detector::status_description {
+            /*.state*/ detector::state::invalid,
+            /*.error_code*/ "STATUS_CODE_ANC_WRONG_HEADER"
+        };
+    }
 
     /*
      * for every embedded sub-stream in the packet:
@@ -62,12 +92,13 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
      */
     for (uint8_t i=0; i < anc_header.anc_count(); i++)
     {
-        logger()->trace("Ancillary: data count : {}", i);
-
         if (p > end)
         {
             /* could be truncated */
-            return detector::status::detecting;
+            return detector::status_description {
+                /*.state*/ detector::state::detecting,
+                /*.error_code*/ "STATUS_CODE_ANC_DETECTING"
+            };
         }
 
         uint16_t bit_counter = 0;
@@ -82,20 +113,27 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
         anc_packet_header.data_count = get_bits<10>(&p, &bit_counter);
 
         const auto anc_packet = anc_packet_header_lens(anc_packet_header);
-        anc_packet.dump();
+        //anc_packet.dump();
 
         /* let's give a chance */
         if ( !anc_packet.sanity_check() )
         {
-            return detector::status::detecting;
+            logger()->debug("Ancillary: header insanity");
+            return detector::status_description {
+                /*.state*/ detector::state::detecting,
+                /*.error_code*/ "STATUS_CODE_ANC_DETECTING"
+            };
         }
 
         auto s = anc_sub_stream((anc_packet.did() << 8) + anc_packet.sdid(), anc_packet.stream_num());
         if (!s.is_valid())
         {
-            logger()->trace("Ancillary: stream invalid");
+            logger()->debug("Ancillary: invalid data type ({}-{})", anc_packet.did(), anc_packet.sdid());
             /* it could be worth trying to return invalid */
-            return detector::status::detecting;
+            return detector::status_description {
+                /*.state*/ detector::state::detecting,
+                /*.error_code*/ "STATUS_CODE_ANC_DETECTING"
+            };
         }
 
         /* detect and save new sub-streams */
@@ -113,6 +151,9 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
             get_bits<10>(&p, &bit_counter);
         }
 
+        /* crc */
+        get_bits<10>(&p, &bit_counter);
+
         /* skip the padding */
         while (bit_counter % 32)
         {
@@ -124,7 +165,10 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
     {
         /* could be truncated */
         logger()->warn("Ancillary stream shorter than expected");
-        return detector::status::detecting;
+        return detector::status_description {
+            /*.state*/ detector::state::detecting,
+            /*.error_code*/ "STATUS_CODE_ANC_DETECTING"
+        };
     }
 
     const auto res = detector_.handle_data(packet);
@@ -135,10 +179,13 @@ detector::status anc_format_detector::handle_data(const rtp::packet& packet)
 detector::details anc_format_detector::get_details() const
 {
     auto result = anc_description{};
-    result.rate = detector_.rate();
 
-    result.packets_per_frame = detector_.packets_pre_frame();
+    result.packets_per_frame = detector_.packets_per_frame();
     result.rate = detector_.rate();
+    for(auto &it : description_.sub_streams)
+    {
+        result.sub_streams.push_back(it);
+    }
 
-    return description_;
+    return result;
 }

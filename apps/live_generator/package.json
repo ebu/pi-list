@@ -1,0 +1,21 @@
+{
+    "name": "live_generator",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "start": "nodemon server.js",
+        "dev": "nodemon server.js"
+    },
+    "dependencies": {
+        "amqplib": "^0.5.2",
+        "axios": "^0.18.0",
+        "commander": "^2.12.2",
+        "lodash": "^4.17.14",
+        "read-yaml": "^1.1.0",
+        "winston": "^3.0.0-rc1"
+    },
+    "devDependencies": {
+        "eslint": "^5.16.0",
+        "nodemon": "^1.19.1"
+    }
+}

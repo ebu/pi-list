@@ -25,6 +25,12 @@ var parser = parse({ delimiter: ',' }, function (err, data) {
         localeNames[locales[index]] = name;
     });
 
+    /* Add warning to each of the translation file */
+    debugger;
+    locales.forEach((name) => {
+        translations[name]["_comment"] = ["              #####  ########  #######  ########               ","             ##    ##    ##    ##     ## ##     ##             ","             ##          ##    ##     ## ##     ##             ","              ######     ##    ##     ## ########              ","                   ##    ##    ##     ## ##                    ","             ##    ##    ##    ##     ## ##                    ","              ######     ##     #######  ##                    "," THIS FILE IS AUTO-GENERATED ANY MODIFICATION WILL BE OVERRIDED"];
+    });
+
     data.forEach(row => {
         const key = row[0];
         if (key) {

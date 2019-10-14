@@ -16,16 +16,18 @@ const AncillarySubStream = props => {
     const error_count = subStream.errors.toString();
     const packet_count = subStream.packet_count.toString();
     const textareas = typeof subStream.sub_sub_streams === 'undefined' ?
-        '' :
-        subStream.sub_sub_streams.map(s => {
-            const downloadPath = api.downloadAncillaryUrl(props.pcapID, props.streamID, s.filename);
-            return (
-                <Textarea
-                title={ s.type }
-                downloadPath={ downloadPath }
-                />
-            );
-        });
+        '' : subStream.sub_sub_streams.map((s, i) => {
+                const downloadPath = api.downloadAncillaryUrl(props.pcapID, props.streamID, s.filename);
+                return (
+                    <div className="col-xs-12 col-md-4">
+                        <Textarea
+                            title={ s.type }
+                            downloadPath={ downloadPath }
+                        />
+                        { i%3 === 2? '': <div class="w-100"></div> }
+                    </div>
+                );
+            });
 
     const values = [
         {

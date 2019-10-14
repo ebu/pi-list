@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Tabs from '../components/common/Tabs';
-import AncillarySummary from './streamPage/AncillarySummary';
+import AncillaryStreamInformation from './streamPage/AncillaryStreamInformation';
 import AncillarySubStream from './streamPage/AncillarySubStream';
 
 const AncillaryPage = props => {
     const streamInfo = props.streamInfo;
-    const subStreams = streamInfo.media_specific.sub_streams;
-    const TABS = [AncillarySummary].
+    const subStreams = typeof streamInfo.media_specific.sub_streams === 'undefined' ?
+        [] : streamInfo.media_specific.sub_streams;
+    const TABS = [AncillaryStreamInformation].
         concat(subStreams.map((s,i) => {
                 return AncillarySubStream;
             })

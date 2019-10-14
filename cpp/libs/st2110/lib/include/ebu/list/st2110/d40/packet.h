@@ -39,6 +39,7 @@ namespace ebu_list::st2110::d40
         uint16_t length() const;
         uint8_t anc_count() const;
         uint8_t field_identification() const;
+        uint32_t reserved_bit() const;
 
     private:
         const raw_anc_header& raw_header_;
