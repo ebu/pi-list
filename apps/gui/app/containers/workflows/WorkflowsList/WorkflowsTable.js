@@ -127,6 +127,8 @@ const WorkflowsTable = props => {
 
     return (
         <ReactTable
+            previousText={translateX('table.previous')}
+            nextText={translateX('table.next')}
             data={props.data}
             columns={columns}
             defaultPageSize={10}
