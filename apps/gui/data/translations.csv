@@ -133,6 +133,7 @@ workflow.drop_sdp_file_here,Déposer votre fichier SDP ici,Перетащите 
 workflow.add,*** workflow.add,*** workflow.add,*** workflow.add,*** workflow.add,Add,Adicionar,*** workflow.add,*** workflow.add
 workflow.added,*** workflow.added,*** workflow.added,*** workflow.added,*** workflow.added,Added,Adicionado,*** workflow.added,*** workflow.added
 workflow.add_failed,*** workflow.add_failed,*** workflow.add_failed,*** workflow.add_failed,*** workflow.add_failed,Failed to add,Falha ao adicionar,*** workflow.add_failed,*** workflow.add_failed
+workflow.update,*** workflow.update,*** workflow.update,*** workflow.update,*** workflow.update,Update,Atualizar,*** workflow.update,*** workflow.update
 workflow.cancel,*** workflow.cancel,*** workflow.cancel,*** workflow.cancel,*** workflow.cancel,Cancel,Cancelar,*** workflow.cancel,*** workflow.cancel
 workflow.requested,*** workflow.requested,*** workflow.requested,*** workflow.requested,*** workflow.requested,Workflow requested,Workflow iniciado,*** workflow.requested,*** workflow.requested
 workflow.request_failed,*** workflow.request_failed,*** workflow.request_failed,*** workflow.request_failed,*** workflow.request_failed,Workflow request failed,Falha ao iniciar workflow,*** workflow.request_failed,*** workflow.request_failed
@@ -192,6 +193,7 @@ errors.network_error_title,Erreur réseau,Ошибка сети,Помилка �
 settings.theme,Thème,Тема,Тема,Thema,Theme,Tema,Thema,Θέμα
 settings.language,Langue,Язык,Мова,Taal,Language,Língua,Sprache,Γλώσσα
 live.sources.add_sources,*** live.sources.add_sources,*** live.sources.add_sources,*** live.sources.add_sources,*** live.sources.add_sources,Add sources,Adicionar fontes,*** live.sources.add_sources,*** live.sources.add_sources
+live.sources.edit_sources,*** live.sources.edit_sources,*** live.sources.edit_sources,*** live.sources.edit_sources,*** live.sources.edit_sources,Edit sources,Editar fontes,*** live.sources.edit_sources,*** live.sources.edit_sources
 live.sources.name,*** live.sources.name,*** live.sources.name,*** live.sources.name,*** live.sources.name,Name,Nome,Name,Όνομα
 live.sources.delete_header,*** live.sources.delete_header,*** live.sources.delete_header,*** live.sources.delete_header,*** live.sources.delete_header,Delete source,Apagar fonte,Lösche Quelle,Διαγράφή πηγής
 live.sources.delete_message,*** live.sources.delete_header,*** live.sources.delete_message,*** live.sources.delete_message,*** live.sources.delete_message,Are you sure you want to delete %{name} source(s)?,Tem a certeza que pretende apagar %{name} fonte(s)?,"Sind Sie sich sicher, dass Sie die Quelle(n) %{name} löschen möchten?",Είστε βέβαιοι ότι θέλετε να διαγράψετε την πηγή %{name};

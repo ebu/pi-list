@@ -57,7 +57,7 @@ const reducer = (state, { type, payload }) => {
         case Actions.updateSources: {
             const { added, removedIds } = payload;
             const removedIdsSet = new Set(removedIds);
-            const notRemoved = state.data.filter(s => !removedIdsSet.has(s.id));
+            const notRemoved = state.data.filter(s => !removedIdsSet.has(s.id) && s._id != added.map(p => p._id));
             const sources = [...notRemoved, ...added.map(mapBackendData)];
 
             return { ...state, data: sources };
@@ -70,7 +70,13 @@ const reducer = (state, { type, payload }) => {
             return { ...state, addSourceModalVisible: false };
 
         case Actions.addSources:
-            return { ...state, addSourceModalVisible: false };
+            return { ...state, addSourceModalVisible: false, editSourceModalVisible: false };
+
+        case Actions.showEditSource:
+            return { ...state, editSourceModalVisible: true };
+
+        case Actions.hideEditSource:
+            return { ...state, editSourceModalVisible: false };
 
         default:
             return state;

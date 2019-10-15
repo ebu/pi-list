@@ -17,7 +17,9 @@ import api from '../../../utils/api';
 import DragAndDropUploader from '../../../components/upload/DragAndDropUploader';
 import { translateX } from '../../../utils/translation';
 import AddSourceModal from './AddSourceModal';
+import EditSourceModal from './EditSourceModal';
 import './SourcesList.scss';
+import { kinds } from 'ebu_list_common/capture/sources';
 
 const filterFunction = (state) => {
     return state.data;
@@ -36,6 +38,7 @@ const actionsWorkflow = (state, action) => {
 const initialState = {
     ...tableInitialState(),
     addSourceModalVisible: false,
+    editSourceModalVisible: false,
 };
 
 const filterData = (data, filterString) => {
@@ -67,6 +70,8 @@ const filterData = (data, filterString) => {
 
 const SourcesList = props => {
     const [state, dispatch] = useReducer(actionsWorkflow, initialState);
+    const [sourcesToEdit, setSourcesToEdit] = useState([]);
+
     const toggleRow = id =>
         dispatch({ type: tableactions.toggleRow, data: { id } });
     const toggleSelectAll = () =>
@@ -124,11 +129,32 @@ const SourcesList = props => {
     const onModalAddSources = sources =>
         dispatch({ type: Actions.addSources, payload: { sources } });
 
+    const onEditSourceModalClose = () =>
+        dispatch({ type: Actions.hideEditSource });
+
     const filteredData = filterData(state.data, state.filterString);
 
-    useEffect(() => {
+    useEffect(() => { 
         const selectedSources = state.data.filter(source => state.selected.includes(source.id));
         props.onSelectedSendersChanged({selectedSources: selectedSources});
+
+
+        setSourcesToEdit(
+            selectedSources
+            .filter(s => s.kind === kinds.user_defined)
+            .map(
+                obj => {
+                    return {
+                        id: obj.id,
+                        description : obj.meta.label,
+                        dstAddr : obj.meta.network.destination.split(":")[0],
+                        dstPort : obj.meta.network.destination.split(":")[1]
+                    }
+                }
+            )
+        );
+        console.log(sourcesToEdit);
+
     }, [state.selected]);
 
     return (
@@ -143,6 +169,12 @@ const SourcesList = props => {
                 visible={state.addSourceModalVisible}
                 onAdd={onModalAddSources}
                 onClose={onAddSourceModalClose}
+            />
+            <EditSourceModal
+                sources={sourcesToEdit}
+                visible={state.editSourceModalVisible}
+                onEdit={onModalAddSources}
+                onClose={onEditSourceModalClose}
             />
             <DragAndDropUploader
                 uploadButtonLabel="SDP"

@@ -17,8 +17,12 @@ const Input = (props) => {
         }
     };
 
-    if(props.width) {
+    if (props.width) {
         attrs.style.width = props.width;
+    }
+
+    if (props.border) {
+        attrs.style.border = props.border;
     }
 
     return (
@@ -31,6 +35,7 @@ const Input = (props) => {
             max={props.max}
             onChange={props.onChange}
             onFocus={props.onFocus}
+            onBlur={props.onBlur}
             disabled={props.disabled || false}
             { ...attrs }
         />

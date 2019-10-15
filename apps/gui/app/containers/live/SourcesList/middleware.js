@@ -65,7 +65,7 @@ const middleware = (state, action) => {
 
             s.forEach(source => {
                 const descriptor = {
-                    id: uuidv1(),
+                    id: (!source.id) ? uuidv1() : source.id,
                     meta: {
                         label: source.description || 'User defined',
                     },
