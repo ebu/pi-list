@@ -8,6 +8,17 @@ const dataAsNanoseconds = (data) => {
     const values = data.map(item => Object.assign(item, { value: item.value * 1e9 }));
     return values;
 };
+
+const isPointNull = p => p.max === null || p.min === null;
+
+const trimNull = data => {
+    while(data.length > 0 && isPointNull(data[0])) {
+        data = data.splice(1, data.length); 
+    }
+
+    return data;
+};
+
 const VrxAnalysis = (props) => {
     const { first_packet_ts, last_packet_ts } = props.streamInfo.statistics;
     const { streamID, pcapID } = props;
@@ -27,7 +38,7 @@ const VrxAnalysis = (props) => {
                     displayXTicks="true"
                 />
                 <LineChart
-                    asyncData={() => api.getVrxIdealForStream(pcapID, streamID, first_packet_ts, last_packet_ts)}
+                    asyncData={() => api.getVrxIdealForStream(pcapID, streamID, first_packet_ts, last_packet_ts).then(trimNull)}
                     xAxis={item => item.time}
                     data={chartFormatters.statsLineChart}
                     title="VRX (with TRoffset = TROdefault)"
@@ -37,7 +48,7 @@ const VrxAnalysis = (props) => {
                     legend
                 />
                 <LineChart
-                    asyncData={() => api.getVrxAdjustedAvgTro(pcapID, streamID, first_packet_ts, last_packet_ts)}
+                    asyncData={() => api.getVrxAdjustedAvgTro(pcapID, streamID, first_packet_ts, last_packet_ts).then(trimNull)}
                     xAxis={item => item.time}
                     data={chartFormatters.statsLineChart}
                     title="VRX (with TRoffset = Measured/Averaged)"
