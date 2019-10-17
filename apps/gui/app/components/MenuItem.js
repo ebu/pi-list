@@ -31,7 +31,7 @@ const externalLinkRender = props => (
     </a>
 );
 
-const MenuItem = props => {
+const MenuItem = (props) => {
     const renderer = props.external ? externalLinkRender : internalLinkRender;
 
     return <li className="lst-side-nav__item">{renderer(props)}</li>;

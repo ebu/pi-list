@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -17,53 +17,53 @@ const defaultTheme = 'dark';
 
 const reducer = (state, action) => {
     switch (action.type) {
-        case Actions.setLanguage:
-            return {
-                ...state,
-                language: action.value,
-            };
+    case Actions.setLanguage:
+        return {
+            ...state,
+            language: action.value,
+        };
 
-        case Actions.setTheme:
-            return {
-                ...state,
-                theme: action.value,
-            };
+    case Actions.setTheme:
+        return {
+            ...state,
+            theme: action.value,
+        };
 
-        case Actions.deleteUserRequest:
-            return {
-                ...state,
-                showModal: true,
-            };
+    case Actions.deleteUserRequest:
+        return {
+            ...state,
+            showModal: true,
+        };
 
-        case Actions.deleteUserDismiss:
-            return {
-                ...state,
-                showModal: false,
-            };
+    case Actions.deleteUserDismiss:
+        return {
+            ...state,
+            showModal: false,
+        };
 
-        default:
-            return state;
+    default:
+        return state;
     }
 };
 
 const middleware = (state, action) => {
     switch (action.type) {
-        case Actions.setLanguage:
-            api.updateUserPreferences({ gui: { language: action.value } });
-            break;
+    case Actions.setLanguage:
+        api.updateUserPreferences({ gui: { language: action.value } });
+        break;
 
-        case Actions.setTheme:
-            api.updateUserPreferences({ gui: { theme: action.value } });
-            break;
+    case Actions.setTheme:
+        api.updateUserPreferences({ gui: { theme: action.value } });
+        break;
 
-        case Actions.deleteUserExecute:
-            api.deleteUser().then(() => {
-                window.appHistory.push('/login');
-            });
-            break;
+    case Actions.deleteUserExecute:
+        api.deleteUser().then(() => {
+            window.appHistory.push('/login');
+        });
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 };
 
@@ -72,9 +72,23 @@ const actionsWorkflow = (state, action) => {
     return reducer(state, action);
 };
 
-const AppContainer = props => {
+const AppContainer = (props) => {
     const sideNav = useRef(null);
     const [{ theme, showModal }, dispatch] = useStateValue();
+
+    // Setting the class in body so that it also affects Noty or other top level elements
+    useLayoutEffect(() => {
+        const element = document.getElementById('lst-body');
+
+        if (element) {
+            const cl = element.classList;
+            while (cl.length) {
+                cl.remove(cl.item(0));
+            }
+
+            element.classList.add(theme);
+        }
+    }, [theme]);
 
     const account_delete_message = <T t="user_account.delete_confirmation" />;
     const account_delete_label = <T t="user_account.delete_user_account" />;
@@ -104,11 +118,9 @@ const AppContainer = props => {
                     visible={showModal}
                     message={account_delete_message}
                     label={account_delete_label}
-                    onClose={() =>
-                        dispatch({ type: Actions.deleteUserDismiss })
+                    onClose={() => dispatch({ type: Actions.deleteUserDismiss })
                     }
-                    onDoAction={() =>
-                        dispatch({ type: Actions.deleteUserExecute })
+                    onDoAction={() => dispatch({ type: Actions.deleteUserExecute })
                     }
                 />
             </div>
@@ -120,7 +132,7 @@ AppContainer.propTypes = {
     user: PropTypes.object.isRequired,
 };
 
-const App = props => {
+const App = (props) => {
     useEffect(() => {
         websocket.initialize(props.user.id);
     }, []);

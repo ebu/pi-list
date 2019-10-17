@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { isString, isObject, pick, omit } from 'lodash';
+import {
+    isString, isObject, pick, omit
+} from 'lodash';
 import * as d3 from 'd3';
 import classnames from 'classnames';
 import asyncLoader from 'components/asyncLoader';
@@ -16,7 +18,12 @@ class LineChart extends Component {
             timestamp: new Date(item.time),
         }));
 
-        this.margin = { top: 20, right: 10, bottom: 30, left: 65 };
+        this.margin = {
+            top: 20,
+            right: 10,
+            bottom: 30,
+            left: 65,
+        };
 
         this.lines = [];
 
@@ -72,7 +79,7 @@ class LineChart extends Component {
 
         const lines = this.lines;
 
-        this.graphAreaD3.selectAll('.line-chart').each(function(data, index) {
+        this.graphAreaD3.selectAll('.line-chart').each(function (data, index) {
             d3.select(this).attr('d', lines[index]);
         });
     }
@@ -115,18 +122,14 @@ class LineChart extends Component {
                         <g
                             ref={ref => (this.graphArea = ref)}
                             className="lst-svg-line-chart-area"
-                            transform={`translate(${this.margin.left}, ${
-                                this.margin.right
-                            })`}
+                            transform={`translate(${this.margin.left}, ${this.margin.right})`}
                         />
                         <rect
                             className="lst-svg-line-chart--zoom-area"
                             ref={ref => (this.graphInteractionArea = ref)}
                             width={this.state.chartWidth}
                             height={this.state.chartHeight}
-                            transform={`translate(${this.margin.left}, ${
-                                this.margin.right
-                            })`}
+                            transform={`translate(${this.margin.left}, ${this.margin.right})`}
                         />
                     </svg>
                     {this._renderChartLegend()}
@@ -176,7 +179,7 @@ class LineChart extends Component {
     }
 
     _renderChartLines() {
-        [...this.props.data].reverse().forEach(chart => {
+        [...this.props.data].reverse().forEach((chart) => {
             const line = d3
                 .line()
                 .curve(d3.curveMonotoneX)
@@ -195,9 +198,7 @@ class LineChart extends Component {
                 .attr('stroke', chart.color)
                 .attr('stroke-width', this.props.lineWidth)
                 .attr('d', line)
-                .style('stroke-dasharray', () => {
-                    return chart.type === 'dashed' ? '3, 3' : '3, 0';
-                });
+                .style('stroke-dasharray', () => (chart.type === 'dashed' ? '3, 3' : '3, 0'));
         });
     }
 
@@ -209,7 +210,7 @@ class LineChart extends Component {
                     ref={ref => (this.chartLegend = ref)}
                 >
                     <ul>
-                        {this.props.data.map(item => {
+                        {this.props.data.map((item) => {
                             const labelClassName = classnames({
                                 'lst-line-through': this.state.hiddenOptions.includes(
                                     item.yValues
@@ -222,10 +223,9 @@ class LineChart extends Component {
                                         className="lst-css-line-chart--legend__item"
                                         noStyle
                                         noAnimation
-                                        onClick={() =>
-                                            this._onClickToggleVisibility(
-                                                item.yValues
-                                            )
+                                        onClick={() => this._onClickToggleVisibility(
+                                            item.yValues
+                                        )
                                         }
                                     >
                                         <span
@@ -329,7 +329,7 @@ class LineChart extends Component {
 
         const lines = this.lines;
 
-        this.graphAreaD3.selectAll('.line-chart').each(function(data, index) {
+        this.graphAreaD3.selectAll('.line-chart').each(function (data, index) {
             d3.select(this).attr('d', lines[index]);
         });
     }
@@ -340,10 +340,10 @@ class LineChart extends Component {
         const intervalY = (maxDomainY - minDomainY) / this.props.yAxisTick;
 
         if (minDomainY !== 0) {
-            minDomainY = minDomainY - intervalY;
+            minDomainY -= intervalY;
         }
 
-        maxDomainY = maxDomainY + intervalY;
+        maxDomainY += intervalY;
 
         this.yScale.domain([minDomainY, maxDomainY]);
 

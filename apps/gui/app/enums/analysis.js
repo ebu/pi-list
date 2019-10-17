@@ -26,6 +26,7 @@ module.exports = {
         destination_multicast_mac_address: 'Destination Multicast MAC address',
         destination_multicast_ip_address: 'Destination Multicast IP address',
         unrelated_multicast_addresses: 'Multicast MAC and IP addresses mapping',
-        unique_multicast_destination_ip_address: 'Unique destination Multicast IP address',
+        unique_multicast_destination_ip_address:
+            'Unique destination Multicast IP address',
     },
 };

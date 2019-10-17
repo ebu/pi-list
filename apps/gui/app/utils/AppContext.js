@@ -25,13 +25,13 @@ export const Actions = {
     deleteUserDismiss: 'Actions.deleteUserDismiss', // { }
 };
 
-export const LiveFeature = props => {
+export const LiveFeature = (props) => {
     const [{ live }] = useStateValue();
 
     return <If condition={live}>{props.children}</If>;
 };
 
-export const LiveRoute = props => {
+export const LiveRoute = (props) => {
     const [{ live }] = useStateValue();
     return (
         <ConditionalRoute
@@ -45,11 +45,11 @@ export const LiveRoute = props => {
                 props.hideOnFalse
                     ? null
                     : () => (
-                          <ErrorPage
-                              errorType={errorEnum.PAGE_NOT_FOUND}
-                              errorMessage={translateX('errors.404_message')}
-                          />
-                      )
+                        <ErrorPage
+                            errorType={errorEnum.PAGE_NOT_FOUND}
+                            errorMessage={translateX('errors.404_message')}
+                        />
+                    )
             }
         />
     );

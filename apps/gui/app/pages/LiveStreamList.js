@@ -46,9 +46,8 @@ class LiveStreamList extends Component {
     }
 
     onStreamUpdate(data) {
-        const newStream =
-            this.state.streams.findIndex(element => element.id === data.id) ===
-            -1;
+        const newStream = this.state.streams.findIndex(element => element.id === data.id)
+            === -1;
         if (newStream) {
             this.setState({
                 streams: [
@@ -106,47 +105,42 @@ class LiveStreamList extends Component {
 
         return (
             <div className="row">
-                {streams.map((stream, index) => {
-                    return (
-                        <div className={`col-md-${perRow}`}>
-                            <LiveStreamCard
-                                key={stream.id}
-                                title={`Stream #${index + 1}`}
-                                lowInformation={!normalSize}
-                                onDeleteButtonClicked={this.handleDeleteStream}
-                                {...stream}
-                            />
-                        </div>
-                    );
-                })}
+                {streams.map((stream, index) => (
+                    <div className={`col-md-${perRow}`}>
+                        <LiveStreamCard
+                            key={stream.id}
+                            title={`Stream #${index + 1}`}
+                            lowInformation={!normalSize}
+                            onDeleteButtonClicked={this.handleDeleteStream}
+                            {...stream}
+                        />
+                    </div>
+                ))}
             </div>
         );
     }
 
     renderFilters(filters) {
-        return filters.map(filter => {
-            return (
-                <div className="col-xs-12">
-                    <FormInput
-                        label={filter.label}
-                        className="lst-no-margin"
-                        labelColSize={8}
-                        valueColSize={4}
-                    >
-                        <Toggle
-                            checked={filter.value}
-                            onChange={e =>
-                                this.handleSimpleChange(filter.valueName, e)
-                            }
-                        />
-                    </FormInput>
-                </div>
-            );
-        });
+        return filters.map(filter => (
+            <div className="col-xs-12">
+                <FormInput
+                    label={filter.label}
+                    className="lst-no-margin"
+                    labelColSize={8}
+                    valueColSize={4}
+                >
+                    <Toggle
+                        checked={filter.value}
+                        onChange={e => this.handleSimpleChange(filter.valueName, e)
+                        }
+                    />
+                </FormInput>
+            </div>
+        ));
     }
 
     render() {
-        const filteredStreams = this.state.streams.filter(elem => {
+        const filteredStreams = this.state.streams.filter((elem) => {
             const errorOnly = this.state.showErrorOnly
                 ? elem.global_video_analysis.compliance === 'not_compliant'
                 : true;
@@ -163,7 +157,7 @@ class LiveStreamList extends Component {
             return errorOnly && onlineOnly && videoOnly && audioOnly;
         });
 
-        const maxHeight = `calc(90vh)`; // todo: check this!!!!
+        const maxHeight = 'calc(90vh)'; // todo: check this!!!!
 
         if (filteredStreams.length === 0) {
             return (

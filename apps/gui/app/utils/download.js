@@ -3,7 +3,7 @@ export function downloadFiles(targets) {
         if (i >= targets.length) {
             return;
         }
-        var a = document.createElement('a');
+        const a = document.createElement('a');
         a.href = targets[i].url;
         a.target = '_parent';
         // Use a.download if available, it prevents plugins from opening.
@@ -17,7 +17,7 @@ export function downloadFiles(targets) {
         a.parentNode.removeChild(a);
         // Download the next file with a small timeout. The timeout is necessary
         // for IE, which will otherwise only download the first file.
-        setTimeout(function() {
+        setTimeout(() => {
             download_next(i + 1);
         }, 500);
     }

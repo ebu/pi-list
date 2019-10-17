@@ -8,10 +8,10 @@ const PcapFileNameHeader = props => (
 
 export default asyncLoader(PcapFileNameHeader, {
     loaderProps: {
-        loadingWidget: <div className="lst-header-item fade-in"></div>,
+        loadingWidget: <div className="lst-header-item fade-in" />,
     },
     asyncRequests: {
-        pcap: props => {
+        pcap: (props) => {
             const { pcapID } = props.match.params;
             return api.getPcap(pcapID);
         },

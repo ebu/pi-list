@@ -16,7 +16,9 @@ const noData = () => (
 const PcapsPage = props => (
     <div className="row">
         <div className="col-xs-12">
-            <NetworkCaptureUploader title={translateX('workflow.import_networkcapture')}>
+            <NetworkCaptureUploader
+                title={translateX('workflow.import_networkcapture')}
+            >
                 <PcapList noDataComponent={noData} />
             </NetworkCaptureUploader>
         </div>

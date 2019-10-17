@@ -79,7 +79,7 @@ function getTimeLineLabel(chartData) {
 function cinstHistogramValues(chartData) {
     const value = [];
 
-    chartData['histogram'].forEach(v => {
+    chartData.histogram.forEach((v) => {
         value.push(v[0]);
     });
 
@@ -89,7 +89,7 @@ function cinstHistogramValues(chartData) {
 function cinstHistogramCounts(chartData) {
     const value = [];
 
-    chartData['histogram'].forEach(v => {
+    chartData.histogram.forEach((v) => {
         value.push(v[1]);
     });
 
@@ -107,7 +107,7 @@ function cinstHistogramCounts(chartData) {
 function singleValueChart(chartData) {
     const value = [];
 
-    chartData.forEach(v => {
+    chartData.forEach((v) => {
         value.push(v.value);
     });
 
@@ -125,7 +125,7 @@ function minMaxChart(chartData) {
     const min = [];
     const max = [];
 
-    chartData.forEach(value => {
+    chartData.forEach((value) => {
         min.push(value.min);
         max.push(value.max);
     });
@@ -150,7 +150,7 @@ function stdDeviationMeanMinMaxChart(chartData) {
     const min = [];
     const max = [];
 
-    chartData.forEach(value => {
+    chartData.forEach((value) => {
         stddev.push(value.stddev);
         mean.push(value.mean);
         min.push(value.min);

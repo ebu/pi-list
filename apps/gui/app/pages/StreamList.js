@@ -11,21 +11,19 @@ import { translateX } from '../utils/translation';
 function renderColumn(pcapID, title, icon, streams) {
     return (
         <StreamColumn title={title}>
-            {streams.map((stream, index) => {
-                return (
-                    <StreamCard
-                        key={stream.id}
-                        title={`Stream #${index + 1}`}
-                        {...stream}
-                        pcapID={pcapID}
-                    />
-                );
-            })}
+            {streams.map((stream, index) => (
+                <StreamCard
+                    key={stream.id}
+                    title={`Stream #${index + 1}`}
+                    {...stream}
+                    pcapID={pcapID}
+                />
+            ))}
         </StreamColumn>
     );
 }
 
-const StreamList = props => {
+const StreamList = (props) => {
     const videoStreams = props.availableStreams.filter(
         elem => elem.media_type === 'video'
     );
@@ -95,12 +93,12 @@ const StreamList = props => {
 
 export default asyncLoader(StreamList, {
     asyncRequests: {
-        availableStreams: props => {
+        availableStreams: (props) => {
             const { pcapID } = props.match.params;
 
             return api.getStreamsFromPcap(pcapID);
         },
-        pcap: props => {
+        pcap: (props) => {
             const { pcapID } = props.match.params;
             return api.getPcap(pcapID);
         },

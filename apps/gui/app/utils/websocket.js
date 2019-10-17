@@ -15,7 +15,7 @@ function initialize(userID) {
 
     socket.emit('register', userID);
 
-    socket.on('message', wsData => {
+    socket.on('message', (wsData) => {
         eventManager.emit(wsData.event, wsData.data);
     });
 }

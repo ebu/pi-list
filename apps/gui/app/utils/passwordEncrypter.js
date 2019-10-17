@@ -1,11 +1,9 @@
 function xorEncrypt(key, str) {
     return str
         .split('')
-        .map((char, index) => {
-            return String.fromCharCode(
-                str.charCodeAt(index) ^ key.charCodeAt(index % key.length)
-            );
-        })
+        .map((char, index) => String.fromCharCode(
+            str.charCodeAt(index) ^ key.charCodeAt(index % key.length)
+        ))
         .join('');
 }
 
