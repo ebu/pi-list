@@ -11,6 +11,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Translations
+token.json
+
 # Runtime data
 pids
 *.pid

@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
+const WebpackShellPlugin = require('webpack-shell-plugin');
 
 module.exports = merge(common, {
     mode: 'development',
@@ -11,6 +12,9 @@ module.exports = merge(common, {
             'process.env': {
                 NODE_ENV: JSON.stringify('development'),
             },
+        }),
+        new WebpackShellPlugin({
+            onBuildStart: ['node ./data/translationsGenerator']
         }),
     ],
     devServer: {
