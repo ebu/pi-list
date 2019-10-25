@@ -5,12 +5,18 @@ const constants = require('../enums/analysis');
 const { appendError, validateMulticastAddresses } = require('./utils');
 
 // Definitions
+// TODO get from a validation template
 const validation = {
     rtp: {
-        delta_rtp_ts_vs_nt_ticks_min: -2,
-        delta_rtp_ts_vs_nt_ticks_max: 45000,
-        delta_packet_ts_vs_rtp_ts_ns_min: 0,
-        delta_packet_ts_vs_rtp_ts_ns_max: 2000000,
+        // See docs/video_timing_analysis.md
+        deltaRtpTsVsNtLimit: {
+            min: -90,
+            max: 0
+        },
+        deltaPktTsVsRtpTsLimit: {
+            min: 0,
+            max: 1000000
+        },
     },
 };
 
@@ -69,7 +75,7 @@ function map2110d21Vrx(stream) {
 function validateRtpTimes(stream) {
     const delta = _.get(
         stream,
-        'analyses.packet_ts_vs_rtp_ts.details.delta_packet_time_vs_rtp_time_ns',
+        'analyses.packet_ts_vs_rtp_ts.details.range',
         null
     );
 
@@ -78,21 +84,24 @@ function validateRtpTimes(stream) {
         stream = appendError(stream, {
             id: constants.errors.missing_information,
             value:
-                'no value for "analyses.packet_ts_vs_rtp_ts.details.delta_packet_time_vs_rtp_time_ns"',
+                'no value for "analyses.packet_ts_vs_rtp_ts.details.range"',
         });
 
         return;
     }
+    const limit = validation.rtp.deltaPktTsVsRtpTsLimit;
+    _.set(stream, 'analyses.packet_ts_vs_rtp_ts.details.limit', limit);
+    _.set(stream, 'analyses.packet_ts_vs_rtp_ts.details.unit', 'ns');
 
     const { min, max } = delta;
-
+    _.set(stream, 'analyses.packet_ts_vs_rtp_ts.result', constants.outcome.not_compliant);
     if (
-        min < validation.rtp.delta_packet_ts_vs_rtp_ts_ns_min ||
-        max > validation.rtp.delta_packet_ts_vs_rtp_ts_ns_max
+        min < limit.min ||
+        max > limit.max
     ) {
         _.set(stream, 'analyses.packet_ts_vs_rtp_ts.result', constants.outcome.not_compliant);
         stream = appendError(stream, {
-            id: constants.errors.invalid_delta_packet_ts_vs_rtp_ts,
+            id: constants.errors.invalid_packet_ts_vs_rtp_ts,
         });
     } else {
         _.set(stream, 'analyses.packet_ts_vs_rtp_ts.result', constants.outcome.compliant);
@@ -101,37 +110,39 @@ function validateRtpTimes(stream) {
     return stream;
 }
 
-// Sets analyses.rtp_ticks.result to compliant or not_compliant
+// Sets analyses.rtp_ts_vs_nt.result to compliant or not_compliant
 // - if not compliant, adds and error to analyses.errors
 function validateRtpTicks(stream) {
     const delta = _.get(
         stream,
-        'analyses.rtp_ticks.details.delta_rtp_ts_vs_nt_ticks',
+        'analyses.rtp_ts_vs_nt.details.range',
         null
     );
     if (delta === null) {
-        _.set(stream, 'analyses.rtp_ticks.result', constants.outcome.not_compliant);
+        _.set(stream, 'analyses.rtp_ts_vs_nt.result', constants.outcome.not_compliant);
         stream = appendError(stream, {
             id: constants.errors.missing_information,
             value:
-                'no value for "analyses.rtp_ticks.details.delta_rtp_ts_vs_nt_ticks"',
+                'no value for "analyses.rtp_ts_vs_nt.details.range"',
         });
 
         return stream;
     }
 
-    const { min, max } = delta;
+    const limit = validation.rtp.deltaRtpTsVsNtLimit;
+    _.set(stream, 'analyses.rtp_ts_vs_nt.details.limit', limit);
+    _.set(stream, 'analyses.rtp_ts_vs_nt.details.unit', 'ticks');
 
     if (
-        min < validation.rtp.delta_rtp_ts_vs_nt_ticks_min ||
-        max > validation.rtp.delta_rtp_ts_vs_nt_ticks_max
+        delta.min < limit.min ||
+        delta.max > limit.max
     ) {
-        _.set(stream, 'analyses.rtp_ticks.result', constants.outcome.not_compliant);
+        _.set(stream, 'analyses.rtp_ts_vs_nt.result', constants.outcome.not_compliant);
         stream = appendError(stream, {
-            id: constants.errors.invalid_delta_rtp_ts_vs_nt,
+            id: constants.errors.invalid_rtp_ts_vs_nt,
         });
     } else {
-        _.set(stream, 'analyses.rtp_ticks.result', constants.outcome.compliant);
+        _.set(stream, 'analyses.rtp_ts_vs_nt.result', constants.outcome.compliant);
     }
 
     return stream;
@@ -154,7 +165,7 @@ const doRtpTicksAnalysis = async (pcapId, stream) => {
     }
 
     const { min, max, avg } = value[0];
-    _.set(stream, 'analyses.rtp_ticks.details.delta_rtp_ts_vs_nt_ticks', {
+    _.set(stream, 'analyses.rtp_ts_vs_nt.details.range', {
         min,
         max,
         avg,
@@ -180,7 +191,7 @@ const doRtpTimeAnalysis = async (pcapId, stream) => {
     }
 
     const { min, max, avg } = value[0];
-    _.set(stream, 'analyses.packet_ts_vs_rtp_ts.details.delta_packet_time_vs_rtp_time_ns', {
+    _.set(stream, 'analyses.packet_ts_vs_rtp_ts.details.range', {
         min,
         max,
         avg,

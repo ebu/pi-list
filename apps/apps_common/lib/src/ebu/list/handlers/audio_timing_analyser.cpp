@@ -24,7 +24,7 @@ audio_timing_analyser::audio_timing_analyser(rtp::packet first_packet, listener_
     first_packet_ts_usec_(std::chrono::duration_cast<std::chrono::microseconds>(first_packet.info.udp.packet_time.time_since_epoch()).count()),
     sampling_(sampling)
 {
-    delta_rtp_ts_vs_pkt_ts_buffer.clear();
+    delta_pkt_ts_vs_rtp_ts_buffer.clear();
 }
 
 audio_timing_analyser::~audio_timing_analyser() = default;
@@ -50,14 +50,14 @@ void audio_timing_analyser::on_data(const rtp::packet& packet)
         first_packet_ts_usec_ = packet_ts_usec;
 
         /* get min, max, mean of delays */
-        const auto minmax = std::minmax_element(delta_rtp_ts_vs_pkt_ts_buffer.begin(), delta_rtp_ts_vs_pkt_ts_buffer.end());
+        const auto minmax = std::minmax_element(delta_pkt_ts_vs_rtp_ts_buffer.begin(), delta_pkt_ts_vs_rtp_ts_buffer.end());
         const auto min = minmax.first[0];
         const auto max = minmax.second[0];
-        const auto mean = std::accumulate(delta_rtp_ts_vs_pkt_ts_buffer.begin(), delta_rtp_ts_vs_pkt_ts_buffer.end(), 0.0) / delta_rtp_ts_vs_pkt_ts_buffer.size();
+        const auto mean = std::accumulate(delta_pkt_ts_vs_rtp_ts_buffer.begin(), delta_pkt_ts_vs_rtp_ts_buffer.end(), 0.0) / delta_pkt_ts_vs_rtp_ts_buffer.size();
 
         /* TS-DF is the amplitude of relative transit delay based on a
          * reference delay, i.e. the first delay of the measurement window */
-        const auto init = delta_rtp_ts_vs_pkt_ts_buffer[0];
+        const auto init = delta_pkt_ts_vs_rtp_ts_buffer[0];
         const auto tsdf = (max - init) - (min - init);
 
         logger()->trace("audio: new delay=[{},{},{}] TS-DF=[{},{}]={}",
@@ -68,22 +68,22 @@ void audio_timing_analyser::on_data(const rtp::packet& packet)
 
         /* reinit measurement the window with the new reference transit
          * delay for TS-DF, i.e. (R(0)-S(0)) */
-        delta_rtp_ts_vs_pkt_ts_buffer.clear();
+        delta_pkt_ts_vs_rtp_ts_buffer.clear();
     }
 
     /* save every delay */
-    const auto new_delta_rtp_ts_vs_pkt_ts_buffer = get_delta_rtp_ts_vs_pkt_ts(packet);
-    delta_rtp_ts_vs_pkt_ts_buffer.push_back(new_delta_rtp_ts_vs_pkt_ts_buffer);
-    impl_rtp_->listener_->on_data({packet.info.udp.packet_time, new_delta_rtp_ts_vs_pkt_ts_buffer, 0});
+    const auto new_delta_pkt_ts_vs_rtp_ts_buffer = get_delta_pkt_ts_vs_rtp_ts(packet);
+    delta_pkt_ts_vs_rtp_ts_buffer.push_back(new_delta_pkt_ts_vs_rtp_ts_buffer);
+    impl_rtp_->listener_->on_data({packet.info.udp.packet_time, new_delta_pkt_ts_vs_rtp_ts_buffer, 0});
 }
 
 /*
- * get_delta_rtp_ts_vs_pkt_ts():
+ * get_delta_pkt_ts_vs_rtp_ts():
  * - is the raw information for RTP timestamp validation
  * - returns the (R(i) - S(i)) (usec) part of TS-DF
- * - is AKA transit time or RTP-to-PTP delay
+ * - is AKA transit time or arrival TS to RTP TS delay
  */
-int64_t audio_timing_analyser::get_delta_rtp_ts_vs_pkt_ts(const rtp::packet& packet)
+int64_t audio_timing_analyser::get_delta_pkt_ts_vs_rtp_ts(const rtp::packet& packet)
 {
     constexpr auto RTP_WRAP_AROUND = 0x100000000;
     const auto packet_ts_nsec = std::chrono::duration_cast<std::chrono::nanoseconds>(packet.info.udp.packet_time.time_since_epoch()).count();

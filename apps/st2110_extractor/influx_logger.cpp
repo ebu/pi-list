@@ -117,7 +117,7 @@ influxdb_audio_rtp_logger::influxdb_audio_rtp_logger(std::string_view url, std::
 
 void influxdb_audio_rtp_logger::on_data(const ebu_list::audio_timing_analyser::delay_sample& sample)
 {
-    db_.send_data(prefix_ + "-rtp-vs-pkt", sample.rtp_ts_vs_pkt_ts, sample.timestamp);
+    db_.send_data(prefix_ + "-pkt-vs-rtp", sample.pkt_ts_vs_rtp_ts, sample.timestamp);
 }
 
 void influxdb_audio_rtp_logger::on_complete()

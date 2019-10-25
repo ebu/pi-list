@@ -1,7 +1,9 @@
 import React, { Fragment } from 'react';
 import _ from 'lodash';
 import InfoPane from './components/InfoPane';
+import ResultPane from './components/ResultPane';
 import MinAvgMaxDisplay from './components/MinAvgMaxDisplay';
+import MinMaxDisplay from './components/MinMaxDisplay';
 import DataList from './components/DataList';
 import analysisConstants from '../../enums/analysis';
 
@@ -10,10 +12,8 @@ const isRtpCompliant = (info) => {
 
 const getCompliance = (info) => {
     const v = _.get(info, ['analyses', 'packet_ts_vs_rtp_ts', 'result']);
-    if (v === analysisConstants.outcome.compliant) {
-        return { value: 'Compliant' };
-    }
-    return { value: 'Not compliant' };
+    return (v === analysisConstants.outcome.compliant)?
+        { value: 'Compliant' } : { value: 'Not compliant', attention:true};
 };
 
 const nsPropAsMinMaxAvgUs = (info) => {
@@ -28,8 +28,8 @@ const propAsMinMaxAvg = (info) => {
 };
 
 const RtpInfo = ({ info }) => {
-    const delta_packet_time_vs_rtp_time_ns = _.get(info, ['analyses', 'packet_ts_vs_rtp_ts', 'details', 'delta_packet_time_vs_rtp_time_ns'], undefined);
-    const delta_rtp_ts_vs_nt = _.get(info, ['analyses', 'rtp_ticks', 'details', 'delta_rtp_ts_vs_nt_ticks'], undefined);
+    const deltaPktTsVsRtpTs = _.get(info, ['analyses', 'packet_ts_vs_rtp_ts'], undefined);
+    const deltaRtpTsVsNTFrame = _.get(info, ['analyses', 'rtp_ts_vs_nt'], undefined);
 
     const summaryValues = [
         {
@@ -38,34 +38,44 @@ const RtpInfo = ({ info }) => {
         },
     ];
 
+    const results = [
+        {
+            measurement : <MinAvgMaxDisplay
+                labelTag='media_information.rtp.delta_packet_time_vs_rtp_time_ns'
+                units='μs'
+                {...nsPropAsMinMaxAvgUs(deltaPktTsVsRtpTs.details.range)}
+                attention={deltaPktTsVsRtpTs.result!=='compliant'}
+            />,
+            limit : <MinMaxDisplay
+                labelTag='range'
+                units='μs'
+                {...nsPropAsMinMaxAvgUs(deltaPktTsVsRtpTs.details.limit)}
+            />
+        },
+        {
+            measurement : <MinAvgMaxDisplay
+                labelTag='media_information.rtp.delta_rtp_ts_vs_nt'
+                units='ticks'
+                {...propAsMinMaxAvg(deltaRtpTsVsNTFrame.details.range)}
+                attention={deltaRtpTsVsNTFrame.result!=='compliant'}
+            />,
+            limit : <MinMaxDisplay
+                labelTag='range'
+                units={deltaRtpTsVsNTFrame.details.unit}
+                {...deltaRtpTsVsNTFrame.details.limit}
+            />
+        },
+    ]
     return (
         <div>
             <InfoPane
-                icon="blur_linear"
-                heading="RTP"
-                values={[]}
+                icon='blur_linear'
+                heading='RTP'
+                values={summaryValues}
             />
-            <div className="row">
-                <div className="col-xs-12">
-                    <DataList values={summaryValues} />
-                </div>
-            </div>
-            <div className="row">
-            <div className="col-xs-12">
-                    <MinAvgMaxDisplay
-                        labelTag="media_information.rtp.delta_packet_time_vs_rtp_time_ns"
-                        units="μs"
-                        {...nsPropAsMinMaxAvgUs(delta_packet_time_vs_rtp_time_ns)}
-                    />
-                </div>
-                <div className="col-xs-12">
-                    <MinAvgMaxDisplay
-                        labelTag="media_information.rtp.delta_rtp_ts_vs_nt"
-                        units="ticks"
-                        {...propAsMinMaxAvg(delta_rtp_ts_vs_nt)}
-                    />
-                </div>
-            </div>
+            <ResultPane
+                values={results}
+            />
         </div>
     );
 };

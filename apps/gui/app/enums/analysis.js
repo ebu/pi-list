@@ -9,7 +9,7 @@ module.exports = {
         compliant: 'compliant',
     },
     errors: {
-        invalid_delta_rtp_ts_vs_nt: 'errors.invalid_delta_rtp_ts_vs_nt',
+        invalid_rtp_ts_vs_nt: 'errors.invalid_rtp_ts_vs_nt',
     },
     warnings: {
         pcap: {
@@ -17,8 +17,8 @@ module.exports = {
         },
     },
     analysesNames: {
-        rtp_ticks: 'RTP ticks',
-        packet_ts_vs_rtp_ts: 'RTP timestamps',
+        rtp_ts_vs_nt: 'Delta between RTP timestamps and (N x Tframe) in ticks',
+        packet_ts_vs_rtp_ts: 'Delta between packet capture timestamps and RTP timestamps in ns',
         rtp_sequence: 'RTP sequence',
         '2110_21_cinst': 'SMPTE 2110-21 (Cinst)',
         '2110_21_vrx': 'SMPTE 2110-21 (VRX)',

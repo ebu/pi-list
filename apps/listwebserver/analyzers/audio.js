@@ -6,6 +6,17 @@ const { appendError, validateMulticastAddresses } = require('./utils');
 const logger = require('../util/logger');
 
 const log = logger('audio');
+//
+// Definitions
+// TODO get from a validation template
+const validation = {
+    rtp: {
+        deltaPktTsVsRtpTsLimit: {
+            min: 0,
+            max: 2000
+        },
+    },
+};
 
 // determines compliance based on EBU's recommendation
 // returns
@@ -48,14 +59,16 @@ function updateStreamWithTsdfMax(stream, tsdf_max) {
 
     var tsdf = {
         max: tsdf_max,
-        tolerance: stream.media_specific.packet_time * 1000, // usec
-        limit: stream.media_specific.packet_time * 1000 * 17, // usec
+        tolerance: stream.media_specific.packet_time * 1000,
+        limit: stream.media_specific.packet_time * 1000 * 17, // https://tech.ebu.ch/docs/tech/tech3337.pdf
+        unit: 'μs',
     };
     const { result, level } = getTsdfCompliance(tsdf);
     tsdf['compliance'] = level;
     tsdf['level'] = level;
     tsdf['result'] = result;
 
+    //TODO clean this: choose between 'analyses' and 'global_audio_analysis'
     global_audio_analysis =
         stream.global_audio_analysis === undefined
             ? {}
@@ -78,7 +91,7 @@ function updateStreamWithTsdfMax(stream, tsdf_max) {
     return stream;
 }
 
-function getRtpTsVsPktTsCompliance(range, limit) {
+function getPktTsVsRtpTsCompliance(range, limit) {
     if (
         _.isNil(range) ||
         _.isNil(range.min) ||
@@ -96,8 +109,8 @@ function getRtpTsVsPktTsCompliance(range, limit) {
     };
 }
 
-function updateStreamWithRtpTsVsPktTs(stream, range) {
-    const limit = { min: 0, max: 2000 }; //un-hardcode this in us
+function updateStreamWithPktTsVsRtpTs(stream, range) {
+    const limit = validation.rtp.deltaPktTsVsRtpTsLimit;
 
     global_audio_analysis =
         stream.global_audio_analysis === undefined
@@ -106,11 +119,14 @@ function updateStreamWithRtpTsVsPktTs(stream, range) {
     const packet_ts_vs_rtp_ts = {
         range: range,
         limit: limit,
+        unit: 'μs',
     };
     global_audio_analysis['packet_ts_vs_rtp_ts'] = packet_ts_vs_rtp_ts;
+
+    // TODO: maybe remove global_audio_analysis
     stream = _.set(stream, 'global_audio_analysis', global_audio_analysis);
 
-    const { result } = getRtpTsVsPktTsCompliance(range, limit);
+    const { result } = getPktTsVsRtpTsCompliance(range, limit);
     const report = {
         result,
         details: packet_ts_vs_rtp_ts,
@@ -141,10 +157,10 @@ function doCalculateTsdf(pcapId, stream) {
         });
 }
 
-function doCalculateRtpTsVsPktTsRange(pcapId, stream) {
+function doCalculatePktTsVsRtpTsRange(pcapId, stream) {
     return influxDbManager
-        .getAudioRtpTsVsPktTsRange(pcapId, stream.id)
-        .then(range => updateStreamWithRtpTsVsPktTs(stream, range[0]));
+        .getAudioPktTsVsRtpTsRange(pcapId, stream.id)
+        .then(range => updateStreamWithPktTsVsRtpTs(stream, range[0]));
 }
 
 // Returns one promise, which result is undefined.
@@ -153,7 +169,7 @@ function doAudioStreamAnalysis(pcapId, stream) {
         .then(info =>
             Stream.findOneAndUpdate({ id: stream.id }, info, { new: true })
         )
-        .then(() => doCalculateRtpTsVsPktTsRange(pcapId, stream))
+        .then(() => doCalculatePktTsVsRtpTsRange(pcapId, stream))
         .then(info =>
               Stream.findOneAndUpdate({ id: stream.id }, info, { new: true })
         )

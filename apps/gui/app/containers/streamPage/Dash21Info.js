@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import InfoPane from './components/InfoPane';
+import ResultPane from './components/ResultPane';
 import DataList from './components/DataList';
 import MultiValueDisplay from './components/MultiValueDisplay';
 import NarrowWideDisplay from './components/NarrowWideDisplay';
@@ -39,9 +40,9 @@ const getCompliance = (value) => {
 
 const nsAsMicroseconds = value => (value / 1000).toFixed(3);
 
-const TpaDisplay = props => (
+const FpoDisplay = props => (
     <MinAvgMaxDisplay
-        label={<span>TPA<sub>0</sub></span>}
+        label={<span>FPO</span>}
         units="μs"
         min={nsAsMicroseconds(props.min_tro_ns)}
         avg={nsAsMicroseconds(props.avg_tro_ns)}
@@ -63,70 +64,81 @@ const TroDefaultDisplay = props => {
 
 
 const Dash21Info = (props) => {
-    const cmin = getLowestFromHistogram(props.cinst.histogram);
-    const cpeak = getHighestFromHistogram(props.cinst.histogram);
-    const cavg = getAverageFromHistogram(props.cinst.histogram);
-    const vrxmin = getLowestFromHistogram(props.vrx.histogram);
-    const vrxpeak = getHighestFromHistogram(props.vrx.histogram);
-    const vrxavg = getAverageFromHistogram(props.vrx.histogram);
+    const globalVideoAnalysis = props.info.global_video_analysis;
+    const cmin = getLowestFromHistogram(globalVideoAnalysis.cinst.histogram);
+    const cpeak = getHighestFromHistogram(globalVideoAnalysis.cinst.histogram);
+    const cavg = getAverageFromHistogram(globalVideoAnalysis.cinst.histogram);
+    const vrxmin = getLowestFromHistogram(globalVideoAnalysis.vrx.histogram);
+    const vrxpeak = getHighestFromHistogram(globalVideoAnalysis.vrx.histogram);
+    const vrxavg = getAverageFromHistogram(globalVideoAnalysis.vrx.histogram);
+    const invalid = globalVideoAnalysis.compliant !== 'compliant';
+    const invalidCinst = props.info.analyses['2110_21_cinst'].result !== 'compliant';
+    const invalidVrx = props.info.analyses['2110_21_vrx'].result !== 'compliant';
 
     const summaryValues = [
-        {
-            labelTag: 'stream.compliance',
-            ...getCompliance(props.compliance)
+        { labelTag: 'stream.compliance',
+            ...getCompliance(globalVideoAnalysis.compliance),
+            attention:{invalid}
         },
         {
             labelTag: 'media_information.video.read_schedule',
-            value: props.schedule === 'gapped' ? 'Gapped' : 'Linear'
+            value: typeof  props.info.media_specific.schedule !== 'undefined'? props.info.media_specific.schedule : 'unknown'
         }
     ];
+
+    const results = [
+        {
+            measurement : <MinAvgMaxDisplay
+                label={<span>C<sub>INST</sub></span>}
+                units="packets"
+                min={cmin}
+                avg={cavg.toFixed(3)}
+                max={cpeak}
+                attention={invalidCinst}
+            />,
+            limit : <NarrowWideDisplay
+                label={<span>C<sub>MAX</sub></span>}
+                units="packets"
+                narrow={globalVideoAnalysis.cinst.cmax_narrow}
+                wide={globalVideoAnalysis.cinst.cmax_wide}
+            />
+        },
+        {
+            measurement : <MinAvgMaxDisplay
+                label="VRX"
+                units="packets"
+                min={vrxmin}
+                avg={vrxavg.toFixed(3)}
+                max={vrxpeak}
+                attention={invalidVrx}
+            />,
+            limit : <NarrowWideDisplay
+                label={<span>VRX<sub>FULL</sub></span>}
+                units="packets"
+                narrow={globalVideoAnalysis.vrx.vrx_full_narrow}
+                wide={globalVideoAnalysis.vrx.vrx_full_wide}
+            />
+        },
+        {
+            measurement : <FpoDisplay
+                {...props.info.media_specific}
+            />,
+            limit : <TroDefaultDisplay
+                value={props.info.media_specific.tro_default_ns}
+            />
+        },
+    ]
 
     return (
         <div>
             <InfoPane
                 icon="alarm_on"
                 heading="ST2110-21"
-                values={[]}
+                values={summaryValues}
             />
-            <div className="row">
-                <div className="col-xs-12">
-                    <DataList values={summaryValues} />
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-xs-6">
-                    <MinAvgMaxDisplay
-                        label={<span>C<sub>INST</sub></span>}
-                        units="packets"
-                        min={cmin}
-                        avg={cavg.toFixed(3)}
-                        max={cpeak}
-                    />
-                </div>
-                <div className="col-xs-6">
-                    <NarrowWideDisplay label={<span>C<sub>MAX</sub></span>} units="packets" narrow={props.cinst.cmax_narrow} wide={props.cinst.cmax_wide} />
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-xs-6">
-                    <MinAvgMaxDisplay
-                        label="VRX"
-                        units="packets"
-                        min={vrxmin} avg={vrxavg.toFixed(3)} max={vrxpeak}
-                    />
-                </div>
-                <div className="col-xs-6">
-                    <NarrowWideDisplay label={<span>VRX<sub>FULL</sub></span>} units="packets" narrow={props.vrx.vrx_full_narrow} wide={props.vrx.vrx_full_wide} />
-                </div>
-            </div>
-            <div className="row lst-stream-info2-row">
-                <div className="col-xs-6">
-                    <TpaDisplay {...props} />
-                </div>
-                <div className="col-xs-6">
-                    <TroDefaultDisplay value={props.tro_default_ns} />
-                </div>
-            </div>
+            <ResultPane
+                values={results}
+            />
         </div>
     );
 };

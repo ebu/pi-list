@@ -102,6 +102,7 @@
         @extend .lst-text-left,
         .lst-text-vertical-align;
         color: $red;
+        font-weight: bold;
         .dark & {
             color: $red;
         }
@@ -116,6 +117,16 @@
         justify-content: left;
         margin: 0px;
         padding: 5px;
+    }
+    &-header {
+        font-size: 100%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        color: $black;
+        .dark & {
+            color: $light-yellow;
+        }
     }
     &-label-group {
         display: flex;
@@ -162,11 +173,20 @@
         text-align: right;
         min-width: 40px;
     }
+    &-value-attention{
+        @extend .lst-text-left,
+        .lst-text-vertical-align;
+        color: $red;
+        font-weight: bold;
+        .dark & {
+            color: $red;
+        }
+    }
     &-row {
         align-items: flex-end;
     }
     &-divider {
-        border-top: 1px solid darken($grey-dark, 50%);
+        border: 1px solid $light-yellow;
     }
     &-message {
         margin-left: 1rem;

@@ -22,6 +22,8 @@ const trimNull = data => {
 const VrxAnalysis = (props) => {
     const { first_packet_ts, last_packet_ts } = props.streamInfo.statistics;
     const { streamID, pcapID } = props;
+    const default_tro = props.streamInfo.media_specific.tro_default_ns / 1000;
+    const avg_tro = props.streamInfo.media_specific.avg_tro_ns / 1000;
 
     return (
         <div className="row">
@@ -41,7 +43,7 @@ const VrxAnalysis = (props) => {
                     asyncData={() => api.getVrxIdealForStream(pcapID, streamID, first_packet_ts, last_packet_ts).then(trimNull)}
                     xAxis={item => item.time}
                     data={chartFormatters.statsLineChart}
-                    title="VRX (with TRoffset = TROdefault)"
+                    title={`VRX (with TRoffset = TROdefault = ${default_tro} μs)`}
                     yAxisLabel="packets"
                     height={300}
                     lineWidth={3}
@@ -51,7 +53,7 @@ const VrxAnalysis = (props) => {
                     asyncData={() => api.getVrxAdjustedAvgTro(pcapID, streamID, first_packet_ts, last_packet_ts).then(trimNull)}
                     xAxis={item => item.time}
                     data={chartFormatters.statsLineChart}
-                    title="VRX (with TRoffset = Measured/Averaged)"
+                    title={`Adjusted VRX (with TRoffset = Avg(FPO) = ${avg_tro} μs)`}
                     yAxisLabel="packets"
                     height={300}
                     lineWidth={3}

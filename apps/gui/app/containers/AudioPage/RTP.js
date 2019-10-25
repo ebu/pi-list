@@ -13,7 +13,7 @@ const RTP = props => {
                 <div className="col-xs-12">
                     <LineChart
                         asyncData={() =>
-                            api.getAudioRtpTsVsPktTs(
+                            api.getAudioPktTsVsRtpTs(
                                 props.pcapID,
                                 props.streamID,
                                 first_packet_ts,

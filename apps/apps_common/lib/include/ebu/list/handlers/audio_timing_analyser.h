@@ -27,7 +27,7 @@ namespace ebu_list
         struct delay_sample
         {
             clock::time_point timestamp;
-            int64_t rtp_ts_vs_pkt_ts;
+            int64_t pkt_ts_vs_rtp_ts;
             int64_t time_stamped_delay_factor;
         };
 
@@ -55,10 +55,10 @@ namespace ebu_list
         const std::unique_ptr<impl> impl_rtp_;
         const std::unique_ptr<impl> impl_tsdf_;
 
-        int64_t get_delta_rtp_ts_vs_pkt_ts(const rtp::packet& packet);
+        int64_t get_delta_pkt_ts_vs_rtp_ts(const rtp::packet& packet);
 
         int64_t first_packet_ts_usec_;
         int sampling_;
-        std::vector<int64_t> delta_rtp_ts_vs_pkt_ts_buffer;
+        std::vector<int64_t> delta_pkt_ts_vs_rtp_ts_buffer;
     };
 }

@@ -175,8 +175,8 @@ class LiveVideoPage extends Component {
             <div className="lst-stream-info-tab lst-full-height">
                 <div className="row">
                     <Panel className="col-xs-12 col-md-4">
-                        <Dash21Info {...globalVideoAnalysis} {...mediaInfo} />
-                        <NetworkInfo stream={this.props.streamInfo} />
+                        <Dash21Info info={streamInfo} />
+                        <NetworkInfo stream={streamInfo} />
                         <VideoInfo {...mediaInfo} />
                     </Panel>
                     <div className="col-xs-12 col-md-8">

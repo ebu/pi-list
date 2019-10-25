@@ -48,7 +48,7 @@ audio_stream_handler::audio_stream_handler(rtp::packet first_packet, serializabl
     audio_description_.first_packet_ts = first_packet.info.udp.packet_time;
     using float_sec = std::chrono::duration<float, std::ratio<1, 1>>;
     audio_description_.samples_per_packet = static_cast<int>(to_int(audio_description_.audio.sampling) * float_sec(audio_description_.audio.packet_time).count());
-    audio_description_.sample_size = sample_size(audio_description_.audio) * audio_description_.samples_per_packet;
+    audio_description_.packet_size = sample_size(audio_description_.audio) * audio_description_.samples_per_packet;
 }
 
 const audio_stream_details& audio_stream_handler::info() const
@@ -99,9 +99,9 @@ void audio_stream_handler::parse_packet(const rtp::packet& packet)
     auto& sdu = packet.sdu;
 
     // check if number of samples is consistent
-    if( const auto actual_size = sdu.view().size(); actual_size != audio_description_.sample_size )
+    if( const auto actual_size = sdu.view().size(); actual_size != audio_description_.packet_size )
     {
-        logger()->trace("bad packet size. Expected: {}; Actual: {}", audio_description_.sample_size, actual_size);
+        logger()->trace("bad packet size. Expected: {}; Actual: {}", audio_description_.packet_size, actual_size);
         return;
     }
 

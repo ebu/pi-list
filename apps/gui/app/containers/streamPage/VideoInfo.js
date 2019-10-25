@@ -25,6 +25,11 @@ const VideoInfo = (props) => {
         {
             labelTag: 'media_information.video.sampling',
             value: props.sampling
+        },
+        {
+            labelTag: 'media_information.video.color_depth',
+            value: props.color_depth,
+            units: 'bit'
         }
     ]
 

@@ -24,48 +24,51 @@
 
 ```
 - analyses
-  - rtp_ticks
+  - rtp_ts_vs_nt
     - result : string // defined in enums/analysis/outcome
     - details
-        - delta_rtp_ts_vs_nt_ticks // video only
+        - rtp_ts_vs_nt // video only
             - min : number
             - max : number
             - avg : number
-  - packet_ts_vs_rtp_ts: (video)
+        - limit // permitted range
+            - min : number
+            - max : number
+        - unit: string
+  - packet_ts_vs_rtp_ts (video+audio)
     - result : string // defined in enums/analysis/outcome
     - details
-        - delta_packet_time_vs_rtp_time_ns
+        - range // measured range
             - min : number
             - max : number
             - avg : number
-  - packet_ts_vs_rtp_ts: (audio)
-    - result : string // defined in enums/analysis/outcome
-    - details:
-        - range: { min, max } // measured range
-        - limit: { min, max } // permitted range
+        - limit // permitted range
+            - min : number
+            - max : number
+        - unit: string
   - 2110_21_cinst
     - result : string // defined in enums/analysis/outcome
   - 2110_21_vrx
     - result : string // defined in enums/analysis/outcome
   - tsdf
     - result : string // defined in enums/analysis/outcome
-    - details:
+    - details
         - max: Number // calculated as defined by the EBU recommendation
         - tolerance: Number // one packet time
         - limit: Number // 17 * packet time
         - level: string // enums/analysis/qualitative
-  - rtp_sequence:
+  - rtp_sequence
     - result : string // defined in enums/analysis/outcome
-    - details:
+    - details
         - packet_count: Number // the number of captured packets
         - dropped_packets: Number // the number of dropped packets
-  - destination_multicast_mac_address:
+  - destination_multicast_mac_address
     - result : string // defined in enums/analysis/outcome
-  - destination_multicast_ip_address:
+  - destination_multicast_ip_address
     - result : string // defined in enums/analysis/outcome
-  - unrelated_multicast_addresses:
+  - unrelated_multicast_addresses
     - result : string // defined in enums/analysis/outcome
-  - unique_multicast_destination_ip_address:
+  - unique_multicast_destination_ip_address
     - result : string // defined in enums/analysis/outcome
     - details:
         - destination: { address : string, port : string }

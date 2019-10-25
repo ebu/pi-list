@@ -6,7 +6,7 @@ using namespace std;
 nlohmann::json audio_stream_details::to_json(const audio_stream_details& details)
 {
     nlohmann::json statistics;
-    statistics["sample_size"] = details.sample_size;
+    statistics["packet_size"] = details.packet_size;
     statistics["samples_per_packet"] = details.samples_per_packet;
     statistics["packet_count"] = details.packet_count;
     statistics["dropped_packet_count"] = details.dropped_packet_count;
@@ -29,7 +29,7 @@ audio_stream_details audio_stream_details::from_json(const nlohmann::json& j)
     const auto statistics_json = j.find("statistics");
     if (statistics_json != j.end())
     {
-        desc.sample_size = statistics_json->at("sample_size").get<int>();
+        desc.packet_size = statistics_json->at("packet_size").get<int>();
         desc.samples_per_packet = statistics_json->at("samples_per_packet").get<int>();
         desc.packet_count = statistics_json->at("packet_count").get<uint32_t>();
         desc.dropped_packet_count = statistics_json->at("dropped_packet_count").get<uint32_t>();

@@ -40,7 +40,8 @@ const NetworkInfo = props => {
         },
         {
             labelTag: 'media_information.rtp.packet_count',
-            value: `${packet_count}${droppedInfo}`
+            value: `${packet_count}${droppedInfo}`,
+            attention: dropped_count != 0
         }
     ];
 
