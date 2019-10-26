@@ -20,4 +20,4 @@ namespace ebu_list::ethernet
     static_assert(sizeof(l2_header) == 14);
 
 #pragma pack(pop)
-}
+} // namespace ebu_list::ethernet

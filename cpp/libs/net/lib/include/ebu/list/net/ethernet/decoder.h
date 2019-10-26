@@ -1,15 +1,15 @@
 #pragma once
 
-#include "ebu/list/net/ethernet/mac.h"
 #include "ebu/list/core/memory/bimo.h"
+#include "ebu/list/net/ethernet/mac.h"
 #include <tuple>
 
 namespace ebu_list::ethernet
 {
     enum class payload_type : uint16_t
     {
-        UNKNOWN = 0x0000,
-        IPv4 = 0x0800,
+        UNKNOWN     = 0x0000,
+        IPv4        = 0x0800,
         VLAN_802_1Q = 0x8100
     };
 
@@ -27,4 +27,4 @@ namespace ebu_list::ethernet
 
     std::string to_string(const payload_type m);
     payload_type to_payload_type(std::string_view address);
-}
+} // namespace ebu_list::ethernet

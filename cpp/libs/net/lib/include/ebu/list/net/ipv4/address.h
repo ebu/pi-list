@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ebu/list/core/types.h"
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace ebu_list::ipv4
 {
@@ -36,4 +36,4 @@ namespace ebu_list::ipv4
 
     std::string to_string(const endpoint& e);
     std::ostream& operator<<(std::ostream& os, endpoint e);
-}
+} // namespace ebu_list::ipv4

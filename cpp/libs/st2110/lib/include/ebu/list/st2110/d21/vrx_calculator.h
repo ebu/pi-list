@@ -15,15 +15,15 @@ namespace ebu_list::st2110::d21
 
     class vrx_calculator
     {
-    public:
+      public:
         vrx_calculator(int npackets, media::video::info video_info, vrx_settings settings);
 
         packet_info on_packet(const clock::time_point& packet_timestamp, bool frame_start);
 
-    private:
-		void on_frame_start(const fraction64& packet_time);
-		
-		const vrx_settings settings_;
+      private:
+        void on_frame_start(const fraction64& packet_time);
+
+        const vrx_settings settings_;
         const fraction64 tframe_; // Period of a frame, in seconds
         const vrx_constants constants_;
         int64_t current_n_ = 0;
@@ -32,7 +32,7 @@ namespace ebu_list::st2110::d21
         fraction64 tvd_;
         std::optional<fraction64> start_draining_ts_;
         int drained_prev_ = 0;
-        int vrx_prev_ = 0;
-		double trs_ns_ = 0;
+        int vrx_prev_     = 0;
+        double trs_ns_    = 0;
     };
-}
+} // namespace ebu_list::st2110::d21

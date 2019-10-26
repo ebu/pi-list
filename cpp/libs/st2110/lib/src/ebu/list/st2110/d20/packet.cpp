@@ -1,12 +1,11 @@
-#include "ebu/list/st2110/pch.h"
 #include "ebu/list/st2110/d20/packet.h"
+#include "ebu/list/st2110/pch.h"
 
 using namespace ebu_list::st2110::d20;
 
 //////////////////////////////////////////////////////////////////////
 
-line_header_lens::line_header_lens(const raw_line_header& raw_header)
-    : raw_header_(raw_header)
+line_header_lens::line_header_lens(const raw_line_header& raw_header) : raw_header_(raw_header)
 {
 }
 

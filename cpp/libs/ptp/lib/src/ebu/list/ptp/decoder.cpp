@@ -1,9 +1,9 @@
 #include "ebu/list/ptp/decoder.h"
-#include "ebu/list/ptp/message.h"
-#include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/core/idioms.h"
-#include <sstream>
+#include "ebu/list/core/memory/bimo.h"
+#include "ebu/list/ptp/message.h"
 #include <iomanip>
+#include <sstream>
 
 using namespace ebu_list::ptp;
 using namespace ebu_list;
@@ -20,12 +20,11 @@ namespace
     maybe_message decode_v2(clock::time_point packet_timestamp, oview&& pdu)
     {
         LIST_ASSERT(size(pdu) >= ssizeof<v2::message_header>());
-        auto[header, remainder] = v2::take_header(std::move(pdu));
+        auto [header, remainder] = v2::take_header(std::move(pdu));
 
         switch (header.value().type())
         {
-        case v2::message_type::sync:
-            return v2::sync(packet_timestamp, std::move(header), std::move(remainder));
+        case v2::message_type::sync: return v2::sync(packet_timestamp, std::move(header), std::move(remainder));
 
         case v2::message_type::delay_req:
             return v2::delay_req(packet_timestamp, std::move(header), std::move(remainder));
@@ -36,11 +35,10 @@ namespace
         case v2::message_type::delay_resp:
             return v2::delay_resp(packet_timestamp, std::move(header), std::move(remainder));
 
-        default:
-            return v2::other{};
+        default: return v2::other{};
         }
     }
-}
+} // namespace
 //------------------------------------------------------------------------------
 
 bool ptp::may_be_ptp(ipv4::address /*destination_address*/, port destination_port)
@@ -67,7 +65,7 @@ maybe_message ptp::decode(clock::time_point packet_timestamp, oview&& pdu)
 {
     if (size(pdu) < ssizeof<common_message_header>()) return std::nullopt;
     const auto common = reinterpret_cast<const common_message_header*>(pdu.view().data());
-    
+
     if (common->version_ptp == 2)
     {
         return decode_v2(packet_timestamp, std::move(pdu));
@@ -86,4 +84,3 @@ bool ptp::operator==(const origin& lhs, const origin& rhs)
 {
     return std::tie(lhs.clock_identity, lhs.subdomain_number) == std::tie(rhs.clock_identity, rhs.subdomain_number);
 }
-

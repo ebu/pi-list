@@ -1,10 +1,10 @@
 #include "pch.h"
 
-#include "ebu/list/ptp/decoder.h"
+#include "catch.hpp"
 #include "ebu/list/core/memory/bimo.h"
+#include "ebu/list/ptp/decoder.h"
 #include "ebu/list/ptp/test_messages.h"
 #include "ebu/list/ptp/v2/sync.h"
-#include "catch.hpp"
 using namespace ebu_list;
 using namespace ebu_list::ptp;
 using namespace ebu_list::ptp;
@@ -55,10 +55,7 @@ SCENARIO("PTP decoding")
         {
             auto decode_result = decode(clock::time_point{}, std::move(pdu));
 
-            THEN("the type is correctly inferred")
-            {
-                REQUIRE(decode_result);
-            }
+            THEN("the type is correctly inferred") { REQUIRE(decode_result); }
         }
     }
 
@@ -70,17 +67,14 @@ SCENARIO("PTP decoding")
         {
             auto decode_result = decode(clock::time_point{}, std::move(pdu));
 
-            THEN("decode returns no data")
-            {
-                REQUIRE_FALSE(decode_result);
-            }
+            THEN("decode returns no data") { REQUIRE_FALSE(decode_result); }
         }
     }
 
     GIVEN("a shorter v2 sync message")
     {
         // TODO: fuzz point
-        auto data = std::array<byte, 20>();
+        auto data    = std::array<byte, 20>();
         auto shorter = gsl::make_span(v2::test::sync_1::data).subspan(10, data.size());
         ebu_list::copy(shorter, data);
         auto pdu = oview(make_static_sbuffer(data));
@@ -89,11 +83,7 @@ SCENARIO("PTP decoding")
         {
             auto decode_result = decode(clock::time_point{}, std::move(pdu));
 
-            THEN("decode returns no data")
-            {
-                REQUIRE_FALSE(decode_result);
-            }
+            THEN("decode returns no data") { REQUIRE_FALSE(decode_result); }
         }
     }
 }
-    

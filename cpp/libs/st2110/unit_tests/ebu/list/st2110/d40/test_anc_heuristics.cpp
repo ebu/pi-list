@@ -1,11 +1,11 @@
-#include "pch.h"
-#include "ebu/list/st2110/d40/anc_format_detector.h"
-#include "ebu/list/rtp/udp_handler.h"
-#include "ebu/list/test_lib/sample_files.h"
+#include "catch.hpp"
 #include "ebu/list/pcap/player.h"
+#include "ebu/list/rtp/udp_handler.h"
+#include "ebu/list/st2110/d40/anc_format_detector.h"
+#include "ebu/list/test_lib/sample_files.h"
+#include "pch.h"
 #include "rtp_source.h"
 #include "utils.h"
-#include "catch.hpp"
 
 using namespace ebu_list;
 using namespace ebu_list::test;
@@ -46,10 +46,7 @@ SCENARIO("ST2110-40 heuristics")
 
         WHEN("we check the status")
         {
-            THEN("it is invalid")
-            {
-                REQUIRE(result.state == detector::state::invalid);
-            }
+            THEN("it is invalid") { REQUIRE(result.state == detector::state::invalid); }
         }
     }
 
@@ -64,10 +61,7 @@ SCENARIO("ST2110-40 heuristics")
 
         WHEN("we check the status")
         {
-            THEN("it is invalid")
-            {
-                REQUIRE(result.state == detector::state::invalid);
-            }
+            THEN("it is invalid") { REQUIRE(result.state == detector::state::invalid); }
         }
     }
 
@@ -82,10 +76,7 @@ SCENARIO("ST2110-40 heuristics")
 
         WHEN("we check the status")
         {
-            THEN("it is invalid")
-            {
-                REQUIRE(result.state == detector::state::invalid);
-            }
+            THEN("it is invalid") { REQUIRE(result.state == detector::state::invalid); }
         }
     }
 
@@ -100,10 +91,7 @@ SCENARIO("ST2110-40 heuristics")
 
         WHEN("we check the status")
         {
-            THEN("it is invalid")
-            {
-                REQUIRE(result.state == detector::state::valid);
-            }
+            THEN("it is invalid") { REQUIRE(result.state == detector::state::valid); }
         }
     }
 
@@ -121,7 +109,7 @@ SCENARIO("ST2110-40 heuristics")
             REQUIRE(result.state == detector::state::valid);
             THEN("it is invalid")
             {
-                const auto details = detector.get_details();
+                const auto details     = detector.get_details();
                 const auto anc_details = std::get<d40::anc_description>(details);
                 REQUIRE(anc_details.packets_per_frame == 5);
                 REQUIRE(anc_details.sub_streams.size() == 3);

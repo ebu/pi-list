@@ -1,12 +1,11 @@
-#include <utility>
 #include "ebu/list/ptp/udp_filter.h"
+#include <utility>
 
 using namespace ebu_list;
 using namespace ebu_list::ptp;
 
 udp_filter::udp_filter(message_listener_ptr ptp_listener, udp::listener_ptr non_ptp_listener)
-    : ptp_listener_(std::move(ptp_listener)),
-    non_ptp_listener_(std::move(non_ptp_listener))
+    : ptp_listener_(std::move(ptp_listener)), non_ptp_listener_(std::move(non_ptp_listener))
 {
 }
 

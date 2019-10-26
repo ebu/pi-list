@@ -1,10 +1,10 @@
 #include "ebu/list/pcap/player.h"
-#include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/core/io/file_source.h"
-#include "ebu/list/pcap/reader.h"
+#include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/net/ethernet/decoder.h"
 #include "ebu/list/net/ipv4/decoder.h"
 #include "ebu/list/net/udp/decoder.h"
+#include "ebu/list/pcap/reader.h"
 
 using namespace ebu_list::pcap;
 using namespace ebu_list;
@@ -16,7 +16,7 @@ void ebu_list::on_error_exit(std::exception_ptr e)
     {
         std::rethrow_exception(e);
     }
-    catch (std::exception &ex)
+    catch (std::exception& ex)
     {
         logger()->info("on_error: {}", ex.what());
         std::exit(-1);
@@ -25,16 +25,11 @@ void ebu_list::on_error_exit(std::exception_ptr e)
 
 //------------------------------------------------------------------------------
 
-pcap_player::pcap_player(path pcap_file,
-    udp::listener_ptr listener,
-    on_error_t on_error,
-    clock::duration packet_timestamp_correction)
-    : listener_(std::move(listener)),
-    on_error_(std::move(on_error)),
-    packet_timestamp_correction_(packet_timestamp_correction),
-    bf_(std::make_shared<malloc_sbuffer_factory>()),
-    source_(bf_, std::make_unique<file_source>(bf_, pcap_file)),
-    file_header_(pcap::read_header(source_))
+pcap_player::pcap_player(path pcap_file, udp::listener_ptr listener, on_error_t on_error,
+                         clock::duration packet_timestamp_correction)
+    : listener_(std::move(listener)), on_error_(std::move(on_error)),
+      packet_timestamp_correction_(packet_timestamp_correction), bf_(std::make_shared<malloc_sbuffer_factory>()),
+      source_(bf_, std::make_unique<file_source>(bf_, pcap_file)), file_header_(pcap::read_header(source_))
 {
     if (!file_header_)
     {
@@ -44,9 +39,7 @@ pcap_player::pcap_player(path pcap_file,
     }
 }
 
-pcap_player::pcap_player(path pcap_file,
-    udp::listener_ptr listener,
-    on_error_t on_error)
+pcap_player::pcap_player(path pcap_file, udp::listener_ptr listener, on_error_t on_error)
     : pcap_player(std::move(pcap_file), std::move(listener), on_error, clock::duration{})
 {
 }
@@ -100,21 +93,18 @@ void pcap_player::do_next()
 
         const auto packet_timestamp = packet.pcap_header.view().timestamp() + packet_timestamp_correction_;
 
-        auto[ethernet_header, ethernet_payload] = ethernet::decode(std::move(packet.data));
+        auto [ethernet_header, ethernet_payload] = ethernet::decode(std::move(packet.data));
         if (ethernet_header.type != ethernet::payload_type::IPv4) continue;
 
-        auto[ipv4_header, ipv4_payload] = ipv4::decode(std::move(ethernet_payload));
+        auto [ipv4_header, ipv4_payload] = ipv4::decode(std::move(ethernet_payload));
         if (ipv4_header.type != ipv4::protocol_type::UDP) continue;
 
-        auto[udp_header, udp_payload] = udp::decode(std::move(ipv4_payload));
+        auto [udp_header, udp_payload] = udp::decode(std::move(ipv4_payload));
 
-        auto datagram = udp::make_datagram(packet_timestamp,
-            ethernet_header.source_address,
-            ethernet_header.destination_address,
-            ethernet_header.type,
-            ipv4_header.source_address, udp_header.source_port,
-            ipv4_header.destination_address, udp_header.destination_port,
-            std::move(udp_payload));
+        auto datagram =
+            udp::make_datagram(packet_timestamp, ethernet_header.source_address, ethernet_header.destination_address,
+                               ethernet_header.type, ipv4_header.source_address, udp_header.source_port,
+                               ipv4_header.destination_address, udp_header.destination_port, std::move(udp_payload));
 
         listener_->on_data(std::move(datagram));
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ebu/list/core/types.h"
 #include "ebu/list/core/memory/bimo.h"
+#include "ebu/list/core/types.h"
 #include <optional>
 
 namespace ebu_list::ethernet
@@ -13,4 +13,4 @@ namespace ebu_list::ethernet
     };
 
     using maybe_frame = std::optional<frame>;
-}
+} // namespace ebu_list::ethernet

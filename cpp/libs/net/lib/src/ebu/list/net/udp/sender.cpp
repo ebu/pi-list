@@ -1,7 +1,7 @@
 #include "ebu/list/net/udp/sender.h"
 
 #pragma warning(push)
-#pragma warning(disable: 4834)
+#pragma warning(disable : 4834)
 #include "boost/asio.hpp"
 #pragma warning(pop)
 
@@ -15,9 +15,7 @@ struct sender::impl
     boost::asio::io_service io_service_;
     bai::udp::socket socket_;
 
-    impl() : io_service_(), socket_(io_service_, bai::udp::endpoint(bai::udp::v4(), 0))
-    {
-    }
+    impl() : io_service_(), socket_(io_service_, bai::udp::endpoint(bai::udp::v4(), 0)) {}
 };
 
 sender::sender() : pimpl_(std::make_unique<impl>())
@@ -32,7 +30,7 @@ sender::~sender()
 void sender::send_data(cbyte_span msg, const ipv4::endpoint& endpoint)
 {
     const auto address = to_string(endpoint.addr);
-    const auto port = to_string(endpoint.p);
+    const auto port    = to_string(endpoint.p);
 
     send_data(msg, address, port);
 }

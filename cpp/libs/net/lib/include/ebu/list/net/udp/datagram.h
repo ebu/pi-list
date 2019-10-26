@@ -9,7 +9,7 @@ namespace ebu_list::udp
 
     // from https://en.wikipedia.org/wiki/User_Datagram_Protocol
 
-    struct datagram_header 
+    struct datagram_header
     {
         net_uint16_t srcport;
         net_uint16_t destport;
@@ -19,4 +19,4 @@ namespace ebu_list::udp
     static_assert(sizeof(datagram_header) == 8);
 
 #pragma pack(pop)
-}
+} // namespace ebu_list::udp

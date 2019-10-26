@@ -15,4 +15,4 @@ namespace ebu_list::st2110::d10
         // optional
         uint16_t max_udp = STANDARD_UDP_SIZE_LIMIT;
     };
-}
+} // namespace ebu_list::st2110::d10

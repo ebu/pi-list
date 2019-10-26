@@ -28,12 +28,10 @@ namespace ebu_list::st2110
         };
 
         using details =
-            std::variant<std::nullopt_t, d20::video_description,
-                         d30::audio_description, d40::anc_description>;
+            std::variant<std::nullopt_t, d20::video_description, d30::audio_description, d40::anc_description>;
 
-        virtual detector::status_description
-        handle_data(const rtp::packet& packet) = 0;
-        virtual details get_details() const = 0;
+        virtual detector::status_description handle_data(const rtp::packet& packet) = 0;
+        virtual details get_details() const                                         = 0;
     };
 
     class sub_detector : public detector
@@ -54,15 +52,13 @@ namespace ebu_list::st2110
         detector::status_description status() const noexcept;
         detector::details get_details() const;
 
-        const std::map<std::string, std::vector<std::string>>&
-        get_error_codes() const;
+        const std::map<std::string, std::vector<std::string>>& get_error_codes() const;
 
       private:
         std::vector<std::unique_ptr<sub_detector>> detectors_;
         detector::status_description status_description_ =
-            detector::status_description{
-                /*.state=*/detector::state::detecting,
-                /*.error_code*/ "STATUS_CODE_FORMAT_DETECTING"};
+            detector::status_description{/*.state=*/detector::state::detecting,
+                                         /*.error_code*/ "STATUS_CODE_FORMAT_DETECTING"};
         std::map<std::string, std::vector<std::string>> error_codes_list_;
     };
 } // namespace ebu_list::st2110

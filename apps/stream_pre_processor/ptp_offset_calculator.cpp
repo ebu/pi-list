@@ -1,5 +1,5 @@
-#include "pch.h"
 #include "ptp_offset_calculator.h"
+#include "pch.h"
 
 using namespace ebu_list;
 
@@ -13,10 +13,11 @@ clock::duration ptp_offset_calculator::get_average_offset() const
 
     if (!average_offset_)
     {
-        const auto total = std::accumulate(offsets_.begin(), offsets_.end(), clock::duration{}, [](const auto& acc, const auto& v) { return acc + v.offset_from_master; });
-        const auto ns = total.count();
-        const auto avg = ns / int64_t(offsets_.size());
-        average_offset_ = clock::duration{ avg };
+        const auto total = std::accumulate(offsets_.begin(), offsets_.end(), clock::duration{},
+                                           [](const auto& acc, const auto& v) { return acc + v.offset_from_master; });
+        const auto ns    = total.count();
+        const auto avg   = ns / int64_t(offsets_.size());
+        average_offset_  = clock::duration{avg};
     }
 
     return average_offset_.value();

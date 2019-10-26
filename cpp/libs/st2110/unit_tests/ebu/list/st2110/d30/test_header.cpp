@@ -1,7 +1,7 @@
 #include "pch.h"
 
-#include "ebu/list/st2110/d20/header.h"
 #include "catch.hpp"
+#include "ebu/list/st2110/d20/header.h"
 using namespace ebu_list;
 using namespace ebu_list::st2110;
 
@@ -13,9 +13,7 @@ SCENARIO("ST2110-30 header")
     {
         WHEN("we read its header")
         {
-            THEN("we get the correct header information")
-            {
-            }
+            THEN("we get the correct header information") {}
         }
     }
 }

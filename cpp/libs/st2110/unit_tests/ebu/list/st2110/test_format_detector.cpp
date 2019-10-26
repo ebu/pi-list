@@ -1,11 +1,11 @@
-#include "pch.h"
-#include "ebu/list/st2110/format_detector.h"
+#include "catch.hpp"
+#include "ebu/list/pcap/player.h"
+#include "ebu/list/rtp/udp_handler.h"
 #include "ebu/list/st2110/d20/video_format_detector.h"
 #include "ebu/list/st2110/d30/audio_format_detector.h"
-#include "ebu/list/rtp/udp_handler.h"
+#include "ebu/list/st2110/format_detector.h"
 #include "ebu/list/test_lib/sample_files.h"
-#include "ebu/list/pcap/player.h"
-#include "catch.hpp"
+#include "pch.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110;
@@ -18,10 +18,9 @@ SCENARIO("format detector")
 {
     format_detector* fd = nullptr;
 
-    auto create_handler = [&](rtp::packet first_packet)
-    {
+    auto create_handler = [&](rtp::packet first_packet) {
         auto d = std::make_unique<format_detector>(first_packet);
-        fd = d.get();
+        fd     = d.get();
         return d;
     };
 
@@ -32,7 +31,9 @@ SCENARIO("format detector")
         const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-20/2110-20_1080i5994.pcap");
 
         pcap::pcap_player player(pcap_file, udp_handler, on_error_exit);
-        while (player.next()) {}
+        while (player.next())
+        {
+        }
 
         REQUIRE(fd != nullptr);
 
@@ -56,7 +57,9 @@ SCENARIO("format detector")
         const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-30/l16_48000_2ch_1ms.pcap");
 
         pcap::pcap_player player(pcap_file, udp_handler, on_error_exit);
-        while (player.next()) {}
+        while (player.next())
+        {
+        }
 
         REQUIRE(fd != nullptr);
 
@@ -82,7 +85,9 @@ SCENARIO("format detector")
         const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-30/l24_48000_8ch_0125.pcap");
 
         pcap::pcap_player player(pcap_file, udp_handler, on_error_exit);
-        while (player.next()) {}
+        while (player.next())
+        {
+        }
 
         REQUIRE(fd != nullptr);
 

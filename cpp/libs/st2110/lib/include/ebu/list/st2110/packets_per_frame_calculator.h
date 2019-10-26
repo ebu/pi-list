@@ -6,12 +6,12 @@ namespace ebu_list::st2110
 {
     class packets_per_frame_calculator
     {
-    public:
+      public:
         void on_packet(const rtp::header_lens& header);
         std::optional<int> count() const;
 
-    private:
+      private:
         std::optional<int> first_frame_;
         std::optional<int> count_;
     };
-}
+} // namespace ebu_list::st2110

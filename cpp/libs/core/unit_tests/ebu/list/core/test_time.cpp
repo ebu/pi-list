@@ -1,7 +1,7 @@
 #include "pch.h"
 
-#include "ebu/list/core/types.h"
 #include "catch.hpp"
+#include "ebu/list/core/types.h"
 
 using namespace ebu_list;
 

@@ -1,9 +1,9 @@
 #include "pch.h"
 
+#include "catch.hpp"
+#include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/rtp/header.h"
 #include "ebu/list/rtp/test_packets.h"
-#include "ebu/list/core/memory/bimo.h"
-#include "catch.hpp"
 using namespace ebu_list;
 using namespace ebu_list::rtp;
 

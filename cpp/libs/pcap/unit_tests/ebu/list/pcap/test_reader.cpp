@@ -1,11 +1,11 @@
 #include "pch.h"
 
-#include "ebu/list/pcap/reader.h"
-#include "ebu/list/test_lib/sample_files.h"
-#include "ebu/list/core/memory/bimo.h"
+#include "catch.hpp"
 #include "ebu/list/core/io/chunked_data_source.h"
 #include "ebu/list/core/io/file_source.h"
-#include "catch.hpp"
+#include "ebu/list/core/memory/bimo.h"
+#include "ebu/list/pcap/reader.h"
+#include "ebu/list/test_lib/sample_files.h"
 using namespace ebu_list;
 using namespace ebu_list::pcap;
 
@@ -76,7 +76,8 @@ SCENARIO("pcap packets")
             THEN("we get the correct header information")
             {
                 REQUIRE(maybe_packet);
-                constexpr auto expected_d = clock::time_point(std::chrono::duration_cast<typename clock::duration>(std::chrono::nanoseconds(1445454185533268000)));
+                constexpr auto expected_d = clock::time_point(std::chrono::duration_cast<typename clock::duration>(
+                    std::chrono::nanoseconds(1445454185533268000)));
                 REQUIRE(maybe_packet.value().pcap_header().timestamp() == expected_d);
             }
         }
@@ -98,7 +99,8 @@ SCENARIO("pcap packets")
             THEN("we get the correct header information")
             {
                 REQUIRE(maybe_packet);
-                constexpr auto expected_d = clock::time_point(std::chrono::duration_cast<typename clock::duration>(std::chrono::nanoseconds(1486566127765647489)));
+                constexpr auto expected_d = clock::time_point(std::chrono::duration_cast<typename clock::duration>(
+                    std::chrono::nanoseconds(1486566127765647489)));
                 REQUIRE(maybe_packet.value().pcap_header().timestamp() == expected_d);
             }
         }

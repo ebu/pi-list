@@ -6,9 +6,9 @@ using namespace ebu_list;
 //------------------------------------------------------------------------------
 namespace
 {
-    constexpr auto n_threads = 4;
+    constexpr auto n_threads       = 4;
     constexpr auto high_water_mark = n_threads * 16;
-}
+} // namespace
 //------------------------------------------------------------------------------
 struct executor::impl
 {
@@ -26,9 +26,7 @@ struct executor::impl
     {
         std::unique_lock lock(mutex_);
 
-        cv_.wait(lock, [this]() {
-            return tasks_.size() < high_water_mark;
-        });
+        cv_.wait(lock, [this]() { return tasks_.size() < high_water_mark; });
 
         tasks_.push_back(std::move(f));
         cv_.notify_one();
@@ -42,11 +40,9 @@ struct executor::impl
 
     void wait()
     {
-        std::for_each(
-            threads_.begin(),
-            threads_.end(),
-            [](std::thread& t) { if (t.joinable()) t.join(); }
-        );
+        std::for_each(threads_.begin(), threads_.end(), [](std::thread& t) {
+            if (t.joinable()) t.join();
+        });
     }
 
     void run()
@@ -78,9 +74,7 @@ struct executor::impl
     std::optional<F> get_next()
     {
         std::unique_lock lock(mutex_);
-        cv_.wait(lock, [this]() {
-            return !tasks_.empty() || done_;
-        });
+        cv_.wait(lock, [this]() { return !tasks_.empty() || done_; });
 
         if (tasks_.empty())
         {
@@ -101,9 +95,9 @@ struct executor::impl
     std::vector<F> tasks_;
     std::vector<std::thread> threads_;
 
-    std::atomic<int> total_ = 0;
+    std::atomic<int> total_   = 0;
     std::atomic<int> pending_ = 0;
-    std::atomic<bool> done_ = false;
+    std::atomic<bool> done_   = false;
 
     using FT = std::future<void>;
     std::vector<FT> futures_;

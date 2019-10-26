@@ -27,8 +27,8 @@ Slightly adapted by Pedro Ferreira (pedro@bisect.pt)
 */
 #include "pch.h"
 
-#include "ebu/list/core/platform/guid.h"
 #include "catch.hpp"
+#include "ebu/list/core/platform/guid.h"
 
 using namespace ebu_list;
 
@@ -37,13 +37,12 @@ using namespace ebu_list;
 TEST_CASE("GUID - Happy path tests")
 {
     /*************************************************************************
-    * HAPPY PATH TESTS
-    *************************************************************************/
+     * HAPPY PATH TESTS
+     *************************************************************************/
 
     auto r1 = newGuid();
     auto r2 = newGuid();
     auto r3 = newGuid();
-
 
     REQUIRE(r1 != r2);
     REQUIRE(r1 != r3);
@@ -62,7 +61,6 @@ TEST_CASE("GUID - Happy path tests")
     REQUIRE(s2.is_valid());
     REQUIRE(s3.is_valid());
     REQUIRE(s4.is_valid());
-
 
     std::stringstream ss1;
     ss1 << s1;
@@ -98,11 +96,8 @@ TEST_CASE("GUID - Happy path tests")
     REQUIRE(swap2 == swap3);
     REQUIRE(swap1 != swap2);
 
-    std::array<unsigned char, 16> bytes =
-    {
-        0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
-        0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0xdd
-    };
+    std::array<unsigned char, 16> bytes = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+                                           0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0xdd};
     guid guidFromBytes(bytes);
     guid guidFromString("0102030405060708090a0b0c0d0e0fdd");
     REQUIRE(guidFromBytes == guidFromString);
@@ -112,8 +107,8 @@ TEST_CASE("GUID - Happy path tests")
     REQUIRE(std::equal(guidFromBytes.bytes().begin(), guidFromBytes.bytes().end(), bytes.begin()));
 
     /*************************************************************************
-    * ERROR HANDLING
-    *************************************************************************/
+     * ERROR HANDLING
+     *************************************************************************/
 
     guid empty;
     guid twoTooFew("7bcd757f-5b10-4f9b-af69-1a1f226f3b");

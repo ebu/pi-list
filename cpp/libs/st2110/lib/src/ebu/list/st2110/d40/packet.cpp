@@ -1,13 +1,13 @@
+#include "ebu/list/st2110/d40/packet.h"
 #include "ebu/list/core/idioms.h"
 #include "ebu/list/st2110/pch.h"
-#include "ebu/list/st2110/d40/packet.h"
 
 using namespace ebu_list::st2110::d40;
 
-constexpr auto word_mask = 0x00FF;
-constexpr auto word_parity_mask = 0x0100;
+constexpr auto word_mask                 = 0x00FF;
+constexpr auto word_parity_mask          = 0x0100;
 constexpr auto word_inverted_parity_mask = 0x0200;
-constexpr auto checksum_mask = 0x01FF;
+constexpr auto checksum_mask             = 0x01FF;
 
 //////////////////////////////////////////////////////////////////////
 
@@ -48,32 +48,25 @@ uint8_t anc_packet_header_lens::data_count() const
 
 uint8_t anc_packet_header_lens::stream_num() const
 {
-    return raw_packet_header_.stream_flag? raw_packet_header_.stream_num : 0;
+    return raw_packet_header_.stream_flag ? raw_packet_header_.stream_num : 0;
 }
 
 bool anc_packet_header_lens::sanity_check() const
 {
     // TODO may be worth verifying the checksum of the payload
 
-    return (sanity_check_word(raw_packet_header_.did) && \
-            sanity_check_word(raw_packet_header_.sdid) && \
+    return (sanity_check_word(raw_packet_header_.did) && sanity_check_word(raw_packet_header_.sdid) &&
             sanity_check_word(raw_packet_header_.data_count));
 }
 
 void anc_packet_header_lens::dump() const
 {
-    logger()->debug("Ancillary header: color_channel={}, line_num={}, offset={}, stream={}, did={}, sdid={}, data_count={}",
-            color_channel(),
-            line_num(),
-            horizontal_offset(),
-            stream_num(),
-            did(),
-            sdid(),
-            data_count());
+    logger()->debug(
+        "Ancillary header: color_channel={}, line_num={}, offset={}, stream={}, did={}, sdid={}, data_count={}",
+        color_channel(), line_num(), horizontal_offset(), stream_num(), did(), sdid(), data_count());
 }
 
-anc_header_lens::anc_header_lens(const raw_anc_header& raw_header)
-    : raw_header_(raw_header)
+anc_header_lens::anc_header_lens(const raw_anc_header& raw_header) : raw_header_(raw_header)
 {
 }
 
@@ -94,6 +87,5 @@ uint8_t anc_header_lens::field_identification() const
 
 uint32_t anc_header_lens::reserved_bit() const
 {
-    return (static_cast<uint32_t>(raw_header_.reserved_0) << 16) + \
-        static_cast<uint32_t>(raw_header_.reserved_1);
+    return (static_cast<uint32_t>(raw_header_.reserved_0) << 16) + static_cast<uint32_t>(raw_header_.reserved_1);
 }

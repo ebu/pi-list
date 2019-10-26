@@ -12,5 +12,5 @@ namespace ebu_list::ptp::v2::test
         follow_up get_follow_up();
         delay_req get_delay_req();
         delay_resp get_delay_resp();
-    }
-}
+    } // namespace two_step_sequence_1
+} // namespace ebu_list::ptp::v2::test

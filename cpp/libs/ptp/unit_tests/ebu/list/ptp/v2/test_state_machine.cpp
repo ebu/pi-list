@@ -1,10 +1,10 @@
 #include "pch.h"
 
-#include "ebu/list/ptp/state_machine.h"
+#include "catch.hpp"
 #include "ebu/list/ptp/decoder.h"
+#include "ebu/list/ptp/state_machine.h"
 #include "ebu/list/ptp/v2/sync.h"
 #include "test_sequences.h"
-#include "catch.hpp"
 #include <vector>
 using namespace ebu_list;
 using namespace ebu_list::ptp;
@@ -14,40 +14,30 @@ using namespace ebu_list::ptp::v2::test;
 
 class sm_listener : public ptp::state_machine::listener
 {
-public:
+  public:
     std::vector<ptp::state_machine::on_sync_data> messages;
     int on_complete_count = 0;
-    int on_error_count = 0;
+    int on_error_count    = 0;
 
-private:
-    void on_data(const ptp::state_machine::on_sync_data& data)
-    {
-        messages.push_back(data);
-    }
+  private:
+    void on_data(const ptp::state_machine::on_sync_data& data) { messages.push_back(data); }
 
-    void on_complete() override
-    {
-        ++on_complete_count;
-    }
+    void on_complete() override { ++on_complete_count; }
 
-    void on_error([[ maybe_unused ]] std::exception_ptr e)
-    {
-        ++on_error_count;
-    }
+    void on_error([[maybe_unused]] std::exception_ptr e) { ++on_error_count; }
 };
 //------------------------------------------------------------------------------
 
-namespace Catch 
+namespace Catch
 {
-    template<>
-    struct StringMaker<std::chrono::nanoseconds>
+    template <> struct StringMaker<std::chrono::nanoseconds>
     {
         static std::string convert(std::chrono::nanoseconds const& value)
         {
             return std::to_string(value.count()) + "ns";
         }
     };
-}
+} // namespace Catch
 
 SCENARIO("PTP state machine")
 {

@@ -18,4 +18,4 @@ namespace ebu_list::ptp::v1
     class message
     {
     };
-}
+} // namespace ebu_list::ptp::v1

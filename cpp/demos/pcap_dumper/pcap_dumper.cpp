@@ -1,12 +1,12 @@
-#include "ebu/list/version.h"
-#include "ebu/list/core/memory/bimo.h"
+#include "bisect/bicla.h"
 #include "ebu/list/core/io/file_source.h"
-#include "ebu/list/pcap/reader.h"
+#include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/net/ethernet/decoder.h"
 #include "ebu/list/net/ipv4/decoder.h"
 #include "ebu/list/net/udp/decoder.h"
+#include "ebu/list/pcap/reader.h"
 #include "ebu/list/ptp/decoder.h"
-#include "bisect/bicla.h"
+#include "ebu/list/version.h"
 
 using namespace ebu_list;
 //------------------------------------------------------------------------------
@@ -22,9 +22,8 @@ namespace
     {
         using namespace bisect::bicla;
 
-        const auto[parse_result, config] = parse(argc, argv,
-            argument(&config::pcap_file, "pcap file", "the path to the pcap file to use as input")
-        );
+        const auto [parse_result, config] =
+            parse(argc, argv, argument(&config::pcap_file, "pcap file", "the path to the pcap file to use as input"));
 
         if (parse_result) return config;
 
@@ -61,25 +60,25 @@ namespace
             auto& packet = maybe_packet.value();
             dump_packet_info(packet, ++packet_count);
 
-            auto[ethernet_header, ethernet_payload] = ethernet::decode(std::move(packet.data));
+            auto [ethernet_header, ethernet_payload] = ethernet::decode(std::move(packet.data));
             std::cout << '\t' << ethernet_header << std::endl;
 
             // process only IPv4 packets
             if (ethernet_header.type != ethernet::payload_type::IPv4) continue;
 
-            auto[ipv4_header, ipv4_payload] = ipv4::decode(std::move(ethernet_payload));
+            auto [ipv4_header, ipv4_payload] = ipv4::decode(std::move(ethernet_payload));
             std::cout << '\t' << ipv4_header << std::endl;
 
             // process only UDP datagrams
             if (ipv4_header.type != ipv4::protocol_type::UDP) continue;
 
-            auto[udp_header, udp_payload] = udp::decode(std::move(ipv4_payload));
+            auto [udp_header, udp_payload] = udp::decode(std::move(ipv4_payload));
             std::cout << '\t' << udp_header << std::endl;
 
             (void)udp_payload;
         }
     }
-}
+} // namespace
 
 //------------------------------------------------------------------------------
 
@@ -104,4 +103,3 @@ int main(int argc, char* argv[])
 
     return 0;
 }
-

@@ -1,8 +1,8 @@
 #pragma once
 
+#include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/core/types.h"
 #include "ebu/list/st2110/d20/header.h"
-#include "ebu/list/core/memory/bimo.h"
 
 //------------------------------------------------------------------------------
 
@@ -10,7 +10,7 @@ namespace ebu_list::st2110::d20
 {
     class line_header_lens
     {
-    public:
+      public:
         explicit line_header_lens(const raw_line_header& raw_header);
 
         uint16_t length() const;
@@ -19,9 +19,9 @@ namespace ebu_list::st2110::d20
         bool continuation() const;
         uint16_t offset() const;
 
-    private:
+      private:
         const raw_line_header& raw_header_;
     };
 
     using line_header = mapped_view<raw_line_header, line_header_lens>;
-}
+} // namespace ebu_list::st2110::d20

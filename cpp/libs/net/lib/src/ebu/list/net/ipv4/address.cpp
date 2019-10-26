@@ -1,6 +1,6 @@
 #include "ebu/list/net/ipv4/address.h"
-#include "ebu/list/core/platform/config.h"
 #include "ebu/list/core/idioms.h"
+#include "ebu/list/core/platform/config.h"
 #include <boost/algorithm/string.hpp>
 
 #if defined(_WIN32)
@@ -8,11 +8,10 @@
 #include <Ws2tcpip.h>
 #pragma comment(lib, "Ws2_32.lib")
 #else
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <arpa/inet.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 #endif
-
 
 using namespace ebu_list::ipv4;
 using namespace ebu_list;
@@ -54,10 +53,10 @@ address ipv4::from_dotted_string(std::string_view s)
     address a;
 #if defined(LIST_HAS_POSIX)
     const auto result = inet_pton(AF_INET, s.data(), &a);
-#else // defined(LIST_HAS_POSIX)
+#else  // defined(LIST_HAS_POSIX)
     const auto result = InetPton(AF_INET, s.data(), &a);
 #endif // defined(LIST_HAS_POSIX)
-    if(result == 1) return a;
+    if (result == 1) return a;
     if (result == 0) throw std::logic_error(fmt::format("invalid IPv4 dotted string {}", s.data()));
     throw std::runtime_error("error converting dotted string to IPv4 address");
 }
@@ -65,9 +64,9 @@ address ipv4::from_dotted_string(std::string_view s)
 endpoint ipv4::endpoint_from_string(std::string_view address_and_port)
 {
     std::vector<std::string> results;
-    boost::split(results, address_and_port, [](char c){return c == ':';});
+    boost::split(results, address_and_port, [](char c) { return c == ':'; });
 
-    if(results.size() != 2)
+    if (results.size() != 2)
     {
         // TODO: handle format errors
         return {};
@@ -110,5 +109,5 @@ endpoint ipv4::from_string(std::string_view address, std::string_view port)
 
 endpoint ipv4::from_string(std::string_view address, uint16_t port)
 {
-    return { from_dotted_string(address), to_port(port) };
+    return {from_dotted_string(address), to_port(port)};
 }

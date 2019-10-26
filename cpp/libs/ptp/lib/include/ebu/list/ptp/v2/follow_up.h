@@ -19,21 +19,21 @@ namespace ebu_list::ptp::v2
 
     class follow_up_lens
     {
-    public:
+      public:
         explicit follow_up_lens(const follow_up_body& h) noexcept;
 
         ts80 precise_origin_timestamp() const noexcept;
 
-    private:
+      private:
         const follow_up_body& h_;
     };
 
     class follow_up : public v2_base_message<follow_up_body, follow_up_lens>
     {
-    public:
+      public:
         explicit follow_up(clock::time_point packet_timestamp, v2::header&& header, oview&& sdu)
             : base_message(packet_timestamp, std::move(header), std::move(sdu))
         {
         }
     };
-}
+} // namespace ebu_list::ptp::v2

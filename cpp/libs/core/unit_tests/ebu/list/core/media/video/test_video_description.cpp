@@ -1,12 +1,12 @@
 #include "pch.h"
 
-#include "ebu/list/core/media/video_description.h"
 #include "catch.hpp"
+#include "ebu/list/core/media/video_description.h"
 
 using namespace ebu_list::media::video;
 
 constexpr const char* progressive_s = "progressive";
-constexpr const char* interlaced_s = "interlaced";
+constexpr const char* interlaced_s  = "interlaced";
 
 SCENARIO("reading scan type from a string")
 {
@@ -16,8 +16,8 @@ SCENARIO("reading scan type from a string")
         {
             THEN("we get the right enum value")
             {
-                REQUIRE( scan_type::PROGRESSIVE == parse_scan_type(progressive_s) );
-                REQUIRE( scan_type::INTERLACED == parse_scan_type(interlaced_s) );
+                REQUIRE(scan_type::PROGRESSIVE == parse_scan_type(progressive_s));
+                REQUIRE(scan_type::INTERLACED == parse_scan_type(interlaced_s));
             }
         }
     }
@@ -33,8 +33,8 @@ SCENARIO("converting scan type to a string")
         {
             THEN("we get the right enum value")
             {
-                REQUIRE( progressive_s == to_string(scan_type::PROGRESSIVE) );
-                REQUIRE( interlaced_s == to_string(scan_type::INTERLACED) );
+                REQUIRE(progressive_s == to_string(scan_type::PROGRESSIVE));
+                REQUIRE(interlaced_s == to_string(scan_type::INTERLACED));
             }
         }
     }
@@ -50,13 +50,13 @@ SCENARIO("parsing rate from a string")
         {
             THEN("we get the right value")
             {
-                REQUIRE( Rate(24,1) == parse_from_string("24") );
-                REQUIRE( Rate(25,1) == parse_from_string("25") );
-                REQUIRE( Rate(30000,1001) == parse_from_string("30000/1001") );
-                REQUIRE( Rate(30,1) == parse_from_string("30") );
-                REQUIRE( Rate(50,1) == parse_from_string("50") );
-                REQUIRE( Rate(60000,1001) == parse_from_string("60000/1001") );
-                REQUIRE( Rate(60,1) == parse_from_string("60") );
+                REQUIRE(Rate(24, 1) == parse_from_string("24"));
+                REQUIRE(Rate(25, 1) == parse_from_string("25"));
+                REQUIRE(Rate(30000, 1001) == parse_from_string("30000/1001"));
+                REQUIRE(Rate(30, 1) == parse_from_string("30"));
+                REQUIRE(Rate(50, 1) == parse_from_string("50"));
+                REQUIRE(Rate(60000, 1001) == parse_from_string("60000/1001"));
+                REQUIRE(Rate(60, 1) == parse_from_string("60"));
             }
         }
     }
@@ -73,5 +73,4 @@ SCENARIO("parsing rate from a string")
             }
         }
     }
-
 }

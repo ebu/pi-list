@@ -5,9 +5,7 @@ using namespace ebu_list;
 
 //------------------------------------------------------------------------------
 
-file_source::file_source(sbuffer_factory_ptr factory, const path& path)
-    : factory_(factory),
-    handle_(path)
+file_source::file_source(sbuffer_factory_ptr factory, const path& path) : factory_(factory), handle_(path)
 {
     LIST_ASSERT(factory);
     LIST_ASSERT(handle_);
@@ -23,7 +21,7 @@ oview file_source::read_next()
 
 #if defined(_WIN32)
     const auto read_result = fread_s(block->begin(), block->size(), 1, block->size(), handle_.handle());
-#else // defined(_WIN32)
+#else  // defined(_WIN32)
     const auto read_result = fread(block->begin(), 1, block->size(), handle_.handle());
 #endif // defined(_WIN32)
 
@@ -31,7 +29,7 @@ oview file_source::read_next()
     {
         // Throw if not EOF
         LIST_ENFORCE(feof(handle_.handle()), std::runtime_error, "End of File was not detected");
-        
+
         return oview();
     }
 

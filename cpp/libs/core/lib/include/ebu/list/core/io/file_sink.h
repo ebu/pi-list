@@ -9,12 +9,12 @@ namespace ebu_list
 {
     class file_sink
     {
-    public:
+      public:
         explicit file_sink(const path& path);
 
         void write(cbyte_span data);
 
-    private:
+      private:
         file_handle handle_;
     };
-}
+} // namespace ebu_list

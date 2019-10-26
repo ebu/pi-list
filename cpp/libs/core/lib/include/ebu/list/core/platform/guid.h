@@ -22,29 +22,30 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-/* 
+/*
 Slightly adapted by Pedro Ferreira (pedro@bisect.pt)
 */
 
 #pragma once
 
 #if defined(_WIN32)
-#    define GUID_WINDOWS
+#define GUID_WINDOWS
 #elif defined(__APPLE__)
-#    define GUID_CFUUID
+#define GUID_CFUUID
 #else
-#    define GUID_LIBUUID
+#define GUID_LIBUUID
 #endif
 
-#include <functional>
-#include <iostream>
 #include <array>
+#include <functional>
+#include <iomanip>
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <utility>
-#include <iomanip>
 
-namespace ebu_list {
+namespace ebu_list
+{
 
     // Class to represent a GUID/UUID. Each instance acts as a wrapper around a
     // 16 byte value that can be passed around by value. It also supports
@@ -52,57 +53,52 @@ namespace ebu_list {
     // string via constructor.
     class guid
     {
-    public:
-        guid(const std::array<unsigned char, 16> &bytes);
-        guid(const unsigned char *bytes);
-        guid(const std::string &fromString);
+      public:
+        guid(const std::array<unsigned char, 16>& bytes);
+        guid(const unsigned char* bytes);
+        guid(const std::string& fromString);
         guid();
-        guid(const guid &other);
-        guid &operator=(const guid &other);
-        bool operator==(const guid &other) const;
-        bool operator!=(const guid &other) const;
+        guid(const guid& other);
+        guid& operator=(const guid& other);
+        bool operator==(const guid& other) const;
+        bool operator!=(const guid& other) const;
 
         std::string str() const;
         operator std::string() const;
         const std::array<unsigned char, 16>& bytes() const;
-        void swap(guid &other);
+        void swap(guid& other);
         bool is_valid() const;
 
-    private:
+      private:
         void zeroify();
 
         // actual data
         std::array<unsigned char, 16> _bytes;
 
         // make the << operator a friend so it can access _bytes
-        friend std::ostream &operator<<(std::ostream &s, const guid &guid);
+        friend std::ostream& operator<<(std::ostream& s, const guid& guid);
     };
 
     guid newGuid();
-}
+} // namespace ebu_list
 
 namespace std
 {
     // Template specialization for std::swap<guid>() --
-    template <>
-    inline void swap(ebu_list::guid &lhs, ebu_list::guid &rhs)
-    {
-        lhs.swap(rhs);
-    }
+    template <> inline void swap(ebu_list::guid& lhs, ebu_list::guid& rhs) { lhs.swap(rhs); }
 
     // Specialization for std::hash<guid> -- this implementation
     // uses std::hash<std::string> on the stringification of the guid
     // to calculate the hash
-    template <>
-    struct hash<ebu_list::guid>
+    template <> struct hash<ebu_list::guid>
     {
         typedef ebu_list::guid argument_type;
         typedef std::size_t result_type;
 
-        result_type operator()(argument_type const &guid) const
+        result_type operator()(argument_type const& guid) const
         {
             std::hash<std::string> hasher;
             return static_cast<result_type>(hasher(guid.str()));
         }
     };
-}
+} // namespace std

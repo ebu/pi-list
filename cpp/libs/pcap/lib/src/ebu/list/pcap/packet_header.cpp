@@ -6,8 +6,7 @@ using namespace ebu_list;
 
 //------------------------------------------------------------------------------
 packet_header_lens::packet_header_lens(const raw_packet_header& h, const file_header_lens& file_header) noexcept
-    : h_(h),
-    nanosecond_multiplier_(file_header.is_nanosecond() ? 1 : 1000)
+    : h_(h), nanosecond_multiplier_(file_header.is_nanosecond() ? 1 : 1000)
 {
 }
 

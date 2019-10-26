@@ -1,14 +1,14 @@
 #pragma once
 
 #include "ebu/list/st2110/format_detector.h"
-#include "ebu/list/st2110/rate_calculator.h"
 #include "ebu/list/st2110/packets_per_frame_calculator.h"
+#include "ebu/list/st2110/rate_calculator.h"
 
 namespace ebu_list::st2110
 {
     class packet_spacing_analyzer
     {
-    public:
+      public:
         detector::status_description handle_data(const rtp::packet& packet);
 
         st2110::d21::read_schedule get_schedule() const noexcept;
@@ -16,13 +16,12 @@ namespace ebu_list::st2110
         clock::duration average_regular_packet_spacing() const noexcept;
         clock::duration average_frame_start_packet_spacing() const noexcept;
 
-    private:
-        detector::status_description status_description_ = detector::status_description {
-            /*.state*/ detector::state::detecting,
-            /*.error_code*/ "STATUS_CODE_VIDEO_DETECTING"
-        };
+      private:
+        detector::status_description status_description_ =
+            detector::status_description{/*.state*/ detector::state::detecting,
+                                         /*.error_code*/ "STATUS_CODE_VIDEO_DETECTING"};
         std::optional<clock::time_point> last_packet_timestamp_;
-        bool last_frame_was_marked_ = false;
+        bool last_frame_was_marked_    = false;
         uint64_t regular_packet_count_ = 0;
         clock::duration regular_packet_total_{};
         uint64_t frame_start_packet_count_ = 0;
@@ -31,7 +30,7 @@ namespace ebu_list::st2110
 
     class common_video_detector
     {
-    public:
+      public:
         struct settings
         {
             int maximum_packets_per_frame;
@@ -45,17 +44,16 @@ namespace ebu_list::st2110
         int packets_per_frame() const;
         media::video::Rate rate() const;
 
-    private:
+      private:
         const settings settings_;
-        detector::status_description status_description_ = detector::status_description {
-            /*.state*/ detector::state::detecting,
-            /*.error_code*/ "STATUS_CODE_VIDEO_DETECTING"
-        };
-        int current_frame_ = 0;
+        detector::status_description status_description_ =
+            detector::status_description{/*.state*/ detector::state::detecting,
+                                         /*.error_code*/ "STATUS_CODE_VIDEO_DETECTING"};
+        int current_frame_         = 0;
         int current_frame_packets_ = 0;
-        std::optional<uint32_t> current_frame_rtp_timestamp_ {};
+        std::optional<uint32_t> current_frame_rtp_timestamp_{};
         bool last_frame_was_marked_ = false;
         st2110::rate_calculator rate_;
         st2110::packets_per_frame_calculator packets_per_frame_;
     };
-}
+} // namespace ebu_list::st2110

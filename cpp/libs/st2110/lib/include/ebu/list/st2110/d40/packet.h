@@ -1,8 +1,8 @@
 #pragma once
 
+#include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/core/types.h"
 #include "ebu/list/st2110/d40/header.h"
-#include "ebu/list/core/memory/bimo.h"
 
 //------------------------------------------------------------------------------
 
@@ -10,7 +10,7 @@ namespace ebu_list::st2110::d40
 {
     class anc_packet_header_lens
     {
-    public:
+      public:
         explicit anc_packet_header_lens(const raw_anc_packet_header& raw_packet_header);
 
         uint8_t color_channel() const;
@@ -23,7 +23,7 @@ namespace ebu_list::st2110::d40
         bool sanity_check() const;
         void dump() const;
 
-    private:
+      private:
         /* Raw header contains 10-fields including parity bits.
          * Use public accessors to get the effective field values. */
         const raw_anc_packet_header& raw_packet_header_;
@@ -33,7 +33,7 @@ namespace ebu_list::st2110::d40
 
     class anc_header_lens
     {
-    public:
+      public:
         explicit anc_header_lens(const raw_anc_header& raw_header);
 
         uint16_t length() const;
@@ -41,9 +41,9 @@ namespace ebu_list::st2110::d40
         uint8_t field_identification() const;
         uint32_t reserved_bit() const;
 
-    private:
+      private:
         const raw_anc_header& raw_header_;
     };
 
     using anc_header = mapped_view<raw_anc_header, anc_header_lens>;
-}
+} // namespace ebu_list::st2110::d40

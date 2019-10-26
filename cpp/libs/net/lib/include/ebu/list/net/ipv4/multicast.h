@@ -5,6 +5,5 @@
 
 namespace ebu_list::ipv4
 {
-	void join_multicast_group(socket_handle& sock, ipv4::address listen_address,
-		ipv4::endpoint multicast_endpoint);
+    void join_multicast_group(socket_handle& sock, ipv4::address listen_address, ipv4::endpoint multicast_endpoint);
 }

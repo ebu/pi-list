@@ -9,13 +9,11 @@ namespace ebu_list
     // Where T implements:
     // "bool next()", which processes the next item
     // "void done()", which is called when all items are processed
-    template<class T> 
-    class launcher
+    template <class T> class launcher
     {
-    public:
+      public:
         explicit launcher(std::unique_ptr<T>&& target)
-            : target_(std::move(target)),
-            runner_(std::async(std::launch::async, [&]() { this->loop(); }))
+            : target_(std::move(target)), runner_(std::async(std::launch::async, [&]() { this->loop(); }))
         {
         }
 
@@ -27,22 +25,13 @@ namespace ebu_list
             wait();
         }
 
-        void stop()
-        {
-            done_ = true;
-        }
+        void stop() { done_ = true; }
 
-        void wait()
-        {
-            runner_.wait();
-        }
-        
-        const T& target() const noexcept
-        {
-            return *target_;
-        }
+        void wait() { runner_.wait(); }
 
-    private:
+        const T& target() const noexcept { return *target_; }
+
+      private:
         std::unique_ptr<T> target_;
         std::future<void> runner_;
         bool done_ = false; // TODO: atomic?
@@ -57,15 +46,15 @@ namespace ebu_list
         }
     };
 
-    template<class T> // Where T implements "bool next()"
+    template <class T> // Where T implements "bool next()"
     auto launch(std::unique_ptr<T>&& t)
     {
         return launcher<T>(std::move(t));
     }
 
-    template<class T, class... Args> // Where T implements "bool next()"
+    template <class T, class... Args> // Where T implements "bool next()"
     auto make_and_launch(Args&&... args)
     {
         return launcher<T>(std::make_unique<T>(std::forward<Args&&>(args)...));
     }
-}
+} // namespace ebu_list

@@ -1,8 +1,8 @@
 #pragma once
 
+#include "ebu/list/core/io/chunked_data_source.h"
 #include "ebu/list/pcap/file_header.h"
 #include "ebu/list/pcap/packet_header.h"
-#include "ebu/list/core/io/chunked_data_source.h"
 #include <optional>
 
 //------------------------------------------------------------------------------
@@ -22,4 +22,4 @@ namespace ebu_list::pcap
     using maybe_packet = std::optional<packet>;
 
     maybe_packet read_packet(const file_header_lens& header, chunked_data_source& source);
-}
+} // namespace ebu_list::pcap

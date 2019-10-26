@@ -1,11 +1,11 @@
 #pragma once
 
+#include "bisect/bimo/types.h"
+#include "ebu/list/core/io/logger.h"
 #include "ebu/list/core/platform/config.h"
 #include "ebu/list/core/platform/time.h"
-#include "ebu/list/core/io/logger.h"
 #include "gsl/gsl_byte"
 #include "gsl/span"
-#include "bisect/bimo/types.h"
 #include <cinttypes>
 #include <experimental/filesystem>
 
@@ -13,8 +13,8 @@
 
 namespace ebu_list
 {
-    using byte = bisect::bimo::byte;
-    using byte_span = bisect::bimo::byte_span;
+    using byte       = bisect::bimo::byte;
+    using byte_span  = bisect::bimo::byte_span;
     using cbyte_span = bisect::bimo::cbyte_span;
 
     using bisect::bimo::to_byte_array;
@@ -39,8 +39,5 @@ namespace ebu_list
     std::string to_string(const port& m);
     std::ostream& operator<<(std::ostream& os, port a);
 
-    inline port to_port(uint16_t p)
-    {
-        return to_net(p);
-    }
-}
+    inline port to_port(uint16_t p) { return to_net(p); }
+} // namespace ebu_list

@@ -8,7 +8,7 @@ namespace ebu_list
 {
     class data_source
     {
-    public:
+      public:
         virtual ~data_source() = default;
 
         // returns oview() if EOF
@@ -16,4 +16,4 @@ namespace ebu_list
     };
 
     using data_source_uptr = std::unique_ptr<data_source>;
-}
+} // namespace ebu_list

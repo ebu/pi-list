@@ -21,10 +21,12 @@ namespace ebu_list::st2110::d30
     struct st2110_30_sdp_serializer
     {
         explicit st2110_30_sdp_serializer(const audio_description& audio_des);
-        void write_rtpmap_line(std::vector<std::string>& current_lines, const ebu_list::media::network_media_description& media_description);
-        void additional_attributes(std::vector<std::string>& current_lines, const media::network_media_description& media_description);
+        void write_rtpmap_line(std::vector<std::string>& current_lines,
+                               const ebu_list::media::network_media_description& media_description);
+        void additional_attributes(std::vector<std::string>& current_lines,
+                                   const media::network_media_description& media_description);
 
-    private:
+      private:
         const audio_description& audio_desc_;
     };
-}
+} // namespace ebu_list::st2110::d30

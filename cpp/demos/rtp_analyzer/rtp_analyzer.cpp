@@ -1,18 +1,18 @@
 // Lists all streams contained in a .pcap file.
 
-#include "ebu/list/version.h"
-#include "stream_handler.h"
-#include "ebu/list/net/udp/listener.h"
-#include "ebu/list/st2110/d20/header.h"
-#include "ebu/list/st2110/d20/packet.h"
-#include "ebu/list/pcap/player.h"
-#include "ebu/list/core/platform/parallel.h"
+#include "bisect/bicla.h"
 #include "ebu/list/core/io/file_source.h"
+#include "ebu/list/core/memory/bimo.h"
+#include "ebu/list/core/platform/parallel.h"
+#include "ebu/list/net/udp/listener.h"
+#include "ebu/list/pcap/player.h"
 #include "ebu/list/pcap/reader.h"
 #include "ebu/list/rtp/decoder.h"
-#include "bisect/bicla.h"
-#include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/rtp/udp_handler.h"
+#include "ebu/list/st2110/d20/header.h"
+#include "ebu/list/st2110/d20/packet.h"
+#include "ebu/list/version.h"
+#include "stream_handler.h"
 using namespace ebu_list;
 
 //------------------------------------------------------------------------------
@@ -29,10 +29,9 @@ namespace
     {
         using namespace bisect::bicla;
 
-        const auto[parse_result, config] = parse(argc, argv,
-            argument(&config::pcap_file, "pcap file", "the path to the pcap file to use as input"),
-            option(&config::verbose, "v", "verbose", "verbose output")
-        );
+        const auto [parse_result, config] =
+            parse(argc, argv, argument(&config::pcap_file, "pcap file", "the path to the pcap file to use as input"),
+                  option(&config::verbose, "v", "verbose", "verbose output"));
 
         if (parse_result) return config;
 
@@ -42,9 +41,7 @@ namespace
 
     using stream_handlers = std::vector<const stream_handler*>;
 
-
-    template<typename T>
-    void dump_histogram(const typename histogram_data<T>::entries& entries)
+    template <typename T> void dump_histogram(const typename histogram_data<T>::entries& entries)
     {
         for (const auto& e : entries)
         {
@@ -69,7 +66,7 @@ namespace
     {
         for (auto& stream : streams)
         {
-            dump_handler( *stream);
+            dump_handler(*stream);
         }
     }
 
@@ -77,15 +74,14 @@ namespace
     {
         stream_handlers streams;
 
-        auto create_handler = [&](rtp::packet first_packet)
-        {
+        auto create_handler = [&](rtp::packet first_packet) {
             auto new_handler = std::make_unique<stream_handler>(first_packet);
             streams.push_back(new_handler.get());
             return new_handler;
         };
 
         auto handler = std::make_shared<rtp::udp_handler>(create_handler);
-        auto player = std::make_unique<pcap::pcap_player>(path(config.pcap_file), handler, on_error_exit);
+        auto player  = std::make_unique<pcap::pcap_player>(path(config.pcap_file), handler, on_error_exit);
 
         auto launcher = launch(std::move(player));
 
@@ -101,7 +97,7 @@ namespace
 
         t.join();
     }
-}
+} // namespace
 
 //------------------------------------------------------------------------------
 
@@ -126,4 +122,3 @@ int main(int argc, char* argv[])
 
     return 0;
 }
-

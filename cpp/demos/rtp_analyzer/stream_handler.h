@@ -1,17 +1,16 @@
 #pragma once
 
 #include "ebu/list/rtp/listener.h"
-#include "ebu/list/st2110/rate_calculator.h"
 #include "ebu/list/st2110/d20/packet.h"
-#include <optional>
+#include "ebu/list/st2110/rate_calculator.h"
 #include <map>
+#include <optional>
 
 namespace ebu_list
 {
-    template<typename ValueType>
-    class histogram_data
+    template <typename ValueType> class histogram_data
     {
-    public:
+      public:
         void add(ValueType v)
         {
             auto it = values_.find(v);
@@ -22,7 +21,7 @@ namespace ebu_list
             }
             else
             {
-                values_.insert({ v, 1 });
+                values_.insert({v, 1});
             }
         }
 
@@ -45,21 +44,22 @@ namespace ebu_list
             return results_.value();
         }
 
-    private:
+      private:
         std::map<ValueType, int> values_;
         mutable std::optional<entries> results_;
 
         entries calculate_results() const
         {
-            const auto total = std::accumulate(values_.begin(), values_.end(), ValueType(), [](auto acc, auto& v) { return acc + v.second; });
+            const auto total = std::accumulate(values_.begin(), values_.end(), ValueType(),
+                                               [](auto acc, auto& v) { return acc + v.second; });
 
             auto r = entries();
             r.reserve(values_.size());
 
             for (const auto& item : values_)
             {
-                const auto&[value, count] = item;
-                r.push_back({ value, count, static_cast<float>(count) / total });
+                const auto& [value, count] = item;
+                r.push_back({value, count, static_cast<float>(count) / total});
             }
 
             return r;
@@ -72,9 +72,9 @@ namespace ebu_list
         ipv4::endpoint destination;
         uint32_t ssrc;
         uint32_t first_frame_ts = 0;
-        uint32_t last_frame_ts = 0;
-		double rate = 0.0;
-        uint8_t payload_type = 0;
+        uint32_t last_frame_ts  = 0;
+        double rate             = 0.0;
+        uint8_t payload_type    = 0;
         histogram_data<size_t>::entries packet_sizes;
         histogram_data<int>::entries ts_deltas;
         int packet_count = 0;
@@ -82,12 +82,12 @@ namespace ebu_list
 
     class stream_handler : public rtp::listener
     {
-    public:
+      public:
         explicit stream_handler(rtp::packet first_packet);
 
         const stream_info& info() const;
 
-    private:
+      private:
 #pragma region udp::listener events
         void on_data(const rtp::packet& packet) override;
 

@@ -6,7 +6,11 @@
 
 namespace ebu_list::st2110::d21
 {
-    enum class read_schedule { gapped, linear };
+    enum class read_schedule
+    {
+        gapped,
+        linear
+    };
 
     std::string to_string(read_schedule schedule);
     read_schedule read_schedule_from_string(std::string_view s);
@@ -29,36 +33,23 @@ namespace ebu_list::st2110::d21
     int calculate_vrx_full_wide(int n_packets, fraction64 t_frame);
     int calculate_vrx_full(compliance_profile profile, int n_packets, fraction64 t_frame);
 
-    int calculate_cmax_narrow(read_schedule schedule,
-        int n_packets,
-        fraction t_frame,
-        media::video::scan_type scan,
-        media::video::video_dimensions raster);
+    int calculate_cmax_narrow(read_schedule schedule, int n_packets, fraction t_frame, media::video::scan_type scan,
+                              media::video::video_dimensions raster);
 
     int calculate_cmax_wide(int n_packets, fraction t_frame);
 
-    int calculate_cmax(compliance_profile profile, 
-        read_schedule schedule,
-        int n_packets,
-        fraction t_frame,
-        media::video::scan_type scan,
-        media::video::video_dimensions raster);
+    int calculate_cmax(compliance_profile profile, read_schedule schedule, int n_packets, fraction t_frame,
+                       media::video::scan_type scan, media::video::video_dimensions raster);
 
-    compliance_parameters calculate_narrow_compliance_parameters(int n_packets,
-        fraction t_frame,
-        read_schedule schedule,
-        media::video::scan_type scan,
-        media::video::video_dimensions raster);
+    compliance_parameters calculate_narrow_compliance_parameters(int n_packets, fraction t_frame,
+                                                                 read_schedule schedule, media::video::scan_type scan,
+                                                                 media::video::video_dimensions raster);
 
-    compliance_parameters calculate_wide_compliance_parameters(int n_packets,
-        fraction t_frame);
+    compliance_parameters calculate_wide_compliance_parameters(int n_packets, fraction t_frame);
 
-    compliance_parameters calculate_compliance_parameters(compliance_profile profile,
-        int n_packets,
-        fraction t_frame,
-        read_schedule schedule,
-        media::video::scan_type scan,
-        media::video::video_dimensions raster);
+    compliance_parameters calculate_compliance_parameters(compliance_profile profile, int n_packets, fraction t_frame,
+                                                          read_schedule schedule, media::video::scan_type scan,
+                                                          media::video::video_dimensions raster);
 
     enum tvd_kind
     {
@@ -83,9 +74,6 @@ namespace ebu_list::st2110::d21
         fraction64 tr_offset;
     };
 
-    vrx_constants calculate_vrx_constants(int npackets,
-        fraction64 tframe,
-        read_schedule schedule,
-        media::video::scan_type scan,
-        media::video::video_dimensions raster);
-}
+    vrx_constants calculate_vrx_constants(int npackets, fraction64 tframe, read_schedule schedule,
+                                          media::video::scan_type scan, media::video::video_dimensions raster);
+} // namespace ebu_list::st2110::d21

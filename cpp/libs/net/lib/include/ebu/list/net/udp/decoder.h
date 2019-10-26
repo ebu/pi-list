@@ -28,16 +28,13 @@ namespace ebu_list::udp
 
     std::tuple<header, oview> decode(oview&& pdu);
 
-    udp::datagram make_datagram(clock::time_point packet_time,
-        ethernet::mac_address source_mac_address,
-        ethernet::mac_address destination_mac_address,
-        ethernet::payload_type payload_type,
-        ipv4::address source_address, port source_port,
-        ipv4::address destination_address, port destination_port,
-        oview&& payload);
+    udp::datagram make_datagram(clock::time_point packet_time, ethernet::mac_address source_mac_address,
+                                ethernet::mac_address destination_mac_address, ethernet::payload_type payload_type,
+                                ipv4::address source_address, port source_port, ipv4::address destination_address,
+                                port destination_port, oview&& payload);
 
     std::ostream& operator<<(std::ostream& os, const header& h);
 
     ipv4::endpoint source(const datagram_info& info);
     ipv4::endpoint destination(const datagram_info& info);
-}
+} // namespace ebu_list::udp

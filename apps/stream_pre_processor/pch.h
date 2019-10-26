@@ -1,6 +1,6 @@
 #pragma once
 
-#pragma warning(disable: 4996)
+#pragma warning(disable : 4996)
 
 #if defined(_WIN32)
 #include <SDKDDKVer.h>
@@ -11,22 +11,22 @@
 #include <cassert>
 #include <chrono>
 #include <cinttypes>
+#include <cstdio>
 #include <iomanip>
 #include <iostream>
 #include <memory>
 #include <optional>
 #include <sstream>
-#include <cstdio>
 #include <string>
 #include <tuple>
 #include <type_traits>
 #include <variant>
 
-#include "spdlog/spdlog.h"
 #include "gsl/gsl"
+#include "spdlog/spdlog.h"
 
 #pragma warning(push)
-#pragma warning(disable: 4127)
+#pragma warning(disable : 4127)
 #include "fmt/printf.h"
 #pragma warning(pop)
 
@@ -35,16 +35,16 @@
 #include <Ws2tcpip.h>
 #pragma comment(lib, "Ws2_32.lib")
 #else
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <arpa/inet.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 #endif
 
 #undef min
 #undef max
 
 #pragma warning(push)
-#pragma warning(disable: 4834)
+#pragma warning(disable : 4834)
 
 #include <boost/asio.hpp>
 

@@ -50,4 +50,4 @@ namespace ebu_list::st2110::d20
     static_assert(platform::config::little_endian);
 
 #pragma pack(pop)
-}
+} // namespace ebu_list::st2110::d20

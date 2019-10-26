@@ -1,20 +1,18 @@
 #pragma once
 
 #include "ebu/list/core/io/logger.h"
-#include <queue>
+#include <future>
 #include <mutex>
 #include <optional>
-#include <future>
+#include <queue>
 
 namespace ebu_list
 {
-    template<class T, typename Sender>
-    class active_queue
+    template <class T, typename Sender> class active_queue
     {
-    public:
+      public:
         active_queue(Sender sender)
-            : sender_(sender),
-            runner_(std::async(std::launch::async, [this]() { this->loop(); }))
+            : sender_(sender), runner_(std::async(std::launch::async, [this]() { this->loop(); }))
         {
         }
 
@@ -31,10 +29,7 @@ namespace ebu_list
             cv_.notify_all();
         }
 
-        void wait()
-        {
-            runner_.wait();
-        }
+        void wait() { runner_.wait(); }
 
         std::optional<T> pop()
         {
@@ -71,11 +66,8 @@ namespace ebu_list
 
         // todo: implement emplace functions
 
-    private:
-        bool is_not_empty_or_is_done_i() const
-        {
-            return !queue_.empty() || done_;
-        }
+      private:
+        bool is_not_empty_or_is_done_i() const { return !queue_.empty() || done_; }
 
         void loop()
         {
@@ -102,4 +94,4 @@ namespace ebu_list
         std::future<void> runner_;
         std::atomic_bool done_ = false;
     };
-}
+} // namespace ebu_list

@@ -17,12 +17,12 @@ void file_header_lens::parse_magic() noexcept
 {
     if (h_.magic_number == magic_number::little_endian)
     {
-        is_valid_ = true;
+        is_valid_      = true;
         is_nanosecond_ = false;
     }
     else if (h_.magic_number == magic_number::little_endian_nanosecond)
     {
-        is_valid_ = true;
+        is_valid_      = true;
         is_nanosecond_ = true;
     }
     else
@@ -50,9 +50,9 @@ void file_header_lens::parse_version() noexcept
 bool file_header_lens::is_valid() const noexcept
 {
     return is_valid_;
-} 
+}
 
 bool file_header_lens::is_nanosecond() const noexcept
 {
     return is_nanosecond_;
-} 
+}

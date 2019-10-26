@@ -1,9 +1,9 @@
 #include "pch.h"
 
+#include "catch.hpp"
 #include "ebu/list/core/io/file_source.h"
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/test_lib/sample_files.h"
-#include "catch.hpp"
 
 using namespace ebu_list;
 
@@ -41,7 +41,7 @@ SCENARIO("Open a file")
             THEN("it throws")
             {
                 const auto p = test_lib::sample_file("an_invalid_path.bin");
-                auto l = [&]() { file_source source(f, p); };
+                auto l       = [&]() { file_source source(f, p); };
                 REQUIRE_THROWS(l());
             }
         }

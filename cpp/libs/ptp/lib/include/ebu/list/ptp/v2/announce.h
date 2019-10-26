@@ -23,4 +23,4 @@ namespace ebu_list::ptp::v2
 
     static_assert(sizeof(announce_body) == 30);
 #pragma pack(pop)
-}
+} // namespace ebu_list::ptp::v2

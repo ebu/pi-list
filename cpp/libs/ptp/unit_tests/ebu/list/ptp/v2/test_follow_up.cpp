@@ -1,10 +1,10 @@
 #include "pch.h"
 
+#include "catch.hpp"
+#include "ebu/list/core/memory/bimo.h"
+#include "ebu/list/ptp/test_messages.h"
 #include "ebu/list/ptp/v2/follow_up.h"
 #include "ebu/list/ptp/v2/message_header.h"
-#include "ebu/list/ptp/test_messages.h"
-#include "ebu/list/core/memory/bimo.h"
-#include "catch.hpp"
 using namespace ebu_list;
 using namespace ebu_list::ptp;
 using namespace ebu_list::ptp::v2::test;
@@ -15,8 +15,8 @@ SCENARIO("PTP follow up parsing")
 {
     GIVEN("sync message 1")
     {
-        auto pdu = oview(make_static_sbuffer(follow_up_1::data));
-        auto[header, remainder] = v2::take_header(std::move(pdu));
+        auto pdu                 = oview(make_static_sbuffer(follow_up_1::data));
+        auto [header, remainder] = v2::take_header(std::move(pdu));
 
         WHEN("we parse it")
         {
@@ -36,4 +36,3 @@ SCENARIO("PTP follow up parsing")
         }
     }
 }
-    
