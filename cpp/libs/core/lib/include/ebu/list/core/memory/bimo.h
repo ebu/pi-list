@@ -11,16 +11,16 @@
 
 namespace ebu_list
 {
-    using bisect::bimo::oview;
-    using bisect::bimo::sbuffer;
-    using bisect::bimo::sbuffer_ptr;
-    using bisect::bimo::sbuffer_factory;
-    using bisect::bimo::sbuffer_factory_ptr;
+    using bisect::bimo::copy;
+    using bisect::bimo::equal;
+    using bisect::bimo::make_static_sbuffer;
     using bisect::bimo::malloc_sbuffer_factory;
     using bisect::bimo::mapped_oview;
     using bisect::bimo::mapped_view;
+    using bisect::bimo::oview;
+    using bisect::bimo::sbuffer;
+    using bisect::bimo::sbuffer_factory;
+    using bisect::bimo::sbuffer_factory_ptr;
+    using bisect::bimo::sbuffer_ptr;
     using bisect::bimo::static_sbuffer;
-    using bisect::bimo::make_static_sbuffer;
-    using bisect::bimo::copy;
-    using bisect::bimo::equal;
-}
+} // namespace ebu_list

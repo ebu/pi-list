@@ -12,6 +12,8 @@ const Actions = {
     showAddSource: 'showAddSource',
     hideAddSource: 'hideAddSource',
     addSources: 'addSources', // payload: { sources: [ { dstAddr, dstPort } ] },
+    showEditSource: 'showEditSource',
+    hideEditSource: 'hideEditSource',
 };
 
 export default Actions;

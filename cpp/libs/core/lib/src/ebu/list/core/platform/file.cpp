@@ -17,15 +17,14 @@ namespace
         return handle;
 #else
         const auto mode_string = _mode == ebu_list::file_handle::mode::read ? "rb" : "wb";
-        FILE* handle = ::fopen(path.c_str(), mode_string);
+        FILE* handle           = ::fopen(path.c_str(), mode_string);
         LIST_ENFORCE(handle != nullptr, std::runtime_error, "Error opening '{}'", path);
         return handle;
 #endif
     }
-}
+} // namespace
 
-ebu_list::file_handle::file_handle(const path& path, mode _mode)
-    : handle_(do_open(path, _mode))
+ebu_list::file_handle::file_handle(const path& path, mode _mode) : handle_(do_open(path, _mode))
 {
 }
 

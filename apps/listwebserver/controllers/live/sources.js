@@ -64,16 +64,24 @@ function addLiveSource(_source) {
 
     source.meta = getMetaForUserDefinedSource(source);
 
-    new LiveSource(source).save();
+    // race-condition problem ?!
+    // https://mongoosejs.com/docs/tutorials/findoneandupdate.html
+    const filter = { id : source.id };
+    let upsertedSource = LiveSource.findOneAndUpdate(filter, source, { new: true, upsert: true }).exec();
+    upsertedSource.then(function (doc)
+    {
+        console.log(doc);
+        
+        const changeSet = {
+            added: [doc],
+            removedIds: [],
+        };
 
-    const changeSet = {
-        added: [source],
-        removedIds: [],
-    };
+        sendMqttUpdate(changeSet);
 
-    sendMqttUpdate(changeSet);
+      });
 
-    return Promise.resolve(source);
+    return Promise.resolve(upsertedSource);
 }
 
 function deleteLiveSources(ids) {

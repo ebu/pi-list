@@ -9,7 +9,7 @@ using namespace ebu_list::st2110::d30;
 namespace
 {
     constexpr auto minimum_number_of_valid_timestamps = 5;
-    constexpr auto default_audio_sampling_rate = media::audio::audio_sampling::_48kHz;
+    constexpr auto default_audio_sampling_rate        = media::audio::audio_sampling::_48kHz;
 
     audio_packet_time calculate_packet_time(int sampling_rate, int timestamp_difference)
     {
@@ -17,27 +17,27 @@ namespace
 
         return std::chrono::nanoseconds(ceil(t));
     }
-}
+} // namespace
 
 //-----------------------------------------------
 
 std::optional<std::tuple<int, int>> d30::calculate_number_of_channels_and_depth(int packet_size, int ticks_per_packet)
 {
-    if(packet_size % ticks_per_packet != 0) return std::nullopt;
+    if (packet_size % ticks_per_packet != 0) return std::nullopt;
     const auto bytes_per_sample = packet_size / ticks_per_packet;
 
-    if(bytes_per_sample % 3 == 0)
+    if (bytes_per_sample % 3 == 0)
     {
         const auto channels = bytes_per_sample / 3;
-        const auto depth = 24;
-        return std::tuple{ channels, depth };
+        const auto depth    = 24;
+        return std::tuple{channels, depth};
     }
 
-    if(bytes_per_sample % 2 == 0)
+    if (bytes_per_sample % 2 == 0)
     {
         const auto channels = bytes_per_sample / 2;
-        const auto depth = 16;
-        return std::tuple{ channels, depth };
+        const auto depth    = 16;
+        return std::tuple{channels, depth};
     }
 
     return std::nullopt;
@@ -57,7 +57,9 @@ detector::status_description timestamp_difference_checker::handle_data(uint32_t 
 
             if (difference_.value() == 0)
             {
-                status_description_ = detector::status_description { /*.state*/ detector::state::invalid, /*.error_code*/ "STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO" };
+                status_description_ =
+                    detector::status_description{/*.state*/ detector::state::invalid,
+                                                 /*.error_code*/ "STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"};
             }
         }
 
@@ -73,8 +75,9 @@ detector::status_description timestamp_difference_checker::handle_data(uint32_t 
 
     if (current_difference != difference_.value())
     {
-        logger()->info("Audio: timestamps are inconsistent. Current difference is {} while the previous was {}.", current_difference, difference_.value());
-        status_description_.state = detector::state::invalid;
+        logger()->info("Audio: timestamps are inconsistent. Current difference is {} while the previous was {}.",
+                       current_difference, difference_.value());
+        status_description_.state      = detector::state::invalid;
         status_description_.error_code = "STATUS_CODE_AUDIO_TIMESTAMPS_INCONSISTENCY";
     }
     else
@@ -83,7 +86,7 @@ detector::status_description timestamp_difference_checker::handle_data(uint32_t 
 
         if (valid_samples_ == minimum_number_of_valid_timestamps)
         {
-            status_description_.state = detector::state::valid;
+            status_description_.state      = detector::state::valid;
             status_description_.error_code = "STATUS_CODE_AUDIO_VALID";
         }
     }
@@ -112,7 +115,7 @@ detector::status_description packet_size_calculator::handle_data(int packet_size
 
     if (packet_size != packet_size_.value())
     {
-        status_description_.state = detector::state::invalid;
+        status_description_.state      = detector::state::invalid;
         status_description_.error_code = "STATUS_CODE_AUDIO_DIFFEENT_PACKET_SIZE";
     }
     else
@@ -121,7 +124,7 @@ detector::status_description packet_size_calculator::handle_data(int packet_size
 
         if (valid_samples_ == minimum_number_of_valid_timestamps)
         {
-            status_description_.state = detector::state::valid;
+            status_description_.state      = detector::state::valid;
             status_description_.error_code = "STATUS_CODE_AUDIO_VALID";
         }
     }
@@ -161,22 +164,23 @@ detector::status_description audio_format_detector::handle_data(const rtp::packe
 
     if (ts_status.state == detector::state::valid && ps_status.state == detector::state::valid)
     {
-        description_.sampling = default_audio_sampling_rate;
+        description_.sampling    = default_audio_sampling_rate;
         description_.packet_time = calculate_packet_time(to_int(description_.sampling), ts_checker_.get_difference());
 
-        const auto result = calculate_number_of_channels_and_depth(packet_sizes_.get_packet_size(), ts_checker_.get_difference());
+        const auto result =
+            calculate_number_of_channels_and_depth(packet_sizes_.get_packet_size(), ts_checker_.get_difference());
         if (!result)
         {
-            status_description_.state = detector::state::invalid;
+            status_description_.state      = detector::state::invalid;
             status_description_.error_code = "STATUS_CODE_AUDIO_ERROR_CALCULATE_NUMBER_CHANNELS_AND_DEPTH";
             return status_description_;
         }
 
-        auto[number_channels, bit_depth] = result.value();
-        description_.number_channels = static_cast<uint8_t>(number_channels);
-        description_.encoding = audio::to_audio_encoding(bit_depth);
+        auto [number_channels, bit_depth] = result.value();
+        description_.number_channels      = static_cast<uint8_t>(number_channels);
+        description_.encoding             = audio::to_audio_encoding(bit_depth);
 
-        status_description_.state = detector::state::valid;
+        status_description_.state      = detector::state::valid;
         status_description_.error_code = "STATUS_CODE_AUDIO_VALID";
     }
 

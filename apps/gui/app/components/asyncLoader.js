@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { map, isObject, isFunction, zipObject } from 'lodash';
+import {
+    map, isObject, isFunction, zipObject
+} from 'lodash';
 import Loader from 'components/common/Loader';
 import ErrorPage from 'components/ErrorPage';
 
@@ -45,7 +47,7 @@ import ErrorPage from 'components/ErrorPage';
  *
  * Other possible settings:
  *  - `loaderProps`
- * 
+ *
  * - `dependencyProps`: what should cause the async methods to be run again (see useEffect)
  *
  * @param {React.Component} Component
@@ -53,8 +55,8 @@ import ErrorPage from 'components/ErrorPage';
  * @returns {React.Component}
  */
 
-export default function(AsyncComponent, options) {
-    return props => {
+export default function (AsyncComponent, options) {
+    return (props) => {
         const [isLoading, setIsLoading] = useState(true);
         const [asyncRequestsFailed, setAsyncRequestsFailed] = useState(false);
         const [asyncResults, setAsyncResults] = useState(null);
@@ -73,7 +75,7 @@ export default function(AsyncComponent, options) {
                 // Build an array of promises by iterate all functions of `asyncRequests`.
                 const asyncRequests = map(
                     options.asyncRequests,
-                    asyncRequest => {
+                    (asyncRequest) => {
                         if (isFunction(asyncRequest)) {
                             const promise = asyncRequest(props);
 
@@ -87,7 +89,7 @@ export default function(AsyncComponent, options) {
 
                 // Load all information requested
                 Promise.all(asyncRequests)
-                    .then(results => {
+                    .then((results) => {
                         // Lets assume that results are originated form 3 functions which return 3 promises
                         // and the functions names are: user, pcaps, streams.
                         // results = [ { ... }, { ... }, { ... } ]
@@ -101,7 +103,7 @@ export default function(AsyncComponent, options) {
                         setAsyncResults(zippedResults);
                         setIsLoading(false);
                     })
-                    .catch(e => {
+                    .catch((e) => {
                         setAsyncRequestsFailed(true);
                         setError(e);
                         if (isFunction(options.onError)) {

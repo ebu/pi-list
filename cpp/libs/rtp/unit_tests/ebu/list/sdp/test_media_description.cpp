@@ -1,7 +1,7 @@
 #include "pch.h"
 
-#include "ebu/list/sdp/media_description.h"
 #include "catch.hpp"
+#include "ebu/list/sdp/media_description.h"
 
 using namespace ebu_list::media;
 
@@ -16,8 +16,8 @@ SCENARIO("media_type is created")
         {
             THEN("we get the video enum value")
             {
-                REQUIRE( media_type::VIDEO == from_string(video_string) );
-                REQUIRE( media_type::AUDIO == from_string(audio_string) );
+                REQUIRE(media_type::VIDEO == from_string(video_string));
+                REQUIRE(media_type::AUDIO == from_string(audio_string));
             }
         }
     }
@@ -30,10 +30,7 @@ SCENARIO("media_type is created")
         {
             auto value = from_string(s);
 
-            THEN("we get the audio enum value")
-            {
-                REQUIRE( media_type::UNKNOWN == value );
-            }
+            THEN("we get the audio enum value") { REQUIRE(media_type::UNKNOWN == value); }
         }
     }
 }
@@ -47,9 +44,9 @@ SCENARIO("media_type converted to string")
         {
             THEN("we get the right string representation")
             {
-                REQUIRE( video_string == to_string(media_type::VIDEO) );
-                REQUIRE( audio_string == to_string(media_type::AUDIO) );
-                REQUIRE( "unknown" == to_string(media_type::UNKNOWN) );
+                REQUIRE(video_string == to_string(media_type::VIDEO));
+                REQUIRE(audio_string == to_string(media_type::AUDIO));
+                REQUIRE("unknown" == to_string(media_type::UNKNOWN));
             }
         }
     }
@@ -63,10 +60,7 @@ SCENARIO("network media description is created")
 
         WHEN("we check its media_type")
         {
-            THEN("we get it as unknown")
-            {
-                REQUIRE(desc.type == media_type::UNKNOWN);
-            }
+            THEN("we get it as unknown") { REQUIRE(desc.type == media_type::UNKNOWN); }
         }
     }
 }

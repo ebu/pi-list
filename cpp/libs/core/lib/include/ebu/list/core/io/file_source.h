@@ -9,13 +9,13 @@ namespace ebu_list
 {
     class file_source : public data_source
     {
-    public:
+      public:
         explicit file_source(sbuffer_factory_ptr factory, const path& path);
 
         oview read_next() override;
 
-    private:
+      private:
         sbuffer_factory_ptr factory_;
         file_handle handle_;
     };
-}
+} // namespace ebu_list

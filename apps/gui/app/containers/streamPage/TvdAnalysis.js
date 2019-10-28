@@ -10,6 +10,8 @@ const dataAsNanoseconds = (data) => {
 const VrxAnalysis = (props) => {
     const { first_packet_ts, last_packet_ts } = props.streamInfo.statistics;
     const { streamID, pcapID } = props;
+    const default_tro = props.streamInfo.media_specific.tro_default_ns / 1000;
+    const avg_tro = props.streamInfo.media_specific.avg_tro_ns / 1000;
 
     return (
         <div className="row">
@@ -18,8 +20,8 @@ const VrxAnalysis = (props) => {
                     asyncData={() => api.getDeltaToIdealTpr0Raw(pcapID, streamID, first_packet_ts, last_packet_ts).then(data => dataAsNanoseconds(data))}
                     xAxis={chartFormatters.xAxisTimeDomain}
                     data={chartFormatters.singleValueLineChart}
-                    title="TVD (with TRoffset = TROdefault)"
-                    yAxisLabel="nanoseconds"
+                    title={`Tvd (with TRoffset = TROdefault = ${default_tro} μs)`}
+                    yAxisLabel="ns"
                     height={300}
                     lineWidth={3}
                 />
@@ -27,8 +29,8 @@ const VrxAnalysis = (props) => {
                     asyncData={() => api.getDeltaToIdealTpr0AdjustedAvgTroRaw(pcapID, streamID, first_packet_ts, last_packet_ts).then(data => dataAsNanoseconds(data))}
                     xAxis={chartFormatters.xAxisTimeDomain}
                     data={chartFormatters.singleValueLineChart}
-                    title="TVD (with TRoffset = Measured/Averaged)"
-                    yAxisLabel="nanoseconds"
+                    title={`Adjusted Tvd (with TRoffset = Avg(FPO) = ${avg_tro} μs)`}
+                    yAxisLabel="ns"
                     height={300}
                     lineWidth={3}
                 />

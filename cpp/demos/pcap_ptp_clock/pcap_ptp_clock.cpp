@@ -1,18 +1,17 @@
-#include "pch.h"
-#include "ebu/list/ptp/state_machine.h"
-#include "ebu/list/ptp/udp_filter.h"
-#include "ebu/list/version.h"
-#include "ebu/list/net/udp/listener.h"
-#include "ebu/list/pcap/player.h"
+#include "bisect/bicla.h"
+#include "ebu/list/core/io/file_source.h"
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/core/platform/parallel.h"
-#include "ebu/list/core/io/file_source.h"
-#include "ebu/list/pcap/reader.h"
 #include "ebu/list/net/ethernet/decoder.h"
 #include "ebu/list/net/ipv4/decoder.h"
 #include "ebu/list/net/udp/decoder.h"
 #include "ebu/list/net/udp/listener.h"
-#include "bisect/bicla.h"
+#include "ebu/list/pcap/player.h"
+#include "ebu/list/pcap/reader.h"
+#include "ebu/list/ptp/state_machine.h"
+#include "ebu/list/ptp/udp_filter.h"
+#include "ebu/list/version.h"
+#include "pch.h"
 using namespace ebu_list;
 
 //------------------------------------------------------------------------------
@@ -28,32 +27,26 @@ namespace
     {
         using namespace bisect::bicla;
 
-        const auto[parse_result, config] = parse(argc, argv,
-            argument(&config::pcap_file, "pcap file", "the path to the pcap file to use as input"));
-        
+        const auto [parse_result, config] =
+            parse(argc, argv, argument(&config::pcap_file, "pcap file", "the path to the pcap file to use as input"));
+
         if (parse_result) return config;
 
         logger()->error("usage: {} {}", path(argv[0]).filename().string(), to_string(parse_result));
         exit(-1);
     }
-}
+} // namespace
 
 //------------------------------------------------------------------------------
 class null_udp_listener : public udp::listener
 {
-private:
+  private:
 #pragma region udp::listener events
-    void on_data(udp::datagram&&) override
-    {
-    }
+    void on_data(udp::datagram&&) override {}
 
-    void on_complete() override
-    {
-    }
+    void on_complete() override {}
 
-    void on_error(std::exception_ptr) override
-    {
-    }
+    void on_error(std::exception_ptr) override {}
 #pragma endregion udp::listener events
 };
 
@@ -63,11 +56,11 @@ void run(const config& config)
 {
     logger()->info("Press <enter> to exit.\n\n");
 
-    auto sm = std::make_shared<ptp::state_machine>();
+    auto sm               = std::make_shared<ptp::state_machine>();
     auto non_ptp_listener = std::make_shared<null_udp_listener>();
-    auto filter = std::make_shared<ptp::udp_filter>(sm, non_ptp_listener);
-    auto player = std::make_unique<pcap::pcap_player>(path(config.pcap_file), filter, on_error_exit);
-    auto launcher = launch(std::move(player));
+    auto filter           = std::make_shared<ptp::udp_filter>(sm, non_ptp_listener);
+    auto player           = std::make_unique<pcap::pcap_player>(path(config.pcap_file), filter, on_error_exit);
+    auto launcher         = launch(std::move(player));
 
     std::cin.ignore();
 
@@ -97,4 +90,3 @@ int main(int argc, char* argv[])
 
     return 0;
 }
-

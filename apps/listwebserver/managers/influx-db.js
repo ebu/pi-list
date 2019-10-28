@@ -198,10 +198,10 @@ class InfluxDbManager {
         return this.sendQueryAndFormatResults(query);
     }
 
-    getAudioRtpTsVsPktTs(pcapID, streamID, startTime, endTime) {
+    getAudioPktTsVsRtpTs(pcapID, streamID, startTime, endTime) {
         const query = `
             select
-            "audio-rtp-vs-pkt" as "value"
+            "audio-pkt-vs-rtp" as "value"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
         `;
 
@@ -210,9 +210,9 @@ class InfluxDbManager {
         return this.sendQueryAndFormatResults(query);
     }
 
-    getAudioRtpTsVsPktTsRange(pcapID, streamID) {
+    getAudioPktTsVsRtpTsRange(pcapID, streamID) {
         const query = `
-            select max("audio-rtp-vs-pkt") as "max", min("audio-rtp-vs-pkt") as "min"
+            select max("audio-pkt-vs-rtp") as "max", min("audio-pkt-vs-rtp") as "min"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}
         `;
 

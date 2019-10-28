@@ -19,21 +19,21 @@ namespace ebu_list::ptp::v2
 
     class sync_message_lens
     {
-    public:
+      public:
         explicit sync_message_lens(const sync_body& h) noexcept;
 
         ts80 origin_timestamp() const noexcept;
 
-    private:
+      private:
         const sync_body& h_;
     };
 
     class sync : public v2_base_message<sync_body, sync_message_lens>
     {
-    public:
+      public:
         explicit sync(clock::time_point packet_timestamp, v2::header&& header, oview&& sdu)
             : base_message(packet_timestamp, std::move(header), std::move(sdu))
         {
         }
     };
-}
+} // namespace ebu_list::ptp::v2

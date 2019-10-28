@@ -56,6 +56,10 @@ class PopUp extends Component {
                 if (event.keyCode == 13) {
                     this.props.onClose();
                 }
+            case 'warning':
+                    if (event.keyCode == 13) {
+                        this.props.onClose();
+                    }
             break;
             default:
                 break;
@@ -117,13 +121,20 @@ class PopUp extends Component {
                     />
                 ];
                 break;
-                case 'ok':
-                    iconlabel = "info";
-                    headtextcolor = "lst-text-blue";
-                    buttons = [
-                        <Button key="cancel-btn" label={translateC('buttons.ok')} outline noAnimation onClick={this.props.onClose} />,
-                    ];
-                    break;
+            case 'ok':
+                iconlabel = "info";
+                headtextcolor = "lst-text-blue";
+                buttons = [
+                    <Button key="cancel-btn" label={translateC('buttons.ok')} outline noAnimation onClick={this.props.onClose} />,
+                ];
+                break;
+            case 'warning':
+                iconlabel = "warning";
+                headtextcolor = "lst-text-red";
+                buttons = [
+                    <Button key="cancel-btn" label={translateC('buttons.ok')} outline noAnimation onClick={this.props.onClose} />,
+                ];
+                break;
             default:
                 iconlabel = "info";
                 headtextcolor = "lst-text-red";

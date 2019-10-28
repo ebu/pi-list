@@ -28,4 +28,4 @@ namespace ebu_list::media::video
         scan_type scan;
         video_dimensions raster;
     };
-}
+} // namespace ebu_list::media::video

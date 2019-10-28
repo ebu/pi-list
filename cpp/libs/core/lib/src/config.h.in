@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include "ebu/list/core/platform/config.h"
 
@@ -6,7 +6,9 @@
 
 namespace ebu_list
 {
+    // clang-format off
     static constexpr auto version_major = @EBU_LIST_VERSION_MAJOR@;
     static constexpr auto version_minor = @EBU_LIST_VERSION_MINOR@;
     static constexpr auto version_patch = @EBU_LIST_VERSION_PATCH@;
+    // clang-format on
 }

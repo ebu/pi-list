@@ -44,17 +44,17 @@ uint64_t ebu_list::to_native(net_uint64_t v)
 
 net_uint16_t ebu_list::to_net(uint16_t v)
 {
-    return net_uint16_t{ _byteswap_ushort(v) };
+    return net_uint16_t{_byteswap_ushort(v)};
 }
 
 net_uint32_t ebu_list::to_net(uint32_t v)
 {
-    return net_uint32_t{ _byteswap_ulong(v) };
+    return net_uint32_t{_byteswap_ulong(v)};
 }
 
 net_uint64_t ebu_list::to_net(uint64_t v)
 {
-    return net_uint64_t{ _byteswap_uint64(v) };
+    return net_uint64_t{_byteswap_uint64(v)};
 }
 #endif
 
@@ -76,16 +76,16 @@ uint64_t ebu_list::to_native(net_uint64_t v)
 
 net_uint16_t ebu_list::to_net(uint16_t v)
 {
-    return net_uint16_t{ bswap_16(v) };
+    return net_uint16_t{bswap_16(v)};
 }
 
 net_uint32_t ebu_list::to_net(uint32_t v)
 {
-    return net_uint32_t{ bswap_32(v) };
+    return net_uint32_t{bswap_32(v)};
 }
 
 net_uint64_t ebu_list::to_net(uint64_t v)
 {
-    return net_uint64_t{ bswap_64(v) };
+    return net_uint64_t{bswap_64(v)};
 }
 #endif // defined(LIST_HAS_POSIX)

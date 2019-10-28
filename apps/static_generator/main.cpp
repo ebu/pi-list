@@ -1,7 +1,7 @@
-#include "ebu/list/version.h"
+#include "bisect/bicla.h"
 #include "ebu/list/core/types.h"
 #include "ebu/list/sdp/media_description.h"
-#include "bisect/bicla.h"
+#include "ebu/list/version.h"
 #include "serializer.h"
 
 using namespace ebu_list;
@@ -17,9 +17,9 @@ namespace
     {
         using namespace bisect::bicla;
 
-        const auto[parse_result, config] = parse(argc, argv,
-            argument(&config::base_dir, "base dir", "the path to the directory where the information will be written")
-        );
+        const auto [parse_result, config] = parse(
+            argc, argv,
+            argument(&config::base_dir, "base dir", "the path to the directory where the information will be written"));
 
         if (parse_result) return config;
 
@@ -34,7 +34,7 @@ namespace
         write_available_options_for_audio(config.base_dir);
         write_available_options_for_ancillary(config.base_dir);
     }
-}
+} // namespace
 
 //------------------------------------------------------------------------------
 

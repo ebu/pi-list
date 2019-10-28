@@ -21,7 +21,7 @@ namespace ebu_list::rtp
     //   |            contributing source (CSRC) identifiers             |
     //   |                             ....                              |
     //   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-    struct raw_header 
+    struct raw_header
     {
         uint8_t csrc_count : 4;
         uint8_t extension : 1;
@@ -52,4 +52,4 @@ namespace ebu_list::rtp
     static_assert(sizeof(extension_header) == 4);
 
 #pragma pack(pop)
-}
+} // namespace ebu_list::rtp

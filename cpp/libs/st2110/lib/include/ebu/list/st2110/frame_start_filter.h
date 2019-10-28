@@ -1,28 +1,28 @@
 #pragma once
 
-#include "ebu/list/rtp/listener.h"
 #include "ebu/list/core/media/video_description.h"
+#include "ebu/list/rtp/listener.h"
 #include <vector>
 
 namespace ebu_list::st2110
 {
     class frame_start_filter : public rtp::listener
     {
-    public:
+      public:
         struct packet_info
         {
             rtp::packet packet;
             bool frame_start = false; // true: if this is the first packet on a frame; false, otherwise.
-            int packet_index = 0; // The index of this packet in the current frame.
+            int packet_index = 0;     // The index of this packet in the current frame.
         };
 
         class listener
         {
-        public:
+          public:
             virtual ~listener() = default;
 
-            virtual void on_data(const packet_info&) = 0;
-            virtual void on_complete() = 0;
+            virtual void on_data(const packet_info&)    = 0;
+            virtual void on_complete()                  = 0;
             virtual void on_error(std::exception_ptr e) = 0;
         };
 
@@ -35,8 +35,8 @@ namespace ebu_list::st2110
         void on_complete() override;
         void on_error(std::exception_ptr ptr) override;
 
-    private:
+      private:
         struct impl;
         const std::unique_ptr<impl> impl_;
     };
-}
+} // namespace ebu_list::st2110

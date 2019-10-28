@@ -43,8 +43,3 @@ const CapturePage = props => {
 };
 
 export default CapturePage;
-{
-    /* <StartCaptureModal
-visible={state.startCaptureModalVisible}
-/> */
-}

@@ -1,11 +1,9 @@
-#include "pch.h"
+#include "catch.hpp"
 #include "ebu/list/st2110/d20/video_format_detector.h"
-#include "ebu/list/rtp/udp_handler.h"
 #include "ebu/list/test_lib/sample_files.h"
-#include "ebu/list/pcap/player.h"
+#include "pch.h"
 #include "rtp_source.h"
 #include "utils.h"
-#include "catch.hpp"
 
 using namespace ebu_list;
 using namespace ebu_list::test;
@@ -107,10 +105,7 @@ SCENARIO("ST2110-20 heuristics")
 
         WHEN("we check the status")
         {
-            THEN("it is invalid")
-            {
-                REQUIRE(result.state == detector::state::invalid);
-            }
+            THEN("it is invalid") { REQUIRE(result.state == detector::state::invalid); }
         }
     }
 
@@ -124,10 +119,7 @@ SCENARIO("ST2110-20 heuristics")
 
         WHEN("we check the status")
         {
-            THEN("it is invalid")
-            {
-                REQUIRE(result.state == detector::state::invalid);
-            }
+            THEN("it is invalid") { REQUIRE(result.state == detector::state::invalid); }
         }
     }
 
@@ -142,10 +134,7 @@ SCENARIO("ST2110-20 heuristics")
 
         WHEN("we check the status")
         {
-            THEN("it is invalid")
-            {
-                REQUIRE(result.state == detector::state::invalid);
-            }
+            THEN("it is invalid") { REQUIRE(result.state == detector::state::invalid); }
         }
     }
 }

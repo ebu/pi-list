@@ -35,39 +35,38 @@ void format_detector::on_data(const rtp::packet& packet)
         else if (result.state == detector::state::valid)
         {
             status_description_ = result;
-            one_valid = d.get();
+            one_valid           = d.get();
         }
     }
 
     if (one_valid)
     {
         detectors_.erase(
-            remove_if(begin(detectors_), end(detectors_),
-                      [&](const auto& x) { return x.get() != one_valid; }),
+            remove_if(begin(detectors_), end(detectors_), [&](const auto& x) { return x.get() != one_valid; }),
             end(detectors_));
     }
     else
     {
-        detectors_.erase(remove_if(begin(detectors_), end(detectors_),
-                                   [&](const auto& x) {
-                                       return find(begin(to_remove),
-                                                   end(to_remove),
-                                                   x.get()) != end(to_remove);
-                                   }),
-                         end(detectors_));
+        detectors_.erase(
+            remove_if(begin(detectors_), end(detectors_),
+                      [&](const auto& x) { return find(begin(to_remove), end(to_remove), x.get()) != end(to_remove); }),
+            end(detectors_));
     }
 
     if (detectors_.empty())
     {
-        status_description_.state = detector::state::invalid;
-        status_description_.error_code =
-            "STATUS_CODE_FORMAT_NO_DETECTORS_FOUND";
+        status_description_.state      = detector::state::invalid;
+        status_description_.error_code = "STATUS_CODE_FORMAT_NO_DETECTORS_FOUND";
     }
 }
 
-void format_detector::on_complete() {}
+void format_detector::on_complete()
+{
+}
 
-void format_detector::on_error(std::exception_ptr) {}
+void format_detector::on_error(std::exception_ptr)
+{
+}
 
 detector::status_description format_detector::status() const noexcept
 {
@@ -76,15 +75,13 @@ detector::status_description format_detector::status() const noexcept
 
 detector::details format_detector::get_details() const
 {
-    if (status_description_.state != detector::state::valid)
-        return std::nullopt;
+    if (status_description_.state != detector::state::valid) return std::nullopt;
 
     assert(detectors_.size() == 1);
     return detectors_[0]->get_details();
 }
 
-const std::map<std::string, std::vector<std::string>>&
-format_detector::get_error_codes() const
+const std::map<std::string, std::vector<std::string>>& format_detector::get_error_codes() const
 {
     return error_codes_list_;
 }

@@ -10,29 +10,29 @@ const useMqttMessages = (topic, onMessage) => {
         wsbroker,
         wsport,
         path,
-        `myclientid_` + parseInt(Math.random() * 100, 10)
+        `myclientid_${parseInt(Math.random() * 100, 10)}`
     );
 
-    client.onConnectionLost = function(responseObject) {
+    client.onConnectionLost = function (responseObject) {
         console.log(
-            'Stream updates - CONNECTION LOST - ' + responseObject.errorMessage
+            `Stream updates - CONNECTION LOST - ${responseObject.errorMessage}`
         );
     };
 
-    client.onMessageArrived = message => {
+    client.onMessageArrived = (message) => {
         onMessage(message.destinationName, JSON.parse(message.payloadString));
     };
 
     const options = {
         timeout: 3,
         keepAliveInterval: 30,
-        onSuccess: function() {
+        onSuccess() {
             console.log('Stream updates - CONNECTION SUCCESS');
             client.subscribe(topic, { qos: 1 });
         },
-        onFailure: function(message) {
+        onFailure(message) {
             console.log(
-                'Stream updates - CONNECTION FAILURE - ' + message.errorMessage
+                `Stream updates - CONNECTION FAILURE - ${message.errorMessage}`
             );
         },
     };
@@ -40,7 +40,7 @@ const useMqttMessages = (topic, onMessage) => {
     if (location.protocol == 'https:') {
         options.useSSL = true;
     }
-    console.log('Stream updates - CCONNECT TO ' + wsbroker + ':' + wsport);
+    console.log(`Stream updates - CCONNECT TO ${wsbroker}:${wsport}`);
     client.connect(options);
 
     return () => {

@@ -1,6 +1,6 @@
-#include "ebu/list/st2110/pch.h"
 #include "ebu/list/st2110/d21/compliance.h"
 #include "ebu/list/st2110/d21/settings.h"
+#include "ebu/list/st2110/pch.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110;
@@ -8,15 +8,11 @@ using namespace ebu_list::st2110::d21;
 
 //------------------------------------------------------------------------------
 
-compliance_analyzer::compliance_analyzer(int npackets,
-    media::video::Rate rate, 
-    media::video::info video_info, 
-    vrx_settings settings,
-    media::video::scan_type scan,
-    media::video::video_dimensions raster) noexcept
-    : c_calculator_(npackets, rate),
-    vrx_calculator_(npackets, video_info, settings),
-    checker_(npackets, 1 / rate, settings.schedule, scan, raster)
+compliance_analyzer::compliance_analyzer(int npackets, media::video::Rate rate, media::video::info video_info,
+                                         vrx_settings settings, media::video::scan_type scan,
+                                         media::video::video_dimensions raster) noexcept
+    : c_calculator_(npackets, rate), vrx_calculator_(npackets, video_info, settings),
+      checker_(npackets, 1 / rate, settings.schedule, scan, raster)
 {
 }
 
@@ -55,16 +51,12 @@ compliance_parameters compliance_analyzer::get_wide_parameters() const
 
 compliance_analyzer::compliance_status compliance_analyzer::get_compliance() const noexcept
 {
-    const auto current_vrx_min = get_histogram_min(vrx_histogram_.values());
+    const auto current_vrx_min  = get_histogram_min(vrx_histogram_.values());
     const auto current_vrx_peak = get_histogram_peak(vrx_histogram_.values());
-    const auto current_c_peak = get_histogram_peak(cinst_histogram_.values());
+    const auto current_c_peak   = get_histogram_peak(cinst_histogram_.values());
 
-    return 
-    {
-        checker_.check(current_vrx_min, current_vrx_peak, current_c_peak),
-        checker_.check_c_peak(current_c_peak),
-        checker_.check_vrx_min_peak(current_vrx_min, current_vrx_peak)
-    };
+    return {checker_.check(current_vrx_min, current_vrx_peak, current_c_peak), checker_.check_c_peak(current_c_peak),
+            checker_.check_vrx_min_peak(current_vrx_min, current_vrx_peak)};
 }
 
 void compliance_analyzer::clear_histograms() noexcept
@@ -85,14 +77,11 @@ const std::map<int, int>& compliance_analyzer::get_vrx_histogram() const noexcep
 
 //------------------------------------------------------------------------------
 
-compliance_checker::compliance_checker(int n_packets,
-    fraction t_frame,
-    read_schedule schedule,
-    media::video::scan_type scan,
-    media::video::video_dimensions raster) noexcept
+compliance_checker::compliance_checker(int n_packets, fraction t_frame, read_schedule schedule,
+                                       media::video::scan_type scan, media::video::video_dimensions raster) noexcept
     : narrow_(calculate_narrow_compliance_parameters(n_packets, t_frame, schedule, scan, raster)),
-    wide_(calculate_wide_compliance_parameters(n_packets, t_frame)),
-    narrow_kind_((schedule == read_schedule::gapped) ? compliance_profile::narrow : compliance_profile::narrow_linear)
+      wide_(calculate_wide_compliance_parameters(n_packets, t_frame)),
+      narrow_kind_((schedule == read_schedule::gapped) ? compliance_profile::narrow : compliance_profile::narrow_linear)
 {
 }
 
@@ -107,7 +96,7 @@ compliance_profile compliance_checker::check_vrx_min_peak(int vrx_min, int vrx_p
     {
         return narrow_kind_;
     }
-    
+
     if (vrx_peak <= wide_.vrx_full)
     {
         return compliance_profile::wide;
@@ -134,7 +123,7 @@ compliance_profile compliance_checker::check_c_peak(int c_peak) const noexcept
 compliance_profile compliance_checker::check(int vrx_min, int vrx_peak, int c_peak) const noexcept
 {
     const auto vrx = check_vrx_min_peak(vrx_min, vrx_peak);
-    const auto c = check_c_peak(c_peak);
+    const auto c   = check_c_peak(c_peak);
 
     if (vrx == narrow_kind_) return c;
 

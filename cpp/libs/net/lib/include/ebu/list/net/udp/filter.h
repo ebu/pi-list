@@ -6,11 +6,11 @@ namespace ebu_list::udp
 {
     class udp_filter : public listener
     {
-    public:
+      public:
         udp_filter(listener_ptr l, ipv4::address wanted_address, port wanted_port);
         udp_filter(listener_ptr l, ipv4::endpoint_list wanted_endpoints);
 
-    private:
+      private:
 #pragma region listener events
         void on_data(datagram&& datagram) override;
         void on_complete() override;
@@ -20,4 +20,4 @@ namespace ebu_list::udp
         const listener_ptr listener_;
         const ipv4::endpoint_list wanted_endpoints_;
     };
-}
+} // namespace ebu_list::udp

@@ -2,6 +2,7 @@
 
 using namespace influxdb::api;
 using namespace ebu_list;
+using namespace ebu_list::analysis;
 using namespace ebu_list::influx;
 using namespace ebu_list::st2110::d20;
 using namespace ebu_list::st2110::d21;
@@ -39,9 +40,8 @@ void influxdb_ptp_logger::on_error(std::exception_ptr)
 
 //------------------------------------------------------------------------------
 
-influxdb_c_inst_logger::influxdb_c_inst_logger(std::string_view url,
-    std::string_view pcap_id,
-    std::string_view stream_id)
+influxdb_c_inst_logger::influxdb_c_inst_logger(std::string_view url, std::string_view pcap_id,
+                                               std::string_view stream_id)
     : db_(url, pcap_id, stream_id)
 {
 }
@@ -62,7 +62,8 @@ void influxdb_c_inst_logger::on_error(std::exception_ptr)
 
 //------------------------------------------------------------------------------
 
-influxdb_rtp_ts_logger::influxdb_rtp_ts_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id)
+influxdb_rtp_ts_logger::influxdb_rtp_ts_logger(std::string_view url, std::string_view pcap_id,
+                                               std::string_view stream_id)
     : db_(url, pcap_id, stream_id)
 {
 }
@@ -86,9 +87,9 @@ void influxdb_rtp_ts_logger::on_error(std::exception_ptr)
 
 //------------------------------------------------------------------------------
 
-influxdb_vrx_logger::influxdb_vrx_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id, std::string prefix)
-    : db_(url, pcap_id, stream_id),
-    prefix_(std::move(prefix))
+influxdb_vrx_logger::influxdb_vrx_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id,
+                                         std::string prefix)
+    : db_(url, pcap_id, stream_id), prefix_(std::move(prefix))
 {
 }
 
@@ -109,15 +110,15 @@ void influxdb_vrx_logger::on_error(std::exception_ptr)
 
 //------------------------------------------------------------------------------
 
-influxdb_audio_rtp_logger::influxdb_audio_rtp_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id, std::string prefix)
-    : db_(url, pcap_id, stream_id),
-    prefix_(std::move(prefix))
+influxdb_audio_rtp_logger::influxdb_audio_rtp_logger(std::string_view url, std::string_view pcap_id,
+                                                     std::string_view stream_id, std::string prefix)
+    : db_(url, pcap_id, stream_id), prefix_(std::move(prefix))
 {
 }
 
-void influxdb_audio_rtp_logger::on_data(const ebu_list::audio_timing_analyser::delay_sample& sample)
+void influxdb_audio_rtp_logger::on_data(const audio_timing_analyser::delay_sample& sample)
 {
-    db_.send_data(prefix_ + "-rtp-vs-pkt", sample.rtp_ts_vs_pkt_ts, sample.timestamp);
+    db_.send_data(prefix_ + "-pkt-vs-rtp", sample.pkt_ts_vs_rtp_ts, sample.timestamp);
 }
 
 void influxdb_audio_rtp_logger::on_complete()
@@ -131,13 +132,13 @@ void influxdb_audio_rtp_logger::on_error(std::exception_ptr)
 
 //------------------------------------------------------------------------------
 
-influxdb_audio_tsdf_logger::influxdb_audio_tsdf_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id, std::string prefix)
-    : db_(url, pcap_id, stream_id),
-    prefix_(std::move(prefix))
+influxdb_audio_tsdf_logger::influxdb_audio_tsdf_logger(std::string_view url, std::string_view pcap_id,
+                                                       std::string_view stream_id, std::string prefix)
+    : db_(url, pcap_id, stream_id), prefix_(std::move(prefix))
 {
 }
 
-void influxdb_audio_tsdf_logger::on_data(const ebu_list::audio_timing_analyser::delay_sample& sample)
+void influxdb_audio_tsdf_logger::on_data(const audio_timing_analyser::delay_sample& sample)
 {
     db_.send_data(prefix_ + "-tsdf", sample.time_stamped_delay_factor, sample.timestamp);
 }

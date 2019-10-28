@@ -1,12 +1,12 @@
 #pragma once
 
-#include "ebu/list/rtp/types.h"
 #include "ebu/list/core/math.h"
+#include "ebu/list/rtp/types.h"
 
 namespace ebu_list::st2110::d20
 {
     constexpr auto RTP_WRAP_AROUND = 0x100000000;
-    constexpr auto RTP_CLOCK_RATE = 90000;
+    constexpr auto RTP_CLOCK_RATE  = 90000;
 
     uint32_t calculate_rtp_timestamp(fraction64 time);
     int64_t calculate_n(fraction64 packet_time, fraction64 frame_period);

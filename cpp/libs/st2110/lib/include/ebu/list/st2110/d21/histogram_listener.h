@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <memory>
 
 namespace ebu_list::st2110::d21
 {
@@ -8,11 +9,11 @@ namespace ebu_list::st2110::d21
 
     class histogram_listener
     {
-    public:
+      public:
         virtual ~histogram_listener() = default;
 
-        virtual void on_data(const histogram_t&) = 0;
-        virtual void on_complete() = 0;
+        virtual void on_data(const histogram_t&)    = 0;
+        virtual void on_complete()                  = 0;
         virtual void on_error(std::exception_ptr e) = 0;
     };
 
@@ -20,9 +21,9 @@ namespace ebu_list::st2110::d21
 
     class null_histogram_listener : public histogram_listener
     {
-    public:
+      public:
         virtual void on_data(const histogram_t&) {}
         virtual void on_complete() {}
         virtual void on_error(std::exception_ptr) {}
     };
-}
+} // namespace ebu_list::st2110::d21

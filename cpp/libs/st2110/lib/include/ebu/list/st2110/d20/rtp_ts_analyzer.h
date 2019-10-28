@@ -24,8 +24,8 @@ namespace ebu_list::st2110::d20
           public:
             virtual ~listener() = default;
 
-            virtual void on_data(const packet_info&) = 0;
-            virtual void on_complete() = 0;
+            virtual void on_data(const packet_info&)    = 0;
+            virtual void on_complete()                  = 0;
             virtual void on_error(std::exception_ptr e) = 0;
         };
 

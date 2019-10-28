@@ -1,7 +1,7 @@
 #include "ebu/list/net/udp/receiver.h"
 
 #pragma warning(push)
-#pragma warning(disable: 4834)
+#pragma warning(disable : 4834)
 #include "boost/asio.hpp"
 #pragma warning(pop)
 
@@ -28,14 +28,11 @@ struct receiver::impl
 
     std::future<void> runner_;
 
-    impl(listener_uptr l, const std::string& address, uint16_t port) :
-        io_context_()
-        , socket_(io_context_, bai::udp::endpoint(bai::udp::v4(), port))
-        , listener_(std::move(l))
-        , dest_addr_(ipv4::from_dotted_string(address))
-        , dest_port_(to_port(port))
+    impl(listener_uptr l, const std::string& address, uint16_t port)
+        : io_context_(), socket_(io_context_, bai::udp::endpoint(bai::udp::v4(), port)), listener_(std::move(l)),
+          dest_addr_(ipv4::from_dotted_string(address)), dest_port_(to_port(port))
     {
-        LIST_ENFORCE( listener_ != nullptr, std::runtime_error, "udp receiver listener not valid!" );
+        LIST_ENFORCE(listener_ != nullptr, std::runtime_error, "udp receiver listener not valid!");
 
         // Join the multicast group.
         socket_.set_option(bai::multicast::join_group(bai::make_address(ipv4::to_string(dest_addr_))));
@@ -52,41 +49,36 @@ struct receiver::impl
     void do_receive()
     {
         auto buffer = factory_.get_buffer(max_packet_size);
-        auto span = bisect::bimo::as_span(*buffer);
+        auto span   = bisect::bimo::as_span(*buffer);
 
         bai::udp::endpoint sender_endpoint;
         socket_.async_receive_from(
-                boost::asio::buffer(span.data(), span.size()), sender_endpoint,
-                [=](boost::system::error_code ec, std::size_t length) mutable
+            boost::asio::buffer(span.data(), span.size()), sender_endpoint,
+            [=](boost::system::error_code ec, std::size_t length) mutable {
+                if (!ec)
                 {
-                    if (!ec)
-                    {
-                        auto source_addr = ipv4::from_dotted_string(sender_endpoint.address().to_string());
-                        auto source_port = ebu_list::to_port(sender_endpoint.port());
+                    auto source_addr = ipv4::from_dotted_string(sender_endpoint.address().to_string());
+                    auto source_port = ebu_list::to_port(sender_endpoint.port());
 
-                        auto udp_payload = bisect::bimo::owning_view(buffer, 0, length);
+                    auto udp_payload = bisect::bimo::owning_view(buffer, 0, length);
 
-                        auto packet_timestamp = ebu_list::clock::now(); //todo: get me from IP header
-                        auto source_mac_address = to_byte_array(0, 0, 0, 0, 0, 0);
-                        auto destination_mac_address = to_byte_array(0, 0, 0, 0, 0, 0);
-                        auto payload_type = ethernet::payload_type::UNKNOWN;
-                        auto datagram = udp::make_datagram(packet_timestamp,
-                                                           source_mac_address,
-                                                           destination_mac_address,
-                                                           payload_type,
-                                                           source_addr, source_port,
-                                                           dest_addr_, dest_port_,
-                                                           std::move(udp_payload));
+                    auto packet_timestamp        = ebu_list::clock::now(); // todo: get me from IP header
+                    auto source_mac_address      = to_byte_array(0, 0, 0, 0, 0, 0);
+                    auto destination_mac_address = to_byte_array(0, 0, 0, 0, 0, 0);
+                    auto payload_type            = ethernet::payload_type::UNKNOWN;
+                    auto datagram =
+                        udp::make_datagram(packet_timestamp, source_mac_address, destination_mac_address, payload_type,
+                                           source_addr, source_port, dest_addr_, dest_port_, std::move(udp_payload));
 
-                        listener_->on_data(std::move(datagram));
-                        do_receive(); //register callback again
-                    }
-                    else
-                    {
-                        // todo: do something
-                        //listener_->on_error();
-                    }
-                });
+                    listener_->on_data(std::move(datagram));
+                    do_receive(); // register callback again
+                }
+                else
+                {
+                    // todo: do something
+                    // listener_->on_error();
+                }
+            });
     }
 };
 

@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const WebpackShellPlugin = require('webpack-shell-plugin');
 
 module.exports = {
     entry: {
@@ -57,9 +56,6 @@ module.exports = {
                 to: 'static',
             },
         ]),
-        new WebpackShellPlugin({
-            onBuildStart: ['node ./data/translationsGenerator']
-        }),
         new HtmlWebpackPlugin({
             title: 'EBU LIST',
             template: './index.html',

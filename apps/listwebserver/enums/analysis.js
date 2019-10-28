@@ -15,7 +15,7 @@ module.exports = {
         //
         
         missing_information: 'errors.missing_information',
-        invalid_delta_rtp_ts_vs_nt: 'errors.invalid_delta_rtp_ts_vs_nt',
+        invalid_rtp_ts_vs_nt: 'errors.invalid_rtp_ts_vs_nt',
         invalid_delta_packet_ts_vs_rtp_ts: 'errors.invalid_delta_packet_ts_vs_rtp_ts',
         cinst_above_maximum: 'errors.cinst_above_maximum',
         vrx_above_maximum: 'errors.vrx_above_maximum',

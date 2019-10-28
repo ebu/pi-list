@@ -122,7 +122,7 @@ const AUDIO_PROFILES = {
  * @retuns {Promise} - This promise will be used to simulate an API request in order to get the video presets
  */
 export function getVideoProfiles() {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         resolve([
             {
                 label: '1080i50 / 4:2:2 / 10 bit',
@@ -173,7 +173,7 @@ export function getVideoProfiles() {
 }
 
 export function getAudioProfiles() {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         resolve([
             {
                 label: 'L16 / 48kHz / 2 channels / 1 millisecond',
@@ -192,10 +192,7 @@ export function getVideoInformationByProfile(profile) {
         ? VIDEO_PROFILES[profile]
         : { colorimetry: 'unknown' };
 
-    const newVideo = Object.assign(
-        {},
-        defaults
-    );
+    const newVideo = Object.assign({}, defaults);
 
     if (newVideo.colorimetry === undefined) {
         newVideo.colorimetry = 'unknown';

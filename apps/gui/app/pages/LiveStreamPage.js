@@ -17,7 +17,8 @@ class LiveStreamPage extends Component {
     render() {
         if (this.isVideo()) {
             return <LiveVideoPage streamInfo={this.props.streamInfo} />;
-        } else if (this.isAudio()) {
+        }
+        if (this.isAudio()) {
             const { streamID } = this.props.match.params;
             return (
                 <AudioPage
@@ -26,16 +27,15 @@ class LiveStreamPage extends Component {
                     streamID={streamID}
                 />
             );
-        } else {
-            return <div>Unknown stream type</div>;
         }
+        return <div>Unknown stream type</div>;
     }
 }
 
 export default withRouter(
     asyncLoader(LiveStreamPage, {
         asyncRequests: {
-            streamInfo: props => {
+            streamInfo: (props) => {
                 const { streamID } = props.match.params;
                 return api.getLiveStream(streamID);
             },

@@ -1,6 +1,6 @@
 #pragma once
 
-#pragma warning(disable: 4996)
+#pragma warning(disable : 4996)
 
 #if defined(_WIN32)
 #include <SDKDDKVer.h>
@@ -11,15 +11,14 @@
 #include <cassert>
 #include <chrono>
 #include <cinttypes>
+#include <cstdio>
+#include <experimental/filesystem>
 #include <iomanip>
 #include <iostream>
 #include <memory>
 #include <optional>
 #include <sstream>
-#include <cstdio>
 #include <string>
 #include <tuple>
 #include <type_traits>
 #include <variant>
-#include <cinttypes>
-#include <experimental/filesystem>

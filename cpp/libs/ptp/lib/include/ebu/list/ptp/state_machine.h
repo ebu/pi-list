@@ -8,7 +8,7 @@ namespace ebu_list::ptp
 {
     class state_machine : public message_listener
     {
-    public:
+      public:
         struct on_sync_data
         {
             clock::time_point sync_message_timestamp;
@@ -17,14 +17,14 @@ namespace ebu_list::ptp
 
         class listener
         {
-        public:
+          public:
             using data_type = on_sync_data const&;
 
             virtual ~listener() = default;
 
             virtual void on_data(const on_sync_data& data) = 0;
-            virtual void on_complete() = 0;
-            virtual void on_error(std::exception_ptr e) = 0;
+            virtual void on_complete()                     = 0;
+            virtual void on_error(std::exception_ptr e)    = 0;
         };
 
         using listener_ptr = std::shared_ptr<listener>;
@@ -37,19 +37,19 @@ namespace ebu_list::ptp
         void on_complete() override;
         void on_error(std::exception_ptr e) override;
 
-    private:
+      private:
         struct impl;
         const std::unique_ptr<impl> impl_;
     };
 
-    using state_machine_listener_ptr = state_machine::listener_ptr;
+    using state_machine_listener_ptr  = state_machine::listener_ptr;
     using state_machine_listener_uptr = std::unique_ptr<state_machine::listener>;
 
     class null_state_machine_listener : public state_machine::listener
     {
-    private:
-        void on_data(const state_machine::on_sync_data&) override { }
-        void on_complete() override { }
-        void on_error(std::exception_ptr) override { }
+      private:
+        void on_data(const state_machine::on_sync_data&) override {}
+        void on_complete() override {}
+        void on_error(std::exception_ptr) override {}
     };
 }

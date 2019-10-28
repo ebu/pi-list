@@ -1,10 +1,10 @@
 #include "pch.h"
 
-#include "ebu/list/ptp/v2/sync.h"
-#include "ebu/list/ptp/v2/message_header.h"
-#include "ebu/list/ptp/test_messages.h"
-#include "ebu/list/core/memory/bimo.h"
 #include "catch.hpp"
+#include "ebu/list/core/memory/bimo.h"
+#include "ebu/list/ptp/test_messages.h"
+#include "ebu/list/ptp/v2/message_header.h"
+#include "ebu/list/ptp/v2/sync.h"
 using namespace ebu_list;
 using namespace ebu_list::ptp;
 using namespace ebu_list::ptp::v2;
@@ -20,12 +20,9 @@ SCENARIO("PTPv2 header parsing")
 
         WHEN("we take its header")
         {
-            const auto[header, remainder] = take_header(std::move(pdu));
+            const auto [header, remainder] = take_header(std::move(pdu));
 
-            THEN("the header is correct")
-            {
-                REQUIRE(header.value().sequence_id() == sync_1::sequence_id);
-            }
+            THEN("the header is correct") { REQUIRE(header.value().sequence_id() == sync_1::sequence_id); }
 
             AND_THEN("the remainder of the message is correct")
             {

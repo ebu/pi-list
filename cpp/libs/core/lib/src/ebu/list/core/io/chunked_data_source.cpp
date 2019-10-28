@@ -5,8 +5,7 @@ using namespace ebu_list;
 //------------------------------------------------------------------------------
 
 chunked_data_source::chunked_data_source(sbuffer_factory_ptr factory, data_source_uptr source)
-    : factory_(factory),
-    source_(std::move(source))
+    : factory_(factory), source_(std::move(source))
 {
     LIST_ENFORCE(source_, std::runtime_error, "Invalid source");
 }
@@ -48,8 +47,8 @@ oview chunked_data_source::try_read_exactly(ptrdiff_t amount)
 
     if (size(cache_) >= amount)
     {
-        auto[left, right] = split(std::move(cache_), amount);
-        cache_ = std::move(right);
+        auto [left, right] = split(std::move(cache_), amount);
+        cache_             = std::move(right);
 
         current_offset_ += left.view().size_bytes();
 

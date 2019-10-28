@@ -32,8 +32,8 @@ const AudioInfo = props => {
             value: props.samples_per_packet
         },
         {
-            labelTag: 'media_information.audio.sample_size',
-            value: props.sample_size,
+            labelTag: 'media_information.audio.packet_size',
+            value: props.packet_size,
             units: 'bytes'
         },
     ];

@@ -7,7 +7,7 @@ namespace ebu_list
 {
     class executor
     {
-    public:
+      public:
         executor();
         ~executor();
 
@@ -16,10 +16,10 @@ namespace ebu_list
         void execute(F&& f);
         void wait();
 
-    private:
+      private:
         struct impl;
         std::unique_ptr<impl> impl_;
     };
 
     using executor_ptr = std::shared_ptr<executor>;
-}
+} // namespace ebu_list

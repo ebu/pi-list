@@ -11,8 +11,22 @@ import './Modal.scss';
 const isEmpty = stream =>
     !stream.description && !stream.dstAddr && !stream.dstPort;
 
+const haveErrors = stream => {
+    if (stream.dstAddrError == true || stream.dstPortError == true || stream.descriptionError == true)
+        return true;
+
+    return false;
+}
+
 const addTrailing = streams => {
-    streams.push({ description: '', dstAddr: '', dstPort: '' });
+    streams.push({
+        description: '',
+        descriptionError: false,
+        dstAddr: '',
+        dstAddrError: false,
+        dstPort: '',
+        dstPortError: false
+    });
     return streams;
 };
 
@@ -39,7 +53,11 @@ const AddSourceModal = props => {
         />
     ));
 
+    const errors = sources.some(s => haveErrors(s)) ? (<div>Please correct field errors.</div>) : "";
+
     const onAdd = () => {
+        if(sources.some(s => haveErrors(s))) return;
+        
         const newSources = sources.filter(s => !isEmpty(s));
         setSources(addTrailing([]));
         props.onAdd(newSources);
@@ -69,6 +87,7 @@ const AddSourceModal = props => {
                 </h2>
                 <hr />
                 {rows}
+                {errors}
                 <Button
                     type="info"
                     label={translateC('workflow.add')}

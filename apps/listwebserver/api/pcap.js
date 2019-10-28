@@ -360,12 +360,12 @@ router.get('/:pcapID/stream/:streamID/analytics/Vrx/histogram', (req, res) => {
 
 /* Audio Delays */
 router.get(
-    '/:pcapID/stream/:streamID/analytics/AudioRtpTsVsPktTs',
+    '/:pcapID/stream/:streamID/analytics/AudioPktTsVsRtpTs',
     (req, res) => {
         const { pcapID, streamID } = req.params;
         const { from, to } = req.query;
 
-        chartData = influxDbManager.getAudioRtpTsVsPktTs(
+        chartData = influxDbManager.getAudioPktTsVsRtpTs(
             pcapID,
             streamID,
             from,

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Tabs from '../components/common/Tabs';
-import AnalysisPanel from './streamPage/AnalysisPanel';
+import VideoAnalysis from './streamPage/VideoAnalysis';
 import VideoStreamInformation from './streamPage/VideoStreamInformation';
 import CbufferAnalysis from './streamPage/CbufferAnalysis';
 import VrxAnalysis from './streamPage/VrxAnalysis';
@@ -11,8 +11,8 @@ import PerFrameAnalysisViewer from './streamPage/PerFrameAnalysisViewer';
 import RtpAnalysisViewer from './streamPage/RtpAnalysisViewer';
 
 const TABS = [
-    AnalysisPanel,
     VideoStreamInformation,
+    VideoAnalysis,
     VideoExplorer,
     CbufferAnalysis,
     VrxAnalysis,
@@ -21,22 +21,22 @@ const TABS = [
     PerFrameAnalysisViewer,
 ];
 
-const VideoPage = props => {
+const VideoPage = (props) => {
     const [tabIndex, setTabIndex] = useState(0);
 
     const CurrentTabComponent = TABS[tabIndex];
 
     return (
-        <div className = "lst-stream-info-tab lst-full-height">
+        <div className="lst-stream-info-tab lst-full-height">
             <Tabs
-                headers = {[
-                    {
-                        label: 'Analysis',
-                        icon: 'info',
-                    },
+                headers={[
                     {
                         label: 'Information',
                         icon: 'info',
+                    },
+                    {
+                        label: 'Analysis',
+                        icon: 'assignment',
                     },
                     {
                         label: 'Stream Explorer',
@@ -63,10 +63,10 @@ const VideoPage = props => {
                         icon: 'timeline',
                     },
                 ]}
-                onTabChange = { setTabIndex }
+                onTabChange={setTabIndex}
             >
                 <Scrollbars>
-                    <CurrentTabComponent { ...props } />
+                    <CurrentTabComponent {...props} />
                 </Scrollbars>
             </Tabs>
         </div>

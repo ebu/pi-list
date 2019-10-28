@@ -15,7 +15,7 @@ namespace ebu_list::st2110::d20
         video::video_sampling sampling{};
         uint16_t color_depth = 0;
         video::video_dimensions dimensions{0, 0};
-        video::Rate rate = video::Rate(0,1);
+        video::Rate rate = video::Rate(0, 1);
         video::colorimetry colorimetry{};
         st2110::d21::read_schedule schedule{};
 
@@ -26,6 +26,11 @@ namespace ebu_list::st2110::d20
         // TCS
         // RANGE
         // PAR
+
+        int64_t avg_tro_ns     = 0;
+        int64_t max_tro_ns     = 0;
+        int64_t min_tro_ns     = 0;
+        int64_t tro_default_ns = 0;
     };
 
     media::video::info get_info(st2110::d20::video_description video);
@@ -33,10 +38,12 @@ namespace ebu_list::st2110::d20
     struct st2110_20_sdp_serializer
     {
         explicit st2110_20_sdp_serializer(const video_description& video_des);
-        void write_rtpmap_line(std::vector<std::string>& current_lines, const ebu_list::media::network_media_description& media_description);
-        void additional_attributes(std::vector<std::string>& current_lines, const media::network_media_description& media_description);
+        void write_rtpmap_line(std::vector<std::string>& current_lines,
+                               const ebu_list::media::network_media_description& media_description);
+        void additional_attributes(std::vector<std::string>& current_lines,
+                                   const media::network_media_description& media_description);
 
-    private:
+      private:
         const video_description& video_desc_;
     };
-}
+} // namespace ebu_list::st2110::d20

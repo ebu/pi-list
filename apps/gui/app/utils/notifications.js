@@ -4,7 +4,7 @@ import 'noty/lib/noty.css';
 
 Noty.overrideDefaults({
     layout: 'topRight',
-    theme: 'list',
+    theme: 'dark',
     timeout: 4000,
     closeWith: ['click', 'button'],
     progressBar: false,
@@ -29,9 +29,11 @@ function notificationTemplate(title = '', message = '', icon) {
 
 function showNoty(type, title, message, icon) {
     const noty = new Noty({
+        theme: 'list',
         type,
         text: notificationTemplate(title, message, icon),
         layout: 'bottomRight',
+        timeout: 3000,
     });
 
     noty.show();
@@ -41,15 +43,15 @@ const getTitle = obj => obj.title || translate(obj.titleTag);
 const getMessage = obj => obj.message || translate(obj.messageTag);
 
 export default {
-    success: obj => {
+    success: (obj) => {
         showNoty('success', getTitle(obj), getMessage(obj), 'check_circle');
     },
 
-    error: obj => {
+    error: (obj) => {
         showNoty('error', getTitle(obj), getMessage(obj), 'error');
     },
 
-    warn: obj => {
+    warn: (obj) => {
         showNoty('warn', getTitle(obj), getMessage(obj), 'warning');
     },
 };

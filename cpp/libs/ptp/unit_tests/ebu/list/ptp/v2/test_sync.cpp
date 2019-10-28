@@ -1,10 +1,10 @@
 #include "pch.h"
 
-#include "ebu/list/ptp/v2/sync.h"
-#include "ebu/list/ptp/test_messages.h"
-#include "ebu/list/core/types.h"
-#include "ebu/list/core/memory/bimo.h"
 #include "catch.hpp"
+#include "ebu/list/core/memory/bimo.h"
+#include "ebu/list/core/types.h"
+#include "ebu/list/ptp/test_messages.h"
+#include "ebu/list/ptp/v2/sync.h"
 using namespace ebu_list;
 using namespace ebu_list::ptp;
 using namespace ebu_list::ptp::v2::test;
@@ -15,8 +15,8 @@ SCENARIO("PTP sync parsing")
 {
     GIVEN("sync message 1")
     {
-        auto pdu = oview(make_static_sbuffer(sync_1::data));
-        auto[header, remainder] = v2::take_header(std::move(pdu));
+        auto pdu                 = oview(make_static_sbuffer(sync_1::data));
+        auto [header, remainder] = v2::take_header(std::move(pdu));
 
         WHEN("we parse it")
         {
@@ -38,8 +38,8 @@ SCENARIO("PTP sync parsing")
 
     GIVEN("sync message 2")
     {
-        auto pdu = oview(make_static_sbuffer(sync_2::data));
-        auto[header, remainder] = v2::take_header(std::move(pdu));
+        auto pdu                 = oview(make_static_sbuffer(sync_2::data));
+        auto [header, remainder] = v2::take_header(std::move(pdu));
 
         WHEN("we parse it")
         {
@@ -61,8 +61,8 @@ SCENARIO("PTP sync parsing")
 
     GIVEN("a sync message with a large ts")
     {
-        auto pdu = oview(make_static_sbuffer(sync_3::data));
-        auto[header, remainder] = v2::take_header(std::move(pdu));
+        auto pdu                 = oview(make_static_sbuffer(sync_3::data));
+        auto [header, remainder] = v2::take_header(std::move(pdu));
 
         WHEN("we parse it")
         {

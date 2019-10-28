@@ -1,5 +1,5 @@
-#include "ebu/list/st2110/pch.h"
 #include "ebu/list/st2110/rate_calculator.h"
+#include "ebu/list/st2110/pch.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110;
@@ -34,6 +34,6 @@ std::optional<media::video::Rate> rate_calculator::rate() const
     const auto d1 = t1 - t0;
     const auto d2 = t2 - t1;
 
-    if (d1 == 0 || d2 == 0) return media::video::Rate(0,1);
+    if (d1 == 0 || d2 == 0) return media::video::Rate(0, 1);
     return media::video::Rate(clock_rate * 2, d1 + d2);
 }

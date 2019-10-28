@@ -1,17 +1,17 @@
 import React from 'react';
 import { translateX } from 'utils/translation';
 
-const SingleValueEntry = ({ label, value }) => (
+const SingleValueEntry = ({ label, value, attention }) => (
     <div className="lst-stream-info2-value-group">
         <span className="lst-stream-info2-measurement">{label}</span>
-        <div className="lst-stream-info2-value">{value}</div>
+        <div className={attention? "lst-stream-info2-value-attention": "lst-stream-info2-value"}> {value} </div>
     </div>
 );
 
 // values: [{ label: DOMNode, value: DOMNode }]
-const MultiValueDisplay = ({ label, labelTag, units, values, message }) => {
+const MultiValueDisplay = ({ label, labelTag, units, values, message, attention }) => {
     const renderedValues = values.map((value, index) => (
-        <SingleValueEntry key={index} {...value} />
+        <SingleValueEntry key={index} {...value} attention={attention} />
     ));
     label = label || translateX(labelTag);
 

@@ -89,6 +89,20 @@ CMakeLists.txt  --> definitions for both lib and unit_tests
 
 Just use cmake's `add_subdirectory()` and it will work out-of-the-box.
 
+## Contribute with translations
+
+Translations file are [stored in a Google Sheet](https://docs.google.com/spreadsheets/d/1yqL3CKmUu_M1AWCtHEzG5hp-8B1X-5_qxcgDn4AbFYo/edit)
+
+## Create authentication token to generate the translations
+
+The translations will be generated during the deploy process either Linux host
+or Docker builds, to achieve this a token must be generated first.
+This token can be kept locally and can be reused.
+
+```
+node apps/gui/data/translationsGenerator.js -t
+```
+
 ## Contribute
 
 1. Fork it

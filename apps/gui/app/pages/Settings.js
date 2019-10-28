@@ -7,7 +7,7 @@ import asyncLoader from '../components/asyncLoader';
 import { useStateValue, Actions } from '../utils/AppContext';
 import { localeNames, T } from '../utils/translation';
 
-const Settings = props => {
+const Settings = (props) => {
     const [{ language, theme }, dispatch] = useStateValue();
 
     const themes = [
@@ -16,25 +16,26 @@ const Settings = props => {
     ];
 
     const languageKeys = Object.keys(localeNames).sort();
-    const languages = languageKeys.map(key => {
-        return { value: key, label: localeNames[key] };
-    });
+    const languages = languageKeys.map(key => ({
+        value: key,
+        label: localeNames[key],
+    }));
 
-    const onChange = e => {
+    const onChange = (e) => {
         dispatch({
             type: Actions.setTheme,
             value: e.value,
         });
     };
 
-    const onChangeLanguage = e => {
+    const onChangeLanguage = (e) => {
         dispatch({
             type: Actions.setLanguage,
             value: e.value,
         });
     };
 
-    const onDeleteUser = e => {
+    const onDeleteUser = (e) => {
         dispatch({
             type: Actions.deleteUserRequest,
         });
@@ -44,7 +45,8 @@ const Settings = props => {
         <div className="lst-settings-page col-md-6">
             <div className="row lst-align-items-center">
                 <div className="col-xs-4 lst-text-right lst-stream-info2-label">
-                    <T t="settings.theme" />:
+                    <T t="settings.theme" />
+:
                 </div>
                 <div className="col-xs-8">
                     <Select
@@ -56,7 +58,8 @@ const Settings = props => {
             </div>
             <div className="row lst-align-items-center">
                 <div className="col-xs-4 lst-text-right lst-stream-info2-label">
-                    <T t="settings.language" />:
+                    <T t="settings.language" />
+:
                 </div>
                 <div className="col-xs-8">
                     <Select
@@ -79,8 +82,6 @@ const Settings = props => {
 
 export default asyncLoader(Settings, {
     asyncRequests: {
-        user: props => {
-            return api.getUser();
-        },
+        user: props => api.getUser(),
     },
 });

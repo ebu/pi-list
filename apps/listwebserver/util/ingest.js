@@ -50,6 +50,7 @@ function generateRandomPcapDefinition(req, optionalPcapId) {
  */
 function argumentsToCmd() {
     return {
+        withStorage: `database`,
         withMongo: `-mongo_url ${program.databaseURL}`,
         withInflux: `-influx_url ${program.influxURL}`,
     };
@@ -254,13 +255,13 @@ const pcapFullAnalysis = async (req, res, next) => {
     const pcapId = req.pcap.uuid;
     const pcapFolder = req.pcap.folder;
 
-    const { withMongo, withInflux } = argumentsToCmd();
+    const { withStorage, withMongo, withInflux } = argumentsToCmd();
 
     const st2110ExtractorCommand = `"${
         program.cpp
     }/st2110_extractor" ${pcapId} "${
         res.locals.pcapFilePath
-    }" "${pcapFolder}" ${withInflux} ${withMongo}`;
+    }" "${pcapFolder}" ${withStorage} ${withInflux} ${withMongo} `;
 
     logger('st2110_extractor').info(`Command: ${st2110ExtractorCommand}`);
 
@@ -326,11 +327,11 @@ function singleStreamAnalysis(req, res, next) {
     const pcapFolder = req.pcap.folder;
     const pcap_location = req.file.path;
 
-    const { withMongo, withInflux } = argumentsToCmd();
+    const { withStorage, withMongo, withInflux } = argumentsToCmd();
 
     const st2110ExtractorCommand = `"${
         program.cpp
-    }/st2110_extractor" ${pcapId} "${pcap_location}" "${pcapFolder}" ${withInflux} ${withMongo} -s "${streamID}"`;
+    }/st2110_extractor" ${pcapId} "${pcap_location}" "${pcapFolder}" ${withStorage}  ${withInflux} ${withMongo} -s "${streamID}"`;
 
     logger('st2110_extractor').info(`Command: ${st2110ExtractorCommand}`);
     exec(st2110ExtractorCommand)

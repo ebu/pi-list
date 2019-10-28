@@ -1,8 +1,8 @@
-#include "ebu/list/st2110/pch.h"
 #include "ebu/list/st2110/d21/vrx_analyzer.h"
 #include "ebu/list/core/math/histogram.h"
-#include "ebu/list/st2110/d21/settings.h"
 #include "ebu/list/st2110/d21/histogram_listener.h"
+#include "ebu/list/st2110/d21/settings.h"
+#include "ebu/list/st2110/pch.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110::d21;
@@ -11,10 +11,10 @@ using namespace ebu_list::st2110::d21;
 
 struct vrx_analyzer::impl
 {
-    impl(listener_uptr listener, histogram_listener_uptr hl, int npackets, media::video::info video_info, vrx_settings settings)
-        : listener_(std::move(listener)),
-        histogram_listener_(std::move(hl)),
-        calculator_(npackets, video_info, settings)
+    impl(listener_uptr listener, histogram_listener_uptr hl, int npackets, media::video::info video_info,
+         vrx_settings settings)
+        : listener_(std::move(listener)), histogram_listener_(std::move(hl)),
+          calculator_(npackets, video_info, settings)
     {
     }
 
@@ -33,10 +33,12 @@ struct vrx_analyzer::impl
 
 //------------------------------------------------------------------------------
 
-vrx_analyzer::vrx_analyzer(listener_uptr l, histogram_listener_uptr histogram_listener, int npackets, media::video::info video_info, vrx_settings _settings)
+vrx_analyzer::vrx_analyzer(listener_uptr l, histogram_listener_uptr histogram_listener, int npackets,
+                           media::video::info video_info, vrx_settings _settings)
     : impl_(std::make_unique<impl>(std::move(l),
-    histogram_listener ? std::move(histogram_listener) : std::make_unique<null_histogram_listener>(),
-    npackets, video_info, _settings))
+                                   histogram_listener ? std::move(histogram_listener)
+                                                      : std::make_unique<null_histogram_listener>(),
+                                   npackets, video_info, _settings))
 {
 }
 

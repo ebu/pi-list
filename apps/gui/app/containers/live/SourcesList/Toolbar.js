@@ -35,6 +35,15 @@ const Toolbar = props => {
         />
     );
 
+    const editSourceButton = (
+        <Button
+            icon="edit"
+            type="info"
+            link
+            onClick={() => props.dispatch({ type: Actions.showEditSource })}
+        />
+    );
+
     const colSizes = { labelColSize: 1, valueColSize: 11 };
     const searchBar = (
         <div className="lst-toolbar-search">
@@ -68,6 +77,7 @@ const Toolbar = props => {
         <div className="lst-table-actions">
             {deleteButton}
             {addSourceButton}
+            {editSourceButton}
             {searchBar}
         </div>
     );

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "rtp_source.h"
 #include "ebu/list/st2110/format_detector.h"
+#include "rtp_source.h"
 
 namespace ebu_list::test
 {

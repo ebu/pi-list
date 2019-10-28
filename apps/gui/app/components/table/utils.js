@@ -36,12 +36,15 @@ const getKindColumn = sources => ({
             case sources.kinds.from_sdp:
                 if (original.sdp.errors.length > 0) {
                     return (
-                        <span
-                            title={original.sdp.errors}
-                            style={{ color: 'red' }}
-                        >
-                            SDP
-                        </span>
+                        <div>
+                            <span
+                                title={original.sdp.errors}
+                                style={{ color: 'red', display: 'flex' }}>
+                                <Icon value={'priority_high'} />
+                                SDP
+                            </span>
+                        </div>
+                        
                     );
                 } else {
                     return <span style={{ color: 'green' }}>SDP</span>;

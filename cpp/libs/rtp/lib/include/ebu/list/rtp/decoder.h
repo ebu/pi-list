@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ebu/list/core/memory/bimo.h"
-#include "ebu/list/rtp/header.h"
 #include "ebu/list/net/udp/decoder.h"
+#include "ebu/list/rtp/header.h"
 #include <optional>
 
 //------------------------------------------------------------------------------
@@ -11,7 +11,7 @@ namespace ebu_list::rtp
 {
     class header_lens
     {
-    public:
+      public:
         header_lens(const raw_header&);
 
         int version() const noexcept;
@@ -24,21 +24,19 @@ namespace ebu_list::rtp
         uint32_t timestamp() const noexcept;
         uint32_t ssrc() const noexcept;
 
-    private:
+      private:
         const raw_header& header_;
     };
 
-    using header = mapped_view<raw_header, header_lens>;
-    using pdu = std::tuple<header, oview>;
+    using header    = mapped_view<raw_header, header_lens>;
+    using pdu       = std::tuple<header, oview>;
     using maybe_pdu = std::optional<pdu>;
 
     maybe_pdu decode(oview&& raw_pdu);
 
     struct packet_info
     {
-        packet_info(ethernet::header&& _ethernet_info,
-                    udp::datagram_info&& _udp,
-                    header&& _rtp);
+        packet_info(ethernet::header&& _ethernet_info, udp::datagram_info&& _udp, header&& _rtp);
 
         ethernet::header ethernet_info;
         udp::datagram_info udp;
@@ -53,7 +51,5 @@ namespace ebu_list::rtp
 
     using maybe_packet = std::optional<packet>;
 
-    maybe_packet decode(ethernet::header ethernet_info,
-                        udp::datagram_info udp_info,
-                        oview&& raw_pdu);
-}
+    maybe_packet decode(ethernet::header ethernet_info, udp::datagram_info udp_info, oview&& raw_pdu);
+} // namespace ebu_list::rtp

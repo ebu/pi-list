@@ -32,15 +32,15 @@ namespace ebu_list::ptp::v2
 
     enum class message_type : uint8_t
     {
-        sync        = 0,
-        delay_req   = 1,
-        follow_up   = 8,
-        delay_resp  = 9
+        sync       = 0,
+        delay_req  = 1,
+        follow_up  = 8,
+        delay_resp = 9
     };
 
     class message_header_lens
     {
-    public:
+      public:
         explicit message_header_lens(const message_header& h) noexcept;
 
         message_type type() const noexcept;
@@ -48,18 +48,18 @@ namespace ebu_list::ptp::v2
         uint64_t clock_identity() const noexcept;
         uint8_t subdomain_number() const noexcept;
 
-    private:
+      private:
         const message_header& h_;
     };
 
     class header
     {
-    public:
+      public:
         explicit header(mapped_oview<message_header>&& common_header);
 
         const message_header_lens& value() const noexcept;
 
-    private:
+      private:
         mapped_oview<message_header> common_header_;
         message_header_lens header_lens_;
     };
@@ -68,6 +68,6 @@ namespace ebu_list::ptp::v2
     // the parsed header and the remainder of the message.
     std::tuple<header, oview> take_header(oview&& pdu);
 
-    template<class MessageBody, class MessageLens>
+    template <class MessageBody, class MessageLens>
     using v2_base_message = base_message<header, MessageBody, MessageLens>;
-}
+} // namespace ebu_list::ptp::v2

@@ -6,17 +6,17 @@ using namespace ebu_list::rtp;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-udp_handler::udp_handler(handler_creator creator)
-    : creator_(std::move(creator))
+udp_handler::udp_handler(handler_creator creator) : creator_(std::move(creator))
 {
 }
 
-void udp_handler::on_data(udp::datagram &&datagram)
+void udp_handler::on_data(udp::datagram&& datagram)
 {
     auto maybe_rtp_packet = rtp::decode(datagram.ethernet_info, datagram.info, std::move(datagram.sdu));
     if (!maybe_rtp_packet)
     {
-        // logger()->trace("Non-RTP datagram from {} to {}", to_string(source(datagram.info)), to_string(destination(datagram.info)));
+        // logger()->trace("Non-RTP datagram from {} to {}", to_string(source(datagram.info)),
+        // to_string(destination(datagram.info)));
         return;
     }
 
@@ -31,7 +31,7 @@ void udp_handler::on_data(udp::datagram &&datagram)
 
 void udp_handler::on_complete()
 {
-    for (auto &handler : handlers_)
+    for (auto& handler : handlers_)
     {
         handler.second->on_complete();
     }
@@ -43,24 +43,24 @@ void udp_handler::on_error(std::exception_ptr e)
     {
         std::rethrow_exception(e);
     }
-    catch (std::exception &ex)
+    catch (std::exception& ex)
     {
         logger()->info("on_error: {}", ex.what());
     }
 }
 
-rtp::listener *udp_handler::find_or_create(const rtp::packet &packet)
+rtp::listener* udp_handler::find_or_create(const rtp::packet& packet)
 {
     const auto s = source(packet.info.udp);
     const auto d = destination(packet.info.udp);
 
-    const stream_key key = { s, d };
+    const stream_key key = {s, d};
 
     auto it = handlers_.find(key);
 
     if (it == handlers_.end())
     {
-        auto new_handler = creator_(packet);
+        auto new_handler     = creator_(packet);
         const auto p_handler = new_handler.get();
         handlers_.emplace(key, std::move(new_handler));
         return p_handler;

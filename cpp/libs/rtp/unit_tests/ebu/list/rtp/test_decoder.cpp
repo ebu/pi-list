@@ -1,9 +1,9 @@
 #include "pch.h"
 
+#include "catch.hpp"
+#include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/rtp/decoder.h"
 #include "ebu/list/rtp/test_packets.h"
-#include "ebu/list/core/memory/bimo.h"
-#include "catch.hpp"
 using namespace ebu_list;
 using namespace ebu_list::rtp;
 
@@ -23,8 +23,8 @@ SCENARIO("RTP decoding")
             {
                 REQUIRE(decode_result);
                 auto full_packet = std::move(decode_result.value());
-                auto& header = std::get<0>(full_packet);
-                auto& sdu = std::get<1>(full_packet);
+                auto& header     = std::get<0>(full_packet);
+                auto& sdu        = std::get<1>(full_packet);
 
                 REQUIRE(header.view().version() == test::header_1::version);
                 REQUIRE(header.view().padding() == test::header_1::padding);
@@ -53,8 +53,8 @@ SCENARIO("RTP decoding")
             {
                 REQUIRE(decode_result);
                 auto full_packet = std::move(decode_result.value());
-                auto& header = std::get<0>(full_packet);
-                auto& sdu = std::get<1>(full_packet);
+                auto& header     = std::get<0>(full_packet);
+                auto& sdu        = std::get<1>(full_packet);
 
                 REQUIRE(header.view().version() == test::header_with_extension::version);
                 REQUIRE(header.view().padding() == test::header_with_extension::padding);

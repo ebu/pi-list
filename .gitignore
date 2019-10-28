@@ -10,12 +10,3 @@ apps/listwebserver/version.yml
 apps/listwebserver/.vscode/launch.json
 apps/capture_probe/.vscode/launch.json
 apps/stream_pre_processor/.vscode/launch.json
-apps/gui/data/en-US.json
-apps/gui/data/de-DE.json
-apps/gui/data/fr-CA.json
-apps/gui/data/gr-GR.json
-apps/gui/data/locales.json
-apps/gui/data/nl-BE.json
-apps/gui/data/pt-PT.json
-apps/gui/data/ru-RU.json
-apps/gui/data/uk-UA.json

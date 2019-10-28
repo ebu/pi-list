@@ -38,8 +38,8 @@ class Chart extends Component {
                 title: {
                     display: true,
                     text: this.props.title,
-                    [this.props.colorScheme === 'dark' &&
-                    'fontColor']: '#D8DEE9',
+                    [this.props.colorScheme === 'dark'
+                    && 'fontColor']: '#D8DEE9',
                 },
                 elements: {
                     point: {
@@ -53,18 +53,18 @@ class Chart extends Component {
                         {
                             gridLines: {
                                 display: true,
-                                [this.props.colorScheme === 'dark' &&
-                                'fontColor']: '#D8DEE9',
+                                [this.props.colorScheme === 'dark'
+                                && 'fontColor']: '#D8DEE9',
                             },
                             scaleLabel: {
                                 display: this.props.yLabel != null,
                                 labelString: this.props.yLabel,
-                                [this.props.colorScheme === 'dark' &&
-                                'fontColor']: '#D8DEE9',
+                                [this.props.colorScheme === 'dark'
+                                && 'fontColor']: '#D8DEE9',
                             },
                             ticks: {
-                                [this.props.colorScheme === 'dark' &&
-                                'fontColor']: '#D8DEE9',
+                                [this.props.colorScheme === 'dark'
+                                && 'fontColor']: '#D8DEE9',
                             },
                         },
                     ],
@@ -80,8 +80,8 @@ class Chart extends Component {
                             },
                             ticks: {
                                 display: this.props.displayXTicks != null,
-                                [this.props.colorScheme === 'dark' &&
-                                'fontColor']: '#D8DEE9',
+                                [this.props.colorScheme === 'dark'
+                                && 'fontColor']: '#D8DEE9',
                             },
                         },
                     ],

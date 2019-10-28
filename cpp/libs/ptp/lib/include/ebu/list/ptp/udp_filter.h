@@ -9,17 +9,17 @@ namespace ebu_list::ptp
 {
     class udp_filter : public udp::listener
     {
-    public:
+      public:
         explicit udp_filter(message_listener_ptr ptp_listener, udp::listener_ptr non_ptp_listener);
 
-    private:
+      private:
 #pragma region udp::listener events
         void on_data(udp::datagram&& datagram) override;
         void on_complete() override;
         void on_error(std::exception_ptr e) override;
 #pragma endregion udp::listener events
 
-    private:
+      private:
         const message_listener_ptr ptp_listener_;
         const udp::listener_ptr non_ptp_listener_;
     };

@@ -19,21 +19,21 @@ namespace ebu_list::ptp::v2
 
     class delay_req_lens
     {
-    public:
+      public:
         explicit delay_req_lens(const delay_req_body& h) noexcept;
 
         ts80 origin_timestamp() const noexcept;
 
-    private:
+      private:
         const delay_req_body& h_;
     };
 
     class delay_req : public v2_base_message<delay_req_body, delay_req_lens>
     {
-    public:
+      public:
         explicit delay_req(clock::time_point packet_timestamp, v2::header&& header, oview&& sdu)
             : base_message(packet_timestamp, std::move(header), std::move(sdu))
         {
         }
     };
-}
+} // namespace ebu_list::ptp::v2

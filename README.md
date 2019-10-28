@@ -30,8 +30,7 @@ We deployed an [online version](http://list.ebu.io/) that you can start using ri
 
 ## Additional information
 
-* [Explanation of the timing parameters](./docs/parameters_explained.md)
-* [Cfull and Vrx analysis](./docs/cfull_and_vrx_analysis.md)
+* [Video timing analysis](./docs/video_timing_analysis.md)
 * [Audio timing analysis](./docs/audio_timing_analysis.md)
 * [Ancillary data](./docs/ancillary_data.md)
 

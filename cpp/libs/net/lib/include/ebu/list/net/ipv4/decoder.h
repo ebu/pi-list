@@ -27,4 +27,4 @@ namespace ebu_list::ipv4
 
     std::ostream& operator<<(std::ostream& os, const header& h);
     std::ostream& operator<<(std::ostream& os, protocol_type h);
-}
+} // namespace ebu_list::ipv4

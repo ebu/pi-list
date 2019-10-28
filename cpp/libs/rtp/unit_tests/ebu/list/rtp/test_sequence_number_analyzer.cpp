@@ -1,7 +1,7 @@
 #include "pch.h"
 
-#include "ebu/list/rtp/sequence_number_analyzer.h"
 #include "catch.hpp"
+#include "ebu/list/rtp/sequence_number_analyzer.h"
 using namespace ebu_list;
 using namespace ebu_list::rtp;
 
@@ -15,10 +15,7 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 0")
-            {
-                REQUIRE(analyzer.dropped_packets() == 0);
-            }
+            THEN("it is 0") { REQUIRE(analyzer.dropped_packets() == 0); }
         }
     }
 
@@ -33,10 +30,7 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 0")
-            {
-                REQUIRE(analyzer.dropped_packets() == 0);
-            }
+            THEN("it is 0") { REQUIRE(analyzer.dropped_packets() == 0); }
         }
     }
 
@@ -52,10 +46,7 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 0")
-            {
-                REQUIRE(analyzer.dropped_packets() == 0);
-            }
+            THEN("it is 0") { REQUIRE(analyzer.dropped_packets() == 0); }
         }
     }
 
@@ -75,10 +66,7 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 0")
-            {
-                REQUIRE(analyzer.dropped_packets() == 0);
-            }
+            THEN("it is 0") { REQUIRE(analyzer.dropped_packets() == 0); }
         }
     }
 
@@ -92,10 +80,7 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 1")
-            {
-                REQUIRE(analyzer.dropped_packets() == 1);
-            }
+            THEN("it is 1") { REQUIRE(analyzer.dropped_packets() == 1); }
         }
     }
 
@@ -109,10 +94,7 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 5")
-            {
-                REQUIRE(analyzer.dropped_packets() == 5);
-            }
+            THEN("it is 5") { REQUIRE(analyzer.dropped_packets() == 5); }
         }
     }
 
@@ -126,10 +108,7 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 5")
-            {
-                REQUIRE(analyzer.dropped_packets() == 5);
-            }
+            THEN("it is 5") { REQUIRE(analyzer.dropped_packets() == 5); }
         }
     }
 
@@ -148,10 +127,7 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 1")
-            {
-                REQUIRE(analyzer.dropped_packets() == 1);
-            }
+            THEN("it is 1") { REQUIRE(analyzer.dropped_packets() == 1); }
         }
     }
 
@@ -166,10 +142,7 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 5")
-            {
-                REQUIRE(analyzer.dropped_packets() == 5);
-            }
+            THEN("it is 5") { REQUIRE(analyzer.dropped_packets() == 5); }
         }
     }
 
@@ -188,10 +161,7 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 1")
-            {
-                REQUIRE(analyzer.dropped_packets() == 1);
-            }
+            THEN("it is 1") { REQUIRE(analyzer.dropped_packets() == 1); }
         }
     }
 
@@ -206,14 +176,11 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 5")
-            {
-                REQUIRE(analyzer.dropped_packets() == 5);
-            }
+            THEN("it is 5") { REQUIRE(analyzer.dropped_packets() == 5); }
         }
     }
 
-    GIVEN("a sequence that drops all packackets except for the one " \
+    GIVEN("a sequence that drops all packackets except for the one "
           "at the lower and upper numeric limits")
     {
         sequence_number_analyzer<uint32_t> analyzer;

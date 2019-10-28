@@ -12,23 +12,19 @@ using namespace ebu_list::st2110::d21;
 
 struct rtp_ts_analyzer::impl
 {
-    impl(listener_uptr l, media::video::Rate rate)
-        : listener_(std::move(l)), tframe_(1 / rate)
-    {}
+    impl(listener_uptr l, media::video::Rate rate) : listener_(std::move(l)), tframe_(1 / rate) {}
 
     void update_frame(const rtp::packet& packet, packet_info& info)
     {
         const auto packet_time_ns =
-            std::chrono::duration_cast<std::chrono::nanoseconds>(
-                packet.info.udp.packet_time.time_since_epoch())
+            std::chrono::duration_cast<std::chrono::nanoseconds>(packet.info.udp.packet_time.time_since_epoch())
                 .count();
-        const auto packet_time = fraction64(packet_time_ns, std::giga::num);
+        const auto packet_time   = fraction64(packet_time_ns, std::giga::num);
         const auto rtp_timestamp = packet.info.rtp.view().timestamp();
 
         if (previous_timestamp_)
         {
-            const auto delta =
-                modulo_difference(rtp_timestamp, previous_timestamp_.value());
+            const auto delta  = modulo_difference(rtp_timestamp, previous_timestamp_.value());
             info.rtp_ts_delta = rtp::to_ticks32(delta);
         }
 
@@ -36,8 +32,8 @@ struct rtp_ts_analyzer::impl
 
         const auto rtp_to_packet_deltas = calculate_rtp_to_packet_deltas(tframe_, rtp_timestamp, packet_time);
 
-        info.delta_rtp_vs_packet_time = rtp_to_packet_deltas.delta_rtp_vs_packet_time;
-        info.delta_rtp_vs_NTs = rtp_to_packet_deltas.delta_rtp_vs_NTs;
+        info.delta_rtp_vs_packet_time      = rtp_to_packet_deltas.delta_rtp_vs_packet_time;
+        info.delta_rtp_vs_NTs              = rtp_to_packet_deltas.delta_rtp_vs_NTs;
         info.delta_packet_time_vs_rtp_time = rtp_to_packet_deltas.delta_packet_time_vs_rtp_time;
     }
 
@@ -62,7 +58,8 @@ struct rtp_ts_analyzer::impl
 
 rtp_ts_analyzer::rtp_ts_analyzer(listener_uptr l, media::video::Rate rate)
     : impl_(std::make_unique<impl>(std::move(l), rate))
-{}
+{
+}
 
 rtp_ts_analyzer::~rtp_ts_analyzer() = default;
 
@@ -71,7 +68,10 @@ void rtp_ts_analyzer::on_data(const frame_start_filter::packet_info& info)
     impl_->on_data(info);
 }
 
-void rtp_ts_analyzer::on_complete() { impl_->listener_->on_complete(); }
+void rtp_ts_analyzer::on_complete()
+{
+    impl_->listener_->on_complete();
+}
 
 void rtp_ts_analyzer::on_error(std::exception_ptr e)
 {

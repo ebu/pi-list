@@ -31,13 +31,11 @@ class Login extends Component {
 
         api.getToken()
             .then(data => encrypt(password, data.t))
-            .then(passwordEncrypted =>
-                api.register({ email, password: passwordEncrypted })
-            )
+            .then(passwordEncrypted => api.register({ email, password: passwordEncrypted }))
             .then(() => {
                 this.setState({ userSuccessfullyRegistered: true, errors: [] });
             })
-            .catch(error => {
+            .catch((error) => {
                 this.setState({
                     errors: [error.response.data],
                     userSuccessfullyRegistered: false,
@@ -51,13 +49,11 @@ class Login extends Component {
 
         api.getToken()
             .then(data => encrypt(password, data.t))
-            .then(passwordEncrypted =>
-                api.login({ email, password: passwordEncrypted })
-            )
+            .then(passwordEncrypted => api.login({ email, password: passwordEncrypted }))
             .then(() => {
                 this.props.history.push('/');
             })
-            .catch(error => {
+            .catch((error) => {
                 this.setState({ errors: [error.response.data] });
             });
     }
@@ -83,7 +79,9 @@ class Login extends Component {
                     />
                 </div>
                 <div className="lst-login--logo lst-text-center">
-                    <b>LIST</b> - LiveIP Software Toolkit
+                    <b>LIST</b>
+                    {' '}
+- LiveIP Software Toolkit
                 </div>
                 <div className="lst-login--form lst-text-center">
                     <h1 className="lst-login--header">
