@@ -20,6 +20,7 @@ import AddSourceModal from './AddSourceModal';
 import EditSourceModal from './EditSourceModal';
 import './SourcesList.scss';
 import { kinds } from 'ebu_list_common/capture/sources';
+import PopUp from '../../../components/common/PopUp';
 
 const filterFunction = (state) => {
     return state.data;
@@ -71,11 +72,19 @@ const filterData = (data, filterString) => {
 const SourcesList = props => {
     const [state, dispatch] = useReducer(actionsWorkflow, initialState);
     const [sourcesToEdit, setSourcesToEdit] = useState([]);
+    const [showSDPErrorPopUp, setShowSDPErrorPopUp] = useState({});
 
     const toggleRow = id =>
         dispatch({ type: tableactions.toggleRow, data: { id } });
     const toggleSelectAll = () =>
         dispatch({ type: tableactions.toggleSelectAll });
+
+    const onClickRow = id => {
+        dispatch({ type: tableactions.showSDPErrorPopUp, data: { id } });
+        
+        //keep same functionallity. select the row.
+        toggleRow(id);
+    }
 
     const onMessage = (topic, message) => {
         dispatch({
@@ -132,6 +141,10 @@ const SourcesList = props => {
     const onEditSourceModalClose = () =>
         dispatch({ type: Actions.hideEditSource });
 
+    const onShowSDPErrorPopUpClose= () => {
+        dispatch({ type: tableactions.hideSDPErrorPopUp });
+    }
+
     const filteredData = filterData(state.data, state.filterString);
 
     useEffect(() => { 
@@ -153,23 +166,31 @@ const SourcesList = props => {
                 }
             )
         );
-        console.log(sourcesToEdit);
 
     }, [state.selected]);
 
+    useEffect(() => { 
+        setShowSDPErrorPopUp(state.showSDPErrorPopUp);
+        console.log("SHOW SDP ERRORS: ", state.showSDPErrorPopUp);
+    }, [state.showSDPErrorPopUp]);
+
     return (
         <div className="lst-sources-list">
+            <PopUp
+                type="warning"
+                visible={showSDPErrorPopUp.show}
+                label="SDP Errors"
+                message={showSDPErrorPopUp.error}
+                onClose={onShowSDPErrorPopUpClose}/>
             <DeleteModal
                 label="live.sources.delete_header"
                 message="live.sources.delete_message"
                 data={state.itemsToDelete}
-                onDelete={doDelete}
-            />
+                onDelete={doDelete} />
             <AddSourceModal
                 visible={state.addSourceModalVisible}
                 onAdd={onModalAddSources}
-                onClose={onAddSourceModalClose}
-            />
+                onClose={onAddSourceModalClose} />
             <EditSourceModal
                 sources={sourcesToEdit}
                 visible={state.editSourceModalVisible}
@@ -192,7 +213,7 @@ const SourcesList = props => {
                     selectAll={state.selectAll}
                     onSelectId={toggleRow}
                     onSelectAll={toggleSelectAll}
-                    onClickRow={toggleRow}
+                    onClickRow={onClickRow}
                 />
             </DragAndDropUploader>
         </div>

@@ -7,6 +7,7 @@ const tableInitialState = () => ({
     selectAll: 0,
     itemsToDelete: [],
     filterString: null,
+    showSDPErrorPopUp: { show:false, id : null, error: "" },
 });
 
 
@@ -54,6 +55,24 @@ const makeTableReducer = (options) => (state, action) => {
 
         case actions.setFilterString:
             return { ...state, filterString: action.payload.value };
+
+        case actions.showSDPErrorPopUp:
+            const id = action.data.id;
+            const newSelected = state.data.filter(item => item.id === id);
+            if (newSelected[0].sdp.errors != null && newSelected[0].sdp.errors.length > 0) {
+                return Object.assign({}, { ...state}, {
+                    showSDPErrorPopUp: { show: true, id: id, error: newSelected[0].sdp.errors.join(" and ") }
+                });                
+            }else {
+                return Object.assign({}, { ...state}, {
+                    showSDPErrorPopUp: { show: false, id: null, error: ""}
+                });                
+            }
+            
+        case actions.hideSDPErrorPopUp:
+            return Object.assign({}, { ...state}, {
+                showSDPErrorPopUp: { show: false, id: null, error: ""}
+            });
 
         default:
             return state;
