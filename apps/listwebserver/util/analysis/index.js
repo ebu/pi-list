@@ -232,7 +232,7 @@ const postProcessSdpFiles = async folder => {
 
 // Returns undefined on success; otherwise, the error.
 const runAnalysis = async params => {
-    const {pcapId, pcapFolder, streamID, pcapFile, userId, analysisProfileFile} = params;
+    const { pcapId, pcapFolder, streamID, pcapFile, userId, analysisProfileFile } = params;
     const { withMongo, withInflux } = argumentsToCmd();
 
     const streamOption = streamID ? `-s ${streamID}` : '';
@@ -344,7 +344,7 @@ function addWarningsToSummary(pcap, warning_list) {
     }
 }
 
-function pcapConsolidation(req, res, next) {
+const pcapConsolidation = async (req, res, next) => {
     const pcapId = req.pcap.uuid;
 
     const summary = {
@@ -355,14 +355,12 @@ function pcapConsolidation(req, res, next) {
     const streams = _.get(req, 'streams', []);
     streams.forEach(stream => addStreamErrorsToSummary(stream, summary.error_list));
 
-    return Pcap.findOne({ id: pcapId })
-        .exec() // it returns the mongo db record of the PCAP
-        .then(pcapData => {
-            addWarningsToSummary(pcapData, summary.warning_list);
-        })
-        .then(() => Pcap.findOneAndUpdate({ id: pcapId }, { summary }).exec())
-        .then(() => next());
-}
+    const pcapData = await Pcap.findOne({ id: pcapId }).exec();
+    addWarningsToSummary(pcapData, summary.warning_list);
+    const analysis_profile = req.analysisProfile;
+    await Pcap.findOneAndUpdate({ id: pcapId }, { summary, analysis_profile }).exec();
+    next();
+};
 
 function addStreamsToReq(streams, req) {
     const allStreams = _.get(req, 'streams', []);
