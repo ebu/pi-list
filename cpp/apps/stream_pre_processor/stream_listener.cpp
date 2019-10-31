@@ -33,7 +33,7 @@ namespace
 } // namespace
 
 stream_listener::stream_listener(rtp::packet first_packet, std::string pcap_id, std::string mongo_url)
-    : detector_(first_packet), num_packets_(1), db_("database", std::move(mongo_url), "", "")
+    : detector_(first_packet), num_packets_(1), db_(mongo_url)
 {
     seqnum_analyzer_.handle_packet(static_cast<uint16_t>(first_packet.info.rtp.view().sequence_number()));
 

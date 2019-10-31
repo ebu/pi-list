@@ -7,7 +7,26 @@ const defaultPreferences = {
     gui: {
         theme: 'dark',
         language: 'en-US',
+    },
+    analysis: {
+        currentProfileId: null,
+    },
+};
+
+const getPreferences = async userId => {
+    const user = await User.findOne({ _id: userId }).exec();
+    if (user === null) return null;
+    return user.preferences;
+};
+
+const setPreferences = async (userId, newPreferences) => {
+    const user = await User.findOne({ _id: userId }).exec();
+    if (user === null) {
+        throw new Error(`User ${userId} not found`);
     }
+
+    user.preferences = newPreferences;
+    await user.save();
 };
 
 function getUser(req, res, next) {
@@ -18,23 +37,23 @@ function getUser(req, res, next) {
     info.preferences = _.merge(defaultPreferences, info.preferences || {});
     req.userInfo = info;
 
-    if(!hasPreferences) {
-        User.findOne({ _id: info.id }).exec()
-        .then(user => {
-            if (user === null) {
-                res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND);
-                return;
-            }
+    if (!hasPreferences) {
+        User.findOne({ _id: info.id })
+            .exec()
+            .then(user => {
+                if (user === null) {
+                    res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND);
+                    return;
+                }
 
-            user.preferences = info.preferences;
-            return user.save()
-                .then((d) => {
+                user.preferences = info.preferences;
+                return user.save().then(d => {
                     next();
                 });
-        })
-        .catch((e) => {
-            res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send();
-        });
+            })
+            .catch(e => {
+                res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send();
+            });
     } else {
         next();
     }
@@ -44,7 +63,8 @@ function updatePreferences(req, res, next) {
     const { user } = req.session.passport;
     const value = req.body.value;
 
-    User.findOne({ _id: user.id }).exec()
+    User.findOne({ _id: user.id })
+        .exec()
         .then(user => {
             if (user === null) {
                 res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND);
@@ -53,17 +73,18 @@ function updatePreferences(req, res, next) {
 
             const preferences = _.merge(user.preferences, value);
             user.preferences = preferences;
-            return user.save()
-                .then((d) => {
-                    res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ value: d });
-                });
+            return user.save().then(d => {
+                res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ value: d });
+            });
         })
-        .catch((e) => {
+        .catch(e => {
             res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send();
         });
 }
 
 module.exports = {
     getUser,
-    updatePreferences
+    updatePreferences,
+    getPreferences,
+    setPreferences,
 };

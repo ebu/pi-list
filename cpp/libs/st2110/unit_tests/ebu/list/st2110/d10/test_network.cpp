@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "catch.hpp"
+#include "catch2/catch.hpp"
 #include "ebu/list/st2110/d10/network.h"
 
 using namespace ebu_list::st2110::d10;

@@ -40,10 +40,6 @@ add_subdirectory(third_party)
 
 if(BUILD_TESTS)
     enable_testing()
-
-    if(!WIN32)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 -fprofile-arcs -ftest-coverage") # for coverage
-    endif()
 endif()
 
 message(STATUS "====== LIBS ======")
@@ -52,7 +48,7 @@ message(STATUS "==================")
 
 if(BUILD_APPS)
     message(STATUS "====== APPS ======")
-    add_subdirectory(apps)
+    add_subdirectory(cpp/apps)
     message(STATUS "==================")
 endif()
 

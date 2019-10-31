@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "catch.hpp"
+#include "catch2/catch.hpp"
 #include "ebu/list/core/media/video_description.h"
 
 using namespace ebu_list::media::video;

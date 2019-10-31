@@ -1,4 +1,5 @@
 BasedOnStyle: LLVM
+Language: Cpp
 ColumnLimit: 120
 IndentWidth: 4
 BreakBeforeBraces: Custom

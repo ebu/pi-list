@@ -11,11 +11,11 @@ const validation = {
         // See docs/video_timing_analysis.md
         deltaRtpTsVsNtLimit: {
             min: -90,
-            max: 0
+            max: 0,
         },
         deltaPktTsVsRtpTsLimit: {
             min: 0,
-            max: 1000000
+            max: 1000000,
         },
     },
 };
@@ -26,20 +26,12 @@ function map2110d21Cinst(stream) {
     const compliance = _.get(stream, 'global_video_analysis.cinst.compliance');
 
     if (compliance === constants.outcome.not_compliant) {
-        stream = _.set(
-            stream,
-            'analyses.2110_21_cinst.result',
-            constants.outcome.not_compliant
-        );
+        stream = _.set(stream, 'analyses.2110_21_cinst.result', constants.outcome.not_compliant);
         stream = appendError(stream, {
             id: constants.errors.cinst_above_maximum,
         });
     } else {
-        stream = _.set(
-            stream,
-            'analyses.2110_21_cinst.result',
-            constants.outcome.compliant
-        );
+        stream = _.set(stream, 'analyses.2110_21_cinst.result', constants.outcome.compliant);
     }
 
     return stream;
@@ -51,20 +43,12 @@ function map2110d21Vrx(stream) {
     const compliance = _.get(stream, 'global_video_analysis.vrx.compliance');
 
     if (compliance === constants.outcome.not_compliant) {
-        stream = _.set(
-            stream,
-            'analyses.2110_21_vrx.result',
-            constants.outcome.not_compliant
-        );
+        stream = _.set(stream, 'analyses.2110_21_vrx.result', constants.outcome.not_compliant);
         stream = appendError(stream, {
             id: constants.errors.vrx_above_maximum,
         });
     } else {
-        stream = _.set(
-            stream,
-            'analyses.2110_21_vrx.result',
-            constants.outcome.compliant
-        );
+        stream = _.set(stream, 'analyses.2110_21_vrx.result', constants.outcome.compliant);
     }
 
     return stream;
@@ -73,18 +57,13 @@ function map2110d21Vrx(stream) {
 // Sets analyses.packet_ts_vs_rtp_ts.result to compliant or not_compliant
 // - if not compliant, adds and error to analyses.errors
 function validateRtpTimes(stream) {
-    const delta = _.get(
-        stream,
-        'analyses.packet_ts_vs_rtp_ts.details.range',
-        null
-    );
+    const delta = _.get(stream, 'analyses.packet_ts_vs_rtp_ts.details.range', null);
 
     if (delta === null) {
         _.set(stream, 'analyses.packet_ts_vs_rtp_ts.result', constants.outcome.not_compliant);
         stream = appendError(stream, {
             id: constants.errors.missing_information,
-            value:
-                'no value for "analyses.packet_ts_vs_rtp_ts.details.range"',
+            value: 'no value for "analyses.packet_ts_vs_rtp_ts.details.range"',
         });
 
         return;
@@ -95,13 +74,10 @@ function validateRtpTimes(stream) {
 
     const { min, max } = delta;
     _.set(stream, 'analyses.packet_ts_vs_rtp_ts.result', constants.outcome.not_compliant);
-    if (
-        min < limit.min ||
-        max > limit.max
-    ) {
+    if (min < limit.min || max > limit.max) {
         _.set(stream, 'analyses.packet_ts_vs_rtp_ts.result', constants.outcome.not_compliant);
         stream = appendError(stream, {
-            id: constants.errors.invalid_packet_ts_vs_rtp_ts,
+            id: constants.errors.invalid_delta_packet_ts_vs_rtp_ts,
         });
     } else {
         _.set(stream, 'analyses.packet_ts_vs_rtp_ts.result', constants.outcome.compliant);
@@ -113,17 +89,12 @@ function validateRtpTimes(stream) {
 // Sets analyses.rtp_ts_vs_nt.result to compliant or not_compliant
 // - if not compliant, adds and error to analyses.errors
 function validateRtpTicks(stream) {
-    const delta = _.get(
-        stream,
-        'analyses.rtp_ts_vs_nt.details.range',
-        null
-    );
+    const delta = _.get(stream, 'analyses.rtp_ts_vs_nt.details.range', null);
     if (delta === null) {
         _.set(stream, 'analyses.rtp_ts_vs_nt.result', constants.outcome.not_compliant);
         stream = appendError(stream, {
             id: constants.errors.missing_information,
-            value:
-                'no value for "analyses.rtp_ts_vs_nt.details.range"',
+            value: 'no value for "analyses.rtp_ts_vs_nt.details.range"',
         });
 
         return stream;
@@ -133,10 +104,7 @@ function validateRtpTicks(stream) {
     _.set(stream, 'analyses.rtp_ts_vs_nt.details.limit', limit);
     _.set(stream, 'analyses.rtp_ts_vs_nt.details.unit', 'ticks');
 
-    if (
-        delta.min < limit.min ||
-        delta.max > limit.max
-    ) {
+    if (delta.min < limit.min || delta.max > limit.max) {
         _.set(stream, 'analyses.rtp_ts_vs_nt.result', constants.outcome.not_compliant);
         stream = appendError(stream, {
             id: constants.errors.invalid_rtp_ts_vs_nt,
@@ -150,16 +118,12 @@ function validateRtpTicks(stream) {
 
 // Returns one promise that resolves to an object with the updated analysis.
 const doRtpTicksAnalysis = async (pcapId, stream) => {
-    const value = await influxDbManager.getDeltaRtpVsNtTicksMinMax(
-        pcapId,
-        stream.id
-    );
+    const value = await influxDbManager.getDeltaRtpVsNtTicksMinMax(pcapId, stream.id);
 
     if (_.isNil(value) || value.length < 1 || _.isNil(value[0])) {
         stream = appendError(stream, {
             id: constants.errors.missing_information,
-            value:
-                'no DeltaRtpVsNtTicksMinMax for stream `stream.id` in `pcapId`',
+            value: 'no DeltaRtpVsNtTicksMinMax for stream `stream.id` in `pcapId`',
         });
         return stream;
     }
@@ -176,16 +140,12 @@ const doRtpTicksAnalysis = async (pcapId, stream) => {
 
 // Returns one promise that resolves to an object with the updated analysis.
 const doRtpTimeAnalysis = async (pcapId, stream) => {
-    const value = await influxDbManager.getDeltaPacketTimeVsRtpTimeMinMax(
-        pcapId,
-        stream.id
-    );
+    const value = await influxDbManager.getDeltaPacketTimeVsRtpTimeMinMax(pcapId, stream.id);
 
     if (_.isNil(value) || value.length < 1 || _.isNil(value[0])) {
         stream = appendError(stream, {
             id: constants.errors.missing_information,
-            value:
-                'no DeltaPacketTimeVsRtpTimeMinMax for stream `stream.id` in `pcapId`',
+            value: 'no DeltaPacketTimeVsRtpTimeMinMax for stream `stream.id` in `pcapId`',
         });
         return stream;
     }
@@ -216,9 +176,7 @@ const doVideoStreamAnalysis = async (pcapId, stream) => {
 
 // Returns one array with a promise for each stream. The result of the promise is undefined.
 function doVideoAnalysis(pcapId, streams) {
-    const promises = streams.map(stream =>
-        doVideoStreamAnalysis(pcapId, stream)
-    );
+    const promises = streams.map(stream => doVideoStreamAnalysis(pcapId, stream));
     return Promise.all(promises);
 }
 

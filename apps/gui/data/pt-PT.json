@@ -11,7 +11,7 @@
   ],
   "analysis.warnings.pcap.truncated": "Truncado",
   "analysis.errors.missing_information": "Erro interno: falta informação",
-  "analysis.errors.invalid_delta_rtp_ts_vs_nt": "Delta entre o timestamp RTP e o valor de N x Tframe inválido",
+  "analysis.errors.invalid_rtp_ts_vs_nt": "Delta entre o timestamp RTP e o valor de N x Tframe inválido",
   "analysis.errors.invalid_delta_packet_ts_vs_rtp_ts": "Delta entre o TS do pacote e o RTP TS inválido",
   "analysis.errors.cinst_above_maximum": "CInst está acima do valor máximo permitido (CMAX)",
   "analysis.errors.vrx_above_maximum": "VRX está fora dos limites permitidos (0..VRXFULL)",
@@ -212,5 +212,6 @@
   "notifications.error.live.sources.deleted": "Fonte(s) não apagada(s)",
   "notifications.error.live.sources.delete_message": "Erro ao apagar fontes",
   "table.next": "Seguinte",
-  "table.previous": "Anterior"
+  "table.previous": "Anterior",
+  "analysis_profiles.active_profile": "Perfil de análise"
 }
