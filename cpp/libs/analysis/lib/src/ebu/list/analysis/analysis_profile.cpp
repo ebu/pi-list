@@ -1,4 +1,4 @@
-#include "ebu/list/analysis/serialization/analysis_profile.h"
+#include "ebu/list/analysis/analysis_profile.h"
 #include "ebu/list/core/idioms.h"
 
 using namespace ebu_list;

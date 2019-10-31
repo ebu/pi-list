@@ -126,21 +126,10 @@ namespace
             return stream_info_it->second;
         };
 
-        if (config.profile.timestamps.source == timestamps_source::pcap)
-        {
-            logger()->info("Using raw pcap timestamps");
-            pcap.offset_from_ptp_clock = std::chrono::nanoseconds(0);
-        }
-        else
-        {
-            logger()->info("Using PTP packets to derive pcap timestamp offset: {} ns",
-                           std::chrono::duration_cast<std::chrono::nanoseconds>(pcap.offset_from_ptp_clock).count());
-        }
-
         db_handler_factory factory(config);
         db_updater updater(db, config.storage_folder);
         auto context =
-            processing_context{config.pcap_file, config.storage_folder, pcap, get_stream_info, &factory, &updater};
+            processing_context{config.pcap_file, config.profile, config.storage_folder, pcap, get_stream_info, &factory, &updater};
 
         run_full_analysis(context);
     }

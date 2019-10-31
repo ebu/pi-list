@@ -70,6 +70,19 @@ namespace
         sdp.add_media(network_info, s);
         context.updater->update_sdp(network_info.id, sdp, media::media_type::ANCILLARY_DATA);
     }
+
+    clock::duration get_timestamp_offset(const analysis_profile& profile, const pcap_info& pcap)
+    {
+        if (profile.timestamps.source == timestamps_source::pcap)
+        {
+            logger()->info("Using raw pcap timestamps");
+            return {};
+        }
+        logger()->info("Using PTP packets to derive pcap timestamp offset: {} ns",
+                       std::chrono::duration_cast<std::chrono::nanoseconds>(pcap.offset_from_ptp_clock).count());
+
+        return pcap.offset_from_ptp_clock;
+    }
 } // namespace
 
 void analysis::run_full_analysis(processing_context& context)
@@ -223,11 +236,8 @@ void analysis::run_full_analysis(processing_context& context)
     auto handler    = std::make_shared<rtp::udp_handler>(create_handler);
     auto filter     = std::make_shared<ptp::udp_filter>(ptp_sm, handler);
 
-    logger()->info("Offset from PTP clock is: {} ns",
-                   std::chrono::duration_cast<std::chrono::nanoseconds>(context.pcap.offset_from_ptp_clock).count());
-
     auto player = std::make_unique<pcap::pcap_player>(context.pcap_file, filter, on_error_exit,
-                                                      -context.pcap.offset_from_ptp_clock);
+                                                      -get_timestamp_offset(context.profile, context.pcap));
 
     auto launcher = launch(std::move(player));
 

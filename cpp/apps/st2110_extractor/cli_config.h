@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ebu/list/analysis/serialization/analysis_profile.h"
+#include "ebu/list/analysis/analysis_profile.h"
 #include "ebu/list/core/types.h"
 
 namespace ebu_list::st2110_extractor

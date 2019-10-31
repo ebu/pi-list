@@ -1,5 +1,5 @@
 #include "catch2/catch.hpp"
-#include "ebu/list/analysis/serialization/analysis_profile.h"
+#include "ebu/list/analysis/analysis_profile.h"
 
 using namespace ebu_list;
 using namespace ebu_list::analysis;
