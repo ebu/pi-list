@@ -1,4 +1,4 @@
-#include "catch.hpp"
+#include "catch2/catch.hpp"
 #include "ebu/list/analysis/full_analysis.h"
 #include "ebu/list/test_lib/sample_files.h"
 #include "fs_handler_factory.h"

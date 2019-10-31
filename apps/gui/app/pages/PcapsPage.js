@@ -6,19 +6,14 @@ import SimpleMessage from '../components/SimpleMessage';
 
 const noData = () => (
     <div className="lst-table-loading-data col-xs-12 center-xs lst-table-nodata">
-        <SimpleMessage
-            icon="do not disturb"
-            message={translateX('pcap.no_pcaps')}
-        />
+        <SimpleMessage icon="do not disturb" message={translateX('pcap.no_pcaps')} />
     </div>
 );
 
-const PcapsPage = props => (
+const PcapsPage = () => (
     <div className="row">
         <div className="col-xs-12">
-            <NetworkCaptureUploader
-                title={translateX('workflow.import_networkcapture')}
-            >
+            <NetworkCaptureUploader title={translateX('workflow.import_networkcapture')}>
                 <PcapList noDataComponent={noData} />
             </NetworkCaptureUploader>
         </div>

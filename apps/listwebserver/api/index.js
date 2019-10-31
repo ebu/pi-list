@@ -6,7 +6,6 @@
  */
 const { Router } = require('express');
 const program = require('../util/programArguments');
-const workflow = require('./workflow');
 
 // Initialize Express Router
 const router = Router();
@@ -16,11 +15,12 @@ router.use('/pcap', require('./pcap'));
 router.use('/sdp', require('./sdp'));
 router.use('/user', require('./user'));
 router.use('/meta', require('./meta'));
+router.use('/analysis_profile', require('./analysis_profile'));
 
 if (program.liveMode) {
     router.use('/live', require('./live'));
 }
 
-router.use('/workflow', workflow);
+router.use('/workflow', require('./workflow'));
 
 module.exports = router;

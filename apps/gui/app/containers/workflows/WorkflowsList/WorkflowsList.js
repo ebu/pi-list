@@ -1,17 +1,14 @@
 import React, { useEffect, useReducer } from 'react';
+import mqtypes from 'ebu_list_common/mq/types';
 import Toolbar from './Toolbar';
 import WorkflowsTable from './WorkflowsTable';
 import Actions from './Actions';
 import { reducer } from './reducer';
 import { middleware } from './middleware';
-import {
-    tableInitialState,
-    makeTableReducer,
-} from '../../../utils/models/table/tableReducer';
+import { tableInitialState, makeTableReducer } from '../../../utils/models/table/tableReducer';
 import tableactions from '../../../utils/models/table/actions';
 import api from '../../../utils/api';
 import { useMqttMessages } from '../../../utils/mqtt';
-import mqtypes from 'ebu_list_common/mq/types';
 
 const tableReducer = makeTableReducer();
 
@@ -25,10 +22,8 @@ const initialState = {
 
 const WorkflowsList = () => {
     const [state, dispatch] = useReducer(actionsWorkflow, initialState);
-    const toggleRow = id =>
-        dispatch({ type: tableactions.toggleRow, data: { id } });
-    const toggleSelectAll = () =>
-        dispatch({ type: tableactions.toggleSelectAll });
+    const toggleRow = id => dispatch({ type: tableactions.toggleRow, data: { id } });
+    const toggleSelectAll = () => dispatch({ type: tableactions.toggleSelectAll });
     const onClickRow = () => {};
 
     const onMessage = (topic, message) => {
@@ -39,10 +34,7 @@ const WorkflowsList = () => {
     };
 
     useEffect(() => {
-        const disconnect = useMqttMessages(
-            mqtypes.exchanges.mqtt.topics.workflows.update,
-            onMessage
-        );
+        const disconnect = useMqttMessages(mqtypes.exchanges.mqtt.topics.workflows.update, onMessage);
 
         api.getWorkflows().then(data => {
             dispatch({

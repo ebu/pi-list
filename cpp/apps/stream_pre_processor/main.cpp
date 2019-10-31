@@ -3,12 +3,10 @@
 #include "ebu/list/analysis/serialization/pcap.h"
 #include "ebu/list/core/platform/parallel.h"
 #include "ebu/list/pcap/player.h"
-#include "ebu/list/ptp/state_machine.h"
+#include "ebu/list/ptp/ptp_offset_calculator.h"
 #include "ebu/list/ptp/udp_filter.h"
 #include "ebu/list/rtp/udp_handler.h"
 #include "ebu/list/version.h"
-#include "pch.h"
-#include "ptp_offset_calculator.h"
 #include "stream_listener.h"
 
 using namespace ebu_list;
@@ -53,19 +51,17 @@ namespace
 
     void run(const config& config)
     {
-        auto fi                        = make_pcap_info(config.pcap_file, config.pcap_uuid);
-        auto offset_calculator         = std::make_shared<ptp_offset_calculator>();
-        const auto offset_calculator_p = offset_calculator.get();
-        const auto mongo_db_url        = config.mongo_db_url.value_or(MONGO_DEFAULT_URL);
+        auto fi = make_pcap_info(config.pcap_file, config.pcap_uuid);
+        auto offset_calculator = std::make_shared<ptp::ptp_offset_calculator>();
+        const auto mongo_db_url = config.mongo_db_url.value_or(MONGO_DEFAULT_URL);
 
         auto create_handler = [&](rtp::packet first_packet) {
             return std::make_unique<stream_listener>(first_packet, fi.id, mongo_db_url);
         };
 
-        auto ptp_sm      = std::make_shared<ptp::state_machine>(offset_calculator);
         auto udp_handler = std::make_shared<rtp::udp_handler>(create_handler);
-        auto filter      = std::make_shared<ptp::udp_filter>(ptp_sm, udp_handler);
-        auto player      = std::make_unique<pcap::pcap_player>(path(config.pcap_file), filter, on_error_exit);
+        auto filter = std::make_shared<ptp::udp_filter>(offset_calculator, udp_handler);
+        auto player = std::make_unique<pcap::pcap_player>(path(config.pcap_file), filter, on_error_exit);
 
         const auto start_time = std::chrono::steady_clock::now();
 
@@ -84,8 +80,8 @@ namespace
             fi.truncated = true;
         }
 
-        fi.offset_from_ptp_clock = offset_calculator_p->get_average_offset();
-        db_serializer db("database", mongo_db_url, "", "");
+        fi.offset_from_ptp_clock = offset_calculator->get_average();
+        db_serializer db(mongo_db_url);
 
         if (db.find_one(constants::db::offline, constants::db::collections::pcaps,
                         nlohmann::json{{"id", config.pcap_uuid}}))
@@ -98,7 +94,7 @@ namespace
             db.insert(constants::db::offline, constants::db::collections::pcaps, pcap_info::to_json(fi));
 
         logger()->info("----------------------------------------");
-        logger()->info("PTP average offset: {} ns", offset_calculator_p->get_average_offset().count());
+        logger()->info("PTP average offset: {} ns", offset_calculator->get_average().count());
     }
 } // namespace
 

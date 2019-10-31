@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ebu/list/analysis/serialization/analysis_profile.h"
 #include "ebu/list/core/types.h"
 
 namespace ebu_list::st2110_extractor
@@ -12,11 +13,10 @@ namespace ebu_list::st2110_extractor
         std::string pcap_id;
         path pcap_file;
         path storage_folder;
-        std::string storage_mode;
         std::optional<std::string> influxdb_url;
         std::optional<std::string> mongo_db_url;
-        std::optional<std::string> pcap_metadata_file;
-        std::optional<std::string> streams_metadata_file;
+        path analysis_profile_file;
+        analysis::analysis_profile profile;
         std::optional<std::string> id_to_process;
     };
 } // namespace ebu_list::st2110_extractor

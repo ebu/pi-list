@@ -5,11 +5,8 @@ const API_URL = `${REST_URL}/api`;
 
 axios.interceptors.response.use(
     config => config,
-    (error) => {
-        if (
-            error.response.status === 401
-            && window.location.pathname !== '/login'
-        ) {
+    error => {
+        if (error.response.status === 401 && window.location.pathname !== '/login') {
             window.appHistory.push('/login');
         }
 
@@ -43,14 +40,10 @@ export default {
     updateUserPreferences: value => request.patch('user/preferences', { value }),
     deleteUser: () => request.delete('user'),
 
-    register: loginData => axios
-        .post(`${REST_URL}/user/register`, loginData)
-        .then(response => response.data),
+    register: loginData => axios.post(`${REST_URL}/user/register`, loginData).then(response => response.data),
     getToken: () => axios.get(`${REST_URL}/auth/token`).then(response => response.data),
 
-    login: loginData => axios
-        .post(`${REST_URL}/auth/login`, loginData)
-        .then(response => response.data),
+    login: loginData => axios.post(`${REST_URL}/auth/login`, loginData).then(response => response.data),
     logout: () => `${REST_URL}/auth/logout`,
 
     /* PCAP */
@@ -63,10 +56,8 @@ export default {
     getStreamsFromPcap: pcapID => request.get(`pcap/${pcapID}/streams`),
     updatePcapAnalysis: (pcapId, onAnalysisProgress) => {
         const config = {
-            onAnalysisProgress: (progressEvent) => {
-                const percentCompleted = Math.floor(
-                    (progressEvent.loaded * 100) / progressEvent.total
-                );
+            onAnalysisProgress: progressEvent => {
+                const percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
 
                 onUploadProgress(percentCompleted);
             },
@@ -78,10 +69,8 @@ export default {
         data.append('pcap', pcapFile);
 
         const config = {
-            onUploadProgress: (progressEvent) => {
-                const percentCompleted = Math.floor(
-                    (progressEvent.loaded * 100) / progressEvent.total
-                );
+            onUploadProgress: progressEvent => {
+                const percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
 
                 onUploadProgress(percentCompleted);
             },
@@ -117,81 +106,63 @@ export default {
     getPtpOffset: pcapID => request.get(`pcap/${pcapID}/analytics/PtpOffset`),
 
     /* Stream */
-    getCInstHistogramForStream: (pcapID, streamID) => request.get(
-        `pcap/${pcapID}/stream/${streamID}/analytics/CInst/histogram`
-    ),
-    getCInstForStream: (pcapID, streamID, fromNs, toNs) => request.get(
-        `pcap/${pcapID}/stream/${streamID}/analytics/CInst?from=${fromNs}&to=${toNs}`
-    ),
-    getCInstRaw: (pcapID, streamID, fromNs, toNs) => request.get(
-        `pcap/${pcapID}/stream/${streamID}/analytics/CInstRaw?from=${fromNs}&to=${toNs}`
-    ),
-    getVrxHistogramForStream: (pcapID, streamID) => request.get(
-        `pcap/${pcapID}/stream/${streamID}/analytics/Vrx/histogram`
-    ),
-    getVrxIdealForStream: (pcapID, streamID, fromNs, toNs) => request.get(
-        `pcap/${pcapID}/stream/${streamID}/analytics/VrxIdeal?from=${fromNs}&to=${toNs}`
-    ),
-    getVrxIdealRaw: (pcapID, streamID, fromNs, toNs) => request.get(
-        `pcap/${pcapID}/stream/${streamID}/analytics/VrxIdealRaw?from=${fromNs}&to=${toNs}`
-    ),
-    getVrxAdjustedAvgTro: (pcapID, streamID, fromNs, toNs) => request.get(
-        `pcap/${pcapID}/stream/${streamID}/analytics/VrxAdjustedAvgTro?from=${fromNs}&to=${toNs}`
-    ),
-    getDeltaToIdealTpr0Raw: (pcapID, streamID, fromNs, toNs) => request.get(
-        `pcap/${pcapID}/stream/${streamID}/analytics/DeltaToIdealTpr0Raw?from=${fromNs}&to=${toNs}`
-    ),
-    getDeltaToIdealTpr0AdjustedAvgTroRaw: (pcapID, streamID, fromNs, toNs) => request.get(
-        `pcap/${pcapID}/stream/${streamID}/analytics/DeltaToIdealTpr0AdjustedAvgTroRaw?from=${fromNs}&to=${toNs}`
-    ),
-    getDeltaRtpTsVsPacketTsRaw: (pcapID, streamID, fromNs, toNs) => request.get(
-        `pcap/${pcapID}/stream/${streamID}/analytics/DeltaRtpTsVsPacketTsRaw?from=${fromNs}&to=${toNs}`
-    ),
-    getDeltaPacketTimeVsRtpTimeRaw: (pcapID, streamID, fromNs, toNs) => request.get(
-        `pcap/${pcapID}/stream/${streamID}/analytics/DeltaPacketTimeVsRtpTimeRaw?from=${fromNs}&to=${toNs}`
-    ),
-    getDeltaToPreviousRtpTsRaw: (pcapID, streamID, fromNs, toNs) => request.get(
-        `pcap/${pcapID}/stream/${streamID}/analytics/DeltaToPreviousRtpTsRaw?from=${fromNs}&to=${toNs}`
-    ),
-    getDeltaRtpVsNtRaw: (pcapID, streamID, fromNs, toNs) => request.get(
-        `pcap/${pcapID}/stream/${streamID}/analytics/DeltaRtpVsNt?from=${fromNs}&to=${toNs}`
-    ),
-    getAudioPktTsVsRtpTs: (pcapID, streamID, fromNs, toNs) => request.get(
-        `pcap/${pcapID}/stream/${streamID}/analytics/AudioPktTsVsRtpTs?from=${fromNs}&to=${toNs}`
-    ),
-    getAudioTimeStampedDelayFactor: (
-        pcapID,
-        streamID,
-        fromNs,
-        toNs,
-        toleranceUs,
-        tsdfmaxUs
-    ) => request.get(
-        `pcap/${pcapID}/stream/${streamID}/analytics/AudioTimeStampedDelayFactor?from=${fromNs}&to=${toNs}&tolerance=${toleranceUs}&tsdfmax=${tsdfmaxUs}`
-    ),
+    getCInstHistogramForStream: (pcapID, streamID) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/CInst/histogram`),
+    getCInstForStream: (pcapID, streamID, fromNs, toNs) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/CInst?from=${fromNs}&to=${toNs}`),
+    getCInstRaw: (pcapID, streamID, fromNs, toNs) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/CInstRaw?from=${fromNs}&to=${toNs}`),
+    getVrxHistogramForStream: (pcapID, streamID) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/Vrx/histogram`),
+    getVrxIdealForStream: (pcapID, streamID, fromNs, toNs) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/VrxIdeal?from=${fromNs}&to=${toNs}`),
+    getVrxIdealRaw: (pcapID, streamID, fromNs, toNs) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/VrxIdealRaw?from=${fromNs}&to=${toNs}`),
+    getVrxAdjustedAvgTro: (pcapID, streamID, fromNs, toNs) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/VrxAdjustedAvgTro?from=${fromNs}&to=${toNs}`),
+    getDeltaToIdealTpr0Raw: (pcapID, streamID, fromNs, toNs) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/DeltaToIdealTpr0Raw?from=${fromNs}&to=${toNs}`),
+    getDeltaToIdealTpr0AdjustedAvgTroRaw: (pcapID, streamID, fromNs, toNs) =>
+        request.get(
+            `pcap/${pcapID}/stream/${streamID}/analytics/DeltaToIdealTpr0AdjustedAvgTroRaw?from=${fromNs}&to=${toNs}`
+        ),
+    getDeltaRtpTsVsPacketTsRaw: (pcapID, streamID, fromNs, toNs) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/DeltaRtpTsVsPacketTsRaw?from=${fromNs}&to=${toNs}`),
+    getDeltaPacketTimeVsRtpTimeRaw: (pcapID, streamID, fromNs, toNs) =>
+        request.get(
+            `pcap/${pcapID}/stream/${streamID}/analytics/DeltaPacketTimeVsRtpTimeRaw?from=${fromNs}&to=${toNs}`
+        ),
+    getDeltaToPreviousRtpTsRaw: (pcapID, streamID, fromNs, toNs) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/DeltaToPreviousRtpTsRaw?from=${fromNs}&to=${toNs}`),
+    getDeltaRtpVsNtRaw: (pcapID, streamID, fromNs, toNs) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/DeltaRtpVsNt?from=${fromNs}&to=${toNs}`),
+    getAudioPktTsVsRtpTs: (pcapID, streamID, fromNs, toNs) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/AudioPktTsVsRtpTs?from=${fromNs}&to=${toNs}`),
+    getAudioTimeStampedDelayFactor: (pcapID, streamID, fromNs, toNs, toleranceUs, tsdfmaxUs) =>
+        request.get(
+            `pcap/${pcapID}/stream/${streamID}/analytics/AudioTimeStampedDelayFactor?from=${fromNs}&to=${toNs}&tolerance=${toleranceUs}&tsdfmax=${tsdfmaxUs}`
+        ),
 
     getStreamInformation: (pcapID, streamID) => request.get(`pcap/${pcapID}/stream/${streamID}`),
     getStreamHelp: (pcapID, streamID) => request.get(`pcap/${pcapID}/stream/${streamID}/help`),
-    sendStreamConfigurations: (pcapID, streamID, streamsConfigurations) => request.put(
-        `pcap/${pcapID}/stream/${streamID}/help`,
-        streamsConfigurations
-    ),
+    sendStreamConfigurations: (pcapID, streamID, streamsConfigurations) =>
+        request.put(`pcap/${pcapID}/stream/${streamID}/help`, streamsConfigurations),
     changeStreamName: (pcapID, streamID, data) => request.patch(`pcap/${pcapID}/stream/${streamID}/`, data),
 
     /* Video */
     getFramesFromStream: (pcapID, streamID) => request.get(`pcap/${pcapID}/stream/${streamID}/frames`),
-    getImageFromStream: (pcapID, streamID, timestamp) => `${API_URL}/pcap/${pcapID}/stream/${streamID}/frame/${timestamp}/png`,
-    getPacketsFromFrame: (pcapID, streamID, frameNumber) => request.get(
-        `pcap/${pcapID}/stream/${streamID}/frame/${frameNumber}/packets`
-    ),
+    getImageFromStream: (pcapID, streamID, timestamp) =>
+        `${API_URL}/pcap/${pcapID}/stream/${streamID}/frame/${timestamp}/png`,
+    getPacketsFromFrame: (pcapID, streamID, frameNumber) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/frame/${frameNumber}/packets`),
 
     /* Audio */
-    downloadMp3Url: (pcapID, streamID, channelsString) => `${API_URL}/pcap/${pcapID}/stream/${streamID}/downloadmp3${
-        channelsString ? `?channels=${channelsString}` : ''
-    }`,
-    renderMp3: (pcapID, streamID, channelsString) => request.get(
-        `pcap/${pcapID}/stream/${streamID}/rendermp3?channels=${channelsString}`
-    ),
+    downloadMp3Url: (pcapID, streamID, channelsString) =>
+        `${API_URL}/pcap/${pcapID}/stream/${streamID}/downloadmp3${
+            channelsString ? `?channels=${channelsString}` : ''
+        }`,
+    renderMp3: (pcapID, streamID, channelsString) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/rendermp3?channels=${channelsString}`),
 
     /* Ancillary */
     downloadAncillaryUrl: (pcapID, streamID, filename) => `pcap/${pcapID}/stream/${streamID}/ancillary/${filename}`,
@@ -211,4 +182,9 @@ export default {
 
     createWorkflow: info => request.post('workflow', info),
     getWorkflows: () => request.get('workflow'),
+
+    analysisProfile: {
+        getInfo: () => request.get('analysis_profile'),
+        setDefaultProfile: id => request.put('analysis_profile/default', { id: id }),
+    },
 };

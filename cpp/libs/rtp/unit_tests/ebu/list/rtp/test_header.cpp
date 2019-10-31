@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "catch.hpp"
+#include "catch2/catch.hpp"
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/rtp/header.h"
 #include "ebu/list/rtp/test_packets.h"

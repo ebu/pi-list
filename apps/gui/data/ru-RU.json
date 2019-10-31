@@ -11,7 +11,7 @@
   ],
   "analysis.warnings.pcap.truncated": "Усеченный",
   "analysis.errors.missing_information": "Внутренняя ошибка: Информация отсутствует",
-  "analysis.errors.invalid_delta_rtp_ts_vs_nt": "Недействительная дельта между меткой времени RTP и N x Tframe",
+  "analysis.errors.invalid_rtp_ts_vs_nt": "Недействительная дельта между меткой времени RTP и N x Tframe",
   "analysis.errors.invalid_delta_packet_ts_vs_rtp_ts": "*** invalid_delta_packet_ts_vs_rtp_ts ***",
   "analysis.errors.cinst_above_maximum": "Значение CInst превышает максимально допустимое (CMAX)",
   "analysis.errors.vrx_above_maximum": "*** Значение VRX превышает максимально допустимое (VRXFULL)",
@@ -212,5 +212,6 @@
   "notifications.error.live.sources.deleted": "*** notifications.error.live.sources.deleted",
   "notifications.error.live.sources.delete_message": "*** notifications.error.live.sources.delete_message",
   "table.next": "*** table.next ***",
-  "table.previous": "*** table.previous ***"
+  "table.previous": "*** table.previous ***",
+  "analysis_profiles.active_profile": "*** analysis_profiles.profiles ***"
 }

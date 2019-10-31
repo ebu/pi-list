@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "catch.hpp"
+#include "catch2/catch.hpp"
 #include "ebu/list/net/multicast_address_analyzer.h"
 
 using namespace ebu_list;

@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "catch.hpp"
+#include "catch2/catch.hpp"
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/ptp/test_messages.h"
 #include "ebu/list/ptp/v2/delay_req.h"

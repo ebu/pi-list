@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "catch.hpp"
+#include "catch2/catch.hpp"
 #include "ebu/list/core/io/file_source.h"
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/test_lib/sample_files.h"

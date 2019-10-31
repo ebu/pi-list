@@ -6,7 +6,7 @@ const controller = require('../controllers/workflow');
 
 router.get('/', (req, res, next) => {
     const workflows = controller.getWorkflows();
-    res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send(workflows);
+    res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(workflows);
 });
 
 router.post('/', (req, res, next) => {

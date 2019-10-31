@@ -22,14 +22,35 @@
     width: calc(100% - 22px);
 }
 
-.Select-control {
-    border-radius: 5px;
-    border: 1px solid $black-light-40;
-    color: $black-light-20;
+.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label,
+.Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
+    color: $white;
 }
-
-.Select.is-focused:not(.is-open) > .Select-control {
-    border-color: rgba(79, 134, 216, 0.8);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 2px $blue;
-    background: #fff;
+.Select-option.is-focused {
+    color: $white;
 }
+.Select-option:not(.is-focused) {
+    color: $white;
+}
+.Select {
+    &-multi-value-wrapper {
+        background-color: $black;
+    }
+    &-value {
+        background-color: $black;
+    }
+    &-control {
+        color: #fff;
+    }
+    background-color: $black;
+    &-menu-outer {
+        background-color: $black;
+    }
+    &-menu {
+        background-color: $black;
+    }
+    &-option {
+        background-color: $black;
+    }
+}
+    

@@ -11,7 +11,7 @@
   ],
   "analysis.warnings.pcap.truncated": "Μη ολοκληρωμένο",
   "analysis.errors.missing_information": "Εσωτερικό σφάλμα: λείπουν πληροφορίες",
-  "analysis.errors.invalid_delta_rtp_ts_vs_nt": "Μη έγκυρα δ ιαφορά μεταξύ της χρονικής σήμανσης RTP και του N x Tframe",
+  "analysis.errors.invalid_rtp_ts_vs_nt": "Μη έγκυρα δ ιαφορά μεταξύ της χρονικής σήμανσης RTP και του N x Tframe",
   "analysis.errors.invalid_delta_packet_ts_vs_rtp_ts": "*** invalid_delta_packet_ts_vs_rtp_ts ***",
   "analysis.errors.cinst_above_maximum": "CInst πάνω από τη μέγιστη επιτρεπόμενη τιμή (CMAX)",
   "analysis.errors.vrx_above_maximum": "*** VRX πάνω από τη μέγιστη επιτρεπόμενη τιμή (0..VRXFULL)",
@@ -212,5 +212,6 @@
   "notifications.error.live.sources.deleted": "Η πηγή/ες δεν έχουν διαγραφεί",
   "notifications.error.live.sources.delete_message": "Σφάλμα κατά τη διαγραφή ζωντανών πηγών",
   "table.next": "*** table.next ***",
-  "table.previous": "*** table.previous ***"
+  "table.previous": "*** table.previous ***",
+  "analysis_profiles.active_profile": "*** analysis_profiles.profiles ***"
 }

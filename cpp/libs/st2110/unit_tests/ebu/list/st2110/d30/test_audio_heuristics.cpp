@@ -1,4 +1,4 @@
-#include "catch.hpp"
+#include "catch2/catch.hpp"
 #include "ebu/list/pcap/player.h"
 #include "ebu/list/rtp/udp_handler.h"
 #include "ebu/list/st2110/d30/audio_format_detector.h"

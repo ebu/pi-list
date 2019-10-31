@@ -11,7 +11,7 @@
   ],
   "analysis.warnings.pcap.truncated": "Gekürzt",
   "analysis.errors.missing_information": "Interner Fehler: Fehlende Informationen",
-  "analysis.errors.invalid_delta_rtp_ts_vs_nt": "Ungültiges delta zwischen RTP timestamp und N x Tframe",
+  "analysis.errors.invalid_rtp_ts_vs_nt": "Ungültiges delta zwischen RTP timestamp und N x Tframe",
   "analysis.errors.invalid_delta_packet_ts_vs_rtp_ts": "*** invalid_delta_packet_ts_vs_rtp_ts ***",
   "analysis.errors.cinst_above_maximum": "Cinst ist oberhalb des maximal erlaubten Wertes (CMAX)",
   "analysis.errors.vrx_above_maximum": "*** VRX ist oberhalb des maximal erlaubten Wertes (0..VRXFULL)",
@@ -212,5 +212,6 @@
   "notifications.error.live.sources.deleted": "Live-Quelle(n) nicht gelöscht",
   "notifications.error.live.sources.delete_message": "Fehler beim Löschen der Live-Quellen",
   "table.next": "*** table.next ***",
-  "table.previous": "*** table.previous ***"
+  "table.previous": "*** table.previous ***",
+  "analysis_profiles.active_profile": "*** analysis_profiles.profiles ***"
 }

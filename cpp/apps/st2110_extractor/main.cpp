@@ -2,6 +2,7 @@
 #include "db_handler_factory.h"
 #include "ebu/list/analysis/full_analysis.h"
 #include "ebu/list/version.h"
+#include <fstream>
 
 using namespace ebu_list;
 using namespace ebu_list::analysis;
@@ -10,47 +11,43 @@ using namespace ebu_list::st2110::d20;
 using namespace ebu_list::st2110::d21;
 using namespace ebu_list::st2110_extractor;
 using namespace ebu_list::analysis;
+using nlohmann::json;
 
 //------------------------------------------------------------------------------
 
 namespace
 {
+    analysis_profile load_profile(const path& profile_file)
+    {
+        std::ifstream i(profile_file.string());
+        json j;
+        i >> j;
+        return j.get<analysis_profile>();
+    }
+
     config parse_or_usage_and_exit(int argc, char const* const* argv)
     {
         using namespace bisect::bicla;
 
-        const auto [parse_result, config] =
+        auto [parse_result, config] =
             parse(argc, argv,
                   option(&config::id_to_process, "s", "stream id",
                          "One or more stream ids to process. If none is "
                          "specified, processes all streams in the file."),
+                  option(&config::analysis_profile_file, "p", "analysis profile file",
+                         "The file with the analysis profile, in JSON"),
                   argument(&config::pcap_id, "pcap id", "the pcap id to be processed"),
                   argument(&config::pcap_file, "pcap file", "the path to the pcap file within the filesystem"),
                   argument(&config::storage_folder, "storage dir",
                            "the path to a storage folder where some "
                            "information is writen"),
-                  argument(&config::storage_mode, "storage mode",
-                           "Mode of operation for the data layer: database or filesystem"),
                   option(&config::influxdb_url, "influx_url", "influxDB url",
                          "url to influxDB. Usually http://localhost:8086"),
                   option(&config::mongo_db_url, "mongo_url", "mongo url",
-                         "url to mongoDB. Usually mongodb://localhost:27017."),
-                  option(&config::pcap_metadata_file, "pcaps_db_json_file", "PCAP information",
-                         "JSON file with information about the network capture."),
-                  option(&config::streams_metadata_file, "streams_db_json_file", "Streams information",
-                         "JSON file with information about the streams in the "
-                         "networks capture."));
+                         "url to mongoDB. Usually mongodb://localhost:27017."));
 
-        if (config.storage_mode == "filesystem")
-        {
-            if (!config.pcap_metadata_file.has_value() || !config.streams_metadata_file.has_value())
-            {
-                logger()->error("Selecting the 'filesystem' storage requires "
-                                "the presence '-pcaps_db_json_file' "
-                                "'-streams_db_json_file' options");
-                exit(-1);
-            }
-        }
+        config.profile = load_profile(config.analysis_profile_file);
+        logger()->info("Using analysis profile with id {}", config.profile.id);
 
         if (parse_result) return config;
 
@@ -98,8 +95,7 @@ namespace
     void run(const config& config)
     {
         const auto db_url = config.mongo_db_url.value_or(MONGO_DEFAULT_URL);
-        db_serializer db(config.storage_mode, db_url, config.pcap_metadata_file.value_or(""),
-                         config.streams_metadata_file.value_or(""));
+        db_serializer db(db_url);
 
         auto streams_to_process = get_ids_to_process(db, config);
         const auto tro_info     = calculate_average_troffset(config.pcap_file, streams_to_process);
@@ -129,6 +125,17 @@ namespace
             if (stream_info_it == streams_to_process.end()) return std::nullopt;
             return stream_info_it->second;
         };
+
+        if (config.profile.timestamps.source == timestamps_source::pcap)
+        {
+            logger()->info("Using raw pcap timestamps");
+            pcap.offset_from_ptp_clock = std::chrono::nanoseconds(0);
+        }
+        else
+        {
+            logger()->info("Using PTP packets to derive pcap timestamp offset: {} ns",
+                           std::chrono::duration_cast<std::chrono::nanoseconds>(pcap.offset_from_ptp_clock).count());
+        }
 
         db_handler_factory factory(config);
         db_updater updater(db, config.storage_folder);

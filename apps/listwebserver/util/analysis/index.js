@@ -7,31 +7,30 @@ const child_process = require('child_process');
 const sdp_parser = require('sdp-transform');
 const sdpoker = require('sdpoker');
 const uuidv1 = require('uuid/v1');
-const program = require('./programArguments');
-const websocketManager = require('../managers/websocket');
-const logger = require('./logger');
-const API_ERRORS = require('../enums/apiErrors');
-const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
+const program = require('../programArguments');
+const websocketManager = require('../../managers/websocket');
+const logger = require('../logger');
+const API_ERRORS = require('../../enums/apiErrors');
+const HTTP_STATUS_CODE = require('../../enums/httpStatusCode');
 const exec = util.promisify(child_process.exec);
-const Pcap = require('../models/pcap');
-const Stream = require('../models/stream');
-const WS_EVENTS = require('../enums/wsEvents');
-const { doVideoAnalysis } = require('../analyzers/video');
-const { doAudioAnalysis } = require('../analyzers/audio');
-const { doAncillaryAnalysis } = require('../analyzers/ancillary');
-const { doRtpAnalysis } = require('../analyzers/rtp');
-const { doMulticastAddressAnalysis } = require('../analyzers/multicast.js');
-const constants = require('../enums/analysis');
+const Pcap = require('../../models/pcap');
+const Stream = require('../../models/stream');
+const WS_EVENTS = require('../../enums/wsEvents');
+const { doVideoAnalysis } = require('../../analyzers/video');
+const { doAudioAnalysis } = require('../../analyzers/audio');
+const { doAncillaryAnalysis } = require('../../analyzers/ancillary');
+const { doRtpAnalysis } = require('../../analyzers/rtp');
+const { doMulticastAddressAnalysis } = require('../../analyzers/multicast.js');
+const constants = require('../../enums/analysis');
 const glob = util.promisify(require('glob'));
 
 function getUserFolder(req) {
     return `${program.folder}/${req.session.passport.user.id}`;
 }
 
-function generateRandomPcapFilename (file) {
+function generateRandomPcapFilename(file) {
     const extensionCharIdx = file.originalname.lastIndexOf('.');
-    const fileExtension =
-        extensionCharIdx > -1 ? '.' + file.originalname.substring(extensionCharIdx + 1) : '';
+    const fileExtension = extensionCharIdx > -1 ? '.' + file.originalname.substring(extensionCharIdx + 1) : '';
 
     return `${Date.now()}_${uuidv1()}${fileExtension}`;
 }
@@ -50,7 +49,6 @@ function generateRandomPcapDefinition(req, optionalPcapId) {
  */
 function argumentsToCmd() {
     return {
-        withStorage: `database`,
         withMongo: `-mongo_url ${program.databaseURL}`,
         withInflux: `-influx_url ${program.influxURL}`,
     };
@@ -59,9 +57,7 @@ function argumentsToCmd() {
 function pcapFileAvailableFromReq(req, res, next) {
     if (!req.file) {
         logger('ingest').error('Pcap file not received!');
-        res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send(
-            API_ERRORS.PCAP_FILE_TO_UPLOAD_NOT_FOUND
-        );
+        res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send(API_ERRORS.PCAP_FILE_TO_UPLOAD_NOT_FOUND);
     } else {
         next();
     }
@@ -70,7 +66,7 @@ function pcapFileAvailableFromReq(req, res, next) {
 /**
  * Given a network capture file, convert it to PCAP format before ingestion.
  */
-function pcapFormatConversion (req, res, next) {
+function pcapFormatConversion(req, res, next) {
     const userID = req.session.passport.user.id;
     const pcapId = req.pcap.uuid;
     const originalFilename = req.body.originalFilename || req.file.originalname;
@@ -83,43 +79,37 @@ function pcapFormatConversion (req, res, next) {
             pcap_file_name: req.file.filename,
             date: Date.now(),
             progress: 33,
-        }
+        },
     });
 
     const uploadedFilePath = req.file.path;
     const extensionCharIdx = uploadedFilePath.lastIndexOf('.');
-    const uploadedFileExtension =
-        extensionCharIdx > -1 ? uploadedFilePath.substring(extensionCharIdx + 1) : '';
+    const uploadedFileExtension = extensionCharIdx > -1 ? uploadedFilePath.substring(extensionCharIdx + 1) : '';
 
     if (uploadedFileExtension.toLowerCase() !== 'pcap') {
-
         const fileExtensionRegex = new RegExp(uploadedFileExtension + '$', 'i');
         let convertedFilePath = '';
         if (uploadedFileExtension !== '') {
             convertedFilePath = uploadedFilePath.replace(fileExtensionRegex, 'pcap');
-        }
-        else convertedFilePath = uploadedFilePath + '.pcap';
+        } else convertedFilePath = uploadedFilePath + '.pcap';
 
         const editcapConversionCommand = `editcap ${uploadedFilePath} ${convertedFilePath} -F pcap`;
         logger('pcap-format-conversion').info(`Command: ${editcapConversionCommand}`);
 
         exec(editcapConversionCommand)
-            .then (output => {
-
-                if (output.stdout.length > 0)
-                    logger('pcap-conversion-process').info(output.stdout);
-                if (output.stderr.length > 0)
-                    logger('pcap-conversion-process').info(output.stderr);
+            .then(output => {
+                if (output.stdout.length > 0) logger('pcap-conversion-process').info(output.stdout);
+                if (output.stderr.length > 0) logger('pcap-conversion-process').info(output.stderr);
 
                 res.locals.pcapFileName =
-                    uploadedFileExtension !== '' ?
-                        req.file.filename.replace(fileExtensionRegex, 'pcap') :
-                        req.file.filename + '.pcap';
+                    uploadedFileExtension !== ''
+                        ? req.file.filename.replace(fileExtensionRegex, 'pcap')
+                        : req.file.filename + '.pcap';
                 res.locals.pcapFilePath = convertedFilePath;
                 next();
             })
-            .catch (err => {
-                logger('pcap-conversion-process').info("Failed to convert capture file");
+            .catch(err => {
+                logger('pcap-conversion-process').info('Failed to convert capture file');
                 logger('pcap-conversion--process').info(err.toString());
 
                 websocketManager.instance().sendEventToUser(userID, {
@@ -127,8 +117,7 @@ function pcapFormatConversion (req, res, next) {
                     data: { id: pcapId, progress: 0, error: err.toString() },
                 });
             });
-    }
-    else {
+    } else {
         res.locals.pcapFileName = req.file.filename;
         res.locals.pcapFilePath = uploadedFilePath;
         next();
@@ -140,15 +129,11 @@ function pcapPreProcessing(req, res, next) {
     const pcapId = req.pcap.uuid;
     const { withMongo } = argumentsToCmd();
 
-    const streamPreProcessorCommand = `"${program.cpp}/stream_pre_processor" "${
-        res.locals.pcapFilePath
-    }" ${pcapId} ${withMongo}`;
+    const streamPreProcessorCommand = `"${program.cpp}/stream_pre_processor" "${res.locals.pcapFilePath}" ${pcapId} ${withMongo}`;
 
     const originalFilename = req.body.originalFilename || req.file.originalname;
 
-    logger('stream-pre-processor').info(
-        `Command: ${streamPreProcessorCommand}`
-    );
+    logger('stream-pre-processor').info(`Command: ${streamPreProcessorCommand}`);
 
     exec(streamPreProcessorCommand)
         .then(output => {
@@ -162,9 +147,7 @@ function pcapPreProcessing(req, res, next) {
                     capture_file_name: req.file.filename,
                     pcap_file_name: res.locals.pcapFileName,
                     owner_id: userID,
-                    generated_from_network: req.pcap.from_network
-                        ? true
-                        : false,
+                    generated_from_network: req.pcap.from_network ? true : false,
                 },
                 { new: true }
             ).exec();
@@ -187,9 +170,7 @@ function pcapPreProcessing(req, res, next) {
                     capture_file_name: req.file.filename,
                     pcap_file_name: res.locals.pcapFileName,
                     owner_id: userID,
-                    generated_from_network: req.pcap.from_network
-                        ? true
-                        : false,
+                    generated_from_network: req.pcap.from_network ? true : false,
                     error: err.toString(),
                 },
                 { new: true }
@@ -215,9 +196,7 @@ const zipSdpFiles = (files, outputPath) =>
         });
 
         output.on('close', function() {
-            logger('zip-files').info(
-                `zipped ${files.length} SDP files. Total size: ${archive.pointer()} bytes`
-            );
+            logger('zip-files').info(`zipped ${files.length} SDP files. Total size: ${archive.pointer()} bytes`);
 
             resolve();
         });
@@ -251,17 +230,14 @@ const postProcessSdpFiles = async folder => {
     await zipSdpFiles(files, `${folder}/sdp.zip`);
 };
 
-const pcapFullAnalysis = async (req, res, next) => {
-    const pcapId = req.pcap.uuid;
-    const pcapFolder = req.pcap.folder;
+// Returns undefined on success; otherwise, the error.
+const runAnalysis = async params => {
+    const {pcapId, pcapFolder, streamID, pcapFile, userId, analysisProfileFile} = params;
+    const { withMongo, withInflux } = argumentsToCmd();
 
-    const { withStorage, withMongo, withInflux } = argumentsToCmd();
-
-    const st2110ExtractorCommand = `"${
-        program.cpp
-    }/st2110_extractor" ${pcapId} "${
-        res.locals.pcapFilePath
-    }" "${pcapFolder}" ${withStorage} ${withInflux} ${withMongo} `;
+    const streamOption = streamID ? `-s ${streamID}` : '';
+    const profileFile = `-p ${analysisProfileFile}`;
+    const st2110ExtractorCommand = `"${program.cpp}/st2110_extractor" ${pcapId} "${pcapFile}" "${pcapFolder}" ${withInflux} ${withMongo} ${streamOption} ${profileFile}`;
 
     logger('st2110_extractor').info(`Command: ${st2110ExtractorCommand}`);
 
@@ -270,7 +246,7 @@ const pcapFullAnalysis = async (req, res, next) => {
         logger('st2110_extractor').info(output.stdout);
         logger('st2110_extractor').info(output.stderr);
         await postProcessSdpFiles(pcapFolder);
-        next();
+        return;
     } catch (err) {
         logger('pcap-full-analysis').error(`exception: ${err}`);
 
@@ -282,11 +258,13 @@ const pcapFullAnalysis = async (req, res, next) => {
             { new: true }
         ).exec();
 
-        const userID = req.session.passport.user.id;
+        const userID = userId;
         websocketManager.instance().sendEventToUser(userID, {
             event: WS_EVENTS.PCAP_FILE_FAILED,
             data: { id: pcapId, progress: 0, error: err.toString() },
         });
+
+        return err;
     }
 };
 
@@ -321,30 +299,32 @@ function resetStreamCountersAndErrors(req, res, next) {
         });
 }
 
-function singleStreamAnalysis(req, res, next) {
-    const { streamID } = req.params;
-    const pcapId = req.pcap.uuid;
-    const pcapFolder = req.pcap.folder;
-    const pcap_location = req.file.path;
+const pcapFullAnalysis = async (req, res, next) => {
+    const params = {
+        pcapId: req.pcap.uuid,
+        pcapFolder: req.pcap.folder,
+        pcapFile: res.locals.pcapFilePath,
+        userId: req.session.passport.user.id,
+        analysisProfileFile: req.analysisProfileFile,
+    };
 
-    const { withStorage, withMongo, withInflux } = argumentsToCmd();
+    const result = await runAnalysis(params);
+    next(result);
+};
 
-    const st2110ExtractorCommand = `"${
-        program.cpp
-    }/st2110_extractor" ${pcapId} "${pcap_location}" "${pcapFolder}" ${withStorage}  ${withInflux} ${withMongo} -s "${streamID}"`;
+const singleStreamAnalysis = async (req, res, next) => {
+    const params = {
+        pcapId: req.pcap.uuid,
+        pcapFolder: req.pcap.folder,
+        streamID: req.params.streamID,
+        pcapFile: req.file.path,
+        userId: req.session.passport.user.id,
+        analysisProfileFile: req.analysisProfileFile,
+    };
 
-    logger('st2110_extractor').info(`Command: ${st2110ExtractorCommand}`);
-    exec(st2110ExtractorCommand)
-        .then(output => {
-            logger('st2110_extractor').info(output.stdout);
-            logger('st2110_extractor').info(output.stderr);
-            postProcessSdpFiles(pcapFolder);
-            next();
-        })
-        .catch(err => {
-            logger('pcap-full-analysis').error(`exception: ${err}`);
-        });
-}
+    const result = await runAnalysis(params);
+    next(result);
+};
 
 function addStreamErrorsToSummary(stream, error_list) {
     stream.error_list.forEach(error =>
@@ -373,9 +353,7 @@ function pcapConsolidation(req, res, next) {
     };
 
     const streams = _.get(req, 'streams', []);
-    streams.forEach(stream =>
-        addStreamErrorsToSummary(stream, summary.error_list)
-    );
+    streams.forEach(stream => addStreamErrorsToSummary(stream, summary.error_list));
 
     return Pcap.findOne({ id: pcapId })
         .exec() // it returns the mongo db record of the PCAP
@@ -487,13 +465,9 @@ function sdpCheck(req, res, next) {
             const errors = rfcErrors.concat(st2110Errors);
             if (errors.length !== 0) {
                 // notify instead of printing
-                logger('sdp-check').error(
-                    `Found ${errors.length} error(s) in SDP file:`
-                );
+                logger('sdp-check').error(`Found ${errors.length} error(s) in SDP file:`);
                 for (let c in errors) {
-                    logger('sdp-check').error(
-                        `${+c + 1}: ${errors[c].message}`
-                    );
+                    logger('sdp-check').error(`${+c + 1}: ${errors[c].message}`);
                 }
             }
 
@@ -557,6 +531,8 @@ function sdpDelete(req, res, next) {
     fs.unlinkSync(req.file.path);
 }
 
+const { getAnalysisProfile } = require('./getProfile');
+
 module.exports = {
     getUserFolder,
     generateRandomPcapFilename,
@@ -564,6 +540,7 @@ module.exports = {
     pcapIngest: [
         pcapFileAvailableFromReq,
         pcapFormatConversion,
+        getAnalysisProfile,
         pcapPreProcessing,
         pcapFullAnalysis,
         videoConsolidation,
@@ -575,6 +552,7 @@ module.exports = {
         pcapIngestEnd,
     ],
     pcapReanalyze: [
+        getAnalysisProfile,
         pcapPreProcessing,
         pcapFullAnalysis,
         videoConsolidation,

@@ -3,15 +3,19 @@ const db = require('../managers/database')('list');
 
 const GuiPreferencesSchema = new mongoose.Schema({
     language: {
-        type: String
+        type: String,
     },
     theme: {
-        type: String
-    }
+        type: String,
+    },
 });
 
 const PreferencesSchema = new mongoose.Schema({
-    gui: GuiPreferencesSchema
+    gui: GuiPreferencesSchema,
+
+    analysis: {
+        type: mongoose.Schema.Types.Mixed,
+    },
 });
 
 const UserSchema = new mongoose.Schema({
@@ -19,13 +23,13 @@ const UserSchema = new mongoose.Schema({
         type: String,
         unique: true,
         trim: true,
-        required: true
+        required: true,
     },
     password: {
         type: String,
-        required: true
+        required: true,
     },
-    preferences: PreferencesSchema
+    preferences: PreferencesSchema,
 });
 
 UserSchema.set('toJSON', {
@@ -34,7 +38,7 @@ UserSchema.set('toJSON', {
     transform: (doc, user) => {
         delete user.password;
         delete user._id;
-    }
+    },
 });
 
 module.exports = db.model('User', UserSchema);

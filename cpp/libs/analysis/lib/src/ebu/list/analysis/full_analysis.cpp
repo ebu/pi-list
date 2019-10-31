@@ -39,8 +39,6 @@ namespace
         auto j                     = ::gather_info(network_info, video_info);
         j["global_video_analysis"] = nlohmann::json(analysis_info);
 
-        logger()->info("*************************> TRO Info: {}", j.dump());
-
         context.updater->update_stream_info(network_info.id, j);
 
         st2110::d20::st2110_20_sdp_serializer s(handler.info().video);
@@ -225,8 +223,11 @@ void analysis::run_full_analysis(processing_context& context)
     auto handler    = std::make_shared<rtp::udp_handler>(create_handler);
     auto filter     = std::make_shared<ptp::udp_filter>(ptp_sm, handler);
 
+    logger()->info("Offset from PTP clock is: {} ns",
+                   std::chrono::duration_cast<std::chrono::nanoseconds>(context.pcap.offset_from_ptp_clock).count());
+
     auto player = std::make_unique<pcap::pcap_player>(context.pcap_file, filter, on_error_exit,
-                                                      context.pcap.offset_from_ptp_clock);
+                                                      -context.pcap.offset_from_ptp_clock);
 
     auto launcher = launch(std::move(player));
 

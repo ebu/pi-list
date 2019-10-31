@@ -11,7 +11,7 @@
   ],
   "analysis.warnings.pcap.truncated": "Truncated",
   "analysis.errors.missing_information": "Internal error: information is missing",
-  "analysis.errors.invalid_delta_rtp_ts_vs_nt": "Invalid delta between RTP timestamp and N x Tframe",
+  "analysis.errors.invalid_rtp_ts_vs_nt": "Invalid delta between RTP timestamp and N x Tframe",
   "analysis.errors.invalid_delta_packet_ts_vs_rtp_ts": "Invalid delta between Packet TS and RTP TS",
   "analysis.errors.cinst_above_maximum": "CInst is above the maximum allowed value (CMAX)",
   "analysis.errors.vrx_above_maximum": "VRX is outside of the valid bounds (0..VRXFULL)",
@@ -212,5 +212,6 @@
   "notifications.error.live.sources.deleted": "Live source(s) not deleted",
   "notifications.error.live.sources.delete_message": "Error deleting live sources",
   "table.next": "Next",
-  "table.previous": "Previous"
+  "table.previous": "Previous",
+  "analysis_profiles.active_profile": "Analysis profile"
 }

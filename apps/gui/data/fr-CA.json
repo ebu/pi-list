@@ -11,7 +11,7 @@
   ],
   "analysis.warnings.pcap.truncated": "Tronqué",
   "analysis.errors.missing_information": "Erreur interne: information manquante",
-  "analysis.errors.invalid_delta_rtp_ts_vs_nt": "Delta entre le marqueur de temps RTP et le N x Tframe non valide",
+  "analysis.errors.invalid_rtp_ts_vs_nt": "Delta entre le marqueur de temps RTP et le N x Tframe non valide",
   "analysis.errors.invalid_delta_packet_ts_vs_rtp_ts": "Delta entre les TS de Paquet et TS RTP non valide",
   "analysis.errors.cinst_above_maximum": "CInst est supérieur à la valeur maximale autorisée (CMAX)",
   "analysis.errors.vrx_above_maximum": "VRX est à l'extérieur des limites (0..VRXFULL)",
@@ -212,5 +212,6 @@
   "notifications.error.live.sources.deleted": "Source(s) en direct non supprimée(s)",
   "notifications.error.live.sources.delete_message": "Erreur lors de la suppression des sources en direct",
   "table.next": "Suivant",
-  "table.previous": "Précédent"
+  "table.previous": "Précédent",
+  "analysis_profiles.active_profile": "*** analysis_profiles.profiles ***"
 }
