@@ -52,6 +52,9 @@ module.exports = {
                 from: 'favicon.ico',
             },
             {
+                from: 'static.config.json',
+            },
+            {
                 from: 'static',
                 to: 'static',
             },

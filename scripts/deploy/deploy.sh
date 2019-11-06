@@ -42,6 +42,7 @@ install -m 755 $DEPLOY_SCRIPT_DIR/artifacts/*.sh $RELEASE_DIR/
 install -m 755 $DEPLOY_SCRIPT_DIR/artifacts/docker-compose.yml $RELEASE_DIR/
 install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/Dockerfile $RELEASE_DIR/server/
 install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/config.yml $RELEASE_DIR/server/app/listwebserver
+install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/nginx.conf $RELEASE_DIR/server/
 echo "Copying artifacts... done"
 
 echo
