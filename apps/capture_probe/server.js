@@ -58,9 +58,44 @@ const sleep = milliseconds => {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 };
 
-const onWorkMessage = async (msgContext, sendStatus) => {
+const onCancelMessage = async (msgContext, sendStatus) => {
     const { msg, ack } = msgContext;
 
+    try {
+        const message = JSON.parse(msg.content.toString());
+        const { canceled } = message;
+        
+
+        /*
+        * The flow for cancelation was mounted.
+        * At this point, for each flow to be canceled there must
+        * be a action that really cancells the workflow.
+        * For now, a fake update are being sent through the GUI
+        */
+        canceled.forEach(function(item) {
+            // TODO: CANCEL THE WORKFLOW AND SEND STATUS
+
+            sendStatus({
+                msg: {
+                    id: item,
+                    status: workflowsSchema.status.canceled,
+                },
+                persistent,
+            });
+          });
+
+    } catch (err) {
+        logger('server').error(`Error cancelling workflows: ${err.message}`);
+    } finally {
+        ack();
+    }
+};
+
+
+
+const onWorkMessage = async (msgContext, sendStatus) => {
+    const { msg, ack } = msgContext;
+    
     try {
         logger('server').info(`Received message`);
         const message = JSON.parse(msg.content.toString());
@@ -99,6 +134,7 @@ const onWorkMessage = async (msgContext, sendStatus) => {
                     msg: {
                         id: workflowConfig.id,
                         status: workflowsSchema.status.started,
+                        percentage: 0,
                     },
                     persistent,
                 });
@@ -119,6 +155,7 @@ const onWorkMessage = async (msgContext, sendStatus) => {
                     msg: {
                         id: workflowConfig.id,
                         status: workflowsSchema.status.completed,
+                        percentage: 100,
                     },
                     persistent,
                 });
@@ -148,6 +185,16 @@ const onWorkMessage = async (msgContext, sendStatus) => {
 };
 
 const run = async () => {
+    const cancelReceiver = mqReceive.createExchangeReceiver(
+        globalConfig.rabbitmqUrl,
+        mq.exchanges.mqtt,
+        [mq.exchanges.mqtt.topics.workflows.cancel]
+    );
+    const handleCancelMessage = msgContext =>
+        onCancelMessage(msgContext, statusSender.send);
+
+    cancelReceiver.emitter.on(mqReceive.onMessageKey, handleCancelMessage);
+
     const heartBeatSender = createExchangeSender(
         globalConfig.rabbitmqUrl,
         mq.exchanges.probeStatus

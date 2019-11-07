@@ -2,9 +2,6 @@ import _ from 'lodash';
 import Actions from './Actions';
 
 const reducer = (state, { type, payload }) => {
-    console.log(type);
-    console.dir(payload);
-
     switch (type) {
         case Actions.updateWorkflows: {
             const added = payload.added || [];

@@ -8,8 +8,25 @@ const {
     createExchangeSender,
 } = require('../../../../js/common_server/mq/send');
 const mqReceive = require('../../../../js/common_server/mq/receive');
+const moment = require('moment');
 
-const activeWorkflows = {};
+const activeWorkflows = [];
+
+const activeWorkflowsTimeoutControl = () => {
+    // Check for started workflows
+    let wfs = getWorkflows().filter(wf => wf.state.status === workflows.status.started).map(wf => wf);
+
+    // How long is the workflow active without beeing updated?
+    wfs.forEach(wf => {
+        var maxValidWfDate = moment(wf.meta.times.lastUpdated).add(3, 'm').toDate();
+        if (maxValidWfDate < moment(Date.now()))
+        {
+            let inputConfig = { ids: [wf.id]};
+            doCancelWorkflow(wf.type, inputConfig);
+        }
+    })
+}
+setInterval(activeWorkflowsTimeoutControl, 5000);
 
 const mqttSender = createExchangeSender(
     programArguments.rabbitmqUrl,
@@ -33,7 +50,7 @@ const addWorkflow = wf => {
     })
 };
 
-const updateWorkflow = ({ id, status, payload }) => {
+const updateWorkflow = ({ id, status, percentage, payload }) => {
     const wf = activeWorkflows[id];
     if (!wf) {
         logger('workflow-controller').error(`Unknown workflow with id ${id}`);
@@ -41,13 +58,29 @@ const updateWorkflow = ({ id, status, payload }) => {
     }
 
     const now = Date.now();
-
-    wf.state.status = status;
     wf.meta.times.lastUpdated = now;
+
+    if (percentage != undefined)
+        wf.state.percentage = percentage;
+   
+    if (status == workflows.status.started) {
+        wf.count += 1;
+        if (wf.count > 2) {
+            let inputConfig = { ids: [id]};
+            // Instead of cancel Workflow, abort Workflow is more appropriate
+            // Pass a status trought the doCancelWorkflow, so that status will
+            //  be used instead the actual 'canceled'
+            doCancelWorkflow(wf.type, inputConfig);
+        }
+    }    
+
+    if (status != undefined)
+        wf.state.status = status;
 
     if (
         status == workflows.status.completed ||
-        status == workflows.status.failed
+        status == workflows.status.failed ||
+        status == workflows.status.canceled
     ) {
         wf.meta.times.completed = now;
     }
@@ -55,6 +88,10 @@ const updateWorkflow = ({ id, status, payload }) => {
     if (status == workflows.status.failed) {
         wf.state.errorMessage = payload;
     }
+
+    // Keep an updated record in memory
+    // Otherwise the wf.count verification will not work
+    activeWorkflows[id] = wf;
 
     sendMqttUpdate({
         updated: [wf]
@@ -89,7 +126,7 @@ const workSender = createQueueSender(
     mqtypes.queues.workflowRequest
 );
 
-const captureAndIngest = require('./captureAndIngest');
+//const captureAndIngest = require('./captureAndIngest');
 
 const doCreateWorkflow = async (wf, inputConfig) => {
     /* Workflow modules must export the following functions:
@@ -110,9 +147,29 @@ const doCreateWorkflow = async (wf, inputConfig) => {
     return;
 };
 
+const doCancelWorkflow = async (type, inputConfig) => {
+    
+    const moduleName = `./${type}`;
+    const module = require(moduleName);
+    if (!module) {
+        throw Error(`Unknown workflow type ${type}`);
+    }
+
+    const cancelFunction = module.cancelWorkflow;
+    if (!cancelFunction) {
+        throw Error(`Cancel function not exported for workflow`);
+    }
+
+    let payload = { canceled: inputConfig.ids };
+
+    await cancelFunction(payload, mqttSender);
+    return;
+};
+
 const createBareWorkflowDescriptor = (type, userId) => ({
     id: uuidv1(),
     type: type,
+    count: 0,
     state: {
         status: workflows.status.requested,
         errorMessage: undefined,
@@ -143,7 +200,21 @@ const createWorkflow = async (type, userId, inputConfig) => {
     }
 };
 
+const cancelWorkflow = async (type, inputConfig) => {
+    try {
+        logger('workflow-controller').info(
+            `Cancel workflow ${inputConfig.ids} of type ${type}`
+        );
+        await doCancelWorkflow(type, inputConfig);
+    } catch (err) {
+        const message = `Error caneling workflow: ${err.message}`;
+        logger('workflow-controller').error(message);
+        throw err;
+    }
+};
+
 module.exports = {
     getWorkflows,
     createWorkflow,
+    cancelWorkflow,
 };

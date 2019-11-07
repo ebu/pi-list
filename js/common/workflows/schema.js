@@ -19,6 +19,7 @@
 */
 
 const status = {
+    canceled: 'canceled',
     requested: 'requested',
     started: 'started',
     failed: 'failed', // payload : { message: string }
