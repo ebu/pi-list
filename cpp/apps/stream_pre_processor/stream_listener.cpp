@@ -48,7 +48,14 @@ stream_listener::stream_listener(rtp::packet first_packet, std::string pcap_id, 
 
 void stream_listener::on_data(const rtp::packet& packet)
 {
-    detector_.on_data(packet);
+    if(packet.sdu.view().size() == 0 && packet.info.rtp.view().extension())
+    {
+        // logger()->info("Skipping packet containing only extension data");
+    }
+    else
+    {
+        detector_.on_data(packet);
+    }
 
     // NOTE: seqnum_analyzer_ is looking for dropped packets but only for
     // streams of unkown types. Therefore it only assumes the presence of
