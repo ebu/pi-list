@@ -40,8 +40,7 @@ SCENARIO("PTP Offset Calculator")
 
             THEN("it calculates the right offset")
             {
-                REQUIRE(c.get_average() ==
-                        std::chrono::nanoseconds(-37204848445));
+                REQUIRE(c.get_average() == std::chrono::nanoseconds(-37204848445));
             }
         }
 

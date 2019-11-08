@@ -21,7 +21,7 @@ void analysis::from_json(const json& j, timestamps_source& t)
 {
     const auto v = j.get<std::string>();
 
-    if(v == "pcap")
+    if (v == "pcap")
     {
         t = timestamps_source::pcap;
     }

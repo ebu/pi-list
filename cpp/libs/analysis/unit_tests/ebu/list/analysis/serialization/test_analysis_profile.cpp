@@ -38,14 +38,14 @@ SCENARIO("Analysis profile serialization")
         }
     })"_json;
         const auto profile = j.get<analysis_profile>();
-    WHEN("the string is deserialized")
-    {
-        THEN("the profile is correct")
+        WHEN("the string is deserialized")
         {
-            REQUIRE(profile.id == "b89d08b5-0dc8-4860-b5d5-32d2a051957e");
-            REQUIRE(profile.label == "JT-NM Tested");
-            REQUIRE(profile.timestamps.source == timestamps_source::ptp_packets);
+            THEN("the profile is correct")
+            {
+                REQUIRE(profile.id == "b89d08b5-0dc8-4860-b5d5-32d2a051957e");
+                REQUIRE(profile.label == "JT-NM Tested");
+                REQUIRE(profile.timestamps.source == timestamps_source::ptp_packets);
+            }
         }
     }
-}
 }

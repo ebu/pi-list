@@ -19,8 +19,8 @@ namespace ebu_list::analysis
         st2110::d30::audio_description audio;
 
         int packet_size               = 0;
-        int samples_per_packet = 0;
-        uint32_t packet_count = 0;
+        int samples_per_packet        = 0;
+        uint32_t packet_count         = 0;
         uint32_t dropped_packet_count = 0;
         uint32_t sample_count         = 0;
 

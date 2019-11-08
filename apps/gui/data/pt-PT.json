@@ -134,7 +134,7 @@
   "workflow.capture_stream": "Gravar Stream",
   "workflow.add_stream": "Adicionar Stream",
   "workflow.start_capture": "Iniciar",
-  "workflow.start_capture.serial": "Iniciar (seqüente)",
+  "workflow.start_capture.serial": "Iniciar (série)",
   "workflow.start_capture.parallel": "Iniciar (paralelo)",
   "workflow.drop_sdp_file_here": "Arraste para aqui seu ficheiro SDP",
   "workflow.add": "Adicionar",

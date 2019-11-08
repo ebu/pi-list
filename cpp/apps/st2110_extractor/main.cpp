@@ -128,8 +128,8 @@ namespace
 
         db_handler_factory factory(config);
         db_updater updater(db, config.storage_folder);
-        auto context =
-            processing_context{config.pcap_file, config.profile, config.storage_folder, pcap, get_stream_info, &factory, &updater};
+        auto context = processing_context{
+            config.pcap_file, config.profile, config.storage_folder, pcap, get_stream_info, &factory, &updater};
 
         run_full_analysis(context);
     }
