@@ -47,7 +47,7 @@ const PcapToolbar = props => {
             type="info"
             link
             icon="file_download"
-            disabled={props.selectedItems === null || props.selectedItems.length !== 1}
+            disabled={props.selectedItems === null || props.selectedItems.length === 0}
             onClick={() => dispatch({ type: Actions.downloadSelectOriginalCapture })}
         />
     );
@@ -59,7 +59,7 @@ const PcapToolbar = props => {
             type="info"
             link
             icon="file_download"
-            disabled={props.selectedItems === null || props.selectedItems.length !== 1}
+            disabled={props.selectedItems === null || props.selectedItems.length === 0}
             onClick={() => dispatch({ type: Actions.downloadSelectedPcap })}
         />
     );
@@ -71,8 +71,8 @@ const PcapToolbar = props => {
             type="info"
             link
             icon="file_download"
-            disabled={props.selectedItems === null || props.selectedItems.length !== 1}
-            onClick={() => dispatch({ type: Actions.downloadSelectedSdp  })}
+            disabled={props.selectedItems === null || props.selectedItems.length === 0}
+            onClick={() => dispatch({ type: Actions.downloadSelectedSdp })}
         />
     );
 
@@ -83,7 +83,7 @@ const PcapToolbar = props => {
             type="info"
             link
             icon="file_download"
-            disabled={props.selectedItems === null || props.selectedItems.length !== 1}
+            disabled={props.selectedItems === null || props.selectedItems.length === 0}
             onClick={() => dispatch({ type: Actions.downloadSelectedJsonReport })}
         />
     );
@@ -95,7 +95,7 @@ const PcapToolbar = props => {
             type="info"
             link
             icon="file_download"
-            disabled={props.selectedItems === null || props.selectedItems.length !== 1}
+            disabled={props.selectedItems === null || props.selectedItems.length === 0}
             onClick={() => dispatch({ type: Actions.downloadSelectedPdfReport })}
         />
     );

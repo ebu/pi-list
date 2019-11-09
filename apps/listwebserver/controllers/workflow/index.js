@@ -166,7 +166,7 @@ const doCancelWorkflow = async (type, inputConfig) => {
     return;
 };
 
-const createBareWorkflowDescriptor = (type, userId) => ({
+const createBareWorkflowDescriptor = (type, userId, userFolder) => ({
     id: uuidv1(),
     type: type,
     count: 0,
@@ -176,6 +176,7 @@ const createBareWorkflowDescriptor = (type, userId) => ({
     },
     meta: {
         createdBy: userId,
+        folder: userFolder,
         times: {
             created: Date.now(),
             lastUpdated: undefined,
@@ -184,9 +185,9 @@ const createBareWorkflowDescriptor = (type, userId) => ({
     },
 });
 
-const createWorkflow = async (type, userId, inputConfig) => {
+const createWorkflow = async (type, userId, userFolder, inputConfig) => {
     try {
-        const wf = createBareWorkflowDescriptor(type, userId);
+        const wf = createBareWorkflowDescriptor(type, userId, userFolder);
         logger('workflow-controller').info(
             `Creating workflow ${wf.id} of type ${wf.type}`
         );

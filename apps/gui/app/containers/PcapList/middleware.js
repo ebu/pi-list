@@ -3,9 +3,14 @@ import Actions from './Actions';
 import api from '../../utils/api';
 import { translate } from '../../utils/translation';
 import { getFullInfoFromId } from './utils';
-import { downloadFiles } from '../../utils/download';
+import { downloadFileFromUrl } from '../../utils/download';
+import { types as workflowTypes } from 'ebu_list_common/workflows/types';
 
 const middleware = (state, action) => {
+    var downloadUrl = null;
+    var downloadType = null;
+    const multipleSelection = state.selected.length > 1;
+
     switch (action.type) {
 
         case Actions.reanalyzePcap: {
@@ -43,51 +48,66 @@ const middleware = (state, action) => {
             break;
 
         case Actions.downloadSelectOriginalCapture: {
-            const filesForDownload = state.selected.map(id => ({
-                url: api.downloadOriginalCaptureUrl(id),
-                filename: `${id}.json`
-            }));
-            downloadFiles(filesForDownload);
+            downloadUrl = api.downloadOriginalCaptureUrl(state.selected[0]);
+            downloadType = 'orig';
         }
             break;
 
         case Actions.downloadSelectedPcap: {
-            const filesForDownload = state.selected.map(id => ({
-                url: api.downloadPcapUrl(id),
-                filename: `${id}.json`
-            }));
-            downloadFiles(filesForDownload);
+            downloadUrl = api.downloadPcapUrl(state.selected[0]);
+            downloadType = 'pcap';
         }
             break;
 
         case Actions.downloadSelectedSdp: {
-            const filesForDownload = state.selected.map(id => ({
-                url: api.downloadSDPUrl(id),
-                filename: `${id}.json`
-            }));
-            downloadFiles(filesForDownload);
+            downloadUrl = api.downloadSDPUrl(state.selected[0]);
+            downloadType = 'sdp';
         }
             break;
 
         case Actions.downloadSelectedJsonReport: {
-            const filesForDownload = state.selected.map(id => ({
-                url: api.downloadJsonUrl(id)
-            }));
-            downloadFiles(filesForDownload);
+            downloadUrl = api.downloadJsonUrl(state.selected[0]);
+            downloadType = 'json';
         }
             break;
 
         case Actions.downloadSelectedPdfReport: {
-            const filesForDownload = state.selected.map(id => ({
-                url: api.downloadPdfUrl(id)
-            }));
-            downloadFiles(filesForDownload);
+            downloadUrl = api.downloadPdfUrl(state.selected[0]);
+            downloadType = 'pdf';
         }
             break;
 
-
         default:
             break;
+    }
+
+    if (downloadUrl) {
+        if (multipleSelection) {
+            const workflowInfo = {
+                type: workflowTypes.downloadMultipleFiles,
+                configuration: {
+                    ids: state.selected,
+                    type: downloadType,
+                },
+            };
+
+            api.createWorkflow(workflowInfo)
+                .then(() => {
+                    notifications.success({
+                        titleTag: 'workflow.requested',
+                        messageTag: 'workflow.requested',
+                    });
+                })
+                .catch(() => {
+                    notifications.error({
+                        titleTag: 'workflow.request_failed',
+                        messageTag: 'workflow.request_failed',
+                    });
+                });
+        }
+        else { // single file
+            downloadFileFromUrl(downloadUrl);
+        }
     }
 };
 

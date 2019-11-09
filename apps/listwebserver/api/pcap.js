@@ -167,8 +167,16 @@ router.get('/:pcapID/report', (req, res) => {
     pcapController
         .getReport(pcapID, reportType)
         .then(report => {
-            res.setHeader('Content-disposition', `attachment; filename=${pcapID}.${reportType}`);
-            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(report);
+            Pcap.findOne({ id: pcapID })
+                .exec()
+                .then(data => {
+                    const filename = data.file_name.replace(/\.[^\.]*$/, '');
+                    res.setHeader(
+                        'Content-disposition',
+                        `attachment; filename=${filename}.${reportType}`
+                    );
+                    res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(report);
+                });
         })
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
@@ -192,17 +200,8 @@ router.get('/:pcapID/download', (req, res) => {
     Pcap.findOne({ id: pcapID })
         .exec()
         .then(data => {
-            const path = `${getUserFolder(req)}/${pcapID}/${data.pcap_file_name}`;
-
-            let filename = data.file_name;
-            const extensionCharIdx = filename.lastIndexOf('.');
-            const fileExtension = extensionCharIdx > -1 ? filename.substring(extensionCharIdx + 1) : '';
-
-            if (fileExtension !== '') {
-                const fileExtensionRegex = new RegExp(fileExtension + '$', 'i');
-                filename = filename.replace(fileExtensionRegex, 'pcap');
-            } else filename = filename + '.pcap';
-
+            const path = `${getUserFolder(req)}/${pcapID}/${ data.pcap_file_name }`;
+            const filename = data.file_name.replace(/\.[^\.]*$/, '') + '.pcap';
             fs.downloadFile(path, filename, res);
         });
 });
@@ -216,9 +215,9 @@ router.get('/:pcapID/sdp', (req, res) => {
     Pcap.findOne({ id: pcapID })
         .exec()
         .then(data => {
-            const path = `${getUserFolder(req)}/${pcapID}/sdp.zip`;
-            const fileName = data.file_name.replace(/\.[^\.]*$/, '') + '.zip';
-            fs.downloadFile(path, fileName, res);
+            const filename = data.file_name.replace(/\.[^\.]*$/, '-sdp.zip');
+            const path = `${getUserFolder(req)}/${pcapID}/${filename}`;
+            fs.downloadFile(path, filename, res);
         });
 });
 

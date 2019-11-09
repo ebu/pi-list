@@ -17,4 +17,8 @@ export default {
         DONE: 'PCAP_FILE_PROCESSING_DONE',
         DELETED: 'PCAP_FILE_DELETED',
     },
+    ZIP: {
+        FILE_FAILED: 'ZIP_FILE_FAILED',
+        FILE_COMPLETE: 'ZIP_FILE_COMPLETE',
+    }
 };

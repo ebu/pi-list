@@ -149,6 +149,7 @@
   "workflow.cancel_requested": "*** workflow.cancel_requested",
   "workflow.cancel_failed": "*** workflow.cancel_failed",
   "workflow.names.captureAndIngest": "Capture et analyse",
+  "workflow.names.downloadMultipleFiles": "*** workflow.names.downloadMultipleFiles",
   "workflow.download_networkcapture": "Capture originale",
   "user_account.delete_user_account": "Supprimer le compte",
   "user_account.sign_in": "Joindre",

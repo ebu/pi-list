@@ -79,11 +79,12 @@ export default {
         return request.put('pcap', data, config);
     },
 
-    /* SDP */
+    /* SDP and reports */
     downloadSDP: pcapID => request.get(`pcap/${pcapID}/sdp`),
     downloadSDPUrl: pcapID => `${API_URL}/pcap/${pcapID}/sdp`,
     downloadJsonUrl: pcapID => `${API_URL}/pcap/${pcapID}/report?type=json`,
     downloadPdfUrl: pcapID => `${API_URL}/pcap/${pcapID}/report?type=pdf`,
+    downloadZipUrl: (id,type) => `${API_URL}/meta/zip?id=${id}&type=${type}`,
     uploadSDP: (sdpFile, onUploadComplete) => {
         const data = new FormData();
         data.append('sdp', sdpFile);
