@@ -5,7 +5,10 @@ FROM gcc:7.2
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 RUN apt-get install -yq \
-        wireshark-common
+        wireshark-common nginx
+
+# nginx Configuration
+ADD nginx.conf /etc/nginx/
 
 # Install node
 RUN curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh
@@ -31,4 +34,4 @@ WORKDIR /app/listwebserver/
 RUN rm -rf node_modules
 RUN npm install
 
-CMD serve -s /app/gui -p 8080 & npm start -- config.yml --dev
+CMD bash /app/gui/sedstaticconfig.sh & service nginx start & serve -s /app/gui -p 8080 & npm start -- config.yml --dev

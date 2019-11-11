@@ -1,6 +1,31 @@
 import axios from 'axios';
 
-const REST_URL = `http://${window.location.hostname}:3030`;
+function loadFile(filePath) {
+    var result = null;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", filePath, false);
+    xmlhttp.send();
+    if (xmlhttp.status==200) {
+      result = xmlhttp.responseText;
+    }
+    return result;
+  }
+
+function getAPIPort() {
+    let RestAPIPort;
+
+    try {
+        let staticConfig = JSON.parse(loadFile('./../../static.config.json'));
+        RestAPIPort = staticConfig.publicApiPort;
+    }
+    catch {
+        RestAPIPort = '3030';
+    }
+
+    return RestAPIPort;
+}
+
+const REST_URL = `http://${window.location.hostname}:` + getAPIPort();
 const API_URL = `${REST_URL}/api`;
 
 axios.interceptors.response.use(
