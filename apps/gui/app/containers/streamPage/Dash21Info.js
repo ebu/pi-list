@@ -34,7 +34,7 @@ const getCompliance = (value) => {
     } else if (value == 'wide') {
         return { value: 'W', units: '(Wide)' };
     } else {
-        return { value: 'Not compliant' };
+        return { value: 'Not compliant', attention: false };
     }
 };
 
@@ -71,14 +71,12 @@ const Dash21Info = (props) => {
     const vrxmin = getLowestFromHistogram(globalVideoAnalysis.vrx.histogram);
     const vrxpeak = getHighestFromHistogram(globalVideoAnalysis.vrx.histogram);
     const vrxavg = getAverageFromHistogram(globalVideoAnalysis.vrx.histogram);
-    const invalid = globalVideoAnalysis.compliant !== 'compliant';
     const invalidCinst = props.info.analyses['2110_21_cinst'].result !== 'compliant';
     const invalidVrx = props.info.analyses['2110_21_vrx'].result !== 'compliant';
 
     const summaryValues = [
         { labelTag: 'stream.compliance',
             ...getCompliance(globalVideoAnalysis.compliance),
-            attention:{invalid}
         },
         {
             labelTag: 'media_information.video.read_schedule',

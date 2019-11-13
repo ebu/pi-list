@@ -32,6 +32,8 @@ function getStatusIcon(state) {
         return 'play arrow';
     } else if (state === wfSchema.status.completed) {
         return 'stop';
+    } else if (state === wfSchema.status.canceled) {
+        return 'not_interested';
     } else {
         if (state !== wfSchema.status.failed) {
             throw new Error(`unexpected state ${state}`);
@@ -47,12 +49,18 @@ function getStatusType(state) {
         return 'success';
     } else if (state === wfSchema.status.completed) {
         return 'passive';
+    } else if (state === wfSchema.status.canceled) {
+        return 'warning2';
     } else {
         if (state !== wfSchema.status.failed) {
             throw new Error(`unexpected state ${state}`);
         }
         return 'danger';
     }
+}
+
+function renderpercentage( {value} ) {
+    return <span>{value.percentage} %</span>
 }
 
 function renderStatus({ value }) {
@@ -84,8 +92,9 @@ function renderMessage({ value }) {
 }
 
 const WorkflowsTable = props => {
+    console.log(props);
     const columns = [
-        // getCheckBoxColumn(props),
+         getCheckBoxColumn(props),
         // {
         //     Header: translateX('live.sources.name'),
         //     headerClassName: 'lst-text-left lst-table-header',
@@ -106,6 +115,14 @@ const WorkflowsTable = props => {
             headerClassName: 'lst-text-left lst-table-header',
             accessor: 'state.status',
             Cell: renderStatus,
+            minWidth: 60,
+            maxWidth: 60,
+        },
+        {
+            Header: '',
+            headerClassName: 'lst-text-left lst-table-header',
+            accessor: 'state',
+            Cell: renderpercentage,
             minWidth: 60,
             maxWidth: 60,
         },
@@ -172,12 +189,12 @@ const renderKind = ({ value }) => {
         case sources.kinds.user_defined:
             return <Icon value={'person'} />;
 
-        case sources.kinds.from_sdp:
-            return <span>SDP</span>;
-
-        case sources.kinds.nmos:
-            return <img src="/static/nmos.png" alt="NMOS logo" width="45px" />;
-
+            case sources.kinds.from_sdp:
+                return <span>SDP</span>;
+    
+            case sources.kinds.nmos:
+                return <img src="/static/nmos.png" alt="NMOS logo" width="45px" />;
+    
         default:
             return '';
     }

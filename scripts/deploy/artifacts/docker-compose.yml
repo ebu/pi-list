@@ -20,8 +20,9 @@ services:
   list_server:
     build: ./server/
     ports:
-      - "8080:8080"
-      - "3030:3030"
+      - "8080:80"
+      - "8080"
+      - "3030"
     environment:
         - EBU_LIST_WEB_APP_DOMAIN=${EBU_LIST_WEB_APP_DOMAIN}
         - EBU_LIST_LIVE_MODE=${EBU_LIST_LIVE_MODE}

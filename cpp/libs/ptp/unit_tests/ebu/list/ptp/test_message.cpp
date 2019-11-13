@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "catch.hpp"
+#include "catch2/catch.hpp"
 #include "ebu/list/ptp/message.h"
 using namespace ebu_list;
 using namespace ebu_list::ptp;

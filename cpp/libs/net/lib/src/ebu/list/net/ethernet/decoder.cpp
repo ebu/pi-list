@@ -31,7 +31,7 @@ std::tuple<header, oview> ethernet::decode(oview&& l2_packet)
         constexpr auto _802_1q_additional_size = 0x04;
 
         auto [full_ethernet_header, ethernet_payload] =
-            split(std::move(l2_packet), sizeof(ethernet::l2_header) + _802_1q_additional_size);
+            split(std::move(copied_packet), sizeof(ethernet::l2_header) + _802_1q_additional_size);
         auto full_ethernet_header_copy = oview(full_ethernet_header);
         auto [ethernet_header, _rest]  = split(std::move(full_ethernet_header), sizeof(ethernet::l2_header));
         (void)_rest; // [[maybe_unused]]

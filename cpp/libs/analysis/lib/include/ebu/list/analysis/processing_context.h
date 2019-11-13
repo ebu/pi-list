@@ -1,5 +1,6 @@
 #pragma once
 
+#include "analysis_profile.h"
 #include "ebu/list/analysis/handlers/audio_timing_analyser.h"
 #include "ebu/list/analysis/handlers/troffset_calculator.h"
 #include "ebu/list/analysis/serialization/pcap.h"
@@ -54,6 +55,7 @@ namespace ebu_list::analysis
     struct processing_context
     {
         path pcap_file;
+        const analysis_profile profile;
         path storage_folder;
         pcap_info& pcap;
         std::function<std::optional<stream_with_details>(const rtp::packet& first_packet)> get_stream_info;

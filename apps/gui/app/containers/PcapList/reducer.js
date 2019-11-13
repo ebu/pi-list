@@ -7,6 +7,9 @@ import {
     addStateToPcapInfo,
     updatePcap
 } from './utils';
+import notifications from '../../utils/notifications';
+import api from '../../utils/api';
+import { downloadFileFromUrl } from '../../utils/download';
 
 const reducer = (state, action) => {
 
@@ -94,6 +97,22 @@ const reducer = (state, action) => {
             return Object.assign({}, { ...state }, {
                 itemToReanalyze: id
             });
+        }
+
+        case Actions.zipFileFailed : {
+            notifications.error({
+                titleTag: 'Zip failed',
+                messageTag: action.data.msg,
+            });
+            return state;
+        }
+
+        case Actions.zipFileComplete : {
+            notifications.success({
+                titleTag: 'Zip complete',
+                messageTag: action.data.msg,
+            });
+            downloadFileFromUrl(api.downloadZipUrl(action.data.id,action.data.type));
         }
 
         default:

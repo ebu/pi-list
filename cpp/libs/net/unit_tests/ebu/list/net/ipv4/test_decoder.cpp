@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "catch.hpp"
+#include "catch2/catch.hpp"
 #include "ebu/list/net/ipv4/decoder.h"
 using namespace ebu_list;
 using namespace ebu_list::ipv4;

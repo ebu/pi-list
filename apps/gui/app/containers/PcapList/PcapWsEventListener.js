@@ -28,6 +28,14 @@ const PcapWsEventListener = (props) => {
         dispatch({ type: Actions.pcapDeleted, data });
     };
 
+    const onZipFailed = (data) => {
+        dispatch({ type: Actions.zipFileFailed, data });
+    }
+
+    const onZipComplete = (data) => {
+        dispatch({ type: Actions.zipFileComplete, data });
+    }
+
     useEffect(() => {
         websocket.on(websocketEventsEnum.PCAP.FILE_RECEIVED, onReceived);
         websocket.on(websocketEventsEnum.PCAP.FILE_PROCESSED, onPcapProcessed);
@@ -35,6 +43,8 @@ const PcapWsEventListener = (props) => {
         websocket.on(websocketEventsEnum.PCAP.FILE_FAILED, onPcapFailed);
         websocket.on(websocketEventsEnum.PCAP.DONE, onDone);
         websocket.on(websocketEventsEnum.PCAP.DELETED, onDeleted);
+        websocket.on(websocketEventsEnum.ZIP.FILE_FAILED, onZipFailed);
+        websocket.on(websocketEventsEnum.ZIP.FILE_COMPLETE, onZipComplete);
 
         return () => {
             websocket.off(websocketEventsEnum.PCAP.FILE_RECEIVED, onReceived);
@@ -43,6 +53,8 @@ const PcapWsEventListener = (props) => {
             websocket.off(websocketEventsEnum.PCAP.FILE_FAILED, onPcapFailed);
             websocket.off(websocketEventsEnum.PCAP.DONE, onDone);
             websocket.off(websocketEventsEnum.PCAP.DELETED, onDeleted);
+            websocket.off(websocketEventsEnum.ZIP.FILE_FAILED);
+            websocket.off(websocketEventsEnum.ZIP.FILE_COMPLETE);
         };
     }, []);
 

@@ -11,7 +11,7 @@
   ],
   "analysis.warnings.pcap.truncated": "Усічений",
   "analysis.errors.missing_information": "Внутрішня помилка: Інформація відсутня",
-  "analysis.errors.invalid_delta_rtp_ts_vs_nt": "Недійсна дельта між міткою часу RTP та N x Tframe",
+  "analysis.errors.invalid_rtp_ts_vs_nt": "Недійсна дельта між міткою часу RTP та N x Tframe",
   "analysis.errors.invalid_delta_packet_ts_vs_rtp_ts": "*** invalid_delta_packet_ts_vs_rtp_ts ***",
   "analysis.errors.cinst_above_maximum": "Значення Cinst перевищує максимально допустиме (CMAX)",
   "analysis.errors.vrx_above_maximum": "*** Значення VRX перевищує максимально допустиме (VRXFULL)",
@@ -144,7 +144,12 @@
   "workflow.cancel": "*** workflow.cancel",
   "workflow.requested": "*** workflow.requested",
   "workflow.request_failed": "*** workflow.request_failed",
+  "workflow.cancel_not_eligible_title": "***",
+  "workflow.cancel_not_eligible": "***",
+  "workflow.cancel_requested": "*** workflow.cancel_requested",
+  "workflow.cancel_failed": "*** workflow.cancel_failed",
   "workflow.names.captureAndIngest": "*** captureAndIngest",
+  "workflow.names.downloadMultipleFiles": "*** workflow.names.downloadMultipleFiles",
   "workflow.download_networkcapture": "*** workflow.download_networkcapture",
   "user_account.delete_user_account": "Видалити аккаунт",
   "user_account.sign_in": "Увійти",
@@ -212,5 +217,6 @@
   "notifications.error.live.sources.deleted": "*** notifications.error.live.sources.deleted",
   "notifications.error.live.sources.delete_message": "*** notifications.error.live.sources.delete_message",
   "table.next": "*** table.next ***",
-  "table.previous": "*** table.previous ***"
+  "table.previous": "*** table.previous ***",
+  "analysis_profiles.active_profile": "*** analysis_profiles.profiles ***"
 }

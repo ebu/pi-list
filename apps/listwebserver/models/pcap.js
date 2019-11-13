@@ -85,6 +85,9 @@ const PcapSchema = new mongoose.Schema({
         type: Object,
         default: {}
     },
+    analysis_profile: {
+        type: mongoose.Schema.Types.Mixed,
+    },
     truncated: {
         type: Boolean,
         default: false

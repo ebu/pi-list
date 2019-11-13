@@ -39,6 +39,7 @@ const exchanges = {
                 }
                 */
                 update: 'amq.topic.workflows.update',
+                cancel: 'amq.topic.workflows.cancel',
             },
             nmos: {
                 /* payload:
