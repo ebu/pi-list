@@ -7,6 +7,7 @@ const tableInitialState = () => ({
     selectAll: 0,
     itemsToDelete: [],
     filterString: null,
+    cancelRequestIds: [],
     showSDPErrorPopUp: { show:false, id : null, error: "" },
 });
 
@@ -56,6 +57,11 @@ const makeTableReducer = (options) => (state, action) => {
         case actions.setFilterString:
             return { ...state, filterString: action.payload.value };
 
+        case actions.requestCancel: {
+            return Object.assign({}, { ...state }, {
+                cancelRequestIds: action.data.ids
+            });
+        }
         case actions.showSDPErrorPopUp:
             const id = action.data.id;
             const newSelected = state.data.filter(item => item.id === id);

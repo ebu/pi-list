@@ -93,7 +93,9 @@ class FileSystem {
     }
 
     delete(directoryPath) {
-        jetpack.remove(directoryPath);
+        if (this.folderExists(directoryPath)) {
+            jetpack.remove(directoryPath);
+        }
     }
 }
 

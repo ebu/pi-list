@@ -1,4 +1,4 @@
-#include "catch.hpp"
+#include "catch2/catch.hpp"
 #include "ebu/list/analysis/full_analysis.h"
 #include "ebu/list/test_lib/sample_files.h"
 #include "fs_handler_factory.h"
@@ -45,9 +45,11 @@ SCENARIO("ANC stream analysis")
         {
             fs_handler_factory handler_factory(storage_folder);
             fs_updater updater(storage_folder);
+            analysis_profile profile;
+            profile.timestamps.source = timestamps_source::pcap;
 
-            auto context =
-                processing_context{pcap_file, storage_folder, pcap, get_stream_info, &handler_factory, &updater};
+            auto context = processing_context{pcap_file,       profile,          storage_folder, pcap,
+                                              get_stream_info, &handler_factory, &updater};
 
             run_full_analysis(context);
         }

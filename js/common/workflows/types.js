@@ -7,6 +7,9 @@ const types = {
      * durationMs : number // the duration of the capture, in milliseconds
      */
     captureAndIngest: 'captureAndIngest',
+    /*
+     **/
+    downloadMultipleFiles: 'downloadMultipleFiles',
 };
 
 module.exports = {

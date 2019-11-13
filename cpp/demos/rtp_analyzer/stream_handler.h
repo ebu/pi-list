@@ -50,8 +50,7 @@ namespace ebu_list
 
         entries calculate_results() const
         {
-            const auto total = std::accumulate(values_.begin(), values_.end(), ValueType(),
-                                               [](auto acc, auto& v) { return acc + v.second; });
+            const auto total = std::accumulate(values_.begin(), values_.end(), ValueType(), [](auto acc, auto& v) { return acc + v.second; });
 
             auto r = entries();
             r.reserve(values_.size());
@@ -72,9 +71,9 @@ namespace ebu_list
         ipv4::endpoint destination;
         uint32_t ssrc;
         uint32_t first_frame_ts = 0;
-        uint32_t last_frame_ts  = 0;
-        double rate             = 0.0;
-        uint8_t payload_type    = 0;
+        uint32_t last_frame_ts = 0;
+        double rate = 0.0;
+        uint8_t payload_type = 0;
         histogram_data<size_t>::entries packet_sizes;
         histogram_data<int>::entries ts_deltas;
         int packet_count = 0;

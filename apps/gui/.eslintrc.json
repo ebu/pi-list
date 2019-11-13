@@ -1,35 +1,23 @@
 {
-    "extends": [
-        "airbnb"
-    ],
-    "plugins": [],
-    "rules": {
-        "indent": [ "error", 4 ],
-        "react/jsx-indent": [ "error", 4 ],
-        "react/jsx-indent-props": [ "error", 4],
-
-        "max-len": [ "error", { "code": 120 } ],
-
-        "comma-dangle": "off",
-
-        "consistent-return": "off",
-
-        "no-return-assign": "off",
-
-        "one-var": "off",
-        "one-var-declaration-per-line": "off",
-
-        "class-methods-use-this": "off",
-        "prefer-destructuring": "off",
-
-        "react/jsx-filename-extension": [ "never" ],
-        "import/no-extraneous-dependencies": [ "never" ],
-        "import/no-unresolved": [ "never" ],
-        "import/extensions": [ "never" ],
-        "linebreak-style": ["off"]
-    },
-    "env": {
-        "browser": true,
-        "node": true
-    }
+  "extends": ["airbnb", "prettier", "prettier/react"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": ["error"],
+    "consistent-return": "off",
+    "no-return-assign": "off",
+    "one-var": "off",
+    "one-var-declaration-per-line": "off",
+    "class-methods-use-this": "off",
+    "prefer-destructuring": "off",
+    "react/jsx-filename-extension": ["never"],
+    "import/no-extraneous-dependencies": ["never"],
+    "import/no-unresolved": ["never"],
+    "import/prefer-default-export": "off",
+    "import/extensions": ["never"],
+    "linebreak-style": ["off"]
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  }
 }

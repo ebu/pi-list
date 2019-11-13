@@ -18,7 +18,7 @@ namespace ebu_list
         ~file_handle();
 
         FILE* handle();
-        operator bool() const;
+        explicit operator bool() const;
 
       private:
         file_handle(file_handle&) = delete;

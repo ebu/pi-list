@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { Scrollbars } from 'react-custom-scrollbars';
 import SideNav from './SideNav';
 import routes from '../routes';
-import headerRoutes from '../headerRoutes';
+import headerRoutes from '../headerRoutes/index';
 import asyncLoader from '../components/asyncLoader';
 import api from '../utils/api';
 import websocket from '../utils/websocket';
