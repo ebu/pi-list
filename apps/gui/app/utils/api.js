@@ -1,6 +1,31 @@
 import axios from 'axios';
 
-const REST_URL = `http://${window.location.hostname}:3030`;
+function loadFile(filePath) {
+    var result = null;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", filePath, false);
+    xmlhttp.send();
+    if (xmlhttp.status==200) {
+      result = xmlhttp.responseText;
+    }
+    return result;
+  }
+
+function getAPIPort() {
+    let RestAPIPort;
+
+    try {
+        let staticConfig = JSON.parse(loadFile('./../../static.config.json'));
+        RestAPIPort = staticConfig.publicApiPort;
+    }
+    catch {
+        RestAPIPort = '3030';
+    }
+
+    return RestAPIPort;
+}
+
+const REST_URL = `http://${window.location.hostname}:` + getAPIPort();
 const API_URL = `${REST_URL}/api`;
 
 axios.interceptors.response.use(
@@ -79,11 +104,12 @@ export default {
         return request.put('pcap', data, config);
     },
 
-    /* SDP */
+    /* SDP and reports */
     downloadSDP: pcapID => request.get(`pcap/${pcapID}/sdp`),
     downloadSDPUrl: pcapID => `${API_URL}/pcap/${pcapID}/sdp`,
     downloadJsonUrl: pcapID => `${API_URL}/pcap/${pcapID}/report?type=json`,
     downloadPdfUrl: pcapID => `${API_URL}/pcap/${pcapID}/report?type=pdf`,
+    downloadZipUrl: (id,type) => `${API_URL}/meta/zip?id=${id}&type=${type}`,
     uploadSDP: (sdpFile, onUploadComplete) => {
         const data = new FormData();
         data.append('sdp', sdpFile);
@@ -181,6 +207,7 @@ export default {
     deleteLiveSources: ids => request.put('live/sources/delete', { ids }),
 
     createWorkflow: info => request.post('workflow', info),
+    cancelWorkflow: info => request.put('workflow', info),
     getWorkflows: () => request.get('workflow'),
 
     analysisProfile: {

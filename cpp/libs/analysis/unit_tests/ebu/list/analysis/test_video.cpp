@@ -48,8 +48,8 @@ SCENARIO("ANC stream analysis")
             analysis_profile profile;
             profile.timestamps.source = timestamps_source::pcap;
 
-            auto context =
-                processing_context{pcap_file, profile, storage_folder, pcap, get_stream_info, &handler_factory, &updater};
+            auto context = processing_context{pcap_file,       profile,          storage_folder, pcap,
+                                              get_stream_info, &handler_factory, &updater};
 
             run_full_analysis(context);
         }

@@ -48,20 +48,20 @@ struct ptp_offset_calculator::impl
         const auto origin = ptp::to_time_point(origin_ts);
 
         const auto packet_ts_to_origin = packet_ts - origin;
-        const auto x = std::chrono::duration_cast<std::chrono::nanoseconds>(
-            packet_ts_to_origin);
+        const auto x                   = std::chrono::duration_cast<std::chrono::nanoseconds>(packet_ts_to_origin);
 
-        average_ns_ =
-            (sample_count_ * average_ns_ + x.count()) / (sample_count_ + 1);
+        average_ns_ = (sample_count_ * average_ns_ + x.count()) / (sample_count_ + 1);
         ++sample_count_;
     }
 
     std::optional<clock::time_point> last_sync_ts_;
-    int sample_count_ = 0;
+    int sample_count_  = 0;
     double average_ns_ = 0;
 };
 
-ptp_offset_calculator::ptp_offset_calculator() : impl_(std::make_unique<impl>()) {}
+ptp_offset_calculator::ptp_offset_calculator() : impl_(std::make_unique<impl>())
+{
+}
 
 ptp_offset_calculator::~ptp_offset_calculator() = default;
 
@@ -70,11 +70,15 @@ void ptp_offset_calculator::on_data(ptp::some_message&& message)
     std::visit(*impl_, message);
 }
 
-void ptp_offset_calculator::on_complete() {}
+void ptp_offset_calculator::on_complete()
+{
+}
 
-void ptp_offset_calculator::on_error(std::exception_ptr) {}
+void ptp_offset_calculator::on_error(std::exception_ptr)
+{
+}
 
 clock::duration ptp_offset_calculator::get_average() const
 {
-    return std::chrono::nanoseconds(static_cast<int64_t >(impl_->average_ns_));
+    return std::chrono::nanoseconds(static_cast<int64_t>(impl_->average_ns_));
 }

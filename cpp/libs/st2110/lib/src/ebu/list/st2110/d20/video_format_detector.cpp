@@ -52,6 +52,7 @@ detector::status_description line_data_analyzer::handle_data(const rtp::packet& 
     constexpr auto minimum_size = ssizeof<raw_extended_sequence_number>() + ssizeof<raw_line_header>();
     if (sdu.view().size() < minimum_size)
     {
+        // logger()->error("Packet size smaller than minimum: {}", sdu.view().size());
         return detector::status_description{/*.state*/ detector::state::invalid,
                                             /*.error_code*/ "STATUS_CODE_FORMAT_NO_MINIMUM_SIZE"};
     }

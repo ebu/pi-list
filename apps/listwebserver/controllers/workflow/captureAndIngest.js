@@ -1,4 +1,5 @@
 const workflows = require('../../../../js/common/workflows/types');
+const mqtypes = require('../../../../js/common/mq/types');
 const programArguments = require('../../util/programArguments');
 const liveSources = require('../live/sources');
 const { persistent } = require('../../../../js/common_server/mq/send');
@@ -21,6 +22,14 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
     await workSender.send({ msg: wf, persistent });
 };
 
+const cancelWorkflow = async (payload, mqttSender) => {
+    await mqttSender.send({
+        key: mqtypes.exchanges.mqtt.topics.workflows.cancel,
+        msg: payload,
+    });
+};
+
 module.exports = {
     createWorkflow,
+    cancelWorkflow,
 };

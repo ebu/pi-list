@@ -1,7 +1,6 @@
 const util = require('util');
 const fs = require('fs');
 const readFileAsync = util.promisify(fs.readFile);
-const writeFileAsync = util.promisify(fs.writeFile);
 const _ = require('lodash');
 const child_process = require('child_process');
 const sdp_parser = require('sdp-transform');
@@ -23,6 +22,7 @@ const { doRtpAnalysis } = require('../../analyzers/rtp');
 const { doMulticastAddressAnalysis } = require('../../analyzers/multicast.js');
 const constants = require('../../enums/analysis');
 const glob = util.promisify(require('glob'));
+const { zipFilesExt } = require('../zip');
 
 function getUserFolder(req) {
     return `${program.folder}/${req.session.passport.user.id}`;
@@ -183,51 +183,14 @@ function pcapPreProcessing(req, res, next) {
         });
 }
 
-// async
-const zipSdpFiles = (files, outputPath) =>
-    new Promise((resolve, reject) => {
-        const fs = require('fs');
-        const path = require('path');
-        const archiver = require('archiver');
-
-        const output = fs.createWriteStream(outputPath);
-        const archive = archiver('zip', {
-            zlib: { level: 9 }, // Sets the compression level.
-        });
-
-        output.on('close', function() {
-            logger('zip-files').info(`zipped ${files.length} SDP files. Total size: ${archive.pointer()} bytes`);
-
-            resolve();
-        });
-
-        archive.on('warning', function(err) {
-            if (err.code === 'ENOENT') {
-                logger('zip-files').info(`warning: ${err.message}`);
-            } else {
-                logger('zip-files').error(`warning: ${err.message}`);
-                reject(err);
-            }
-        });
-
-        archive.on('error', function(err) {
-            logger('zip-files').error(`warning: ${err.message}`);
-            reject(err);
-        });
-
-        archive.pipe(output);
-        files.forEach((file, i) => {
-            const base = path.basename(file, '.sdp');
-            const name = `${i}-${base}.sdp`;
-
-            archive.file(file, { name });
-        });
-        archive.finalize();
-    });
-
-const postProcessSdpFiles = async folder => {
-    const files = await glob(`${folder}/**/*.sdp`);
-    await zipSdpFiles(files, `${folder}/sdp.zip`);
+const postProcessSdpFiles = async (pcapId, folder) => {
+    Pcap.findOne({ id: pcapId })
+        .exec()
+        .then(async data => {
+            const filename = data.file_name.replace(/\.[^\.]*$/, '-sdp.zip');
+            const files = await glob(`${folder}/**/*.sdp`);
+            await zipFilesExt(files, `${folder}/${filename}`, 'sdp');
+        })
 };
 
 // Returns undefined on success; otherwise, the error.
@@ -245,7 +208,7 @@ const runAnalysis = async params => {
         const output = await exec(st2110ExtractorCommand);
         logger('st2110_extractor').info(output.stdout);
         logger('st2110_extractor').info(output.stderr);
-        await postProcessSdpFiles(pcapFolder);
+        await postProcessSdpFiles(pcapId, pcapFolder);
         return;
     } catch (err) {
         logger('pcap-full-analysis').error(`exception: ${err}`);

@@ -4,16 +4,13 @@ const session = require('express-session');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
+const url = require('url');
 const bodyParser = require('body-parser');
 const { promisify } = require('util');
 const child_process = require('child_process');
 const api = require('./api');
 const auth = require('./auth');
-const {
-    apiErrorHandler,
-    resourceNotFoundHandler,
-    isAuthenticated,
-} = require('./util/express-middleware');
+const { apiErrorHandler, resourceNotFoundHandler, isAuthenticated } = require('./util/express-middleware');
 const programArguments = require('./util/programArguments');
 const logger = require('./util/logger');
 
@@ -22,12 +19,13 @@ const app = express();
 // Initialize the REST API logger
 app.use(morgan('short', { stream: logger('rest-api').restAPILogger }));
 
-logger('static-generator').info('CORS:', programArguments.webappDomain);
+logger('static-generator').info('CORS: ', "*");
 
-// User custom middleware in order to set the Access-Control-Allow-Credentials as true.
 app.use(
     cors({
-        origin: programArguments.webappDomain,
+        origin: function(origin, callback) {
+            callback(null, true);
+        },
         credentials: true,
     })
 );
@@ -65,9 +63,7 @@ app.use(resourceNotFoundHandler);
 app.use(apiErrorHandler);
 
 // Generate static config data when the LIST web server is executed.
-const generateStaticConfigCommand = `"${
-    programArguments.cpp
-}/static_generator" "${programArguments.folder}"`;
+const generateStaticConfigCommand = `"${programArguments.cpp}/static_generator" "${programArguments.folder}"`;
 
 logger('static-generator').profile('Static configurations generated');
 
@@ -75,17 +71,13 @@ logger('static-generator').profile('Static configurations generated');
 const exec = promisify(child_process.exec);
 exec(generateStaticConfigCommand)
     .then(output => {
-        logger('static-generator').info(
-            `Generated static configurations: ${output.stdout}`
-        );
+        logger('static-generator').info(`Generated static configurations: ${output.stdout}`);
     })
     .catch(output => {
         logger('static-generator').error(output.stderr);
     })
     .then(() => {
-        logger('static-generator').profile(
-            'Static configurations generated'
-        );
+        logger('static-generator').profile('Static configurations generated');
     });
 
 module.exports = app;

@@ -51,8 +51,8 @@ namespace
 
     void run(const config& config)
     {
-        auto fi = make_pcap_info(config.pcap_file, config.pcap_uuid);
-        auto offset_calculator = std::make_shared<ptp::ptp_offset_calculator>();
+        auto fi                 = make_pcap_info(config.pcap_file, config.pcap_uuid);
+        auto offset_calculator  = std::make_shared<ptp::ptp_offset_calculator>();
         const auto mongo_db_url = config.mongo_db_url.value_or(MONGO_DEFAULT_URL);
 
         auto create_handler = [&](rtp::packet first_packet) {
@@ -60,8 +60,8 @@ namespace
         };
 
         auto udp_handler = std::make_shared<rtp::udp_handler>(create_handler);
-        auto filter = std::make_shared<ptp::udp_filter>(offset_calculator, udp_handler);
-        auto player = std::make_unique<pcap::pcap_player>(path(config.pcap_file), filter, on_error_exit);
+        auto filter      = std::make_shared<ptp::udp_filter>(offset_calculator, udp_handler);
+        auto player      = std::make_unique<pcap::pcap_player>(path(config.pcap_file), filter, on_error_exit);
 
         const auto start_time = std::chrono::steady_clock::now();
 

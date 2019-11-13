@@ -21,3 +21,4 @@ AllowShortFunctionsOnASingleLine: InlineOnly
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: true
 AlignTrailingComments: true
+SpaceBeforeParens: Never
