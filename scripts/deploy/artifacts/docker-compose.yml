@@ -31,7 +31,7 @@ services:
       - mongo
       - rabbitmq
     volumes:
-      - listserver:/home/
+      - ${EBU_LIST_HOST_DATA_FOLDER:-listserver}:/home/
 
 volumes:
   mongo:

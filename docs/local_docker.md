@@ -30,3 +30,19 @@ Change:
 to
 
 ```EBU_LIST_WEB_APP_DOMAIN=http://192.168.1.1```
+
+or
+
+```sh
+export EBU_LIST_WEB_APP_DOMAIN=http://192.168.1.1
+docker-compose up
+```
+
+## Choose a local folder for data
+
+A docker volume `listserver` is created by default for persistent storage of files (pcap, decoded data, sdp). In case there is a dedicated folder/disk on the host for that purpose, it is possible to set this specific path to be mounted as a volume.
+
+```sh
+export EBU_LIST_HOST_DATA_FOLDER=/mnt/
+docker-compose up
+```
