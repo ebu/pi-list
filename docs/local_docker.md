@@ -17,11 +17,11 @@ curl -O https://raw.githubusercontent.com/ebu/pi-list/master/docs/docker-compose
 docker-compose up
 ```
 
-You're good to go: `http://localhost`
+You're good to go: `http://localhost:80`
 
 ## Exposing LIST to the network
 
-The steps above will restrict the usage of LIST on the machine where the docker containers are being run. In order to allow it to be used from other machines, you just need to edit the docker-compose.yml file and change the line indicated below, replacing ${EBU_LIST_WEB_APP_DOMAIN} with your URL (in the example below, replace 192.168.1.1 with the IP address of your machine):
+The steps above will restrict the usage of LIST on the machine where the docker containers are being run. In order to allow it to be used from other machines, you just need to edit the docker-compose.yml file and change the line indicated below, replacing ${EBU_LIST_WEB_APP_DOMAIN} with your URL (in the example below, replace 192.168.1.1 with the IP address of your machine). Please keep or specify a new port:
 
 Change:
 
@@ -29,12 +29,12 @@ Change:
 
 to
 
-```EBU_LIST_WEB_APP_DOMAIN=http://192.168.1.1```
+```EBU_LIST_WEB_APP_DOMAIN=http://192.168.1.1:80```
 
 or
 
 ```sh
-export EBU_LIST_WEB_APP_DOMAIN=http://192.168.1.1
+export EBU_LIST_WEB_APP_DOMAIN=http://192.168.1.1:80
 docker-compose up
 ```
 
