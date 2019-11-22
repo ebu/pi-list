@@ -206,6 +206,17 @@ const runAnalysis = async params => {
 
     try {
         const output = await exec(st2110ExtractorCommand);
+
+        Pcap.findOne({ id: pcapId }).exec()
+            .then(pcap => {
+                if (pcap.error) {
+                    Pcap.findOneAndUpdate(
+                        { id: pcapId },
+                        { error: "", },
+                        { new: true }).exec()
+                }
+            });
+
         logger('st2110_extractor').info(output.stdout);
         logger('st2110_extractor').info(output.stderr);
         await postProcessSdpFiles(pcapId, pcapFolder);
@@ -527,6 +538,7 @@ module.exports = {
     pcapSingleStreamIngest: [
         pcapFileAvailableFromReq,
         resetStreamCountersAndErrors,
+        getAnalysisProfile,
         singleStreamAnalysis,
         videoConsolidation,
         audioConsolidation,
