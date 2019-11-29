@@ -12,6 +12,7 @@ namespace
 {
     constexpr auto cinst_file_name = "cinst.json";
     constexpr auto vrx_file_name   = "vrx.json";
+    constexpr auto anc_pkt_file_name   = "anc_pkt.json";
 } // namespace
 
 db_handler_factory::db_handler_factory(const config& c) : config_(c)
@@ -25,7 +26,7 @@ st2110::d21::c_analyzer::listener_uptr db_handler_factory::create_c_inst_data_lo
                                                             stream_id);
 }
 
-st2110::d21::histogram_listener_uptr
+histogram_listener_uptr
 db_handler_factory::create_c_inst_histogram_logger(const std::string& stream_id) const
 {
     const auto info_path = config_.storage_folder / stream_id;
@@ -47,7 +48,7 @@ st2110::d21::vrx_analyzer::listener_uptr db_handler_factory::create_vrx_data_log
                                                          stream_id, prefix);
 }
 
-st2110::d21::histogram_listener_uptr db_handler_factory::create_vrx_histogram_logger(const std::string& stream_id) const
+histogram_listener_uptr db_handler_factory::create_vrx_histogram_logger(const std::string& stream_id) const
 {
     const auto info_path = config_.storage_folder / stream_id;
     return std::make_unique<histogram_writer>(info_path, vrx_file_name);
@@ -67,6 +68,21 @@ audio_timing_analyser::listener_uptr db_handler_factory::create_audio_tsdf_logge
 {
     return std::make_unique<influx::influxdb_audio_tsdf_logger>(config_.influxdb_url.value_or(INFLUX_DEFAULT_URL),
                                                                 pcap_id, stream_id, prefix);
+}
+
+anc_stream_handler::listener_uptr db_handler_factory::create_anc_rtp_logger(const std::string& pcap_id,
+                                                                                  const std::string& stream_id,
+                                                                                  const std::string& prefix) const
+{
+    return std::make_unique<influx::influxdb_anc_rtp_logger>(config_.influxdb_url.value_or(INFLUX_DEFAULT_URL),
+                                                                pcap_id, stream_id, prefix);
+}
+
+histogram_listener_uptr
+db_handler_factory::create_anc_pkt_histogram_logger(const std::string& stream_id) const
+{
+    const auto info_path = config_.storage_folder / stream_id;
+    return std::make_unique<histogram_writer>(info_path, anc_pkt_file_name);
 }
 
 ptp::state_machine::listener_ptr db_handler_factory::create_ptp_logger(const std::string& pcap_id) const

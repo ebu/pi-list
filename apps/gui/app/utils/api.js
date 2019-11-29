@@ -192,6 +192,12 @@ export default {
 
     /* Ancillary */
     downloadAncillaryUrl: (pcapID, streamID, filename) => `pcap/${pcapID}/stream/${streamID}/ancillary/${filename}`,
+    getAncillaryPktPerFrame: (pcapID, streamID, fromNs, toNs) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/AncillaryPktPerFrame?from=${fromNs}&to=${toNs}`),
+    getAncillaryPktPerFrameHistogram: (pcapID, streamID) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/AncillaryPktHistogram`),
+    getAncillaryPktTsVsRtpTs: (pcapID, streamID, fromNs, toNs) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/AncillaryPktTsVsRtpTs?from=${fromNs}&to=${toNs}`),
 
     /* Txt files */
     downloadText: path => request.get(`${path}`),

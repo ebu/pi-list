@@ -5,7 +5,7 @@ import asyncLoader from '../components/asyncLoader';
 import errorEnum from '../enums/errorEnum';
 import VideoPage from '../containers/VideoPage';
 import AudioPage from '../containers/AudioPage/index';
-import AncillaryPage from '../containers/AncillaryPage';
+import Ancillary from '../containers/ancillary/index';
 import ErrorPage from '../components/ErrorPage';
 import routeBuilder from '../utils/routeBuilder';
 
@@ -56,7 +56,7 @@ const StreamPage = (props) => {
 
     case 'ancillary_data':
         return (
-            <AncillaryPage
+            <Ancillary
                 streamInfo={props.streamInfo}
                 pcapID={pcapID}
                 streamID={streamID}

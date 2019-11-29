@@ -1,4 +1,5 @@
 #include "ebu/list/analysis/serialization/anc_serialization.h"
+#include "ebu/list/st2110/d40/packet.h"
 
 using namespace ebu_list::analysis;
 using namespace ebu_list::st2110::d40;
@@ -12,6 +13,7 @@ nlohmann::json anc_stream_details::to_json(const anc_stream_details& details)
     statistics["frame_count"]          = details.frame_count;
     statistics["packet_count"]         = details.packet_count;
     statistics["dropped_packet_count"] = details.dropped_packet_count;
+    statistics["wrong_marker_count"]   = details.wrong_marker_count;
     statistics["first_packet_ts"] =
         std::to_string(chrono::duration_cast<chrono::nanoseconds>(details.first_packet_ts.time_since_epoch()).count());
     statistics["last_packet_ts"] =
@@ -40,6 +42,7 @@ anc_stream_details anc_stream_details::from_json(const nlohmann::json& j)
         desc.last_frame_ts        = statistics_json->at("last_frame_ts").get<uint32_t>();
         desc.packet_count         = statistics_json->at("packet_count").get<uint32_t>();
         desc.dropped_packet_count = statistics_json->at("dropped_packet_count").get<uint32_t>();
+        desc.wrong_marker_count = statistics_json->at("wrong_marker_count").get<uint32_t>();
         desc.first_packet_ts =
             clock::time_point{clock::duration{std::stol(statistics_json->at("first_packet_ts").get<std::string>())}};
         desc.last_packet_ts =
@@ -70,6 +73,8 @@ nlohmann::json st2110::d40::to_json(const st2110::d40::anc_sub_stream& s)
     nlohmann::json j;
     j["num"]          = s.num();
     j["did_sdid"]     = s.did_sdid();
+    j["line"]         = s.line_num();
+    j["offset"]       = s.horizontal_offset();
     j["errors"]       = s.errors();
     j["packet_count"] = s.packet_count;
 
@@ -106,7 +111,15 @@ st2110::d40::anc_description st2110::d40::from_json(const nlohmann::json& j)
 
 st2110::d40::anc_sub_stream st2110::d40::from_json(const nlohmann::json& j, [[maybe_unused]] uint8_t i)
 {
-    auto s = anc_sub_stream(j.at("did_sdid"), j.at("num"));
+    raw_anc_packet_header anc_packet_header;
+    anc_packet_header.did               = (j.at("did_sdid").get<int>() >> 8) & 0xff;
+    anc_packet_header.sdid              = j.at("did_sdid").get<int>() & 0xff;
+    anc_packet_header.stream_num        = j.at("num");
+    anc_packet_header.line_num          = j.at("line");
+    anc_packet_header.horizontal_offset = j.at("offset");
+    const auto anc_packet = anc_packet_header_lens(anc_packet_header);
+    auto s = anc_sub_stream(anc_packet);
+
     s.errors(j.at("errors"));
     s.packet_count = j.at("packet_count");
 

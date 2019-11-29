@@ -76,7 +76,7 @@ function getTimeLineLabel(chartData) {
     return chartData.map(data => data.time);
 }
 
-function cinstHistogramValues(chartData) {
+function histogramValues(chartData) {
     const value = [];
 
     chartData.histogram.forEach((v) => {
@@ -86,7 +86,7 @@ function cinstHistogramValues(chartData) {
     return value;
 }
 
-function cinstHistogramCounts(chartData) {
+function histogramCounts(chartData) {
     const value = [];
 
     chartData.histogram.forEach((v) => {
@@ -161,8 +161,8 @@ function stdDeviationMeanMinMaxChart(chartData) {
 }
 
 export default {
-    cinstHistogramValues,
-    cinstHistogramCounts,
+    histogramValues,
+    histogramCounts,
     singleValueChart,
     minMaxChart,
     getTimeLineLabel,

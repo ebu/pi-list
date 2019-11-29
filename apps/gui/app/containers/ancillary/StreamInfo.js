@@ -1,23 +1,29 @@
 import React from 'react';
 import Button from '../../components/common/Button';
-import NetworkInfo from './NetworkInfo';
-import VideoInfo from './VideoInfo';
-import AncillarySummary from './AncillarySummary';
+import NetworkInfo from '../streamPage/NetworkInfo';
+import VideoInfo from '../streamPage/VideoInfo';
+import RtpInfo from './RtpInfo';
+import AncillarySummary from './Summary';
 
-const AncillaryStreamInformation = (props) => {
+const StreamInfo = (props) => {
     const streamInfo = props.streamInfo;
 
     return (
         <div>
             <div className='row lst-full-height'>
-                <div className='col-xs-12 col-md-4'>
+                <div className='col-xs-12 col-md-6'>
                     <NetworkInfo stream={ props.streamInfo } />
                 </div>
-                <div className='col-xs-12 col-md-4'>
+                <div className='col-xs-12 col-md-6'>
                     <VideoInfo {...streamInfo.media_type} {...streamInfo.media_specific} {...streamInfo.statistics} />
                 </div>
-                <div className='col-xs-12 col-md-4'>
-                    <AncillarySummary  {...props} />
+            </div>
+            <div className='row lst-full-height'>
+                <div className='col-xs-12 col-md-6'>
+                    <RtpInfo {...props}/>
+                </div>
+                <div className='col-xs-12 col-md-6'>
+                     <AncillarySummary  {...props} />
                 </div>
             </div>
             <hr />
@@ -35,4 +41,4 @@ const AncillaryStreamInformation = (props) => {
     );
 };
 
-export default AncillaryStreamInformation;
+export default StreamInfo;

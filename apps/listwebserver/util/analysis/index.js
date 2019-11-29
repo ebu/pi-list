@@ -377,7 +377,7 @@ function ancillaryConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
     Stream.find({ pcap: pcapId, media_type: 'ancillary_data' })
         .exec()
-        .then(streams => doAncillaryAnalysis(pcapId, streams))
+        .then(streams => doAncillaryAnalysis(req, streams))
         .then(streams => {
             addStreamsToReq(streams, req);
         })
