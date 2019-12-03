@@ -14,8 +14,8 @@ const CbufferAnalysis = (props) => {
                 <Chart
                     type="bar"
                     request={() => api.getCInstHistogramForStream(pcapID, streamID)}
-                    labels={chartFormatters.cinstHistogramValues}
-                    formatData={chartFormatters.cinstHistogramCounts}
+                    labels={chartFormatters.histogramValues}
+                    formatData={chartFormatters.histogramCounts}
                     xLabel="packets"
                     title="Cinst - Histogram"
                     height={300}

@@ -41,10 +41,10 @@ module.exports = {
     },
     plugins: [
         // This will reduce the size of the bundle by removing the unused languages in moment.js
-        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /us/),
+        new webpack.ContextReplacementPlugin(/moment[\\]locale$/, /us/),
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: JSON.stringify('production'),
+                NODE_ENV: JSON.stringify('development'),
             },
         }),
         new CopyWebpackPlugin([

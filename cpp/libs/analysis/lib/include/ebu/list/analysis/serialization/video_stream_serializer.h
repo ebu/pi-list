@@ -8,21 +8,6 @@
 
 namespace ebu_list::analysis
 {
-    class histogram_writer : public st2110::d21::histogram_listener
-    {
-      public:
-        explicit histogram_writer(path info_path, std::string_view filename);
-
-      private:
-        const path info_path_;
-        const std::string filename_;
-
-        // Inherited via cinst_histogram_listener
-        virtual void on_data(const st2110::d21::cinst_histogram_t&) override;
-        virtual void on_complete() override;
-        virtual void on_error(std::exception_ptr e) override;
-    };
-
     void write_frame_info(const path& base_dir, const std::string& stream_id, const frame_info& info);
 
     using packets = std::vector<packet_info>;

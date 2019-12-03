@@ -1,7 +1,9 @@
 #pragma once
 
-#include "ebu/list/st2110/d21/histogram_listener.h"
+#include "ebu/list/analysis/utils/histogram_listener.h"
 #include "ebu/list/st2110/d21/vrx_calculator.h"
+
+using namespace ebu_list::analysis;
 
 namespace ebu_list::st2110::d21
 {

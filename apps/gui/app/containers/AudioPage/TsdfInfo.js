@@ -37,7 +37,7 @@ const TsdfInfo = props => {
         <div>
             <InfoPane
                 icon="queue_music"
-                headingTag="TS-DF"
+                heading="TS-DF"
                 values={summary}
             />
             <ResultPane

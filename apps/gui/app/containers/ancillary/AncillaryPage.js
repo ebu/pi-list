@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import Tabs from '../components/common/Tabs';
-import AncillaryStreamInformation from './streamPage/AncillaryStreamInformation';
-import AncillarySubStream from './streamPage/AncillarySubStream';
+import Tabs from '../../components/common/Tabs';
+import StreamInfo from './StreamInfo';
+import AncillarySubStream from './SubStream';
+import RtpCharts from './RtpCharts';
 
 const AncillaryPage = (props) => {
     const streamInfo = props.streamInfo;
     const subStreams = typeof streamInfo.media_specific.sub_streams === 'undefined'
         ? []
         : streamInfo.media_specific.sub_streams;
-    const TABS = [AncillaryStreamInformation].concat(
+    const TABS = [StreamInfo, RtpCharts].concat(
         subStreams.map((s, i) => AncillarySubStream)
     );
     const [tabIndex, setTabIndex] = useState(0);
@@ -18,6 +19,10 @@ const AncillaryPage = (props) => {
         {
             label: 'Summary',
             icon: 'info',
+        },
+        {
+            label: 'RTP',
+            icon: 'timeline',
         },
     ].concat(
         subStreams.map((s, i) => ({

@@ -58,8 +58,8 @@ const getFiles = async (wf, inputConfig) => {
                 });
                 return await Promise.all(getReportPromises);
 
-            } catch {
-                logger('download-multiple').error(`Could not find report for id: ${pcapID}`);
+            } catch(err) {
+                logger('download-multiple').error(`Could not find report for id: ${pcapID} err:${err.code}`);
                 return [];
             }
 

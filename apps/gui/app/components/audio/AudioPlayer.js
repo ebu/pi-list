@@ -24,13 +24,13 @@ const createWaveSurfer = (waveform, timeline) => {
         height: 80,
         cursorWidth: 2,
         plugins,
-        xhr: { withCredentials: true }
+        xhr: { withCredentials: true },
     });
 
     return wavesurfer;
 };
 
-const AudioPlayer = (props) => {
+const AudioPlayer = props => {
     const [isLoading, setisLoading] = useState(true);
     const [isPlaying, setIsPlaying] = useState(false);
     const [hasError, setHasError] = useState(false);
@@ -39,7 +39,7 @@ const AudioPlayer = (props) => {
 
     const onPlayerReady = () => {
         setisLoading(false);
-        setHasError(false)
+        setHasError(false);
     };
 
     const onFinishPlay = () => {
@@ -47,7 +47,7 @@ const AudioPlayer = (props) => {
     };
 
     const onPlayerError = () => {
-        setHasError(true)
+        setHasError(true);
     };
 
     useEffect(() => {
@@ -64,29 +64,34 @@ const AudioPlayer = (props) => {
             wavesurfer.unAll();
             wavesurfer.destroy();
         };
-    },
-        [props.src]
-    );
+    }, [props.src]);
 
     const play = () => {
         waveSurferRef.current.playPause();
-        setIsPlaying((prevIsPlaying) => !prevIsPlaying);
+        setIsPlaying(prevIsPlaying => !prevIsPlaying);
     };
 
     const buttonLabel = isPlaying ? translateC('audio_player.pause') : translateC('audio_player.play');
-    const buttonType = (isPlaying || hasError) ? 'danger' : 'info';
+    const buttonType = isPlaying || hasError ? 'danger' : 'info';
     const buttonIcon = isPlaying ? 'pause' : 'play arrow';
     const buttonDisabled = hasError;
 
     return (
-        <div ref={waveformRef} className="waveform center-xs middle-xs" >
+        <div ref={waveformRef} className="waveform center-xs middle-xs">
             {isLoading && <Loader />}
             <div className="wave" />
             <div className="wave-timeline" />
-            {!isLoading &&
-                <Button type={buttonType} label={buttonLabel} icon={buttonIcon} disabled={buttonDisabled} outline onClick={play} />
-            }
-        </div >
+            {!isLoading && (
+                <Button
+                    type={buttonType}
+                    label={buttonLabel}
+                    icon={buttonIcon}
+                    disabled={buttonDisabled}
+                    outline
+                    onClick={play}
+                />
+            )}
+        </div>
     );
 };
 
@@ -96,7 +101,7 @@ AudioPlayer.propTypes = {
 };
 
 AudioPlayer.defaultProps = {
-    timeline: false
+    timeline: false,
 };
 
 export default AudioPlayer;
