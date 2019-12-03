@@ -21,7 +21,7 @@ You're good to go: `http://localhost`
 
 ## Exposing LIST to the network
 
-The steps above will restrict the usage of LIST on the machine where the docker containers are being run. In order to allow it to be used from other machines, you just need to edit the docker-compose.yml file and change the line indicated below, replacing ${EBU_LIST_WEB_APP_DOMAIN} with your URL (in the example below, replace 192.168.1.1 with the IP address of your machine):
+The steps above will restrict the usage of LIST on the machine where the docker containers are being run. In order to allow it to be used from other machines, you just need to edit the docker-compose.yml file and change the line indicated below, replacing ${EBU_LIST_WEB_APP_DOMAIN} with your URL (in the example below, replace 192.168.1.1 with the IP address of your machine). To specify a new port, please see the next section :
 
 Change:
 
@@ -30,3 +30,62 @@ Change:
 to
 
 ```EBU_LIST_WEB_APP_DOMAIN=http://192.168.1.1```
+
+or
+
+```sh
+export EBU_LIST_WEB_APP_DOMAIN=http://192.168.1.1
+docker-compose up
+```
+
+## Choose a different port
+
+To change the default port from 80 to another port please do the following:
+Edit the docker-compose.yml file and change the line indicated below. That line exposes the docker port to the user network.
+Also replacing ${EBU_LIST_WEB_APP_DOMAIN} with your URL.
+
+
+Example: Change the default port 80 to port 83.
+
+Old:
+``` yml
+  ...
+  list_server:
+    build: ./server/
+    ports:
+      - "80:80"
+   ...
+```
+New:
+``` yml
+  ...
+  list_server:
+    build: ./server/
+    ports:
+      - "83:80"
+   ...
+```
+
+Change:
+
+```EBU_LIST_WEB_APP_DOMAIN=${EBU_LIST_WEB_APP_DOMAIN}```
+
+to
+
+```EBU_LIST_WEB_APP_DOMAIN=http://localhost:83```
+
+or
+
+```sh
+export EBU_LIST_WEB_APP_DOMAIN=http://localhost:83
+docker-compose up
+```
+
+## Choose a local folder for data
+
+A docker volume `listserver` is created by default for persistent storage of files (pcap, decoded data, sdp). In case there is a dedicated folder/disk on the host for that purpose, it is possible to set this specific path to be mounted as a volume.
+
+```sh
+export EBU_LIST_HOST_DATA_FOLDER=/mnt/
+docker-compose up
+```

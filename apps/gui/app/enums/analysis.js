@@ -28,5 +28,7 @@ module.exports = {
         unrelated_multicast_addresses: 'Multicast MAC and IP addresses mapping',
         unique_multicast_destination_ip_address:
             'Unique destination Multicast IP address',
+        pkts_per_frame:'RTP packets per frame/field',
+        marker_bit:'RTP marker bit',
     },
 };

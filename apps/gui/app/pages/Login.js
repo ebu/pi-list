@@ -21,7 +21,7 @@ class Login extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         document.addEventListener(keyEnum.EVENTS.KEY_UP, this.onKeyUpEnter);
     }
 

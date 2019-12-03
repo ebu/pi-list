@@ -1,10 +1,10 @@
 #include "catch2/catch.hpp"
-#include "ebu/list/st2110/d20/rtp_utils.h"
+#include "ebu/list/analysis/utils/rtp_utils.h"
 #include "pch.h"
 
 using namespace ebu_list;
 using namespace ebu_list::rtp;
-using namespace ebu_list::st2110::d20;
+using namespace ebu_list::analysis;
 
 //------------------------------------------------------------------------------
 SCENARIO("test calculate_rtp_timestamp")

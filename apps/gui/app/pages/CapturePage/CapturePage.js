@@ -29,7 +29,7 @@ const CapturePage = props => {
                     <SourcesList onSelectedSendersChanged={onChange} />
                 </div>
                 <div className="col-xs-6">
-                    <CapturePanel dispatch={dispatch} sources={selected} />
+                    <CapturePanel dispatch={dispatch} sources={selected} visible={true}/>
                     <WorkflowsList />
                 </div>
             </div>

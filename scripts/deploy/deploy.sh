@@ -34,8 +34,9 @@ echo "Copying apps..."
 cp -R $TOP_DIR/apps/listwebserver/* $RELEASE_DIR/server/app/listwebserver
 cp -R $TOP_DIR/js $RELEASE_DIR/server/js
 cp -R $TOP_DIR/apps/gui/dist/* $RELEASE_DIR/server/app/gui
-cp -R $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/sedstaticconfig.sh $RELEASE_DIR/server/app/gui
+cp -R $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/sedstaticconfig.sh $RELEASE_DIR/server/app/
 cp -R $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/static.config.json $RELEASE_DIR/server/app/gui
+cp -R $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/static.config.json $RELEASE_DIR/server/app/listwebserver
 
 echo "Copying apps... done"
 

@@ -2,13 +2,13 @@
 
 #include "ebu/list/core/media/video_description.h"
 #include "ebu/list/rtp/listener.h"
-#include "ebu/list/st2110/d21/histogram_listener.h"
+#include "ebu/list/analysis/utils/histogram_listener.h"
 #include <vector>
+
+using namespace ebu_list::analysis;
 
 namespace ebu_list::st2110::d21
 {
-    using cinst_histogram_t = histogram_t;
-
     class c_analyzer : public rtp::listener
     {
       public:

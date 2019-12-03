@@ -1,4 +1,4 @@
-import routeNames from 'config/routeNames';
+import routeNames from '../config/routeNames';
 
 export default {
     /* Page that enables stream configuration */

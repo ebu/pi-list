@@ -2,8 +2,8 @@ import React from 'react';
 import { find } from 'lodash';
 import PropTypes from 'prop-types';
 import api from '../../utils/api';
-import InfoPane from './components/InfoPane';
-import DataList from './components/DataList';
+import InfoPane from '../streamPage/components/InfoPane';
+import DataList from '../streamPage/components/DataList';
 import asyncLoader from '../../components/asyncLoader';
 import Textarea from '../../components/common/Textarea';
 
@@ -13,6 +13,8 @@ const AncillarySubStream = props => {
     const availableAncTypes = props.availableAncOptions[0].value;
     const type = find(availableAncTypes, { value: `${ subStream.did_sdid }` });
     const hex_did_sdid = subStream.did_sdid.toString(16);
+    const line = subStream.line.toString();
+    const offset = subStream.offset.toString();
     const error_count = subStream.errors.toString();
     const packet_count = subStream.packet_count.toString();
     const textareas = typeof subStream.sub_sub_streams === 'undefined' ?
@@ -43,8 +45,12 @@ const AncillarySubStream = props => {
             value: `0x${ hex_did_sdid.slice(2) }`
         },
         {
-            label: 'Packets',
-            value: packet_count
+            label: 'Line',
+            value: line
+        },
+        {
+            label: 'Horizontal offset',
+            value: offset
         },
         {
             label: 'Payload errors',
