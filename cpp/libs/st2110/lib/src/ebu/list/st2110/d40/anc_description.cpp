@@ -37,8 +37,18 @@ void anc_sub_sub_stream::write(const ebu_list::path path) const
     o << decoded_data;
 }
 
+anc_sub_stream::anc_sub_stream(const anc_packet_header_lens anc_packet)
+    : did_sdid_(static_cast<ancillary::did_sdid>((anc_packet.did() << 8) + anc_packet.sdid())),
+    line_num_(anc_packet.line_num()), horizontal_offset_(anc_packet.horizontal_offset()),
+    num_(anc_packet.stream_num()), errors_(0), packet_count(0)
+{
+    check();
+}
+
+// basic constructor for unit tests
 anc_sub_stream::anc_sub_stream(uint16_t did_sdid, uint8_t num)
-    : did_sdid_(static_cast<ancillary::did_sdid>(did_sdid)), num_(num), errors_(0), packet_count(0)
+   : did_sdid_(static_cast<ancillary::did_sdid>(did_sdid)),
+    line_num_(0), horizontal_offset_(0), num_(0), errors_(0), packet_count(0)
 {
     check();
 }
@@ -63,6 +73,16 @@ bool anc_sub_stream::operator==(const anc_sub_stream& other)
 ancillary::did_sdid anc_sub_stream::did_sdid() const
 {
     return did_sdid_;
+}
+
+uint16_t anc_sub_stream::line_num() const
+{
+    return line_num_;
+}
+
+uint16_t anc_sub_stream::horizontal_offset() const
+{
+    return horizontal_offset_;
 }
 
 uint8_t anc_sub_stream::num() const

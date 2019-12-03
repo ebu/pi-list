@@ -7,11 +7,13 @@ const propTypes = {
     label: PropTypes.string.isRequired,
 };
 
+
+
 const SectionHeader = props => (
     <Fragment>
         <h2>
             <Icon value={props.icon} />
-            <span>{props.label}</span>
+            {props.label}
         </h2>
         <hr />
     </Fragment>

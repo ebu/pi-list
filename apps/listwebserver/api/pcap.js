@@ -328,6 +328,39 @@ router.get('/:pcapID/stream/:streamID/analytics/AudioTimeStampedDelayFactor', (r
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
+/* Ancillary */
+
+router.get('/:pcapID/stream/:streamID/analytics/AncillaryPktPerFrame', (req, res) => {
+    const { pcapID, streamID } = req.params;
+    const { from, to } = req.query;
+
+    chartData = influxDbManager.getAncillaryPktPerFrame(pcapID, streamID, from, to);
+    chartData
+        .then(data => {
+            res.json(data);
+        })
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+});
+
+router.get('/:pcapID/stream/:streamID/analytics/AncillaryPktHistogram', (req, res) => {
+    const { pcapID, streamID } = req.params;
+
+    const path = `${getUserFolder(req)}/${pcapID}/${streamID}/${CONSTANTS.ANC_PKT_FILE}`;
+    fs.sendFileAsResponse(path, res);
+});
+
+router.get('/:pcapID/stream/:streamID/analytics/AncillaryPktTsVsRtpTs', (req, res) => {
+    const { pcapID, streamID } = req.params;
+    const { from, to } = req.query;
+
+    chartData = influxDbManager.getAncillaryPktTsVsRtpTs(pcapID, streamID, from, to);
+    chartData
+        .then(data => {
+            res.json(data);
+        })
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+});
+
 /* */
 router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
     const { pcapID, streamID, measurement } = req.params;

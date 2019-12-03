@@ -129,8 +129,8 @@ class LiveVideoPage extends Component {
                 type="bar"
                 rawData={data}
                 request={() => data}
-                labels={chartFormatters.cinstHistogramValues}
-                formatData={chartFormatters.cinstHistogramCounts}
+                labels={chartFormatters.histogramValues}
+                formatData={chartFormatters.histogramCounts}
                 xLabel=""
                 title={title}
                 height={300}

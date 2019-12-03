@@ -5,7 +5,7 @@ import { T } from '../utils/translation';
 
 const AnalysisProfileSelector = () => {
     const [profiles, setProfiles] = useState([]);
-    const [defaultProfile, setDefaultProfile] = useState(null);
+    const [defaultProfile, setDefaultProfile] = useState('');
 
     useEffect(() => {
         api.analysisProfile

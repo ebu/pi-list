@@ -1,4 +1,5 @@
 {
+  "parser": "babel-eslint",
   "extends": ["airbnb", "prettier", "prettier/react"],
   "plugins": ["prettier"],
   "rules": {
@@ -6,14 +7,18 @@
     "consistent-return": "off",
     "no-return-assign": "off",
     "one-var": "off",
+    "no-console" : "off",
     "one-var-declaration-per-line": "off",
     "class-methods-use-this": "off",
     "prefer-destructuring": "off",
-    "react/jsx-filename-extension": ["never"],
-    "import/no-extraneous-dependencies": ["never"],
-    "import/no-unresolved": ["never"],
+    "react/jsx-fragments" : "off",
+    "react/jsx-filename-extension": "off",
+    "react/destructuring-assignment" : "off",
+    "react/no-array-index-key" : "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/no-unresolved": "off",
     "import/prefer-default-export": "off",
-    "import/extensions": ["never"],
+    "import/extensions": "off",
     "linebreak-style": ["off"]
   },
   "env": {

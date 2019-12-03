@@ -31,12 +31,17 @@ namespace ebu_list::st2110::d40
       private:
         void check();
         anc::did_sdid did_sdid_;
+        uint16_t line_num_;
+        uint16_t horizontal_offset_;
         uint8_t num_;
         uint16_t errors_;
 
       public:
+        anc_sub_stream(const anc_packet_header_lens anc_packet);
         anc_sub_stream(uint16_t did_sdid, uint8_t num);
         anc::did_sdid did_sdid() const;
+        uint16_t line_num() const;
+        uint16_t horizontal_offset() const;
         uint8_t num() const;
         uint16_t errors() const;
         void errors(uint16_t err);

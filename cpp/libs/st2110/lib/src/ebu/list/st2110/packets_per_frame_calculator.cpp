@@ -14,6 +14,7 @@ namespace
 
 void packets_per_frame_calculator::on_packet(const rtp::header_lens& header)
 {
+    /* wait for the begining of a frame and count only once */
     if (!header.marker() || count_.has_value()) return;
 
     if (first_frame_)
@@ -30,6 +31,12 @@ void packets_per_frame_calculator::on_packet(const rtp::header_lens& header)
     {
         first_frame_ = header.sequence_number();
     }
+}
+
+void packets_per_frame_calculator::reset()
+{
+    first_frame_.reset();
+    count_.reset();
 }
 
 std::optional<int> packets_per_frame_calculator::count() const

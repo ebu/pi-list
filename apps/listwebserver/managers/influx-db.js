@@ -243,6 +243,40 @@ class InfluxDbManager {
         return this.sendQueryAndFormatResults(query);
     }
 
+    getAncillaryPktPerFrame(pcapID, streamID, startTime, endTime) {
+        const query = `
+            select
+            "ancillary-pkt-per-frame" as "value"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
+        `;
+
+        log.info(`Get RTP pkt per frame for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
+
+    getAncillaryPktTsVsRtpTs(pcapID, streamID, startTime, endTime) {
+        const query = `
+            select
+            "ancillary-pkt-vs-rtp" as "value"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
+        `;
+
+        log.info(`Get 1st pkt ts vs RTP ts for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
+
+    getAncillaryPktTsVsRtpTsMinMax(pcapID, streamID) {
+        const query = `
+            select MAX("ancillary-pkt-vs-rtp") as "max", MIN("ancillary-pkt-vs-rtp") as "min", MEAN("ancillary-pkt-vs-rtp") as "avg"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}`;
+
+        log.info(`Get getAncillaryPktTsVsRtpTsMinMax for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
+
     deleteSeries(pcapID) {
         const query = `drop series from /^${pcapID}$/`;
 

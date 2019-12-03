@@ -51,7 +51,7 @@ const Toolbar = props => {
                 <Input
                     className="lst-toolbar-search-input"
                     type="text"
-                    value={props.filterString}
+                    value={props.filterString != null ? props.filterString : "" }
                     onChange={evt =>
                         props.dispatch({
                             type: actions.setFilterString,

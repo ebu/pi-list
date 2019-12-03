@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ebu/list/analysis/handlers/audio_timing_analyser.h"
+#include "ebu/list/analysis/handlers/anc_stream_handler.h"
 #include "ebu/list/core/platform/time.h"
 #include "ebu/list/ptp/state_machine.h"
 #include "ebu/list/rtp/listener.h"
@@ -84,6 +85,19 @@ namespace ebu_list::analysis
 
       private:
         void on_data(const audio_timing_analyser::delay_sample&) override;
+        void on_complete() override;
+        void on_error(std::exception_ptr ptr) override;
+
+        std::ofstream file_stream_;
+    };
+
+    class fs_anc_rtp_logger : public anc_stream_handler::listener
+    {
+      public:
+        fs_anc_rtp_logger(std::string_view filename);
+
+      private:
+        void on_data(const anc_stream_handler::frame_info&) override;
         void on_complete() override;
         void on_error(std::exception_ptr ptr) override;
 

@@ -4,7 +4,7 @@
 //#include "ebu/list/database.h"
 #include "ebu/list/pcap/player.h"
 #include "ebu/list/rtp/udp_handler.h"
-#include "ebu/list/st2110/d20/rtp_utils.h"
+#include "ebu/list/analysis/utils/rtp_utils.h"
 #include "ebu/list/st2110/d21/settings.h"
 
 using namespace ebu_list;
@@ -68,7 +68,7 @@ void troffset_analyzer::on_data(const rtp::packet& p)
             std::chrono::duration_cast<std::chrono::nanoseconds>(packet_timestamp.time_since_epoch()).count();
         const auto packet_time = fraction64(packet_time_ns, std::giga::num);
 
-        const auto current_n          = d20::calculate_n(packet_time, t_frame_);
+        const auto current_n          = calculate_n(packet_time, t_frame_);
         const auto base_frame_time    = current_n * t_frame_;
         const auto base_frame_time_ns = to_ns(base_frame_time);
         // Since current_n is derived from packet time, this must hold true

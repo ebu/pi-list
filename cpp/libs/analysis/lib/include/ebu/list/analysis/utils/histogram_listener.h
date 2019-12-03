@@ -3,7 +3,7 @@
 #include <map>
 #include <memory>
 
-namespace ebu_list::st2110::d21
+namespace ebu_list::analysis
 {
     using histogram_t = std::map<int, int>;
 
@@ -26,4 +26,4 @@ namespace ebu_list::st2110::d21
         virtual void on_complete() {}
         virtual void on_error(std::exception_ptr) {}
     };
-} // namespace ebu_list::st2110::d21
+}

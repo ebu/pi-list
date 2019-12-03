@@ -3,7 +3,7 @@
 #include "ebu/list/core/math.h"
 #include "ebu/list/rtp/types.h"
 
-namespace ebu_list::st2110::d20
+namespace ebu_list::analysis
 {
     constexpr auto RTP_WRAP_AROUND = 0x100000000;
     constexpr auto RTP_CLOCK_RATE  = 90000;

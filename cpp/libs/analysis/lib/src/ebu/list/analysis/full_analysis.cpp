@@ -217,8 +217,12 @@ void analysis::run_full_analysis(processing_context& context)
         {
             ++nr_anc;
             const auto& anc_info = std::get<anc_stream_details>(media_info);
-            auto new_handler     = std::make_unique<anc_stream_serializer>(first_packet, stream_info, anc_info,
-                                                                       anc_finalizer_callback, context.storage_folder);
+            auto anc_pkt_writer = context.handler_factory->create_anc_pkt_histogram_logger(stream_info.id);
+            auto db_anc_rtp_logger =
+                context.handler_factory->create_anc_rtp_logger(context.pcap.id, stream_info.id, "ancillary");
+            auto new_handler     = std::make_unique<anc_stream_serializer>(first_packet, std::move(db_anc_rtp_logger),
+                                        std::move(anc_pkt_writer), stream_info, anc_info, anc_finalizer_callback,
+                                        context.storage_folder);
             return new_handler;
         }
         else

@@ -20,7 +20,7 @@ services:
   list_server:
     build: ./server/
     ports:
-      - "8080:80"
+      - "80:80"
       - "8080"
       - "3030"
     environment:
@@ -31,7 +31,7 @@ services:
       - mongo
       - rabbitmq
     volumes:
-      - listserver:/home/
+      - ${EBU_LIST_HOST_DATA_FOLDER:-listserver}:/home/
 
 volumes:
   mongo:
