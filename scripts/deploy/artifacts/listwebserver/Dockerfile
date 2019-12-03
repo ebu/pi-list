@@ -34,4 +34,4 @@ WORKDIR /app/listwebserver/
 RUN rm -rf node_modules
 RUN npm install
 
-CMD bash /app/gui/sedstaticconfig.sh & service nginx start & serve -s /app/gui -p 8080 & npm start -- config.yml --dev
+CMD bash /app/sedstaticconfig.sh & service nginx start & serve -s /app/gui -p 8080 & npm start -- config.yml --dev

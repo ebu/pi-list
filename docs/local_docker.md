@@ -17,11 +17,11 @@ curl -O https://raw.githubusercontent.com/ebu/pi-list/master/docs/docker-compose
 docker-compose up
 ```
 
-You're good to go: `http://localhost:80`
+You're good to go: `http://localhost`
 
 ## Exposing LIST to the network
 
-The steps above will restrict the usage of LIST on the machine where the docker containers are being run. In order to allow it to be used from other machines, you just need to edit the docker-compose.yml file and change the line indicated below, replacing ${EBU_LIST_WEB_APP_DOMAIN} with your URL (in the example below, replace 192.168.1.1 with the IP address of your machine). Please keep or specify a new port:
+The steps above will restrict the usage of LIST on the machine where the docker containers are being run. In order to allow it to be used from other machines, you just need to edit the docker-compose.yml file and change the line indicated below, replacing ${EBU_LIST_WEB_APP_DOMAIN} with your URL (in the example below, replace 192.168.1.1 with the IP address of your machine). To specify a new port, please see the next section :
 
 Change:
 
@@ -29,12 +29,55 @@ Change:
 
 to
 
-```EBU_LIST_WEB_APP_DOMAIN=http://192.168.1.1:80```
+```EBU_LIST_WEB_APP_DOMAIN=http://192.168.1.1```
 
 or
 
 ```sh
-export EBU_LIST_WEB_APP_DOMAIN=http://192.168.1.1:80
+export EBU_LIST_WEB_APP_DOMAIN=http://192.168.1.1
+docker-compose up
+```
+
+## Choose a different port
+
+To change the default port from 80 to another port please do the following:
+Edit the docker-compose.yml file and change the line indicated below. That line exposes the docker port to the user network.
+Also replacing ${EBU_LIST_WEB_APP_DOMAIN} with your URL.
+
+
+Example: Change the default port 80 to port 83.
+
+Old:
+``` yml
+  ...
+  list_server:
+    build: ./server/
+    ports:
+      - "80:80"
+   ...
+```
+New:
+``` yml
+  ...
+  list_server:
+    build: ./server/
+    ports:
+      - "83:80"
+   ...
+```
+
+Change:
+
+```EBU_LIST_WEB_APP_DOMAIN=${EBU_LIST_WEB_APP_DOMAIN}```
+
+to
+
+```EBU_LIST_WEB_APP_DOMAIN=http://localhost:83```
+
+or
+
+```sh
+export EBU_LIST_WEB_APP_DOMAIN=http://localhost:83
 docker-compose up
 ```
 
