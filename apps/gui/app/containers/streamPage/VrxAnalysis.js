@@ -31,8 +31,8 @@ const VrxAnalysis = (props) => {
                 <Chart
                     type="bar"
                     request={() => api.getVrxHistogramForStream(pcapID, streamID)}
-                    labels={chartFormatters.cinstHistogramValues}
-                    formatData={chartFormatters.cinstHistogramCounts}
+                    labels={chartFormatters.histogramValues}
+                    formatData={chartFormatters.histogramCounts}
                     xLabel="packets"
                     title="VRX - Histogram"
                     height={300}

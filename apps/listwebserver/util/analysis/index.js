@@ -206,6 +206,17 @@ const runAnalysis = async params => {
 
     try {
         const output = await exec(st2110ExtractorCommand);
+
+        Pcap.findOne({ id: pcapId }).exec()
+            .then(pcap => {
+                if (pcap.error) {
+                    Pcap.findOneAndUpdate(
+                        { id: pcapId },
+                        { error: "", },
+                        { new: true }).exec()
+                }
+            });
+
         logger('st2110_extractor').info(output.stdout);
         logger('st2110_extractor').info(output.stderr);
         await postProcessSdpFiles(pcapId, pcapFolder);
@@ -366,7 +377,7 @@ function ancillaryConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
     Stream.find({ pcap: pcapId, media_type: 'ancillary_data' })
         .exec()
-        .then(streams => doAncillaryAnalysis(pcapId, streams))
+        .then(streams => doAncillaryAnalysis(req, streams))
         .then(streams => {
             addStreamsToReq(streams, req);
         })
@@ -527,6 +538,7 @@ module.exports = {
     pcapSingleStreamIngest: [
         pcapFileAvailableFromReq,
         resetStreamCountersAndErrors,
+        getAnalysisProfile,
         singleStreamAnalysis,
         videoConsolidation,
         audioConsolidation,

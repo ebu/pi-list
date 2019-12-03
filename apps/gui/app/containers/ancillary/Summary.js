@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import { find } from 'lodash';
 import api from 'utils/api';
 import asyncLoader from '../../components/asyncLoader';
-import DataList from './components/DataList';
-import InfoPane from './components/InfoPane';
+import DataList from '../streamPage/components/DataList';
+import InfoPane from '../streamPage/components/InfoPane';
 
 const AncillarySummary = (props) => {
     const availableAncTypes = props.availableAncOptions[0].value;
@@ -36,7 +36,7 @@ const AncillarySummary = (props) => {
         <div>
         <InfoPane
             icon='assignment'
-            headingTag='headings.anc'
+            headingTag='headings.anc_sub_stream'
             values={ [] }
         />
         { summary }

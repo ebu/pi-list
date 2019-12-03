@@ -142,26 +142,3 @@ st2110::d21::video_analysis_info video_stream_serializer::get_video_analysis_inf
 {
     return st2110::d21::get_video_analysis_info(compliance_);
 }
-
-//------------------------------------------------------------------------------
-
-histogram_writer::histogram_writer(path info_path, std::string_view filename)
-    : info_path_(std::move(info_path)), filename_(filename)
-{
-}
-
-void histogram_writer::on_data(const st2110::d21::cinst_histogram_t& histogram)
-{
-    json j;
-    j["histogram"] = histogram;
-
-    write_json_to(info_path_, filename_, j);
-}
-
-void histogram_writer::on_complete()
-{
-}
-
-void histogram_writer::on_error(std::exception_ptr)
-{
-}

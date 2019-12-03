@@ -27,7 +27,7 @@ const Toolbar = props => {
 }
 
 Toolbar.propTypes = {
-    dispatch: PropTypes.func.isRequired,
+    dispatch: PropTypes.func,
     selectedItems: PropTypes.array.isRequired,
     cbFunction: PropTypes.func,
 };

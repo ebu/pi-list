@@ -7,7 +7,7 @@ import "react-table/react-table.css";
 import Icon from '../../components/common/Icon';
 import Badge from '../../components/common/Badge';
 import ProgressBar from '../../components/common/ProgressBar';
-import { translateX } from '../../utils/translation';
+import { translateX, translateC } from '../../utils/translation';
 import pcapEnums from '../../enums/pcap';
 import Tooltip from '../../components/common/Tooltip';
 import { isSelected, getGetTdProps, getCheckBoxColumn } from '../../components/table/utils';
@@ -15,7 +15,7 @@ import { isSelected, getGetTdProps, getCheckBoxColumn } from '../../components/t
 
 const getWEMessage = item => {
     const id = _.get(item, ['value', 'id'], null);
-    return translateX('analysis.' + id);
+    return translateC('analysis.' + id);
 }
 
 
@@ -109,7 +109,7 @@ function renderPcapStatusCell(state) {
                 text=""
                 icon={getStateIcon(state)}
             />
-            <span>{translateX(state)}</span>
+            {translateC(state)}
         </Fragment>
     );
 }

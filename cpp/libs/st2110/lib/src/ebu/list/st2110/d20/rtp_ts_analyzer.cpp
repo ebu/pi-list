@@ -1,10 +1,11 @@
 #include "ebu/list/st2110/d20/rtp_ts_analyzer.h"
 #include "ebu/list/core/math.h"
-#include "ebu/list/st2110/d20/rtp_utils.h"
+#include "ebu/list/analysis/utils/rtp_utils.h"
 #include "ebu/list/st2110/d21/settings.h"
 #include "ebu/list/st2110/pch.h"
 
 using namespace ebu_list;
+using namespace ebu_list::analysis;
 using namespace ebu_list::st2110::d20;
 using namespace ebu_list::st2110::d21;
 

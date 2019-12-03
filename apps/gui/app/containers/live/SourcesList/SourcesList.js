@@ -64,7 +64,7 @@ const filterData = (data, searchString) => {
 const SourcesList = props => {
     const [state, dispatch] = useReducer(actionsWorkflow, initialState);
     const [sourcesToEdit, setSourcesToEdit] = useState([]);
-    const [showSDPErrorPopUp, setShowSDPErrorPopUp] = useState({});
+    const [showSDPErrorPopUp, setShowSDPErrorPopUp] = useState({ show:false, id : null, error: "" });
 
     const toggleRow = id => dispatch({ type: tableactions.toggleRow, data: { id } });
     const toggleSelectAll = () => dispatch({ type: tableactions.toggleSelectAll });

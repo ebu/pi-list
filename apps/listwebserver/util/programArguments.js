@@ -1,8 +1,15 @@
 const commander = require('commander');
 const yamlParser = require('read-yaml');
 const deepFreeze = require('deep-freeze');
-const path = require('./path');
+const path = require('path');
+const pathSanitization = require('./path');
 const { URL } = require('url');
+
+function loadFile(filePath) {
+    const fs = require('fs');
+    const contents =  fs.readFileSync(path.join(__dirname, filePath), 'utf8');
+    return contents;
+  }
 
 function parseNmosArguments(args) {
     return args.nmos || null;
@@ -13,8 +20,8 @@ function parseArguments(args) {
 
     const config = Object.assign({}, args, {
         port: args.port || '3030',
-        folder: path.sanitizeDirectoryPath(args.folder),
-        cpp: path.sanitizeDirectoryPath(args.cpp),
+        folder: pathSanitization.sanitizeDirectoryPath(args.folder),
+        cpp: pathSanitization.sanitizeDirectoryPath(args.cpp),
         influxURL: `http://${args.influx.hostname}:${args.influx.port}`,
         databaseURL: `mongodb://${args.database.hostname}:${
             args.database.port
@@ -27,7 +34,9 @@ function parseArguments(args) {
 
     const webappDomain =
         process.env.EBU_LIST_WEB_APP_DOMAIN || config.webappDomain;
+
     config.webappDomain = webappDomain || 'http://localhost:8080';
+    
     console.log('config.webappDomain:', config.webappDomain);
 
     const liveModeEnv =
@@ -37,8 +46,15 @@ function parseArguments(args) {
     console.log('config.liveMode:', config.liveMode);
 
     const baseUrl = new URL(config.webappDomain);
-    const apiUrl = `${baseUrl.protocol}//${baseUrl.hostname}:${config.port}/api`;
-    config.apiUrl = apiUrl;
+    try {
+        const staticConfig = JSON.parse(loadFile('./../static.config.json'));
+        config.publicApiPort = staticConfig.publicApiPort;
+    }
+    catch (err) {
+        config.publicApiPort = config.port;
+    }
+    config.apiUrl = `${baseUrl.protocol}//${baseUrl.hostname}:${config.publicApiPort}/api`;
+    console.log('config.apiUrl:', config.apiUrl);
 
     return config;
 }
