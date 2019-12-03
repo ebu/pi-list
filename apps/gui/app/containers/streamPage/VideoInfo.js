@@ -17,23 +17,35 @@ const VideoInfo = (props) => {
     const size = `${props.width}x${props.height}`;
     const isInterlaced = props.scan_type === 'interlaced';
     const rate = typeof(props.rate) === 'string' ? props.rate : props.rate.toFixed(2).toString();
-    const video_values = isAncillary? [] : [
-        {
-            labelTag: 'media_information.video.dimensions',
-            value: size
-        },
-        {
-            labelTag: 'media_information.video.sampling',
-            value: props.sampling
-        },
-        {
-            labelTag: 'media_information.video.color_depth',
-            value: props.color_depth,
-            units: 'bit'
-        }
-    ]
+    var values = isAncillary?
+        [
+            {
+                labelTag: 'media_information.rtp.wrong_marker_bit',
+                value: props.wrong_marker_count,
+                attention: props.wrong_marker_count > 0,
+            },
 
-    const values = video_values.concat([
+        ] : [
+            {
+                labelTag: 'media_information.video.dimensions',
+                value: size
+            },
+            {
+                labelTag: 'media_information.video.sampling',
+                value: props.sampling
+            },
+            {
+                labelTag: 'media_information.video.color_depth',
+                value: props.color_depth,
+                units: 'bit'
+            },
+            {
+                labelTag: 'media_information.video.packets_per_frame',
+                value: props.packets_per_frame
+            }
+        ]
+
+    values = values.concat([
         {
             labelTag: 'media_information.video.scan_type',
             value: translateX(isInterlaced ?
@@ -57,10 +69,6 @@ const VideoInfo = (props) => {
                 'media_information.video.frames',
             value: props.frame_count
         },
-        {
-            labelTag: 'media_information.video.packets_per_frame',
-            value: props.packets_per_frame
-        }
     ]);
 
     return (<InfoPane

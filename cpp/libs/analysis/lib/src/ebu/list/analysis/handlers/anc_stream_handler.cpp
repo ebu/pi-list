@@ -3,6 +3,7 @@
 #include "ebu/list/net/multicast_address_analyzer.h"
 #include "ebu/list/st2110/d40/anc_description.h"
 #include "ebu/list/st2110/d40/packet.h"
+#include "ebu/list/core/math/histogram.h"
 
 using namespace ebu_list;
 using namespace ebu_list::analysis;
@@ -239,9 +240,36 @@ footer:\n\
     return 0;
 }
 
-anc_stream_handler::anc_stream_handler(rtp::packet first_packet, serializable_stream_info info,
+struct anc_stream_handler::impl
+{
+    impl(listener_uptr l, histogram_listener_uptr h_l)
+        : listener_(std::move(l)), histogram_listener_(std::move(h_l))
+    {
+    }
+
+    void on_data(const frame_info& frame_info)
+    {
+        listener_->on_data(frame_info);
+        histogram_.add_value(frame_info.packets_per_frame);
+    }
+
+    void on_complete()
+    {
+        histogram_listener_->on_data(histogram_.values());
+        histogram_listener_->on_complete();
+        listener_->on_complete();
+    }
+
+    const listener_uptr listener_;
+    const histogram_listener_uptr histogram_listener_;
+    histogram<int> histogram_;
+};
+
+anc_stream_handler::anc_stream_handler(rtp::packet first_packet, listener_uptr l_rtp, histogram_listener_uptr l_h, serializable_stream_info info,
                                        anc_stream_details details, completion_handler ch)
-    : info_(std::move(info)), anc_description_(std::move(details)), completion_handler_(std::move(ch))
+    : impl_(std::make_unique<impl>(std::move(l_rtp), l_h ? std::move(l_h) : std::make_unique<null_histogram_listener>())),
+      info_(std::move(info)), anc_description_(std::move(details)),
+      completion_handler_(std::move(ch))
 {
     logger()->info("Ancillary: created handler for {:08x}, {}->{}", info_.network.ssrc, to_string(info_.network.source),
                    to_string(info_.network.destination));
@@ -295,15 +323,50 @@ void anc_stream_handler::on_data(const rtp::packet& packet)
 {
     ++anc_description_.packet_count;
     anc_description_.last_packet_ts = packet.info.udp.packet_time;
+    const auto marked = packet.info.rtp().marker();
+
+    logger()->trace("Ancillary packet={}, frame={}, marker={}", anc_description_.packet_count, anc_description_.frame_count, (marked)? "1" : "0");
+
+    packets_per_frame_.on_packet(packet.info.rtp.view());
 
     const auto timestamp = packet.info.rtp.view().timestamp();
+    /* frame transition based on RTP TS change */
     if (timestamp != anc_description_.last_frame_ts)
     {
         anc_description_.last_frame_ts = timestamp;
         anc_description_.frame_count++;
+
+        const auto packet_time_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(packet.info.udp.packet_time.time_since_epoch()) .count();
+        const auto packet_time   = fraction64(packet_time_ns, std::giga::num);
+        const auto rtp_timestamp = packet.info.rtp.view().timestamp();
+        const auto tframe = fraction64(1, anc_description_.anc.rate);
+        first_rtp_to_packet_deltas_ = calculate_rtp_to_packet_deltas(tframe, rtp_timestamp, packet_time);
+
+        if (!last_frame_was_marked_)
+        {
+            logger()->debug("Ancillary: missing marker bit");
+            anc_description_.wrong_marker_count++;
+        }
+    }
+    else if (last_frame_was_marked_)
+    {
+        logger()->debug("Ancillary: wrong marker bit in frame");
+        anc_description_.wrong_marker_count++;
     }
 
-    logger()->trace("Ancillary packet={}, frame={}", anc_description_.packet_count, anc_description_.frame_count);
+    /* report variable pkts/frame on every marker bit after a complete
+     * frame was received */
+    if(marked)
+    {
+        if (anc_description_.frame_count > 1)
+        {
+            impl_->on_data({packet.info.udp.packet_time, packets_per_frame_.count().value_or(0), first_rtp_to_packet_deltas_});
+            packets_per_frame_.reset();
+            packets_per_frame_.on_packet(packet.info.rtp.view());
+        }
+    }
+
+    last_frame_was_marked_ = marked;
 
     parse_packet(packet);
 }
@@ -316,6 +379,7 @@ void anc_stream_handler::on_complete()
         logger()->info("ancillary rtp packet drop: {}", anc_description_.dropped_packet_count);
     }
 
+    impl_->on_complete();
     this->on_stream_complete();
     info_.state = StreamState::ANALYZED;
     completion_handler_(*this);
@@ -389,7 +453,7 @@ void anc_stream_handler::parse_packet(const rtp::packet& packet)
 
         /* is it acceptable data? */
         const auto anc_packet = anc_packet_header_lens(anc_packet_header);
-        auto s                = anc_sub_stream((anc_packet.did() << 8) + anc_packet.sdid(), anc_packet.stream_num());
+        auto s                = anc_sub_stream(anc_packet);
         if (!s.is_valid())
         {
             logger()->warn("Ancillary: sub-stream invalid");

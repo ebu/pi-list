@@ -8,7 +8,7 @@ import { translateC } from '../../utils/translation';
 
 const propTypes = {
     visible: PropTypes.bool.isRequired,
-    onDoAction: PropTypes.func.isRequired,
+    onDoAction: PropTypes.func, //Type ok and warning does not have an DoAction.
     onClose: PropTypes.func.isRequired,
     height: PropTypes.number,
     width: PropTypes.number

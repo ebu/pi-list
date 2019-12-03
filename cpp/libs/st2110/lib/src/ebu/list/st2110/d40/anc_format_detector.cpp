@@ -105,7 +105,7 @@ detector::status_description anc_format_detector::handle_data(const rtp::packet&
                                                 /*.error_code*/ "STATUS_CODE_ANC_DETECTING"};
         }
 
-        auto s = anc_sub_stream((anc_packet.did() << 8) + anc_packet.sdid(), anc_packet.stream_num());
+        auto s = anc_sub_stream(anc_packet);
         if (!s.is_valid())
         {
             logger()->debug("Ancillary: invalid data type ({}-{})", anc_packet.did(), anc_packet.sdid());

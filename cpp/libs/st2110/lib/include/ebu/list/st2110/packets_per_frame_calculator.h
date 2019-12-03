@@ -8,6 +8,7 @@ namespace ebu_list::st2110
     {
       public:
         void on_packet(const rtp::header_lens& header);
+        void reset();
         std::optional<int> count() const;
 
       private:

@@ -2,9 +2,12 @@
 
 #include "ebu/list/analysis/serialization/anc_serialization.h"
 #include "ebu/list/analysis/serialization/serializable_stream_info.h"
+#include "ebu/list/analysis/utils/histogram_listener.h"
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/rtp/listener.h"
 #include "ebu/list/rtp/sequence_number_analyzer.h"
+#include "ebu/list/st2110/packets_per_frame_calculator.h"
+#include "ebu/list/analysis/utils/rtp_utils.h"
 
 #pragma GCC diagnostic ignored "-Wpedantic"
 #include <libklvanc/vanc.h>
@@ -17,9 +20,28 @@ namespace ebu_list::analysis
       public:
         using completion_handler = std::function<void(const anc_stream_handler& ash)>;
 
-        anc_stream_handler(
-            rtp::packet first_packet, serializable_stream_info info, anc_stream_details details,
-            completion_handler ch = [](const anc_stream_handler&) {});
+        struct frame_info
+        {
+            clock::time_point timestamp;
+            int packets_per_frame;
+            delta_info first_rtp_to_packet_deltas;
+        };
+
+        class listener
+        {
+          public:
+            virtual ~listener() = default;
+
+            virtual void on_data(const frame_info& frame_info)   = 0;
+            virtual void on_complete()                  = 0;
+            virtual void on_error(std::exception_ptr e) = 0;
+        };
+
+        using listener_uptr = std::unique_ptr<listener>;
+
+        anc_stream_handler( rtp::packet first_packet, listener_uptr l_rtp, histogram_listener_uptr l_h,
+                        serializable_stream_info info, anc_stream_details details,
+                        completion_handler ch = [](const anc_stream_handler&) {});
         ~anc_stream_handler(void);
 
         const anc_stream_details& info() const;
@@ -40,13 +62,19 @@ namespace ebu_list::analysis
 #pragma endregion event handlers
 
         void parse_packet(const rtp::packet& packet);
+        int64_t get_delta_pkt_ts_vs_rtp_ts(const rtp::packet& packet);
 
+        struct impl;
+        const std::unique_ptr<impl> impl_;
         serializable_stream_info info_;
         anc_stream_details anc_description_;
+        completion_handler completion_handler_;
+
         rtp::sequence_number_analyzer<uint32_t> rtp_seqnum_analyzer_;
         struct klvanc_context_s* klvanc_ctx;
-
-        completion_handler completion_handler_;
+        bool last_frame_was_marked_ = false;
+        st2110::packets_per_frame_calculator packets_per_frame_;
+        delta_info first_rtp_to_packet_deltas_;
     };
 
     using anc_stream_handler_uptr = std::unique_ptr<anc_stream_handler>;
