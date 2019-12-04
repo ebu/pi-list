@@ -85,11 +85,19 @@ function validateRtpTimes(stream) {
     return stream;
 }
 
-// TODO: implement this
 function getInterFrameRtpTsDeltaLimit(stream) {
+    const rate = _.get(stream, 'statistics.rate', null);
+
+    if (rate === null) {
+        return null;
+    }
+
+    const rtpClockRate = 90000;
+    const interTicks = rtpClockRate / rate;
+
     return {
-        min: 0,
-        max: 2000,
+        min: Math.floor(interTicks),
+        max: Math.ceil(interTicks),
     };
 }
 
@@ -107,7 +115,18 @@ function validateInterFrameRtpTSDelta(stream) {
 
         return;
     }
+
     const limit = getInterFrameRtpTsDeltaLimit(stream);
+    if (limit === null) {
+        _.set(stream, 'analyses.inter_frame_rtp_ts_delta.result', constants.outcome.not_compliant);
+        stream = appendError(stream, {
+            id: constants.errors.missing_information,
+            value: 'could not calculate the limits',
+        });
+
+        return;
+    }
+
     _.set(stream, 'analyses.inter_frame_rtp_ts_delta.details.limit', limit);
     _.set(stream, 'analyses.inter_frame_rtp_ts_delta.details.unit', 'ticks');
 
