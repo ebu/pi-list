@@ -33,7 +33,7 @@ namespace
             parse(argc, argv, argument(&config::pcap_file, "pcap file", "the path to the pcap file to use as input"),
                   option(&config::verbose, "v", "verbose", "verbose output"));
 
-        if (parse_result) return config;
+        if(parse_result) return config;
 
         logger()->error("usage: {} {}", path(argv[0]).filename().string(), to_string(parse_result));
         exit(-1);
@@ -43,7 +43,7 @@ namespace
 
     template <typename T> void dump_histogram(const typename histogram_data<T>::entries& entries)
     {
-        for (const auto& e : entries)
+        for(const auto& e : entries)
         {
             logger()->info("{:>8d}: {:>8d} ({:>3.2f}%)", e.value, e.count, e.relative * 100);
         }
@@ -64,7 +64,7 @@ namespace
 
     void dump_handlers(const stream_handlers& streams)
     {
-        for (auto& stream : streams)
+        for(auto& stream : streams)
         {
             dump_handler(*stream);
         }
@@ -114,7 +114,7 @@ int main(int argc, char* argv[])
     {
         run(config);
     }
-    catch (std::exception& ex)
+    catch(std::exception& ex)
     {
         console->error("exception: {}", ex.what());
         return -1;

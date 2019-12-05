@@ -33,7 +33,7 @@ video_stream_details video_stream_details::from_json(const nlohmann::json& j)
     desc.video = st2110::d20::from_json(j.at("media_specific"));
 
     const auto statistics_json = j.find("statistics");
-    if (statistics_json != j.end())
+    if(statistics_json != j.end())
     {
         desc.first_frame_ts = statistics_json->at("first_frame_ts").get<uint32_t>();
         desc.last_frame_ts  = statistics_json->at("last_frame_ts").get<uint32_t>();
@@ -68,6 +68,7 @@ nlohmann::json st2110::d20::to_json(const st2110::d20::video_description& desc)
     j["max_tro_ns"]        = desc.max_tro_ns;
     j["min_tro_ns"]        = desc.min_tro_ns;
     j["tro_default_ns"]    = desc.tro_default_ns;
+    j["packing_mode"]      = desc.packing_mode;
 
     return j;
 }
@@ -76,7 +77,7 @@ st2110::d20::video_description st2110::d20::from_json(const nlohmann::json& j)
 {
     st2110::d20::video_description desc{};
 
-    if (j.empty()) // media_specific was empty, using default values
+    if(j.empty()) // media_specific was empty, using default values
         return desc;
 
     desc.sampling    = media::video::parse_video_sampling(j.at("sampling").get<string>());
@@ -87,19 +88,19 @@ st2110::d20::video_description st2110::d20::from_json(const nlohmann::json& j)
 
     // the following are not always populated
     const auto scan_type_json = j.find("scan_type");
-    if (scan_type_json != j.end())
+    if(scan_type_json != j.end())
     {
         desc.scan_type = media::video::parse_scan_type(scan_type_json->get<string>());
     }
 
     const auto packets_per_frame_json = j.find("packets_per_frame");
-    if (packets_per_frame_json != j.end())
+    if(packets_per_frame_json != j.end())
     {
         desc.packets_per_frame = packets_per_frame_json->get<int>();
     }
 
     const auto schedule_json = j.find("schedule");
-    if (schedule_json != j.end())
+    if(schedule_json != j.end())
     {
         desc.schedule = d21::read_schedule_from_string(schedule_json->get<string>());
     }
@@ -108,6 +109,7 @@ st2110::d20::video_description st2110::d20::from_json(const nlohmann::json& j)
     desc.max_tro_ns     = j.at("max_tro_ns").get<int64_t>();
     desc.min_tro_ns     = j.at("min_tro_ns").get<int64_t>();
     desc.tro_default_ns = j.at("tro_default_ns").get<int64_t>();
+    desc.packing_mode   = j.at("packing_mode").get<packing_mode_t>();
 
     return desc;
 }

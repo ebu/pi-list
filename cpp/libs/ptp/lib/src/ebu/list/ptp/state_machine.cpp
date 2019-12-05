@@ -170,7 +170,7 @@ std::string_view state_waiting_for_sync::get_name() const
 
 const state* state_waiting_for_sync::handle_message(context& c, const ptp::v2::sync& message) const
 {
-    if (!is_same_clock(c, message.header().value())) return this;
+    if(!is_same_clock(c, message.header().value())) return this;
 
     c.last_sync_timestamp      = message.packet_timestamp();
     c.current_sequence_id      = message.header().value().sequence_id();
@@ -205,16 +205,16 @@ std::string_view state_waiting_for_follow_up::get_name() const
 
 const state* state_waiting_for_follow_up::handle_message(context& c, const ptp::v2::sync& message) const
 {
-    if (!is_same_clock(c, message.header().value())) return this;
+    if(!is_same_clock(c, message.header().value())) return this;
 
     return c.waiting_for_sync->handle_message(c, message);
 }
 
 const state* state_waiting_for_follow_up::handle_message(context& c, const ptp::v2::follow_up& message) const
 {
-    if (!is_same_clock(c, message.header().value())) return this;
+    if(!is_same_clock(c, message.header().value())) return this;
 
-    if (message.header().value().sequence_id() != c.current_sequence_id) return this;
+    if(message.header().value().sequence_id() != c.current_sequence_id) return this;
 
     c.precise_origin_timestamp = message.message().precise_origin_timestamp();
 
@@ -249,7 +249,7 @@ std::string_view state_waiting_for_delay_request::get_name() const
 
 const state* state_waiting_for_delay_request::handle_message(context& c, const ptp::v2::sync& message) const
 {
-    if (!is_same_clock(c, message.header().value())) return this;
+    if(!is_same_clock(c, message.header().value())) return this;
 
     return c.waiting_for_sync->handle_message(c, message);
 }
@@ -287,7 +287,7 @@ std::string_view state_waiting_for_delay_response::get_name() const
 
 const state* state_waiting_for_delay_response::handle_message(context& c, const ptp::v2::sync& message) const
 {
-    if (!is_same_clock(c, message.header().value())) return this;
+    if(!is_same_clock(c, message.header().value())) return this;
 
     return c.waiting_for_sync->handle_message(c, message);
 }
@@ -305,10 +305,10 @@ const state* state_waiting_for_delay_response::handle_message(context& /*c*/,
 
 const state* state_waiting_for_delay_response::handle_message(context& c, const ptp::v2::delay_resp& message) const
 {
-    if (!is_same_clock(c, message.header().value())) return this;
+    if(!is_same_clock(c, message.header().value())) return this;
 
-    if (message.header().value().sequence_id() != c.current_sequence_id) return this;
-    if (!is_same_clock(c, message.header().value())) return this;
+    if(message.header().value().sequence_id() != c.current_sequence_id) return this;
+    if(!is_same_clock(c, message.header().value())) return this;
 
     c.delay_response_origin_timestamp = message.message().receive_timestamp();
 
@@ -341,7 +341,7 @@ struct state_machine::impl
                         typeid(*current_state_).name());
         const auto new_state = current_state_->handle_message(context_, message);
         assert(new_state);
-        if (new_state != current_state_)
+        if(new_state != current_state_)
         {
             logger()->trace("Switching to state {}", typeid(*new_state).name());
             current_state_ = new_state;

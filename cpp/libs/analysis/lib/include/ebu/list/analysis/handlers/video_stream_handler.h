@@ -6,6 +6,7 @@
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/rtp/listener.h"
 #include "ebu/list/rtp/sequence_number_analyzer.h"
+#include "ebu/list/st2110/d20/packing_mode_analyzer.h"
 #include "ebu/list/st2110/rate_calculator.h"
 
 namespace ebu_list::analysis
@@ -64,6 +65,7 @@ namespace ebu_list::analysis
         st2110::rate_calculator rate_;
         frame_uptr current_frame_;
         rtp::sequence_number_analyzer<uint32_t> rtp_seqnum_analyzer_;
+        st2110::d20::packing_mode_analyzer pm_analyzer_;
         malloc_sbuffer_factory block_factory_;
 
         serializable_stream_info info_;

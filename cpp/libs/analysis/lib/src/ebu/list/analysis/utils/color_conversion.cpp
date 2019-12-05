@@ -39,11 +39,11 @@ oview analysis::from_ycbcr422_to_rgba(oview ycbcr422, media::video::video_dimens
 
     auto input = ycbcr422.view().begin();
 
-    for (auto y = 0; y < height; ++y)
+    for(auto y = 0; y < height; ++y)
     {
         auto output = target->begin() + y * rgba_line_size;
 
-        for (auto x = 0; x < width; x += pixels_per_pgroup)
+        for(auto x = 0; x < width; x += pixels_per_pgroup)
         {
             //      Cb         Y0        Cr         Y1
             // XXXXXXXX XX++++++ ++++XXXX XXXXXX++ ++++++++
@@ -95,11 +95,11 @@ oview analysis::from_ycbcr422_to_uyvy(oview ycbcr422, media::video::video_dimens
 
     auto input = ycbcr422.view().begin();
 
-    for (auto y = 0; y < height; ++y)
+    for(auto y = 0; y < height; ++y)
     {
         auto output = target->begin() + y * uyvy_line_size;
 
-        for (auto x = 0; x < width; x += pixels_per_pgroup)
+        for(auto x = 0; x < width; x += pixels_per_pgroup)
         {
             //      Cb         Y0        Cr         Y1
             // XXXXXXXX XX++++++ ++++XXXX XXXXXX++ ++++++++

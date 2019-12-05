@@ -14,9 +14,9 @@ namespace
 
     std::tuple<int, int> get_dimensions_from_max_line(int max_line, bool is_field_based)
     {
-        if (is_field_based)
+        if(is_field_based)
         {
-            switch (max_line)
+            switch(max_line)
             {
             case 239: return {720, 480};
             case 242: return {720, 486};
@@ -28,7 +28,7 @@ namespace
         }
         else
         {
-            switch (max_line)
+            switch(max_line)
             {
             case 719: return {1280, 720};
             case 1079: return {1920, 1080};
@@ -50,7 +50,7 @@ detector::status_description line_data_analyzer::handle_data(const rtp::packet& 
     auto& sdu = packet.sdu;
 
     constexpr auto minimum_size = ssizeof<raw_extended_sequence_number>() + ssizeof<raw_line_header>();
-    if (sdu.view().size() < minimum_size)
+    if(sdu.view().size() < minimum_size)
     {
         // logger()->error("Packet size smaller than minimum: {}", sdu.view().size());
         return detector::status_description{/*.state*/ detector::state::invalid,
@@ -63,7 +63,7 @@ detector::status_description line_data_analyzer::handle_data(const rtp::packet& 
     // skip esn
     p += sizeof(raw_extended_sequence_number);
 
-    while (p < end)
+    while(p < end)
     {
         const auto line_header = line_header_lens(*reinterpret_cast<const raw_line_header*>(p));
         p += sizeof(raw_line_header);
@@ -72,7 +72,7 @@ detector::status_description line_data_analyzer::handle_data(const rtp::packet& 
 
         is_field_based_ |= (line_header.field_identification() != 0);
 
-        if (!line_header.continuation()) break;
+        if(!line_header.continuation()) break;
     }
 
     return detector::status_description{/*.state*/ detector::state::detecting,
@@ -98,9 +98,9 @@ video_format_detector::video_format_detector() : detector_({maximum_packets_per_
 detector::status_description video_format_detector::handle_data(const rtp::packet& packet)
 {
     const auto la_result = line_analyzer_.handle_data(packet);
-    if (la_result.state == detector::state::invalid) return la_result;
+    if(la_result.state == detector::state::invalid) return la_result;
     const auto sa_result = spacing_analyzer_.handle_data(packet);
-    if (sa_result.state == detector::state::invalid) return sa_result;
+    if(sa_result.state == detector::state::invalid) return sa_result;
 
     return detector_.handle_data(packet);
 }

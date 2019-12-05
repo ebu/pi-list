@@ -64,6 +64,7 @@
   "media_information.video.height": "Высота",
   "media_information.video.colorimetry": "Колориметрия",
   "media_information.video.packets_per_frame": "Пакетов на кадр",
+  "media_information.video.packing_mode": "Packing mode",
   "media_information.video.scan_type": "Тип развертки",
   "media_information.video.rate": "Темп",
   "media_information.video.dimensions": "Размеры",

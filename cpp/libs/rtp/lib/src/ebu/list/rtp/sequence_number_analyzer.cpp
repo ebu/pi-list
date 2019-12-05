@@ -22,19 +22,19 @@ template <typename Counter> int64_t sequence_number_analyzer<Counter>::dropped_p
 
 template <typename Counter> void sequence_number_analyzer<Counter>::handle_packet(Counter sequence_number) noexcept
 {
-    if (started_)
+    if(started_)
     {
-        if (current_seqnum_ + 1 == sequence_number)
+        if(current_seqnum_ + 1 == sequence_number)
         {
         }
-        else if (current_seqnum_ < sequence_number)
+        else if(current_seqnum_ < sequence_number)
         {
             const auto dropped_now = sequence_number - current_seqnum_ - 1;
             num_dropped_ += dropped_now;
             log("Sequence number ({}) is larger than expected. Previous was ({}). Dropped now: {}. Accumulated: {}",
                 sequence_number, current_seqnum_, dropped_now, num_dropped_);
         }
-        else if (current_seqnum_ > sequence_number)
+        else if(current_seqnum_ > sequence_number)
         {
             const auto dropped_now = std::numeric_limits<Counter>::max() - current_seqnum_ + sequence_number;
             num_dropped_ += dropped_now;

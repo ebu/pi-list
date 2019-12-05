@@ -67,7 +67,7 @@ namespace
     template <class ENUM> nlohmann::json to_json(const std::vector<ENUM>& values)
     {
         nlohmann::json content;
-        for (const auto& value : values)
+        for(const auto& value : values)
         {
             content.push_back(to_json(value));
         }
@@ -125,7 +125,7 @@ void ebu_list::write_available_options(const path& dir)
 {
     nlohmann::json content;
 
-    for (const auto& type : available_media_types_)
+    for(const auto& type : available_media_types_)
     {
         content.emplace_back(nlohmann::json{{"label", type.second}, {"value", to_string(type.first)}});
     }

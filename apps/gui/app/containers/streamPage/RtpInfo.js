@@ -4,7 +4,6 @@ import InfoPane from './components/InfoPane';
 import ResultPane from './components/ResultPane';
 import MinAvgMaxDisplay from './components/MinAvgMaxDisplay';
 import MinMaxDisplay from './components/MinMaxDisplay';
-import DataList from './components/DataList';
 import analysisConstants from '../../enums/analysis';
 
 const isRtpCompliant = info => {};
@@ -22,9 +21,9 @@ const nsPropAsMinMaxAvgUs = info => {
     return { min: toUs(info.min), max: toUs(info.max), avg: toUs(info.avg) };
 };
 
-const propAsMinMaxAvg = info => {
+const propAsMinMaxAvg = (info, nDecimal) => {
     if (_.isNil(info)) return { min: '---', max: '---', avg: '---' };
-    return { min: info.min, max: info.max, avg: info.avg.toFixed(0) };
+    return { min: info.min, max: info.max, avg: info.avg.toFixed(nDecimal || 0) };
 };
 
 const RtpInfo = ({ info }) => {
@@ -75,7 +74,7 @@ const RtpInfo = ({ info }) => {
                 <MinAvgMaxDisplay
                     labelTag="media_information.rtp.inter_frame_rtp_ts_delta"
                     units="ticks"
-                    {...propAsMinMaxAvg(interFrameRtpDelta.details.range)}
+                    {...propAsMinMaxAvg(interFrameRtpDelta.details.range, 1)}
                     attention={interFrameRtpDelta.result !== 'compliant'}
                 />
             ),

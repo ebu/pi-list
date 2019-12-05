@@ -64,6 +64,7 @@
   "media_information.video.height": "Υψος",
   "media_information.video.colorimetry": "Χρωματομετρία",
   "media_information.video.packets_per_frame": "Πακέτα ανά πλαίσιο",
+  "media_information.video.packing_mode": "Packing mode",
   "media_information.video.scan_type": "Τύπος σάρωσης",
   "media_information.video.rate": "Τιμή",
   "media_information.video.dimensions": "Διαστάσεις",

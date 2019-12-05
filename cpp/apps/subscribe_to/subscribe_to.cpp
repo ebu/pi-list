@@ -27,14 +27,14 @@ namespace
                   argument(&config::local_interface_s, "local interface", "the IP address of the local interface"),
                   option(&config::multicast_group_s, "g", "multicast group", "the multicast group to subscribe"));
 
-        if (!parse_result)
+        if(!parse_result)
         {
             logger()->error("usage: {} {}", path(argv[0]).filename().string(), to_string(parse_result));
             exit(-1);
         }
 
         const auto maybe_local_addr = net::get_ipv4_interface_addr(config.local_interface_s.c_str());
-        if (!maybe_local_addr)
+        if(!maybe_local_addr)
         {
             logger()->error("invalid local interface: {}", config.local_interface_s);
             exit(-1);
@@ -42,7 +42,7 @@ namespace
 
         config.local_interface = *maybe_local_addr;
 
-        for (const auto& s : config.multicast_group_s)
+        for(const auto& s : config.multicast_group_s)
         {
             config.multicast_group.push_back(ipv4::from_dotted_string(s));
         }
@@ -54,7 +54,7 @@ namespace
     {
         ipv4::multicast_subscriber subscriber(config.local_interface);
 
-        for (const auto& group : config.multicast_group)
+        for(const auto& group : config.multicast_group)
         {
             subscriber.subscribe_to(group, port{});
             logger()->info("Subscribing to {}, using interface {}", to_string(group),
@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
     {
         run(config);
     }
-    catch (std::exception& ex)
+    catch(std::exception& ex)
     {
         console->error("exception: {}", ex.what());
         return -1;

@@ -15,12 +15,12 @@ namespace
 void packets_per_frame_calculator::on_packet(const rtp::header_lens& header)
 {
     /* wait for the begining of a frame and count only once */
-    if (!header.marker() || count_.has_value()) return;
+    if(!header.marker() || count_.has_value()) return;
 
-    if (first_frame_)
+    if(first_frame_)
     {
         auto current = int(header.sequence_number());
-        if (current < first_frame_.value())
+        if(current < first_frame_.value())
         {
             current += pkt_sequence_max;
         }

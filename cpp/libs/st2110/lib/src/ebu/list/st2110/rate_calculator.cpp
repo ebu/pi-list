@@ -12,9 +12,9 @@ namespace
 
 void rate_calculator::on_packet(uint32_t timestamp)
 {
-    if (timestamps_.size() > 2) return;
+    if(timestamps_.size() > 2) return;
 
-    if (timestamps_.find(timestamp) == timestamps_.end())
+    if(timestamps_.find(timestamp) == timestamps_.end())
     {
         timestamps_.insert(timestamp);
     }
@@ -24,7 +24,7 @@ std::optional<media::video::Rate> rate_calculator::rate() const
 {
     // TODO: deal with invalid values
 
-    if (timestamps_.size() < 3) return std::nullopt;
+    if(timestamps_.size() < 3) return std::nullopt;
 
     auto it = timestamps_.begin();
     auto t0 = *it++;
@@ -34,6 +34,6 @@ std::optional<media::video::Rate> rate_calculator::rate() const
     const auto d1 = t1 - t0;
     const auto d2 = t2 - t1;
 
-    if (d1 == 0 || d2 == 0) return media::video::Rate(0, 1);
+    if(d1 == 0 || d2 == 0) return media::video::Rate(0, 1);
     return media::video::Rate(clock_rate * 2, d1 + d2);
 }

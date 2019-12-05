@@ -64,6 +64,7 @@
   "media_information.video.height": "Hauteur",
   "media_information.video.colorimetry": "Colorimétrie",
   "media_information.video.packets_per_frame": "Paquets par Trame/Champ",
+  "media_information.video.packing_mode": "Packing mode",
   "media_information.video.scan_type": "Type de balayage",
   "media_information.video.rate": "Taux",
   "media_information.video.dimensions": "Dimensions",

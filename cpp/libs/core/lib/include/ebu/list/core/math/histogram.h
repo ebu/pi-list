@@ -14,7 +14,7 @@ namespace ebu_list
         void add_value(T value)
         {
             auto it = values_.find(value);
-            if (it == values_.end())
+            if(it == values_.end())
             {
                 values_.insert({value, 1});
             }
@@ -34,15 +34,15 @@ namespace ebu_list
     // and all other values are adjusted accordingly
     template <typename T> std::map<int, T> normalize_negative_to_zero(const std::map<int, T>& source)
     {
-        if (source.empty()) return source;
+        if(source.empty()) return source;
 
         const auto lowest = source.begin()->first;
 
-        if (lowest >= 0) return source;
+        if(lowest >= 0) return source;
 
         histogram<int>::value_type target;
         const auto offset = -lowest;
-        for (const auto& v : source)
+        for(const auto& v : source)
         {
             target.insert({v.first + offset, v.second});
         }
@@ -53,7 +53,7 @@ namespace ebu_list
     // Returns the lowest key in an histogram, 0 if empty
     template <typename T> T get_histogram_min(const std::map<int, T>& h)
     {
-        if (h.empty()) return 0;
+        if(h.empty()) return 0;
         const auto lowest = h.cbegin();
         return lowest->first;
     }
@@ -61,7 +61,7 @@ namespace ebu_list
     // Returns the highest key in an histogram, 0 if empty
     template <typename T> T get_histogram_peak(const std::map<int, T>& h)
     {
-        if (h.empty()) return 0;
+        if(h.empty()) return 0;
         const auto highest = h.crbegin();
         return highest->first;
     }
@@ -69,7 +69,7 @@ namespace ebu_list
     // Returns the highest key in an histogram, 0 if empty
     template <typename T> std::map<int, float> transform_histogram_samples_to_percentages(const std::map<int, T>& h)
     {
-        if (h.empty()) return {};
+        if(h.empty()) return {};
 
         const auto total =
             std::accumulate(h.cbegin(), h.cend(), 0, [](int acc, const auto& v) { return acc + v.second; });

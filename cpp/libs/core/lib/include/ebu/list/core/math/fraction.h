@@ -157,7 +157,7 @@ namespace ebu_list
      */
     template <typename T> inline std::string to_string(const fraction_t<T>& f)
     {
-        if (f.denominator() == 1)
+        if(f.denominator() == 1)
         {
             return std::to_string(f.numerator());
         }
@@ -170,7 +170,7 @@ namespace ebu_list
     // TODO: make this generic
     template <typename T> T modulo_difference(T lhs, T rhs) noexcept
     {
-        if (rhs < lhs)
+        if(rhs < lhs)
         {
             return lhs - rhs;
         }
