@@ -41,7 +41,7 @@ namespace
 
         context.updater->update_stream_info(network_info.id, j);
 
-        st2110::d20::st2110_20_sdp_serializer s(handler.info().video);
+        st2110::d20::st2110_20_sdp_serializer s(handler.info().video, analysis_info.compliance);
         ebu_list::sdp::sdp_builder sdp({"LIST Generated SDP", "Video flow"});
         sdp.add_media(network_info, s);
         context.updater->update_sdp(network_info.id, sdp, media::media_type::VIDEO);

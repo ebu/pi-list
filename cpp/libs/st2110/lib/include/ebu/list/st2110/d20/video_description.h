@@ -10,7 +10,7 @@ namespace ebu_list::st2110::d20
     namespace video = ebu_list::media::video;
 
     /**
-     * ST2110-2018 6.3.1 Packing Modes
+     * ST2110-20-2017 6.3.1 Packing Modes
      */
     enum class packing_mode_t
     {
@@ -49,13 +49,14 @@ namespace ebu_list::st2110::d20
 
     struct st2110_20_sdp_serializer
     {
-        explicit st2110_20_sdp_serializer(const video_description& video_des);
+        explicit st2110_20_sdp_serializer(const video_description& video_des, d21::compliance_profile compliance_profile);
         void write_rtpmap_line(std::vector<std::string>& current_lines,
                                const ebu_list::media::network_media_description& media_description);
         void additional_attributes(std::vector<std::string>& current_lines,
                                    const media::network_media_description& media_description);
 
       private:
-        const video_description& video_desc_;
+        const video_description video_desc_;
+        const d21::compliance_profile compliance_profile_;
     };
 } // namespace ebu_list::st2110::d20
