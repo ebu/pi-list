@@ -26,7 +26,7 @@ const RtpAnalysisViewer = props => {
                     }
                     xAxis={chartFormatters.getTimeLineLabel}
                     data={chartFormatters.singleValueLineChart}
-                    title={translateX('media_information.rtp.delta_packet_time_vs_rtp_time_ns')}
+                    title={translateX('media_information.rtp.delta_first_packet_time_vs_rtp_time')}
                     yAxisLabel="μs"
                     height={300}
                     lineWidth={3}

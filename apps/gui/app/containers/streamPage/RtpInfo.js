@@ -42,7 +42,7 @@ const RtpInfo = ({ info }) => {
         {
             measurement: (
                 <MinAvgMaxDisplay
-                    labelTag="media_information.rtp.delta_packet_time_vs_rtp_time_ns"
+                    labelTag="media_information.rtp.delta_first_packet_time_vs_rtp_time"
                     units="μs"
                     {...nsPropAsMinMaxAvgUs(deltaPktTsVsRtpTs.details.range)}
                     attention={deltaPktTsVsRtpTs.result !== 'compliant'}
