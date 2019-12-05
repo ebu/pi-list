@@ -8,7 +8,7 @@ import asyncLoader from '../../components/asyncLoader';
 import Textarea from '../../components/common/Textarea';
 
 const AncillarySubStream = props => {
-    const index = props.index - 1;
+    const index = props.index;
     const subStream = props.streamInfo.media_specific.sub_streams[index];
     const availableAncTypes = props.availableAncOptions[0].value;
     const type = find(availableAncTypes, { value: `${subStream.did_sdid}` });
