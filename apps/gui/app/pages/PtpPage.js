@@ -3,11 +3,11 @@ import Panel from 'components/common/Panel';
 import api from 'utils/api';
 import chartFormatters from 'utils/chartFormatters';
 import Chart from 'components/StyledChart';
+import { translateX } from 'utils/translation';
 
 class PtpPage extends Component {
     render() {
         const { pcapID } = this.props.match.params;
-
         return (
             <Panel className="col-xs-12">
                 <div className="row">
@@ -15,7 +15,7 @@ class PtpPage extends Component {
                         <Chart
                             type="line"
                             request={() => api.getPtpOffset(pcapID)}
-                            labels={chartFormatters.getTimeLineLabel}
+                            labels={chartFormatters.getTimeLineLabel} //RS
                             formatData={chartFormatters.singleValueChart}
                             xLabel=""
                             title="PTP Offset"

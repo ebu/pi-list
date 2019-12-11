@@ -3,6 +3,7 @@ import Panel from '../../components/common/Panel';
 import LineChart from '../../components/LineChart';
 import api from '../../utils/api';
 import chartFormatters from '../../utils/chartFormatters';
+import { translateX } from '../../utils/translation';
 
 const RTP = props => {
     const { first_packet_ts, last_packet_ts } = props.streamInfo.statistics;
@@ -23,7 +24,7 @@ const RTP = props => {
                         xAxis={chartFormatters.getTimeLineLabel}
                         data={chartFormatters.singleValueLineChart}
                         titleTag="media_information.rtp.delta_packet_time_vs_rtp_time"
-                        yAxisLabel="Delay (μs)"
+                        yAxisLabel={translateX('media_information.delay')}
                         height={300}
                         lineWidth={3}
                         legend
