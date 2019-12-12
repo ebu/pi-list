@@ -58,7 +58,7 @@ void stream_listener::on_data(const rtp::packet& packet)
     }
 
     // NOTE: seqnum_analyzer_ is looking for dropped packets but only for
-    // streams of unkown types. Therefore it only assumes the presence of
+    // streams of unknown types. Therefore it only assumes the presence of
     // RTP's sequence number field, hence the uint16_t qualification.
     seqnum_analyzer_.handle_packet(static_cast<uint16_t>(packet.info.rtp.view().sequence_number()));
     num_packets_++;

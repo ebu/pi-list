@@ -76,7 +76,8 @@ void st2110_20_sdp_serializer::additional_attributes(
     current_lines.emplace_back(fmt::format("a=fmtp:{} sampling={}; width={}; height={}; {}exactframerate={}; depth={}; "
                                            "colorimetry={}; PM={}; SSN=ST2110-20:2017{};",
                                            payload, sampling, width, height, get_interlace(video_desc_), rate,
-                                           bit_depth, colorimetry, get_packing_mode(video_desc_), get_tp(compliance_profile_)));
+                                           bit_depth, colorimetry, get_packing_mode(video_desc_),
+                                           get_tp(compliance_profile_)));
 
     /** Optional Parameters **/
     // TODO: add max_udp a=fmtp

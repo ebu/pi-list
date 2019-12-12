@@ -75,4 +75,4 @@ namespace ebu_list::analysis
     };
 
     using stream_handler_uptr = std::unique_ptr<video_stream_handler>;
-}
+} // namespace ebu_list::analysis

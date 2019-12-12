@@ -33,9 +33,9 @@ namespace
 
     using rate_preset                              = std::pair<std::string, video::Rate>;
     const std::vector<rate_preset> available_rates = {
-        {"24 Hz", video::Rate(24, 1)}, {"25 Hz", video::Rate(25, 1)}, {"29.97 Hz", video::Rate(30000, 1001)},
-        {"30 Hz", video::Rate(30, 1)}, {"50 Hz", video::Rate(50, 1)}, {"59.94 Hz", video::Rate(60000, 1001)},
-        {"60 Hz", video::Rate(60, 1)}};
+        {"24 Hz", video::Rate(24, 1)},          {"24.98 Hz", video::Rate(24000, 1001)}, {"25 Hz", video::Rate(25, 1)},
+        {"29.97 Hz", video::Rate(30000, 1001)}, {"30 Hz", video::Rate(30, 1)},          {"50 Hz", video::Rate(50, 1)},
+        {"59.94 Hz", video::Rate(60000, 1001)}, {"60 Hz", video::Rate(60, 1)}};
 
     //----------------------------------------------------------------
     const std::vector<audio::audio_encoding> available_encondings = {audio::audio_encoding::L16,

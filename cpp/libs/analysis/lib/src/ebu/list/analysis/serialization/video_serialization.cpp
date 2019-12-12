@@ -109,7 +109,12 @@ st2110::d20::video_description st2110::d20::from_json(const nlohmann::json& j)
     desc.max_tro_ns     = j.at("max_tro_ns").get<int64_t>();
     desc.min_tro_ns     = j.at("min_tro_ns").get<int64_t>();
     desc.tro_default_ns = j.at("tro_default_ns").get<int64_t>();
-    desc.packing_mode   = j.at("packing_mode").get<packing_mode_t>();
+
+    const auto pm_json = j.find("packing_mode");
+    if(pm_json != j.end())
+    {
+        desc.packing_mode = pm_json->get<packing_mode_t>();
+    }
 
     return desc;
 }

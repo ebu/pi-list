@@ -11,4 +11,4 @@ namespace ebu_list
     };
 
     exit_code native_exec(std::string_view command);
-}
+} // namespace ebu_list

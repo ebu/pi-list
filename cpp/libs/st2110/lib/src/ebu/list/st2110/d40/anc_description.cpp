@@ -46,7 +46,7 @@ anc_sub_stream::anc_sub_stream(const anc_packet_header_lens anc_packet)
 }
 
 // basic constructor for unit tests
-anc_sub_stream::anc_sub_stream(uint16_t did_sdid, uint8_t num)
+anc_sub_stream::anc_sub_stream(uint16_t did_sdid, uint8_t /*num*/)
     : did_sdid_(static_cast<ancillary::did_sdid>(did_sdid)), line_num_(0), horizontal_offset_(0), num_(0), errors_(0),
       packet_count(0)
 {

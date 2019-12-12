@@ -80,7 +80,7 @@ SCENARIO("sdp creation for st2110 video")
 
         WHEN("we generate the additional attributes tag with an interlaced structure")
         {
-            auto video_info = video_info_base;
+            auto video_info      = video_info_base;
             video_info.scan_type = video::scan_type::INTERLACED;
             std::vector<std::string> lines;
             st2110_20_sdp_serializer sdp_serializer(video_info, st2110::d21::compliance_profile::narrow);
@@ -97,8 +97,6 @@ SCENARIO("sdp creation for st2110 video")
                 REQUIRE(lines == expected);
             }
         }
-
-
 
         WHEN("we generate the additional attributes tag with a wide schedule")
         {

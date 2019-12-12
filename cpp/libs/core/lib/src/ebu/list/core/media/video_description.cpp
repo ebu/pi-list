@@ -29,6 +29,8 @@ Rate video::parse_from_string(std::string_view s)
 {
     if(s == "0")
         return video::Rate(0);
+    else if(s == "24000/1001")
+        return video::Rate(24000, 1001);
     else if(s == "24")
         return video::Rate(24, 1);
     else if(s == "25")

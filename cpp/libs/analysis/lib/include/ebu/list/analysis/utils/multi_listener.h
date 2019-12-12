@@ -32,4 +32,4 @@ namespace ebu_list::analysis
         using listeners = std::vector<listener_uptr>;
         listeners listeners_;
     };
-}
+} // namespace ebu_list::analysis

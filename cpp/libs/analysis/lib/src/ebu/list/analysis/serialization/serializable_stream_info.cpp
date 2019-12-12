@@ -35,8 +35,7 @@ std::string analysis::to_string(StreamState s)
     case StreamState::NEEDS_INFO: return "needs_info";
     case StreamState::READY: return "ready";
     case StreamState::ON_GOING_ANALYSIS: return "on_going_analysis";
-    default:
-    {
+    default: {
         assert(s == StreamState::ANALYZED);
         return "analyzed";
     }
