@@ -10,7 +10,7 @@
 | N | Frame or field index since the SMPTE epoch |
 | N x T<sub>frame</sub> | Frame/field reference time |
 | TP<i>R</i><sub>j</sub> | Ideal time when a packet j gets out off the receive buffer in the Read Schedule model |
-| T<i>VD</i>) |  Video Transmission Datum: TP<sub>R</sub><sub>0</sub> = T<subVD</sub> |
+| T<sub>VD</sub> |  Video Transmission Datum: TP<sub>R</sub><sub>0</sub> = T<subVD</sub> |
 | TP<i>A</i><sub>j</sub> | Actual measured arrival time of a packet |
 
 ![Packet Arrival](video_timings.png)
