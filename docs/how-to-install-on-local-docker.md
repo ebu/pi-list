@@ -65,9 +65,33 @@ volumes:
 - Execute the following instructions:
 
 ~~~~
-docker login -u <username> 
-docker-compose pull
+LIST:EBU-LIST$ docker login -u <username> 
+LIST:EBU-LIST$ docker-compose pull
+
+WARNING: The EBU_LIST_WEB_APP_DOMAIN variable is not set. Defaulting to a blank string.
+WARNING: The EBU_LIST_LIVE_MODE variable is not set. Defaulting to a blank string.
+Pulling influxdb    ... downloading (71.3%)
+Pulling mongo       ... waiting
+Pulling rabbitmq    ... download complete
+Pulling list_server ... downloading (71.3%)
+...
+~~~~
+When all images are downloaded:
+~~~~
+LIST:EBU-LIST$ EBU_LIST_WEB_APP_DOMAIN=http://localhost:80 docker-compose up
+
 EBU_LIST_WEB_APP_DOMAIN=http://localhost:80 docker-compose up
+WARNING: The EBU_LIST_LIVE_MODE variable is not set. Defaulting to a blank string.
+Creating network "documents_default" with the default driver
+Creating volume "documents_mongo" with default driver
+Creating volume "documents_listserver" with default driver
+Creating volume "documents_influxdb" with default driver
+Creating documents_rabbitmq_1 ... done
+Creating documents_influxdb_1 ... done
+Creating documents_mongo_1    ... done
+Creating documents_list_server_1 ... done
+Attaching to documents_mongo_1, documents_influxdb_1, documents_rabbitmq_1, documents_list_server_1
+...
 ~~~~
 
 This should result in the following:
