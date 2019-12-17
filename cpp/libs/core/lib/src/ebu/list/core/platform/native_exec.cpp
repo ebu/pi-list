@@ -15,11 +15,11 @@ exit_code ebu_list::native_exec(std::string_view command)
 {
     const auto result = std::system(command.data());
 
-    if constexpr (platform::config::windows)
+    if constexpr(platform::config::windows)
     {
         return result < 31 ? exit_code::error : exit_code::success;
     }
-    else if constexpr (platform::config::posix)
+    else if constexpr(platform::config::posix)
     {
         return result == 0 ? exit_code::success : exit_code::error;
     }

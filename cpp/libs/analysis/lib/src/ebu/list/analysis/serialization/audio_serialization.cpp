@@ -30,7 +30,7 @@ audio_stream_details audio_stream_details::from_json(const nlohmann::json& j)
     desc.audio = st2110::d30::from_json(j.at("media_specific"));
 
     const auto statistics_json = j.find("statistics");
-    if (statistics_json != j.end())
+    if(statistics_json != j.end())
     {
         desc.packet_size          = statistics_json->at("packet_size").get<int>();
         desc.samples_per_packet   = statistics_json->at("samples_per_packet").get<int>();
@@ -61,7 +61,7 @@ st2110::d30::audio_description st2110::d30::from_json(const nlohmann::json& j)
 {
     audio_description desc{};
 
-    if (j.empty()) // media_specific was empty, using default values
+    if(j.empty()) // media_specific was empty, using default values
         return desc;
 
     desc.sampling        = media::audio::parse_audio_sampling(j.at("sampling").get<string>());

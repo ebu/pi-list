@@ -8,6 +8,42 @@ using namespace ebu_list::st2110::d20;
 
 //------------------------------------------------------------------------------
 
+namespace
+{
+    std::string get_packing_mode(const video_description& video_desc)
+    {
+        if(video_desc.packing_mode == packing_mode_t::block)
+        {
+            return "2110BPM";
+        }
+
+        return "2110GPM";
+    }
+
+    std::string get_tp(const d21::compliance_profile& compliance_profile)
+    {
+        switch(compliance_profile)
+        {
+        case d21::compliance_profile::narrow: return "; TP=2110TPN";
+        case d21::compliance_profile::narrow_linear: return "; TP=2110TPNL";
+        case d21::compliance_profile::wide: return "; TP=2110TPW";
+        default: return "";
+        }
+    }
+
+    std::string get_interlace(const video_description& video_desc)
+    {
+        if(video_desc.scan_type == st2110::d20::video::scan_type::INTERLACED)
+        {
+            return "interlace; ";
+        }
+
+        return "";
+    }
+} // namespace
+
+//------------------------------------------------------------------------------
+
 media::video::info d20::get_info(video_description video)
 {
     return {video.rate, video.scan_type, video.dimensions};
@@ -15,7 +51,9 @@ media::video::info d20::get_info(video_description video)
 
 //------------------------------------------------------------------------------
 
-st2110_20_sdp_serializer::st2110_20_sdp_serializer(const d20::video_description& video_des) : video_desc_(video_des)
+st2110_20_sdp_serializer::st2110_20_sdp_serializer(const d20::video_description& video_des,
+                                                   d21::compliance_profile compliance_profile)
+    : video_desc_(video_des), compliance_profile_(compliance_profile)
 {
 }
 
@@ -35,12 +73,14 @@ void st2110_20_sdp_serializer::additional_attributes(
     const auto colorimetry = to_string(video_desc_.colorimetry);
     const auto rate        = to_string(video_desc_.rate);
 
-    current_lines.emplace_back(fmt::format("a=fmtp:{} sampling={}; width={}; height={}; exactframerate={}; depth={}; "
-                                           "colorimetry={}; PM=2110GPM; SSN=ST2110-20:2017;",
-                                           payload, sampling, width, height, rate, bit_depth, colorimetry));
+    current_lines.emplace_back(fmt::format("a=fmtp:{} sampling={}; width={}; height={}; {}exactframerate={}; depth={}; "
+                                           "colorimetry={}; PM={}; SSN=ST2110-20:2017{};",
+                                           payload, sampling, width, height, get_interlace(video_desc_), rate,
+                                           bit_depth, colorimetry, get_packing_mode(video_desc_),
+                                           get_tp(compliance_profile_)));
 
     /** Optional Parameters **/
-    // todo: add max_udp and interlace fields to a=fmtp
+    // TODO: add max_udp a=fmtp
 }
 
 void st2110_20_sdp_serializer::write_rtpmap_line(std::vector<std::string>& current_lines,

@@ -29,7 +29,7 @@ int c_calculator::on_packet(const clock::time_point& packet_time)
     const auto packet_time_ns =
         std::chrono::duration_cast<std::chrono::nanoseconds>(packet_time.time_since_epoch()).count();
 
-    if (!initial_time_.has_value())
+    if(!initial_time_.has_value())
     {
         initial_time_ = packet_time_ns;
 
@@ -47,7 +47,7 @@ int c_calculator::on_packet(const clock::time_point& packet_time)
     const auto cinst = buffer >= 0 ? buffer : 0;
     last_cinst_      = cinst;
 
-    if (cleared_.size() > 2) cleared_.erase(cleared_.begin());
+    if(cleared_.size() > 2) cleared_.erase(cleared_.begin());
 
     return cinst;
 }

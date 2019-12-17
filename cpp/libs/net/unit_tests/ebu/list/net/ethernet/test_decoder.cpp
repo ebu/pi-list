@@ -27,6 +27,7 @@ SCENARIO("decode Ethernet PDU")
 
         auto data                  = oview(make_static_sbuffer(packet_bytes));
         auto [_, expected_payload] = split(oview(data), 14);
+        (void)_;
 
         WHEN("we decode it")
         {
@@ -58,6 +59,7 @@ SCENARIO("decode Ethernet with VLAN 802.1Q")
 
         auto data                  = oview(make_static_sbuffer(packet_bytes));
         auto [_, expected_payload] = split(oview(data), 18);
+        (void)_;
 
         WHEN("we decode it")
         {

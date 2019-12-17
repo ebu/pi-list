@@ -25,7 +25,7 @@ uint16_t d40::do_get_bits(const std::byte** data_p, const uint8_t word_len, uint
     *bit_counter += bit_step;
     (*data_p) += (bit_shift == 0) ? 1 : 0;
 
-    if (overlap)
+    if(overlap)
     {
         res = res << (word_len - bit_step);
         res += do_get_bits(data_p, word_len - bit_step, bit_counter);
@@ -48,14 +48,14 @@ bool d40::sanity_check_word(const uint16_t word)
     uint8_t parity     = 0;
     bool res           = (parity_bit != ((word & word_inverted_parity_mask) >> 9));
 
-    while (word_copy)
+    while(word_copy)
     {
         parity ^= (word_copy & 1);
         word_copy >>= 1;
     }
     res = (parity == parity_bit) ? res : false;
 
-    if (!res)
+    if(!res)
     {
         logger()->trace("Parity error in {}", word);
     }
@@ -71,13 +71,13 @@ bool d40::sanity_check_word(const uint16_t word)
  */
 bool d40::sanity_check_sum(const uint16_t checksum, uint16_t sum)
 {
-    if ((checksum & checksum_mask) != (sum & checksum_mask))
+    if((checksum & checksum_mask) != (sum & checksum_mask))
     {
         logger()->debug("Ancillary checksum error");
         return false;
     }
 
-    if (((checksum & word_parity_mask) >> 8) == ((checksum & word_inverted_parity_mask) >> 9))
+    if(((checksum & word_parity_mask) >> 8) == ((checksum & word_inverted_parity_mask) >> 9))
     {
         logger()->debug("Ancillary checksum malformed");
         return false;

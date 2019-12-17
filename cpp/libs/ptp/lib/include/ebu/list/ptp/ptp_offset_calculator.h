@@ -24,4 +24,4 @@ namespace ebu_list::ptp
         struct impl;
         const std::unique_ptr<impl> impl_;
     };
-}
+} // namespace ebu_list::ptp

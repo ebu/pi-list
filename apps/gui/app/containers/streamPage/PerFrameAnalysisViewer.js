@@ -41,7 +41,7 @@ class PerFrameAnalysisViewer extends Component {
                             xAxis={chartFormatters.getTimeLineLabel}
                             data={chartFormatters.singleValueLineChart}
                             title="CInst"
-                            yAxisLabel="packets"
+                            yAxisLabel="packets" //RS
                             height={300}
                             lineWidth={3}
                         />
@@ -51,7 +51,7 @@ class PerFrameAnalysisViewer extends Component {
                             xAxis={chartFormatters.getTimeLineLabel}
                             data={chartFormatters.singleValueLineChart}
                             title="Vrx"
-                            yAxisLabel="packets"
+                            yAxisLabel="packets"  //RS
                             height={300}
                             lineWidth={3}
                         />

@@ -10,7 +10,7 @@
 | N | Frame or field index since the SMPTE epoch |
 | N x T<sub>frame</sub> | Frame/field reference time |
 | TP<i>R</i><sub>j</sub> | Ideal time when a packet j gets out off the receive buffer in the Read Schedule model |
-| T<i>VD</i>) |  Video Transmission Datum: TP<sub>R</sub><sub>0</sub> = T<subVD</sub> |
+| T<sub>VD</sub> |  Video Transmission Datum: TP<sub>R</sub><sub>0</sub> = T<sub>VD</sub> |
 | TP<i>A</i><sub>j</sub> | Actual measured arrival time of a packet |
 
 ![Packet Arrival](video_timings.png)
@@ -20,7 +20,6 @@
 | Parameter | Explanation |
 | ------ | ------ |
 | C<sub>INST</sub>  | Instantaneous value of the *Retwork Compatibility model* C as defined in SMPTE ST 2110-21 |
-Base definition:
 | C<sub>MAX</sub> | Maximum allowed value that C<sub>INST</sub> shall not exceed. This value is dependend on the type of sender, the video format and the packing of the video. A narrow sender has a tighter packet pacing on the network and will have a lower allowed C<sub>MAX</sub> value than a wide sender. Both sender type are limited in their burstiness. |
 | VRX | Measured level of the *Virtual Receive Buffer* as defined in SMPTE ST 2110-21 |
 | VRX<sub>FULL</sub> | Maximum allowed value the VRX buffer. This value is dependend on the type of sender, the video format and the packing of the video. A narrow sender has a smaller receiving buffer and will have a lower allowed VRX<sub>Full</sub> value than a wide sender. Both sender type are limited in their burstiness. |

@@ -16,7 +16,7 @@ struct executor::impl
     {
         threads_.reserve(n_threads);
 
-        for (auto i = 0; i < n_threads; ++i)
+        for(auto i = 0; i < n_threads; ++i)
         {
             threads_.emplace_back(std::thread([this]() { this->run(); }));
         }
@@ -41,16 +41,16 @@ struct executor::impl
     void wait()
     {
         std::for_each(threads_.begin(), threads_.end(), [](std::thread& t) {
-            if (t.joinable()) t.join();
+            if(t.joinable()) t.join();
         });
     }
 
     void run()
     {
-        for (;;)
+        for(;;)
         {
             auto maybe_f = get_next();
-            if (!maybe_f) return;
+            if(!maybe_f) return;
             execute_one(std::move(*maybe_f));
         }
     }
@@ -61,11 +61,11 @@ struct executor::impl
         {
             f();
         }
-        catch (std::exception& ex)
+        catch(std::exception& ex)
         {
             logger()->error("exception while executing asynchronous task: {}", ex.what());
         }
-        catch (...)
+        catch(...)
         {
             logger()->error("unknown exception while executing asynchronous task");
         }
@@ -76,7 +76,7 @@ struct executor::impl
         std::unique_lock lock(mutex_);
         cv_.wait(lock, [this]() { return !tasks_.empty() || done_; });
 
-        if (tasks_.empty())
+        if(tasks_.empty())
         {
             assert(done_);
             return std::nullopt;

@@ -38,7 +38,7 @@ namespace ebu_list
 
         void loop()
         {
-            while (!done_ && target_->next())
+            while(!done_ && target_->next())
             {
             }
 

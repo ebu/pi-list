@@ -4,7 +4,7 @@
 
 using namespace ebu_list;
 using namespace ebu_list::analysis;
-//using namespace ebu_list::st2110::d20;
+// using namespace ebu_list::st2110::d20;
 using namespace ebu_list::st2110::d21;
 
 //------------------------------------------------------------------------------
@@ -20,12 +20,12 @@ void vrx_calculator::on_frame_start(const fraction64& packet_time)
 {
     current_n_ = calculate_n(packet_time, tframe_);
 
-    if (settings_.tvd == tvd_kind::ideal)
+    if(settings_.tvd == tvd_kind::ideal)
     {
         const auto base_frame_time = current_n_ * tframe_;
         const auto ideal_tvd       = base_frame_time + constants_.tr_offset;
 
-        if (settings_.troffset.has_value())
+        if(settings_.troffset.has_value())
         {
             tvd_ = base_frame_time + fraction64(settings_.troffset.value().count(), 1'000'000'000);
         }
@@ -38,7 +38,7 @@ void vrx_calculator::on_frame_start(const fraction64& packet_time)
     {
         LIST_ASSERT(settings_.tvd == tvd_kind::first_packet_first_frame);
 
-        if (!first_tvd_)
+        if(!first_tvd_)
         {
             first_tvd_ = packet_time;
         }
@@ -60,7 +60,7 @@ packet_info vrx_calculator::on_packet(const clock::time_point& packet_timestamp,
 
     auto current = packet_info{packet_timestamp};
 
-    if (frame_start)
+    if(frame_start)
     {
         on_frame_start(packet_time);
         current.delta_to_ideal_tpr0 = tvd_ - packet_time;

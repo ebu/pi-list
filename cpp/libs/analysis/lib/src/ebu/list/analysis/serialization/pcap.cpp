@@ -35,7 +35,7 @@ pcap_info pcap_info::from_json(const nlohmann::json& j)
     pcap.pcap_file_name = j.at("pcap_file_name").get<std::string>();
 
     auto analyzer_version_json = j.find("analyzer_version");
-    if (analyzer_version_json != j.end())
+    if(analyzer_version_json != j.end())
         pcap.analyzer_version = analyzer_version_json->get<std::string>();
     else
         pcap.analyzer_version = "";

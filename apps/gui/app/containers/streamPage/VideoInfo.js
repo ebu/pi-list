@@ -11,6 +11,14 @@ const getTimeCode = (props) => {
     }
 };
 
+const getPackingMode = (props) => {
+    switch(props.packing_mode) {
+        case 1: return 'General Packing Mode (GPM)';
+        case 2: return 'Block Packing Mode (BPM)';
+        default: return 'Unknown';
+    }
+};
+
 /* VideoInfo can serve as AncillaryInfo too */
 const VideoInfo = (props) => {
     const isAncillary = typeof props.width === 'undefined';
@@ -42,6 +50,10 @@ const VideoInfo = (props) => {
             {
                 labelTag: 'media_information.video.packets_per_frame',
                 value: props.packets_per_frame
+            },
+            {
+                labelTag: 'media_information.video.packing_mode',
+                value: getPackingMode(props)
             }
         ]
 

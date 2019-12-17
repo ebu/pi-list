@@ -31,4 +31,4 @@ namespace ebu_list::rtp
         using handler_map = std::map<stream_key, rtp::listener_uptr>;
         handler_map handlers_;
     };
-}
+} // namespace ebu_list::rtp

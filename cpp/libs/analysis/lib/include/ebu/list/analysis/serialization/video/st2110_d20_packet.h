@@ -13,4 +13,4 @@ namespace ebu_list::analysis
         static nlohmann::json to_json(const st2110_d20_packet& p);
         static st2110_d20_packet from_json(const nlohmann::json& j);
     };
-}
+} // namespace ebu_list::analysis
