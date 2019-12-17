@@ -26,9 +26,9 @@ std::optional<ipv4::address> net::get_ipv4_interface_addr(std::string_view inter
 
     scope_guard cleanup([ifaddr]() { ::freeifaddrs(ifaddr); });
 
-    for (auto i = ifaddr; i != nullptr; i = i->ifa_next)
+    for(auto i = ifaddr; i != nullptr; i = i->ifa_next)
     {
-        if (i->ifa_addr && i->ifa_addr->sa_family == AF_INET && interface_name.compare(i->ifa_name) == 0)
+        if(i->ifa_addr && i->ifa_addr->sa_family == AF_INET && interface_name.compare(i->ifa_name) == 0)
         {
             const auto a = reinterpret_cast<const sockaddr_in*>(i->ifa_addr);
             return static_cast<ipv4::address>(a->sin_addr.s_addr);

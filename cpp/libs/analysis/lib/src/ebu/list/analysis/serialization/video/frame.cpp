@@ -55,9 +55,9 @@ line_info line_info::from_json(const nlohmann::json& j)
 nlohmann::json analysis::to_json(const lines_info& lines)
 {
     nlohmann::json j;
-    for (const auto& line : lines)
+    for(const auto& line : lines)
     {
-        if (line.valid)
+        if(line.valid)
         {
             j.push_back(line_info::to_json(line));
         }

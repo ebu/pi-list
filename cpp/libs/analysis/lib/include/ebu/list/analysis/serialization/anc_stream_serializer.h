@@ -11,8 +11,8 @@ namespace ebu_list::analysis
     {
       public:
         anc_stream_serializer(rtp::packet first_packet, listener_uptr l_rtp, histogram_listener_uptr l_h,
-                                serializable_stream_info info, anc_stream_details details,
-                                completion_handler ch, path base_dir);
+                              serializable_stream_info info, anc_stream_details details, completion_handler ch,
+                              path base_dir);
 
       private:
         void on_sample() override;

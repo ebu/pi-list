@@ -117,7 +117,7 @@ namespace ebu_list::st2110::d40
     template <int word_len> auto get_bits(const std::byte** data_p, uint16_t* bit_counter)
     {
         // TODO: select return type automatically
-        if constexpr (word_len <= 8)
+        if constexpr(word_len <= 8)
         {
             return static_cast<uint8_t>(do_get_bits(data_p, word_len, bit_counter));
         }

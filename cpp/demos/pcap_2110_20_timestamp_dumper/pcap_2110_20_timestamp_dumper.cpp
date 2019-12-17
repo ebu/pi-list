@@ -33,7 +33,7 @@ namespace
 
     outputter get_output(std::optional<path> output_file)
     {
-        if (!output_file)
+        if(!output_file)
         {
             return [](uint64_t ts_ns, uint32_t ext_seq_no) { fmt::print("{}\t{}\n", ext_seq_no, ts_ns); };
         }
@@ -60,18 +60,18 @@ namespace
                          "only dump packets with this destination port"),
                   option(&config::output_file, "f", "output file", "file to write the output to"));
 
-        if (!parse_result)
+        if(!parse_result)
         {
             logger()->error("usage: {} {}", path(argv[0]).filename().string(), to_string(parse_result));
             exit(-1);
         }
 
-        if (config.destination_address_s)
+        if(config.destination_address_s)
         {
             config.destination_address = ipv4::from_dotted_string(*config.destination_address_s);
         }
 
-        if (config.destination_port_i)
+        if(config.destination_port_i)
         {
             // TODO: make a port from string function that returns an optional
             config.destination_port = to_port(static_cast<uint16_t>(*config.destination_port_i));
@@ -95,7 +95,7 @@ namespace
         chunked_data_source source(factory, std::make_unique<file_source>(factory, config.pcap_file));
 
         auto maybe_header = pcap::read_header(source);
-        if (!maybe_header)
+        if(!maybe_header)
         {
             logger()->error("Invalid file");
             return;
@@ -104,10 +104,10 @@ namespace
         auto header = std::move(maybe_header.value());
 
         // int packet_count = 0;
-        for (;;)
+        for(;;)
         {
             auto maybe_packet = pcap::read_packet(header(), source);
-            if (!maybe_packet) break;
+            if(!maybe_packet) break;
 
             auto& packet = maybe_packet.value();
             // dump_packet_info(packet, ++packet_count);
@@ -116,25 +116,25 @@ namespace
             // std::cout << '\t' << ethernet_header << std::endl;
 
             // process only IPv4 packets
-            if (ethernet_header.type != ethernet::payload_type::IPv4) continue;
+            if(ethernet_header.type != ethernet::payload_type::IPv4) continue;
 
             auto [ipv4_header, ipv4_payload] = ipv4::decode(std::move(ethernet_payload));
             // std::cout << '\t' << ipv4_header << std::endl;
 
-            if (config.destination_address)
+            if(config.destination_address)
             {
-                if (ipv4_header.destination_address != *config.destination_address) continue;
+                if(ipv4_header.destination_address != *config.destination_address) continue;
             }
 
             // process only UDP datagrams
-            if (ipv4_header.type != ipv4::protocol_type::UDP) continue;
+            if(ipv4_header.type != ipv4::protocol_type::UDP) continue;
 
             auto [udp_header, udp_payload] = udp::decode(std::move(ipv4_payload));
             // std::cout << '\t' << udp_header << std::endl;
 
-            if (config.destination_port)
+            if(config.destination_port)
             {
-                if (udp_header.destination_port != *config.destination_port) continue;
+                if(udp_header.destination_port != *config.destination_port) continue;
             }
 
             auto datagram = udp::make_datagram(
@@ -143,7 +143,7 @@ namespace
                 ipv4_header.destination_address, udp_header.destination_port, std::move(udp_payload));
 
             auto maybe_rtp_packet = rtp::decode(datagram.ethernet_info, datagram.info, std::move(datagram.sdu));
-            if (!maybe_rtp_packet)
+            if(!maybe_rtp_packet)
             {
                 continue;
             }
@@ -154,7 +154,7 @@ namespace
 
             constexpr auto minimum_size =
                 ssizeof<d20::raw_extended_sequence_number>() + ssizeof<d20::raw_line_header>();
-            if (sdu.view().size() < minimum_size) continue;
+            if(sdu.view().size() < minimum_size) continue;
 
             auto p = sdu.view().data();
 
@@ -182,12 +182,12 @@ int main(int argc, char* argv[])
     {
         run(config);
     }
-    catch (std::exception& ex)
+    catch(std::exception& ex)
     {
         console->error("exception: {}", ex.what());
         return -1;
     }
-    catch (...)
+    catch(...)
     {
         console->error("unknown exception");
         return -1;

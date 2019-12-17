@@ -52,4 +52,4 @@ namespace ebu_list::ptp
         void on_complete() override {}
         void on_error(std::exception_ptr) override {}
     };
-}
+} // namespace ebu_list::ptp

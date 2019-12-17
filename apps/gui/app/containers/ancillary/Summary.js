@@ -5,41 +5,37 @@ import asyncLoader from '../../components/asyncLoader';
 import DataList from '../streamPage/components/DataList';
 import InfoPane from '../streamPage/components/InfoPane';
 
-const AncillarySummary = (props) => {
+const AncillarySummary = props => {
     const availableAncTypes = props.availableAncOptions[0].value;
     const streamInfo = props.streamInfo;
-    const subStreams = typeof streamInfo.media_specific.sub_streams === 'undefined' ?
-        [] : streamInfo.media_specific.sub_streams;
-    const summary = subStreams.map((s, i) => {
-            const type = find(availableAncTypes, { value: `${s.did_sdid}` });
+    const subStreams =
+        typeof streamInfo.media_specific.sub_streams === 'undefined' ? [] : streamInfo.media_specific.sub_streams;
+    const summary = subStreams.map((s, index) => {
+        const type = find(availableAncTypes, { value: `${s.did_sdid}` });
 
-            const values = [
-                {
-                    label: 'ID',
-                    value: (i+1).toString()
-                },
-                {
-                    label: 'Type',
-                    value: type.label
-                },
-            ];
+        const values = [
+            {
+                label: 'ID',
+                value: (index + 1).toString(),
+            },
+            {
+                label: 'Type',
+                value: type.label,
+            },
+        ];
 
-            return (
-                <Fragment>
-                    <DataList values={ values } />
-                    <hr />
-                </Fragment>
-            );
-        })
+        return (
+            <Fragment key={`row-${index}`}>
+                <DataList values={values} />
+                <hr />
+            </Fragment>
+        );
+    });
 
     return (
         <div>
-        <InfoPane
-            icon='assignment'
-            headingTag='headings.anc_sub_stream'
-            values={ [] }
-        />
-        { summary }
+            <InfoPane icon="assignment" headingTag="headings.anc_sub_stream" values={[]} />
+            {summary}
         </div>
     );
 };

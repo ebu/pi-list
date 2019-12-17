@@ -56,8 +56,8 @@ address ipv4::from_dotted_string(std::string_view s)
 #else  // defined(LIST_HAS_POSIX)
     const auto result = InetPton(AF_INET, s.data(), &a);
 #endif // defined(LIST_HAS_POSIX)
-    if (result == 1) return a;
-    if (result == 0) throw std::logic_error(fmt::format("invalid IPv4 dotted string {}", s.data()));
+    if(result == 1) return a;
+    if(result == 0) throw std::logic_error(fmt::format("invalid IPv4 dotted string {}", s.data()));
     throw std::runtime_error("error converting dotted string to IPv4 address");
 }
 
@@ -66,7 +66,7 @@ endpoint ipv4::endpoint_from_string(std::string_view address_and_port)
     std::vector<std::string> results;
     boost::split(results, address_and_port, [](char c) { return c == ':'; });
 
-    if (results.size() != 2)
+    if(results.size() != 2)
     {
         // TODO: handle format errors
         return {};

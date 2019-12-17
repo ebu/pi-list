@@ -26,7 +26,7 @@ const RtpAnalysisViewer = props => {
                     }
                     xAxis={chartFormatters.getTimeLineLabel}
                     data={chartFormatters.singleValueLineChart}
-                    title={translateX('media_information.rtp.delta_packet_time_vs_rtp_time_ns')}
+                    title={translateX('media_information.rtp.delta_first_packet_time_vs_rtp_time')}
                     yAxisLabel="μs"
                     height={300}
                     lineWidth={3}
@@ -42,8 +42,8 @@ const RtpAnalysisViewer = props => {
                     }
                     xAxis={chartFormatters.getTimeLineLabel}
                     data={chartFormatters.singleValueLineChart}
-                    title={translateX('media_information.rtp.delta_rtp_ts_vs_nt')}
-                    yAxisLabel="Ticks"
+                    titleTag='media_information.rtp.delta_rtp_ts_vs_nt'
+                    yAxisLabel={translateX('media_information.ticks')}
                     height={300}
                     lineWidth={3}
                 />
@@ -58,8 +58,8 @@ const RtpAnalysisViewer = props => {
                     }
                     xAxis={chartFormatters.getTimeLineLabel}
                     data={chartFormatters.singleValueLineChart}
-                    title={translateX('media_information.rtp.rtp_ts_step')}
-                    yAxisLabel="Ticks"
+                    titleTag='media_information.rtp.rtp_ts_step'
+                    yAxisLabel={translateX('media_information.ticks')}
                     height={300}
                     lineWidth={3}
                 />

@@ -46,6 +46,17 @@
             - min : number
             - max : number
         - unit: string
+  - inter_frame_rtp_ts_delta (video)
+    - result : string // defined in enums/analysis/outcome
+    - details
+        - range // measured range
+            - min : number
+            - max : number
+            - avg : number
+        - limit // permitted range
+            - min : number
+            - max : number
+        - unit: string
   - 2110_21_cinst
     - result : string // defined in enums/analysis/outcome
   - 2110_21_vrx

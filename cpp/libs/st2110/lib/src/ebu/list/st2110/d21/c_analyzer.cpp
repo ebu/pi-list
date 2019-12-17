@@ -1,7 +1,7 @@
 #include "ebu/list/st2110/d21/c_analyzer.h"
+#include "ebu/list/analysis/utils/histogram_listener.h"
 #include "ebu/list/core/math/histogram.h"
 #include "ebu/list/st2110/d21/c_calculator.h"
-#include "ebu/list/analysis/utils/histogram_listener.h"
 #include "ebu/list/st2110/pch.h"
 
 using namespace ebu_list;

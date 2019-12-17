@@ -33,4 +33,4 @@ namespace ebu_list::analysis
     using lines_info = std::array<line_info, 3>; // ST2110-20 6.2.1: max 3 line headers per packet
 
     nlohmann::json to_json(const lines_info& lines);
-}
+} // namespace ebu_list::analysis

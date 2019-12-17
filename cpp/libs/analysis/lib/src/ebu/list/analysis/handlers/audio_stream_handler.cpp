@@ -63,7 +63,7 @@ void audio_stream_handler::on_data(const rtp::packet& packet)
 
 void audio_stream_handler::on_complete()
 {
-    if (rtp_seqnum_analyzer_.dropped_packets() > 0)
+    if(rtp_seqnum_analyzer_.dropped_packets() > 0)
     {
         audio_description_.dropped_packet_count += rtp_seqnum_analyzer_.dropped_packets();
         logger()->info("audio rtp packet drop: {}", audio_description_.dropped_packet_count);
@@ -80,7 +80,7 @@ void audio_stream_handler::on_error(std::exception_ptr e)
     {
         std::rethrow_exception(e);
     }
-    catch (std::exception& ex)
+    catch(std::exception& ex)
     {
         logger()->info("on_error: {}", ex.what());
     }
@@ -91,7 +91,7 @@ void audio_stream_handler::parse_packet(const rtp::packet& packet)
     auto& sdu = packet.sdu;
 
     // check if number of samples is consistent
-    if (const auto actual_size = sdu.view().size(); actual_size != audio_description_.packet_size)
+    if(const auto actual_size = sdu.view().size(); actual_size != audio_description_.packet_size)
     {
         logger()->trace("bad packet size. Expected: {}; Actual: {}", audio_description_.packet_size, actual_size);
         return;

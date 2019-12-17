@@ -3,11 +3,11 @@
 #include "ebu/list/analysis/serialization/anc_serialization.h"
 #include "ebu/list/analysis/serialization/serializable_stream_info.h"
 #include "ebu/list/analysis/utils/histogram_listener.h"
+#include "ebu/list/analysis/utils/rtp_utils.h"
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/rtp/listener.h"
 #include "ebu/list/rtp/sequence_number_analyzer.h"
 #include "ebu/list/st2110/packets_per_frame_calculator.h"
-#include "ebu/list/analysis/utils/rtp_utils.h"
 
 #pragma GCC diagnostic ignored "-Wpedantic"
 #include <libklvanc/vanc.h>
@@ -32,16 +32,16 @@ namespace ebu_list::analysis
           public:
             virtual ~listener() = default;
 
-            virtual void on_data(const frame_info& frame_info)   = 0;
-            virtual void on_complete()                  = 0;
-            virtual void on_error(std::exception_ptr e) = 0;
+            virtual void on_data(const frame_info& frame_info) = 0;
+            virtual void on_complete()                         = 0;
+            virtual void on_error(std::exception_ptr e)        = 0;
         };
 
         using listener_uptr = std::unique_ptr<listener>;
 
-        anc_stream_handler( rtp::packet first_packet, listener_uptr l_rtp, histogram_listener_uptr l_h,
-                        serializable_stream_info info, anc_stream_details details,
-                        completion_handler ch = [](const anc_stream_handler&) {});
+        anc_stream_handler(
+            rtp::packet first_packet, listener_uptr l_rtp, histogram_listener_uptr l_h, serializable_stream_info info,
+            anc_stream_details details, completion_handler ch = [](const anc_stream_handler&) {});
         ~anc_stream_handler(void);
 
         const anc_stream_details& info() const;

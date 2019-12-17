@@ -19,7 +19,7 @@ const AudioRtpInfo = props => {
     const results = [
         {
             measurement: <MinMaxDisplay
-                labelTag='media_information.rtp.delta_packet_time_vs_rtp_time_ns'
+                labelTag='media_information.rtp.delta_packet_time_vs_rtp_time'
                 min={range.min}
                 max={range.max}
                 units={analysis.details.unit}

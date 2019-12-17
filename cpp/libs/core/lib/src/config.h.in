@@ -11,4 +11,4 @@ namespace ebu_list
     static constexpr auto version_minor = @EBU_LIST_VERSION_MINOR@;
     static constexpr auto version_patch = @EBU_LIST_VERSION_PATCH@;
     // clang-format on
-}
+} // namespace ebu_list

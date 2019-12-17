@@ -78,6 +78,25 @@ const reducer = (state, { type, payload }) => {
         case Actions.hideEditSource:
             return { ...state, editSourceModalVisible: false };
 
+        case Actions.showSDPErrorPopUp:
+            const id = payload.id;
+            const newSelected = state.data.filter(item => item.id === id);
+            if (newSelected[0].sdp.errors != null && newSelected[0].sdp.errors.length > 0) {
+                return Object.assign({}, { ...state}, {
+                    showSDPErrorPopUp: { show: true, id: id, error: newSelected[0].sdp.errors.join(" and ") }
+                });                
+            }else {
+                // { ...state, showSDPErrorPopUp: { show: false, id: null, error: ""} };
+                return Object.assign({}, { ...state}, {
+                    showSDPErrorPopUp: { show: false, id: null, error: ""}
+                });                
+            }
+            
+        case Actions.hideSDPErrorPopUp:
+            return Object.assign({}, { ...state}, {
+                showSDPErrorPopUp: { show: false, id: null, error: ""}
+            });
+
         default:
             return state;
     }

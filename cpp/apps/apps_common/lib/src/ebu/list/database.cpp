@@ -66,7 +66,7 @@ std::optional<nlohmann::json> ebu_list::db_serializer::find_one(std::string_view
     auto filter     = from_json_to_bson(look_alike);
     auto maybe_bson = coll.find_one(std::move(filter));
 
-    if (maybe_bson)
+    if(maybe_bson)
         return from_bson_to_json(maybe_bson.value());
     else
         return std::nullopt;
@@ -104,7 +104,7 @@ std::vector<json> ebu_list::db_serializer::find_many(std::string_view database, 
     auto filter  = from_json_to_bson(look_alike);
     auto results = coll.find(std::move(filter));
 
-    for (auto doc : results)
+    for(auto doc : results)
         jsons.push_back(from_bson_to_json(doc));
 
     return jsons;
