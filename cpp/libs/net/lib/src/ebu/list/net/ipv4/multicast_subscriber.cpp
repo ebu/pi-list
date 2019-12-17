@@ -40,7 +40,7 @@ void multicast_subscriber::unsubscribe_from(ipv4::address address)
     logger()->info("Unsubscribing from {}\n", to_string(address));
 
     const auto it = subscriptions_.find(address);
-    if (it != subscriptions_.end())
+    if(it != subscriptions_.end())
     {
         subscriptions_.erase(it);
     }

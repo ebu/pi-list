@@ -49,7 +49,7 @@ namespace
         config.profile = load_profile(config.analysis_profile_file);
         logger()->info("Using analysis profile with id {}", config.profile.id);
 
-        if (parse_result) return config;
+        if(parse_result) return config;
 
         logger()->error("usage: {} {}", path(argv[0]).filename().string(), to_string(parse_result));
         exit(-1);
@@ -68,7 +68,7 @@ namespace
             found_streams.insert({v.first.id, v});
         });
 
-        if (!config.id_to_process.has_value()) return found_streams;
+        if(!config.id_to_process.has_value()) return found_streams;
 
         const auto wanted_stream_it = found_streams.find(config.id_to_process.value());
         LIST_ENFORCE(wanted_stream_it != found_streams.end(), std::runtime_error, "Didn't find specified stream: {}",
@@ -81,7 +81,7 @@ namespace
 
     void update_tr_info(const tro_map& info, stream_with_details_map& streams)
     {
-        for (const auto& [id, tro] : info)
+        for(const auto& [id, tro] : info)
         {
             auto& stream                    = streams[id];
             auto& video_info                = std::get<video_stream_details>(stream.second);
@@ -122,7 +122,7 @@ namespace
                     return s.network.ssrc == ssrc && s.network.source == source && s.network.destination == destination;
                 });
 
-            if (stream_info_it == streams_to_process.end()) return std::nullopt;
+            if(stream_info_it == streams_to_process.end()) return std::nullopt;
             return stream_info_it->second;
         };
 
@@ -155,7 +155,7 @@ int main(int argc, char* argv[])
             static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(processing_time).count());
         logger()->info("Processing time: {:.3f} s", processing_time_ms / 1000.0);
     }
-    catch (std::exception& ex)
+    catch(std::exception& ex)
     {
         logger()->error("exception: {}", ex.what());
         return -1;

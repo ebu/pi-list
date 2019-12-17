@@ -54,4 +54,4 @@ namespace ebu_list::media::audio
 
     audio_encoding parse_audio_encoding(std::string_view s);
     std::string to_string(audio_encoding encoding);
-}
+} // namespace ebu_list::media::audio

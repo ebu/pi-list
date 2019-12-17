@@ -34,7 +34,7 @@ namespace
                   option(&config::mongo_db_url, "mongo_url", "mongo url",
                          "url to mongoDB. Usually mongodb://localhost:27017."));
 
-        if (parse_result) return config;
+        if(parse_result) return config;
 
         logger()->error("usage: {} {}", path(argv[0]).filename().string(), to_string(parse_result));
         exit(-1);
@@ -75,7 +75,7 @@ namespace
             static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(processing_time).count());
         logger()->info("Processing time: {:.3f} s", processing_time_ms / 1000.0);
 
-        if (launcher.target().pcap_has_truncated_packets())
+        if(launcher.target().pcap_has_truncated_packets())
         {
             fi.truncated = true;
         }
@@ -83,8 +83,8 @@ namespace
         fi.offset_from_ptp_clock = offset_calculator->get_average();
         db_serializer db(mongo_db_url);
 
-        if (db.find_one(constants::db::offline, constants::db::collections::pcaps,
-                        nlohmann::json{{"id", config.pcap_uuid}}))
+        if(db.find_one(constants::db::offline, constants::db::collections::pcaps,
+                       nlohmann::json{{"id", config.pcap_uuid}}))
         {
 
             db.update(constants::db::offline, constants::db::collections::pcaps,
@@ -111,7 +111,7 @@ int main(int argc, char* argv[])
     {
         run(config);
     }
-    catch (std::exception& ex)
+    catch(std::exception& ex)
     {
         console->error("exception: {}", ex.what());
         return -1;

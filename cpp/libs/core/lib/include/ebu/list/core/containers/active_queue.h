@@ -37,7 +37,7 @@ namespace ebu_list
 
             cv_.wait(mlock, [this]() { return this->is_not_empty_or_is_done_i(); });
 
-            if (queue_.empty()) return std::nullopt;
+            if(queue_.empty()) return std::nullopt;
 
             auto item = queue_.front();
             queue_.pop();
@@ -71,16 +71,16 @@ namespace ebu_list
 
         void loop()
         {
-            for (;;)
+            for(;;)
             {
                 auto m = this->pop();
-                if (!m) return;
+                if(!m) return;
 
                 try
                 {
                     sender_(std::move(*m));
                 }
-                catch (std::exception& ex)
+                catch(std::exception& ex)
                 {
                     logger()->error("event sender exception: {}", ex.what());
                 }

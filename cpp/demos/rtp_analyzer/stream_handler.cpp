@@ -37,7 +37,7 @@ void stream_handler::on_data(const rtp::packet& packet)
 
     const auto this_ts = packet.info.rtp.view().timestamp();
 
-    if (last_ts_ && last_ts_.value() != this_ts)
+    if(last_ts_ && last_ts_.value() != this_ts)
     {
         timestamp_deltas_.add(this_ts - last_ts_.value());
     }
@@ -45,7 +45,7 @@ void stream_handler::on_data(const rtp::packet& packet)
     last_ts_ = this_ts;
 
     const auto ts = packet.info.rtp.view().timestamp();
-    if (ts < info_.first_frame_ts)
+    if(ts < info_.first_frame_ts)
     {
         // TODO: detect rollover
         logger()->error("received packet of a past frame");

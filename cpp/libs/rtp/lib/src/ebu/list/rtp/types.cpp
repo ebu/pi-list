@@ -17,6 +17,6 @@ int32_t rtp::from_ticks(ticks32 t)
 
 std::optional<int32_t> rtp::from_ticks(std::optional<ticks32> t)
 {
-    if (!t) return std::nullopt;
+    if(!t) return std::nullopt;
     return from_ticks(*t);
 }

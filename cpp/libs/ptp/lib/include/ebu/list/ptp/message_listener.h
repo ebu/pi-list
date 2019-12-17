@@ -17,4 +17,4 @@ namespace ebu_list::ptp
     };
 
     using message_listener_ptr = std::shared_ptr<message_listener>;
-}
+} // namespace ebu_list::ptp

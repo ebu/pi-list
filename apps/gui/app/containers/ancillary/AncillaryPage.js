@@ -10,7 +10,8 @@ const AncillaryPage = (props) => {
     const subStreams = typeof streamInfo.media_specific.sub_streams === 'undefined'
         ? []
         : streamInfo.media_specific.sub_streams;
-    const TABS = [StreamInfo, RtpCharts].concat(
+    const constTABS = [StreamInfo, RtpCharts];
+    const TABS = constTABS.concat(
         subStreams.map((s, i) => AncillarySubStream)
     );
     const [tabIndex, setTabIndex] = useState(0);
@@ -35,7 +36,7 @@ const AncillaryPage = (props) => {
         <div className="lst-stream-info-tab lst-full-height">
             <Tabs headers={headers} onTabChange={setTabIndex}>
                 <Scrollbars>
-                    <CurrentTabComponent index={tabIndex - 1} {...props} />
+                    <CurrentTabComponent index={tabIndex - constTABS.length} {...props} />
                 </Scrollbars>
             </Tabs>
         </div>

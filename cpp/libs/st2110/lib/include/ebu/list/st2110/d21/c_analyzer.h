@@ -1,8 +1,8 @@
 #pragma once
 
+#include "ebu/list/analysis/utils/histogram_listener.h"
 #include "ebu/list/core/media/video_description.h"
 #include "ebu/list/rtp/listener.h"
-#include "ebu/list/analysis/utils/histogram_listener.h"
 #include <vector>
 
 using namespace ebu_list::analysis;

@@ -35,7 +35,7 @@ void caching_influx_writer::on_complete()
 
 void caching_influx_writer::check_cache()
 {
-    if (count_ == max_cached_lines)
+    if(count_ == max_cached_lines)
     {
         send_cache();
     }

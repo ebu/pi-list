@@ -24,7 +24,7 @@ socket_handle::socket_handle(int af, int type, int protocol) : handle_(::socket(
 
 socket_handle::~socket_handle()
 {
-    if (handle_ == INVALID_SOCKET) return;
+    if(handle_ == INVALID_SOCKET) return;
 
 #if defined(LIST_HAS_POSIX)
     ::close(handle_);

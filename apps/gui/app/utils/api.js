@@ -3,13 +3,13 @@ import axios from 'axios';
 function loadFile(filePath) {
     var result = null;
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", filePath, false);
+    xmlhttp.open('GET', filePath, false);
     xmlhttp.send();
-    if (xmlhttp.status==200) {
-      result = xmlhttp.responseText;
+    if (xmlhttp.status == 200) {
+        result = xmlhttp.responseText;
     }
     return result;
-  }
+}
 
 function getAPIPort() {
     let RestAPIPort;
@@ -17,8 +17,7 @@ function getAPIPort() {
     try {
         let staticConfig = JSON.parse(loadFile('./../../static.config.json'));
         RestAPIPort = staticConfig.publicApiPort;
-    }
-    catch (err) {
+    } catch (err) {
         RestAPIPort = '3030';
     }
 
@@ -109,7 +108,7 @@ export default {
     downloadSDPUrl: pcapID => `${API_URL}/pcap/${pcapID}/sdp`,
     downloadJsonUrl: pcapID => `${API_URL}/pcap/${pcapID}/report?type=json`,
     downloadPdfUrl: pcapID => `${API_URL}/pcap/${pcapID}/report?type=pdf`,
-    downloadZipUrl: (id,type) => `${API_URL}/meta/zip?id=${id}&type=${type}`,
+    downloadZipUrl: (id, type) => `${API_URL}/meta/zip?id=${id}&type=${type}`,
     uploadSDP: (sdpFile, onUploadComplete) => {
         const data = new FormData();
         data.append('sdp', sdpFile);
@@ -160,6 +159,8 @@ export default {
         ),
     getDeltaToPreviousRtpTsRaw: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/DeltaToPreviousRtpTsRaw?from=${fromNs}&to=${toNs}`),
+    getDeltaToPreviousRtpTsMinMax: (pcapID, streamID, fromNs, toNs) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/DeltaToPreviousRtpTsMinMax?from=${fromNs}&to=${toNs}`),
     getDeltaRtpVsNtRaw: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/DeltaRtpVsNt?from=${fromNs}&to=${toNs}`),
     getAudioPktTsVsRtpTs: (pcapID, streamID, fromNs, toNs) =>

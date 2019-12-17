@@ -33,13 +33,13 @@ rtp_packet rtp_packet::from_json(const nlohmann::json& j)
     rtp_packet p;
 
     // Ethernet
-    if (j.find("source_mac_address") != j.end())
+    if(j.find("source_mac_address") != j.end())
         p.ethernet::header::source_address =
             ethernet::to_mac_address(j.at("source_mac_address").get<std::string>()).value();
-    if (j.find("destination_mac_address") != j.end())
+    if(j.find("destination_mac_address") != j.end())
         p.ethernet::header::destination_address =
             ethernet::to_mac_address(j.at("destination_mac_address").get<std::string>()).value();
-    if (j.find("ethernet_payload_type") != j.end())
+    if(j.find("ethernet_payload_type") != j.end())
         p.ethernet::header::type = ethernet::to_payload_type(j.at("ethernet_payload_type").get<std::string>());
 
     // UDP

@@ -79,7 +79,7 @@ void d21::from_json(const nlohmann::json& j, vrx_analysis& v)
 
 void st2110::d21::to_json(nlohmann::json& j, const compliance_profile& v)
 {
-    switch (v)
+    switch(v)
     {
     case compliance_profile::narrow: j = "narrow"; break;
     case compliance_profile::narrow_linear: j = "narrow_linear"; break;
@@ -95,11 +95,11 @@ void st2110::d21::from_json(const nlohmann::json& j, compliance_profile& v)
 {
     const auto s = j.get<std::string>();
 
-    if (s == "narrow")
+    if(s == "narrow")
         v = compliance_profile::narrow;
-    else if (s == "narrow_linear")
+    else if(s == "narrow_linear")
         v = compliance_profile::narrow_linear;
-    else if (s == "wide")
+    else if(s == "wide")
         v = compliance_profile::wide;
     else
     {

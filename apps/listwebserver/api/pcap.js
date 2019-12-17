@@ -171,10 +171,7 @@ router.get('/:pcapID/report', (req, res) => {
                 .exec()
                 .then(data => {
                     const filename = data.file_name.replace(/\.[^\.]*$/, '');
-                    res.setHeader(
-                        'Content-disposition',
-                        `attachment; filename=${filename}.${reportType}`
-                    );
+                    res.setHeader('Content-disposition', `attachment; filename=${filename}.${reportType}`);
                     res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(report);
                 });
         })
@@ -200,7 +197,7 @@ router.get('/:pcapID/download', (req, res) => {
     Pcap.findOne({ id: pcapID })
         .exec()
         .then(data => {
-            const path = `${getUserFolder(req)}/${pcapID}/${ data.pcap_file_name }`;
+            const path = `${getUserFolder(req)}/${pcapID}/${data.pcap_file_name}`;
             const filename = data.file_name.replace(/\.[^\.]*$/, '') + '.pcap';
             fs.downloadFile(path, filename, res);
         });
@@ -388,6 +385,8 @@ router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
         chartData = influxDbManager.getDeltaPacketTimeVsRtpTimeRaw(pcapID, streamID, from, to);
     } else if (measurement === 'DeltaToPreviousRtpTsRaw') {
         chartData = influxDbManager.getDeltaToPreviousRtpTsRaw(pcapID, streamID, from, to);
+    } else if (measurement === 'DeltaToPreviousRtpTsMinMax') {
+        chartData = influxDbManager.getDeltaToPreviousRtpTsMinMax(pcapID, streamID, from, to);
     } else if (measurement === 'DeltaRtpVsNt') {
         chartData = influxDbManager.getDeltaRtpVsNt(pcapID, streamID, from, to);
     } else if (measurement === 'DeltaRtpVsNtTicksMinMax') {

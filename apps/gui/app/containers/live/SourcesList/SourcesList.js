@@ -38,6 +38,7 @@ const initialState = {
     ...tableInitialState(),
     addSourceModalVisible: false,
     editSourceModalVisible: false,
+    showSDPErrorPopUp: { show : false, id : null, error: "" },
 };
 
 const findOne = (target, tokens) => {
@@ -70,7 +71,7 @@ const SourcesList = props => {
     const toggleSelectAll = () => dispatch({ type: tableactions.toggleSelectAll });
 
     const onClickRow = id => {
-        dispatch({ type: tableactions.showSDPErrorPopUp, data: { id } });
+        dispatch({ type: Actions.showSDPErrorPopUp, payload: { id } });
 
         // keep same functionallity. select the row.
         toggleRow(id);
@@ -126,7 +127,7 @@ const SourcesList = props => {
     const onEditSourceModalClose = () => dispatch({ type: Actions.hideEditSource });
 
     const onShowSDPErrorPopUpClose = () => {
-        dispatch({ type: tableactions.hideSDPErrorPopUp });
+        dispatch({ type: Actions.hideSDPErrorPopUp });
     };
 
     const filteredData = filterData(state.data, state.filterString);

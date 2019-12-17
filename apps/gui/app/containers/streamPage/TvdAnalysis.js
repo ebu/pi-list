@@ -2,6 +2,7 @@ import React from 'react';
 import api from 'utils/api';
 import LineChart from 'components/LineChart';
 import chartFormatters from 'utils/chartFormatters';
+import { translateX } from 'utils/translation';
 
 const dataAsNanoseconds = (data) => {
     const values = data.map(item => Object.assign(item, { value : item.value * 1e9}));
@@ -13,6 +14,15 @@ const VrxAnalysis = (props) => {
     const default_tro = props.streamInfo.media_specific.tro_default_ns / 1000;
     const avg_tro = props.streamInfo.media_specific.avg_tro_ns / 1000;
 
+
+    const ComposeChartTitle = (value) => {
+            return "VRX - " + value;
+    }
+
+    const ComposeComplexChartTitle = (translation, value) => {
+            return translation + " " + value + " μs";
+    }
+
     return (
         <div className="row">
             <div className="col-xs-12">
@@ -20,7 +30,7 @@ const VrxAnalysis = (props) => {
                     asyncData={() => api.getDeltaToIdealTpr0Raw(pcapID, streamID, first_packet_ts, last_packet_ts).then(data => dataAsNanoseconds(data))}
                     xAxis={chartFormatters.xAxisTimeDomain}
                     data={chartFormatters.singleValueLineChart}
-                    title={`Tvd (with TRoffset = TROdefault = ${default_tro} μs)`}
+                    title={ComposeComplexChartTitle(translateX('media_information.tvd'),default_tro)}
                     yAxisLabel="ns"
                     height={300}
                     lineWidth={3}
@@ -29,7 +39,7 @@ const VrxAnalysis = (props) => {
                     asyncData={() => api.getDeltaToIdealTpr0AdjustedAvgTroRaw(pcapID, streamID, first_packet_ts, last_packet_ts).then(data => dataAsNanoseconds(data))}
                     xAxis={chartFormatters.xAxisTimeDomain}
                     data={chartFormatters.singleValueLineChart}
-                    title={`Adjusted Tvd (with TRoffset = Avg(FPO) = ${avg_tro} μs)`}
+                    title={ComposeComplexChartTitle(translateX('media_information.tvd_adjusted'),avg_tro)}
                     yAxisLabel="ns"
                     height={300}
                     lineWidth={3}

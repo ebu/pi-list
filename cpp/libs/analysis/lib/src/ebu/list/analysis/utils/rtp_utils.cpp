@@ -19,7 +19,8 @@ int64_t analysis::calculate_n(fraction64 packet_time, fraction64 frame_period)
     return static_cast<int64_t>(std::floor(n0));
 }
 
-delta_info analysis::calculate_rtp_to_packet_deltas(fraction64 frame_period, uint32_t rtp_timestamp, fraction64 packet_time)
+delta_info analysis::calculate_rtp_to_packet_deltas(fraction64 frame_period, uint32_t rtp_timestamp,
+                                                    fraction64 packet_time)
 {
     delta_info info{};
 

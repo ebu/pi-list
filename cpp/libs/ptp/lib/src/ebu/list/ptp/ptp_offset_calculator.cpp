@@ -12,7 +12,7 @@ struct ptp_offset_calculator::impl
         logger()->trace("v2::sync");
         const auto ptp_ts = message.message().origin_timestamp();
 
-        if (ptp_ts.i() == 0)
+        if(ptp_ts.i() == 0)
         {
             // Two step. Record the sync packet TS
             last_sync_ts_ = message.packet_timestamp();
@@ -29,7 +29,7 @@ struct ptp_offset_calculator::impl
         logger()->trace("v2::follow_up");
         const auto ptp_ts = message.message().precise_origin_timestamp();
 
-        if (!last_sync_ts_)
+        if(!last_sync_ts_)
         {
             // Haven't received a Sync message yet
             return;

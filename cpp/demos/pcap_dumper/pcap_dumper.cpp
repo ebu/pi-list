@@ -25,7 +25,7 @@ namespace
         const auto [parse_result, config] =
             parse(argc, argv, argument(&config::pcap_file, "pcap file", "the path to the pcap file to use as input"));
 
-        if (parse_result) return config;
+        if(parse_result) return config;
 
         logger()->error("usage: {} {}", path(argv[0]).filename().string(), to_string(parse_result));
         exit(-1);
@@ -43,7 +43,7 @@ namespace
         chunked_data_source source(factory, std::make_unique<file_source>(factory, config.pcap_file));
 
         auto maybe_header = pcap::read_header(source);
-        if (!maybe_header)
+        if(!maybe_header)
         {
             logger()->error("Invalid file");
             return;
@@ -52,10 +52,10 @@ namespace
         auto header = std::move(maybe_header.value());
 
         int packet_count = 0;
-        for (;;)
+        for(;;)
         {
             auto maybe_packet = pcap::read_packet(header(), source);
-            if (!maybe_packet) break;
+            if(!maybe_packet) break;
 
             auto& packet = maybe_packet.value();
             dump_packet_info(packet, ++packet_count);
@@ -64,13 +64,13 @@ namespace
             std::cout << '\t' << ethernet_header << std::endl;
 
             // process only IPv4 packets
-            if (ethernet_header.type != ethernet::payload_type::IPv4) continue;
+            if(ethernet_header.type != ethernet::payload_type::IPv4) continue;
 
             auto [ipv4_header, ipv4_payload] = ipv4::decode(std::move(ethernet_payload));
             std::cout << '\t' << ipv4_header << std::endl;
 
             // process only UDP datagrams
-            if (ipv4_header.type != ipv4::protocol_type::UDP) continue;
+            if(ipv4_header.type != ipv4::protocol_type::UDP) continue;
 
             auto [udp_header, udp_payload] = udp::decode(std::move(ipv4_payload));
             std::cout << '\t' << udp_header << std::endl;
@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
     {
         run(config);
     }
-    catch (std::exception& ex)
+    catch(std::exception& ex)
     {
         console->error("exception: {}", ex.what());
         return -1;

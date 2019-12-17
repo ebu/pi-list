@@ -26,4 +26,4 @@ namespace ebu_list::analysis
         virtual void on_complete() {}
         virtual void on_error(std::exception_ptr) {}
     };
-}
+} // namespace ebu_list::analysis

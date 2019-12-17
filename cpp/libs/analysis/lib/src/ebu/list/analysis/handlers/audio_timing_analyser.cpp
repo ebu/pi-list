@@ -46,7 +46,7 @@ void audio_timing_analyser::on_data(const rtp::packet& packet)
     /* new measurement window for delays and TS-DF */
     // TODO: remove 200ms and compute windows duration so that it is 1s for a
     // 1Mbits/s stream
-    if ((packet_ts_usec - first_packet_ts_usec_) > 200000)
+    if((packet_ts_usec - first_packet_ts_usec_) > 200000)
     {
         first_packet_ts_usec_ = packet_ts_usec;
 

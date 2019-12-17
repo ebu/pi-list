@@ -11,13 +11,13 @@ using namespace ebu_list::st2110;
 
 detector::status_description packet_spacing_analyzer::handle_data(const rtp::packet& packet)
 {
-    if (status_description_.state != detector::state::detecting) return status_description_;
+    if(status_description_.state != detector::state::detecting) return status_description_;
 
-    if (last_packet_timestamp_)
+    if(last_packet_timestamp_)
     {
         const auto delta = packet.info.udp.packet_time - *last_packet_timestamp_;
 
-        if (last_frame_was_marked_)
+        if(last_frame_was_marked_)
         {
             ++frame_start_packet_count_;
             frame_start_packet_total_ += delta;
@@ -33,7 +33,7 @@ detector::status_description packet_spacing_analyzer::handle_data(const rtp::pac
     last_frame_was_marked_ = packet.info.rtp().marker();
 
     constexpr auto minimum_frame_start_packet_count = 3;
-    if (frame_start_packet_count_ == minimum_frame_start_packet_count)
+    if(frame_start_packet_count_ == minimum_frame_start_packet_count)
     {
         status_description_.state      = detector::state::valid;
         status_description_.error_code = "STATUS_CODE_VIDEO_FRAME_START_PACKET_COUNT";
@@ -51,13 +51,13 @@ st2110::d21::read_schedule packet_spacing_analyzer::get_schedule() const noexcep
 
 clock::duration packet_spacing_analyzer::average_regular_packet_spacing() const noexcept
 {
-    if (regular_packet_count_ == 0) return {};
+    if(regular_packet_count_ == 0) return {};
     return regular_packet_total_ / regular_packet_count_;
 }
 
 clock::duration packet_spacing_analyzer::average_frame_start_packet_spacing() const noexcept
 {
-    if (frame_start_packet_count_ == 0) return {};
+    if(frame_start_packet_count_ == 0) return {};
     return frame_start_packet_total_ / frame_start_packet_count_;
 }
 
@@ -69,10 +69,10 @@ common_video_detector::common_video_detector(settings _settings) : settings_(_se
 
 detector::status_description common_video_detector::handle_data(const rtp::packet& packet)
 {
-    if (status_description_.state != detector::state::detecting) return status_description_;
+    if(status_description_.state != detector::state::detecting) return status_description_;
 
     // new frame
-    if (!current_frame_rtp_timestamp_ || last_frame_was_marked_)
+    if(!current_frame_rtp_timestamp_ || last_frame_was_marked_)
     {
         last_frame_was_marked_ = false;
         ++current_frame_;
@@ -85,7 +85,7 @@ detector::status_description common_video_detector::handle_data(const rtp::packe
     {
         assert(current_frame_rtp_timestamp_.has_value());
 
-        if (current_frame_rtp_timestamp_ != packet.info.rtp().timestamp())
+        if(current_frame_rtp_timestamp_ != packet.info.rtp().timestamp())
         {
             logger()->trace("INVALID: Different RTP timestamps in the same frame");
 
@@ -99,7 +99,7 @@ detector::status_description common_video_detector::handle_data(const rtp::packe
 
     ++current_frame_packets_;
 
-    if (current_frame_packets_ > settings_.maximum_packets_per_frame)
+    if(current_frame_packets_ > settings_.maximum_packets_per_frame)
     {
         logger()->debug("INVALID: Too many packets until a marker bit was detected");
 
@@ -108,15 +108,15 @@ detector::status_description common_video_detector::handle_data(const rtp::packe
         return status_description_;
     }
 
-    if (packet.info.rtp().marker())
+    if(packet.info.rtp().marker())
     {
         last_frame_was_marked_ = true;
 
-        if (current_frame_ == rate_calculator::minimum_number_of_frames)
+        if(current_frame_ == rate_calculator::minimum_number_of_frames)
         {
             const auto packets = packets_per_frame_.count();
 
-            if (packets < settings_.minimum_packets_per_frame)
+            if(packets < settings_.minimum_packets_per_frame)
             {
                 status_description_.state      = detector::state::invalid;
                 status_description_.error_code = "STATUS_CODE_VIDEO_MINIMUM_PACKETS_PER_FRAME";
@@ -124,7 +124,7 @@ detector::status_description common_video_detector::handle_data(const rtp::packe
             }
 
             const auto r = rate_.rate();
-            if (!r.has_value())
+            if(!r.has_value())
             {
                 // There is a problem with this stream: the timestamps are repeated.
                 status_description_.state      = detector::state::invalid;
@@ -137,7 +137,7 @@ detector::status_description common_video_detector::handle_data(const rtp::packe
 
             logger()->debug("Video or ancillary: valid");
             logger()->debug("  Rate: {}", to_string(r.value()));
-            if (packets)
+            if(packets)
             {
                 logger()->debug("  Packets per frame: {}", packets.value());
             }

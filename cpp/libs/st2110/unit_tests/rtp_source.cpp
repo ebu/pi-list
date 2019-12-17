@@ -18,19 +18,19 @@ rtp_source::rtp_source(path pcap_file)
 
 rtp::maybe_packet rtp_source::next()
 {
-    for (;;)
+    for(;;)
     {
         auto maybe_packet = pcap::read_packet(file_header_.value()(), source_);
-        if (!maybe_packet) return std::nullopt;
+        if(!maybe_packet) return std::nullopt;
 
         auto& packet                = maybe_packet.value();
         const auto packet_timestamp = packet.pcap_header.view().timestamp();
 
         auto [ethernet_header, ethernet_payload] = ethernet::decode(std::move(packet.data));
-        if (ethernet_header.type != ethernet::payload_type::IPv4) continue;
+        if(ethernet_header.type != ethernet::payload_type::IPv4) continue;
 
         auto [ipv4_header, ipv4_payload] = ipv4::decode(std::move(ethernet_payload));
-        if (ipv4_header.type != ipv4::protocol_type::UDP) continue;
+        if(ipv4_header.type != ipv4::protocol_type::UDP) continue;
 
         auto [udp_header, udp_payload] = udp::decode(std::move(ipv4_payload));
 
@@ -41,7 +41,7 @@ rtp::maybe_packet rtp_source::next()
 
         auto maybe_rtp_packet = rtp::decode(datagram.ethernet_info, datagram.info, std::move(datagram.sdu));
 
-        if (!maybe_rtp_packet) return std::nullopt;
+        if(!maybe_rtp_packet) return std::nullopt;
 
         return std::move(maybe_rtp_packet.value());
     }
