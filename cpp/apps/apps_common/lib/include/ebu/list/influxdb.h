@@ -53,7 +53,7 @@ namespace ebu_list::influx
 
         template <typename T> void send_data(const std::string& key, std::optional<T> value, clock::time_point when)
         {
-            if (!value.has_value()) return;
+            if(!value.has_value()) return;
             send_data(key, value.value(), when);
         }
 

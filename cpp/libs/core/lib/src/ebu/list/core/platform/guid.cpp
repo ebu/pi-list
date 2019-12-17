@@ -102,13 +102,13 @@ namespace ebu_list
     unsigned char hexDigitToChar(char ch)
     {
         // 0-9
-        if (ch > 47 && ch < 58) return ch - 48;
+        if(ch > 47 && ch < 58) return ch - 48;
 
         // a-f
-        if (ch > 96 && ch < 103) return ch - 87;
+        if(ch > 96 && ch < 103) return ch - 87;
 
         // A-F
-        if (ch > 64 && ch < 71) return ch - 55;
+        if(ch > 64 && ch < 71) return ch - 55;
 
         return 0;
     }
@@ -116,13 +116,13 @@ namespace ebu_list
     bool isValidHexChar(char ch)
     {
         // 0-9
-        if (ch > 47 && ch < 58) return true;
+        if(ch > 47 && ch < 58) return true;
 
         // a-f
-        if (ch > 96 && ch < 103) return true;
+        if(ch > 96 && ch < 103) return true;
 
         // A-F
-        if (ch > 64 && ch < 71) return true;
+        if(ch > 64 && ch < 71) return true;
 
         return false;
     }
@@ -138,18 +138,18 @@ namespace ebu_list
         bool lookingForFirstChar = true;
         unsigned nextByte        = 0;
 
-        for (const char& ch : fromString)
+        for(const char& ch : fromString)
         {
-            if (ch == '-') continue;
+            if(ch == '-') continue;
 
-            if (nextByte >= 16 || !isValidHexChar(ch))
+            if(nextByte >= 16 || !isValidHexChar(ch))
             {
                 // Invalid string so bail
                 zeroify();
                 return;
             }
 
-            if (lookingForFirstChar)
+            if(lookingForFirstChar)
             {
                 charOne             = ch;
                 lookingForFirstChar = false;
@@ -164,7 +164,7 @@ namespace ebu_list
         }
 
         // if there were fewer than 16 bytes in the string then guid is bad
-        if (nextByte < 16)
+        if(nextByte < 16)
         {
             zeroify();
             return;

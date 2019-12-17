@@ -16,26 +16,27 @@ class InfluxDbManager {
         this.influx = new Influx.InfluxDB({
             host: program.influx.hostname,
             port: program.influx.port,
-            database: 'LIST'
+            database: 'LIST',
         });
 
         log.info(`Influx DB Manager connect to ${program.influxURL}`);
     }
 
     fromPcapIdWhereStreamIs(pcapID, streamID) {
-        return `from /^${pcapID}$/ where ("stream" =~ /^"${streamID}"$/)`
+        return `from /^${pcapID}$/ where ("stream" =~ /^"${streamID}"$/)`;
     }
 
     timeFilter(startTime, endTime) {
-        return `time >= ${startTime}ns and time <= ${endTime}ns`
+        return `time >= ${startTime}ns and time <= ${endTime}ns`;
     }
 
     sendQueryAndFormatResults(query) {
-        return this.influx.query(query)
-            .then(data => data.map(item => ({
+        return this.influx.query(query).then(data =>
+            data.map(item => ({
                 ...item,
-                time: item.time._nanoISO
-            })));
+                time: item.time._nanoISO,
+            }))
+        );
     }
 
     getPtpOffsetSamplesByPcap(pcapID) {
@@ -57,7 +58,7 @@ class InfluxDbManager {
 
     getCInstByStream(pcapID, streamID, startTime, endTime) {
         const wanted_resolution = Math.ceil((endTime - startTime) / 2000);
-        const resolution = wanted_resolution <= 1 ? "1ns" : `${wanted_resolution}ns`;
+        const resolution = wanted_resolution <= 1 ? '1ns' : `${wanted_resolution}ns`;
         const query = `
             select max("cinst"), min("cinst"), mean("cinst"), stddev("cinst")
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
@@ -121,14 +122,16 @@ class InfluxDbManager {
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
         `;
 
-        log.info(`Get DeltaToIdealTpr0AdjustedAvgTroRaw for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+        log.info(
+            `Get DeltaToIdealTpr0AdjustedAvgTroRaw for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`
+        );
 
         return this.sendQueryAndFormatResults(query);
     }
 
     getDeltaRtpTsVsPacketTsRaw(pcapID, streamID, startTime, endTime) {
         const wanted_resolution = Math.ceil((endTime - startTime) / 2000);
-        const resolution = wanted_resolution <= 1 ? "1ns" : `${wanted_resolution}ns`;
+        const resolution = wanted_resolution <= 1 ? '1ns' : `${wanted_resolution}ns`;
         const query = `
             select "delta_rtp_vs_packet_time" as "value"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
@@ -141,7 +144,7 @@ class InfluxDbManager {
 
     getDeltaPacketTimeVsRtpTimeRaw(pcapID, streamID, startTime, endTime) {
         const wanted_resolution = Math.ceil((endTime - startTime) / 2000);
-        const resolution = wanted_resolution <= 1 ? "1ns" : `${wanted_resolution}ns`;
+        const resolution = wanted_resolution <= 1 ? '1ns' : `${wanted_resolution}ns`;
         const query = `
             select "delta_packet_time_vs_rtp_time_ns" as "value"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
@@ -157,14 +160,16 @@ class InfluxDbManager {
             select MAX("delta_packet_time_vs_rtp_time_ns") as "max", MIN("delta_packet_time_vs_rtp_time_ns") as "min", MEAN("delta_packet_time_vs_rtp_time_ns") as "avg"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}`;
 
-        log.info(`Get DeltaPacketTimeVsRtpTimeMinMax for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+        log.info(
+            `Get DeltaPacketTimeVsRtpTimeMinMax for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`
+        );
 
         return this.sendQueryAndFormatResults(query);
     }
 
     getDeltaRtpVsNt(pcapID, streamID, startTime, endTime) {
         const wanted_resolution = Math.ceil((endTime - startTime) / 2000);
-        const resolution = wanted_resolution <= 1 ? "1ns" : `${wanted_resolution}ns`;
+        const resolution = wanted_resolution <= 1 ? '1ns' : `${wanted_resolution}ns`;
         const query = `
             select "delta_rtp_vs_NTs" as "value"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
@@ -187,13 +192,24 @@ class InfluxDbManager {
 
     getDeltaToPreviousRtpTsRaw(pcapID, streamID, startTime, endTime) {
         const wanted_resolution = Math.ceil((endTime - startTime) / 2000);
-        const resolution = wanted_resolution <= 1 ? "1ns" : `${wanted_resolution}ns`;
+        const resolution = wanted_resolution <= 1 ? '1ns' : `${wanted_resolution}ns`;
         const query = `
             select "delta_previous_rtp_ts" as "value"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
         `;
 
-        log.info(`Get DeltaRtpTsVsPacketTs for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+        log.info(`Get DeltaToPreviousRtpTsRaw for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
+
+    getDeltaToPreviousRtpTsMinMax(pcapID, streamID, startTime, endTime) {
+        const query = `
+            select MAX("delta_previous_rtp_ts") as "max", MIN("delta_previous_rtp_ts") as "min", MEAN("delta_previous_rtp_ts") as "avg"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}
+        `;
+
+        log.info(`Get DeltaToPreviousRtpTsMinMax for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
 
         return this.sendQueryAndFormatResults(query);
     }
@@ -272,7 +288,9 @@ class InfluxDbManager {
             select MAX("ancillary-pkt-vs-rtp") as "max", MIN("ancillary-pkt-vs-rtp") as "min", MEAN("ancillary-pkt-vs-rtp") as "avg"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}`;
 
-        log.info(`Get getAncillaryPktTsVsRtpTsMinMax for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+        log.info(
+            `Get getAncillaryPktTsVsRtpTsMinMax for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`
+        );
 
         return this.sendQueryAndFormatResults(query);
     }
@@ -285,6 +303,5 @@ class InfluxDbManager {
         return this.sendQueryAndFormatResults(query);
     }
 }
-
 
 module.exports = new InfluxDbManager();

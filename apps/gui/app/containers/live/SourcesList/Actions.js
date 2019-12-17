@@ -14,6 +14,8 @@ const Actions = {
     addSources: 'addSources', // payload: { sources: [ { dstAddr, dstPort } ] },
     showEditSource: 'showEditSource',
     hideEditSource: 'hideEditSource',
+    showSDPErrorPopUp: 'showSDPErrorPopUp', // payload: { id },
+    hideSDPErrorPopUp: 'hideSDPErrorPopUp',
 };
 
 export default Actions;

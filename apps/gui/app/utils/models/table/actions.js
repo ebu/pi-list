@@ -4,10 +4,7 @@ const actions = {
     toggleSelectAll: 'toggleSelectAll',
     requestDelete: 'requestDelete', // data: { ids : [ String ] }
     setFilterString: 'setFilterString', // payload: { value : String },
-    requestCancel: 'requestCancel', // data: { ids : [ String ] }
-    showSDPErrorPopUp: 'showSDPErrorPopUp', // data: { id : String }
-    hideSDPErrorPopUp: 'hideSDPErrorPopUp',
-
+    requestCancel: 'requestCancel', // data: { ids : [ String ] },
 };
 
 export default actions;

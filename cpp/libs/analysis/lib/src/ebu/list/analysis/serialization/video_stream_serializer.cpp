@@ -18,7 +18,7 @@ namespace
     media::video::video_dimensions get_frame_size(const video_stream_details& info)
     {
         auto dimensions = info.video.dimensions;
-        if (info.video.scan_type == media::video::scan_type::INTERLACED)
+        if(info.video.scan_type == media::video::scan_type::INTERLACED)
         {
             dimensions.height /= 2;
         }
@@ -37,7 +37,7 @@ void analysis::write_packets(const path& packets_path, const packets& packets_in
 {
     json j;
 
-    for (const auto& packet : packets_info)
+    for(const auto& packet : packets_info)
     {
         const st2110_d20_packet p{rtp_packet::build_from(packet.rtp), packet.full_sequence_number, packet.line_info};
         j.push_back(st2110_d20_packet::to_json(p));
@@ -82,14 +82,14 @@ struct packets_write_info
 
 int64_t get_first_packet_timestamp(const packets& ps)
 {
-    if (ps.empty()) return 0;
+    if(ps.empty()) return 0;
     return std::chrono::duration_cast<std::chrono::nanoseconds>(ps.front().rtp.udp.packet_time.time_since_epoch())
         .count();
 }
 
 int64_t get_last_packet_timestamp(const packets& ps)
 {
-    if (ps.empty()) return 0;
+    if(ps.empty()) return 0;
     auto last = ps.rbegin();
     return std::chrono::duration_cast<std::chrono::nanoseconds>(last->rtp.udp.packet_time.time_since_epoch()).count();
 }

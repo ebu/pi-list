@@ -21,19 +21,19 @@ void compliance_analyzer::handle_packet(const rtp::packet_info& info) noexcept
     const auto cinst = c_calculator_.on_packet(info.udp.packet_time);
     cinst_histogram_.add_value(cinst);
 
-    if (state_ != state::waiting_for_frame)
+    if(state_ != state::waiting_for_frame)
     {
         const auto vrx_info = vrx_calculator_.on_packet(info.udp.packet_time, state_ == state::is_frame_start);
 
         vrx_histogram_.add_value(vrx_info.vrx);
     }
 
-    if (state_ == state::is_frame_start)
+    if(state_ == state::is_frame_start)
     {
         state_ = state::in_frame;
     }
 
-    if (info.rtp.view().marker())
+    if(info.rtp.view().marker())
     {
         state_ = state::is_frame_start;
     }
@@ -87,17 +87,17 @@ compliance_checker::compliance_checker(int n_packets, fraction t_frame, read_sch
 
 compliance_profile compliance_checker::check_vrx_min_peak(int vrx_min, int vrx_peak) const noexcept
 {
-    if (vrx_min < 0)
+    if(vrx_min < 0)
     {
         return compliance_profile::not_compliant;
     }
 
-    if (vrx_peak <= narrow_.vrx_full)
+    if(vrx_peak <= narrow_.vrx_full)
     {
         return narrow_kind_;
     }
 
-    if (vrx_peak <= wide_.vrx_full)
+    if(vrx_peak <= wide_.vrx_full)
     {
         return compliance_profile::wide;
     }
@@ -107,12 +107,12 @@ compliance_profile compliance_checker::check_vrx_min_peak(int vrx_min, int vrx_p
 
 compliance_profile compliance_checker::check_c_peak(int c_peak) const noexcept
 {
-    if (c_peak <= narrow_.cmax)
+    if(c_peak <= narrow_.cmax)
     {
         return narrow_kind_;
     }
 
-    if (c_peak <= wide_.cmax)
+    if(c_peak <= wide_.cmax)
     {
         return compliance_profile::wide;
     }
@@ -125,11 +125,11 @@ compliance_profile compliance_checker::check(int vrx_min, int vrx_peak, int c_pe
     const auto vrx = check_vrx_min_peak(vrx_min, vrx_peak);
     const auto c   = check_c_peak(c_peak);
 
-    if (vrx == narrow_kind_) return c;
+    if(vrx == narrow_kind_) return c;
 
-    if (vrx == compliance_profile::wide)
+    if(vrx == compliance_profile::wide)
     {
-        if (c == narrow_kind_) return compliance_profile::wide;
+        if(c == narrow_kind_) return compliance_profile::wide;
         return c;
     }
 

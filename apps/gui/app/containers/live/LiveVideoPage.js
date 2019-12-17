@@ -116,7 +116,7 @@ class LiveVideoPage extends Component {
                 formatData={chartFormatters.singleValueChart}
                 point_radius={1}
                 xLabel=""
-                title={title}
+                titleTag={title} 
                 height={300}
             />
         );
@@ -132,7 +132,7 @@ class LiveVideoPage extends Component {
                 labels={chartFormatters.histogramValues}
                 formatData={chartFormatters.histogramCounts}
                 xLabel=""
-                title={title}
+                titleTag={title}
                 height={300}
                 yLabel="%"
                 displayXTicks="true"
@@ -163,10 +163,10 @@ class LiveVideoPage extends Component {
         const streamInfo = this.state.streamInfo;
 
         const toRenderCInst = this.state.showGlobalValues ? streamInfo.global_video_analysis.cinst : streamInfo.current_video_analysis.cinst;
-        const toRenderCInstTitle = this.state.showGlobalValues ? 'Global' : 'Last second';
+        const toRenderCInstTitle = this.state.showGlobalValues ? 'media_information.title_global' : 'media_information.title_last_second';
 
         const toRenderVrx = this.state.showGlobalValues ? streamInfo.global_video_analysis.vrx : streamInfo.current_video_analysis.vrx;
-        const toRenderVrxTitle = this.state.showGlobalValues ? 'Global' : 'Last second';
+        const toRenderVrxTitle = this.state.showGlobalValues ? 'media_information.title_global' : 'media_information.title_last_second';
 
         const mediaInfo = streamInfo.media_specific;
         const globalVideoAnalysis = streamInfo.global_video_analysis;
@@ -187,7 +187,7 @@ class LiveVideoPage extends Component {
                                         {this.renderChart(toRenderCInst, toRenderCInstTitle)}
                                     </div>
                                     <div className="col-xs-12 col-md-6">
-                                        {this.renderLastMinuteChart(this.state.lastMinuteCInst, 'C peak Timeline')}
+                                        {this.renderLastMinuteChart(this.state.lastMinuteCInst, 'media_information.c_peak_timeline')}
                                     </div>
                                 </div>
                             </Panel>
@@ -197,7 +197,7 @@ class LiveVideoPage extends Component {
                                         {this.renderChart(toRenderVrx, toRenderVrxTitle)}
                                     </div>
                                     <div className="col-xs-12 col-md-6">
-                                        {this.renderLastMinuteChart(this.state.lastMinuteVrx, 'Vrx peak Timeline')}
+                                        {this.renderLastMinuteChart(this.state.lastMinuteVrx, 'media_information.vrx_peak_timeline')}
                                     </div>
                                 </div>
                             </Panel>

@@ -14,12 +14,12 @@ using namespace ebu_list;
 #define ASSERT_EX(cond, error_message)                                                                                 \
     do                                                                                                                 \
     {                                                                                                                  \
-        if (!(cond))                                                                                                   \
+        if(!(cond))                                                                                                    \
         {                                                                                                              \
             std::cerr << error_message;                                                                                \
             exit(1);                                                                                                   \
         }                                                                                                              \
-    } while (0)
+    } while(0)
 
 namespace
 {
@@ -35,7 +35,7 @@ namespace
         TPngDestructor(png_struct* png) : p(png) {}
         ~TPngDestructor()
         {
-            if (p)
+            if(p)
             {
                 png_destroy_write_struct(&p, nullptr);
             }
@@ -53,7 +53,7 @@ void analysis::write_png(oview data, media::video::video_dimensions dimensions, 
     const auto w      = dimensions.width;
     const auto h      = dimensions.height;
 
-    if (w == 0 || h == 0)
+    if(w == 0 || h == 0)
     {
         logger()->error("Invalid dimensions: {}x{}", w, h);
         // TODO: send error message
@@ -77,7 +77,7 @@ void analysis::write_png(oview data, media::video::video_dimensions dimensions, 
                  PNG_FILTER_TYPE_DEFAULT);
     // png_set_compression_level(p, 1);
     std::vector<uint8_t*> rows(h);
-    for (size_t y = 0; y < h; ++y)
+    for(size_t y = 0; y < h; ++y)
         rows[y] = const_cast<uint8_t*>(buffer) + y * w * 4;
     png_set_rows(p, info_ptr, &rows[0]);
     png_set_write_fn(p, &out, PngWriteCallback, nullptr);
@@ -98,6 +98,6 @@ void ebu_list::write_png(oview data, media::video::video_dimensions dimensions, 
     unsigned error = lodepng_encode32_file(target.string().c_str(), buffer, dimensions.width, dimensions.height);
 
     // if there's an error, display it
-    if (error) printf("error %u: %s\n", error, lodepng_error_text(error));
+    if(error) printf("error %u: %s\n", error, lodepng_error_text(error));
 }
 #endif // defined(EBU_LIST_USE_LIBPNG)

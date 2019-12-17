@@ -32,4 +32,4 @@ namespace ebu_list::media::video
     std::string to_string(video_sampling sampling);
 
     float samples_per_pixel(video_sampling sampling);
-}
+} // namespace ebu_list::media::video

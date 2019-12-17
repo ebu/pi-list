@@ -17,9 +17,9 @@ const ResultPane = props => {
             </div>
 
             {
-                props.values.map(item => {
+                props.values.map((item, index) => {
                     return (
-                        <div className="row">
+                        <div key={`row-${index}`} className="row">
                             <div className="col-xs-6">
                                 {item.measurement}
                             </div>

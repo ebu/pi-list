@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ebu/list/analysis/handlers/audio_timing_analyser.h"
 #include "ebu/list/analysis/handlers/anc_stream_handler.h"
+#include "ebu/list/analysis/handlers/audio_timing_analyser.h"
 #include "ebu/list/core/platform/time.h"
 #include "ebu/list/ptp/state_machine.h"
 #include "ebu/list/rtp/listener.h"

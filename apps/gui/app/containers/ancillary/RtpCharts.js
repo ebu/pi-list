@@ -19,10 +19,10 @@ const RtpCharts = props => {
                         request={() => api.getAncillaryPktPerFrameHistogram(pcapID, streamID)}
                         labels={chartFormatters.histogramValues}
                         formatData={chartFormatters.histogramCounts}
-                        xLabel="packets"
-                        title={translateX('media_information.video.packets_per_frame')}
+                        xLabel={translateX('media_information.packets')}
+                        titleTag='media_information.video.packets_per_frame'
                         height={300}
-                        yLabel="Count"
+                        yLabel={translateX(media_information.count)}
                         displayXTicks="true"
                     />
                 </div>
@@ -38,8 +38,8 @@ const RtpCharts = props => {
                         }
                         xAxis={chartFormatters.getTimeLineLabel}
                         data={chartFormatters.singleValueLineChart}
-                        title={translateX('media_information.video.packets_per_frame')}
-                        yAxisLabel="Packets"
+                        titleTag='media_information.video.packets_per_frame'
+                        yAxisLabel={translateX('media_information.packets')}
                         height={300}
                         lineWidth={3}
                         legend
@@ -63,7 +63,7 @@ const RtpCharts = props => {
                         }
                         xAxis={chartFormatters.getTimeLineLabel}
                         data={chartFormatters.singleValueLineChart}
-                        title={translateX('media_information.rtp.delta_packet_time_vs_rtp_time_ns')}
+                        titleTag='media_information.rtp.delta_first_packet_time_vs_rtp_time'
                         yAxisLabel="us"
                         height={300}
                         lineWidth={3}

@@ -30,7 +30,7 @@ namespace
         const auto [parse_result, config] =
             parse(argc, argv, argument(&config::pcap_file, "pcap file", "the path to the pcap file to use as input"));
 
-        if (parse_result) return config;
+        if(parse_result) return config;
 
         logger()->error("usage: {} {}", path(argv[0]).filename().string(), to_string(parse_result));
         exit(-1);
@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
     {
         run(config);
     }
-    catch (std::exception& ex)
+    catch(std::exception& ex)
     {
         console->error("exception: {}", ex.what());
         return -1;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ebu/list/analysis/handlers/audio_timing_analyser.h"
 #include "ebu/list/analysis/handlers/anc_stream_handler.h"
+#include "ebu/list/analysis/handlers/audio_timing_analyser.h"
 #include "ebu/list/core/platform/time.h"
 #include "ebu/list/influxdb.h"
 #include "ebu/list/ptp/state_machine.h"
@@ -101,7 +101,7 @@ namespace ebu_list::influx
     {
       public:
         influxdb_anc_rtp_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id,
-                                   std::string prefix);
+                                std::string prefix);
 
       private:
         void on_data(const analysis::anc_stream_handler::frame_info&) override;

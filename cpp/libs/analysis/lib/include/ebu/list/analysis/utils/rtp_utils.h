@@ -19,4 +19,4 @@ namespace ebu_list::analysis
     };
 
     delta_info calculate_rtp_to_packet_deltas(fraction64 frame_period, uint32_t rtp_timestamp, fraction64 packet_time);
-} // namespace ebu_list::st2110::d20
+} // namespace ebu_list::analysis

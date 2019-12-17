@@ -11,7 +11,7 @@ void sdp::write_to(const sdp_builder& sdp, const ebu_list::path& path)
     std::experimental::filesystem::create_directory(path.parent_path());
     std::ofstream o(path.string());
 
-    for (const auto& line : sdp.sdp())
+    for(const auto& line : sdp.sdp())
     {
         o << line << std::endl;
     }
@@ -45,7 +45,7 @@ void sdp_builder::write_media_line(const media::network_media_description& media
                  std::invalid_argument, "Only ancillary, audio and video supported on SDP serialization");
 
     const auto media_type_string = [&media_description]() -> std::string {
-        if (media_description.type == media::media_type::AUDIO)
+        if(media_description.type == media::media_type::AUDIO)
         {
             return "audio";
         }

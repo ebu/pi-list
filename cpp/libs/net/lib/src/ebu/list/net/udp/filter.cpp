@@ -27,10 +27,10 @@ udp_filter::udp_filter(listener_ptr l, ipv4::endpoint_list wanted_endpoints)
 
 void udp_filter::on_data(datagram&& datagram)
 {
-    for (const auto& wanted : wanted_endpoints_)
+    for(const auto& wanted : wanted_endpoints_)
     {
-        if (datagram.info.destination_address != wanted.addr) continue;
-        if (datagram.info.destination_port != wanted.p) continue;
+        if(datagram.info.destination_address != wanted.addr) continue;
+        if(datagram.info.destination_port != wanted.p) continue;
         listener_->on_data(std::move(datagram));
 
         return;

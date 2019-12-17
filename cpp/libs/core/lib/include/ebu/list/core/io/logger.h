@@ -16,4 +16,4 @@ namespace ebu_list
 
         return l;
     }
-}
+} // namespace ebu_list
