@@ -21,7 +21,7 @@ std::tuple<header, oview> ethernet::decode(oview&& l2_packet)
         header h{s.value().destination_address, s.value().source_address,
                  static_cast<payload_type>(to_native(s.value().type))};
 
-        if (h.type != payload_type::VLAN_802_1Q)
+        if(h.type != payload_type::VLAN_802_1Q)
         {
             return {h, ethernet_payload};
         }
@@ -62,7 +62,7 @@ std::ostream& ethernet::operator<<(std::ostream& os, payload_type h)
 
 std::string ethernet::to_string(const payload_type ptype)
 {
-    switch (ptype)
+    switch(ptype)
     {
     case payload_type::IPv4: return "IPv4";
     case payload_type::VLAN_802_1Q: return "VLAN_802_1Q";
@@ -72,9 +72,9 @@ std::string ethernet::to_string(const payload_type ptype)
 
 payload_type ethernet::to_payload_type(std::string_view ptype_str)
 {
-    if (ptype_str == "IPv4")
+    if(ptype_str == "IPv4")
         return payload_type::IPv4;
-    else if (ptype_str == "VLAN_802_1Q")
+    else if(ptype_str == "VLAN_802_1Q")
         return payload_type::VLAN_802_1Q;
     else
         return payload_type::UNKNOWN;

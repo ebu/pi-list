@@ -155,7 +155,7 @@ void influxdb_audio_tsdf_logger::on_error(std::exception_ptr)
 //------------------------------------------------------------------------------
 
 influxdb_anc_rtp_logger::influxdb_anc_rtp_logger(std::string_view url, std::string_view pcap_id,
-                                                       std::string_view stream_id, std::string prefix)
+                                                 std::string_view stream_id, std::string prefix)
     : db_(url, pcap_id, stream_id), prefix_(std::move(prefix))
 {
 }
@@ -163,7 +163,8 @@ influxdb_anc_rtp_logger::influxdb_anc_rtp_logger(std::string_view url, std::stri
 void influxdb_anc_rtp_logger::on_data(const anc_stream_handler::frame_info& frame_info)
 {
     db_.send_data(prefix_ + "-pkt-per-frame", frame_info.packets_per_frame, frame_info.timestamp);
-    db_.send_data(prefix_ + "-pkt-vs-rtp", frame_info.first_rtp_to_packet_deltas.delta_packet_time_vs_rtp_time.count(), frame_info.timestamp);
+    db_.send_data(prefix_ + "-pkt-vs-rtp", frame_info.first_rtp_to_packet_deltas.delta_packet_time_vs_rtp_time.count(),
+                  frame_info.timestamp);
 }
 
 void influxdb_anc_rtp_logger::on_complete()

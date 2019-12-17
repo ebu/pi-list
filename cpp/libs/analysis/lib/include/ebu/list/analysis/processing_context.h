@@ -1,8 +1,8 @@
 #pragma once
 
 #include "analysis_profile.h"
-#include "ebu/list/analysis/handlers/audio_timing_analyser.h"
 #include "ebu/list/analysis/handlers/anc_stream_handler.h"
+#include "ebu/list/analysis/handlers/audio_timing_analyser.h"
 #include "ebu/list/analysis/handlers/troffset_calculator.h"
 #include "ebu/list/analysis/serialization/pcap.h"
 #include "ebu/list/analysis/serialization/serialization.h"
@@ -21,28 +21,25 @@ namespace ebu_list::analysis
         virtual ~abstract_handler_factory() = default;
 
         virtual st2110::d21::c_analyzer::listener_uptr
-        create_c_inst_data_logger(const std::string& pcap_id, const std::string& stream_id) const = 0;
-        virtual histogram_listener_uptr
-        create_c_inst_histogram_logger(const std::string& stream_id) const = 0;
+        create_c_inst_data_logger(const std::string& pcap_id, const std::string& stream_id) const          = 0;
+        virtual histogram_listener_uptr create_c_inst_histogram_logger(const std::string& stream_id) const = 0;
         virtual st2110::d20::rtp_ts_analyzer::listener_uptr
         create_rtp_ts_logger(const std::string& pcap_id, const std::string& stream_id) const                     = 0;
         virtual st2110::d21::vrx_analyzer::listener_uptr create_vrx_data_logger(const std::string& pcap_id,
                                                                                 const std::string& stream_id,
                                                                                 const std::string& prefix) const = 0;
-        virtual histogram_listener_uptr
-        create_vrx_histogram_logger(const std::string& stream_id) const                                        = 0;
+        virtual histogram_listener_uptr create_vrx_histogram_logger(const std::string& stream_id) const          = 0;
         virtual audio_timing_analyser::listener_uptr create_audio_rtp_logger(const std::string& pcap_id,
                                                                              const std::string& stream_id,
-                                                                             const std::string& prefix) const  = 0;
+                                                                             const std::string& prefix) const    = 0;
         virtual audio_timing_analyser::listener_uptr create_audio_tsdf_logger(const std::string& pcap_id,
                                                                               const std::string& stream_id,
-                                                                              const std::string& prefix) const = 0;
+                                                                              const std::string& prefix) const   = 0;
         virtual anc_stream_handler::listener_uptr create_anc_rtp_logger(const std::string& pcap_id,
-                                                                              const std::string& stream_id,
-                                                                              const std::string& prefix) const = 0;
-        virtual histogram_listener_uptr
-        create_anc_pkt_histogram_logger(const std::string& stream_id) const                                    = 0;
-        virtual ptp::state_machine::listener_ptr create_ptp_logger(const std::string& pcap_id) const           = 0;
+                                                                        const std::string& stream_id,
+                                                                        const std::string& prefix) const         = 0;
+        virtual histogram_listener_uptr create_anc_pkt_histogram_logger(const std::string& stream_id) const      = 0;
+        virtual ptp::state_machine::listener_ptr create_ptp_logger(const std::string& pcap_id) const             = 0;
     };
 
     using abstract_handler_factory_uptr = std::unique_ptr<abstract_handler_factory>;

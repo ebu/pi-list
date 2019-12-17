@@ -1,6 +1,6 @@
 #include "ebu/list/st2110/d20/rtp_ts_analyzer.h"
-#include "ebu/list/core/math.h"
 #include "ebu/list/analysis/utils/rtp_utils.h"
+#include "ebu/list/core/math.h"
 #include "ebu/list/st2110/d21/settings.h"
 #include "ebu/list/st2110/pch.h"
 
@@ -23,7 +23,7 @@ struct rtp_ts_analyzer::impl
         const auto packet_time   = fraction64(packet_time_ns, std::giga::num);
         const auto rtp_timestamp = packet.info.rtp.view().timestamp();
 
-        if (previous_timestamp_)
+        if(previous_timestamp_)
         {
             const auto delta  = modulo_difference(rtp_timestamp, previous_timestamp_.value());
             info.rtp_ts_delta = rtp::to_ticks32(delta);
@@ -40,7 +40,7 @@ struct rtp_ts_analyzer::impl
 
     void on_data(const frame_start_filter::packet_info& source_info)
     {
-        if (source_info.frame_start)
+        if(source_info.frame_start)
         {
             packet_info info{source_info.packet.info.udp.packet_time};
 

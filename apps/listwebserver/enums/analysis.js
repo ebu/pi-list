@@ -13,10 +13,11 @@ module.exports = {
         //
         // Whenever a new value is added here, a corresponding translation must be added too
         //
-        
+
         missing_information: 'errors.missing_information',
         invalid_rtp_ts_vs_nt: 'errors.invalid_rtp_ts_vs_nt',
         invalid_delta_packet_ts_vs_rtp_ts: 'errors.invalid_delta_packet_ts_vs_rtp_ts',
+        invalid_inter_frame_rtp_ts_delta: 'errors.invalid_inter_frame_rtp_ts_delta',
         cinst_above_maximum: 'errors.cinst_above_maximum',
         vrx_above_maximum: 'errors.vrx_above_maximum',
         tsdf_not_compliant: 'errors.tsdf_not_compliant',
@@ -29,13 +30,12 @@ module.exports = {
     },
     warnings: {
         pcap: {
-            truncated: 'warnings.pcap.truncated'
-        }
+            truncated: 'warnings.pcap.truncated',
+        },
     },
     qualitative: {
         narrow: 'narrow',
         wide: 'wide',
         not_compliant: 'not_compliant',
-    }
+    },
 };
-

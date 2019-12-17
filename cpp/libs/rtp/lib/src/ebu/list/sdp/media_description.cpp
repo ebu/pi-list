@@ -5,7 +5,7 @@ using namespace std;
 
 string media::to_string(media_type media_type)
 {
-    switch (media_type)
+    switch(media_type)
     {
     case media_type::VIDEO: return "video";
     case media_type::AUDIO: return "audio";
@@ -16,11 +16,11 @@ string media::to_string(media_type media_type)
 
 media::media_type media::from_string(std::string_view media)
 {
-    if (media == "video")
+    if(media == "video")
         return media_type::VIDEO;
-    else if (media == "audio")
+    else if(media == "audio")
         return media_type::AUDIO;
-    else if (media == "ancillary_data")
+    else if(media == "ancillary_data")
         return media_type::ANCILLARY_DATA;
     else
         return media_type::UNKNOWN;

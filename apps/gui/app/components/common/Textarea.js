@@ -6,14 +6,8 @@ import asyncLoader from '../../components/asyncLoader';
 const Textarea = props => {
     return (
         <div>
-            <label>
-                { props.title }:
-            </label>
-            <textarea
-                className='lst-textarea'
-                type='textarea'
-                value={ props.value  }
-            ></textarea>
+            <label>{props.title}:</label>
+            <textarea className="lst-textarea" type="textarea" value={props.value} readOnly></textarea>
         </div>
     );
 };
@@ -31,13 +25,12 @@ Textarea.defaultProps = {
 export default asyncLoader(Textarea, {
     asyncRequests: {
         value: props => {
-            if (props.downloadPath !== null ) {
+            if (props.downloadPath !== null) {
                 return api.downloadText(props.downloadPath);
-            }
-            else {
+            } else {
                 return '';
             }
         },
     },
-    dependencyProps: ['downloadPath']
+    dependencyProps: ['downloadPath'],
 });

@@ -55,7 +55,7 @@ struct receiver::impl
         socket_.async_receive_from(
             boost::asio::buffer(span.data(), span.size()), sender_endpoint,
             [=](boost::system::error_code ec, std::size_t length) mutable {
-                if (!ec)
+                if(!ec)
                 {
                     auto source_addr = ipv4::from_dotted_string(sender_endpoint.address().to_string());
                     auto source_port = ebu_list::to_port(sender_endpoint.port());

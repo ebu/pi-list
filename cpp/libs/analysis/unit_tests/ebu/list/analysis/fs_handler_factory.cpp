@@ -10,17 +10,17 @@ using namespace ebu_list::analysis;
 
 namespace
 {
-    constexpr auto pcap_file_name   = "pcap.json";
-    constexpr auto stream_file_name = "stream.json";
-    constexpr auto cinst_file_name  = "cinst.json";
-    constexpr auto vrx_file_name    = "vrx.json";
-    constexpr auto ptp_log_file     = "ptp_log.txt";
-    constexpr auto c_inst_log_file  = "c_inst_log.txt";
-    constexpr auto rtp_ts_log_file  = "rtp_ts_log.txt";
-    constexpr auto vrx_log_file     = "vrx_log.txt";
-    constexpr auto rtp_log_file     = "rtp_log.txt";
-    constexpr auto tsdf_log_file    = "tsdf_log.txt";
-    constexpr auto anc_rtp_log_file = "anc_rtp_log.txt";
+    constexpr auto pcap_file_name    = "pcap.json";
+    constexpr auto stream_file_name  = "stream.json";
+    constexpr auto cinst_file_name   = "cinst.json";
+    constexpr auto vrx_file_name     = "vrx.json";
+    constexpr auto ptp_log_file      = "ptp_log.txt";
+    constexpr auto c_inst_log_file   = "c_inst_log.txt";
+    constexpr auto rtp_ts_log_file   = "rtp_ts_log.txt";
+    constexpr auto vrx_log_file      = "vrx_log.txt";
+    constexpr auto rtp_log_file      = "rtp_log.txt";
+    constexpr auto tsdf_log_file     = "tsdf_log.txt";
+    constexpr auto anc_rtp_log_file  = "anc_rtp_log.txt";
     constexpr auto anc_pkt_file_name = "anc_pkt.json";
 } // namespace
 
@@ -34,8 +34,7 @@ st2110::d21::c_analyzer::listener_uptr fs_handler_factory::create_c_inst_data_lo
     return std::make_unique<fs_c_inst_logger>((storage_base_dir_ / pcap_id / stream_id / c_inst_log_file).string());
 }
 
-histogram_listener_uptr
-fs_handler_factory::create_c_inst_histogram_logger(const std::string& stream_id) const
+histogram_listener_uptr fs_handler_factory::create_c_inst_histogram_logger(const std::string& stream_id) const
 {
     const auto info_path = storage_base_dir_ / stream_id;
     return std::make_unique<histogram_writer>(info_path, cinst_file_name);
@@ -77,8 +76,8 @@ audio_timing_analyser::listener_uptr fs_handler_factory::create_audio_tsdf_logge
 }
 
 anc_stream_handler::listener_uptr fs_handler_factory::create_anc_rtp_logger(const std::string& pcap_id,
-                                                                                  const std::string& stream_id,
-                                                                                  const std::string& prefix) const
+                                                                            const std::string& stream_id,
+                                                                            const std::string& prefix) const
 {
     return std::make_unique<fs_anc_rtp_logger>(
         (storage_base_dir_ / pcap_id / stream_id / prefix / anc_rtp_log_file).string());

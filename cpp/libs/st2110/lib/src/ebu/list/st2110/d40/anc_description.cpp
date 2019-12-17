@@ -39,25 +39,25 @@ void anc_sub_sub_stream::write(const ebu_list::path path) const
 
 anc_sub_stream::anc_sub_stream(const anc_packet_header_lens anc_packet)
     : did_sdid_(static_cast<ancillary::did_sdid>((anc_packet.did() << 8) + anc_packet.sdid())),
-    line_num_(anc_packet.line_num()), horizontal_offset_(anc_packet.horizontal_offset()),
-    num_(anc_packet.stream_num()), errors_(0), packet_count(0)
+      line_num_(anc_packet.line_num()), horizontal_offset_(anc_packet.horizontal_offset()),
+      num_(anc_packet.stream_num()), errors_(0), packet_count(0)
 {
     check();
 }
 
 // basic constructor for unit tests
-anc_sub_stream::anc_sub_stream(uint16_t did_sdid, uint8_t num)
-   : did_sdid_(static_cast<ancillary::did_sdid>(did_sdid)),
-    line_num_(0), horizontal_offset_(0), num_(0), errors_(0), packet_count(0)
+anc_sub_stream::anc_sub_stream(uint16_t did_sdid, uint8_t /*num*/)
+    : did_sdid_(static_cast<ancillary::did_sdid>(did_sdid)), line_num_(0), horizontal_offset_(0), num_(0), errors_(0),
+      packet_count(0)
 {
     check();
 }
 
 void anc_sub_stream::check()
 {
-    for (auto& it : ancillary::stream_types)
+    for(auto& it : ancillary::stream_types)
     {
-        if (it.second == did_sdid_)
+        if(it.second == did_sdid_)
         {
             return;
         }
@@ -107,7 +107,7 @@ bool anc_sub_stream::is_valid() const
 
 void anc_sub_stream::write(const ebu_list::path path) const
 {
-    for (auto it = anc_sub_sub_streams.begin(); it != anc_sub_sub_streams.end(); it++)
+    for(auto it = anc_sub_sub_streams.begin(); it != anc_sub_sub_streams.end(); it++)
     {
         it->write(path);
     }
@@ -129,7 +129,7 @@ void st2110_40_sdp_serializer::additional_attributes(std::vector<std::string>& c
     /** Obligatory Parameters **/
     // https://tools.ietf.org/id/draft-ietf-payload-rtp-ancillary-10.xml
     std::string fmtp = fmt::format("a=fmtp:{} ", network_info.network.payload_type);
-    for (const auto s : anc_desc_.sub_streams)
+    for(const auto s : anc_desc_.sub_streams)
     {
         std::ostringstream stream_did;
         stream_did << std::hex << ((static_cast<uint16_t>(s.did_sdid()) >> 8) & 0xFF);

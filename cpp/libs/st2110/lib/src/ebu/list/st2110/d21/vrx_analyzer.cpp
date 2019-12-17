@@ -1,6 +1,6 @@
 #include "ebu/list/st2110/d21/vrx_analyzer.h"
-#include "ebu/list/core/math/histogram.h"
 #include "ebu/list/analysis/utils/histogram_listener.h"
+#include "ebu/list/core/math/histogram.h"
 #include "ebu/list/st2110/d21/settings.h"
 #include "ebu/list/st2110/pch.h"
 

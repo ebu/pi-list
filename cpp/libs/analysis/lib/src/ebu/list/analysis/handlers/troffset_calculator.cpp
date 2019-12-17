@@ -2,9 +2,9 @@
 #include "ebu/list/analysis/constants.h"
 #include "ebu/list/core/platform/parallel.h"
 //#include "ebu/list/database.h"
+#include "ebu/list/analysis/utils/rtp_utils.h"
 #include "ebu/list/pcap/player.h"
 #include "ebu/list/rtp/udp_handler.h"
-#include "ebu/list/analysis/utils/rtp_utils.h"
 #include "ebu/list/st2110/d21/settings.h"
 
 using namespace ebu_list;
@@ -52,7 +52,7 @@ void troffset_analyzer::on_data(const rtp::packet& p)
 {
     const auto sequence_number = p.info.rtp.view().sequence_number();
 
-    if (p.info.rtp.view().marker())
+    if(p.info.rtp.view().marker())
     {
         const int current    = sequence_number;
         const auto next      = (current + 1) % 0x10000;
@@ -61,7 +61,7 @@ void troffset_analyzer::on_data(const rtp::packet& p)
         return;
     }
 
-    if (next_start_of_frame_ && next_start_of_frame_.value() == sequence_number)
+    if(next_start_of_frame_ && next_start_of_frame_.value() == sequence_number)
     {
         const auto packet_timestamp = p.info.udp.packet_time;
         const auto packet_time_ns =
@@ -86,7 +86,7 @@ void troffset_analyzer::on_data(const rtp::packet& p)
 
 void troffset_analyzer::on_complete()
 {
-    if (tros_.empty())
+    if(tros_.empty())
     {
         tro_info_.insert({stream_id_, tro_stream_info{to_ns(tro_default_), 0, 0, 0}});
     }
@@ -123,14 +123,14 @@ tro_map analysis::calculate_average_troffset(ebu_list::path pcap_file,
             return s.network.ssrc == ssrc && s.network.destination == destination;
         });
 
-        if (stream_info_it == wanted_streams.end())
+        if(stream_info_it == wanted_streams.end())
         {
             return std::make_unique<rtp::null_listener>();
         }
 
         const auto& stream_info = stream_info_it->second.first;
 
-        if (stream_info.type == media::media_type::VIDEO)
+        if(stream_info.type == media::media_type::VIDEO)
         {
             const auto& in_video_info = std::get<video_stream_details>(stream_info_it->second.second);
             const auto video_info     = media::video::info{in_video_info.video.rate, in_video_info.video.scan_type,

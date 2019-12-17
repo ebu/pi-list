@@ -12,11 +12,11 @@ struct frame_start_filter::impl
 
     void on_data(const rtp::packet& p)
     {
-        if (in_frame_)
+        if(in_frame_)
         {
             listener_->on_data({p, frame_start_, packet_index_});
 
-            if (frame_start_)
+            if(frame_start_)
             {
                 frame_start_ = false;
             }
@@ -24,7 +24,7 @@ struct frame_start_filter::impl
             ++packet_index_;
         }
 
-        if (p.info.rtp.view().marker())
+        if(p.info.rtp.view().marker())
         {
             in_frame_     = true;
             frame_start_  = true;

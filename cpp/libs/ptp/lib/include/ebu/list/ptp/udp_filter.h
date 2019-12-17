@@ -23,4 +23,4 @@ namespace ebu_list::ptp
         const message_listener_ptr ptp_listener_;
         const udp::listener_ptr non_ptp_listener_;
     };
-}
+} // namespace ebu_list::ptp

@@ -3,6 +3,7 @@ import Panel from '../../components/common/Panel';
 import LineChart from '../../components/LineChart';
 import api from '../../utils/api';
 import chartFormatters from '../../utils/chartFormatters';
+import { translateX } from '../../utils/translation';
 
 const TSDF = props => {
     const analysis = props.streamInfo.global_audio_analysis;
@@ -29,8 +30,8 @@ const TSDF = props => {
                             chartFormatters.highThersholdsLineChart,
                             chartFormatters.singleValueLineChart
                         )}
-                        title="Time Stamped Delay Factor"
-                        yAxisLabel="TSDF (μs)"
+                        titleTag='media_information.tsdf'
+                        yAxisLabel={translateX('media_information.tsdf_axis_label')}
                         height={300}
                         lineWidth={3}
                         legend

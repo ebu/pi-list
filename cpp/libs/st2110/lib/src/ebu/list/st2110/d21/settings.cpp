@@ -30,7 +30,7 @@ int d21::calculate_vrx_full_wide(int n_packets, fraction64 t_frame)
 
 int d21::calculate_vrx_full(compliance_profile profile, int n_packets, fraction64 t_frame)
 {
-    if (profile == compliance_profile::narrow || profile == compliance_profile::narrow_linear)
+    if(profile == compliance_profile::narrow || profile == compliance_profile::narrow_linear)
     {
         return calculate_vrx_full_narrow(n_packets, t_frame);
     }
@@ -54,7 +54,7 @@ int d21::calculate_cmax_wide(int n_packets, fraction t_frame)
 int calculate_cmax(compliance_profile profile, read_schedule schedule, int n_packets, fraction t_frame,
                    media::video::scan_type scan, media::video::video_dimensions raster)
 {
-    if (profile == compliance_profile::narrow || profile == compliance_profile::narrow_linear)
+    if(profile == compliance_profile::narrow || profile == compliance_profile::narrow_linear)
     {
         return calculate_cmax_narrow(schedule, n_packets, t_frame, scan, raster);
     }
@@ -67,7 +67,7 @@ compliance_parameters d21::calculate_compliance_parameters(compliance_profile pr
                                                            read_schedule schedule, media::video::scan_type scan,
                                                            media::video::video_dimensions raster)
 {
-    if (profile == compliance_profile::narrow || profile == compliance_profile::narrow_linear)
+    if(profile == compliance_profile::narrow || profile == compliance_profile::narrow_linear)
     {
         return calculate_narrow_compliance_parameters(n_packets, t_frame, schedule, scan, raster);
     }
@@ -97,7 +97,7 @@ compliance_parameters d21::calculate_wide_compliance_parameters(int n_packets, f
 
 std::string d21::to_string(read_schedule schedule)
 {
-    switch (schedule)
+    switch(schedule)
     {
     case read_schedule::gapped: return "gapped";
     default: assert(schedule == read_schedule::linear); return "linear";
@@ -106,9 +106,9 @@ std::string d21::to_string(read_schedule schedule)
 
 read_schedule d21::read_schedule_from_string(std::string_view s)
 {
-    if (s == "gapped")
+    if(s == "gapped")
         return read_schedule::gapped;
-    else if (s == "linear")
+    else if(s == "linear")
         return read_schedule::linear;
     else
         throw std::runtime_error("Invalid read schedule");
@@ -117,14 +117,14 @@ read_schedule d21::read_schedule_from_string(std::string_view s)
 fraction64 st2110::d21::get_ractive(read_schedule schedule, media::video::scan_type scan,
                                     media::video::video_dimensions raster)
 {
-    if (schedule == read_schedule::linear)
+    if(schedule == read_schedule::linear)
     {
         return {1, 1};
     }
 
     LIST_ASSERT(schedule == read_schedule::gapped);
 
-    if (scan == media::video::scan_type::PROGRESSIVE)
+    if(scan == media::video::scan_type::PROGRESSIVE)
     {
         // ST2110-21, 6.3.2 Gapped PRS Progressive Images
         return {1080, 1125};
@@ -134,11 +134,11 @@ fraction64 st2110::d21::get_ractive(read_schedule schedule, media::video::scan_t
         LIST_ASSERT(scan == media::video::scan_type::INTERLACED);
 
         // ST2110-21, 6.3.3 Gapped PRS Interlaced and PsF Images
-        if (raster.height < 576)
+        if(raster.height < 576)
         {
             return {487, 525};
         }
-        else if (raster.height < 1080)
+        else if(raster.height < 1080)
         {
             return {576, 625};
         }
@@ -156,9 +156,9 @@ fraction64 st2110::d21::get_tro_default_multiplier(media::video::scan_type scan,
     // ST2110-21, 6.3.3 Gapped PRS Interlaced and PsF Images
     // ST2110-21, 6.4 Linear Packet Read Schedule
 
-    if (scan == media::video::scan_type::PROGRESSIVE)
+    if(scan == media::video::scan_type::PROGRESSIVE)
     {
-        if (raster.height < 1080)
+        if(raster.height < 1080)
         {
             return {28, 750};
         }
@@ -171,11 +171,11 @@ fraction64 st2110::d21::get_tro_default_multiplier(media::video::scan_type scan,
     {
         LIST_ASSERT(scan == media::video::scan_type::INTERLACED);
 
-        if (raster.height < 576)
+        if(raster.height < 576)
         {
             return {20, 525};
         }
-        else if (raster.height < 1080)
+        else if(raster.height < 1080)
         {
             return {26, 625};
         }

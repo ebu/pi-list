@@ -41,7 +41,7 @@ namespace
 
         context.updater->update_stream_info(network_info.id, j);
 
-        st2110::d20::st2110_20_sdp_serializer s(handler.info().video);
+        st2110::d20::st2110_20_sdp_serializer s(handler.info().video, analysis_info.compliance);
         ebu_list::sdp::sdp_builder sdp({"LIST Generated SDP", "Video flow"});
         sdp.add_media(network_info, s);
         context.updater->update_sdp(network_info.id, sdp, media::media_type::VIDEO);
@@ -73,7 +73,7 @@ namespace
 
     clock::duration get_timestamp_offset(const analysis_profile& profile, const pcap_info& pcap)
     {
-        if (profile.timestamps.source == timestamps_source::pcap)
+        if(profile.timestamps.source == timestamps_source::pcap)
         {
             logger()->info("Using raw pcap timestamps");
             return {};
@@ -101,7 +101,7 @@ void analysis::run_full_analysis(processing_context& context)
 
     auto video_finalizer_callback = [&](const video_stream_serializer& handler) {
         const auto analysis_info = handler.get_video_analysis_info();
-        switch (analysis_info.compliance)
+        switch(analysis_info.compliance)
         {
         case compliance_profile::narrow: ++nr_narrow; break;
         case compliance_profile::narrow_linear: ++nr_narrow_linear; break;
@@ -120,7 +120,7 @@ void analysis::run_full_analysis(processing_context& context)
 
         const auto maybe_stream_info = context.get_stream_info(first_packet);
 
-        if (!maybe_stream_info)
+        if(!maybe_stream_info)
         {
             logger()->warn("Bypassing stream with ssrc: {}", first_packet.info.rtp.view().ssrc());
             logger()->warn("\tdestination: {}", to_string(ipv4::endpoint{first_packet.info.udp.destination_address,
@@ -132,7 +132,7 @@ void analysis::run_full_analysis(processing_context& context)
         const auto& stream_info = maybe_stream_info->first;
         const auto& media_info  = maybe_stream_info->second;
 
-        if (stream_info.type == media::media_type::VIDEO)
+        if(stream_info.type == media::media_type::VIDEO)
         {
             ++nr_video;
             const auto& in_video_info = std::get<video_stream_details>(media_info);
@@ -192,7 +192,7 @@ void analysis::run_full_analysis(processing_context& context)
 
             return ml;
         }
-        else if (stream_info.type == media::media_type::AUDIO)
+        else if(stream_info.type == media::media_type::AUDIO)
         {
             ++nr_audio;
             const auto& audio_info = std::get<audio_stream_details>(media_info);
@@ -213,16 +213,16 @@ void analysis::run_full_analysis(processing_context& context)
             }
             return ml;
         }
-        else if (stream_info.type == media::media_type::ANCILLARY_DATA)
+        else if(stream_info.type == media::media_type::ANCILLARY_DATA)
         {
             ++nr_anc;
             const auto& anc_info = std::get<anc_stream_details>(media_info);
-            auto anc_pkt_writer = context.handler_factory->create_anc_pkt_histogram_logger(stream_info.id);
+            auto anc_pkt_writer  = context.handler_factory->create_anc_pkt_histogram_logger(stream_info.id);
             auto db_anc_rtp_logger =
                 context.handler_factory->create_anc_rtp_logger(context.pcap.id, stream_info.id, "ancillary");
-            auto new_handler     = std::make_unique<anc_stream_serializer>(first_packet, std::move(db_anc_rtp_logger),
-                                        std::move(anc_pkt_writer), stream_info, anc_info, anc_finalizer_callback,
-                                        context.storage_folder);
+            auto new_handler = std::make_unique<anc_stream_serializer>(first_packet, std::move(db_anc_rtp_logger),
+                                                                       std::move(anc_pkt_writer), stream_info, anc_info,
+                                                                       anc_finalizer_callback, context.storage_folder);
             return new_handler;
         }
         else

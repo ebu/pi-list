@@ -22,7 +22,7 @@ namespace
         LIST_ASSERT(size(pdu) >= ssizeof<v2::message_header>());
         auto [header, remainder] = v2::take_header(std::move(pdu));
 
-        switch (header.value().type())
+        switch(header.value().type())
         {
         case v2::message_type::sync: return v2::sync(packet_timestamp, std::move(header), std::move(remainder));
 
@@ -56,21 +56,21 @@ bool ptp::may_be_ptp(ipv4::address destination_address)
 
 bool ptp::may_be_ptp(port p)
 {
-    if (p == endpoints::ptp_event) return true;
-    if (p == endpoints::ptp_general) return true;
+    if(p == endpoints::ptp_event) return true;
+    if(p == endpoints::ptp_general) return true;
     return false;
 }
 
 maybe_message ptp::decode(clock::time_point packet_timestamp, oview&& pdu)
 {
-    if (size(pdu) < ssizeof<common_message_header>()) return std::nullopt;
+    if(size(pdu) < ssizeof<common_message_header>()) return std::nullopt;
     const auto common = reinterpret_cast<const common_message_header*>(pdu.view().data());
 
-    if (common->version_ptp == 2)
+    if(common->version_ptp == 2)
     {
         return decode_v2(packet_timestamp, std::move(pdu));
     }
-    else if (common->version_ptp == 1)
+    else if(common->version_ptp == 1)
     {
         return decode_v1(std::move(pdu));
     }

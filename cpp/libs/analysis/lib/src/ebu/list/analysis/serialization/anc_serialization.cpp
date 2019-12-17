@@ -31,18 +31,18 @@ anc_stream_details anc_stream_details::from_json(const nlohmann::json& j)
 {
     anc_stream_details desc{};
     const auto anc_json = j.find("media_specific");
-    if (anc_json != j.end())
+    if(anc_json != j.end())
     {
         desc.anc = st2110::d40::from_json(*anc_json);
     }
 
     const auto statistics_json = j.find("statistics");
-    if (statistics_json != j.end())
+    if(statistics_json != j.end())
     {
         desc.last_frame_ts        = statistics_json->at("last_frame_ts").get<uint32_t>();
         desc.packet_count         = statistics_json->at("packet_count").get<uint32_t>();
         desc.dropped_packet_count = statistics_json->at("dropped_packet_count").get<uint32_t>();
-        desc.wrong_marker_count = statistics_json->at("wrong_marker_count").get<uint32_t>();
+        desc.wrong_marker_count   = statistics_json->at("wrong_marker_count").get<uint32_t>();
         desc.first_packet_ts =
             clock::time_point{clock::duration{std::stol(statistics_json->at("first_packet_ts").get<std::string>())}};
         desc.last_packet_ts =
@@ -59,7 +59,7 @@ nlohmann::json st2110::d40::to_json(const st2110::d40::anc_description& desc)
     j["packets_per_frame"] = desc.packets_per_frame;
     j["rate"]              = to_string(desc.rate);
     j["scan_type"]         = to_string(desc.scan_type);
-    for (auto& it : desc.sub_streams)
+    for(auto& it : desc.sub_streams)
     {
         nlohmann::json sub_stream = to_json(it);
         j["sub_streams"].push_back(sub_stream);
@@ -78,7 +78,7 @@ nlohmann::json st2110::d40::to_json(const st2110::d40::anc_sub_stream& s)
     j["errors"]       = s.errors();
     j["packet_count"] = s.packet_count;
 
-    for (auto& it : s.anc_sub_sub_streams)
+    for(auto& it : s.anc_sub_sub_streams)
     {
         nlohmann::json ss;
         ss["type"]     = it.type();
@@ -97,9 +97,9 @@ st2110::d40::anc_description st2110::d40::from_json(const nlohmann::json& j)
     desc.rate              = media::video::parse_from_string(j.at("rate").get<string>());
     desc.scan_type         = media::video::parse_scan_type(j.find("scan_type")->get<string>());
 
-    if (const auto dump = j.find("sub_streams"); dump != j.end())
+    if(const auto dump = j.find("sub_streams"); dump != j.end())
     {
-        for (auto it : j.at("sub_streams"))
+        for(auto it : j.at("sub_streams"))
         {
             anc_sub_stream s = from_json(it, 0); // TODO, fix this workaround
             desc.sub_streams.push_back(s);
@@ -117,15 +117,15 @@ st2110::d40::anc_sub_stream st2110::d40::from_json(const nlohmann::json& j, [[ma
     anc_packet_header.stream_num        = j.at("num");
     anc_packet_header.line_num          = j.at("line");
     anc_packet_header.horizontal_offset = j.at("offset");
-    const auto anc_packet = anc_packet_header_lens(anc_packet_header);
-    auto s = anc_sub_stream(anc_packet);
+    const auto anc_packet               = anc_packet_header_lens(anc_packet_header);
+    auto s                              = anc_sub_stream(anc_packet);
 
     s.errors(j.at("errors"));
     s.packet_count = j.at("packet_count");
 
-    if (const auto dump = j.find("sub_sub_streams"); dump != j.end())
+    if(const auto dump = j.find("sub_sub_streams"); dump != j.end())
     {
-        for (auto it : j.at("sub_sub_streams"))
+        for(auto it : j.at("sub_sub_streams"))
         {
             auto ss = anc_sub_sub_stream(it.at("type").get<string>());
             s.anc_sub_sub_streams.push_back(ss);

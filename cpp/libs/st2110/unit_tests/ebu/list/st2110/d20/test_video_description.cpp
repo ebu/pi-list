@@ -25,14 +25,13 @@ SCENARIO("sdp creation for st2110 video")
 {
     GIVEN("a st2110-20 video information")
     {
-        auto video_info        = video_description{};
-        video_info.sampling    = video::video_sampling::YCbCr_4_2_2;
-        video_info.color_depth = 10;
-        video_info.dimensions  = {1920, 1080};
-        video_info.rate        = {50, 1};
-        video_info.colorimetry = video::colorimetry::BT601;
+        auto video_info_base        = video_description{};
+        video_info_base.sampling    = video::video_sampling::YCbCr_4_2_2;
+        video_info_base.color_depth = 10;
+        video_info_base.dimensions  = {1920, 1080};
+        video_info_base.rate        = {50, 1};
+        video_info_base.colorimetry = video::colorimetry::BT601;
 
-        st2110_20_sdp_serializer sdp_serializer{video_info};
         media::network_media_description desc;
         desc.type                 = media::media_type::VIDEO;
         desc.network.payload_type = 96;
@@ -41,6 +40,9 @@ SCENARIO("sdp creation for st2110 video")
 
         WHEN("we generate the additional attributes tag")
         {
+            auto video_info = video_info_base;
+            st2110_20_sdp_serializer sdp_serializer(video_info, st2110::d21::compliance_profile::narrow);
+
             std::vector<std::string> lines;
             sdp_serializer.additional_attributes(lines, desc);
 
@@ -49,7 +51,7 @@ SCENARIO("sdp creation for st2110 video")
                 const std::vector<std::string> expected = {
                     "a=source-filter: incl IN IP4 255.10.10.1 192.168.1.10",
                     "a=fmtp:96 sampling=YCbCr-4:2:2; width=1920; height=1080; exactframerate=50; depth=10; "
-                    "colorimetry=BT601; PM=2110GPM; SSN=ST2110-20:2017;"};
+                    "colorimetry=BT601; PM=2110GPM; SSN=ST2110-20:2017; TP=2110TPN;"};
 
                 REQUIRE(lines.size() == expected.size());
                 REQUIRE(lines == expected);
@@ -58,8 +60,10 @@ SCENARIO("sdp creation for st2110 video")
 
         WHEN("we generate the additional attributes tag with a not integer framerate")
         {
+            auto video_info = video_info_base;
             video_info.rate = Rate(60, 1001);
             std::vector<std::string> lines;
+            st2110_20_sdp_serializer sdp_serializer(video_info, st2110::d21::compliance_profile::narrow);
             sdp_serializer.additional_attributes(lines, desc);
 
             THEN("we get the correct information")
@@ -67,7 +71,46 @@ SCENARIO("sdp creation for st2110 video")
                 const std::vector<std::string> expected = {
                     "a=source-filter: incl IN IP4 255.10.10.1 192.168.1.10",
                     "a=fmtp:96 sampling=YCbCr-4:2:2; width=1920; height=1080; exactframerate=60/1001; depth=10; "
-                    "colorimetry=BT601; PM=2110GPM; SSN=ST2110-20:2017;"};
+                    "colorimetry=BT601; PM=2110GPM; SSN=ST2110-20:2017; TP=2110TPN;"};
+
+                REQUIRE(lines.size() == expected.size());
+                REQUIRE(lines == expected);
+            }
+        }
+
+        WHEN("we generate the additional attributes tag with an interlaced structure")
+        {
+            auto video_info      = video_info_base;
+            video_info.scan_type = video::scan_type::INTERLACED;
+            std::vector<std::string> lines;
+            st2110_20_sdp_serializer sdp_serializer(video_info, st2110::d21::compliance_profile::narrow);
+            sdp_serializer.additional_attributes(lines, desc);
+
+            THEN("we get the correct information")
+            {
+                const std::vector<std::string> expected = {
+                    "a=source-filter: incl IN IP4 255.10.10.1 192.168.1.10",
+                    "a=fmtp:96 sampling=YCbCr-4:2:2; width=1920; height=1080; interlace; exactframerate=50; depth=10; "
+                    "colorimetry=BT601; PM=2110GPM; SSN=ST2110-20:2017; TP=2110TPN;"};
+
+                REQUIRE(lines.size() == expected.size());
+                REQUIRE(lines == expected);
+            }
+        }
+
+        WHEN("we generate the additional attributes tag with a wide schedule")
+        {
+            auto video_info = video_info_base;
+            std::vector<std::string> lines;
+            st2110_20_sdp_serializer sdp_serializer(video_info, st2110::d21::compliance_profile::wide);
+            sdp_serializer.additional_attributes(lines, desc);
+
+            THEN("we get the correct information")
+            {
+                const std::vector<std::string> expected = {
+                    "a=source-filter: incl IN IP4 255.10.10.1 192.168.1.10",
+                    "a=fmtp:96 sampling=YCbCr-4:2:2; width=1920; height=1080; exactframerate=50; depth=10; "
+                    "colorimetry=BT601; PM=2110GPM; SSN=ST2110-20:2017; TP=2110TPW;"};
 
                 REQUIRE(lines.size() == expected.size());
                 REQUIRE(lines == expected);
@@ -76,7 +119,9 @@ SCENARIO("sdp creation for st2110 video")
 
         WHEN("we generate the rtpmap line")
         {
+            auto video_info = video_info_base;
             std::vector<std::string> lines;
+            st2110_20_sdp_serializer sdp_serializer(video_info, st2110::d21::compliance_profile::narrow);
             sdp_serializer.write_rtpmap_line(lines, desc);
 
             THEN("we get the right values")

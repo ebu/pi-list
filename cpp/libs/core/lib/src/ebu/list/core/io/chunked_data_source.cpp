@@ -29,15 +29,15 @@ size_t chunked_data_source::get_current_offset() const
 
 oview chunked_data_source::try_read_exactly(ptrdiff_t amount)
 {
-    if (!cache_)
+    if(!cache_)
     {
         cache_ = source_->read_next();
     }
 
-    while (size(cache_) < amount)
+    while(size(cache_) < amount)
     {
         auto next = source_->read_next();
-        if (!next)
+        if(!next)
         {
             break;
         }
@@ -45,7 +45,7 @@ oview chunked_data_source::try_read_exactly(ptrdiff_t amount)
         cache_ = merge(*factory_, std::move(cache_), std::move(next));
     }
 
-    if (size(cache_) >= amount)
+    if(size(cache_) >= amount)
     {
         auto [left, right] = split(std::move(cache_), amount);
         cache_             = std::move(right);

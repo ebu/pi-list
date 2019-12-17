@@ -25,7 +25,7 @@ oview file_source::read_next()
     const auto read_result = fread(block->begin(), 1, block->size(), handle_.handle());
 #endif // defined(_WIN32)
 
-    if (read_result == 0)
+    if(read_result == 0)
     {
         // Throw if not EOF
         LIST_ENFORCE(feof(handle_.handle()), std::runtime_error, "End of File was not detected");

@@ -1,8 +1,8 @@
 #pragma once
 
+#include "ebu/list/analysis/utils/histogram_listener.h"
 #include "ebu/list/core/types.h"
 #include "nlohmann/json.hpp"
-#include "ebu/list/analysis/utils/histogram_listener.h"
 
 namespace ebu_list::analysis
 {
@@ -23,4 +23,4 @@ namespace ebu_list::analysis
         virtual void on_error(std::exception_ptr e) override;
     };
 
-}
+} // namespace ebu_list::analysis

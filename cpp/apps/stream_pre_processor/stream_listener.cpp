@@ -15,17 +15,17 @@ namespace
     {
 
         nlohmann::json serialized_streams_details = stream_with_details_serializer::to_json(stream_info);
-        if (num_packets > 0)
+        if(num_packets > 0)
         {
             serialized_streams_details["statistics"]["packet_count"]         = num_packets;
             serialized_streams_details["statistics"]["dropped_packet_count"] = num_dropped_packets;
         }
 
-        if (detectors_error_codes["video"].size() > 0)
+        if(detectors_error_codes["video"].size() > 0)
             serialized_streams_details["media_type_validation"]["video"] = detectors_error_codes["video"];
-        if (detectors_error_codes["audio"].size() > 0)
+        if(detectors_error_codes["audio"].size() > 0)
             serialized_streams_details["media_type_validation"]["audio"] = detectors_error_codes["audio"];
-        if (detectors_error_codes["anc"].size() > 0)
+        if(detectors_error_codes["anc"].size() > 0)
             serialized_streams_details["media_type_validation"]["anc"] = detectors_error_codes["anc"];
 
         db.insert(constants::db::offline, constants::db::collections::streams, serialized_streams_details);
@@ -58,7 +58,7 @@ void stream_listener::on_data(const rtp::packet& packet)
     }
 
     // NOTE: seqnum_analyzer_ is looking for dropped packets but only for
-    // streams of unkown types. Therefore it only assumes the presence of
+    // streams of unknown types. Therefore it only assumes the presence of
     // RTP's sequence number field, hence the uint16_t qualification.
     seqnum_analyzer_.handle_packet(static_cast<uint16_t>(packet.info.rtp.view().sequence_number()));
     num_packets_++;
@@ -75,7 +75,7 @@ void stream_listener::on_complete()
 
     bool is_valid = true;
 
-    if (std::holds_alternative<d20::video_description>(format))
+    if(std::holds_alternative<d20::video_description>(format))
     {
         const auto video_format = std::get<d20::video_description>(format);
 
@@ -86,7 +86,7 @@ void stream_listener::on_complete()
         video_details.video = video_format;
         details             = video_details;
     }
-    else if (std::holds_alternative<d30::audio_description>(format))
+    else if(std::holds_alternative<d30::audio_description>(format))
     {
         const auto audio_format = std::get<d30::audio_description>(format);
 
@@ -97,7 +97,7 @@ void stream_listener::on_complete()
         audio_details.audio = audio_format;
         details             = audio_details;
     }
-    else if (std::holds_alternative<d40::anc_description>(format))
+    else if(std::holds_alternative<d40::anc_description>(format))
     {
         const auto anc_format = std::get<d40::anc_description>(format);
 
@@ -113,11 +113,11 @@ void stream_listener::on_complete()
         stream_id_.state = StreamState::NEEDS_INFO;
     }
 
-    if (is_valid)
+    if(is_valid)
     {
         stream_with_details swd{stream_id_, details};
 
-        if (stream_id_.state != StreamState::NEEDS_INFO)
+        if(stream_id_.state != StreamState::NEEDS_INFO)
             save_on_db(db_, swd, detectors_error_codes);
         else
             save_on_db(db_, swd, detectors_error_codes, num_packets_,

@@ -17,29 +17,29 @@ format_detector::format_detector(rtp::packet /*first_packet*/)
 
 void format_detector::on_data(const rtp::packet& packet)
 {
-    if (status_description_.state != detector::state::detecting) return;
+    if(status_description_.state != detector::state::detecting) return;
 
     std::vector<const detector*> to_remove;
     const detector* one_valid = nullptr;
 
-    for (auto& d : detectors_)
+    for(auto& d : detectors_)
     {
         const auto result = d->handle_data(packet);
-        if (result.state == detector::state::invalid)
+        if(result.state == detector::state::invalid)
         {
             const auto kind = d->get_kind();
             logger()->debug("This stream has not {} valid format ({})", kind, result.error_code);
             error_codes_list_[kind].push_back(result.error_code);
             to_remove.push_back(d.get());
         }
-        else if (result.state == detector::state::valid)
+        else if(result.state == detector::state::valid)
         {
             status_description_ = result;
             one_valid           = d.get();
         }
     }
 
-    if (one_valid)
+    if(one_valid)
     {
         detectors_.erase(
             remove_if(begin(detectors_), end(detectors_), [&](const auto& x) { return x.get() != one_valid; }),
@@ -53,7 +53,7 @@ void format_detector::on_data(const rtp::packet& packet)
             end(detectors_));
     }
 
-    if (detectors_.empty())
+    if(detectors_.empty())
     {
         status_description_.state      = detector::state::invalid;
         status_description_.error_code = "STATUS_CODE_FORMAT_NO_DETECTORS_FOUND";
@@ -75,7 +75,7 @@ detector::status_description format_detector::status() const noexcept
 
 detector::details format_detector::get_details() const
 {
-    if (status_description_.state != detector::state::valid) return std::nullopt;
+    if(status_description_.state != detector::state::valid) return std::nullopt;
 
     assert(detectors_.size() == 1);
     return detectors_[0]->get_details();

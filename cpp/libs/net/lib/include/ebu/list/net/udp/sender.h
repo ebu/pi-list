@@ -19,4 +19,4 @@ namespace ebu_list::udp
         struct impl;
         std::unique_ptr<impl> pimpl_;
     };
-}
+} // namespace ebu_list::udp
