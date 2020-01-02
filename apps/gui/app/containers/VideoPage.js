@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Tabs from '../components/common/Tabs';
 import VideoAnalysis from './streamPage/VideoAnalysis';
-import VideoStreamInformation from './streamPage/VideoStreamInformation';
+import Summary from './streamPage/Summary';
 import CbufferAnalysis from './streamPage/CbufferAnalysis';
 import VrxAnalysis from './streamPage/VrxAnalysis';
 import TvdAnalysis from './streamPage/TvdAnalysis';
@@ -11,7 +11,7 @@ import PerFrameAnalysisViewer from './streamPage/PerFrameAnalysisViewer';
 import RtpAnalysisViewer from './streamPage/RtpAnalysisViewer';
 
 const TABS = [
-    VideoStreamInformation,
+    Summary,
     VideoAnalysis,
     VideoExplorer,
     CbufferAnalysis,
@@ -31,7 +31,7 @@ const VideoPage = (props) => {
             <Tabs
                 headers={[
                     {
-                        label: 'Information',
+                        label: 'Summary',
                         icon: 'info',
                     },
                     {

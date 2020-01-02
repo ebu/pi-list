@@ -2,11 +2,6 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Badge from 'components/common/Badge';
 
-const propTypes = {
-    media_type: PropTypes.string.isRequired,
-    media_specific: PropTypes.object.isRequired
-};
-
 function renderVideoInfo(media) {
     const scan = media.scan_type === 'interlaced' ? 'i' : 'p';
     const rate_value = eval(media.rate);
@@ -33,14 +28,24 @@ function renderAudioInfo(media) {
     );
 }
 
-const StreamBadge = (props) => {
+const StreamBadge = props => {
     switch (props.media_type) {
-    case 'video': return renderVideoInfo(props.media_specific);
-    case 'audio': return renderAudioInfo(props.media_specific);
-    default: return null;
+        case 'video':
+            return renderVideoInfo(props.media_specific);
+        case 'audio':
+            return renderAudioInfo(props.media_specific);
+        default:
+            return null;
     }
 };
 
-StreamBadge.propTypes = propTypes;
+StreamBadge.propTypes = {
+    media_type: PropTypes.string.isRequired,
+    media_specific: PropTypes.object,
+};
+
+StreamBadge.defaultProps = {
+    media_specific: null,
+};
 
 export default StreamBadge;

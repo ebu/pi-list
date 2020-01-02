@@ -1,20 +1,19 @@
 import React from 'react';
-import AudioRtpInfo from './AudioRtpInfo';
-import TsdfInfo from './TsdfInfo';
 import AnalysisInfo from '../streamPage/AnalysisInfo';
+import RtpInfo from './RtpInfo';
+import AncillarySummary from './AncillarySummary';
 
 const Analysis = props => {
     const streamInfo = props.streamInfo;
-    const statistics = streamInfo.statistics;
 
     return (
         <div>
             <div className="row lst-full-height">
                 <div className="col-xs-12 col-md-6">
-                    <AudioRtpInfo {...props} />
+                    <RtpInfo {...props} />
                 </div>
                 <div className="col-xs-12 col-md-6">
-                    <TsdfInfo {...props} />
+                    <AncillarySummary {...props} />
                 </div>
             </div>
             <div className="row lst-full-height">

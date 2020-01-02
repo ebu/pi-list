@@ -2,6 +2,7 @@ import React from 'react';
 import Dash21Info from './Dash21Info';
 import RtpInfo from './RtpInfo';
 import Button from '../../components/common/Button';
+import AnalysisInfo from './AnalysisInfo';
 
 const VideoAnalysis = (props) => {
     return (
@@ -12,6 +13,9 @@ const VideoAnalysis = (props) => {
                 </div>
                 <div className="col-xs-12 col-md-6">
                     <RtpInfo info={props.streamInfo} />
+                </div>
+                <div className="col-xs-12 col-md-6">
+                    <AnalysisInfo {...props} />
                 </div>
             </div>
             <hr />

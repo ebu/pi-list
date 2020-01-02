@@ -1,10 +1,11 @@
 import React from 'react';
 import Button from '../../components/common/Button';
 import NetworkInfo from '../streamPage/NetworkInfo';
-import VideoInfo from '../streamPage/VideoInfo';
+import AudioInfo from '../streamPage/AudioInfo';
 
 const Summary = props => {
     const streamInfo = props.streamInfo;
+    const statistics = streamInfo.statistics;
 
     return (
         <div>
@@ -13,15 +14,15 @@ const Summary = props => {
                     <NetworkInfo stream={props.streamInfo} />
                 </div>
                 <div className="col-xs-12 col-md-6">
-                    <VideoInfo {...streamInfo.media_type} {...streamInfo.media_specific} {...streamInfo.statistics} />
+                    <AudioInfo {...props.streamInfo.media_specific} {...statistics} />
                 </div>
             </div>
             <hr />
             <Button
                 type="info"
-                label="Ancillary analysis explained"
+                label="Audio analysis explained"
                 onClick={() => {
-                    window.open('https://github.com/ebu/pi-list/blob/master/docs/ancillary_data.md', '_blank');
+                    window.open('https://github.com/ebu/pi-list/blob/master/docs/audio_timing_analysis.md', '_blank');
                 }}
             />
         </div>

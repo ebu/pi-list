@@ -2,7 +2,7 @@ import React from 'react';
 import NetworkInfo from './NetworkInfo';
 import VideoInfo from './VideoInfo';
 
-const VideoStreamInformation = (props) => {
+const Summary = (props) => {
     const streamInfo = props.streamInfo;
     const statistics = streamInfo.statistics;
     const mediaInfo = streamInfo.media_specific;
@@ -19,4 +19,4 @@ const VideoStreamInformation = (props) => {
     );
 };
 
-export default VideoStreamInformation;
+export default Summary;
