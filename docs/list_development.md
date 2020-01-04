@@ -89,11 +89,11 @@ CMakeLists.txt  --> definitions for both lib and unit_tests
 
 Just use cmake's `add_subdirectory()` and it will work out-of-the-box.
 
-## Contribute with translations
+## Contribute to translations
 
-Translations file are [stored in a Google Sheet](https://docs.google.com/spreadsheets/d/1yqL3CKmUu_M1AWCtHEzG5hp-8B1X-5_qxcgDn4AbFYo/edit)
+All the labels of the UI are generated from [a Google Sheet](https://docs.google.com/spreadsheets/d/1yqL3CKmUu_M1AWCtHEzG5hp-8B1X-5_qxcgDn4AbFYo/edit) for every supported language.
 
-## Create authentication token to generate the translations
+### Create authentication token to generate the translations
 
 The translations will be generated during the deploy process either Linux host
 or Docker builds, to achieve this a token must be generated first.
@@ -101,6 +101,15 @@ This token can be kept locally and can be reused.
 
 ```
 node apps/gui/data/translationsGenerator.js -t
+```
+
+### Translation helper
+
+In order to help filling the Spreadsheet, one can use the Google
+Translate help script:
+
+```
+node apps/gui/data/googleTranslate.js "Any english text"
 ```
 
 ## Contribute
