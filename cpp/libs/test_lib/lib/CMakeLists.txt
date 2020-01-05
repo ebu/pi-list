@@ -34,7 +34,6 @@ target_link_libraries(${PROJECT_NAME}
         ${${PROJECT_NAME}_LINK_FLAGS}
         )
 
-message(STATUS "***********" ${CONAN_LIB_DIRS_CATCH2}/cmake/Catch2/ParseAndAddCatchTests.cmake)
 # Catch Test Library test discovery (using both "debug" and "normal" so that it works for normal and multi cmake)
 include(${CONAN_LIB_DIRS_CATCH2}/cmake/Catch2/ParseAndAddCatchTests.cmake)
 

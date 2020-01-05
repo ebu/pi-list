@@ -1,6 +1,8 @@
 #include "fs_handler_factory.h"
 #include "ebu/list/analysis/serialization/utils.h"
 #include "ebu/list/analysis/serialization/video_stream_serializer.h"
+#include "ebu/list/analysis/serialization/ttml_stream_serializer.h"
+#include "ebu/list/analysis/handlers/ttml_stream_handler.h"
 #include "storage.h"
 
 using namespace ebu_list;
@@ -87,6 +89,11 @@ histogram_listener_uptr fs_handler_factory::create_anc_pkt_histogram_logger(cons
 {
     const auto info_path = storage_base_dir_ / stream_id;
     return std::make_unique<histogram_writer>(info_path, anc_pkt_file_name);
+}
+
+analysis::ttml::stream_handler::listener_uptr fs_handler_factory::create_ttml_document_logger(const std::string& stream_id) const
+{
+    return std::make_unique<analysis::ttml::stream_serializer>(storage_base_dir_, stream_id);
 }
 
 ptp::state_machine::listener_ptr fs_handler_factory::create_ptp_logger(const std::string& pcap_id) const

@@ -2,6 +2,7 @@
 #include "ebu/list/st2110/d20/video_format_detector.h"
 #include "ebu/list/st2110/d30/audio_format_detector.h"
 #include "ebu/list/st2110/d40/anc_format_detector.h"
+#include "ebu/list/ttml/ttml_format_detector.h"
 #include "ebu/list/st2110/pch.h"
 
 using namespace ebu_list;
@@ -13,6 +14,7 @@ format_detector::format_detector(rtp::packet /*first_packet*/)
     detectors_.push_back(std::make_unique<d20::video_format_detector>());
     detectors_.push_back(std::make_unique<d30::audio_format_detector>());
     detectors_.push_back(std::make_unique<d40::anc_format_detector>());
+    detectors_.push_back(std::make_unique<ttml::format_detector>());
 }
 
 void format_detector::on_data(const rtp::packet& packet)

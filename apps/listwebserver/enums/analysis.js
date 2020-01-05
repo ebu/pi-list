@@ -27,6 +27,8 @@ module.exports = {
         invalid_multicast_ip_address: 'errors.invalid_multicast_ip_address',
         unrelated_multicast_addresses: 'errors.unrelated_multicast_addresses',
         shared_multicast_destination_ip_address: 'errors.shared_multicast_destination_ip_address',
+        ttml_time_base_is_not_media: 'errors.ttml_time_base_is_not_media',
+        ttml_inconsistent_sequence_identifier: 'errors.ttml_inconsistent_sequence_identifier',
     },
     warnings: {
         pcap: {

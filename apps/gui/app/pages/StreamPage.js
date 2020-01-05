@@ -6,6 +6,7 @@ import errorEnum from '../enums/errorEnum';
 import VideoPage from '../containers/VideoPage';
 import AudioPage from '../containers/AudioPage/index';
 import Ancillary from '../containers/ancillary/index';
+import TTML from '../containers/ttml/index';
 import ErrorPage from '../components/ErrorPage';
 import routeBuilder from '../utils/routeBuilder';
 
@@ -57,6 +58,14 @@ const StreamPage = (props) => {
     case 'ancillary_data':
         return (
             <Ancillary
+                streamInfo={props.streamInfo}
+                pcapID={pcapID}
+                streamID={streamID}
+            />
+        );
+    case 'ttml':
+        return (
+            <TTML
                 streamInfo={props.streamInfo}
                 pcapID={pcapID}
                 streamID={streamID}

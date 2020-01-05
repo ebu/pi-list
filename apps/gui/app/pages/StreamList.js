@@ -14,10 +14,28 @@ function get_icon_for(stream) {
             return getIcon('audio');
         case 'ancillary_data':
             return getIcon('metadata');
-        case 'ttml_data':
+        case 'ttml':
             return getIcon('metadata');
         case 'unknown':
             return getIcon('unknown');
+
+        default:
+            return null;
+    }
+}
+
+function get_title_for(stream, index) {
+    switch (stream.media_type) {
+        case 'video':
+            return `ST2110-20 #${index + 1}`;
+        case 'audio':
+            return `ST2110-30 #${index + 1}`;
+        case 'ancillary_data':
+            return `ST2110-40 #${index + 1}`;
+        case 'ttml':
+            return `TTML #${index + 1}`;
+        case 'unknown':
+            return `Unknown #${index + 1}`;
 
         default:
             return null;
@@ -34,9 +52,10 @@ function renderPtpCard(pcapID) {
 
 function renderCard(pcapID, stream, index) {
     const icon = get_icon_for(stream);
+    const title = get_title_for(stream, index);
     return (
         <div className="col-lg-3 col-md-4 col-sm-12" key={`stream-${index}`}>
-            <StreamCard key={stream.id} {...stream} pcapID={pcapID} title={`#${index + 1}`} icon={icon} />
+            <StreamCard key={stream.id} {...stream} pcapID={pcapID} title={title} icon={icon} />
         </div>
     );
 }
@@ -45,7 +64,7 @@ const StreamList = props => {
     const videoStreams = props.availableStreams.filter(elem => elem.media_type === 'video');
     const audioStreams = props.availableStreams.filter(elem => elem.media_type === 'audio');
     const metadataStreams = props.availableStreams.filter(elem => elem.media_type === 'ancillary_data');
-    const ttmlStreams = props.availableStreams.filter(elem => elem.media_type === 'ttml_data');
+    const ttmlStreams = props.availableStreams.filter(elem => elem.media_type === 'ttml');
     const unknownStreams = props.availableStreams.filter(elem => elem.media_type === 'unknown');
     const { pcapID } = props.match.params;
     const allStreams = [...videoStreams, ...audioStreams, ...metadataStreams, ...ttmlStreams, ...unknownStreams];

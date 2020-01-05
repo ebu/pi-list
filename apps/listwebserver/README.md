@@ -83,6 +83,10 @@
     - result : string // defined in enums/analysis/outcome
     - details:
         - destination: { address : string, port : string }
+  - ttml_time_base_is_media
+    - result : string // defined in enums/analysis/outcome
+  - ttml_consistent_sequence_identifier
+    - result : string // defined in enums/analysis/outcome
 
 - error_list : array of:
     - {

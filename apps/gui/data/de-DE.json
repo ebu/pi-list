@@ -24,6 +24,8 @@
   "analysis.errors.invalid_multicast_ip_address": "*** invalid_multicast_ip_address ***",
   "analysis.errors.unrelated_multicast_addresses": "*** unrelated_multicast_addresses ***",
   "analysis.errors.shared_multicast_destination_ip_address": "*** shared_multicast_destination_ip_address ***",
+  "analysis.errors.ttml_time_base_is_not_media": "*** analysis.errors.ttml_time_base_is_not_media ***",
+  "analysis.errors.ttml_inconsistent_sequence_identifier": "*** analysis.errors.ttml_inconsistent_sequence_identifier ***",
   "analysis.errors.invalid_marker_bit": "Ungültiges RTP-Markierungsbit",
   "headings.network_information": "Netzwerk Informationen",
   "headings.media_information": "Medien Informationen",
@@ -39,7 +41,7 @@
   "headings.payload": "Nutzlast",
   "headings.unknown": "Unbekannt",
   "headings.filters": "Filter",
-  "headings.ttml": "*** headings.ttml",
+  "headings.ttml": "TTML",
   "audio_player.play": "Abspielen",
   "audio_player.pause": "Pause",
   "audio_player.render": "Rendern",
@@ -178,6 +180,7 @@
   "workflow.cancel_failed": "***workflow.cancel_failed",
   "workflow.names.captureAndIngest": "*** captureAndIngest",
   "workflow.names.downloadMultipleFiles": "*** workflow.names.downloadMultipleFiles",
+  "workflow.names.compareStreams": "Vergleichen Ströme",
   "workflow.download_networkcapture": "*** workflow.download_networkcapture",
   "user_account.delete_user_account": "Account löschen",
   "user_account.sign_in": "Einloggen",
@@ -223,6 +226,7 @@
   "navigation.ptp_analysis": "PTP Analyse",
   "navigation.streams": "Streams",
   "navigation.stream": "Stream",
+  "navigation.stream_comparisons": "Stream-Vergleich",
   "realtime_feed.ok": "Informationen in Echtzeit erhalten",
   "live_stream.no_streams": "Keine Streams gefunden",
   "live_stream.no_streams_message": "Starten Sie die Aufnahme eines Livestreams um sie hier zu sehen",
@@ -248,5 +252,8 @@
   "notifications.error.live.sources.delete_message": "Fehler beim Löschen der Live-Quellen",
   "table.next": "*** table.next ***",
   "table.previous": "*** table.previous ***",
-  "analysis_profiles.active_profile": "*** analysis_profiles.profiles ***"
+  "analysis_profiles.active_profile": "*** analysis_profiles.profiles ***",
+  "ttml.number_of_subtitles": "Number of subtitles",
+  "ttml.time_base": "Time base",
+  "ttml.sequence_identifier": "Sequence identifier"
 }

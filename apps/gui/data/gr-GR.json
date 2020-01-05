@@ -24,6 +24,8 @@
   "analysis.errors.invalid_multicast_ip_address": "*** invalid_multicast_ip_address ***",
   "analysis.errors.unrelated_multicast_addresses": "*** unrelated_multicast_addresses ***",
   "analysis.errors.shared_multicast_destination_ip_address": "*** shared_multicast_destination_ip_address ***",
+  "analysis.errors.ttml_time_base_is_not_media": "*** analysis.errors.ttml_time_base_is_not_media ***",
+  "analysis.errors.ttml_inconsistent_sequence_identifier": "*** analysis.errors.ttml_inconsistent_sequence_identifier ***",
   "analysis.errors.invalid_marker_bit": "Μη έγκυρο bit δείκτη RTP",
   "headings.network_information": "Πληροφορίες δικτύου",
   "headings.media_information": "Πληροφορίες για το περιεχόμενο",
@@ -39,7 +41,7 @@
   "headings.payload": "φορτίο επί πληρωμή",
   "headings.unknown": "Αγνωστος",
   "headings.filters": "Φίλτρα",
-  "headings.ttml": "*** headings.ttml",
+  "headings.ttml": "TTML",
   "audio_player.play": "Αναπαραγωγή",
   "audio_player.pause": "Παύση",
   "audio_player.render": "Ρεαλισμός",
@@ -178,6 +180,7 @@
   "workflow.cancel_failed": "***workflow.cancel_failed",
   "workflow.names.captureAndIngest": "*** captureAndIngest",
   "workflow.names.downloadMultipleFiles": "*** workflow.names.downloadMultipleFiles",
+  "workflow.names.compareStreams": "συγκρίνετε ρεύματα",
   "workflow.download_networkcapture": "*** workflow.download_networkcapture",
   "user_account.delete_user_account": "Διαγραφή λογαριασμού",
   "user_account.sign_in": "Σύνδεση",
@@ -223,6 +226,7 @@
   "navigation.ptp_analysis": "Ανάλυση PTP",
   "navigation.streams": "Ροές",
   "navigation.stream": "Ροή",
+  "navigation.stream_comparisons": "ροή Σύγκριση",
   "realtime_feed.ok": "Λήψη πληροφοριών σε πραγματικό χρόνο",
   "live_stream.no_streams": "Δεν βρέθηκαν ροές",
   "live_stream.no_streams_message": "Ξεκινήστε την εγγραφή μιας ζωντανής ροής για να την δείτε εδώ.",
@@ -248,5 +252,8 @@
   "notifications.error.live.sources.delete_message": "Σφάλμα κατά τη διαγραφή ζωντανών πηγών",
   "table.next": "*** table.next ***",
   "table.previous": "*** table.previous ***",
-  "analysis_profiles.active_profile": "*** analysis_profiles.profiles ***"
+  "analysis_profiles.active_profile": "*** analysis_profiles.profiles ***",
+  "ttml.number_of_subtitles": "Number of subtitles",
+  "ttml.time_base": "Time base",
+  "ttml.sequence_identifier": "Sequence identifier"
 }

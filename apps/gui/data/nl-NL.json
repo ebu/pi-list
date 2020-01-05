@@ -24,6 +24,8 @@
   "analysis.errors.invalid_multicast_ip_address": "Ongeldig multicast IP adres",
   "analysis.errors.unrelated_multicast_addresses": "Ongerelateerde multicast adressen (MAC en IP)",
   "analysis.errors.shared_multicast_destination_ip_address": "IP adres conflict: meerdere bronnen zenden naar hetzelfde IP adres\n",
+  "analysis.errors.ttml_time_base_is_not_media": "*** analysis.errors.ttml_time_base_is_not_media ***",
+  "analysis.errors.ttml_inconsistent_sequence_identifier": "*** analysis.errors.ttml_inconsistent_sequence_identifier ***",
   "analysis.errors.invalid_marker_bit": "Ongeldigt RTP marker bit",
   "headings.network_information": "Netwerk Informatie",
   "headings.media_information": "Media Informatie",
@@ -39,7 +41,7 @@
   "headings.payload": "payload",
   "headings.unknown": "Onbekend",
   "headings.filters": "Filters",
-  "headings.ttml": "*** headings.ttml",
+  "headings.ttml": "TTML",
   "audio_player.play": "Start",
   "audio_player.pause": "Pause",
   "audio_player.render": "Weergeven",
@@ -178,6 +180,7 @@
   "workflow.cancel_failed": "Cancel mislukt",
   "workflow.names.captureAndIngest": "Capture en ingest",
   "workflow.names.downloadMultipleFiles": "Download meerdere bestanden",
+  "workflow.names.compareStreams": "Vergelijk streams",
   "workflow.download_networkcapture": "Downlaod network opname",
   "user_account.delete_user_account": "Verwijder Account",
   "user_account.sign_in": "Aanmelden",
@@ -223,6 +226,7 @@
   "navigation.ptp_analysis": "PTP Analyse",
   "navigation.streams": "Stromen",
   "navigation.stream": "Stroom",
+  "navigation.stream_comparisons": "stroom Vergelijking",
   "realtime_feed.ok": "Ontvang informatie in real-time",
   "live_stream.no_streams": "Geen stroom gevonden",
   "live_stream.no_streams_message": "Start opname van een live stroom om de stroom hier te zien.",
@@ -248,5 +252,8 @@
   "notifications.error.live.sources.delete_message": "Probleem bij het verwijderen van live bronnen",
   "table.next": "Volgende",
   "table.previous": "Vorige",
-  "analysis_profiles.active_profile": "Actief analyse profiel"
+  "analysis_profiles.active_profile": "Actief analyse profiel",
+  "ttml.number_of_subtitles": "Number of subtitles",
+  "ttml.time_base": "Time base",
+  "ttml.sequence_identifier": "Sequence identifier"
 }
