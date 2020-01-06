@@ -1,7 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
 import { translateX } from 'utils/translation';
-
 import analysisConstants from '../../enums/analysis';
 import AnalysisBadge from '../../components/stream/StreamCard/AnalysisBadge';
 

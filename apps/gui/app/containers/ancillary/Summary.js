@@ -1,7 +1,7 @@
 import React from 'react';
-import Button from '../../components/common/Button';
 import NetworkInfo from '../streamPage/NetworkInfo';
 import VideoInfo from '../streamPage/VideoInfo';
+import AnalysisInfo from '../streamPage/AnalysisInfo';
 
 const Summary = props => {
     const streamInfo = props.streamInfo;
@@ -16,14 +16,11 @@ const Summary = props => {
                     <VideoInfo {...streamInfo.media_type} {...streamInfo.media_specific} {...streamInfo.statistics} />
                 </div>
             </div>
-            <hr />
-            <Button
-                type="info"
-                label="Ancillary analysis explained"
-                onClick={() => {
-                    window.open('https://github.com/ebu/pi-list/blob/master/docs/ancillary_data.md', '_blank');
-                }}
-            />
+            <div className="row lst-full-height">
+                <div className="col-xs-12 col-md-6">
+                    <AnalysisInfo {...props} />
+                </div>
+            </div>
         </div>
     );
 };

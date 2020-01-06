@@ -35,7 +35,7 @@ const TTMLLeafSpan = props => {
         <div className="ttml-container">
             <div className="col-xs-12">
                 <Badge className="ttml-heading-badge" type="info" text="Span" />
-                <div>{props.value}</div>
+                <div className="ttml-text">{props.value}</div>
             </div>
         </div>
     );

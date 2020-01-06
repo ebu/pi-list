@@ -34,3 +34,10 @@
     line-height: 1rem !important;
     margin-bottom: 1rem !important;
 }
+
+.ttml-text {
+    padding: 1rem;
+    background-color: $black-dark-3;
+    //border-style: none;
+    border-left: solid 3px $yellow;
+}

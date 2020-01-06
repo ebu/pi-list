@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Toggle from 'react-toggle';
 import NetworkInfo from '../../containers/streamPage/NetworkInfo';
 import VideoInfo from '../../containers/streamPage/VideoInfo';
-import Dash21Info from '../../containers/streamPage/Dash21Info';
+import Dash21Info from '../../containers/video/Dash21Info';
 import Panel from '../../components/common/Panel';
 import websocketEventsEnum from '../../enums/websocketEventsEnum';
 import websocket from '../../utils/websocket';
@@ -24,15 +24,15 @@ function normalizeHistogramData(data) {
 
     if (!data || !data.histogram || data.histogram.length == 0) return [];
     const newData = new Map();
-    for(var i = min - 1; i <= max + 1; ++i) {
+    for (var i = min - 1; i <= max + 1; ++i) {
         newData.set(i, 0);
     }
 
-    data.histogram.forEach((entry) => {
+    data.histogram.forEach(entry => {
         const [k, v] = entry;
         var realK = k;
-        if(k > max) realK = max + 1;
-        if(k < min) realK = min - 1;
+        if (k > max) realK = max + 1;
+        if (k < min) realK = min - 1;
 
         const newValue = newData.get(realK) + v;
         newData.set(realK, newValue);
@@ -43,8 +43,8 @@ function normalizeHistogramData(data) {
         arrayData.push([k, v]);
     });
 
-    arrayData[0] = [ '<', arrayData[0][1] ];
-    arrayData[arrayData.length - 1] = [ '>', arrayData[arrayData.length - 1][1] ];
+    arrayData[0] = ['<', arrayData[0][1]];
+    arrayData[arrayData.length - 1] = ['>', arrayData[arrayData.length - 1][1]];
 
     return arrayData;
 }
@@ -57,7 +57,7 @@ class LiveVideoPage extends Component {
             streamInfo: this.props.streamInfo,
             showGlobalValues: false,
             lastMinuteVrx: fillArray(),
-            lastMinuteCInst: fillArray()
+            lastMinuteCInst: fillArray(),
         };
 
         this.onStreamUpdate = this.onStreamUpdate.bind(this);
@@ -77,14 +77,14 @@ class LiveVideoPage extends Component {
     onStreamUpdate(data) {
         if (data.id !== this.props.streamInfo.id) return;
 
-        this.setState((prevState) => {
+        this.setState(prevState => {
             const vrxHist = data.current_video_analysis.vrx.histogram;
             const cinstHist = data.current_video_analysis.cinst.histogram;
 
             return {
                 streamInfo: data,
                 lastMinuteVrx: this.updateLastMinute(vrxHist, prevState.lastMinuteVrx),
-                lastMinuteCInst: this.updateLastMinute(cinstHist, prevState.lastMinuteCInst)
+                lastMinuteCInst: this.updateLastMinute(cinstHist, prevState.lastMinuteCInst),
             };
         });
     }
@@ -116,7 +116,7 @@ class LiveVideoPage extends Component {
                 formatData={chartFormatters.singleValueChart}
                 point_radius={1}
                 xLabel=""
-                titleTag={title} 
+                titleTag={title}
                 height={300}
             />
         );
@@ -162,11 +162,19 @@ class LiveVideoPage extends Component {
     render() {
         const streamInfo = this.state.streamInfo;
 
-        const toRenderCInst = this.state.showGlobalValues ? streamInfo.global_video_analysis.cinst : streamInfo.current_video_analysis.cinst;
-        const toRenderCInstTitle = this.state.showGlobalValues ? 'media_information.title_global' : 'media_information.title_last_second';
+        const toRenderCInst = this.state.showGlobalValues
+            ? streamInfo.global_video_analysis.cinst
+            : streamInfo.current_video_analysis.cinst;
+        const toRenderCInstTitle = this.state.showGlobalValues
+            ? 'media_information.title_global'
+            : 'media_information.title_last_second';
 
-        const toRenderVrx = this.state.showGlobalValues ? streamInfo.global_video_analysis.vrx : streamInfo.current_video_analysis.vrx;
-        const toRenderVrxTitle = this.state.showGlobalValues ? 'media_information.title_global' : 'media_information.title_last_second';
+        const toRenderVrx = this.state.showGlobalValues
+            ? streamInfo.global_video_analysis.vrx
+            : streamInfo.current_video_analysis.vrx;
+        const toRenderVrxTitle = this.state.showGlobalValues
+            ? 'media_information.title_global'
+            : 'media_information.title_last_second';
 
         const mediaInfo = streamInfo.media_specific;
         const globalVideoAnalysis = streamInfo.global_video_analysis;
@@ -181,23 +189,37 @@ class LiveVideoPage extends Component {
                     </Panel>
                     <div className="col-xs-12 col-md-8">
                         <div className="row">
-                            <Panel className="col-xs-12" title="CInst" rightToolbar={this.renderToggle('showGlobalValues')}>
+                            <Panel
+                                className="col-xs-12"
+                                title="CInst"
+                                rightToolbar={this.renderToggle('showGlobalValues')}
+                            >
                                 <div className="row">
                                     <div className="col-xs-12 col-md-6">
                                         {this.renderChart(toRenderCInst, toRenderCInstTitle)}
                                     </div>
                                     <div className="col-xs-12 col-md-6">
-                                        {this.renderLastMinuteChart(this.state.lastMinuteCInst, 'media_information.c_peak_timeline')}
+                                        {this.renderLastMinuteChart(
+                                            this.state.lastMinuteCInst,
+                                            'media_information.c_peak_timeline'
+                                        )}
                                     </div>
                                 </div>
                             </Panel>
-                            <Panel className="col-xs-12" title="Vrx" rightToolbar={this.renderToggle('showGlobalValues')}>
+                            <Panel
+                                className="col-xs-12"
+                                title="Vrx"
+                                rightToolbar={this.renderToggle('showGlobalValues')}
+                            >
                                 <div className="row">
                                     <div className="col-xs-12 col-md-6">
                                         {this.renderChart(toRenderVrx, toRenderVrxTitle)}
                                     </div>
                                     <div className="col-xs-12 col-md-6">
-                                        {this.renderLastMinuteChart(this.state.lastMinuteVrx, 'media_information.vrx_peak_timeline')}
+                                        {this.renderLastMinuteChart(
+                                            this.state.lastMinuteVrx,
+                                            'media_information.vrx_peak_timeline'
+                                        )}
                                     </div>
                                 </div>
                             </Panel>

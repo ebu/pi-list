@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Tabs from '../components/common/Tabs';
-import VideoAnalysis from './streamPage/VideoAnalysis';
-import Summary from './streamPage/Summary';
-import CbufferAnalysis from './streamPage/CbufferAnalysis';
-import VrxAnalysis from './streamPage/VrxAnalysis';
-import TvdAnalysis from './streamPage/TvdAnalysis';
-import VideoExplorer from './streamPage/VideoExplorer';
-import PerFrameAnalysisViewer from './streamPage/PerFrameAnalysisViewer';
-import RtpAnalysisViewer from './streamPage/RtpAnalysisViewer';
+import VideoAnalysis from './video/VideoAnalysis';
+import Summary from './video/Summary';
+import CbufferAnalysis from './video/CbufferAnalysis';
+import VrxAnalysis from './video/VrxAnalysis';
+import TvdAnalysis from './video/TvdAnalysis';
+import VideoExplorer from './video/VideoExplorer';
+import PerFrameAnalysisViewer from './video/PerFrameAnalysisViewer';
+import RtpAnalysisViewer from './video/RtpAnalysisViewer';
 
 const TABS = [
     Summary,
@@ -21,7 +21,7 @@ const TABS = [
     PerFrameAnalysisViewer,
 ];
 
-const VideoPage = (props) => {
+const VideoPage = props => {
     const [tabIndex, setTabIndex] = useState(0);
 
     const CurrentTabComponent = TABS[tabIndex];

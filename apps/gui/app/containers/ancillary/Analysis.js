@@ -1,5 +1,5 @@
 import React from 'react';
-import AnalysisInfo from '../streamPage/AnalysisInfo';
+import Button from '../../components/common/Button';
 import RtpInfo from './RtpInfo';
 import AncillarySummary from './AncillarySummary';
 
@@ -16,11 +16,14 @@ const Analysis = props => {
                     <AncillarySummary {...props} />
                 </div>
             </div>
-            <div className="row lst-full-height">
-                <div className="col-xs-12 col-md-6">
-                    <AnalysisInfo {...props} />
-                </div>
-            </div>
+            <hr />
+            <Button
+                type="info"
+                label="Ancillary analysis explained"
+                onClick={() => {
+                    window.open('https://github.com/ebu/pi-list/blob/master/docs/ancillary_data.md', '_blank');
+                }}
+            />
         </div>
     );
 };
