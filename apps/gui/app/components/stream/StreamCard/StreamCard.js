@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
@@ -47,12 +47,12 @@ const StreamCard = props => {
     const notCompliantName = `${notCompliantBadge} not compliant`;
 
     const badges = (
-        <div>
+        <Fragment>
             <AnalysisBadge key="compliant" name={compliantName} compliance="compliant" />
             {notCompliantBadge > 0 && (
                 <AnalysisBadge key="not-compliant" name={notCompliantName} compliance="not_compliant" />
             )}
-        </div>
+        </Fragment>
     );
 
     const badgesMediaTypeValidation = getValidationBadges(props);
@@ -75,7 +75,7 @@ const StreamCard = props => {
             <div className="lst-panel">
                 <div className="lst-panel__container">
                     <div className="row lst-panel__header lst-truncate">
-                        <h2 className="row lst-no-margin" style={{ width: '100%'}}>
+                        <h2 className="row lst-no-margin" style={{ width: '100%' }}>
                             <div className="col-xs-2">{props.icon && <Icon value={props.icon} />}</div>
                             <div className="col-xs-10 lst-text-right">{props.title}</div>
                         </h2>
@@ -86,9 +86,9 @@ const StreamCard = props => {
                     </div>
                     <div className="col-xs-12 col-md-12">
                         <StreamBadge media_type={props.media_type} media_specific={props.media_specific} />
+                        {badges}
+                        {badgesMediaTypeValidation}
                     </div>
-                    <div className="col-xs-12 col-md-12">{badges}</div>
-                    <div className="col-xs-12 col-md-12">{badgesMediaTypeValidation}</div>
                 </div>
             </div>
         </Link>

@@ -27,11 +27,11 @@ function get_icon_for(stream) {
 function get_title_for(stream, index) {
     switch (stream.media_type) {
         case 'video':
-            return `ST2110-20 #${index + 1}`;
+            return `ST 2110-20 Video #${index + 1}`;
         case 'audio':
-            return `ST2110-30 #${index + 1}`;
+            return `ST 2110-30 Audio #${index + 1}`;
         case 'ancillary_data':
-            return `ST2110-40 #${index + 1}`;
+            return `ST 2110-40 Ancillary Data #${index + 1}`;
         case 'ttml':
             return `TTML #${index + 1}`;
         case 'unknown':
@@ -44,7 +44,7 @@ function get_title_for(stream, index) {
 
 function renderPtpCard(pcapID) {
     return (
-        <div className="col-lg-3 col-md-4 col-sm-12">
+        <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12">
             <PTPCard pcapID={pcapID} />
         </div>
     );
@@ -54,7 +54,7 @@ function renderCard(pcapID, stream, index) {
     const icon = get_icon_for(stream);
     const title = get_title_for(stream, index);
     return (
-        <div className="col-lg-3 col-md-4 col-sm-12" key={`stream-${index}`}>
+        <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12" key={`stream-${index}`}>
             <StreamCard key={stream.id} {...stream} pcapID={pcapID} title={title} icon={icon} />
         </div>
     );
