@@ -1,0 +1,44 @@
+@import '../../style/variables/index.scss';
+
+.ttml-item {
+    padding: 1rem;
+    margin: 0;
+    margin-bottom: 0.5rem;
+    background: $background-color-blue;
+    .dark & {
+        background: $nord1;
+    }
+}
+
+.ttml-doc-heading {
+    margin: 0;
+    padding-bottom: 0.5rem;
+    color: $yellow;
+}
+
+.ttml-container {
+    margin-left: 1.2rem;
+}
+
+.ttml-heading-badge {
+    font-size: 1rem !important;
+    line-height: 1rem !important;
+    margin-left: 0rem !important;
+    margin-bottom: 1rem !important;
+    width: 5rem;
+    text-align: center;
+}
+
+.ttml-passive-badge {
+    font-size: 1rem !important;
+    line-height: 1rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.ttml-text {
+    font-size: 1.1rem !important;
+    padding: 1rem;
+    background-color: $black-dark-3;
+    //border-style: none;
+    border-left: solid 3px $yellow;
+}
