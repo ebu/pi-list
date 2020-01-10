@@ -7,6 +7,9 @@ module.exports = merge(common, {
     mode: 'development',
     devtool: 'inline-source-map',
     // devtool: 'eval-source-map',
+    output: {
+        publicPath: '/',
+    },
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {

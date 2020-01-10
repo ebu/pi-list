@@ -1,25 +1,28 @@
 import React, { useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Tabs from '../../components/common/Tabs';
-import StreamInfo from './StreamInfo';
+import Summary from './Summary';
+import Analysis from './Analysis';
 import AncillarySubStream from './SubStream';
 import RtpCharts from './RtpCharts';
 
-const AncillaryPage = (props) => {
+const AncillaryPage = props => {
     const streamInfo = props.streamInfo;
-    const subStreams = typeof streamInfo.media_specific.sub_streams === 'undefined'
-        ? []
-        : streamInfo.media_specific.sub_streams;
-    const constTABS = [StreamInfo, RtpCharts];
-    const TABS = constTABS.concat(
-        subStreams.map((s, i) => AncillarySubStream)
-    );
+
+    const subStreams =
+        typeof streamInfo.media_specific.sub_streams === 'undefined' ? [] : streamInfo.media_specific.sub_streams;
+    const constTABS = [Summary, Analysis, RtpCharts];
+    const TABS = constTABS.concat(subStreams.map((s, i) => AncillarySubStream));
     const [tabIndex, setTabIndex] = useState(0);
     const CurrentTabComponent = TABS[tabIndex];
     const headers = [
         {
             label: 'Summary',
             icon: 'info',
+        },
+        {
+            label: 'Analysis',
+            icon: 'assignment',
         },
         {
             label: 'RTP',

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Tabs from '../../components/common/Tabs';
+import Summary from './Summary';
 import Analysis from './Analysis';
 import StreamExplorer from './StreamExplorer';
 import RTP from './RTP';
 import TSDF from './TSDF';
 
-const TABS = [Analysis, StreamExplorer, RTP, TSDF];
+const TABS = [Summary, Analysis, StreamExplorer, RTP, TSDF];
 
 const AudioPage = props => {
     const [tabIndex, setTabIndex] = useState(0);
@@ -18,8 +19,12 @@ const AudioPage = props => {
             <Tabs
                 headers={[
                     {
-                        label: 'Analysis',
+                        label: 'Summary',
                         icon: 'info',
+                    },
+                    {
+                        label: 'Analysis',
+                        icon: 'assignment',
                     },
                     {
                         label: 'Player',

@@ -33,9 +33,9 @@ namespace
 } // namespace
 //------------------------------------------------------------------------------
 
-SCENARIO("ANC stream analysis")
+SCENARIO("Video stream analysis")
 {
-    GIVEN("a pcap file with 1 ANC stream")
+    GIVEN("a pcap file with 1 PAL SD video stream")
     {
         const auto pcap_file      = test_lib::sample_file("pcap/st2110/2110-20/2110-20_625i50.pcap");
         const auto storage_folder = path("/tmp");
