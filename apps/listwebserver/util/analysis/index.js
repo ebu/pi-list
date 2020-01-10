@@ -18,6 +18,7 @@ const WS_EVENTS = require('../../enums/wsEvents');
 const { doVideoAnalysis } = require('../../analyzers/video');
 const { doAudioAnalysis } = require('../../analyzers/audio');
 const { doAncillaryAnalysis } = require('../../analyzers/ancillary');
+const { doTtmlAnalysis } = require('../../analyzers/ttml/ttml');
 const { doRtpAnalysis } = require('../../analyzers/rtp');
 const { doMulticastAddressAnalysis } = require('../../analyzers/multicast.js');
 const constants = require('../../enums/analysis');
@@ -387,6 +388,20 @@ function ancillaryConsolidation(req, res, next) {
         });
 }
 
+function ttmlConsolidation(req, res, next) {
+    const pcapId = req.pcap.uuid;
+    Stream.find({ pcap: pcapId, media_type: 'ttml' })
+        .exec()
+        .then(streams => doTtmlAnalysis(req, streams))
+        .then(streams => {
+            addStreamsToReq(streams, req);
+        })
+        .then(() => next())
+        .catch(err => {
+            logger('ttml-consolidation').error(`exception: ${err}`);
+        });
+}
+
 function unknownConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
     Stream.find({ pcap: pcapId, media_type: 'unknown' })
@@ -518,6 +533,7 @@ module.exports = {
         videoConsolidation,
         audioConsolidation,
         ancillaryConsolidation,
+        ttmlConsolidation,
         unknownConsolidation,
         commonConsolidation,
         pcapConsolidation,
@@ -530,6 +546,7 @@ module.exports = {
         videoConsolidation,
         audioConsolidation,
         ancillaryConsolidation,
+        ttmlConsolidation,
         unknownConsolidation,
         commonConsolidation,
         pcapConsolidation,
@@ -543,6 +560,7 @@ module.exports = {
         videoConsolidation,
         audioConsolidation,
         ancillaryConsolidation,
+        ttmlConsolidation,
         unknownConsolidation,
         commonConsolidation,
         pcapConsolidation,

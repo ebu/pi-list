@@ -29,6 +29,8 @@ namespace ebu_list::st2110_extractor
                                                                           const std::string& stream_id,
                                                                           const std::string& prefix) const override;
         histogram_listener_uptr create_anc_pkt_histogram_logger(const std::string& stream_id) const override;
+        analysis::ttml::stream_handler::listener_uptr
+        create_ttml_document_logger(const std::string& stream_id) const override;
         ptp::state_machine::listener_ptr create_ptp_logger(const std::string& pcap_id) const override;
 
       private:
