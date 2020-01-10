@@ -54,7 +54,8 @@ const doLoadTtmlDocuments = (ttmlFilesPath, stream) => {
             console.error(e);
         }
         console.log(xml_data);
-    });
+    })
+    .filter(e => e.valid);
 
     stream.media_specific = {
         data: xml_data,

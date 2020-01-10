@@ -225,11 +225,6 @@ test('doLoadTtmlDocuments: invalid document', () => {
         id: '1',
         media_specific: {
             data: [
-                {
-                    valid: false,
-                    ts: j.rtp_timestamp,
-                    doc: j.xml,
-                },
             ],
         },
     };

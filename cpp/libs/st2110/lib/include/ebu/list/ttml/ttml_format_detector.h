@@ -22,6 +22,7 @@ namespace ebu_list::ttml
 
       private:
         description description_{};
+        std::string document_;
     };
 } // namespace ebu_list::st2110::d40
 

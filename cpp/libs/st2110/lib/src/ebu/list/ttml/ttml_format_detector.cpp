@@ -37,29 +37,37 @@ detector::status_description ttml::format_detector::handle_data(const rtp::packe
                                             /*.error_code*/ "STATUS_CODE_TTML_INVALID_LENGTH"};
     }
 
-    if(end - ptr < 6)
+    const auto ptr_char = reinterpret_cast<char const*>(ptr);
+    const auto end_char = reinterpret_cast<char const*>(end);
+
+    document_.append(ptr_char, end_char);
+
+    if(!packet.info.rtp.view().marker())
+    {
+        return detector::status_description{detector::state::detecting, ""};
+    }
+
+    // If this is the last packet of the document, check if the end of the payload is "</tt:tt>"
+    // TODO: this only works for UTF-8
+
+    const std::string_view closing_tag("</tt:tt>");
+    if(document_.size() < closing_tag.size())
     {
         logger()->warn("TTML user content: not xml start tag");
         return detector::status_description{/*.state*/ detector::state::invalid,
                                             /*.error_code*/ "STATUS_CODE_TTML_INVALID_LENGTH"};
     }
 
-    const auto c1        = *ptr++;
-    const auto c2        = *ptr++;
-    const auto c3        = *ptr++;
-    const auto c4        = *ptr++;
-    const auto c5        = *ptr++;
-    const auto c6        = *ptr++;
+    const auto last_segment = std::string_view(end_char - closing_tag.size(), closing_tag.size());
 
-    if(c1 != std::byte('<') || c2 != std::byte('t') || c3 != std::byte('t') || c4 != std::byte(':') ||
-       c5 != std::byte('t') || c6 != std::byte('t'))
+    if(last_segment == closing_tag)
     {
-        return detector::status_description{/*.state*/ detector::state::invalid,
-                                            /*.error_code*/ "STATUS_CODE_TTML_INVALID_DOCUMENT"};
+        return detector::status_description{/*.state*/ detector::state::valid,
+            /*.error_code*/ "STATUS_CODE_TTML_VALID_DOCUMENT"};
     }
 
-    return detector::status_description{/*.state*/ detector::state::valid,
-                                        /*.error_code*/ "STATUS_CODE_TTML_VALID_DOCUMENT"};
+    return detector::status_description{/*.state*/ detector::state::invalid,
+        /*.error_code*/ "STATUS_CODE_TTML_INVALID_DOCUMENT"};
 }
 
 detector::details ttml::format_detector::get_details() const
