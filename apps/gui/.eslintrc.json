@@ -12,7 +12,7 @@
     "class-methods-use-this": "off",
     "prefer-destructuring": "off",
     "react/jsx-fragments" : "off",
-    "react/jsx-filename-extension": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/destructuring-assignment" : "off",
     "react/no-array-index-key" : "off",
     "import/no-extraneous-dependencies": "off",

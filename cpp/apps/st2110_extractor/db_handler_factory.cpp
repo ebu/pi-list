@@ -1,5 +1,6 @@
 #include "db_handler_factory.h"
 #include "ebu/list/analysis/serialization/video_stream_serializer.h"
+#include "ebu/list/analysis/serialization/ttml_stream_serializer.h"
 #include "influx_logger.h"
 
 using namespace ebu_list;
@@ -14,6 +15,9 @@ namespace
     constexpr auto vrx_file_name     = "vrx.json";
     constexpr auto anc_pkt_file_name = "anc_pkt.json";
 } // namespace
+
+
+///////////////////////////////////////////////////////////////////////////////
 
 db_handler_factory::db_handler_factory(const config& c) : config_(c)
 {
@@ -96,6 +100,12 @@ ptp::state_machine::listener_ptr db_handler_factory::create_ptp_logger(const std
     }
 }
 
+analysis::ttml::stream_handler::listener_uptr
+db_handler_factory::create_ttml_document_logger(const std::string& stream_id) const
+{
+    return std::make_unique<analysis::ttml::stream_serializer>(config_.storage_folder, stream_id);
+}
+
 db_updater::db_updater(db_serializer& db, const path& storage_folder) : db_(db), storage_folder_(storage_folder)
 {
 }
@@ -116,3 +126,4 @@ void db_updater::update_sdp(const std::string& stream_id, const sdp::sdp_builder
 {
     write_to(sdp, storage_folder_ / stream_id / (to_string(media_type) + ".sdp"));
 }
+

@@ -3,6 +3,7 @@
 #include "ebu/list/rtp/udp_handler.h"
 #include "ebu/list/st2110/d20/video_format_detector.h"
 #include "ebu/list/st2110/d30/audio_format_detector.h"
+#include "ebu/list/ttml/ttml_format_detector.h"
 #include "ebu/list/st2110/format_detector.h"
 #include "ebu/list/test_lib/sample_files.h"
 #include "pch.h"
@@ -104,6 +105,75 @@ SCENARIO("format detector")
                 REQUIRE(audio_details.packet_time == audio_packet_time(std::chrono::microseconds(125)));
                 REQUIRE(audio_details.number_channels == 8);
                 REQUIRE(audio_details.encoding == media::audio::audio_encoding::L24);
+            }
+        }
+    }
+
+    GIVEN("a pcap file with 1 TTML stream with 1 packet per document")
+    {
+        const auto pcap_file = test_lib::sample_file("pcap/ttml/ttmlRTP_singlePacketDocs.pcap");
+
+        pcap::pcap_player player(pcap_file, udp_handler, on_error_exit);
+        while(player.next())
+        {
+        }
+
+        REQUIRE(fd != nullptr);
+
+        WHEN("we check the format")
+        {
+            REQUIRE(fd->status().state == detector::state::valid);
+
+            THEN("we get ttml")
+            {
+                const auto details = fd->get_details();
+                REQUIRE(std::holds_alternative<ttml::description>(details));
+            }
+        }
+    }
+
+    GIVEN("a pcap file with 1 TTML stream with 4 packets per document")
+    {
+        const auto pcap_file = test_lib::sample_file("pcap/ttml/ttmlRTP_fourPacketDocs.pcap");
+
+        pcap::pcap_player player(pcap_file, udp_handler, on_error_exit);
+        while(player.next())
+        {
+        }
+
+        REQUIRE(fd != nullptr);
+
+        WHEN("we check the format")
+        {
+            REQUIRE(fd->status().state == detector::state::valid);
+
+            THEN("we get ttml")
+            {
+                const auto details = fd->get_details();
+                REQUIRE(std::holds_alternative<ttml::description>(details));
+            }
+        }
+    }
+
+    GIVEN("a pcap file with a truncated document at the start")
+    {
+        const auto pcap_file = test_lib::sample_file("pcap/ttml/ttmlRTP_truncated_start.pcap");
+
+        pcap::pcap_player player(pcap_file, udp_handler, on_error_exit);
+        while(player.next())
+        {
+        }
+
+        REQUIRE(fd != nullptr);
+
+        WHEN("we check the format")
+        {
+            REQUIRE(fd->status().state == detector::state::valid);
+
+            THEN("we get ttml")
+            {
+                const auto details = fd->get_details();
+                REQUIRE(std::holds_alternative<ttml::description>(details));
             }
         }
     }

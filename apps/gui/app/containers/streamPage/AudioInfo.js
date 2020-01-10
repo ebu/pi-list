@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import InfoPane from './components/InfoPane';
 
 const AudioInfo = props => {
@@ -6,43 +6,39 @@ const AudioInfo = props => {
         {
             labelTag: 'media_information.audio.sampling',
             value: props.sampling,
-            units: 'Hz'
+            units: 'Hz',
         },
         {
             labelTag: 'media_information.audio.encoding',
             value: props.encoding,
-            units: 'bits'
+            units: 'bits',
         },
         {
             labelTag: 'media_information.audio.number_channels',
             value: props.number_channels,
-            units: 'ch'
+            units: 'ch',
         },
         {
             labelTag: 'media_information.audio.packet_time',
             value: parseFloat(props.packet_time).toFixed(3),
-            units: 'ms'
+            units: 'ms',
         },
         {
             labelTag: 'media_information.audio.number_samples',
-            value: props.sample_count
+            value: props.sample_count,
         },
         {
             labelTag: 'media_information.audio.samples_per_packet',
-            value: props.samples_per_packet
+            value: props.samples_per_packet,
         },
         {
             labelTag: 'media_information.audio.packet_size',
             value: props.packet_size,
-            units: 'bytes'
+            units: 'bytes',
         },
     ];
 
-    return (<InfoPane
-        icon="audiotrack"
-        headingTag="headings.audio"
-        values={values}
-    />);
+    return <InfoPane icon="audiotrack" headingTag="headings.media_information" values={values} />;
 };
 
 export default AudioInfo;

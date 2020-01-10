@@ -12,6 +12,7 @@ namespace ebu_list::media
         VIDEO,
         AUDIO,
         ANCILLARY_DATA,
+        TTML,
         UNKNOWN
     };
 
