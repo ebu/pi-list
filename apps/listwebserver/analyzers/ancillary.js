@@ -4,7 +4,7 @@ const constants = require('../enums/analysis');
 const Stream = require('../models/stream');
 const { appendError, validateMulticastAddresses } = require('./utils');
 const influxDbManager = require('../managers/influx-db');
-const logger = require('../util/logger');
+
 // For some reason, getUserFolder can't be imported...
 //const { getUserFolder, } = require('../util/analysis');
 function getUserFolder(req) {

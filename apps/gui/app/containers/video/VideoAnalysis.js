@@ -1,9 +1,9 @@
 import React from 'react';
 import Dash21Info from './Dash21Info';
-import RtpInfo from './RtpInfo';
+import RtpInfo from '../streamPage/RtpInfo';
 import Button from '../../components/common/Button';
 
-const VideoAnalysis = (props) => {
+const VideoAnalysis = props => {
     return (
         <div>
             <div className="row">
@@ -16,15 +16,12 @@ const VideoAnalysis = (props) => {
             </div>
             <hr />
             <Button
-                    type="info"
-                    label="Video analysis explained"
-                    onClick={() => {
-                        window.open(
-                            'https://github.com/ebu/pi-list/blob/master/docs/video_timing_analysis.md',
-                            '_blank'
-                        );
-                    }}
-                />
+                type="info"
+                label="Video analysis explained"
+                onClick={() => {
+                    window.open('https://github.com/ebu/pi-list/blob/master/docs/video_timing_analysis.md', '_blank');
+                }}
+            />
         </div>
     );
 };

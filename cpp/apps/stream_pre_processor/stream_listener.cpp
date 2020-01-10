@@ -27,6 +27,8 @@ namespace
             serialized_streams_details["media_type_validation"]["audio"] = detectors_error_codes["audio"];
         if(detectors_error_codes["anc"].size() > 0)
             serialized_streams_details["media_type_validation"]["anc"] = detectors_error_codes["anc"];
+        if(detectors_error_codes["ttml"].size() > 0)
+            serialized_streams_details["media_type_validation"]["ttml"] = detectors_error_codes["ttml"];
 
         db.insert(constants::db::offline, constants::db::collections::streams, serialized_streams_details);
     }
@@ -107,6 +109,16 @@ void stream_listener::on_complete()
         anc_stream_details anc_details{};
         anc_details.anc = anc_format;
         details         = anc_details;
+    }
+    else if(std::holds_alternative<ttml::description>(format))
+    {
+//        const auto ttml_format = std::get<ttml::description>(format);
+
+        stream_id_.type = media::media_type::TTML;
+        stream_id_.state = StreamState::READY;
+
+        analysis::ttml::stream_details ttml_details{};
+        details = ttml_details;
     }
     else
     {

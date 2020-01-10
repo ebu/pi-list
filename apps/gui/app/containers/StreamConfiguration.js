@@ -17,7 +17,7 @@ import {
     getAudioProfiles,
     getVideoInformationByProfile,
     getAudioInformationByProfile,
-} from '../code-for-demos/video-presets';
+} from '../utils/video-presets';
 import notifications from '../utils/notifications';
 import Panel from '../components/common/Panel';
 import { renderInformationList } from './streamPage/utils';

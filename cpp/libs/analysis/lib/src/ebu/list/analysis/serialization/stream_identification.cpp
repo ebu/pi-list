@@ -23,6 +23,11 @@ nlohmann::json stream_with_details_serializer::to_json(const stream_with_details
         const auto& anc_details = std::get<anc_stream_details>(std::get<1>(stream_info));
         j.merge_patch(anc_stream_details::to_json(anc_details));
     }
+    else if(info.type == media::media_type::TTML)
+    {
+        const auto& ttml_details = std::get<ttml::stream_details>(std::get<1>(stream_info));
+        j.merge_patch(ttml::stream_details::to_json(ttml_details));
+    }
     else
     {
         j["media_specific"] = nullptr;
@@ -43,6 +48,9 @@ stream_with_details stream_with_details_serializer::from_json(const nlohmann::js
         return {stream_info, audio_stream_details::from_json(j)};
     else if(stream_info.type == media::media_type::ANCILLARY_DATA)
         return {stream_info, anc_stream_details::from_json(j)};
+    else if(stream_info.type == media::media_type::TTML)
+        return {stream_info, ttml::stream_details::from_json(j)};
     else
         return {stream_info, {}};
 }
+

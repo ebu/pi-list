@@ -1,47 +1,28 @@
-import React, { Fragment } from 'react';
-import { find } from 'lodash';
-import api from 'utils/api';
-import asyncLoader from '../../components/asyncLoader';
-import DataList from '../streamPage/components/DataList';
-import InfoPane from '../streamPage/components/InfoPane';
+import React from 'react';
+import NetworkInfo from '../streamPage/NetworkInfo';
+import VideoInfo from '../streamPage/VideoInfo';
+import AnalysisInfo from '../streamPage/AnalysisInfo';
 
-const AncillarySummary = props => {
-    const availableAncTypes = props.availableAncOptions[0].value;
+const Summary = props => {
     const streamInfo = props.streamInfo;
-    const subStreams =
-        typeof streamInfo.media_specific.sub_streams === 'undefined' ? [] : streamInfo.media_specific.sub_streams;
-    const summary = subStreams.map((s, index) => {
-        const type = find(availableAncTypes, { value: `${s.did_sdid}` });
-
-        const values = [
-            {
-                label: 'ID',
-                value: (index + 1).toString(),
-            },
-            {
-                label: 'Type',
-                value: type.label,
-            },
-        ];
-
-        return (
-            <Fragment key={`row-${index}`}>
-                <DataList values={values} />
-                <hr />
-            </Fragment>
-        );
-    });
 
     return (
         <div>
-            <InfoPane icon="assignment" headingTag="headings.anc_sub_stream" values={[]} />
-            {summary}
+            <div className="row lst-full-height">
+                <div className="col-xs-12 col-md-6">
+                    <NetworkInfo stream={props.streamInfo} />
+                </div>
+                <div className="col-xs-12 col-md-6">
+                    <VideoInfo {...streamInfo.media_type} {...streamInfo.media_specific} {...streamInfo.statistics} />
+                </div>
+            </div>
+            <div className="row lst-full-height">
+                <div className="col-xs-12 col-md-6">
+                    <AnalysisInfo {...props} />
+                </div>
+            </div>
         </div>
     );
 };
 
-export default asyncLoader(AncillarySummary, {
-    asyncRequests: {
-        availableAncOptions: () => api.getAvailableAncillaryOptions(),
-    },
-});
+export default Summary;

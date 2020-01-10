@@ -5,7 +5,6 @@ const constants = require('../enums/analysis');
 const { appendError, validateMulticastAddresses } = require('./utils');
 const logger = require('../util/logger');
 
-const log = logger('audio');
 //
 // Definitions
 // TODO get from a validation template
