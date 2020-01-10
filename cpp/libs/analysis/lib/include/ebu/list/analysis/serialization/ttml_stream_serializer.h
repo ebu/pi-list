@@ -7,6 +7,9 @@ namespace ebu_list::analysis::ttml
     class stream_serializer : public analysis::ttml::stream_handler::listener
     {
       public:
+        constexpr static auto ttml_files_dir_name = "ttml-data";
+
+      public:
         stream_serializer(const path& storage_folder, const std::string& stream_id);
 
         void on_data(uint32_t rtp_timestamp, std::string ttml_doc) override;

@@ -118,7 +118,6 @@ const TTMLBody = props => {
     return (
         <div className="ttml-container">
             <Badge className="ttml-heading-badge" type="success" text="Body" />
-            <Badge className="ttml-passive-badge" type="passive" text={`RTP TS: ${props.ts}`} />
             {getCommonBadges(props.value['@'])}
             {children.map((child, index) => (
                 <TTMLDiv key={`div-${index}`} value={child} />
@@ -130,6 +129,7 @@ const TTMLBody = props => {
 const TTMLItem = props => {
     return (
         <div className="ttml-item">
+            <Badge className="ttml-rtpts-badge" type="passive" text={`RTP TS: ${props.ts}`} />
             <TTMLBody value={props.body[0]} ts={props.ts} />
         </div>
     );

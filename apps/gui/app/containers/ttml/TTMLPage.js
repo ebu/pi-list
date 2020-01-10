@@ -17,7 +17,7 @@ const TTMLPage = props => {
             icon: 'info',
         },
         {
-            label: 'TTML',
+            label: 'TTML Payload',
             icon: 'timeline',
         },
     ];

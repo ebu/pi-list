@@ -5,11 +5,6 @@ using namespace ebu_list;
 using namespace ebu_list::analysis::ttml;
 using json = nlohmann::json;
 
-namespace
-{
-    constexpr auto ttml_files_dir_name = "ttml-data";
-}
-
 stream_serializer::stream_serializer(const path& storage_folder, const std::string& stream_id)
     : storage_folder_(storage_folder), stream_id_(stream_id)
 {
