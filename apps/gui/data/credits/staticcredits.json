@@ -1,0 +1,7 @@
+{
+    "ffmpeg@3.2.14": {
+        "licenses": "LGPL v2.1+",
+        "repository": "https://github.com/FFmpeg/FFmpeg"
+      }
+
+}
