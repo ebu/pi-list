@@ -3,7 +3,7 @@ const phantom = require('phantom');
 const analysis = require('../enums/analysis');
 
 function generate(jsonReport) {
-    return phantom.create().then(function(ctx) {
+    return phantom.create(['--local-url-access=true']).then(function(ctx) {
         return ctx.createPage().then(function(page) {
             page.property('paperSize', {
                 format: 'A4',

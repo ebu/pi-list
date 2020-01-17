@@ -274,5 +274,7 @@
   "comparison.config.comparison_type": "метод порівняння",
   "comparison.config.main": "головний",
   "comparison.config.reference": "посилання",
-  "comparison.config.comparison_type.psnrAndDelay": "PSNR і затримки"
+  "comparison.config.comparison_type.psnrAndDelay": "PSNR і затримки",
+  "credits.text": "*** text.credits",
+  "credits.title": "*** credits.title"
 }

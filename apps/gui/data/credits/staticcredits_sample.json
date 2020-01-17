@@ -1,0 +1,10 @@
+{
+    "name@version": {
+      "licenses": "ISC",
+      "repository": "https://localhost:8080/"
+    },
+    "name2@version2": {
+      "licenses": "MIT",
+      "repository": "https://localhost:8181/"
+    }
+}
