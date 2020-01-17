@@ -108,11 +108,11 @@ const AppContainer = (props) => {
                         {headerRoutes}
                     </div>
                 </nav>
-                <NotificationsProvider>
-                    <Scrollbars>
-                        <div className="lst-main-container">{routes}</div>
-                    </Scrollbars>
-                </NotificationsProvider>
+                <div className="lst-main-container">
+                    <NotificationsProvider>
+                        <Scrollbars>{routes}</Scrollbars>
+                    </NotificationsProvider>
+                </div>
                 <PopUp
                     type="deletecancel"
                     visible={showModal}

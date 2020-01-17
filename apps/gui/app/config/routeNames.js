@@ -1,6 +1,7 @@
 export default {
     HOME: '/',
     SETTINGS: '/settings',
+    CREDITS: '/credits',
     PCAPS: '/pcaps',
     LIVE_SOURCES: '/live_sources',
     WORKFLOWS: '/workflows',

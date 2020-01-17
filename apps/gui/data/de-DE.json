@@ -274,5 +274,7 @@
   "comparison.config.comparison_type": "Vergleichsmethode",
   "comparison.config.main": "Main",
   "comparison.config.reference": "Referenz",
-  "comparison.config.comparison_type.psnrAndDelay": "PSNR und Verzögerung"
+  "comparison.config.comparison_type.psnrAndDelay": "PSNR und Verzögerung",
+  "credits.text": "*** text.credits",
+  "credits.title": "*** credits.title"
 }
