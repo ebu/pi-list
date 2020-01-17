@@ -274,5 +274,7 @@
   "comparison.config.comparison_type": "Comparison Method",
   "comparison.config.main": "Main",
   "comparison.config.reference": "Reference",
-  "comparison.config.comparison_type.psnrAndDelay": "PSNR and Delay"
+  "comparison.config.comparison_type.psnrAndDelay": "PSNR and Delay",
+  "credits.text": "We want to thank all the following projects that help us to concretize this project",
+  "credits.title": "Credits"
 }

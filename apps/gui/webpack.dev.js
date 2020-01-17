@@ -17,7 +17,7 @@ module.exports = merge(common, {
             },
         }),
         new WebpackShellPlugin({
-            onBuildStart: ['node ./data/translationsGenerator'],
+            onBuildStart: ['node ./data/translationsGenerator', 'node ./data/credits/generateCredits.js'],
         }),
     ],
     devServer: {
