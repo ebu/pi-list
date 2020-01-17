@@ -204,6 +204,7 @@
   "pcap.download_json": "Download JSON",
   "pcap.download_pdf": "Download PDF",
   "pcap.no_pcaps": "Geen PCAP bestand gevonden",
+  "pcap.no_pcaps.message": "",
   "pcap.warnings": "Waarschuwing",
   "pcap.errors": "Fout",
   "pcap.file_name": "Bestandsnaam",
@@ -268,13 +269,14 @@
   "comparison.result.max_psnr": "Maximaal PSNR",
   "comparison.result.delta_pkt_ts": "Packet Time Difference",
   "comparison.result.delta_rtp_ts": "RTP tijdstempel Verschil",
-  "comparison.result.delta_frame_or_field": "Frame (of veld) Verschil",
+  "comparison.result.delta_sample": "sample Verschil",
   "comparison.result.psnr_vs_time_shift": "PSNR vs time shift",
   "comparison.config.media_type": "Mediatype",
   "comparison.config.comparison_type": "vergelijking Methode",
   "comparison.config.main": "Hoofd",
   "comparison.config.reference": "Referentie",
   "comparison.config.comparison_type.psnrAndDelay": "PSNR en Delay",
+  "comparison.title": "*** comparison.config.title",
   "credits.text": "*** text.credits",
   "credits.title": "*** credits.title"
 }
