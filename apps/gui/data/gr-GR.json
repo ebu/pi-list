@@ -274,5 +274,7 @@
   "comparison.config.comparison_type": "Μέθοδος σύγκριση",
   "comparison.config.main": "Κύριος",
   "comparison.config.reference": "Αναφορά",
-  "comparison.config.comparison_type.psnrAndDelay": "PSNR και καθυστέρηση"
+  "comparison.config.comparison_type.psnrAndDelay": "PSNR και καθυστέρηση",
+  "credits.text": "*** text.credits",
+  "credits.title": "*** credits.title"
 }

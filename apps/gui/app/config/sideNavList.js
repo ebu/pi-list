@@ -44,5 +44,13 @@ export default {
             liveOnly: false,
         },
     ],
-    bottom: [],
+    bottom: [
+        {
+            link: routeNames.CREDITS,
+            icon: 'favorite_border',
+            labelTag: 'navigation.credits',
+            exact: false,
+            liveOnly: false,
+        },
+    ],
 };

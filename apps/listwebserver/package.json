@@ -31,7 +31,7 @@
     "multer": "^1.4.2",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "phantom": "^6.3.0",
+    "phantom": "6.3.0",
     "read-yaml": "^1.1.0",
     "sdp-transform": "^2.13.0",
     "sdpoker": "Streampunk/sdpoker#6cf3966dffb9e4d3cb16b89f24a03dd3542e177b",

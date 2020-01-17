@@ -1,0 +1,3483 @@
+{
+  "@babel/runtime@7.7.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel",
+    "publisher": "Sebastian McKenzie",
+    "email": "sebmck@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/@babel/runtime",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/@babel/runtime",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/@babel/runtime/LICENSE"
+  },
+  "@sindresorhus/is@0.14.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/is",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/@sindresorhus/is",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/@sindresorhus/is",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/@sindresorhus/is/license"
+  },
+  "@szmarczak/http-timer@1.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/szmarczak/http-timer",
+    "publisher": "Szymon Marczak",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/@szmarczak/http-timer",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/@szmarczak/http-timer",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/@szmarczak/http-timer/LICENSE"
+  },
+  "@vitalets/google-translate-api@3.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vitalets/google-translate-api",
+    "publisher": "Matheus Fernandes",
+    "email": "npm@matheus.top",
+    "url": "http://matheus.top",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/@vitalets/google-translate-api",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/@vitalets/google-translate-api",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/@vitalets/google-translate-api/LICENSE"
+  },
+  "@vitalets/google-translate-token@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vitalets/google-translate-token",
+    "publisher": "Matheus Fernandes",
+    "email": "npm@matheus.top",
+    "url": "http://matheus.top",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/@vitalets/google-translate-token",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/@vitalets/google-translate-token",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/@vitalets/google-translate-token/LICENSE"
+  },
+  "abbrev@1.1.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/abbrev-js",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/abbrev",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/abbrev",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/abbrev/LICENSE"
+  },
+  "abort-controller@3.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mysticatea/abort-controller",
+    "publisher": "Toru Nagashima",
+    "url": "https://github.com/mysticatea",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/abort-controller",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/abort-controller",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/abort-controller/LICENSE"
+  },
+  "accepts@1.3.7": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/accepts",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/accepts",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/accepts",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/accepts/LICENSE"
+  },
+  "add-px-to-style@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mikkoh/add-px-to-style",
+    "publisher": "Mikko Haapoja",
+    "email": "me@mikkoh.com",
+    "url": "https://github.com/mikkoh",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/add-px-to-style",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/add-px-to-style",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/add-px-to-style/LICENSE.md"
+  },
+  "after@0.8.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Raynos/after",
+    "publisher": "Raynos",
+    "email": "raynos2@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/after",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/after",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/after/LICENCE"
+  },
+  "agent-base@4.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/TooTallNate/node-agent-base",
+    "publisher": "Nathan Rajlich",
+    "email": "nathan@tootallnate.net",
+    "url": "http://n8.io/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/agent-base",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/agent-base",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/agent-base/README.md"
+  },
+  "ajv@6.10.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/epoberezkin/ajv",
+    "publisher": "Evgeny Poberezkin",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ajv",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ajv",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ajv/LICENSE"
+  },
+  "ansi-regex@2.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/chalk/ansi-regex",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ansi-regex",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ansi-regex",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ansi-regex/license"
+  },
+  "aproba@1.2.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/iarna/aproba",
+    "publisher": "Rebecca Turner",
+    "email": "me@re-becca.org",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/aproba",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/aproba",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/aproba/LICENSE"
+  },
+  "are-we-there-yet@1.1.5": {
+    "licenses": "ISC",
+    "repository": "https://github.com/iarna/are-we-there-yet",
+    "publisher": "Rebecca Turner",
+    "url": "http://re-becca.org",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/are-we-there-yet",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/are-we-there-yet",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/are-we-there-yet/LICENSE"
+  },
+  "array-flatten@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/blakeembrey/array-flatten",
+    "publisher": "Blake Embrey",
+    "email": "hello@blakeembrey.com",
+    "url": "http://blakeembrey.me",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/array-flatten",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/array-flatten",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/array-flatten/LICENSE"
+  },
+  "arraybuffer.slice@0.0.7": {
+    "licenses": "MIT",
+    "repository": "https://github.com/rase-/arraybuffer.slice",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/arraybuffer.slice",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/arraybuffer.slice",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/arraybuffer.slice/LICENCE"
+  },
+  "arrify@2.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/arrify",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/arrify",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/arrify",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/arrify/license"
+  },
+  "asap@2.0.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/kriskowal/asap",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/asap",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/asap",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/asap/LICENSE.md"
+  },
+  "asn1@0.2.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/joyent/node-asn1",
+    "publisher": "Joyent",
+    "url": "joyent.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/asn1",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/asn1",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/asn1/LICENSE"
+  },
+  "assert-plus@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mcavage/node-assert-plus",
+    "publisher": "Mark Cavage",
+    "email": "mcavage@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/assert-plus",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/assert-plus",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/assert-plus/README.md"
+  },
+  "async-limiter@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/strml/async-limiter",
+    "publisher": "Samuel Reed",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/async-limiter",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/async-limiter",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/async-limiter/LICENSE"
+  },
+  "asynckit@0.4.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/alexindigo/asynckit",
+    "publisher": "Alex Indigo",
+    "email": "iam@alexindigo.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/asynckit",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/asynckit",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/asynckit/LICENSE"
+  },
+  "attr-accept@1.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/okonet/attr-accept",
+    "publisher": "Andrey Okonetchnikov @okonetchnikov",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/attr-accept",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/attr-accept",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/attr-accept/LICENSE"
+  },
+  "aws-sign2@0.7.0": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/mikeal/aws-sign",
+    "publisher": "Mikeal Rogers",
+    "email": "mikeal.rogers@gmail.com",
+    "url": "http://www.futurealoof.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/aws-sign2",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/aws-sign2",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/aws-sign2/LICENSE"
+  },
+  "aws4@1.8.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mhart/aws4",
+    "publisher": "Michael Hart",
+    "email": "michael.hart.au@gmail.com",
+    "url": "http://github.com/mhart",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/aws4",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/aws4",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/aws4/LICENSE"
+  },
+  "axios@0.19.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/axios/axios",
+    "publisher": "Matt Zabriskie",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/axios",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/axios",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/axios/LICENSE"
+  },
+  "backo2@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mokesmokes/backo",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/backo2",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/backo2",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/backo2/Readme.md"
+  },
+  "balanced-match@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/juliangruber/balanced-match",
+    "publisher": "Julian Gruber",
+    "email": "mail@juliangruber.com",
+    "url": "http://juliangruber.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/balanced-match",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/balanced-match",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/balanced-match/LICENSE.md"
+  },
+  "base64-arraybuffer@0.1.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/niklasvh/base64-arraybuffer",
+    "publisher": "Niklas von Hertzen",
+    "email": "niklasvh@gmail.com",
+    "url": "http://hertzen.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/base64-arraybuffer",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/base64-arraybuffer",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/base64-arraybuffer/LICENSE-MIT"
+  },
+  "base64-js@1.3.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/beatgammit/base64-js",
+    "publisher": "T. Jameson Little",
+    "email": "t.jameson.little@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/base64-js",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/base64-js",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/base64-js/LICENSE"
+  },
+  "bcrypt-pbkdf@1.0.2": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/joyent/node-bcrypt-pbkdf",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/bcrypt-pbkdf",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/bcrypt-pbkdf",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/bcrypt-pbkdf/LICENSE"
+  },
+  "better-assert@1.0.2": {
+    "licenses": "UNKNOWN",
+    "repository": "https://github.com/visionmedia/better-assert",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/better-assert",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/better-assert",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/better-assert/Readme.md"
+  },
+  "bignumber.js@7.2.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/MikeMcl/bignumber.js",
+    "publisher": "Michael Mclaughlin",
+    "email": "M8ch88l@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/bignumber.js",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/bignumber.js",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/bignumber.js/LICENCE"
+  },
+  "blob@0.0.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/webmodules/blob",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/blob",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/blob",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/blob/LICENSE"
+  },
+  "block-stream@0.0.9": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/block-stream",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/block-stream",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/block-stream",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/block-stream/LICENSE"
+  },
+  "bluebird@3.7.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/petkaantonov/bluebird",
+    "publisher": "Petka Antonov",
+    "email": "petka_antonov@hotmail.com",
+    "url": "http://github.com/petkaantonov/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/bluebird",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/bluebird",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/bluebird/LICENSE"
+  },
+  "body-parser@1.19.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/expressjs/body-parser",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/body-parser",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/body-parser",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/body-parser/LICENSE"
+  },
+  "brace-expansion@1.1.11": {
+    "licenses": "MIT",
+    "repository": "https://github.com/juliangruber/brace-expansion",
+    "publisher": "Julian Gruber",
+    "email": "mail@juliangruber.com",
+    "url": "http://juliangruber.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/brace-expansion",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/brace-expansion",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/brace-expansion/LICENSE"
+  },
+  "buffer-equal-constant-time@1.0.1": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/goinstant/buffer-equal-constant-time",
+    "publisher": "GoInstant Inc., a salesforce.com company",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/buffer-equal-constant-time",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/buffer-equal-constant-time",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/buffer-equal-constant-time/LICENSE.txt"
+  },
+  "buffer-from@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/LinusU/buffer-from",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/buffer-from",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/buffer-from",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/buffer-from/LICENSE"
+  },
+  "bytes@3.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/visionmedia/bytes.js",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "url": "http://tjholowaychuk.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/bytes",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/bytes",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/bytes/LICENSE"
+  },
+  "cacache@12.0.3": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/cacache",
+    "publisher": "Kat Marchán",
+    "email": "kzm@sykosomatic.org",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/cacache",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/cacache",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/cacache/LICENSE.md"
+  },
+  "cacheable-request@6.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lukechilds/cacheable-request",
+    "publisher": "Luke Childs",
+    "email": "lukechilds123@gmail.com",
+    "url": "http://lukechilds.co.uk",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/cacheable-request",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/cacheable-request",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/cacheable-request/LICENSE"
+  },
+  "callsite@1.0.0": {
+    "licenses": "UNKNOWN",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/callsite",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/callsite",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/callsite/Readme.md"
+  },
+  "caseless@0.12.0": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/mikeal/caseless",
+    "publisher": "Mikeal Rogers",
+    "email": "mikeal.rogers@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/caseless",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/caseless",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/caseless/LICENSE"
+  },
+  "chart.js@2.9.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/chartjs/Chart.js",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/chart.js",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/chart.js",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/chart.js/LICENSE.md"
+  },
+  "chartjs-color-string@0.6.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/chartjs/chartjs-color-string",
+    "publisher": "Heather Arthur",
+    "email": "fayearthur@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/chartjs-color-string",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/chartjs-color-string",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/chartjs-color-string/LICENSE"
+  },
+  "chartjs-color@2.4.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/chartjs/chartjs-color",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/chartjs-color",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/chartjs-color",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/chartjs-color/LICENSE"
+  },
+  "chownr@1.1.3": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/chownr",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/chownr",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/chownr",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/chownr/LICENSE"
+  },
+  "ci-info@2.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/watson/ci-info",
+    "publisher": "Thomas Watson Steen",
+    "email": "w@tson.dk",
+    "url": "https://twitter.com/wa7son",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ci-info",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ci-info",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ci-info/LICENSE"
+  },
+  "classnames@2.2.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/JedWatson/classnames",
+    "publisher": "Jed Watson",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/classnames",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/classnames",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/classnames/LICENSE"
+  },
+  "clone-response@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lukechilds/clone-response",
+    "publisher": "Luke Childs",
+    "email": "lukechilds123@gmail.com",
+    "url": "http://lukechilds.co.uk",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/clone-response",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/clone-response",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/clone-response/LICENSE"
+  },
+  "color-convert@1.9.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Qix-/color-convert",
+    "publisher": "Heather Arthur",
+    "email": "fayearthur@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/color-convert",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/color-convert",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/color-convert/LICENSE"
+  },
+  "color-name@1.1.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/colorjs/color-name",
+    "publisher": "DY",
+    "email": "dfcreative@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/color-name",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/color-name",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/color-name/LICENSE"
+  },
+  "combined-stream@1.0.8": {
+    "licenses": "MIT",
+    "repository": "https://github.com/felixge/node-combined-stream",
+    "publisher": "Felix Geisendörfer",
+    "email": "felix@debuggable.com",
+    "url": "http://debuggable.com/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/combined-stream",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/combined-stream",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/combined-stream/License"
+  },
+  "commander@2.20.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/tj/commander.js",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/commander",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/commander",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/commander/LICENSE"
+  },
+  "component-bind@1.0.0": {
+    "licenses": "UNKNOWN",
+    "repository": "https://github.com/component/bind",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/component-bind",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/component-bind",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/component-bind/Readme.md"
+  },
+  "component-emitter@1.2.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/component/emitter",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/component-emitter",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/component-emitter",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/component-emitter/LICENSE"
+  },
+  "component-inherit@0.0.3": {
+    "licenses": "UNKNOWN",
+    "repository": "https://github.com/component/inherit",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/component-inherit",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/component-inherit",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/component-inherit/Readme.md"
+  },
+  "compressible@2.0.17": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/compressible",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/compressible",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/compressible",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/compressible/LICENSE"
+  },
+  "compression@1.7.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/expressjs/compression",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/compression",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/compression",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/compression/LICENSE"
+  },
+  "concat-map@0.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/substack/node-concat-map",
+    "publisher": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/concat-map",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/concat-map",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/concat-map/LICENSE"
+  },
+  "concat-stream@1.6.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/maxogden/concat-stream",
+    "publisher": "Max Ogden",
+    "email": "max@maxogden.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/concat-stream",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/concat-stream",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/concat-stream/LICENSE"
+  },
+  "configstore@2.1.0": {
+    "licenses": "BSD-2-Clause",
+    "repository": "https://github.com/yeoman/configstore",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/configstore",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/configstore",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/configstore/readme.md"
+  },
+  "console-control-strings@1.1.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/iarna/console-control-strings",
+    "publisher": "Rebecca Turner",
+    "email": "me@re-becca.org",
+    "url": "http://re-becca.org/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/console-control-strings",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/console-control-strings",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/console-control-strings/LICENSE"
+  },
+  "content-disposition@0.5.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/content-disposition",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/content-disposition",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/content-disposition",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/content-disposition/LICENSE"
+  },
+  "content-type@1.0.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/content-type",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/content-type",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/content-type",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/content-type/LICENSE"
+  },
+  "cookie-signature@1.0.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/visionmedia/node-cookie-signature",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@learnboost.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/cookie-signature",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/cookie-signature",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/cookie-signature/Readme.md"
+  },
+  "cookie@0.4.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/cookie",
+    "publisher": "Roman Shtylman",
+    "email": "shtylman@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/cookie",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/cookie",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/cookie/LICENSE"
+  },
+  "copy-concurrently@1.0.5": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/copy-concurrently",
+    "publisher": "Rebecca Turner",
+    "email": "me@re-becca.org",
+    "url": "http://re-becca.org/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/copy-concurrently",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/copy-concurrently",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/copy-concurrently/LICENSE"
+  },
+  "core-js@3.4.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/zloirock/core-js",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/core-js",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/core-js",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/core-js/LICENSE"
+  },
+  "core-util-is@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/isaacs/core-util-is",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/core-util-is",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/core-util-is",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/core-util-is/LICENSE"
+  },
+  "cyclist@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mafintosh/cyclist",
+    "publisher": "Mathias Buus Madsen",
+    "email": "mathiasbuus@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/cyclist",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/cyclist",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/cyclist/LICENSE"
+  },
+  "d3-array@1.2.4": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-array",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-array",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-array",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-array/LICENSE"
+  },
+  "d3-axis@1.0.12": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-axis",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-axis",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-axis",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-axis/LICENSE"
+  },
+  "d3-brush@1.1.5": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-brush",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-brush",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-brush",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-brush/LICENSE"
+  },
+  "d3-chord@1.0.6": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-chord",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-chord",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-chord",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-chord/LICENSE"
+  },
+  "d3-collection@1.0.7": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-collection",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-collection",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-collection",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-collection/LICENSE"
+  },
+  "d3-color@1.4.0": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-color",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-color",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-color",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-color/LICENSE"
+  },
+  "d3-contour@1.3.2": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-contour",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-contour",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-contour",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-contour/LICENSE"
+  },
+  "d3-dispatch@1.0.6": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-dispatch",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-dispatch",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-dispatch",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-dispatch/LICENSE"
+  },
+  "d3-drag@1.2.5": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-drag",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-drag",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-drag",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-drag/LICENSE"
+  },
+  "d3-dsv@1.2.0": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-dsv",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-dsv",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-dsv",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-dsv/LICENSE"
+  },
+  "d3-ease@1.0.6": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-ease",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-ease",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-ease",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-ease/LICENSE"
+  },
+  "d3-fetch@1.1.2": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-fetch",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-fetch",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-fetch",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-fetch/LICENSE"
+  },
+  "d3-force@1.2.1": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-force",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-force",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-force",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-force/LICENSE"
+  },
+  "d3-format@1.4.2": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-format",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-format",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-format",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-format/LICENSE"
+  },
+  "d3-geo@1.11.9": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-geo",
+    "publisher": "Mike Bostock",
+    "url": "https://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-geo",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-geo",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-geo/LICENSE"
+  },
+  "d3-hierarchy@1.1.9": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-hierarchy",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-hierarchy",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-hierarchy",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-hierarchy/LICENSE"
+  },
+  "d3-interpolate@1.3.3": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-interpolate",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-interpolate",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-interpolate",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-interpolate/LICENSE"
+  },
+  "d3-path@1.0.9": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-path",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-path",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-path",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-path/LICENSE"
+  },
+  "d3-polygon@1.0.6": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-polygon",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-polygon",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-polygon",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-polygon/LICENSE"
+  },
+  "d3-quadtree@1.0.7": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-quadtree",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-quadtree",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-quadtree",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-quadtree/LICENSE"
+  },
+  "d3-random@1.1.2": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-random",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-random",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-random",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-random/LICENSE"
+  },
+  "d3-scale-chromatic@1.5.0": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-scale-chromatic",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-scale-chromatic",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-scale-chromatic",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-scale-chromatic/LICENSE"
+  },
+  "d3-selection@1.4.1": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-selection",
+    "publisher": "Mike Bostock",
+    "url": "https://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-selection",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-selection",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-selection/LICENSE"
+  },
+  "d3-shape@1.3.7": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-shape",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-shape",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-shape",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-shape/LICENSE"
+  },
+  "d3-time-format@2.2.2": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-time-format",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-time-format",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-time-format",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-time-format/LICENSE"
+  },
+  "d3-time@1.1.0": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-time",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-time",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-time",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-time/LICENSE"
+  },
+  "d3-timer@1.0.10": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-timer",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-timer",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-timer",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-timer/LICENSE"
+  },
+  "d3-transition@1.3.2": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-transition",
+    "publisher": "Mike Bostock",
+    "url": "https://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-transition",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-transition",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-transition/LICENSE"
+  },
+  "d3-voronoi@1.1.4": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-voronoi",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-voronoi",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-voronoi",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-voronoi/LICENSE"
+  },
+  "d3-zoom@1.8.3": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3-zoom",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-zoom",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-zoom",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3-zoom/LICENSE"
+  },
+  "d3@5.14.2": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/d3/d3",
+    "publisher": "Mike Bostock",
+    "url": "https://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/d3/LICENSE"
+  },
+  "dashdash@1.14.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/trentm/node-dashdash",
+    "publisher": "Trent Mick",
+    "email": "trentm@gmail.com",
+    "url": "http://trentm.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/dashdash",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/dashdash",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/dashdash/LICENSE.txt"
+  },
+  "debug@3.2.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/visionmedia/debug",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/debug",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/debug",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/debug/LICENSE"
+  },
+  "debuglog@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sam-github/node-debuglog",
+    "publisher": "Sam Roberts",
+    "email": "sam@strongloop.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/debuglog",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/debuglog",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/debuglog/LICENSE"
+  },
+  "decompress-response@3.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/decompress-response",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/decompress-response",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/decompress-response",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/decompress-response/license"
+  },
+  "defer-to-connect@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/szmarczak/defer-to-connect",
+    "publisher": "Szymon Marczak",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/defer-to-connect",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/defer-to-connect",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/defer-to-connect/LICENSE"
+  },
+  "define-properties@1.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/define-properties",
+    "publisher": "Jordan Harband",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/define-properties",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/define-properties",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/define-properties/LICENSE"
+  },
+  "delayed-stream@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/felixge/node-delayed-stream",
+    "publisher": "Felix Geisendörfer",
+    "email": "felix@debuggable.com",
+    "url": "http://debuggable.com/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/delayed-stream",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/delayed-stream",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/delayed-stream/License"
+  },
+  "delegates@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/visionmedia/node-delegates",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/delegates",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/delegates",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/delegates/License"
+  },
+  "depd@1.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/dougwilson/nodejs-depd",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/depd",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/depd",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/depd/LICENSE"
+  },
+  "destroy@1.0.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/stream-utils/destroy",
+    "publisher": "Jonathan Ong",
+    "email": "me@jongleberry.com",
+    "url": "http://jongleberry.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/destroy",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/destroy",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/destroy/LICENSE"
+  },
+  "detect-newline@2.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/detect-newline",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/detect-newline",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/detect-newline",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/detect-newline/license"
+  },
+  "dezalgo@1.0.3": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/dezalgo",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/dezalgo",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/dezalgo",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/dezalgo/LICENSE"
+  },
+  "dom-css@2.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mattdesl/dom-css",
+    "publisher": "Matt DesLauriers",
+    "email": "dave.des@gmail.com",
+    "url": "https://github.com/mattdesl",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/dom-css",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/dom-css",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/dom-css/LICENSE.md"
+  },
+  "dot-prop@3.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/dot-prop",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/dot-prop",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/dot-prop",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/dot-prop/license"
+  },
+  "duplexer3@0.1.4": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/floatdrop/duplexer3",
+    "publisher": "Conrad Pankoff",
+    "email": "deoxxa@fknsrs.biz",
+    "url": "http://www.fknsrs.biz/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/duplexer3",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/duplexer3",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/duplexer3/LICENSE.md"
+  },
+  "duplexify@3.7.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mafintosh/duplexify",
+    "publisher": "Mathias Buus",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/duplexify",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/duplexify",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/duplexify/LICENSE"
+  },
+  "ebu_list_common@1.0.0": {
+    "licenses": "GPL-3.0-or-later",
+    "publisher": "Pedro Ferreira",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ebu_list_common",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ebu_list_common"
+  },
+  "ecc-jsbn@0.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/quartzjer/ecc-jsbn",
+    "publisher": "Jeremie Miller",
+    "email": "jeremie@jabber.org",
+    "url": "http://jeremie.com/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ecc-jsbn",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ecc-jsbn",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ecc-jsbn/LICENSE"
+  },
+  "ecdsa-sig-formatter@1.0.11": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/Brightspace/node-ecdsa-sig-formatter",
+    "publisher": "D2L Corporation",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ecdsa-sig-formatter",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ecdsa-sig-formatter",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ecdsa-sig-formatter/LICENSE"
+  },
+  "ee-first@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jonathanong/ee-first",
+    "publisher": "Jonathan Ong",
+    "email": "me@jongleberry.com",
+    "url": "http://jongleberry.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ee-first",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ee-first",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ee-first/LICENSE"
+  },
+  "emoji-regex@7.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mathiasbynens/emoji-regex",
+    "publisher": "Mathias Bynens",
+    "url": "https://mathiasbynens.be/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/emoji-regex",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/emoji-regex",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/emoji-regex/LICENSE-MIT.txt"
+  },
+  "encodeurl@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/pillarjs/encodeurl",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/encodeurl",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/encodeurl",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/encodeurl/LICENSE"
+  },
+  "end-of-stream@1.4.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mafintosh/end-of-stream",
+    "publisher": "Mathias Buus",
+    "email": "mathiasbuus@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/end-of-stream",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/end-of-stream",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/end-of-stream/LICENSE"
+  },
+  "engine.io-client@3.4.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/socketio/engine.io-client",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/engine.io-client",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/engine.io-client",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/engine.io-client/LICENSE"
+  },
+  "engine.io-parser@2.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/socketio/engine.io-parser",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/engine.io-parser",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/engine.io-parser",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/engine.io-parser/LICENSE"
+  },
+  "errno@0.1.7": {
+    "licenses": "MIT",
+    "repository": "https://github.com/rvagg/node-errno",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/errno",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/errno",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/errno/README.md"
+  },
+  "es-abstract@1.16.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/es-abstract",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "url": "http://ljharb.codes",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/es-abstract",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/es-abstract",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/es-abstract/LICENSE"
+  },
+  "es-to-primitive@1.2.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/es-to-primitive",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/es-to-primitive",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/es-to-primitive",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/es-to-primitive/LICENSE"
+  },
+  "es6-promise@4.2.8": {
+    "licenses": "MIT",
+    "repository": "https://github.com/stefanpenner/es6-promise",
+    "publisher": "Yehuda Katz, Tom Dale, Stefan Penner and contributors",
+    "url": "Conversion to ES6 API by Jake Archibald",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/es6-promise",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/es6-promise",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/es6-promise/LICENSE"
+  },
+  "es6-promisify@5.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/digitaldesignlabs/es6-promisify",
+    "publisher": "Mike Hall",
+    "email": "mikehall314@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/es6-promisify",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/es6-promisify",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/es6-promisify/README.md"
+  },
+  "escape-html@1.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/component/escape-html",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/escape-html",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/escape-html",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/escape-html/LICENSE"
+  },
+  "etag@1.8.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/etag",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/etag",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/etag",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/etag/LICENSE"
+  },
+  "event-target-shim@5.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mysticatea/event-target-shim",
+    "publisher": "Toru Nagashima",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/event-target-shim",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/event-target-shim",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/event-target-shim/LICENSE"
+  },
+  "express@4.17.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/expressjs/express",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/express",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/express",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/express/LICENSE"
+  },
+  "extend@3.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/justmoon/node-extend",
+    "publisher": "Stefan Thomas",
+    "email": "justmoon@members.fsf.org",
+    "url": "http://www.justmoon.net",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/extend",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/extend",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/extend/LICENSE"
+  },
+  "extsprintf@1.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/davepacheco/node-extsprintf",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/extsprintf",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/extsprintf",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/extsprintf/LICENSE"
+  },
+  "fast-deep-equal@2.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/epoberezkin/fast-deep-equal",
+    "publisher": "Evgeny Poberezkin",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fast-deep-equal",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fast-deep-equal",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fast-deep-equal/LICENSE"
+  },
+  "fast-json-stable-stringify@2.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/epoberezkin/fast-json-stable-stringify",
+    "publisher": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fast-json-stable-stringify",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fast-json-stable-stringify",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fast-json-stable-stringify/LICENSE"
+  },
+  "fast-text-encoding@1.0.0": {
+    "licenses": "UNKNOWN",
+    "repository": "https://github.com/samthor/fast-text-encoder",
+    "publisher": "Sam Thorogood",
+    "email": "sam.thorogood@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fast-text-encoding",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fast-text-encoding",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fast-text-encoding/LICENSE"
+  },
+  "figgy-pudding@3.5.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/zkat/figgy-pudding",
+    "publisher": "Kat Marchán",
+    "email": "kzm@sykosomatic.org",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/figgy-pudding",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/figgy-pudding",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/figgy-pudding/LICENSE.md"
+  },
+  "finalhandler@1.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/pillarjs/finalhandler",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/finalhandler",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/finalhandler",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/finalhandler/LICENSE"
+  },
+  "flexboxgrid@6.3.1": {
+    "licenses": "UNKNOWN",
+    "repository": "https://github.com/kristoferjoseph/flexboxgrid",
+    "publisher": "@dam",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/flexboxgrid",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/flexboxgrid",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/flexboxgrid/LICENSE"
+  },
+  "flush-write-stream@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mafintosh/flush-write-stream",
+    "publisher": "Mathias Buus",
+    "url": "@mafintosh",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/flush-write-stream",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/flush-write-stream",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/flush-write-stream/LICENSE"
+  },
+  "follow-redirects@1.9.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/follow-redirects/follow-redirects",
+    "publisher": "Ruben Verborgh",
+    "email": "ruben@verborgh.org",
+    "url": "https://ruben.verborgh.org/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/follow-redirects",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/follow-redirects",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/follow-redirects/LICENSE"
+  },
+  "for-each@0.3.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Raynos/for-each",
+    "publisher": "Raynos",
+    "email": "raynos2@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/for-each",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/for-each",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/for-each/LICENSE"
+  },
+  "forever-agent@0.6.1": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/mikeal/forever-agent",
+    "publisher": "Mikeal Rogers",
+    "email": "mikeal.rogers@gmail.com",
+    "url": "http://www.futurealoof.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/forever-agent",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/forever-agent",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/forever-agent/LICENSE"
+  },
+  "form-data@2.3.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/form-data/form-data",
+    "publisher": "Felix Geisendörfer",
+    "email": "felix@debuggable.com",
+    "url": "http://debuggable.com/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/form-data",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/form-data",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/form-data/License"
+  },
+  "forwarded@0.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/forwarded",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/forwarded",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/forwarded",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/forwarded/LICENSE"
+  },
+  "fresh@0.5.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/fresh",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "url": "http://tjholowaychuk.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fresh",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fresh",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fresh/LICENSE"
+  },
+  "from2@2.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/hughsk/from2",
+    "publisher": "Hugh Kennedy",
+    "email": "hughskennedy@gmail.com",
+    "url": "http://hughsk.io/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/from2",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/from2",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/from2/LICENSE.md"
+  },
+  "fs-write-stream-atomic@1.0.10": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/fs-write-stream-atomic",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fs-write-stream-atomic",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fs-write-stream-atomic",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fs-write-stream-atomic/LICENSE"
+  },
+  "fs.realpath@1.0.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/fs.realpath",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fs.realpath",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fs.realpath",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fs.realpath/LICENSE"
+  },
+  "fstream@1.0.12": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/fstream",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fstream",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fstream",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/fstream/LICENSE"
+  },
+  "function-bind@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Raynos/function-bind",
+    "publisher": "Raynos",
+    "email": "raynos2@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/function-bind",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/function-bind",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/function-bind/LICENSE"
+  },
+  "gauge@2.7.4": {
+    "licenses": "ISC",
+    "repository": "https://github.com/iarna/gauge",
+    "publisher": "Rebecca Turner",
+    "email": "me@re-becca.org",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/gauge",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/gauge",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/gauge/LICENSE"
+  },
+  "gaxios@2.1.0": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/JustinBeckwith/gaxios",
+    "publisher": "Google, LLC",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/gaxios",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/gaxios",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/gaxios/LICENSE"
+  },
+  "gcp-metadata@3.2.2": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/googleapis/gcp-metadata",
+    "publisher": "Stephen Sawchuk",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/gcp-metadata",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/gcp-metadata",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/gcp-metadata/LICENSE"
+  },
+  "get-stream@4.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/get-stream",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/get-stream",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/get-stream",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/get-stream/license"
+  },
+  "getpass@0.1.7": {
+    "licenses": "MIT",
+    "repository": "https://github.com/arekinath/node-getpass",
+    "publisher": "Alex Wilson",
+    "email": "alex.wilson@joyent.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/getpass",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/getpass",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/getpass/LICENSE"
+  },
+  "glob@7.1.6": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/node-glob",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/glob",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/glob",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/glob/LICENSE"
+  },
+  "google-auth-library@5.5.1": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/googleapis/google-auth-library-nodejs",
+    "publisher": "Google Inc.",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/google-auth-library",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/google-auth-library",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/google-auth-library/LICENSE"
+  },
+  "google-p12-pem@2.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/google/google-p12-pem",
+    "publisher": "Ryan Seys",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/google-p12-pem",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/google-p12-pem",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/google-p12-pem/LICENSE"
+  },
+  "googleapis-common@3.1.1": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/googleapis/nodejs-googleapis-common",
+    "publisher": "Google LLC",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/googleapis-common",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/googleapis-common",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/googleapis-common/LICENSE"
+  },
+  "googleapis@45.0.0": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/googleapis/google-api-nodejs-client",
+    "publisher": "Google Inc.",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/googleapis",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/googleapis",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/googleapis/LICENSE"
+  },
+  "got@9.6.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/got",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/got",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/got",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/got/license"
+  },
+  "graceful-fs@4.2.3": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/node-graceful-fs",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/graceful-fs",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/graceful-fs",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/graceful-fs/LICENSE"
+  },
+  "gtoken@4.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/google/node-gtoken",
+    "publisher": "Google, LLC",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/gtoken",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/gtoken",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/gtoken/LICENSE"
+  },
+  "gud@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jamiebuilds/global-unique-id",
+    "publisher": "Jamie Kyle",
+    "email": "me@thejameskyle.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/gud",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/gud",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/gud/README.md"
+  },
+  "har-schema@2.0.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/ahmadnassri/har-schema",
+    "publisher": "Ahmad Nassri",
+    "email": "ahmad@ahmadnassri.com",
+    "url": "https://www.ahmadnassri.com/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/har-schema",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/har-schema",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/har-schema/LICENSE"
+  },
+  "har-validator@5.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ahmadnassri/node-har-validator",
+    "publisher": "Ahmad Nassri",
+    "email": "ahmad@ahmadnassri.com",
+    "url": "https://www.ahmadnassri.com/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/har-validator",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/har-validator",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/har-validator/LICENSE"
+  },
+  "has-binary2@1.0.3": {
+    "licenses": "MIT",
+    "publisher": "Kevin Roark",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/has-binary2",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/has-binary2",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/has-binary2/LICENSE"
+  },
+  "has-cors@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/component/has-cors",
+    "publisher": "Nathan Rajlich",
+    "email": "nathan@tootallnate.net",
+    "url": "http://n8.io/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/has-cors",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/has-cors",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/has-cors/Readme.md"
+  },
+  "has-symbols@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/has-symbols",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "url": "http://ljharb.codes",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/has-symbols",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/has-symbols",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/has-symbols/LICENSE"
+  },
+  "has-unicode@2.0.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/iarna/has-unicode",
+    "publisher": "Rebecca Turner",
+    "email": "me@re-becca.org",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/has-unicode",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/has-unicode",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/has-unicode/LICENSE"
+  },
+  "has@1.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/tarruda/has",
+    "publisher": "Thiago de Arruda",
+    "email": "tpadilha84@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/has",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/has",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/has/LICENSE-MIT"
+  },
+  "history@4.10.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ReactTraining/history",
+    "publisher": "Michael Jackson",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/history",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/history",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/history/LICENSE"
+  },
+  "hoist-non-react-statics@3.3.1": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/mridgway/hoist-non-react-statics",
+    "publisher": "Michael Ridgway",
+    "email": "mcridgway@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/hoist-non-react-statics",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/hoist-non-react-statics",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/hoist-non-react-statics/LICENSE.md"
+  },
+  "hosted-git-info@2.8.5": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/hosted-git-info",
+    "publisher": "Rebecca Turner",
+    "email": "me@re-becca.org",
+    "url": "http://re-becca.org",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/hosted-git-info",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/hosted-git-info",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/hosted-git-info/LICENSE"
+  },
+  "http-cache-semantics@4.0.3": {
+    "licenses": "BSD-2-Clause",
+    "repository": "https://github.com/kornelski/http-cache-semantics",
+    "publisher": "Kornel Lesiński",
+    "email": "kornel@geekhood.net",
+    "url": "https://kornel.ski/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/http-cache-semantics",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/http-cache-semantics",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/http-cache-semantics/LICENSE"
+  },
+  "http-errors@1.7.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/http-errors",
+    "publisher": "Jonathan Ong",
+    "email": "me@jongleberry.com",
+    "url": "http://jongleberry.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/http-errors",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/http-errors",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/http-errors/LICENSE"
+  },
+  "http-signature@1.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/joyent/node-http-signature",
+    "publisher": "Joyent, Inc",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/http-signature",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/http-signature",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/http-signature/LICENSE"
+  },
+  "https-proxy-agent@3.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/TooTallNate/node-https-proxy-agent",
+    "publisher": "Nathan Rajlich",
+    "email": "nathan@tootallnate.net",
+    "url": "http://n8.io/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/https-proxy-agent",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/https-proxy-agent",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/https-proxy-agent/README.md"
+  },
+  "iconv-lite@0.4.24": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ashtuchkin/iconv-lite",
+    "publisher": "Alexander Shtuchkin",
+    "email": "ashtuchkin@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/iconv-lite",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/iconv-lite",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/iconv-lite/LICENSE"
+  },
+  "iferr@0.1.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/shesek/iferr",
+    "publisher": "Nadav Ivgi",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/iferr",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/iferr",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/iferr/LICENSE"
+  },
+  "imurmurhash@0.1.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jensyt/imurmurhash-js",
+    "publisher": "Jens Taylor",
+    "email": "jensyt@gmail.com",
+    "url": "https://github.com/homebrewing",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/imurmurhash",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/imurmurhash",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/imurmurhash/README.md"
+  },
+  "indexof@0.0.1": {
+    "licenses": "UNKNOWN",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/indexof",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/indexof",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/indexof/Readme.md"
+  },
+  "infer-owner@1.0.4": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/infer-owner",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "https://izs.me",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/infer-owner",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/infer-owner",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/infer-owner/LICENSE"
+  },
+  "inflight@1.0.6": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/inflight",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/inflight",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/inflight",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/inflight/LICENSE"
+  },
+  "inherits@2.0.3": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/inherits",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/inherits",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/inherits",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/inherits/LICENSE"
+  },
+  "ini@1.3.5": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/ini",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ini",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ini",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ini/LICENSE"
+  },
+  "ipaddr.js@1.9.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/whitequark/ipaddr.js",
+    "publisher": "whitequark",
+    "email": "whitequark@whitequark.org",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ipaddr.js",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ipaddr.js",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ipaddr.js/LICENSE"
+  },
+  "is-buffer@1.1.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/feross/is-buffer",
+    "publisher": "Feross Aboukhadijeh",
+    "email": "feross@feross.org",
+    "url": "http://feross.org/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-buffer",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-buffer",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-buffer/LICENSE"
+  },
+  "is-callable@1.1.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/is-callable",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "url": "http://ljharb.codes",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-callable",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-callable",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-callable/LICENSE"
+  },
+  "is-date-object@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/is-date-object",
+    "publisher": "Jordan Harband",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-date-object",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-date-object",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-date-object/LICENSE"
+  },
+  "is-fullwidth-code-point@2.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/is-fullwidth-code-point",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-fullwidth-code-point",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-fullwidth-code-point",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-fullwidth-code-point/license"
+  },
+  "is-obj@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/is-obj",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-obj",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-obj",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-obj/license"
+  },
+  "is-regex@1.0.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/is-regex",
+    "publisher": "Jordan Harband",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-regex",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-regex",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-regex/LICENSE"
+  },
+  "is-stream@2.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/is-stream",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-stream",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-stream",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-stream/license"
+  },
+  "is-symbol@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/is-symbol",
+    "publisher": "Jordan Harband",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-symbol",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-symbol",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-symbol/LICENSE"
+  },
+  "is-typedarray@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/hughsk/is-typedarray",
+    "publisher": "Hugh Kennedy",
+    "email": "hughskennedy@gmail.com",
+    "url": "http://hughsk.io/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-typedarray",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-typedarray",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/is-typedarray/LICENSE.md"
+  },
+  "isarray@0.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/juliangruber/isarray",
+    "publisher": "Julian Gruber",
+    "email": "mail@juliangruber.com",
+    "url": "http://juliangruber.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/isarray",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/isarray",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/isarray/README.md"
+  },
+  "isexe@2.0.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/isexe",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/isexe",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/isexe",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/isexe/LICENSE"
+  },
+  "isstream@0.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/rvagg/isstream",
+    "publisher": "Rod Vagg",
+    "email": "rod@vagg.org",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/isstream",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/isstream",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/isstream/LICENSE.md"
+  },
+  "js-tokens@4.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lydell/js-tokens",
+    "publisher": "Simon Lydell",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/js-tokens",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/js-tokens",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/js-tokens/LICENSE"
+  },
+  "jsbn@0.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/andyperlitch/jsbn",
+    "publisher": "Tom Wu",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/jsbn",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/jsbn",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/jsbn/LICENSE"
+  },
+  "json-bigint@0.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sidorares/json-bigint",
+    "publisher": "Andrey Sidorov",
+    "email": "sidorares@yandex.ru",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-bigint",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-bigint",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-bigint/LICENSE"
+  },
+  "json-buffer@3.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/dominictarr/json-buffer",
+    "publisher": "Dominic Tarr",
+    "email": "dominic.tarr@gmail.com",
+    "url": "http://dominictarr.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-buffer",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-buffer",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-buffer/LICENSE"
+  },
+  "json-parse-better-errors@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/zkat/json-parse-better-errors",
+    "publisher": "Kat Marchán",
+    "email": "kzm@zkat.tech",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-parse-better-errors",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-parse-better-errors",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-parse-better-errors/LICENSE.md"
+  },
+  "json-schema-traverse@0.4.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/epoberezkin/json-schema-traverse",
+    "publisher": "Evgeny Poberezkin",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-schema-traverse",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-schema-traverse",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-schema-traverse/LICENSE"
+  },
+  "json-schema@0.2.3": {
+    "licenses": [
+      "AFLv2.1",
+      "BSD"
+    ],
+    "repository": "https://github.com/kriszyp/json-schema",
+    "publisher": "Kris Zyp",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-schema",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-schema",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-schema/README.md"
+  },
+  "json-stringify-safe@5.0.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/json-stringify-safe",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-stringify-safe",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-stringify-safe",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/json-stringify-safe/LICENSE"
+  },
+  "jsprim@1.4.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/joyent/node-jsprim",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/jsprim",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/jsprim",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/jsprim/LICENSE"
+  },
+  "jwa@1.4.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/brianloveswords/node-jwa",
+    "publisher": "Brian J. Brennan",
+    "email": "brianloveswords@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/jwa",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/jwa",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/jwa/LICENSE"
+  },
+  "jws@3.2.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/brianloveswords/node-jws",
+    "publisher": "Brian J Brennan",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/jws",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/jws",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/jws/LICENSE"
+  },
+  "keyv@3.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lukechilds/keyv",
+    "publisher": "Luke Childs",
+    "email": "lukechilds123@gmail.com",
+    "url": "http://lukechilds.co.uk",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/keyv",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/keyv",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/keyv/LICENSE"
+  },
+  "list-ebu-gui@0.1.0": {
+    "licenses": "Custom: http://localhost",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/README.md"
+  },
+  "lodash@4.17.15": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lodash/lodash",
+    "publisher": "John-David Dalton",
+    "email": "john.david.dalton@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/lodash",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/lodash",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/lodash/LICENSE"
+  },
+  "loose-envify@1.4.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/zertosh/loose-envify",
+    "publisher": "Andres Suarez",
+    "email": "zertosh@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/loose-envify",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/loose-envify",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/loose-envify/LICENSE"
+  },
+  "lowercase-keys@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/lowercase-keys",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/lowercase-keys",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/lowercase-keys",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/lowercase-keys/license"
+  },
+  "lru-cache@5.1.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/node-lru-cache",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/lru-cache",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/lru-cache",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/lru-cache/LICENSE"
+  },
+  "media-typer@0.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/media-typer",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/media-typer",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/media-typer",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/media-typer/LICENSE"
+  },
+  "merge-descriptors@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/component/merge-descriptors",
+    "publisher": "Jonathan Ong",
+    "email": "me@jongleberry.com",
+    "url": "http://jongleberry.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/merge-descriptors",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/merge-descriptors",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/merge-descriptors/LICENSE"
+  },
+  "methods@1.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/methods",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/methods",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/methods",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/methods/LICENSE"
+  },
+  "mime-db@1.42.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/mime-db",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mime-db",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mime-db",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mime-db/LICENSE"
+  },
+  "mime-types@2.1.25": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/mime-types",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mime-types",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mime-types",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mime-types/LICENSE"
+  },
+  "mime@1.6.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/broofa/node-mime",
+    "publisher": "Robert Kieffer",
+    "email": "robert@broofa.com",
+    "url": "http://github.com/broofa",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mime",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mime",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mime/LICENSE"
+  },
+  "mimic-response@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/mimic-response",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mimic-response",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mimic-response",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mimic-response/license"
+  },
+  "mini-create-react-context@0.3.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/StringEpsilon/mini-create-react-context",
+    "publisher": "StringEpsilon",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mini-create-react-context",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mini-create-react-context",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mini-create-react-context/LICENSE"
+  },
+  "minimatch@3.0.4": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/minimatch",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/minimatch",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/minimatch",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/minimatch/LICENSE"
+  },
+  "minimist@1.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/substack/minimist",
+    "publisher": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/minimist",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/minimist",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/minimist/LICENSE"
+  },
+  "mississippi@3.0.0": {
+    "licenses": "BSD-2-Clause",
+    "repository": "https://github.com/maxogden/mississippi",
+    "publisher": "max ogden",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mississippi",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mississippi",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mississippi/license"
+  },
+  "mitt@1.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/developit/mitt",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mitt",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mitt",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mitt/README.md"
+  },
+  "mkdirp@0.5.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/substack/node-mkdirp",
+    "publisher": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mkdirp",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mkdirp",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/mkdirp/LICENSE"
+  },
+  "moment@2.24.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/moment/moment",
+    "publisher": "Iskren Ivov Chernev",
+    "email": "iskren.chernev@gmail.com",
+    "url": "https://github.com/ichernev",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/moment",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/moment",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/moment/LICENSE"
+  },
+  "move-concurrently@1.0.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/move-concurrently",
+    "publisher": "Rebecca Turner",
+    "email": "me@re-becca.org",
+    "url": "http://re-becca.org/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/move-concurrently",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/move-concurrently",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/move-concurrently/LICENSE"
+  },
+  "ms@2.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/zeit/ms",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ms",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ms",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ms/license.md"
+  },
+  "negotiator@0.6.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/negotiator",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/negotiator",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/negotiator",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/negotiator/LICENSE"
+  },
+  "node-fetch@2.6.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/bitinn/node-fetch",
+    "publisher": "David Frank",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/node-fetch",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/node-fetch",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/node-fetch/LICENSE.md"
+  },
+  "node-forge@0.9.1": {
+    "licenses": "(BSD-3-Clause OR GPL-2.0)",
+    "repository": "https://github.com/digitalbazaar/forge",
+    "publisher": "Digital Bazaar, Inc.",
+    "email": "support@digitalbazaar.com",
+    "url": "http://digitalbazaar.com/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/node-forge",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/node-forge",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/node-forge/LICENSE"
+  },
+  "node-gyp@3.8.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/nodejs/node-gyp",
+    "publisher": "Nathan Rajlich",
+    "email": "nathan@tootallnate.net",
+    "url": "http://tootallnate.net",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/node-gyp",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/node-gyp",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/node-gyp/LICENSE"
+  },
+  "node-polyglot@2.4.0": {
+    "licenses": "BSD-2-Clause",
+    "repository": "https://github.com/airbnb/polyglot.js",
+    "publisher": "Spike Brehm",
+    "email": "spike@airbnb.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/node-polyglot",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/node-polyglot",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/node-polyglot/LICENSE"
+  },
+  "nopt@3.0.6": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/nopt",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/nopt",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/nopt",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/nopt/LICENSE"
+  },
+  "nord@0.2.1": {
+    "licenses": "(Apache-2.0 AND CC-BY-SA-4.0)",
+    "repository": "https://github.com/arcticicestudio/nord",
+    "publisher": "Arctic Ice Studio",
+    "email": "development@arcticicestudio.com",
+    "url": "http://arcticicestudio.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/nord",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/nord",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/nord/LICENSE.md"
+  },
+  "normalize-package-data@2.5.0": {
+    "licenses": "BSD-2-Clause",
+    "repository": "https://github.com/npm/normalize-package-data",
+    "publisher": "Meryn Stol",
+    "email": "merynstol@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/normalize-package-data",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/normalize-package-data",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/normalize-package-data/LICENSE"
+  },
+  "normalize-url@4.5.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/normalize-url",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/normalize-url",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/normalize-url",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/normalize-url/license"
+  },
+  "normalize.css@8.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/necolas/normalize.css",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/normalize.css",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/normalize.css",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/normalize.css/LICENSE.md"
+  },
+  "noty@3.2.0-beta": {
+    "licenses": "MIT",
+    "repository": "https://github.com/needim/noty",
+    "publisher": "Nedim Arabacı",
+    "url": "http://ned.im",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/noty",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/noty",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/noty/LICENSE.txt"
+  },
+  "npm-normalize-package-bin@1.0.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/npm-normalize-package-bin",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "https://izs.me",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/npm-normalize-package-bin",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/npm-normalize-package-bin",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/npm-normalize-package-bin/LICENSE"
+  },
+  "npm@6.13.1": {
+    "licenses": "Artistic-2.0",
+    "repository": "https://github.com/npm/cli",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/npm",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/npm",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/npm/LICENSE"
+  },
+  "npmlog@4.1.2": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/npmlog",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/npmlog",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/npmlog",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/npmlog/LICENSE"
+  },
+  "oauth-sign@0.9.0": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/mikeal/oauth-sign",
+    "publisher": "Mikeal Rogers",
+    "email": "mikeal.rogers@gmail.com",
+    "url": "http://www.futurealoof.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/oauth-sign",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/oauth-sign",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/oauth-sign/LICENSE"
+  },
+  "object-assign@4.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/object-assign",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/object-assign",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/object-assign",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/object-assign/license"
+  },
+  "object-component@0.0.3": {
+    "licenses": "UNKNOWN",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/object-component",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/object-component",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/object-component/Readme.md"
+  },
+  "object-inspect@1.7.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/substack/object-inspect",
+    "publisher": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/object-inspect",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/object-inspect",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/object-inspect/LICENSE"
+  },
+  "object-keys@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/object-keys",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "url": "http://ljharb.codes",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/object-keys",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/object-keys",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/object-keys/LICENSE"
+  },
+  "on-finished@2.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/on-finished",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/on-finished",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/on-finished",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/on-finished/LICENSE"
+  },
+  "on-headers@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/on-headers",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/on-headers",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/on-headers",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/on-headers/LICENSE"
+  },
+  "once@1.4.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/once",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/once",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/once",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/once/LICENSE"
+  },
+  "os-homedir@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/os-homedir",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/os-homedir",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/os-homedir",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/os-homedir/license"
+  },
+  "os-tmpdir@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/os-tmpdir",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/os-tmpdir",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/os-tmpdir",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/os-tmpdir/license"
+  },
+  "osenv@0.1.5": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/osenv",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/osenv",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/osenv",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/osenv/LICENSE"
+  },
+  "p-cancelable@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/p-cancelable",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/p-cancelable",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/p-cancelable",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/p-cancelable/license"
+  },
+  "paho-mqtt@1.1.0": {
+    "licenses": "EPL-1.0",
+    "repository": "https://github.com/eclipse/paho.mqtt.javascript",
+    "publisher": "Andrew Banks",
+    "url": "Initial Author",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/paho-mqtt",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/paho-mqtt",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/paho-mqtt/README.md"
+  },
+  "parallel-transform@1.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mafintosh/parallel-transform",
+    "publisher": "Mathias Buus Madsen",
+    "email": "mathiasbuus@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/parallel-transform",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/parallel-transform",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/parallel-transform/LICENSE"
+  },
+  "parseqs@0.0.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/get/querystring",
+    "publisher": "Gal Koren",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/parseqs",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/parseqs",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/parseqs/LICENSE"
+  },
+  "parseuri@0.0.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/get/parseuri",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/parseuri",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/parseuri",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/parseuri/LICENSE"
+  },
+  "parseurl@1.3.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/pillarjs/parseurl",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/parseurl",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/parseurl",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/parseurl/LICENSE"
+  },
+  "path-is-absolute@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/path-is-absolute",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/path-is-absolute",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/path-is-absolute",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/path-is-absolute/license"
+  },
+  "path-is-inside@1.0.2": {
+    "licenses": "(WTFPL OR MIT)",
+    "repository": "https://github.com/domenic/path-is-inside",
+    "publisher": "Domenic Denicola",
+    "email": "d@domenic.me",
+    "url": "https://domenic.me",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/path-is-inside",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/path-is-inside",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/path-is-inside/LICENSE.txt"
+  },
+  "path-parse@1.0.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jbgutierrez/path-parse",
+    "publisher": "Javier Blanco",
+    "email": "http://jbgutierrez.info",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/path-parse",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/path-parse",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/path-parse/LICENSE"
+  },
+  "path-to-regexp@0.1.7": {
+    "licenses": "MIT",
+    "repository": "https://github.com/component/path-to-regexp",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/path-to-regexp",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/path-to-regexp",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/path-to-regexp/LICENSE"
+  },
+  "performance-now@2.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/braveg1rl/performance-now",
+    "publisher": "Braveg1rl",
+    "email": "braveg1rl@outlook.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/performance-now",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/performance-now",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/performance-now/license.txt"
+  },
+  "prefix-style@2.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mattdesl/prefix-style",
+    "publisher": "Matt DesLauriers",
+    "email": "dave.des@gmail.com",
+    "url": "https://github.com/mattdesl",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/prefix-style",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/prefix-style",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/prefix-style/LICENSE.md"
+  },
+  "prepend-http@1.0.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/prepend-http",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/prepend-http",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/prepend-http",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/prepend-http/license"
+  },
+  "process-nextick-args@2.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/calvinmetcalf/process-nextick-args",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/process-nextick-args",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/process-nextick-args",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/process-nextick-args/license.md"
+  },
+  "promise-inflight@1.0.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/iarna/promise-inflight",
+    "publisher": "Rebecca Turner",
+    "email": "me@re-becca.org",
+    "url": "http://re-becca.org/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/promise-inflight",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/promise-inflight",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/promise-inflight/LICENSE"
+  },
+  "prop-types@15.7.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/prop-types",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/prop-types",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/prop-types",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/prop-types/LICENSE"
+  },
+  "proxy-addr@2.0.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/proxy-addr",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/proxy-addr",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/proxy-addr",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/proxy-addr/LICENSE"
+  },
+  "prr@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/rvagg/prr",
+    "publisher": "Rod Vagg",
+    "email": "rod@vagg.org",
+    "url": "https://github.com/rvagg",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/prr",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/prr",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/prr/LICENSE.md"
+  },
+  "psl@1.4.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lupomontero/psl",
+    "publisher": "Lupo Montero",
+    "email": "lupomontero@gmail.com",
+    "url": "https://lupomontero.com/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/psl",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/psl",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/psl/LICENSE"
+  },
+  "pump@3.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mafintosh/pump",
+    "publisher": "Mathias Buus Madsen",
+    "email": "mathiasbuus@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/pump",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/pump",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/pump/LICENSE"
+  },
+  "pumpify@1.5.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mafintosh/pumpify",
+    "publisher": "Mathias Buus",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/pumpify",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/pumpify",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/pumpify/LICENSE"
+  },
+  "punycode@2.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/bestiejs/punycode.js",
+    "publisher": "Mathias Bynens",
+    "url": "https://mathiasbynens.be/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/punycode",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/punycode",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/punycode/LICENSE-MIT.txt"
+  },
+  "qs@6.7.0": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/ljharb/qs",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/qs",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/qs",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/qs/LICENSE"
+  },
+  "raf@3.4.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/chrisdickinson/raf",
+    "publisher": "Chris Dickinson",
+    "email": "chris@neversaw.us",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/raf",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/raf",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/raf/LICENSE"
+  },
+  "range-parser@1.2.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/range-parser",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "url": "http://tjholowaychuk.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/range-parser",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/range-parser",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/range-parser/LICENSE"
+  },
+  "raw-body@2.4.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/stream-utils/raw-body",
+    "publisher": "Jonathan Ong",
+    "email": "me@jongleberry.com",
+    "url": "http://jongleberry.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/raw-body",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/raw-body",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/raw-body/LICENSE"
+  },
+  "react-custom-scrollbars@4.2.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/malte-wessel/react-custom-scrollbars",
+    "publisher": "Malte Wessel",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-custom-scrollbars",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-custom-scrollbars",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-custom-scrollbars/LICENSE.md"
+  },
+  "react-dom@16.12.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/react",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-dom",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-dom",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-dom/LICENSE"
+  },
+  "react-dropzone@7.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/react-dropzone/react-dropzone",
+    "publisher": "Param Aggarwal",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-dropzone",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-dropzone",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-dropzone/LICENSE"
+  },
+  "react-extras@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/react-extras",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-extras",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-extras",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-extras/license"
+  },
+  "react-input-autosize@2.2.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/JedWatson/react-input-autosize",
+    "publisher": "Jed Watson",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-input-autosize",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-input-autosize",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-input-autosize/LICENSE"
+  },
+  "react-is@16.12.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/react",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-is",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-is",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-is/LICENSE"
+  },
+  "react-router-dom@5.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ReactTraining/react-router",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-router-dom",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-router-dom",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-router-dom/LICENSE"
+  },
+  "react-router-util@0.10.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/react-router-util",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-router-util",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-router-util",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-router-util/license"
+  },
+  "react-router@5.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ReactTraining/react-router",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-router",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-router",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-router/LICENSE"
+  },
+  "react-select@1.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/JedWatson/react-select",
+    "publisher": "Jed Watson",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-select",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-select",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-select/LICENSE"
+  },
+  "react-table@6.10.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/react-tools/react-table",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-table",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-table",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-table/LICENSE"
+  },
+  "react-test-renderer@16.12.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/react",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-test-renderer",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-test-renderer",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-test-renderer/LICENSE"
+  },
+  "react-toggle@4.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/aaronshaf/react-toggle",
+    "publisher": "Aaron Shafovaloff",
+    "email": "aaronshaf@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-toggle",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-toggle",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react-toggle/LICENSE"
+  },
+  "react@16.12.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/react",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/react/LICENSE"
+  },
+  "read-installed@4.0.3": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/read-installed",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/read-installed",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/read-installed",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/read-installed/LICENSE"
+  },
+  "read-package-json@2.1.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/read-package-json",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/read-package-json",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/read-package-json",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/read-package-json/LICENSE"
+  },
+  "readable-stream@2.3.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/nodejs/readable-stream",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/readable-stream",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/readable-stream",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/readable-stream/LICENSE"
+  },
+  "readdir-scoped-modules@1.1.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/readdir-scoped-modules",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/readdir-scoped-modules",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/readdir-scoped-modules",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/readdir-scoped-modules/LICENSE"
+  },
+  "regenerator-runtime@0.13.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/regenerator/tree/master/packages/regenerator-runtime",
+    "publisher": "Ben Newman",
+    "email": "bn@cs.stanford.edu",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/regenerator-runtime",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/regenerator-runtime",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/regenerator-runtime/LICENSE"
+  },
+  "request@2.88.0": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/request/request",
+    "publisher": "Mikeal Rogers",
+    "email": "mikeal.rogers@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/request",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/request",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/request/LICENSE"
+  },
+  "resolve-pathname@3.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mjackson/resolve-pathname",
+    "publisher": "Michael Jackson",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/resolve-pathname",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/resolve-pathname",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/resolve-pathname/LICENSE"
+  },
+  "resolve@1.12.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/browserify/resolve",
+    "publisher": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/resolve",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/resolve",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/resolve/LICENSE"
+  },
+  "responselike@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lukechilds/responselike",
+    "publisher": "lukechilds",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/responselike",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/responselike",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/responselike/LICENSE"
+  },
+  "retry@0.12.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/tim-kos/node-retry",
+    "publisher": "Tim Koschützki",
+    "email": "tim@debuggable.com",
+    "url": "http://debuggable.com/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/retry",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/retry",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/retry/License"
+  },
+  "rimraf@2.7.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/rimraf",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/rimraf",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/rimraf",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/rimraf/LICENSE"
+  },
+  "rodal@1.7.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/chenjiahan/rodal",
+    "publisher": "neverland",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/rodal",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/rodal",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/rodal/LICENSE"
+  },
+  "run-queue@1.0.3": {
+    "licenses": "ISC",
+    "repository": "https://github.com/iarna/run-queue",
+    "publisher": "Rebecca Turner",
+    "email": "me@re-becca.org",
+    "url": "http://re-becca.org/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/run-queue",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/run-queue",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/run-queue/README.md"
+  },
+  "rw@1.3.3": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/mbostock/rw",
+    "publisher": "Mike Bostock",
+    "url": "http://bost.ocks.org/mike",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/rw",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/rw",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/rw/LICENSE"
+  },
+  "safe-buffer@5.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/feross/safe-buffer",
+    "publisher": "Feross Aboukhadijeh",
+    "email": "feross@feross.org",
+    "url": "http://feross.org",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/safe-buffer",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/safe-buffer",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/safe-buffer/LICENSE"
+  },
+  "safer-buffer@2.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ChALkeR/safer-buffer",
+    "publisher": "Nikita Skovoroda",
+    "email": "chalkerx@gmail.com",
+    "url": "https://github.com/ChALkeR",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/safer-buffer",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/safer-buffer",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/safer-buffer/LICENSE"
+  },
+  "scheduler@0.18.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/react",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/scheduler",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/scheduler",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/scheduler/LICENSE"
+  },
+  "semver@5.7.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/node-semver",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/semver",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/semver",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/semver/LICENSE"
+  },
+  "send@0.17.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/pillarjs/send",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/send",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/send",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/send/LICENSE"
+  },
+  "serve-static@1.14.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/expressjs/serve-static",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/serve-static",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/serve-static",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/serve-static/LICENSE"
+  },
+  "set-blocking@2.0.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/yargs/set-blocking",
+    "publisher": "Ben Coe",
+    "email": "ben@npmjs.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/set-blocking",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/set-blocking",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/set-blocking/LICENSE.txt"
+  },
+  "setprototypeof@1.1.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/wesleytodd/setprototypeof",
+    "publisher": "Wes Todd",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/setprototypeof",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/setprototypeof",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/setprototypeof/LICENSE"
+  },
+  "signal-exit@3.0.2": {
+    "licenses": "ISC",
+    "repository": "https://github.com/tapjs/signal-exit",
+    "publisher": "Ben Coe",
+    "email": "ben@npmjs.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/signal-exit",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/signal-exit",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/signal-exit/LICENSE.txt"
+  },
+  "slide@1.1.6": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/slide-flow-control",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/slide",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/slide",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/slide/LICENSE"
+  },
+  "smpte-timecode@1.2.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/CrystalComputerCorp/smpte-timecode",
+    "publisher": "Dimitri Tarassenko",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/smpte-timecode",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/smpte-timecode",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/smpte-timecode/LICENSE"
+  },
+  "socket.io-client@2.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Automattic/socket.io-client",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/socket.io-client",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/socket.io-client",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/socket.io-client/LICENSE"
+  },
+  "socket.io-parser@3.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Automattic/socket.io-parser",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/socket.io-parser",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/socket.io-parser",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/socket.io-parser/LICENSE"
+  },
+  "spdx-correct@3.1.0": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/jslicense/spdx-correct.js",
+    "publisher": "Kyle E. Mitchell",
+    "email": "kyle@kemitchell.com",
+    "url": "https://kemitchell.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/spdx-correct",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/spdx-correct",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/spdx-correct/LICENSE"
+  },
+  "spdx-exceptions@2.2.0": {
+    "licenses": "CC-BY-3.0",
+    "repository": "https://github.com/kemitchell/spdx-exceptions.json",
+    "publisher": "The Linux Foundation",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/spdx-exceptions",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/spdx-exceptions",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/spdx-exceptions/README.md"
+  },
+  "spdx-expression-parse@3.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jslicense/spdx-expression-parse.js",
+    "publisher": "Kyle E. Mitchell",
+    "email": "kyle@kemitchell.com",
+    "url": "http://kemitchell.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/spdx-expression-parse",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/spdx-expression-parse",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/spdx-expression-parse/LICENSE"
+  },
+  "spdx-license-ids@3.0.5": {
+    "licenses": "CC0-1.0",
+    "repository": "https://github.com/shinnn/spdx-license-ids",
+    "publisher": "Shinnosuke Watanabe",
+    "url": "https://github.com/shinnn",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/spdx-license-ids",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/spdx-license-ids",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/spdx-license-ids/README.md"
+  },
+  "sshpk@1.16.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/joyent/node-sshpk",
+    "publisher": "Joyent, Inc",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/sshpk",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/sshpk",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/sshpk/LICENSE"
+  },
+  "ssri@6.0.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/zkat/ssri",
+    "publisher": "Kat Marchán",
+    "email": "kzm@sykosomatic.org",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ssri",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ssri",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ssri/LICENSE.md"
+  },
+  "statuses@1.5.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/statuses",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/statuses",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/statuses",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/statuses/LICENSE"
+  },
+  "stream-each@1.2.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mafintosh/stream-each",
+    "publisher": "Mathias Buus",
+    "url": "@mafintosh",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/stream-each",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/stream-each",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/stream-each/LICENSE"
+  },
+  "stream-shift@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mafintosh/stream-shift",
+    "publisher": "Mathias Buus",
+    "url": "@mafintosh",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/stream-shift",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/stream-shift",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/stream-shift/LICENSE"
+  },
+  "string-width@3.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/string-width",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/string-width",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/string-width",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/string-width/license"
+  },
+  "string.prototype.trim@1.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/es-shims/String.prototype.trim",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "url": "http://ljharb.codes",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/string.prototype.trim",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/string.prototype.trim",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/string.prototype.trim/LICENSE"
+  },
+  "string.prototype.trimleft@2.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/es-shims/String.prototype.trimLeft",
+    "publisher": "Jordan Harband",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/string.prototype.trimleft",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/string.prototype.trimleft",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/string.prototype.trimleft/LICENSE"
+  },
+  "string.prototype.trimright@2.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/es-shims/String.prototype.trimRight",
+    "publisher": "Jordan Harband",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/string.prototype.trimright",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/string.prototype.trimright",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/string.prototype.trimright/LICENSE"
+  },
+  "string_decoder@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/nodejs/string_decoder",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/string_decoder",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/string_decoder",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/string_decoder/LICENSE"
+  },
+  "strip-ansi@3.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/chalk/strip-ansi",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/strip-ansi",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/strip-ansi",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/strip-ansi/license"
+  },
+  "tar@2.2.2": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/node-tar",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tar",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tar",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tar/LICENSE"
+  },
+  "text-table@0.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/substack/text-table",
+    "publisher": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/text-table",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/text-table",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/text-table/LICENSE"
+  },
+  "through2@2.0.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/rvagg/through2",
+    "publisher": "Rod Vagg",
+    "email": "r@va.gg",
+    "url": "https://github.com/rvagg",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/through2",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/through2",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/through2/LICENSE.md"
+  },
+  "tiny-invariant@1.0.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/alexreardon/tiny-invariant",
+    "publisher": "Alex Reardon",
+    "email": "alexreardon@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tiny-invariant",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tiny-invariant",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tiny-invariant/LICENSE"
+  },
+  "tiny-warning@1.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/alexreardon/tiny-warning",
+    "publisher": "Alex Reardon",
+    "email": "alexreardon@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tiny-warning",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tiny-warning",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tiny-warning/LICENSE"
+  },
+  "to-array@0.1.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Raynos/to-array",
+    "publisher": "Raynos",
+    "email": "raynos2@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/to-array",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/to-array",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/to-array/LICENCE"
+  },
+  "to-camel-case@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ianstormtaylor/to-camel-case",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/to-camel-case",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/to-camel-case",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/to-camel-case/Readme.md"
+  },
+  "to-no-case@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ianstormtaylor/to-no-case",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/to-no-case",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/to-no-case",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/to-no-case/Readme.md"
+  },
+  "to-readable-stream@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/to-readable-stream",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/to-readable-stream",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/to-readable-stream",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/to-readable-stream/license"
+  },
+  "to-space-case@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ianstormtaylor/to-space-case",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/to-space-case",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/to-space-case",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/to-space-case/Readme.md"
+  },
+  "toidentifier@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/component/toidentifier",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/toidentifier",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/toidentifier",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/toidentifier/LICENSE"
+  },
+  "tough-cookie@2.5.0": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/salesforce/tough-cookie",
+    "publisher": "Jeremy Stashewsky",
+    "email": "jstash@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tough-cookie",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tough-cookie",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tough-cookie/LICENSE"
+  },
+  "tunnel-agent@0.6.0": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/mikeal/tunnel-agent",
+    "publisher": "Mikeal Rogers",
+    "email": "mikeal.rogers@gmail.com",
+    "url": "http://www.futurealoof.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tunnel-agent",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tunnel-agent",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tunnel-agent/LICENSE"
+  },
+  "tweetnacl@0.14.5": {
+    "licenses": "Unlicense",
+    "repository": "https://github.com/dchest/tweetnacl-js",
+    "publisher": "TweetNaCl-js contributors",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tweetnacl",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tweetnacl",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/tweetnacl/LICENSE"
+  },
+  "type-is@1.6.18": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/type-is",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/type-is",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/type-is",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/type-is/LICENSE"
+  },
+  "typedarray@0.0.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/substack/typedarray",
+    "publisher": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/typedarray",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/typedarray",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/typedarray/LICENSE"
+  },
+  "unique-filename@1.1.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/iarna/unique-filename",
+    "publisher": "Rebecca Turner",
+    "email": "me@re-becca.org",
+    "url": "http://re-becca.org/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/unique-filename",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/unique-filename",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/unique-filename/LICENSE"
+  },
+  "unique-slug@2.0.2": {
+    "licenses": "ISC",
+    "repository": "https://github.com/iarna/unique-slug",
+    "publisher": "Rebecca Turner",
+    "email": "me@re-becca.org",
+    "url": "http://re-becca.org",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/unique-slug",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/unique-slug",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/unique-slug/LICENSE"
+  },
+  "unpipe@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/stream-utils/unpipe",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/unpipe",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/unpipe",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/unpipe/LICENSE"
+  },
+  "uri-js@4.2.2": {
+    "licenses": "BSD-2-Clause",
+    "repository": "https://github.com/garycourt/uri-js",
+    "publisher": "Gary Court",
+    "email": "gary.court@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/uri-js",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/uri-js",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/uri-js/README.md"
+  },
+  "url-parse-lax@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/url-parse-lax",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/url-parse-lax",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/url-parse-lax",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/url-parse-lax/license"
+  },
+  "url-template@2.0.8": {
+    "licenses": "UNKNOWN",
+    "repository": "https://github.com/bramstein/url-template",
+    "publisher": "Bram Stein",
+    "email": "b.l.stein@gmail.com",
+    "url": "http://www.bramstein.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/url-template",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/url-template",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/url-template/LICENSE"
+  },
+  "util-deprecate@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/TooTallNate/util-deprecate",
+    "publisher": "Nathan Rajlich",
+    "email": "nathan@tootallnate.net",
+    "url": "http://n8.io/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/util-deprecate",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/util-deprecate",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/util-deprecate/LICENSE"
+  },
+  "util-extend@1.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/isaacs/util-extend",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/util-extend",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/util-extend",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/util-extend/LICENSE"
+  },
+  "utils-merge@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jaredhanson/utils-merge",
+    "publisher": "Jared Hanson",
+    "email": "jaredhanson@gmail.com",
+    "url": "http://www.jaredhanson.net/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/utils-merge",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/utils-merge",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/utils-merge/LICENSE"
+  },
+  "uuid@3.3.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/kelektiv/node-uuid",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/uuid",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/uuid",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/uuid/LICENSE.md"
+  },
+  "validate-npm-package-license@3.0.4": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/kemitchell/validate-npm-package-license.js",
+    "publisher": "Kyle E. Mitchell",
+    "email": "kyle@kemitchell.com",
+    "url": "https://kemitchell.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/validate-npm-package-license",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/validate-npm-package-license",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/validate-npm-package-license/LICENSE"
+  },
+  "value-equal@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mjackson/value-equal",
+    "publisher": "Michael Jackson",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/value-equal",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/value-equal",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/value-equal/LICENSE"
+  },
+  "vary@1.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/vary",
+    "publisher": "Douglas Christopher Wilson",
+    "email": "doug@somethingdoug.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/vary",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/vary",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/vary/LICENSE"
+  },
+  "verror@1.10.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/davepacheco/node-verror",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/verror",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/verror",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/verror/LICENSE"
+  },
+  "warning@4.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/BerkeleyTrue/warning",
+    "publisher": "Berkeley Martinez",
+    "email": "berkeley@berkeleytrue.com",
+    "url": "http://www.berkeleytrue.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/warning",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/warning",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/warning/LICENSE.md"
+  },
+  "wavesurfer.js@2.2.1": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/katspaugh/wavesurfer.js",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/wavesurfer.js",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/wavesurfer.js",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/wavesurfer.js/LICENSE"
+  },
+  "webpack-shell-plugin@0.5.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/1337programming/webpack-shell-plugin",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/webpack-shell-plugin",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/webpack-shell-plugin",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/webpack-shell-plugin/LICENSE"
+  },
+  "which@1.3.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/node-which",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/which",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/which",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/which/LICENSE"
+  },
+  "wide-align@1.1.3": {
+    "licenses": "ISC",
+    "repository": "https://github.com/iarna/wide-align",
+    "publisher": "Rebecca Turner",
+    "email": "me@re-becca.org",
+    "url": "http://re-becca.org/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/wide-align",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/wide-align",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/wide-align/LICENSE"
+  },
+  "worker-farm@1.7.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/rvagg/node-worker-farm",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/worker-farm",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/worker-farm",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/worker-farm/LICENSE.md"
+  },
+  "wrappy@1.0.2": {
+    "licenses": "ISC",
+    "repository": "https://github.com/npm/wrappy",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/wrappy",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/wrappy",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/wrappy/LICENSE"
+  },
+  "write-file-atomic@2.4.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/iarna/write-file-atomic",
+    "publisher": "Rebecca Turner",
+    "email": "me@re-becca.org",
+    "url": "http://re-becca.org",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/write-file-atomic",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/write-file-atomic",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/write-file-atomic/LICENSE"
+  },
+  "ws@6.1.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/websockets/ws",
+    "publisher": "Einar Otto Stangvik",
+    "email": "einaros@gmail.com",
+    "url": "http://2x.io",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ws",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ws",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/ws/LICENSE"
+  },
+  "xdg-basedir@2.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/sindresorhus/xdg-basedir",
+    "publisher": "Sindre Sorhus",
+    "email": "sindresorhus@gmail.com",
+    "url": "sindresorhus.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/xdg-basedir",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/xdg-basedir",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/xdg-basedir/license"
+  },
+  "xmlhttprequest-ssl@1.5.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mjwwit/node-XMLHttpRequest",
+    "publisher": "Michael de Wit",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/xmlhttprequest-ssl",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/xmlhttprequest-ssl",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/xmlhttprequest-ssl/LICENSE"
+  },
+  "xtend@4.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Raynos/xtend",
+    "publisher": "Raynos",
+    "email": "raynos2@gmail.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/xtend",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/xtend",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/xtend/LICENSE"
+  },
+  "y18n@4.0.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/yargs/y18n",
+    "publisher": "Ben Coe",
+    "email": "ben@npmjs.com",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/y18n",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/y18n",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/y18n/LICENSE"
+  },
+  "yallist@3.1.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/isaacs/yallist",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me/",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/yallist",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/yallist",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/yallist/LICENSE"
+  },
+  "yeast@0.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/unshiftio/yeast",
+    "publisher": "Arnout Kazemier",
+    "dependencyPath": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/yeast",
+    "path": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/yeast",
+    "licenseFile": "/media/disk1/code/list/EBU-LIST/apps/gui/node_modules/yeast/LICENSE"
+  }
+}
+

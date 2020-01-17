@@ -1,0 +1,28 @@
+@import '../style/variables/index.scss';
+
+.lst-credits-list {
+    ul {
+        padding-left: 0;
+        list-style: none;
+    }
+
+    li {
+        white-space: nowrap;
+
+        a {
+            color: #babbbc;
+            text-decoration: none;
+            display: flex;
+            flex: 1;
+            align-items: center;
+            padding: 12px;
+            transition: background $normal-transition-time, box-shadow $normal-transition-time;
+
+            &.active {
+                color: $white;
+                background-color: $black-dark-3;
+                box-shadow: inset 2px 0 0px 0px $blue;
+            }
+        }
+    }
+}
