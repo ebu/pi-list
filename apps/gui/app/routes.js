@@ -16,6 +16,7 @@ import ErrorPage from './components/ErrorPage';
 import errorEnum from './enums/errorEnum';
 import Panel from './components/common/Panel';
 import Settings from './pages/Settings';
+import CreditsPage from './pages/CreditsPage';
 import { LiveRoute } from './utils/AppContext';
 
 const DB = () => (<Redirect to={routeNames.PCAPS}  />);
@@ -24,6 +25,7 @@ export default (
     <Switch>
         <Route exact path={routeNames.HOME} component={DB} />
         <Route exact path={routeNames.SETTINGS} component={Settings} />
+        <Route exact path={routeNames.CREDITS} component={CreditsPage} />
         <Route exact path={routeNames.PCAPS} component={PcapsPage} />
         <Route path={`${routeNames.PCAPS}/:pcapID/ptp`} component={PtpPage} exact />
         <Route path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}`} component={StreamList} exact />

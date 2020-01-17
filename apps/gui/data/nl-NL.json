@@ -274,5 +274,7 @@
   "comparison.config.comparison_type": "vergelijking Methode",
   "comparison.config.main": "Hoofd",
   "comparison.config.reference": "Referentie",
-  "comparison.config.comparison_type.psnrAndDelay": "PSNR en Delay"
+  "comparison.config.comparison_type.psnrAndDelay": "PSNR en Delay",
+  "credits.text": "*** text.credits",
+  "credits.title": "*** credits.title"
 }
