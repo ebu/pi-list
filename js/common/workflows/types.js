@@ -10,6 +10,7 @@ const types = {
     /*
      **/
     downloadMultipleFiles: 'downloadMultipleFiles',
+    compareStreams: 'compareStreams',
 };
 
 module.exports = {

@@ -16,11 +16,11 @@ router.use('/sdp', require('./sdp'));
 router.use('/user', require('./user'));
 router.use('/meta', require('./meta'));
 router.use('/analysis_profile', require('./analysis_profile'));
+router.use('/workflow', require('./workflow'));
+router.use('/comparisons', require('./comparisons'));
 
 if (program.liveMode) {
     router.use('/live', require('./live'));
 }
-
-router.use('/workflow', require('./workflow'));
 
 module.exports = router;

@@ -20,5 +20,10 @@ export default {
     ZIP: {
         FILE_FAILED: 'ZIP_FILE_FAILED',
         FILE_COMPLETE: 'ZIP_FILE_COMPLETE',
-    }
+    },
+    STREAM_COMPARE: {
+        FAILED: 'STREAM_COMPARE_FAILED',
+        COMPLETE: 'STREAM_COMPARE_COMPLETE',
+        DELETED: 'STREAM_COMPARE_DELETED',
+    },
 };

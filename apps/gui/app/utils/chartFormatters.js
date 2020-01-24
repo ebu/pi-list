@@ -71,6 +71,7 @@ const singleValueLineChart = [
 ];
 
 const xAxisTimeDomain = point => point.time;
+const xAxisLinearDomain = point => point.index;
 
 function getTimeLineLabel(chartData) {
     return chartData.map(data => data.time);
@@ -174,4 +175,5 @@ export default {
     lowThersholdsLineChart,
     singleValueLineChart,
     xAxisTimeDomain,
+    xAxisLinearDomain,
 };

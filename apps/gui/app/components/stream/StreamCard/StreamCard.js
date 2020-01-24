@@ -6,6 +6,7 @@ import Icon from 'components/common/Icon';
 import routeBuilder from 'utils/routeBuilder';
 import StreamBadge from './StreamBadge';
 import AnalysisBadge from './AnalysisBadge';
+import { getIcon } from '../../../utils/mediaUtils';
 import DataList from '../../../containers/streamPage/components/DataList';
 
 const getValidationBadges = props => {
@@ -21,9 +22,27 @@ const getValidationBadges = props => {
         });
 };
 
+function getIconFromStream(mediaType) {
+    switch (mediaType) {
+        case 'video':
+            return getIcon('video');
+        case 'audio':
+            return getIcon('audio');
+        case 'ancillary_data':
+            return getIcon('metadata');
+        case 'ttml':
+            return getIcon('metadata');
+        case 'unknown':
+            return getIcon('unknown');
+
+        default:
+            return null;
+    }
+}
+
 const StreamCard = props => {
     const net = props.network_information;
-
+    const icon = getIconFromStream(props.media_type);
     const from_mac = `${net.source_mac_address}`.toUpperCase();
     const to_mac = `${net.destination_mac_address}`.toUpperCase();
     const from = `${net.source_address}:${net.source_port}`;
@@ -76,7 +95,7 @@ const StreamCard = props => {
                 <div className="lst-panel__container">
                     <div className="row lst-panel__header lst-truncate">
                         <h2 className="row lst-no-margin" style={{ width: '100%' }}>
-                            <div className="col-xs-2">{props.icon && <Icon value={props.icon} />}</div>
+                            <div className="col-xs-2">{icon && <Icon value={icon} />}</div>
                             <div className="col-xs-10 lst-text-right">{props.title}</div>
                         </h2>
                     </div>
@@ -98,7 +117,6 @@ const StreamCard = props => {
 StreamCard.propTypes = {
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-    icon: PropTypes.string.isRequired,
 };
 
 StreamCard.defaultProps = {};

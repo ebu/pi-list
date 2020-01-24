@@ -1,0 +1,130 @@
+import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
+import moment from 'moment';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
+import sources from 'ebu_list_common/capture/sources';
+import wfSchema from 'ebu_list_common/workflows/schema';
+import Icon from '../../../components/common/Icon';
+import Badge from '../../../components/common/Badge';
+import { T, translateX } from '../../../utils/translation';
+import {
+    getGetTdProps,
+    getCheckBoxColumn,
+} from '../../../components/table/utils';
+
+const renderLabel = ({ value }) => {
+    return <span> {value} </span>;
+};
+
+const getIconValue = value => {
+    switch (value) {
+        case 'video':
+            return 'videocam';
+        case 'audio':
+            return 'audiotrack';
+        case 'ancillary':
+            return 'subtitles';
+        default:
+            return 'help';
+    }
+};
+
+const renderMediaType = ({ value }) => {
+    return (
+        <span>
+            <Icon value={getIconValue(value)} />
+        </span>
+    );
+};
+
+const renderDate = ({ value }) => {
+    return (
+        <div className="lst-text-center">
+            {moment(value).format('YYYY-MM-DD HH:mm:ss')}
+        </div>
+    );
+}
+
+const ComparisonsTable = props => {
+    const columns = [
+        getCheckBoxColumn(props),
+        // accessors come from props.data[]
+        {
+            Header: translateX('name'),
+            headerClassName: 'lst-text-left lst-table-header',
+            accessor: 'name',
+            className: '',
+            Cell: renderLabel,
+            minWidth: 200,
+            maxWidth: 200,
+        },
+        {
+            Header: translateX('comparison.config.reference'),
+            headerClassName: 'lst-text-left lst-table-header',
+            accessor: 'config.reference.media_type',
+            className: '',
+            Cell: renderMediaType,
+            minWidth: 100,
+            maxWidth: 100,
+        },
+        {
+            Header: translateX('comparison.config.main'),
+            headerClassName: 'lst-text-left lst-table-header',
+            accessor: 'config.main.media_type',
+            className: '',
+            Cell: renderMediaType,
+            minWidth: 100,
+            maxWidth: 100,
+        },
+        {
+            Header: translateX('date'),
+            headerClassName: 'lst-text-center lst-table-header',
+            accessor: 'date',
+            Cell: renderDate,
+            width: 200,
+        },
+    ];
+
+    return (
+        <ReactTable
+            previousText={translateX('table.previous')}
+            nextText={translateX('table.next')}
+            data={props.data}
+            columns={columns}
+            defaultPageSize={10}
+            className="-highlight lst-text-center"
+            getTdProps={getGetTdProps(props)}
+            defaultSorted={[
+                {
+                    id: 'date',
+                    desc: true,
+                },
+            ]}
+            NoDataComponent={props.noDataComponent}
+        />
+    );
+};
+
+ComparisonsTable.propTypes = {
+    data: PropTypes.arrayOf(PropTypes.any),
+    selectedIds: PropTypes.arrayOf(PropTypes.string),
+    selectAll: PropTypes.number,
+    onSelectId: PropTypes.func,
+    onSelectAll: PropTypes.func,
+    onClickRow: PropTypes.func,
+    noDataComponent: PropTypes.func,
+};
+
+ComparisonsTable.defaultProps = {
+    data: [],
+    selectedIds: [],
+    selectAll: 0,
+    onSelectId: () => { },
+    onSelectAll: () => { },
+    onClickRow: () => { },
+    noDataComponent: () => null,
+};
+
+export default ComparisonsTable;
