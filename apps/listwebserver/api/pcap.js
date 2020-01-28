@@ -491,7 +491,7 @@ function renderMp3(req, res) {
     var { channels } = req.query;
 
     if (channels === undefined || channels === '') {
-        channels = '0,1'; // keep the 2 first channels by default
+        channels = '0'; // keep the first channel by default
     }
 
     Stream.findOne({ id: streamID })
