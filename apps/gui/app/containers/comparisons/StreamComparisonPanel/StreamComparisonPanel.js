@@ -26,7 +26,9 @@ const StreamComparisonPanel = props => {
             configuration: {
                 name: name,
                 refStreamID: streamA.stream,
+                refChannel: streamA.audioChannel,
                 mainStreamID: streamB.stream,
+                mainChannel: streamB.audioChannel,
             },
         };
 

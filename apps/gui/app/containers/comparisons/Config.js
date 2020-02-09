@@ -5,10 +5,10 @@ import asyncLoader from '../../components/asyncLoader';
 import StreamCard from '../../components/stream/StreamCard';
 import InfoPane from '../streamPage/components/InfoPane';
 
-const renderCard = (title, stream, index) => {
+const renderCard = (title, stream, description, index) => {
     return (
         <div className="col-sm-12" key={`stream-${index}`}>
-            <StreamCard key={stream.id} {...stream} pcapID={stream.pcap} title={title} />
+            <StreamCard key={stream.id} {...stream} pcapID={stream.pcap} title={`${title} ${description}`} />
         </div>
     );
 }
@@ -37,6 +37,7 @@ const ComparisonConfigPane = (props) => {
                     renderCard(
                         translateX('comparison.config.reference'),
                         props.refStreamInfo,
+                        props.comparison_type === 'crossCorrelation' ? `(channel ${props.main.channel})` : '',
                         1
                     )
                 }
@@ -45,6 +46,7 @@ const ComparisonConfigPane = (props) => {
                     renderCard(
                         translateX('comparison.config.main'),
                         props.mainStreamInfo,
+                        props.comparison_type === 'crossCorrelation' ? `(channel ${props.reference.channel})` : '',
                         0
                     )
                 }

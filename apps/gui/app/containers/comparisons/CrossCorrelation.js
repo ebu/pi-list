@@ -5,46 +5,50 @@ import LineChart from '../../components/LineChart';
 import Panel from '../../components/common/Panel';
 import InfoPane from '../streamPage/components/InfoPane';
 
-const PsnrAndDelayPane = (props) => {
+const CrossCorrelationPane = (props) => {
+    const xcorr = props.result.xcorr;
     const delay = props.result.delay;
-    const psnr = props.result.psnr;
-
     const summary = [
         {
-            labelTag: 'comparison.result.max_psnr',
-            value: psnr.max.psnr,
-            units: 'dB',
+            labelTag: 'comparison.result.cross_correlation_max',
+            value:  xcorr.max.toFixed(3),
+            units: '/1',
         },
         {
             labelTag: 'comparison.result.delay.relative',
-            value: `${delay.sample}:${delay.lines}:${delay.pixels}`,
-            units: `${props.config.media_specific.scan_type === 'progressive'? 'frames' : 'fields'}:lines:pixels`
+            value: delay.sample,
+            units: 'samples',
         },
         {
             labelTag: 'comparison.result.delay.relative',
-            value: delay.actual/1000000,
+            value: delay.time.toFixed(3),
             units: 'ms',
         },
         {
-            labelTag: 'comparison.result.delay.rtp',
-            value: delay.rtp,
-            units: 'ticks',
+            labelTag: 'comparison.result.delay.capture',
+            value: delay.capture.toFixed(3),
+            units: 'ms',
+        },
+        {
+            labelTag: 'comparison.result.delay.actual',
+            value: delay.actual.toFixed(3),
+            units: 'ms',
         },
     ]
 
     const comment = `Main stream is ${
-                delay.sample == 0? 'in sync with' :
-                    delay.sample < 0? 'earlier' : 'later'
+                delay.actual == 0? 'in sync with' :
+                    delay.actual < 0? 'earlier' : 'later'
            } than Reference stream.
            And content is ${
-               psnr.max.psnr === 'inf'? 'the same' : 'altered'
+               xcorr.max > 0.99 ? 'the same' : 'altered'
            }.`;
 
     return (
         <div>
             <InfoPane
                 icon='bar_chart'
-                headingTag='headings.psnr_and_delay'
+                headingTag='headings.cross_correlation'
                 values={summary}
                 comment={comment}
             />
@@ -52,20 +56,13 @@ const PsnrAndDelayPane = (props) => {
                 <div className="row lst-full-height">
                     <div className="col-xs-12">
                         <LineChart
-                            asyncData={async () => {
-                                return psnr.raw.map(e => {
-                                    return {
-                                        value: e.psnr === 'inf'? 100 : e.psnr,
-                                        index: e.index - delay.sample,
-                                    };
-                                });
-                            }}
-                            titleTag="comparison.result.psnr_vs_time_shift"
+                            asyncData={async () => xcorr.raw}
+                            titleTag="comparison.result.cross_correlation"
                             data={chartFormatters.singleValueLineChart}
                             xAxisMode='linear'
                             xAxis={chartFormatters.xAxisLinearDomain}
-                            yAxisLabel={"PSNR (dB)"}
-                            xAxisLabel={ translateX('comparison.result.delay.relative') }
+                            yAxisLabel={"Cross Correlation"}
+                            xAxisLabel={translateX('comparison.result.delay.relative')}
                             height={300}
                             lineWidth={3}
                             legend
@@ -77,4 +74,4 @@ const PsnrAndDelayPane = (props) => {
     );
 };
 
-export default PsnrAndDelayPane;
+export default CrossCorrelationPane;

@@ -111,7 +111,6 @@ const getMin = async (list) => {
 };
 
 const createComparator = async (config) => {
-    // TODO: rewrite all of this with without await
     const refDirList = await getFrameDirList(`${config.user_folder}/${config.reference.pcap}/${config.reference.stream}`);
     const mainDirList = await getFrameDirList(`${config.user_folder}/${config.main.pcap}/${config.main.stream}`);
 
@@ -125,16 +124,17 @@ const createComparator = async (config) => {
     // search for the max which corresponds to the `mainFrame` which is
     // the most similar to `refFrame`
     const psnrMax = await getPsnrMax(psnrList);
-    const mainFrame = await getFrameInfo(mainDirList[psnrMax.index], psnrMax.index)
+    const mainFrame = await getFrameInfo(mainDirList[psnrMax.index], psnrMax.index);
 
-    const delta = {
-        delta_index: psnrMax.index - refFrame.frameInfo.index,
-        delta_rtp_ts: mainFrame.frameInfo.rtp_ts - refFrame.frameInfo.rtp_ts,
-        delta_first_pkt_ts: mainFrame.frameInfo.first_packet_ts - refFrame.frameInfo.first_packet_ts,
-    }
+    // TODO capture Delay
+    const delay = {
+        sample: psnrMax.index - refFrame.frameInfo.index,
+        rtp: mainFrame.frameInfo.rtp_ts - refFrame.frameInfo.rtp_ts,
+        actual: mainFrame.frameInfo.first_packet_ts - refFrame.frameInfo.first_packet_ts,
+    };
 
     // At this point, we still miss time precision in media units, i.e.
-    // lines & pixels.  So let's measure the delta between `mainFrame`
+    // lines & pixels.  So let's measure the delay between `mainFrame`
     // and the `reference` frame which arrives at the same moment. This
     // `syncFrame` can be either at the same index as `mainFrame` OR at
     // index-1. To determine that, find the pkt inside these two
@@ -155,23 +155,23 @@ const createComparator = async (config) => {
     const pktDistanceMin = firstSyncFrame? pktDistanceMin1 : pktDistanceMin2;
     var offset = syncFrame.framePktOffsetList[pktDistanceMin.index].offset;
     // if `reference` is after `main`, then invert offset
-    if (delta.delta_first_pkt_ts < 0) {
+    if (delay.actual < 0) {
         const lastOffset = syncFrame.framePktOffsetList[syncFrame.framePktOffsetList.length - 1].offset;
         offset.lines -= lastOffset.lines;
         offset.pixels = 0; // forget about it
         if (!firstSyncFrame) {
-            delta.delta_index += 1;
+            delay.sample += 1;
         }
     }
     else {
         if (firstSyncFrame) {
-            delta.delta_index -= 1;
+            delay.sample -= 1;
         }
     }
 
     console.log(`ref frame: ${JSON.stringify(refFrame.frameInfo)}`)
     console.log(`main frame: ${JSON.stringify(mainFrame.frameInfo)}`)
-    console.log(`deltas : ${JSON.stringify(delta)}`);
+    console.log(`delays : ${JSON.stringify(delay)}`);
     console.log(`sync1 frame: ${JSON.stringify(syncFrame1.frameInfo)}`)
     console.log(`     ${JSON.stringify(pktDistanceMin1)}`);
     console.log(`     ${JSON.stringify(syncFrame1.framePktOffsetList[pktDistanceMin1.index])}`);
@@ -180,7 +180,16 @@ const createComparator = async (config) => {
     console.log(`     ${JSON.stringify(syncFrame2.framePktOffsetList[pktDistanceMin2.index])}`);
     console.log(`offset: ${JSON.stringify(offset)}`)
 
-    return { psnr: psnrList, max: { ...delta, ...psnrMax, ...offset } };
+    return {
+        psnr: {
+            raw: psnrList,
+            max: psnrMax,
+        },
+        delay: {
+            ... delay,
+            ... offset,
+        },
+    };
 };
 
 module.exports = {

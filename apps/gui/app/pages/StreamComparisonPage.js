@@ -7,6 +7,7 @@ import ErrorPage from '../components/ErrorPage';
 import routeBuilder from '../utils/routeBuilder';
 import ComparisonConfigPane from '../containers/comparisons/Config';
 import PsnrAndDelayPane from '../containers/comparisons/PsnrAndDelay';
+import CrossCorrelationPane from '../containers/comparisons/CrossCorrelation';
 import Button from '../components/common/Button';
 
 
@@ -20,7 +21,9 @@ const StreamComparisonPage = (props) => {
                 <div className="col-xs-12 col-md-6">
                     {
                         props.comparisonInfo.config.comparison_type === 'psnrAndDelay'?
-                        <PsnrAndDelayPane { ... props.comparisonInfo } /> : ''
+                        <PsnrAndDelayPane { ... props.comparisonInfo } /> :
+                            props.comparisonInfo.config.comparison_type === 'crossCorrelation'?
+                            <CrossCorrelationPane { ... props.comparisonInfo } /> : ''
                     }
                 </div>
             </div>

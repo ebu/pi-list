@@ -34,6 +34,7 @@ The algorithm consisting in picking a frame in the `reference` video sequence, s
 
 ### Notes
 
+* decoded frames/fields are .PNG files so pixels are 8-bit per color channel instead of the initial 10-bit
 * positive values means `main` is later than `reference`
 * ffmpeg returns `inf` value for perfectly equal images. This is associated to value `100` in graphes
 * if video is interlace, then PSNR operation is performed on fields
@@ -45,4 +46,20 @@ The algorithm consisting in picking a frame in the `reference` video sequence, s
 
 * schematic for algo
 * rework lines and pixels offset calculation
+* consider capture delay
+* document same way as audio
 
+## Audio-to-audio
+
+Analysis relies on cross-correlation performed on single-channel PCM. Therefore the user is required to select the audio channel in addition to pcap and stream. The nodejs dependencies (abr-xcorr and dsp.js) require 16-bit samples as input. ffmpeg ensure that data fits these 2 constraints.
+
+- *Maximum Cross-Correlation*: maximum of the cross-correlation array, between [-1, 1], used to determine the transparency (the media is exactly the same) if the peak is above 0.99.
+- *Relative Delay* sample shift associated to Maximum Cross-Correlation. Value in milliseconds is derived from sampling rate.
+- *Capture Delay* the 2 streams may be not perfectly simualtaneous. The difference between the capture time of the 1st packets of each stream reflects this possible delay.
+- *Actual Delay* = Relative Delay + Capture Delay
+- *Cross-Correlation Graph* shows a 500-sample-wide window around the peak
+
+Like for video, actual delay determines if `main` is later (>0) or earlier (<0) than `reference`.
+
+TODO:
+* report the first packet RTP timestamp difference

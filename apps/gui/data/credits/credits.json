@@ -5,6 +5,12 @@
         "licenseUrl": "https://github.com/vitalets/google-translate-api/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
+    "abr-xcorr@1.0.0": {
+        "licenses": "MPL-2.0",
+        "repository": "https://github.com/adblockradio/xcorr",
+        "licenseUrl": "https://github.com/adblockradio/xcorr/raw/master/LICENSE",
+        "parents": "listwebserver"
+    },
     "amqplib@0.5.5": {
         "licenses": "MIT",
         "repository": "https://github.com/squaremo/amqp.node",

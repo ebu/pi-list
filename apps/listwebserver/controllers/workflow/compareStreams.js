@@ -35,6 +35,21 @@ const getConfig = async (inputConfig, folder) => {
         config.media_type = main.media_type;
         config.media_specific = main.media_specific.scan_type;
     }
+    else if ((main.media_type === 'audio') && (ref.media_type === 'audio')) {
+        if ((main.media_specific.sampling !== ref.media_specific.sampling) &&
+                (main.media_specific.encoding !== ref.media_specific.encoding) &&
+                (main.media_specific.packet_time !== ref.media_specific.packet_time))
+        {
+            throw Error('different audio format: unsupported');
+        }
+        config.main.channel = inputConfig.mainChannel;
+        config.reference.channel = inputConfig.refChannel;
+        config.main.first_packet_ts = main.statistics.first_packet_ts;
+        config.reference.first_packet_ts = ref.statistics.first_packet_ts;
+        config.comparison_type = COMPARISON_TYPES.CROSS_CORRELATION;
+        config.media_type = main.media_type;
+        config.media_specific = main.media_specific;
+    }
     else {
         throw Error('media type unsupported');
     }
