@@ -192,6 +192,7 @@
   "workflow.names.captureAndIngest": "Capture et analyse",
   "workflow.names.downloadMultipleFiles": "*** workflow.names.downloadMultipleFiles",
   "workflow.names.compareStreams": "Comparer des flux",
+  "workflow.names.st2022_7_analysis": "ST2022-7",
   "workflow.download_networkcapture": "Capture originale",
   "user_account.delete_user_account": "Supprimer le compte",
   "user_account.sign_in": "Joindre",
@@ -278,6 +279,8 @@
   "comparison.result.delay.rtp": "Retard RTP",
   "comparison.result.delay.relative": "Retard relatif",
   "comparison.result.psnr_vs_time_shift": "PSNR vs décalage temporel",
+  "comparison.result.transparency": "Transparence",
+  "comparison.result.delay": "Retard",
   "comparison.config.media_type": "Type de support",
   "comparison.config.comparison_type": "Méthode de comparaison",
   "comparison.config.main": "Principale",
@@ -286,5 +289,11 @@
   "comparison.config.comparison_type.crossCorrelation": "PCM intercorrélation",
   "comparison.title": "*** comparison.config.title",
   "credits.text": "*** text.credits",
-  "credits.title": "*** credits.title"
+  "credits.title": "*** credits.title",
+  "workflow.st2022_7_analysis.totalNumberOfPackets": "Total",
+  "workflow.st2022_7_analysis.intersectionSizeInPackets": "Intersection",
+  "workflow.st2022_7_analysis.numberOfEqualPackets": "Equal",
+  "workflow.st2022_7_analysis.numberOfDifferentPackets": "Different",
+  "workflow.st2022_7_analysis.numberOfMissingPackets": "Missing",
+  "workflow.st2022_7_analysis.deltaBetweenPackets": "Time delta between packets in both streams"
 }

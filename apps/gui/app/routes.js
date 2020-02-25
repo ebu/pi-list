@@ -11,7 +11,7 @@ import PcapsPage from './pages/PcapsPage';
 import CapturePage from './pages/CapturePage/index';
 import WorkflowsPage from './pages/WorkflowsPage';
 import ComparisonsPage from './pages/ComparisonsPage';
-import StreamComparisonPage from './pages/StreamComparisonPage';
+import StreamComparisonView from './pages/StreamComparisonView';
 
 import FlowList from './containers/live/FlowList';
 import ErrorPage from './components/ErrorPage';
@@ -34,7 +34,7 @@ export default (
         <Route exact path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}/:streamID`} component={StreamPage} />
         <Route exact path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}/:streamID/${routeNames.CONFIGURE}`} component={ConfigureStreamsPage} />
         <Route exact path={routeNames.STREAM_COMPARISONS} component={ComparisonsPage} />
-        <Route exact path={`${routeNames.STREAM_COMPARISONS}/:comparisonID`} component={StreamComparisonPage} />
+        <Route exact path={`${routeNames.STREAM_COMPARISONS}/:comparisonID`} component={StreamComparisonView} />
         <Route exact path={routeNames.WORKFLOWS} component={WorkflowsPage} />
 
         <LiveRoute exact path={routeNames.LIVE_SOURCES} component={CapturePage} />

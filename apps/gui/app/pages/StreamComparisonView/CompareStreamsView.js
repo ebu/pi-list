@@ -1,17 +1,10 @@
-import React, { Component } from 'react';
-import api from 'utils/api';
-import { translateX } from '../utils/translation';
-import asyncLoader from '../components/asyncLoader';
-import errorEnum from '../enums/errorEnum';
-import ErrorPage from '../components/ErrorPage';
-import routeBuilder from '../utils/routeBuilder';
-import ComparisonConfigPane from '../containers/comparisons/Config';
-import PsnrAndDelayPane from '../containers/comparisons/PsnrAndDelay';
-import CrossCorrelationPane from '../containers/comparisons/CrossCorrelation';
-import Button from '../components/common/Button';
+import React from 'react';
+import ComparisonConfigPane from './Config';
+import PsnrAndDelayPane from '../../containers/comparisons/PsnrAndDelay';
+import CrossCorrelationPane from '../../containers/comparisons/CrossCorrelation';
+import Button from '../../components/common/Button';
 
-
-const StreamComparisonPage = (props) => {
+const CompareStreamsView = (props) => {
     return (
         <div>
             <div className="row">
@@ -39,11 +32,4 @@ const StreamComparisonPage = (props) => {
     );
 };
 
-export default asyncLoader(StreamComparisonPage, {
-    asyncRequests: {
-        comparisonInfo: (props) => {
-            const { comparisonID } = props.match.params;
-            return api.getComparison(comparisonID);
-        },
-    },
-});
+export default CompareStreamsView;

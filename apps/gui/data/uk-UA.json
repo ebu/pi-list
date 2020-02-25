@@ -192,6 +192,7 @@
   "workflow.names.captureAndIngest": "*** captureAndIngest",
   "workflow.names.downloadMultipleFiles": "*** workflow.names.downloadMultipleFiles",
   "workflow.names.compareStreams": "Порівняти потоки",
+  "workflow.names.st2022_7_analysis": "ST2022-7",
   "workflow.download_networkcapture": "*** workflow.download_networkcapture",
   "user_account.delete_user_account": "Видалити аккаунт",
   "user_account.sign_in": "Увійти",
@@ -278,6 +279,8 @@
   "comparison.result.delay.rtp": "RTP Delay",
   "comparison.result.delay.relative": "відносна затримка",
   "comparison.result.psnr_vs_time_shift": "PSNR проти тимчасового зсуву",
+  "comparison.result.transparency": "прозорість",
+  "comparison.result.delay": "затримка",
   "comparison.config.media_type": "Тип носія",
   "comparison.config.comparison_type": "метод порівняння",
   "comparison.config.main": "головний",
@@ -286,5 +289,11 @@
   "comparison.config.comparison_type.crossCorrelation": "PCM Cross Кореляція",
   "comparison.title": "*** comparison.config.title",
   "credits.text": "*** text.credits",
-  "credits.title": "*** credits.title"
+  "credits.title": "*** credits.title",
+  "workflow.st2022_7_analysis.totalNumberOfPackets": "Total",
+  "workflow.st2022_7_analysis.intersectionSizeInPackets": "Intersection",
+  "workflow.st2022_7_analysis.numberOfEqualPackets": "Equal",
+  "workflow.st2022_7_analysis.numberOfDifferentPackets": "Different",
+  "workflow.st2022_7_analysis.numberOfMissingPackets": "Missing",
+  "workflow.st2022_7_analysis.deltaBetweenPackets": "Time delta between packets in both streams"
 }

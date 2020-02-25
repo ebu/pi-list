@@ -3,7 +3,7 @@ import api from 'utils/api';
 import { translateX } from '../../utils/translation';
 import asyncLoader from '../../components/asyncLoader';
 import StreamCard from '../../components/stream/StreamCard';
-import InfoPane from '../streamPage/components/InfoPane';
+import InfoPane from '../../containers/streamPage/components/InfoPane';
 
 const renderCard = (title, stream, description, index) => {
     return (

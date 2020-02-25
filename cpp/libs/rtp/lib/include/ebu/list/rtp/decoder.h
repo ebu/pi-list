@@ -25,7 +25,7 @@ namespace ebu_list::rtp
         uint32_t ssrc() const noexcept;
 
       private:
-        const raw_header& header_;
+        raw_header header_;
     };
 
     using header    = mapped_view<raw_header, header_lens>;

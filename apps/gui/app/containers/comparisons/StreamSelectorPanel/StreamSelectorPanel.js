@@ -14,6 +14,9 @@ const StreamSelectorPanel = props => {
     const [streams, setStreams] = useState([]);
     const [audioChannels, setAudioChannels] = useState([]);
 
+    // Sort pcaps so that the most recent one is on top
+    props.pcaps.sort((a, b) => a.date < b.date ? 1 : (a.date === b.date ? 0 : -1));
+
     useEffect(() => {
         if (!selectedPcapId) {
             return;

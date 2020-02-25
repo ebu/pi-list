@@ -1,6 +1,5 @@
 const util = require('util');
 const fs = require('fs');
-const readFileAsync = util.promisify(fs.readFile);
 const _ = require('lodash');
 const child_process = require('child_process');
 const sdp_parser = require('sdp-transform');

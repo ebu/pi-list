@@ -191,7 +191,8 @@
   "workflow.cancel_failed": "Falha ao cancelar workflow",
   "workflow.names.captureAndIngest": "Captura e análise",
   "workflow.names.downloadMultipleFiles": "Descarregar vários ficheiros",
-  "workflow.names.compareStreams": "fluxos comparar",
+  "workflow.names.compareStreams": "Comparar streams",
+  "workflow.names.st2022_7_analysis": "ST2022-7",
   "workflow.download_networkcapture": "Descarregar Captura Orignal",
   "user_account.delete_user_account": "Apagar Conta",
   "user_account.sign_in": "Autenticação",
@@ -278,6 +279,8 @@
   "comparison.result.delay.rtp": "RTP Delay",
   "comparison.result.delay.relative": "Delay relativa",
   "comparison.result.psnr_vs_time_shift": "PSNR vs mudança de tempo",
+  "comparison.result.transparency": "Transparência",
+  "comparison.result.delay": "Demora",
   "comparison.config.media_type": "Tipo de mídia",
   "comparison.config.comparison_type": "Método de comparação",
   "comparison.config.main": "a Principal",
@@ -286,5 +289,11 @@
   "comparison.config.comparison_type.crossCorrelation": "Correlação PCM Cruz",
   "comparison.title": "Comparação de streams",
   "credits.text": "Os seguintes projetos são utilizados para construir o LIST. Obrigado.",
-  "credits.title": "*** credits.title"
+  "credits.title": "*** credits.title",
+  "workflow.st2022_7_analysis.totalNumberOfPackets": "Total",
+  "workflow.st2022_7_analysis.intersectionSizeInPackets": "Interseção",
+  "workflow.st2022_7_analysis.numberOfEqualPackets": "Iguais",
+  "workflow.st2022_7_analysis.numberOfDifferentPackets": "Pacotes diferentes",
+  "workflow.st2022_7_analysis.numberOfMissingPackets": "Pacotes em falta",
+  "workflow.st2022_7_analysis.deltaBetweenPackets": "Diferença de tempo entre pacotes em ambos os streams"
 }
