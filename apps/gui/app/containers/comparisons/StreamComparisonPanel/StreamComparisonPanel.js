@@ -67,7 +67,10 @@ const StreamComparisonPanel = () => {
         </>
     );
 
-    const workflows = [workflowTypes.st2022_7_analysis];
+    const workflows = [
+        //workflowTypes.compareStreams,
+        workflowTypes.st2022_7_analysis,
+    ];
 
     const workflowOptions = workflows.map(wf => ({ value: wf, label: translateC(`workflow.names.${wf}`) }));
 
