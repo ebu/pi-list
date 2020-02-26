@@ -46,12 +46,12 @@ const getStreamInfo = async (streamId, folder) => {
 };
 
 const getConfig = async (inputConfig, folder) => {
-    const primary = await getStreamInfo(inputConfig.mainStreamID, folder);
-    const secondary = await getStreamInfo(inputConfig.refStreamID, folder);
+    const reference = await getStreamInfo(inputConfig.refStreamID, folder);
+    const main = await getStreamInfo(inputConfig.mainStreamID, folder);
 
     return {
-        reference: primary,
-        main: secondary,
+        reference: reference,
+        main: main,
     };
 };
 
