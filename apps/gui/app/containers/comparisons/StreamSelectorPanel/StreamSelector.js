@@ -5,7 +5,8 @@ import { getTitleFor } from '../../../utils/mediaUtils';
 
 const NoStreamSelector = () => <div />;
 
-const getFullTitleFor = (stream, index) => (`${getTitleFor(stream, index)} - ${stream.network_information.destination_address}`);
+const getFullTitleFor = (stream, index) =>
+    `${getTitleFor(stream, index)} - ${stream.network_information.destination_address}`;
 
 const StreamSelector = props => {
     const entries = props.streams.map((stream, index) => ({
@@ -16,7 +17,7 @@ const StreamSelector = props => {
     if (entries.length === 0) return <NoStreamSelector />;
 
     return (
-        <div className="row lst-align-items-center">
+        <div className="row type">
             <div className="col-xs-2">
                 <div className="lst-text-right">Stream:</div>
             </div>

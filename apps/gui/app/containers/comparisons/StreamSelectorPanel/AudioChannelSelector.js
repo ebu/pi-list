@@ -14,7 +14,7 @@ const AudioChannelSelector = props => {
     if (entries.length === 0) return <NoAudioChannelSelector />;
 
     return (
-        <div className="row lst-align-items-center">
+        <div className="row type">
             <div className="col-xs-2">
                 <div className="lst-text-right">Audio Channel:</div>
             </div>

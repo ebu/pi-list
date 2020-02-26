@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import uuidv1 from 'uuid/v1';
+import React, { useState } from 'react';
+import moment from 'moment';
+import { types as workflowTypes } from 'ebu_list_common/workflows/types';
 import api from '../../../utils/api';
-import { translate } from '../../../utils/translation';
 import Panel from '../../../components/common/Panel';
 import StreamSelectorPanel from '../StreamSelectorPanel';
 import Button from '../../../components/common/Button';
-import FormInput from '../../../components/common/FormInput';
 import Input from '../../../components/common/Input';
-import { types as workflowTypes } from 'ebu_list_common/workflows/types';
 import { translateC, translateX } from '../../../utils/translation';
 import notifications from '../../../utils/notifications';
 import Select from '../../../components/common/Select';
+import './StreamComparisonPanel.scss';
 
-const StreamComparisonPanel = props => {
+const StreamComparisonPanel = () => {
     const [streamA, setStreamA] = useState(null);
     const [streamB, setStreamB] = useState(null);
     const [description, setDescription] = useState('');
@@ -21,7 +20,8 @@ const StreamComparisonPanel = props => {
     const onChangeB = v => setStreamB(v);
 
     const onCompare = selectedWorkflow => {
-        const name = description ? `${description}` : `name-${uuidv1()}`;
+        const now = moment(Date.now()).format('YYYYMMDD_HHmmss');
+        const name = description ? `${description}` : now;
         const workflowInfo = {
             type: selectedWorkflow,
             configuration: {
@@ -77,42 +77,35 @@ const StreamComparisonPanel = props => {
     const [selectedWorkflow, setSelectedWorkflow] = useState(workflowOptions[0].value);
 
     return (
-        <Panel title={title}>
-            <div className="row lst-align-items-center">
-                <div className="col-md-6 col-xs-12">
-                    <h3> {translateC('comparison.config.reference')}</h3>
-                    <div className="col-xs-12">
-                        <StreamSelectorPanel onChange={onChangeA} />
-                    </div>
-                </div>
-                <div className="col-md-6 col-xs-12">
-                    <h3> {translateC('comparison.config.main')}</h3>
-                    <div className="col-xs-12">
-                        <StreamSelectorPanel onChange={onChangeB} />
-                    </div>
-                </div>
-            </div>
-            <div
-                className="row"
-                style={{
-                    justifyContent: 'space-between',
-                }}
-            >
-                <div className="col-xs-5">
-                    <FormInput className="lst-no-margin" label={translateX('name')}>
-                        <Input
-                            type="text"
-                            value={description}
-                            onChange={evt => onChangeDescription(evt.target.value)}
-                        />
-                    </FormInput>
-                </div>
+        <Panel title={title} className="lst-stream-comparison-panel">
+            <div className="row type">
+                <h3>{translateX('comparison.type')}:</h3>
                 <div className="col-xs-5">
                     <Select
                         options={workflowOptions}
                         value={selectedWorkflow}
                         onChange={e => setSelectedWorkflow(e.value)}
                     />
+                </div>
+            </div>
+            <div className="row stream-selectors">
+                <div className="stream-selector">
+                    <h3> {translateC('comparison.config.reference')}</h3>
+                    <div className="col-xs-12">
+                        <StreamSelectorPanel onChange={onChangeA} />
+                    </div>
+                </div>
+                <div className="stream-selector">
+                    <h3> {translateC('comparison.config.main')}</h3>
+                    <div className="col-xs-12">
+                        <StreamSelectorPanel onChange={onChangeB} />
+                    </div>
+                </div>
+            </div>
+            <div className="row type">
+                <h3>{translateX('name')}:</h3>
+                <div className="col-xs-5">
+                    <Input type="text" value={description} onChange={evt => onChangeDescription(evt.target.value)} />
                 </div>
                 <div className="col-xs-2">
                     <Button label="Compare" disabled={isDisabled} onClick={() => onCompare(selectedWorkflow)} />

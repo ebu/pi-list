@@ -13,7 +13,7 @@ const PcapSelector = props => {
     const entries = props.pcaps.map(pcap => ({ label: pcap.file_name, value: pcap.id }));
 
     return (
-        <div className="row lst-align-items-center">
+        <div className="row type">
             <div className="col-xs-2">
                 <div className="lst-text-right">PCAP:</div>
             </div>

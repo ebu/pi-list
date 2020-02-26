@@ -1,21 +1,14 @@
-import React, { Component, Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import moment from 'moment';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import sources from 'ebu_list_common/capture/sources';
-import wfSchema from 'ebu_list_common/workflows/schema';
 import Icon from '../../../components/common/Icon';
-import Badge from '../../../components/common/Badge';
-import { T, translateX } from '../../../utils/translation';
-import {
-    getGetTdProps,
-    getCheckBoxColumn,
-} from '../../../components/table/utils';
+import { translateX } from '../../../utils/translation';
+import { getGetTdProps, getCheckBoxColumn } from '../../../components/table/utils';
 
 const renderLabel = ({ value }) => {
-    return <span> {value} </span>;
+    return <span>{value}</span>;
 };
 
 const getIconValue = value => {
@@ -40,12 +33,8 @@ const renderMediaType = ({ value }) => {
 };
 
 const renderDate = ({ value }) => {
-    return (
-        <div className="lst-text-center">
-            {moment(value).format('YYYY-MM-DD HH:mm:ss')}
-        </div>
-    );
-}
+    return <div className="lst-text-center">{moment(value).format('YYYY-MM-DD HH:mm:ss')}</div>;
+};
 
 const ComparisonsTable = props => {
     const columns = [
@@ -121,9 +110,9 @@ ComparisonsTable.defaultProps = {
     data: [],
     selectedIds: [],
     selectAll: 0,
-    onSelectId: () => { },
-    onSelectAll: () => { },
-    onClickRow: () => { },
+    onSelectId: () => {},
+    onSelectAll: () => {},
+    onClickRow: () => {},
     noDataComponent: () => null,
 };
 

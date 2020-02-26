@@ -1,8 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
-import _ from 'lodash';
 import mqtypes from 'ebu_list_common/mq/types';
-import { types as workflowTypes } from 'ebu_list_common/workflows/types';
-import wfSchema from 'ebu_list_common/workflows/schema';
 import DeleteModal from '../../../components/DeleteModal';
 import { tableInitialState, makeTableReducer } from '../../../utils/models/table/tableReducer';
 import tableactions from '../../../utils/models/table/actions';
@@ -45,17 +42,17 @@ const ComparisonsList = () => {
         });
     };
 
-    const onFailure = (data) => {
+    const onFailure = data => {
         notifications.success({
             title: translate('notifications.error.comparison_complete'),
-            message: data.msg
+            message: data.msg,
         });
     };
 
-    const onComplete = (data) => {
+    const onComplete = data => {
         notifications.success({
             title: translate('notifications.success.comparison_complete'),
-            message: data.msg
+            message: data.msg,
         });
         api.getComparisons().then(data => {
             dispatch({
@@ -65,11 +62,11 @@ const ComparisonsList = () => {
         });
     };
 
-    const onDeleted = (data) => {
+    const onDeleted = data => {
         console.log(`delete ${data}`);
         dispatch({
             type: Actions.comparisonDeleted,
-            payload: { data }
+            payload: { data },
         });
     };
 
@@ -91,22 +88,16 @@ const ComparisonsList = () => {
             websocket.off(websocketEventsEnum.STREAM_COMPARE.DELETED, onDeleted);
             websocket.off(websocketEventsEnum.STREAM_COMPARE.COMPLETE, onComplete);
             websocket.off(websocketEventsEnum.STREAM_COMPARE.FAILED, onFailure);
-            disconnect;
+            disconnect();
         };
     }, []);
 
-    /*
-    useEffect(() => {
-        console.log('-- do something with state.something');
-    }, [state.cancelRequestIds]);
-    */
-
-    const onClickRow = (comparisonID) => {
+    const onClickRow = comparisonID => {
         const route = routeBuilder.comparison_stream_page(comparisonID);
         window.appHistory.push(route);
     };
 
-    const doDelete = (idsToDelete) => {
+    const doDelete = idsToDelete => {
         dispatch({ type: Actions.requestDelete, data: { ids: [] } });
 
         if (idsToDelete.length === 0) return;
@@ -116,10 +107,9 @@ const ComparisonsList = () => {
         idsToDelete.forEach(id => dispatch({ type: Actions.deleteComparison, data: { id } }));
     };
 
-
     const onToolBarRequestDelete = data => {
         // popup for confirm
-        dispatch({ type: Actions.requestDelete, data: { ids: data }, });
+        dispatch({ type: Actions.requestDelete, data: { ids: data } });
     };
 
     return (
@@ -131,10 +121,7 @@ const ComparisonsList = () => {
                 onDelete={doDelete}
             />
             <div>
-                <Toolbar
-                    cbFunction={onToolBarRequestDelete}
-                    selectedItems={state.selected}
-                />
+                <Toolbar cbFunction={onToolBarRequestDelete} selectedItems={state.selected} />
                 <ComparisonsTable
                     data={state.data}
                     selectedIds={state.selected}

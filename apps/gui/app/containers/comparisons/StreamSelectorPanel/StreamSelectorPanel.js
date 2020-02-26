@@ -15,7 +15,7 @@ const StreamSelectorPanel = props => {
     const [audioChannels, setAudioChannels] = useState([]);
 
     // Sort pcaps so that the most recent one is on top
-    props.pcaps.sort((a, b) => a.date < b.date ? 1 : (a.date === b.date ? 0 : -1));
+    props.pcaps.sort((a, b) => (a.date < b.date ? 1 : a.date === b.date ? 0 : -1));
 
     useEffect(() => {
         if (!selectedPcapId) {
@@ -27,31 +27,29 @@ const StreamSelectorPanel = props => {
             .catch(e => {
                 notifications.error({
                     titleTag: 'Could not get stream from Pcap',
-                    messageTag: `${e}`
+                    messageTag: `${e}`,
                 });
-                console.error(`Error getting streams: ${e}`)
+                console.error(`Error getting streams: ${e}`);
             });
     }, [selectedPcapId]);
 
     useEffect(() => {
-        if (!selectedStreamId) {
+        if (!selectedStreamId || !props.enableAudioChannelSelector) {
             return;
         }
 
         api.getStreamInformation(selectedPcapId, selectedStreamId)
             .then(i => {
-                if (i.media_type === 'audio'){
-                    setAudioChannels(
-                        Array.from({length: i.media_specific.number_channels}, (v, i) => 1+i)
-                    );
+                if (i.media_type === 'audio') {
+                    setAudioChannels(Array.from({ length: i.media_specific.number_channels }, (v, i) => 1 + i));
                 }
             })
             .catch(e => {
                 notifications.error({
                     titleTag: 'Could not get streaminfo from id:',
-                    messageTag: `${e}`
+                    messageTag: `${e}`,
                 });
-                console.error(`Error getting streams: ${e}`)
+                console.error(`Error getting streams: ${e}`);
             });
     }, [selectedStreamId]);
 
@@ -59,7 +57,7 @@ const StreamSelectorPanel = props => {
         setSelectedPcapId(e.value);
         setSelectedStreamId(null);
 
-        props.onChange({ pcap: e.value, stream: null, audioChannel: null});
+        props.onChange({ pcap: e.value, stream: null, audioChannel: null });
     };
 
     const onStreamChange = e => {
@@ -76,23 +74,24 @@ const StreamSelectorPanel = props => {
 
     return (
         <>
-            <div className="row lst-align-items-center">
-                <div className="col-xs-12">
-                    <PcapSelector pcaps={props.pcaps} selectedPcapId={selectedPcapId} onChange={onChangePcap} />
-                </div>
-                <div className="col-xs-12">
-                    <StreamSelector streams={streams} onChange={onStreamChange} selectedStreamId={selectedStreamId} />
-                </div>
-                <div className="col-xs-12">
-                    <AudioChannelSelector channels={audioChannels} onChange={onChannelChange} selectedChannel={selectedAudioChannel} />
-                </div>
-            </div>
+            <PcapSelector pcaps={props.pcaps} selectedPcapId={selectedPcapId} onChange={onChangePcap} />
+            <StreamSelector streams={streams} onChange={onStreamChange} selectedStreamId={selectedStreamId} />
+            <AudioChannelSelector
+                channels={audioChannels}
+                onChange={onChannelChange}
+                selectedChannel={selectedAudioChannel}
+            />
         </>
     );
 };
 
 StreamSelectorPanel.propTypes = {
+    enableAudioChannelSelector: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
+};
+
+StreamSelectorPanel.defaultProps = {
+    enableAudioChannelSelector: false,
 };
 
 export default asyncLoader(StreamSelectorPanel, {
