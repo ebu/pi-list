@@ -12,6 +12,7 @@ const CONSTANTS = require('../enums/constants');
 const Pcap = require('../models/pcap');
 const pcapController = require('../controllers/pcap');
 const Stream = require('../models/stream');
+const StreamCompare = require('../models/streamCompare');
 const streamsController = require('../controllers/streams');
 const {
     pcapSingleStreamIngest,
@@ -141,7 +142,10 @@ router.delete('/:pcapID/', (req, res) => {
             return fs.delete(path); // delete the whole pcap folder
         })
         .then(() => {
-            return Stream.deleteMany({ pcap: pcapID }).exec(); // delete the associated streams
+            // delete the associated streams and comparisons
+            StreamCompare.deleteMany({'config.main.pcap': pcapID}).exec();
+            StreamCompare.deleteMany({'config.reference.pcap': pcapID}).exec();
+            return Stream.deleteMany({ pcap: pcapID }).exec();
         })
         .then(() => {
             return influxDbManager.deleteSeries(pcapID); // delete the associated streams
@@ -156,7 +160,10 @@ router.delete('/:pcapID/', (req, res) => {
                 data: { id: pcapID },
             });
         })
-        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+        .catch((e) => {
+            console.error(`${e}`);
+            return res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND)
+        });
 });
 
 /* Get the report for a pcap */
@@ -484,7 +491,7 @@ function renderMp3(req, res) {
     var { channels } = req.query;
 
     if (channels === undefined || channels === '') {
-        channels = '0,1'; // keep the 2 first channels by default
+        channels = '0'; // keep the first channel by default
     }
 
     Stream.findOne({ id: streamID })

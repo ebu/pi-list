@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import InfoPane from '../streamPage/components/InfoPane';
 import ResultPane from '../streamPage/components/ResultPane';
-import DataList from '../streamPage/components/DataList';
 import MultiValueDisplay from '../streamPage/components/MultiValueDisplay';
 import NarrowWideDisplay from '../streamPage/components/NarrowWideDisplay';
 import MinAvgMaxDisplay from '../streamPage/components/MinAvgMaxDisplay';

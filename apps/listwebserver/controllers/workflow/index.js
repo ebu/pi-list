@@ -126,8 +126,6 @@ const workSender = createQueueSender(
     mqtypes.queues.workflowRequest
 );
 
-//const captureAndIngest = require('./captureAndIngest');
-
 const doCreateWorkflow = async (wf, inputConfig) => {
     /* Workflow modules must export the following functions:
     createWorkflow = async (wf, inputConfig, workSender)
@@ -148,7 +146,6 @@ const doCreateWorkflow = async (wf, inputConfig) => {
 };
 
 const doCancelWorkflow = async (type, inputConfig) => {
-    
     const moduleName = `./${type}`;
     const module = require(moduleName);
     if (!module) {
@@ -197,6 +194,7 @@ const createWorkflow = async (type, userId, userFolder, inputConfig) => {
     } catch (err) {
         const message = `Error creating workflow: ${err.message}`;
         logger('workflow-controller').error(message);
+        console.log(err)
         throw err;
     }
 };

@@ -33,6 +33,7 @@ We deployed an [online version](http://list.ebu.io/) that you can start using ri
 * [Video timing analysis](./docs/video_timing_analysis.md)
 * [Audio timing analysis](./docs/audio_timing_analysis.md)
 * [Ancillary data](./docs/ancillary_data.md)
+* [Stream compare](./docs/stream_compare.md)
 
 ## License
 

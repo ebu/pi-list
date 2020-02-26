@@ -4,6 +4,7 @@
 const CONSTANTS = {
 
     // File system constants
+    PACKET_FILE: 'packets.json',
     META_FILE: '_meta.json',
     HELP_FILE: '_help.json',
     CINST_FILE: 'cinst.json',

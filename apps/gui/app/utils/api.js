@@ -217,6 +217,12 @@ export default {
     cancelWorkflow: info => request.put('workflow', info),
     getWorkflows: () => request.get('workflow'),
 
+    /* Stream Comparisons */
+    getComparisons: () => request.get('comparisons'),
+    getComparison: comparisonID => request.get(`comparisons/${comparisonID}`),
+    deleteComparison: comparisonID => request.delete(`comparisons/${comparisonID}`),
+
+    /* Profiles */
     analysisProfile: {
         getInfo: () => request.get('analysis_profile'),
         setDefaultProfile: id => request.put('analysis_profile/default', { id: id }),

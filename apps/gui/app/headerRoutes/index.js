@@ -11,6 +11,7 @@ import StreamPageHeader from "./StreamPageHeader";
 import ConfigureStreamHeader from "./ConfigureStreamHeader";
 import PtpPageHeader from "./PtpPageHeader";
 import PcapListHeader from "./PcapListHeader";
+import ComparisonPageHeader from "./ComparisonPageHeader";
 
 export default (
   <Switch>
@@ -78,6 +79,13 @@ export default (
       path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}/:streamID/${routeNames.CONFIGURE}`}
       render={props => (
         <ConfigureStreamHeader {...props} pcapID={props.match.params.pcapID} />
+      )}
+    />
+    <Route
+      exact
+      path={`${routeNames.STREAM_COMPARISONS}/:comparisonID`}
+      render={props => (
+        <ComparisonPageHeader {...props} />
       )}
     />
   </Switch>

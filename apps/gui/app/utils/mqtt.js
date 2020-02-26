@@ -40,7 +40,7 @@ const useMqttMessages = (topic, onMessage) => {
     if (location.protocol == 'https:') {
         options.useSSL = true;
     }
-    console.log(`Stream updates - CCONNECT TO ${wsbroker}:${wsport}`);
+    console.log(`Stream updates - CONNECT TO ${wsbroker}:${wsport}`);
     client.connect(options);
 
     return () => {

@@ -1,0 +1,32 @@
+.lst-stream-comparison-panel > * h3 {
+    margin-bottom: 0px;
+    align-self: center;
+}
+
+.lst-stream-comparison-panel .type {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    align-items: center;
+}
+
+.lst-stream-comparison-panel .stream-selector-title {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.stream-selectors {
+    justify-content: space-between;
+}
+
+.lst-stream-comparison-panel .stream-selector {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    flex-basis: 48%;
+}
+
+.stream-selector {
+    margin-left: 0;
+}
+
+.stream-selector > h3 {
+    margin: 1rem 0 1rem 1rem;
+}

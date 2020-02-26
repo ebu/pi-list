@@ -126,7 +126,7 @@ namespace
             return stream_info_it->second;
         };
 
-        db_handler_factory factory(config);
+        pcap_reader factory(config);
         db_updater updater(db, config.storage_folder);
         auto context = processing_context{
             config.pcap_file, config.profile, config.storage_folder, pcap, get_stream_info, &factory, &updater};
