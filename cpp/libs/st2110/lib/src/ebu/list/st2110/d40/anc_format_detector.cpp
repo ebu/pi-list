@@ -60,7 +60,7 @@ detector::status_description anc_format_detector::handle_data(const rtp::packet&
     p += sizeof(raw_anc_header);
 
     /* empty data is ok but must announced as such */
-    if(!anc_header.anc_count() && !anc_header.length() && (p != end))
+    if(!packet.info.rtp.view().padding() && !anc_header.anc_count() && !anc_header.length() && (p != end))
     {
         return detector::status_description{/*.state*/ detector::state::invalid,
                                             /*.error_code*/ "STATUS_CODE_ANC_WRONG_HEADER"};
