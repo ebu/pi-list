@@ -9,4 +9,4 @@ namespace ebu_list
         std::string request_file;
         std::string response_file;
     };
-} // namespace ebu_list::st2110_extractor
+} // namespace ebu_list

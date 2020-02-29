@@ -79,7 +79,7 @@ video_stream_handler::video_stream_handler(decode_video should_decode_video, rtp
 
     update_net_info_with_address_validation(info_.network, first_packet.info);
 
-    info_.state = StreamState::ON_GOING_ANALYSIS; // mark as analysis started
+    info_.state = stream_state::ON_GOING_ANALYSIS; // mark as analysis started
 }
 
 void video_stream_handler::new_frame()
@@ -146,12 +146,14 @@ void video_stream_handler::on_complete()
         logger()->info("video rtp packet drop: {}", video_description_.dropped_packet_count);
     }
 
+    info_.network.dscp = dscp_.get_info();
+
     video_description_.video.packing_mode = pm_analyzer_.get_mode();
 
     ++video_description_.frame_count;
     this->on_frame_complete(std::move(current_frame_));
 
-    info_.state = StreamState::ANALYZED;
+    info_.state = stream_state::ANALYZED;
     completion_handler_(*this);
 }
 
@@ -259,8 +261,7 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
     }
 
     rtp_seqnum_analyzer_.handle_packet(info.full_sequence_number);
-
-    // todo: log number of packets lost
+    dscp_.handle_packet(packet);
 
     this->on_packet(info);
 }

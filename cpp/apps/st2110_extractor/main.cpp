@@ -20,6 +20,7 @@ namespace
     analysis_profile load_profile(const path& profile_file)
     {
         std::ifstream i(profile_file.string());
+        LIST_ENFORCE(i.is_open(), std::runtime_error, "Error opening '{}'", profile_file.string());
         json j;
         i >> j;
         return j.get<analysis_profile>();

@@ -271,7 +271,7 @@ anc_stream_handler::anc_stream_handler(rtp::packet first_packet, listener_uptr l
     logger()->info("Ancillary: created handler for {:08x}, {}->{}", info_.network.ssrc, to_string(info_.network.source),
                    to_string(info_.network.destination));
 
-    info_.state = StreamState::ON_GOING_ANALYSIS;
+    info_.state = stream_state::ON_GOING_ANALYSIS;
 
     anc_description_.first_packet_ts = first_packet.info.udp.packet_time;
     anc_description_.last_frame_ts   = first_packet.info.rtp.view().timestamp();
@@ -284,7 +284,7 @@ anc_stream_handler::anc_stream_handler(rtp::packet first_packet, listener_uptr l
     info_.network.multicast_address_match = is_same_multicast_address(
         first_packet.info.ethernet_info.destination_address, first_packet.info.udp.destination_address);
 
-    info_.state      = StreamState::ON_GOING_ANALYSIS; // mark as analysis started
+    info_.state      = stream_state::ON_GOING_ANALYSIS; // mark as analysis started
     const auto& anc  = this->info();
     nlohmann::json j = anc_stream_details::to_json(anc);
     logger()->trace("Stream info:\n {}", j.dump(2, ' '));
@@ -382,7 +382,8 @@ void anc_stream_handler::on_complete()
 
     impl_->on_complete();
     this->on_stream_complete();
-    info_.state = StreamState::ANALYZED;
+    info_.network.dscp = dscp_.get_info();
+    info_.state        = stream_state::ANALYZED;
     completion_handler_(*this);
 }
 
@@ -409,6 +410,7 @@ void anc_stream_handler::parse_packet(const rtp::packet& packet)
     p += sizeof(raw_extended_sequence_number);
 
     rtp_seqnum_analyzer_.handle_packet(full_sequence_number);
+    dscp_.handle_packet(packet);
 
     const auto anc_header = anc_header_lens(*reinterpret_cast<const raw_anc_header*>(p));
     p += sizeof(raw_anc_header);

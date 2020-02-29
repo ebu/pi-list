@@ -2,6 +2,27 @@ import React, { Fragment } from 'react';
 import _ from 'lodash';
 import { translateX } from 'utils/translation';
 import InfoPane from './components/InfoPane';
+import { translateC } from '../../utils/translation';
+
+const getDscpInfo = props => {
+    const dscp_consistent = _.get(props.stream, ['network_information', 'dscp', 'consistent'], undefined);
+
+    if(dscp_consistent === undefined) {
+        return translateX('headings.unknown');
+    }
+
+    if(dscp_consistent !== true) {
+        return translateX('general.inconsistent');
+    }
+
+    const dscp_value = _.get(props.stream, ['network_information', 'dscp', 'value'], undefined);
+
+    if(dscp_value === undefined) {
+        return translateX('headings.unknown');
+    }
+
+    return dscp_value;
+};
 
 const NetworkInfo = props => {
     const packet_count = _.get(props.stream, ['analyses', 'rtp_sequence', 'details', 'packet_count'], 0);
@@ -13,6 +34,7 @@ const NetworkInfo = props => {
     const invalidMulticastMapping =
         _.get(props.stream, ['analyses', 'unrelated_multicast_addresses', 'result'], 'compliant') !== 'compliant';
     const droppedInfo = dropped_count == 0 ? '' : ` (${dropped_count} ${translateX('media_information.rtp.dropped')})`;
+
 
     const values = [
         {
@@ -49,6 +71,10 @@ const NetworkInfo = props => {
             labelTag: 'media_information.rtp.packet_count',
             value: `${packet_count}${droppedInfo}`,
             attention: dropped_count != 0,
+        },
+        {
+            label: 'DSCP',
+            value: getDscpInfo(props),
         },
     ];
 

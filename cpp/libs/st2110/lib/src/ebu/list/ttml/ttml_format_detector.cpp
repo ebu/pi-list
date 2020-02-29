@@ -63,11 +63,11 @@ detector::status_description ttml::format_detector::handle_data(const rtp::packe
     if(last_segment == closing_tag)
     {
         return detector::status_description{/*.state*/ detector::state::valid,
-            /*.error_code*/ "STATUS_CODE_TTML_VALID_DOCUMENT"};
+                                            /*.error_code*/ "STATUS_CODE_TTML_VALID_DOCUMENT"};
     }
 
     return detector::status_description{/*.state*/ detector::state::invalid,
-        /*.error_code*/ "STATUS_CODE_TTML_INVALID_DOCUMENT"};
+                                        /*.error_code*/ "STATUS_CODE_TTML_INVALID_DOCUMENT"};
 }
 
 detector::details ttml::format_detector::get_details() const
