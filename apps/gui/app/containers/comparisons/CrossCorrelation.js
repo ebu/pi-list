@@ -21,17 +21,17 @@ const CrossCorrelationPane = (props) => {
         },
         {
             labelTag: 'comparison.result.delay.relative',
-            value: delay.time.toFixed(3),
+            value: (delay.time / 1000).toFixed(3),
             units: 'ms',
         },
         {
             labelTag: 'comparison.result.delay.capture',
-            value: delay.capture.toFixed(3),
+            value: (delay.capture / 1000).toFixed(3),
             units: 'ms',
         },
         {
             labelTag: 'comparison.result.delay.actual',
-            value: delay.actual.toFixed(3),
+            value: (delay.actual / 1000).toFixed(3),
             units: 'ms',
         },
     ]
@@ -41,7 +41,7 @@ const CrossCorrelationPane = (props) => {
                     delay.actual < 0? 'earlier' : 'later'
            } than Reference stream.
            And content is ${
-               xcorr.max > 0.99 ? 'the same' : 'altered'
+               props.result.transparency? 'the same' : 'altered'
            }.`;
 
     return (

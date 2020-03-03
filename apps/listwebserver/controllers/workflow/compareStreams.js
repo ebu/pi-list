@@ -33,13 +33,13 @@ const getConfig = async (inputConfig, folder) => {
         }
         config.comparison_type = COMPARISON_TYPES.PSNR_AND_DELAY;
         config.media_type = main.media_type;
-        config.media_specific = main.media_specific.scan_type;
-    } else if (main.media_type === 'audio' && ref.media_type === 'audio') {
-        if (
-            main.media_specific.sampling !== ref.media_specific.sampling &&
-            main.media_specific.encoding !== ref.media_specific.encoding &&
-            main.media_specific.packet_time !== ref.media_specific.packet_time
-        ) {
+        config.media_specific = main.media_specific;
+    }
+    else if ((main.media_type === 'audio') && (ref.media_type === 'audio')) {
+        if ((main.media_specific.sampling !== ref.media_specific.sampling) &&
+                (main.media_specific.encoding !== ref.media_specific.encoding) &&
+                (main.media_specific.packet_time !== ref.media_specific.packet_time))
+        {
             throw Error('different audio format: unsupported');
         }
         config.main.channel = inputConfig.mainChannel;
@@ -50,7 +50,7 @@ const getConfig = async (inputConfig, folder) => {
         config.media_type = main.media_type;
         config.media_specific = main.media_specific;
     } else {
-        throw Error('media type unsupported');
+        throw Error(`Unsupported media type: ${main.media_type} + ${ref.media_type}`);
     }
 
     return config;
@@ -58,7 +58,7 @@ const getConfig = async (inputConfig, folder) => {
 
 const doCreateComparator = config => {
     /* Comparator modules must export the following functions:
-    createComparator = (config)
+    createComparator(config)
     */
     const moduleName = `../../analyzers/${config.comparison_type}`;
     const module = require(moduleName);
@@ -84,25 +84,21 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
         msg: '',
     };
 
-    try {
-        compareConfig = await getConfig(inputConfig, wf.meta.folder);
-    } catch (err) {
-        logger('compare-streams').info(`unsupported config ${err}`);
-        workflowResponse.msg = `${name}: ${err.message}`;
-        websocketManager.instance().sendEventToUser(userID, {
-            event: WS_EVENTS.STREAM_COMPARE_FAILED,
-            data: workflowResponse,
-        });
-        return;
-    }
-
     const handleError = err => {
-        workflowResponse.msg = `Could not compare ${name}`;
+        logger('compare-streams').error(err);
+        workflowResponse.msg = `Could not compare ${name}: ${err.message}`;
         websocketManager.instance().sendEventToUser(userID, {
             event: WS_EVENTS.STREAM_COMPARE_FAILED,
             data: workflowResponse,
         });
     };
+
+    try {
+        compareConfig = await getConfig(inputConfig, wf.meta.folder);
+    } catch (err) {
+        handleError(err);
+        throw err;
+    }
 
     logger('compare-streams').info(`Config: ${JSON.stringify(compareConfig)}`);
     doCreateComparator(compareConfig)
@@ -133,7 +129,9 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
                 }
             );
         })
-        .catch(err => handleError(err));
+        .catch((err) => {
+            return handleError(err);
+        });
 };
 
 module.exports = {

@@ -43,32 +43,52 @@ const getAudioBuffers = async (config) => {
 
 const createComparator = async (config) => {
     var buffers = await getAudioBuffers(config);
-    const minLength = Math.min(buffers[0].length, buffers[1].length);
-    buffers[0] = buffers[0].slice(0,minLength);
-    buffers[1] = buffers[1].slice(0,minLength);
+    const bufLength = Math.min(buffers[0].length, buffers[1].length);
+    buffers[0] = buffers[0].slice(0, bufLength);
+    buffers[1] = buffers[1].slice(0, bufLength);
 
     const xcorrRaw = Xcorr(buffers[1], buffers[0]); // main as 1 param
+    // because of padding, xcorrRaw.xcorr.length == 1.366 * bufLength!!!
+    const l = xcorrRaw.xcorr.length; // even
+    // 1st mesasure corresponds to a 0-shift and last is -1, [0, ..., l/2, -l/2, ..., -1]
+    // so let's reorder to [-l/2, ..., 0, ..., l/2]
+    const xcorrIndex = Array.from(Array(l).keys()).map(v => v - l/2 + 1);
+    const xcorrReorder = Array.from(xcorrRaw.xcorr).slice(l/2, l).concat(Array.from(xcorrRaw.xcorr).slice(0, l/2));
+    // xcorrRaw.iMax == 0 should be in the middle
+    const iMax = xcorrRaw.iMax + l/2;
 
-    // window the result
-    const windowWidth = 250;
-    const windowMin = xcorrRaw.iMax > windowWidth? xcorrRaw.iMax - windowWidth : 0;
-    const windowMax = (xcorrRaw.iMax + windowWidth) < 2 * minLength? xcorrRaw.iMax + windowWidth : 2 * minLength;
-    const xcorr = Array.from(xcorrRaw.xcorr).slice(windowMin, windowMax);
-    const captureDelay = (config.main.first_packet_ts - config.reference.first_packet_ts) /1000000; //ms
-    const timeDelay = xcorrRaw.iMax / parseInt(config.media_specific.sampling) * 1000; // ms
-    //console.log(xcorr.map((e,i) => {return {value: e, index: windowMin+i};} ))
+    // define and clip a window for graph
+    const windowHalfWidth = 200;
+    const windowMin = (iMax - windowHalfWidth) > 0? iMax - windowHalfWidth : 0;
+    const windowMax = (iMax + windowHalfWidth) < l? iMax + windowHalfWidth : l;
+    const xcorrWindow = Array.from(xcorrReorder).slice(windowMin, windowMax);
+    const indexWindow = Array.from(xcorrIndex).slice(windowMin, windowMax);
+
+    // adjust timings
+    const captureDelay = (config.main.first_packet_ts - config.reference.first_packet_ts) / 1000; //us
+    const timeDelay = xcorrRaw.iMax / parseInt(config.media_specific.sampling) * 1000000; // us
+
+    logger('audio-xcorr:').info(`len: buf=${bufLength}, xcorr=${l}`)
+    logger('audio-xcorr:').info(`len: reorder=${xcorrReorder.length}, index=${xcorrIndex.length}, win=${xcorrWindow.length}`)
+    logger('audio-xcorr:').info(`max index: rel=${xcorrRaw.iMax}, abs=${iMax}`)
+    logger('audio-xcorr:').info(`max value: given=${xcorrRaw.xcorrMax}, guessed=${xcorrReorder[iMax]}`)
+    logger('audio-xcorr:').info(`win: [${windowMin}, ${windowMax}]`)
+    //console.log(xcorrWindow.map((e,i) => {return {value: e, index: indexWindow[i]};} ));
+
+    //TODO Get RTP TS delta
 
     return {
         xcorr: {
             max: xcorrRaw.xcorrMax,
-            raw: xcorr.map((e,i) => {return {value: e, index: windowMin+i};})
+            raw: xcorrWindow.map((e,i) => {return {value: e, index: indexWindow[i]};}),
         },
         delay: {
             sample: xcorrRaw.iMax,
             time: timeDelay,
             capture: captureDelay,
-            actual: timeDelay + captureDelay,
-        }
+            actual: (timeDelay + captureDelay),
+        },
+        transparency: xcorrRaw.xcorrMax > 0.98,
     };
 };
 

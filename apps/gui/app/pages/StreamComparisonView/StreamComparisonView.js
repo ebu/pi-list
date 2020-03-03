@@ -9,12 +9,11 @@ const StreamComparisonView = props => {
     if (props.comparisonInfo.type == workflowTypes.compareStreams) {
         return <CompareStreamsView comparisonInfo={props.comparisonInfo} />;
     }
-
-    if (props.comparisonInfo.type == workflowTypes.st2022_7_analysis) {
+    else if (props.comparisonInfo.type == workflowTypes.st2022_7_analysis) {
         return <ST2022_7_View {...props.comparisonInfo} />;
+    } else {
+        return <div>Unknown comparison type ${props.type}</div>;
     }
-
-    return <div>Unknown comparison type ${props.type}</div>;
 };
 
 export default asyncLoader(StreamComparisonView, {

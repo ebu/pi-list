@@ -40,7 +40,6 @@ const getPnsrAndDelay = async (index, mainPath, refFrame) => {
     return {
         psnr: psnr === 'inf'? 'inf' : parseFloat(psnr),
         index: index,
-        path: mainPath,
     };
 }
 
@@ -55,26 +54,12 @@ const getFrameDirList = async (dir) => {
 const getFrameInfo = async (framePath, index) => {
     const frameTs = await getTsFromMetaFile(framePath);
 
-    const pktList = await getTsFromPacketFile(framePath);
-    const pktOffsetList = await Array.from(pktList, e => {
-            return {
-                packet_time: e.packet_time,
-                offset: {
-                    lines: e.lines[0].line_number,
-                    pixels: e.lines[0].offset
-                }
-            };
-        });
-
     return {
-        frameInfo: {
-            index: index,
-            path: framePath,
-            rtp_ts: frameTs.timestamp,
-            first_packet_ts: frameTs.first_packet_ts,
-            last_packet_ts: frameTs.last_packet_ts,
-        },
-        framePktOffsetList: pktOffsetList
+        index: index,
+        path: framePath,
+        rtp_ts: frameTs.timestamp,
+        first_packet_ts: frameTs.first_packet_ts,
+        last_packet_ts: frameTs.last_packet_ts,
     };
 }
 
@@ -101,15 +86,6 @@ const getPsnrMax = async (psnrList) => {
         );
 }
 
-const getPktDistanceList = async (first_packet_ts, frame) => {
-    return await frame.framePktOffsetList.map(e => Math.abs(first_packet_ts - e.packet_time));
-}
-
-const getMin = async (list) => {
-    const min = Math.min(...list);
-    return { min: min, index: list.indexOf(min) }
-};
-
 const createComparator = async (config) => {
     const refDirList = await getFrameDirList(`${config.user_folder}/${config.reference.pcap}/${config.reference.stream}`);
     const mainDirList = await getFrameDirList(`${config.user_folder}/${config.main.pcap}/${config.main.stream}`);
@@ -120,65 +96,53 @@ const createComparator = async (config) => {
 
     // compare this middle `reference` frame with all the frames of
     // `main` sequence and return all PSNR
-    const psnrList = await getPsnrList(mainDirList, refFrame.frameInfo);
+    const psnrList = await getPsnrList(mainDirList, refFrame);
     // search for the max which corresponds to the `mainFrame` which is
     // the most similar to `refFrame`
     const psnrMax = await getPsnrMax(psnrList);
     const mainFrame = await getFrameInfo(mainDirList[psnrMax.index], psnrMax.index);
 
-    // TODO capture Delay
     const delay = {
-        sample: psnrMax.index - refFrame.frameInfo.index,
-        rtp: mainFrame.frameInfo.rtp_ts - refFrame.frameInfo.rtp_ts,
-        actual: mainFrame.frameInfo.first_packet_ts - refFrame.frameInfo.first_packet_ts,
+        sample: psnrMax.index - refFrame.index,
+        rtp: mainFrame.rtp_ts - refFrame.rtp_ts,
+        actual: ((mainFrame.first_packet_ts - refFrame.first_packet_ts) +
+                (mainFrame.last_packet_ts - refFrame.last_packet_ts)) /2
+                / 1000, //us
     };
 
-    // At this point, we still miss time precision in media units, i.e.
-    // lines & pixels.  So let's measure the delay between `mainFrame`
-    // and the `reference` frame which arrives at the same moment. This
-    // `syncFrame` can be either at the same index as `mainFrame` OR at
-    // index-1. To determine that, find the pkt inside these two
-    // candidates the closest to the 1st pkt of `mainFrame` and read
-    // assoicated line & pixel offset.
-    const syncFrameIndex1 = mainFrame.frameInfo.index - 1;
-    const syncFrame1 = await getFrameInfo(refDirList[syncFrameIndex1], syncFrameIndex1);
-    const pktDistanceList1 = await getPktDistanceList(mainFrame.frameInfo.first_packet_ts, syncFrame1);
-    const pktDistanceMin1 = await getMin(pktDistanceList1);
+    // Convert actual delay into media units: frames, fields, lines and pixels
+    const exactRate = eval(config.media_specific.rate);
+    const interlaced = config.media_specific.scan_type === "interlaced";
+    const exactHeigth = interlaced ? config.media_specific.height/2 : config.media_specific.height;
+    const absDelay = Math.abs(delay.actual / 1000000); // in sec
+    const frameDuration = 1.0 / exactRate;
+    const lineDuration = frameDuration / exactHeigth;
+    const pixelDuration = lineDuration / config.media_specific.width;
 
-    const syncFrameIndex2 = mainFrame.frameInfo.index;
-    const syncFrame2 = await getFrameInfo(refDirList[syncFrameIndex2], syncFrameIndex2);
-    const pktDistanceList2 = await getPktDistanceList(mainFrame.frameInfo.first_packet_ts, syncFrame2);
-    const pktDistanceMin2 = await getMin(pktDistanceList2);
-
-    const firstSyncFrame = (pktDistanceMin1.min < pktDistanceMin2.min);
-    const syncFrame = firstSyncFrame? syncFrame1 : syncFrame2;
-    const pktDistanceMin = firstSyncFrame? pktDistanceMin1 : pktDistanceMin2;
-    var offset = syncFrame.framePktOffsetList[pktDistanceMin.index].offset;
-    // if `reference` is after `main`, then invert offset
-    if (delay.actual < 0) {
-        const lastOffset = syncFrame.framePktOffsetList[syncFrame.framePktOffsetList.length - 1].offset;
-        offset.lines -= lastOffset.lines;
-        offset.pixels = 0; // forget about it
-        if (!firstSyncFrame) {
-            delay.sample += 1;
-        }
+    // here frames may refer to fields
+    var frames = Math.floor(absDelay / frameDuration);
+    var remainder = absDelay % frameDuration;
+    const lines = Math.floor(remainder / lineDuration);
+    remainder = remainder % lineDuration;
+    const pixels = Math.floor(remainder / pixelDuration);
+    var fields = 0;
+    if (interlaced) {
+        frames = Math.floor(frames/2);
+        fields = frames % 2;
     }
-    else {
-        if (firstSyncFrame) {
-            delay.sample -= 1;
-        }
-    }
+    const media = {
+        sign: Math.sign(delay.actual),
+        frames: frames,
+        fields: fields,
+        lines: lines,
+        pixels: pixels
+    };
 
-    console.log(`ref frame: ${JSON.stringify(refFrame.frameInfo)}`)
-    console.log(`main frame: ${JSON.stringify(mainFrame.frameInfo)}`)
-    console.log(`delays : ${JSON.stringify(delay)}`);
-    console.log(`sync1 frame: ${JSON.stringify(syncFrame1.frameInfo)}`)
-    console.log(`     ${JSON.stringify(pktDistanceMin1)}`);
-    console.log(`     ${JSON.stringify(syncFrame1.framePktOffsetList[pktDistanceMin1.index])}`);
-    console.log(`sync2 frame: ${JSON.stringify(syncFrame2.frameInfo)}`)
-    console.log(`     ${JSON.stringify(pktDistanceMin2)}`);
-    console.log(`     ${JSON.stringify(syncFrame2.framePktOffsetList[pktDistanceMin2.index])}`);
-    console.log(`offset: ${JSON.stringify(offset)}`)
+    logger('psnr-delay').info(`${JSON.stringify(config)}`)
+    logger('psnr-delay').info(`ref frame: ${JSON.stringify(refFrame)}`)
+    logger('psnr-delay').info(`main frame: ${JSON.stringify(mainFrame)}`)
+    logger('psnr-delay').info(`delays : ${JSON.stringify(delay)}`);
+    logger('psnr-delay').info(`media: ${JSON.stringify(media)}`)
 
     return {
         psnr: {
@@ -187,8 +151,9 @@ const createComparator = async (config) => {
         },
         delay: {
             ... delay,
-            ... offset,
+            ... media,
         },
+        transparency: psnrMax.psnr === 'inf',
     };
 };
 

@@ -8,6 +8,7 @@ import InfoPane from '../streamPage/components/InfoPane';
 const PsnrAndDelayPane = props => {
     const delay = props.result.delay;
     const psnr = props.result.psnr;
+    const interlaced = props.config.media_specific.scan_type === 'interlaced';
 
     const summary = [
         {
@@ -16,26 +17,31 @@ const PsnrAndDelayPane = props => {
             units: 'dB',
         },
         {
-            labelTag: 'comparison.result.delay.relative',
-            value: `${delay.sample}:${delay.lines}:${delay.pixels}`,
-            units: `${props.config.media_specific.scan_type === 'progressive' ? 'frames' : 'fields'}:lines:pixels`,
+            labelTag: 'comparison.result.delay.actual',
+            value: (delay.actual / 1000).toFixed(3),
+            units: 'ms',
         },
         {
-            labelTag: 'comparison.result.delay.relative',
-            value: delay.actual / 1000000,
-            units: 'ms',
+            labelTag: 'comparison.result.delay.media',
+            value: `${delay.sign == -1 ? '-' : '+'}${delay.frames}:${interlaced ? delay.fields+':' : ''}${delay.lines}:${delay.pixels}`,
+            units: `frames : ${interlaced ? 'fields : ' : ''}lines : pixels`,
         },
         {
             labelTag: 'comparison.result.delay.rtp',
             value: delay.rtp,
             units: 'ticks',
         },
+        {
+            labelTag: 'comparison.result.delay.rtp',
+            value: (delay.rtp / 90).toFixed(3),
+            units: 'ms',
+        },
     ];
 
     const comment = `Main stream is ${
-        delay.sample == 0 ? 'in sync with' : delay.sample < 0 ? 'earlier' : 'later'
+        delay.actual == 0? 'in sync with' : delay.actual < 0? 'earlier' : 'later'
     } than Reference stream.
-           And content is ${psnr.max.psnr === 'inf' ? 'the same' : 'altered'}.`;
+       And content is ${ props.result.transparency? 'the same' : 'altered' }.`;
 
     return (
         <div>
@@ -48,7 +54,7 @@ const PsnrAndDelayPane = props => {
                                 return psnr.raw.map(e => {
                                     return {
                                         value: e.psnr === 'inf' ? 100 : e.psnr,
-                                        index: e.index - delay.sample,
+                                        index: e.index - psnr.raw.length/2,
                                     };
                                 });
                             }}

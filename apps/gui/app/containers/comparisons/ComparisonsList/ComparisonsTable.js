@@ -11,6 +11,10 @@ const renderLabel = ({ value }) => {
     return <span>{value}</span>;
 };
 
+const renderDelay = ({ value }) => {
+    return <span> {(value / 1000).toFixed(3)} </span>;
+};
+
 const getIconValue = value => {
     switch (value) {
         case 'video':
@@ -19,12 +23,16 @@ const getIconValue = value => {
             return 'audiotrack';
         case 'ancillary':
             return 'subtitles';
+        case true:
+            return 'done';
+        case false:
+            return 'clear';
         default:
             return 'help';
     }
 };
 
-const renderMediaType = ({ value }) => {
+const renderIcon = ({ value }) => {
     return (
         <span>
             <Icon value={getIconValue(value)} />
@@ -54,7 +62,7 @@ const ComparisonsTable = props => {
             headerClassName: 'lst-text-left lst-table-header',
             accessor: 'config.reference.media_type',
             className: '',
-            Cell: renderMediaType,
+            Cell: renderIcon,
             minWidth: 100,
             maxWidth: 100,
         },
@@ -63,7 +71,25 @@ const ComparisonsTable = props => {
             headerClassName: 'lst-text-left lst-table-header',
             accessor: 'config.main.media_type',
             className: '',
-            Cell: renderMediaType,
+            Cell: renderIcon,
+            minWidth: 100,
+            maxWidth: 100,
+        },
+        {
+            Header: translateX('comparison.result.transparency'),
+            headerClassName: 'lst-text-left lst-table-header',
+            accessor: 'result.transparency',
+            className: '',
+            Cell: renderIcon,
+            minWidth: 100,
+            maxWidth: 100,
+        },
+        {
+            Header: `${translateX('comparison.result.delay')} (ms)`,
+            headerClassName: 'lst-text-left lst-table-header',
+            accessor: 'result.delay.actual',
+            className: '',
+            Cell: renderDelay,
             minWidth: 100,
             maxWidth: 100,
         },

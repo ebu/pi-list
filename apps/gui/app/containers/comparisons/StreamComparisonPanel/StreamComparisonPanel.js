@@ -40,10 +40,10 @@ const StreamComparisonPanel = () => {
                     messageTag: 'workflow.requested',
                 });
             })
-            .catch(() => {
+            .catch((err) => {
                 notifications.error({
                     titleTag: 'workflow.request_failed',
-                    messageTag: 'workflow.request_failed',
+                    messageTag: err,
                 });
             });
     };
@@ -68,7 +68,7 @@ const StreamComparisonPanel = () => {
     );
 
     const workflows = [
-        //workflowTypes.compareStreams,
+        workflowTypes.compareStreams,
         workflowTypes.st2022_7_analysis,
     ];
 
