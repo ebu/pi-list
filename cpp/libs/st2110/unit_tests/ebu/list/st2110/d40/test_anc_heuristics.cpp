@@ -104,6 +104,22 @@ SCENARIO("ST2110-40 heuristics")
         }
     }
 
+    GIVEN("a valid ancillary stream with some RTP padding")
+    {
+        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-40/anc_with_some_rtp_padding.pcap");
+
+
+        rtp_source source(pcap_file);
+
+        anc_format_detector detector;
+        const auto result = run_detector(detector, source);
+
+        WHEN("we check the status")
+        {
+            THEN("it is valid") { REQUIRE(result.state == detector::state::valid); }
+        }
+    }
+
     GIVEN("an ancillary stream with 3 valid types inside")
     {
         const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-40/anc_with_timecode+CC+AFD.pcap");
