@@ -22,7 +22,9 @@ namespace ebu_list::analysis
 
         uint32_t packet_count         = 0;
         uint32_t dropped_packet_count = 0;
+        uint32_t wrong_field_count    = 0;
         uint32_t wrong_marker_count   = 0;
+        uint32_t payload_error_count  = 0;
         uint32_t frame_count          = 0; // frame concept applies to ancillary too
         uint32_t last_frame_ts        = 0;
 

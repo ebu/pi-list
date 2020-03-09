@@ -47,7 +47,9 @@ detector::status_description anc_format_detector::handle_data(const rtp::packet&
         return detector::status_description{/*.state*/ detector::state::invalid,
                                             /*.error_code*/ "STATUS_CODE_ANC_WRONG_FIELD_VALUE"};
         break;
-    case 0: description_.scan_type = video::scan_type::PROGRESSIVE; break;
+    case static_cast<uint8_t>(field_kind::progressive):
+        description_.scan_type = video::scan_type::PROGRESSIVE;
+        break;
     default: description_.scan_type = video::scan_type::INTERLACED; break;
     }
 

@@ -249,13 +249,17 @@ function resetStreamCountersAndErrors(req, res, next) {
         .exec()
         .then(data => {
             if (typeof data.statistics !== 'undefined') {
-                data.statistics.packet_count = 0;
-                data.statistics.dropped_packet_count = 0;
-                if (data.media_type == 'audio') {
-                    data.statistics.sample_count = 0;
-                } else {
-                    data.statistics.frame_count = 0;
-                }
+                if (typeof data.statistics.packet_count !== 'undefined') data.statistics.packet_count = 0;
+                if (typeof data.statistics.dropped_packet_count !== 'undefined') data.statistics.dropped_packet_count = 0;
+                if (typeof data.statistics.sample_count !== 'undefined') data.statistics.sample_count = 0;
+                if (typeof data.statistics.frame_count !== 'undefined') data.statistics.frame_count = 0;
+                if (typeof data.statistics.wrong_marker_count !== 'undefined') data.statistics.wrong_marker_count = 0;
+                if (typeof data.statistics.wrong_field_count !== 'undefined') data.statistics.wrong_field_count = 0;
+                if (typeof data.statistics.payload_error_count !== 'undefined') data.statistics.payload_error_count = 0;
+            }
+
+            if (typeof data.media_specific.sub_streams !== 'undefined') {
+                data.media_specific.sub_streams = [];
             }
 
             if (typeof data.error_list !== 'undefined') {

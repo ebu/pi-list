@@ -322,13 +322,18 @@ void anc_stream_handler::on_data(const rtp::packet& packet)
     anc_description_.last_packet_ts = packet.info.udp.packet_time;
     const auto marked               = packet.info.rtp().marker();
 
+    packets_per_frame_.on_packet(packet.info.rtp.view());
+    parse_packet(packet);
+
     logger()->trace("Ancillary packet={}, frame={}, marker={}", anc_description_.packet_count,
                     anc_description_.frame_count, (marked) ? "1" : "0");
+    if (anc_description_.anc.scan_type == video::scan_type::INTERLACED)
+    {
+        logger()->trace("Ancillary field: last={}, cur={}", last_field_, field_);
+    }
 
-    packets_per_frame_.on_packet(packet.info.rtp.view());
-
-    const auto timestamp = packet.info.rtp.view().timestamp();
     /* frame transition based on RTP TS change */
+    const auto timestamp = packet.info.rtp.view().timestamp();
     if(timestamp != anc_description_.last_frame_ts)
     {
         anc_description_.last_frame_ts = timestamp;
@@ -342,16 +347,34 @@ void anc_stream_handler::on_data(const rtp::packet& packet)
         const auto tframe           = fraction64(1, anc_description_.anc.rate);
         first_rtp_to_packet_deltas_ = calculate_rtp_to_packet_deltas(tframe, rtp_timestamp, packet_time);
 
+        /* a good transition means a marker bit in the last packet and
+         * field transition if interlaced */
         if(!last_frame_was_marked_)
         {
             logger()->debug("Ancillary: missing marker bit");
             anc_description_.wrong_marker_count++;
         }
+        if ((anc_description_.anc.scan_type == video::scan_type::INTERLACED)
+                && (last_field_ == field_)
+                && (last_field_ != static_cast<uint8_t>(field_kind::undefined)))
+        {
+            logger()->debug("Ancillary: missing field bit transition");
+            anc_description_.wrong_field_count++;
+        }
     }
-    else if(last_frame_was_marked_)
+    else
     {
-        logger()->debug("Ancillary: wrong marker bit in frame");
-        anc_description_.wrong_marker_count++;
+        if(last_frame_was_marked_) {
+            logger()->debug("Ancillary: wrong marker bit in frame");
+            anc_description_.wrong_marker_count++;
+        }
+        if ((anc_description_.anc.scan_type == video::scan_type::INTERLACED)
+                && (last_field_ != field_)
+                && (last_field_ != static_cast<uint8_t>(field_kind::undefined)))
+        {
+            logger()->debug("Ancillary: wrong field bit transition in frame");
+            anc_description_.wrong_field_count++;
+        }
     }
 
     /* report variable pkts/frame on every marker bit after a complete
@@ -368,8 +391,7 @@ void anc_stream_handler::on_data(const rtp::packet& packet)
     }
 
     last_frame_was_marked_ = marked;
-
-    parse_packet(packet);
+    last_field_ = field_;
 }
 
 void anc_stream_handler::on_complete()
@@ -378,6 +400,12 @@ void anc_stream_handler::on_complete()
     {
         anc_description_.dropped_packet_count += rtp_seqnum_analyzer_.dropped_packets();
         logger()->info("ancillary rtp packet drop: {}", anc_description_.dropped_packet_count);
+    }
+
+    auto anc_sub_streams = anc_description_.anc.sub_streams;
+    for(auto it = anc_sub_streams.begin(); it != anc_sub_streams.end(); it++)
+    {
+        anc_description_.payload_error_count += it->errors();
     }
 
     impl_->on_complete();
@@ -412,6 +440,29 @@ void anc_stream_handler::parse_packet(const rtp::packet& packet)
 
     const auto anc_header = anc_header_lens(*reinterpret_cast<const raw_anc_header*>(p));
     p += sizeof(raw_anc_header);
+
+    field_ = anc_header.field_identification();
+    switch(field_)
+    {
+    case static_cast<uint8_t>(field_kind::invalid):
+        anc_description_.wrong_field_count++;
+        break;
+    case static_cast<uint8_t>(field_kind::progressive):
+        if (anc_description_.anc.scan_type == video::scan_type::INTERLACED) {
+            anc_description_.wrong_field_count++;
+        }
+        break;
+    case static_cast<uint8_t>(field_kind::interlaced_first_field):
+        if (anc_description_.anc.scan_type == video::scan_type::PROGRESSIVE) {
+            anc_description_.wrong_field_count++;
+        }
+        break;
+    case static_cast<uint8_t>(field_kind::interlaced_second_field):
+        if (anc_description_.anc.scan_type == video::scan_type::PROGRESSIVE) {
+            anc_description_.wrong_field_count++;
+        }
+        break;
+    }
 
     /*
      * for every embedded sub-stream in the packet:
@@ -452,15 +503,8 @@ void anc_stream_handler::parse_packet(const rtp::packet& packet)
         udw_buf.push_back(anc_packet_header.sdid);
         udw_buf.push_back(anc_packet_header.data_count);
 
-        /* is it acceptable data? */
         const auto anc_packet = anc_packet_header_lens(anc_packet_header);
         auto s                = anc_sub_stream(anc_packet);
-        if(!s.is_valid())
-        {
-            logger()->warn("Ancillary: sub-stream invalid");
-            continue;
-        }
-
         /* is this sub-stream already registered? */
         auto it = std::find(anc_description_.anc.sub_streams.begin(), anc_description_.anc.sub_streams.end(), s);
         if(it == anc_description_.anc.sub_streams.end())
@@ -469,8 +513,14 @@ void anc_stream_handler::parse_packet(const rtp::packet& packet)
             anc_description_.anc.sub_streams.push_back(s);
             it = std::find(anc_description_.anc.sub_streams.begin(), anc_description_.anc.sub_streams.end(), s);
         }
+
         uint16_t errors = it->errors();
         ++it->packet_count;
+        if(!s.is_valid())
+        {
+            logger()->warn("Ancillary: sub-stream invalid");
+            errors++;
+        }
 
         /* walkthrough the UDW payload */
         for(uint8_t j = 0; j < anc_packet.data_count(); j++)

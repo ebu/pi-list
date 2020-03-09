@@ -34,6 +34,7 @@ const AncillarySubStream = props => {
         {
             label: 'Type',
             value: type.label,
+            attention: type.label === 'Unknown',
         },
         {
             label: 'DID',
@@ -54,6 +55,7 @@ const AncillarySubStream = props => {
         {
             label: 'Payload errors',
             value: error_count,
+            attention: error_count > 0,
         },
     ];
     return (

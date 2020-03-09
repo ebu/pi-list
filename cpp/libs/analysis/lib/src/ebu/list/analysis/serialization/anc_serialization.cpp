@@ -13,7 +13,9 @@ nlohmann::json anc_stream_details::to_json(const anc_stream_details& details)
     statistics["frame_count"]          = details.frame_count;
     statistics["packet_count"]         = details.packet_count;
     statistics["dropped_packet_count"] = details.dropped_packet_count;
+    statistics["wrong_field_count"]    = details.wrong_field_count;
     statistics["wrong_marker_count"]   = details.wrong_marker_count;
+    statistics["payload_error_count"]  = details.payload_error_count;
     statistics["first_packet_ts"] =
         std::to_string(chrono::duration_cast<chrono::nanoseconds>(details.first_packet_ts.time_since_epoch()).count());
     statistics["last_packet_ts"] =
@@ -42,7 +44,9 @@ anc_stream_details anc_stream_details::from_json(const nlohmann::json& j)
         desc.last_frame_ts        = statistics_json->at("last_frame_ts").get<uint32_t>();
         desc.packet_count         = statistics_json->at("packet_count").get<uint32_t>();
         desc.dropped_packet_count = statistics_json->at("dropped_packet_count").get<uint32_t>();
+        desc.wrong_field_count    = statistics_json->at("wrong_field_count").get<uint32_t>();
         desc.wrong_marker_count   = statistics_json->at("wrong_marker_count").get<uint32_t>();
+        desc.payload_error_count  = statistics_json->at("payload_error_count").get<uint32_t>();
         desc.first_packet_ts =
             clock::time_point{clock::duration{std::stol(statistics_json->at("first_packet_ts").get<std::string>())}};
         desc.last_packet_ts =
