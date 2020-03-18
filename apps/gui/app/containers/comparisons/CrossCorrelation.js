@@ -14,6 +14,7 @@ const CrossCorrelationPane = (props) => {
             value:  xcorr.max.toFixed(3),
             units: '/1',
         },
+        /* Still unsure if intermediate results are relevant
         {
             labelTag: 'comparison.result.delay.relative',
             value: delay.sample,
@@ -29,6 +30,7 @@ const CrossCorrelationPane = (props) => {
             value: (delay.capture / 1000).toFixed(3),
             units: 'ms',
         },
+        */
         {
             labelTag: 'comparison.result.delay.actual',
             value: (delay.actual / 1000).toFixed(3),
@@ -56,7 +58,14 @@ const CrossCorrelationPane = (props) => {
                 <div className="row lst-full-height">
                     <div className="col-xs-12">
                         <LineChart
-                            asyncData={async () => xcorr.raw}
+                            asyncData={async () => {
+                                return xcorr.raw.map((e, i) => {
+                                    return {
+                                        value: e,
+                                        index: xcorr.index + i,
+                                    };
+                                });
+                            }}
                             titleTag="comparison.result.cross_correlation"
                             data={chartFormatters.singleValueLineChart}
                             xAxisMode='linear'
