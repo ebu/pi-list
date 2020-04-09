@@ -296,9 +296,10 @@
   "credits.text": "*** text.credits",
   "credits.title": "*** credits.title",
   "workflow.st2022_7_analysis.totalNumberOfPackets": "Total",
-  "workflow.st2022_7_analysis.intersectionSizeInPackets": "Intersection",
+  "workflow.st2022_7_analysis.intersectionSizeInPackets": "Overlap",
   "workflow.st2022_7_analysis.numberOfEqualPackets": "Equal",
   "workflow.st2022_7_analysis.numberOfDifferentPackets": "Different",
   "workflow.st2022_7_analysis.numberOfMissingPackets": "Missing",
-  "workflow.st2022_7_analysis.deltaBetweenPackets": "Time delta between packets in both streams"
+  "workflow.st2022_7_analysis.deltaBetweenPackets": "Time delta between packets in both streams",
+  "general.inconsistent": "Inconsistent"
 }

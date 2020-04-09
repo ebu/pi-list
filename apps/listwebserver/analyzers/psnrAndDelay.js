@@ -16,9 +16,9 @@ const getTsFromPacketFile = async (path) => {
     return  JSON.parse(await readFile(`${path}/${CONSTANTS.PACKET_FILE}`, 'utf8'));
 }
 
-const getPnsrAndDelay = async (index, mainPath, refFrame) => {
+const getPnsr = async (mainPath, refPath) => {
     const psnrFile = `${mainPath}/psnr.log`;
-    const ffmpegCommand = `ffmpeg -hide_banner -i ${mainPath}/frame.png -i ${refFrame.path}/frame.png -lavfi psnr=\"stats_file=${psnrFile}\" -f null -`;
+    const ffmpegCommand = `ffmpeg -hide_banner -i ${mainPath}/frame.png -i ${refPath}/frame.png -lavfi psnr=\"stats_file=${psnrFile}\" -f null -`;
 
     try {
         output = await exec(ffmpegCommand);
@@ -37,10 +37,7 @@ const getPnsrAndDelay = async (index, mainPath, refFrame) => {
         .filter(line => line[0] === 'psnr_avg')[0][1];
 
 
-    return {
-        psnr: psnr === 'inf'? 'inf' : parseFloat(psnr),
-        index: index,
-    };
+    return psnr === 'inf'? 'inf' : parseFloat(psnr);
 }
 
 // collect all the dirs with frame.png inside
@@ -63,47 +60,87 @@ const getFrameInfo = async (framePath, index) => {
     };
 }
 
-const getPsnrList = async (mainDirList, refFrameInfo) => {
-    logger('psnr-delay').info(`Compare ${mainDirList.length} frames of main sequence with frame #${refFrameInfo.index} of reference sequence.`);
+const getPsnrList = async (mainDirList, refDirList) => {
 
     const getPsnrPromises = mainDirList.map(
-        async (path, index) => getPnsrAndDelay(
-            index,
+        async (path, index) => getPnsr(
             path,
-            refFrameInfo
+            refDirList[index]
         )
     );
     return Promise.all(getPsnrPromises);
 };
 
 const getPsnrMax = async (psnrList) => {
-    return await psnrList.reduce((max, e) =>
-            max.psnr === 'inf'? max :
-                e.psnr === 'inf' ? e :
-                    e.psnr > max.psnr ? e :
-                        max,
+    const max = await psnrList.reduce((max, e) =>
+            max === 'inf'? max :
+                e === 'inf' ? e :
+                    e > max ? e : max,
             psnrList[0]
         );
+
+    return {psnr: max, index: psnrList.findIndex(e => e == max)}
+}
+
+const getPsnrAvg = async (psnrList) => {
+    const sum = await psnrList.reduce((acc, e) => acc += e, 0);
+    return sum / psnrList.length;
+}
+
+const getPsnrInfCounter = async (psnrList) => {
+    return await psnrList.reduce((counter, e) => counter + (e === 'inf'? 1 : 0), 0);
 }
 
 const createComparator = async (config) => {
-    const refDirList = await getFrameDirList(`${config.user_folder}/${config.reference.pcap}/${config.reference.stream}`);
-    const mainDirList = await getFrameDirList(`${config.user_folder}/${config.main.pcap}/${config.main.stream}`);
+    var refDirList = await getFrameDirList(`${config.user_folder}/${config.reference.pcap}/${config.reference.stream}`);
+    var mainDirList = await getFrameDirList(`${config.user_folder}/${config.main.pcap}/${config.main.stream}`);
 
-    // get the frame in the middle of the reference sequence and all the usefull timing info
+    // get the frame in the middle of the reference sequence, frame info
+    // and create a fake list full of it
     const refDirIndex = Math.floor(refDirList.length / 2);
+    logger('psnr-delay').info(`Compare ${mainDirList.length} frames of main sequence with frame #${refDirIndex} of reference sequence.`);
     const refFrame = await getFrameInfo(refDirList[refDirIndex], refDirIndex);
+    const fakeRefDirList = Array.from(Array(mainDirList.length), () => refDirList[refDirIndex]);
 
     // compare this middle `reference` frame with all the frames of
     // `main` sequence and return all PSNR
-    const psnrList = await getPsnrList(mainDirList, refFrame);
+    const psnrList = await getPsnrList(mainDirList, fakeRefDirList);
     // search for the max which corresponds to the `mainFrame` which is
     // the most similar to `refFrame`
-    const psnrMax = await getPsnrMax(psnrList);
+    var psnrMax = await getPsnrMax(psnrList);
     const mainFrame = await getFrameInfo(mainDirList[psnrMax.index], psnrMax.index);
+    const deltaIndex = psnrMax.index - refFrame.index;
+
+    // Now let's calculate the PSNR over the full shifted sequences
+    // but first, strip the sequences:
+    // * remove 1st and last frames which are likely to be incomplete
+    // * remove the non-overlapping frames
+    const clip = 1;
+    if (deltaIndex >= 0) {
+        mainDirList = mainDirList.slice(deltaIndex + clip, mainDirList.length - clip);
+        refDirList = refDirList.slice(clip, mainDirList.length + clip);
+    } else {
+        refDirList = refDirList.slice(-deltaIndex + clip, refDirList.length - clip);
+        mainDirList = mainDirList.slice(clip, refDirList.length + clip);
+    }
+    logger('psnr-delay').info(`Compare ${mainDirList.length} frames of main sequence with ${refDirList.length} frame reference sequence, one to one.`);
+    const psnrMaxList = await getPsnrList(mainDirList, refDirList);
+
+    // get the average
+    if (psnrMax.psnr === 'inf') {
+        if (await getPsnrInfCounter(psnrMaxList) !== psnrMaxList.length) {
+            // replace 'inf' with real high but arbitrary value and get average
+            const tmp = Array.from(psnrMaxList,
+                e => e.psnr === 'inf'? {index:e.index, psnr: 100}: e);
+            psnrMax.psnr = await getPsnrAvg(tmp);
+        }
+        // else, it's all 'inf' and let psnrMax unchanged
+    } else {
+        psnrMax.psnr = await getPsnrAvg(psnrMaxList);
+    }
 
     const delay = {
-        sample: psnrMax.index - refFrame.index,
+        sample: deltaIndex,
         rtp: mainFrame.rtp_ts - refFrame.rtp_ts,
         actual: ((mainFrame.first_packet_ts - refFrame.first_packet_ts) +
                 (mainFrame.last_packet_ts - refFrame.last_packet_ts)) /2
@@ -140,6 +177,7 @@ const createComparator = async (config) => {
 
     logger('psnr-delay').info(`${JSON.stringify(config)}`)
     logger('psnr-delay').info(`ref frame: ${JSON.stringify(refFrame)}`)
+    logger('psnr-delay').info(`psnr max: ${JSON.stringify(psnrMax)}`)
     logger('psnr-delay').info(`main frame: ${JSON.stringify(mainFrame)}`)
     logger('psnr-delay').info(`delays : ${JSON.stringify(delay)}`);
     logger('psnr-delay').info(`media: ${JSON.stringify(media)}`)

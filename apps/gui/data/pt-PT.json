@@ -301,5 +301,6 @@
   "workflow.st2022_7_analysis.numberOfEqualPackets": "Iguais",
   "workflow.st2022_7_analysis.numberOfDifferentPackets": "Pacotes diferentes",
   "workflow.st2022_7_analysis.numberOfMissingPackets": "Pacotes em falta",
-  "workflow.st2022_7_analysis.deltaBetweenPackets": "Diferença de tempo entre pacotes em ambos os streams"
+  "workflow.st2022_7_analysis.deltaBetweenPackets": "Diferença de tempo entre pacotes em ambos os streams",
+  "general.inconsistent": "Inconsistente"
 }

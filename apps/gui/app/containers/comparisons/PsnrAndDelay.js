@@ -26,11 +26,13 @@ const PsnrAndDelayPane = props => {
             value: `${delay.sign == -1 ? '-' : '+'}${delay.frames}:${interlaced ? delay.fields+':' : ''}${delay.lines}:${delay.pixels}`,
             units: `frames : ${interlaced ? 'fields : ' : ''}lines : pixels`,
         },
+        /* maybe unrelevant
         {
             labelTag: 'comparison.result.delay.rtp',
             value: delay.rtp,
             units: 'ticks',
         },
+        */
         {
             labelTag: 'comparison.result.delay.rtp',
             value: (delay.rtp / 90).toFixed(3),
@@ -51,10 +53,10 @@ const PsnrAndDelayPane = props => {
                     <div className="col-xs-12">
                         <LineChart
                             asyncData={async () => {
-                                return psnr.raw.map(e => {
+                                return psnr.raw.map((e, i) => {
                                     return {
-                                        value: e.psnr === 'inf' ? 100 : e.psnr,
-                                        index: e.index - psnr.raw.length/2,
+                                        value: e === 'inf' ? 100 : e,
+                                        index: i - psnr.raw.length/2 + 1,
                                     };
                                 });
                             }}
@@ -63,7 +65,7 @@ const PsnrAndDelayPane = props => {
                             xAxisMode="linear"
                             xAxis={chartFormatters.xAxisLinearDomain}
                             yAxisLabel={'PSNR (dB)'}
-                            xAxisLabel={translateX('comparison.result.delay.relative')}
+                            xAxisLabel={`Time (${interlaced? 'Fields' : 'Frames'})`}
                             height={300}
                             lineWidth={3}
                             legend

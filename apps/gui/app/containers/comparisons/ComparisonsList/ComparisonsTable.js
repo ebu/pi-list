@@ -58,6 +58,15 @@ const ComparisonsTable = props => {
             maxWidth: 200,
         },
         {
+            Header: translateX('comparison.type'),
+            headerClassName: 'lst-text-left lst-table-header',
+            accessor: 'type',
+            className: '',
+            Cell: renderLabel,
+            minWidth: 200,
+            maxWidth: 200,
+        },
+        {
             Header: translateX('comparison.config.reference'),
             headerClassName: 'lst-text-left lst-table-header',
             accessor: 'config.reference.media_type',
