@@ -56,6 +56,27 @@ uint32_t header_lens::ssrc() const noexcept
 }
 
 //------------------------------------------------------------------------------
+
+bool rtp::validate_padding(const std::byte* start, const std::byte* end)
+{
+    auto padding_count = 0;
+    auto p = start;
+
+    /* padding bytes must be 0 */
+    while(p < (end - 1))
+    {
+        if (static_cast<uint8_t>(*p++))
+        {
+            return false;
+        }
+        padding_count++;
+    }
+
+    /* padding length is determined by its last byte */
+    return (static_cast<uint8_t>(*p) == (padding_count + 1));
+}
+
+//------------------------------------------------------------------------------
 namespace
 {
     size_t get_extension_size(const raw_header* header, const byte* ext_p)

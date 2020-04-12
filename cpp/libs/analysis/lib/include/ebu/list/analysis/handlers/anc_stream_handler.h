@@ -9,6 +9,7 @@
 #include "ebu/list/rtp/listener.h"
 #include "ebu/list/rtp/sequence_number_analyzer.h"
 #include "ebu/list/st2110/packets_per_frame_calculator.h"
+#include "ebu/list/st2110/d40/header.h"
 
 #pragma GCC diagnostic ignored "-Wpedantic"
 #include <libklvanc/vanc.h>
@@ -71,6 +72,8 @@ namespace ebu_list::analysis
         rtp::sequence_number_analyzer<uint32_t> rtp_seqnum_analyzer_;
         struct klvanc_context_s* klvanc_ctx;
         bool last_frame_was_marked_ = false;
+        uint8_t field_ = static_cast<uint8_t>(ebu_list::st2110::d40::field_kind::undefined);
+        uint8_t last_field_ = static_cast<uint8_t>(ebu_list::st2110::d40::field_kind::undefined);
         st2110::packets_per_frame_calculator packets_per_frame_;
         delta_info first_rtp_to_packet_deltas_;
         dscp_analyzer dscp_;

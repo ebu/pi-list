@@ -35,6 +35,16 @@ const VideoInfo = props => {
                   value: props.wrong_marker_count,
                   attention: props.wrong_marker_count > 0,
               },
+              {
+                  labelTag: 'media_information.ancillary.wrong_field_bits',
+                  value: props.wrong_field_count,
+                  attention: props.wrong_field_count > 0,
+              },
+              {
+                  labelTag: 'media_information.ancillary.wrong_payloads',
+                  value: props.payload_error_count,
+                  attention: props.payload_error_count > 0,
+              },
           ]
         : [
               {

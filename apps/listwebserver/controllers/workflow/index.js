@@ -136,12 +136,16 @@ const doCreateWorkflow = async (wf, inputConfig) => {
         throw Error(`Unknown workflow type ${wf.type}`);
     }
 
-    const createFunction = module.createWorkflow;
-    if (!createFunction) {
-        throw Error(`Create function not exported for workflow ${wf.type}`);
+    try {
+        const createFunction = module.createWorkflow;
+        if (!createFunction) {
+            throw Error(`Create function not exported for workflow ${wf.type}`);
+        }
+        await createFunction(wf, inputConfig, workSender);
+    } catch (err) {
+        throw err;
     }
 
-    await createFunction(wf, inputConfig, workSender);
     return;
 };
 
@@ -192,9 +196,8 @@ const createWorkflow = async (type, userId, userFolder, inputConfig) => {
         addWorkflow(wf);
         return wf.id;
     } catch (err) {
-        const message = `Error creating workflow: ${err.message}`;
-        logger('workflow-controller').error(message);
-        console.log(err)
+        err.message = `Error creating workflow: ${err.message}`;
+        logger('workflow-controller').error(err.message);
         throw err;
     }
 };

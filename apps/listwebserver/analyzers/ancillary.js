@@ -38,10 +38,32 @@ const ancillaryCheckMarkerBit = async (stream) => {
     if (stream.statistics.wrong_marker_count > 0)
     {
         stream = _.set(stream, 'analyses.marker_bit.result', constants.outcome.not_compliant);
-        stream = _.set(stream, 'analyses.marker_bit.detail.value', stream.statistics.wrong_marker_count);
-        stream = appendError(stream, { id: constants.errors.invalid_rtp_pkts_per_frame });
+        stream = _.set(stream, 'analyses.marker_bit.detail.count', stream.statistics.wrong_marker_count);
+        stream = appendError(stream, { id: constants.errors.invalid_marker_bit });
     } else {
         stream = _.set(stream, 'analyses.marker_bit.result', constants.outcome.compliant);
+    }
+}
+
+const ancillaryCheckFieldBits = async (stream) => {
+    if (stream.statistics.wrong_field_count > 0)
+    {
+        stream = _.set(stream, 'analyses.field_bits.result', constants.outcome.not_compliant);
+        stream = _.set(stream, 'analyses.field_bits.detail.count', stream.statistics.wrong_field_count);
+        stream = appendError(stream, { id: constants.errors.invalid_field_bits });
+    } else {
+        stream = _.set(stream, 'analyses.field_bits.result', constants.outcome.compliant);
+    }
+}
+
+const ancillaryCheckPayloads = async (stream) => {
+    if (stream.statistics.payload_error_count > 0)
+    {
+        stream = _.set(stream, 'analyses.anc_payloads.result', constants.outcome.not_compliant);
+        stream = _.set(stream, 'analyses.anc_payloads.detail.count', stream.statistics.payload_error_count);
+        stream = appendError(stream, { id: constants.errors.ancillary_invalid_payload });
+    } else {
+        stream = _.set(stream, 'analyses.anc_payloads.result', constants.outcome.compliant);
     }
 }
 
@@ -125,6 +147,8 @@ const doRtpTimeAnalysis = async (req, stream) => {
 };
 const doAncillaryStreamAnalysis = async (req, stream) => {
     await ancillaryCheckMarkerBit(stream);
+    await ancillaryCheckFieldBits(stream);
+    await ancillaryCheckPayloads(stream);
     await ancillaryPktPerFrame(req, stream);
     await doRtpTimeAnalysis(req, stream);
     await validateRtpTimes(stream);

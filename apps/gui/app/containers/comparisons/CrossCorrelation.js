@@ -14,6 +14,7 @@ const CrossCorrelationPane = (props) => {
             value:  xcorr.max.toFixed(3),
             units: '/1',
         },
+        /* Still unsure if intermediate results are relevant
         {
             labelTag: 'comparison.result.delay.relative',
             value: delay.sample,
@@ -21,17 +22,18 @@ const CrossCorrelationPane = (props) => {
         },
         {
             labelTag: 'comparison.result.delay.relative',
-            value: delay.time.toFixed(3),
+            value: (delay.time / 1000).toFixed(3),
             units: 'ms',
         },
         {
             labelTag: 'comparison.result.delay.capture',
-            value: delay.capture.toFixed(3),
+            value: (delay.capture / 1000).toFixed(3),
             units: 'ms',
         },
+        */
         {
             labelTag: 'comparison.result.delay.actual',
-            value: delay.actual.toFixed(3),
+            value: (delay.actual / 1000).toFixed(3),
             units: 'ms',
         },
     ]
@@ -41,7 +43,7 @@ const CrossCorrelationPane = (props) => {
                     delay.actual < 0? 'earlier' : 'later'
            } than Reference stream.
            And content is ${
-               xcorr.max > 0.99 ? 'the same' : 'altered'
+               props.result.transparency? 'the same' : 'altered'
            }.`;
 
     return (
@@ -56,7 +58,14 @@ const CrossCorrelationPane = (props) => {
                 <div className="row lst-full-height">
                     <div className="col-xs-12">
                         <LineChart
-                            asyncData={async () => xcorr.raw}
+                            asyncData={async () => {
+                                return xcorr.raw.map((e, i) => {
+                                    return {
+                                        value: e,
+                                        index: xcorr.index + i,
+                                    };
+                                });
+                            }}
                             titleTag="comparison.result.cross_correlation"
                             data={chartFormatters.singleValueLineChart}
                             xAxisMode='linear'

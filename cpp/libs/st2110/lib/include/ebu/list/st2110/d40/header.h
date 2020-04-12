@@ -23,7 +23,8 @@ namespace ebu_list::st2110::d40
         progressive             = 0b00,
         interlaced_first_field  = 0b10,
         interlaced_second_field = 0b11,
-        invalid                 = 0b01
+        invalid                 = 0b01,
+        undefined               = 0b111
     };
 
 #pragma pack(push, 1)

@@ -33,6 +33,7 @@ namespace ebu_list::rtp
     using maybe_pdu = std::optional<pdu>;
 
     maybe_pdu decode(oview&& raw_pdu);
+    bool validate_padding(const std::byte* start, const std::byte* end);
 
     struct packet_info
     {

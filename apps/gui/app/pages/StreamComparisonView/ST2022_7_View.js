@@ -2,30 +2,8 @@ import React from 'react';
 import api from 'utils/api';
 import { translateX, translateC } from '../../utils/translation';
 import asyncLoader from '../../components/asyncLoader';
-import StreamCard from '../../components/stream/StreamCard';
 import InfoPane from '../../containers/streamPage/components/InfoPane';
 import MinAvgMaxDisplay from '../../containers/streamPage/components/MinAvgMaxDisplay';
-
-const renderCard = (title, stream, index) => {
-    return (
-        <div className="col-sm-12" key={`stream-${index}`}>
-            <StreamCard key={stream.id} {...stream} pcapID={stream.pcap} title={`${title}`} />
-        </div>
-    );
-};
-
-const ConfigPane = props => {
-    return (
-        <div>
-            <InfoPane icon="compare" headingTag="headings.config" values={[]} />
-            <div className="col display-flex">
-                {renderCard(translateX('comparison.config.reference'), props.refStreamInfo, 1)}
-                <hr />
-                {renderCard(translateX('comparison.config.main'), props.mainStreamInfo, 0)}
-            </div>
-        </div>
-    );
-};
 
 const ST2022_7_View = props => {
     const intersection = props.result.analysis.intersectionSizeInPackets;
@@ -69,21 +47,14 @@ const ST2022_7_View = props => {
 
     return (
         <div>
-            <div className="row">
-                <div className="col-xs-12 col-md-4">
-                    <ConfigPane refStreamInfo={props.refStreamInfo} mainStreamInfo={props.mainStreamInfo} />
-                </div>
-                <div className="col-xs-12 col-md-6">
-                    <InfoPane icon="compare" headingTag="media_information.analysis" values={summary} />
-                    <MinAvgMaxDisplay
-                        labelTag="workflow.st2022_7_analysis.deltaBetweenPackets"
-                        units="ns"
-                        min={props.result.analysis.minDeltaNs.toFixed(0)}
-                        avg={props.result.analysis.averageDeltaNs.toFixed(0)}
-                        max={props.result.analysis.maxDeltaNs.toFixed(0)}
-                    />
-                </div>
-            </div>
+            <InfoPane icon="compare" headingTag="workflow.names.st2022_7_analysis" values={summary} />
+            <MinAvgMaxDisplay
+                labelTag="workflow.st2022_7_analysis.deltaBetweenPackets"
+                units="ns"
+                min={props.result.analysis.minDeltaNs.toFixed(0)}
+                avg={props.result.analysis.averageDeltaNs.toFixed(0)}
+                max={props.result.analysis.maxDeltaNs.toFixed(0)}
+            />
         </div>
     );
 };

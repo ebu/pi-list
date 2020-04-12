@@ -32,6 +32,13 @@ proposes: "The instantaneous value of theRTP timestamp of the stream is
 not in the future, not more than 1 ms in the past (unless justified),
 and preserves a stable relation to the PTP (should not “drift”)"
 
+## Ancillary header
+
+ * field bits must have acceptable value depending on scan type and
+   frame/field transition
+ * DID/SDID must be registered values
+ * payload intergrity is validated against parity bits and checksum
+
 ## Timecode
 
 Supported:

@@ -21,9 +21,11 @@ namespace ebu_list::analysis
     {
         st2110::d40::anc_description anc;
 
-        uint32_t wrong_marker_count = 0;
-        uint32_t frame_count        = 0; // frame concept applies to ancillary too
-        uint32_t last_frame_ts      = 0;
+        uint32_t wrong_field_count    = 0;
+        uint32_t wrong_marker_count   = 0;
+        uint32_t payload_error_count  = 0;
+        uint32_t frame_count          = 0; // frame concept applies to ancillary too
+        uint32_t last_frame_ts        = 0;
 
         /* serialization details */
         static anc_stream_details from_json(const nlohmann::json& j);
