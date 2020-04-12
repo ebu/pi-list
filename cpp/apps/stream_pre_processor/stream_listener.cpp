@@ -1,19 +1,19 @@
 #include "stream_listener.h"
 #include "ebu/list/analysis/constants.h"
 #include "ebu/list/analysis/serialization/stream_identification.h"
-#include "pch.h"
 
 using namespace ebu_list;
 using namespace ebu_list::analysis;
+using namespace ebu_list::media;
 using namespace ebu_list::st2110;
+using nlohmann::json;
 
 namespace
 {
     void save_on_db(const db_serializer& db, const stream_with_details& stream_info,
-                    std::map<std::string, std::vector<std::string>>& detectors_error_codes, int64_t num_packets = 0,
-                    uint16_t num_dropped_packets = 0)
+                    std::map<std::string, std::vector<std::string>>& detectors_error_codes,
+                    int64_t num_packets = 0, uint16_t num_dropped_packets = 0)
     {
-
         nlohmann::json serialized_streams_details = stream_with_details_serializer::to_json(stream_info);
         if(num_packets > 0)
         {
@@ -63,6 +63,9 @@ void stream_listener::on_data(const rtp::packet& packet)
     // streams of unknown types. Therefore it only assumes the presence of
     // RTP's sequence number field, hence the uint16_t qualification.
     seqnum_analyzer_.handle_packet(static_cast<uint16_t>(packet.info.rtp.view().sequence_number()));
+
+    dscp_.handle_packet(packet);
+
     num_packets_++;
 }
 
@@ -77,12 +80,14 @@ void stream_listener::on_complete()
 
     bool is_valid = true;
 
+    stream_id_.network.dscp = dscp_.get_info();
+
     if(std::holds_alternative<d20::video_description>(format))
     {
         const auto video_format = std::get<d20::video_description>(format);
 
         stream_id_.type  = media::media_type::VIDEO;
-        stream_id_.state = StreamState::READY;
+        stream_id_.state = stream_state::READY;
 
         video_stream_details video_details{};
         video_details.video = video_format;
@@ -93,7 +98,7 @@ void stream_listener::on_complete()
         const auto audio_format = std::get<d30::audio_description>(format);
 
         stream_id_.type  = media::media_type::AUDIO;
-        stream_id_.state = StreamState::READY;
+        stream_id_.state = stream_state::READY;
 
         audio_stream_details audio_details{};
         audio_details.audio = audio_format;
@@ -104,32 +109,32 @@ void stream_listener::on_complete()
         const auto anc_format = std::get<d40::anc_description>(format);
 
         stream_id_.type  = media::media_type::ANCILLARY_DATA;
-        stream_id_.state = StreamState::READY;
+        stream_id_.state = stream_state::READY;
 
         anc_stream_details anc_details{};
         anc_details.anc = anc_format;
         details         = anc_details;
     }
-    else if(std::holds_alternative<ttml::description>(format))
+    else if(std::holds_alternative<ebu_list::ttml::description>(format))
     {
-//        const auto ttml_format = std::get<ttml::description>(format);
+        //        const auto ttml_format = std::get<ttml::description>(format);
 
-        stream_id_.type = media::media_type::TTML;
-        stream_id_.state = StreamState::READY;
+        stream_id_.type  = media::media_type::TTML;
+        stream_id_.state = stream_state::READY;
 
         analysis::ttml::stream_details ttml_details{};
         details = ttml_details;
     }
     else
     {
-        stream_id_.state = StreamState::NEEDS_INFO;
+        stream_id_.state = stream_state::NEEDS_INFO;
     }
 
     if(is_valid)
     {
         stream_with_details swd{stream_id_, details};
 
-        if(stream_id_.state != StreamState::NEEDS_INFO)
+        if(stream_id_.state != stream_state::NEEDS_INFO)
             save_on_db(db_, swd, detectors_error_codes);
         else
             save_on_db(db_, swd, detectors_error_codes, num_packets_,

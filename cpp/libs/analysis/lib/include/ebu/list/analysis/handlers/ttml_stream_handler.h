@@ -6,7 +6,6 @@
 #include "ebu/list/analysis/utils/rtp_utils.h"
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/rtp/listener.h"
-#include "ebu/list/rtp/sequence_number_analyzer.h"
 #include "ebu/list/st2110/packets_per_frame_calculator.h"
 
 namespace ebu_list::analysis::ttml
@@ -32,10 +31,10 @@ namespace ebu_list::analysis::ttml
             ebu_list::rtp::packet first_packet, listener_uptr l_rtp, serializable_stream_info info,
             ttml::stream_details details, completion_handler ch = [](const stream_handler&) {});
 
-        ~stream_handler();
+        ~stream_handler() override;
 
-        const stream_details& info() const;
-        const serializable_stream_info& network_info() const;
+        [[nodiscard]] const stream_details& info() const;
+        [[nodiscard]] const serializable_stream_info& network_info() const;
 
       private:
 #pragma region rtp::listener events
@@ -43,9 +42,6 @@ namespace ebu_list::analysis::ttml
         void on_complete() override;
         void on_error(std::exception_ptr e) override;
 #pragma endregion rtp::listener events
-
-        void parse_packet(const ebu_list::rtp::packet& packet);
-        int64_t get_delta_pkt_ts_vs_rtp_ts(const ebu_list::rtp::packet& packet);
 
         struct impl;
         const std::unique_ptr<impl> impl_;

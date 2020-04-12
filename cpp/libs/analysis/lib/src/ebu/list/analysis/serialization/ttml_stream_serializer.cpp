@@ -23,7 +23,7 @@ void stream_serializer::on_data(uint32_t rtp_timestamp, std::string ttml_doc)
 
     json j;
     j["rtp_timestamp"] = std::to_string(rtp_timestamp);
-    j["xml"] = ttml_doc;
+    j["xml"]           = ttml_doc;
 
     const auto p = base_dir / filename;
     std::ofstream os(p);

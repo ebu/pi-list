@@ -172,6 +172,7 @@ detector::details anc_format_detector::get_details() const
 
     result.packets_per_frame = detector_.packets_per_frame();
     result.rate              = detector_.rate();
+    result.scan_type         = description_.scan_type;
     for(auto& it : description_.sub_streams)
     {
         result.sub_streams.push_back(it);

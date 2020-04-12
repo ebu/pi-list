@@ -11,11 +11,16 @@ namespace ebu_list::ipv4
         UDP = 17
     };
 
+    enum class dscp_type : uint8_t
+    {
+    };
+
     struct header
     {
         address destination_address;
         address source_address;
         protocol_type type;
+        dscp_type dscp;
     };
 
     struct packet_info : header

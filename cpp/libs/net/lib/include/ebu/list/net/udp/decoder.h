@@ -28,9 +28,8 @@ namespace ebu_list::udp
 
     std::tuple<header, oview> decode(oview&& pdu);
 
-    udp::datagram make_datagram(clock::time_point packet_time, ethernet::mac_address source_mac_address,
-                                ethernet::mac_address destination_mac_address, ethernet::payload_type payload_type,
-                                ipv4::address source_address, port source_port, ipv4::address destination_address,
+    udp::datagram make_datagram(ethernet::mac_address source_mac_address, ethernet::mac_address destination_mac_address,
+                                ethernet::payload_type payload_type, ipv4::packet_info ip_info, port source_port,
                                 port destination_port, oview&& payload);
 
     std::ostream& operator<<(std::ostream& os, const header& h);

@@ -38,7 +38,7 @@ const StreamSelectorPanel = props => {
     }, [selectedPcapId]);
 
     useEffect(() => {
-        if (!selectedStreamId) {
+        if (!selectedStreamId || !props.enableAudioChannelSelector) {
             return;
         }
         api.getStreamInformation(selectedPcapId, selectedStreamId)
@@ -96,7 +96,12 @@ const StreamSelectorPanel = props => {
 };
 
 StreamSelectorPanel.propTypes = {
+    enableAudioChannelSelector: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
+};
+
+StreamSelectorPanel.defaultProps = {
+    enableAudioChannelSelector: false,
 };
 
 export default asyncLoader(StreamSelectorPanel, {

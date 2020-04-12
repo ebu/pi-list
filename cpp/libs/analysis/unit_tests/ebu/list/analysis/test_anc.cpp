@@ -71,7 +71,7 @@ SCENARIO("Ancillary stream analysis")
             REQUIRE(stream_ids.size() == 1);
             const auto stream = load_stream_json(storage_folder / stream_ids[0]);
             REQUIRE(stream["id"] == stream_ids[0]);
-            REQUIRE(stream["state"] == to_string(StreamState::ANALYZED));
+            REQUIRE(stream["state"] == to_string(stream_state::ANALYZED));
             REQUIRE(stream["statistics"]["packet_count"] == 199);
             REQUIRE(stream["statistics"]["wrong_marker_count"] == 2);
             REQUIRE(stream["statistics"]["wrong_field_count"] == 4);
@@ -91,7 +91,7 @@ SCENARIO("Ancillary stream analysis")
             REQUIRE(stream_ids.size() == 1);
             const auto stream = load_stream_json(storage_folder / stream_ids[0]);
             REQUIRE(stream["id"] == stream_ids[0]);
-            REQUIRE(stream["state"] == to_string(StreamState::ANALYZED));
+            REQUIRE(stream["state"] == to_string(stream_state::ANALYZED));
             REQUIRE(stream["statistics"]["payload_error_count"] == 3);
         }
     }

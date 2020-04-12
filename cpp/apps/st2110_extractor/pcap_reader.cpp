@@ -1,6 +1,6 @@
 #include "db_handler_factory.h"
-#include "ebu/list/analysis/serialization/video_stream_serializer.h"
 #include "ebu/list/analysis/serialization/ttml_stream_serializer.h"
+#include "ebu/list/analysis/serialization/video_stream_serializer.h"
 #include "influx_logger.h"
 
 using namespace ebu_list;
@@ -15,7 +15,6 @@ namespace
     constexpr auto vrx_file_name     = "vrx.json";
     constexpr auto anc_pkt_file_name = "anc_pkt.json";
 } // namespace
-
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -126,4 +125,3 @@ void db_updater::update_sdp(const std::string& stream_id, const sdp::sdp_builder
 {
     write_to(sdp, storage_folder_ / stream_id / (to_string(media_type) + ".sdp"));
 }
-

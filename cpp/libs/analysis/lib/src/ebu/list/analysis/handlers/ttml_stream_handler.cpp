@@ -1,7 +1,9 @@
 #include "ebu/list/analysis/handlers/ttml_stream_handler.h"
+#include "ebu/list/analysis/handlers/dscp_analyzer.h"
 #include "ebu/list/core/idioms.h"
 #include "ebu/list/core/math/histogram.h"
 #include "ebu/list/net/multicast_address_analyzer.h"
+#include "ebu/list/rtp/sequence_number_analyzer.h"
 #include "ebu/list/st2110/d40/packet.h"
 #include "ebu/list/ttml/ttml_description.h"
 
@@ -26,7 +28,7 @@ struct ebu_list::analysis::ttml::stream_handler::impl
         logger()->info("TTML: created handler for {:08x}, {}->{}", info_.network.ssrc, to_string(info_.network.source),
                        to_string(info_.network.destination));
 
-        info_.state = StreamState::ON_GOING_ANALYSIS;
+        info_.state = stream_state::ON_GOING_ANALYSIS;
 
         ttml_description_.first_packet_ts = first_packet.info.udp.packet_time;
 
@@ -49,6 +51,9 @@ struct ebu_list::analysis::ttml::stream_handler::impl
             ttml_description_.dropped_packet_count += rtp_seqnum_analyzer_.dropped_packets();
             logger()->info("TTML RTP packet drop: {}", ttml_description_.dropped_packet_count);
         }
+
+        info_.network.dscp = dscp_.get_info();
+
         listener_->on_complete();
     }
 
@@ -68,6 +73,7 @@ struct ebu_list::analysis::ttml::stream_handler::impl
         const auto end = ptr + payload_header.length;
 
         rtp_seqnum_analyzer_.handle_packet(sequence_number);
+        dscp_.handle_packet(packet);
 
         current_doc_.insert(current_doc_.end(), ptr, end);
     }
@@ -77,6 +83,7 @@ struct ebu_list::analysis::ttml::stream_handler::impl
     stream_details ttml_description_;
     completion_handler completion_handler_;
     ebu_list::rtp::sequence_number_analyzer<uint16_t> rtp_seqnum_analyzer_;
+    dscp_analyzer dscp_;
     std::vector<std::byte> current_doc_;
 };
 
@@ -121,7 +128,7 @@ void ebu_list::analysis::ttml::stream_handler::on_data(const ebu_list::rtp::pack
 void ebu_list::analysis::ttml::stream_handler::on_complete()
 {
     impl_->on_complete();
-    impl_->info_.state = StreamState::ANALYZED;
+    impl_->info_.state = stream_state::ANALYZED;
     impl_->completion_handler_(*this);
 }
 

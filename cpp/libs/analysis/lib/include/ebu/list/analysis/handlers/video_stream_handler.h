@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ebu/list/analysis/handlers/dscp_analyzer.h"
 #include "ebu/list/analysis/serialization/serializable_stream_info.h"
 #include "ebu/list/analysis/serialization/video/frame.h"
 #include "ebu/list/analysis/serialization/video_serialization.h"
@@ -65,6 +66,7 @@ namespace ebu_list::analysis
         st2110::rate_calculator rate_;
         frame_uptr current_frame_;
         rtp::sequence_number_analyzer<uint32_t> rtp_seqnum_analyzer_;
+        dscp_analyzer dscp_;
         st2110::d20::packing_mode_analyzer pm_analyzer_;
         malloc_sbuffer_factory block_factory_;
 

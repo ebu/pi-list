@@ -3,8 +3,9 @@
 using namespace ebu_list;
 using namespace ebu_list::analysis;
 using namespace std;
+using nlohmann::json;
 
-serializable_stream_info serializable_stream_info::from_json(const nlohmann::json& j)
+serializable_stream_info serializable_stream_info::from_json(const json& j)
 {
     serializable_stream_info stream;
     stream.id      = j["id"].get<string>();
@@ -16,9 +17,9 @@ serializable_stream_info serializable_stream_info::from_json(const nlohmann::jso
     return stream;
 }
 
-nlohmann::json serializable_stream_info::to_json(const serializable_stream_info& info)
+json serializable_stream_info::to_json(const serializable_stream_info& info)
 {
-    nlohmann::json j;
+    json j;
     j["id"]                  = info.id;
     j["pcap"]                = info.pcap;
     j["state"]               = to_string(info.state);
@@ -28,44 +29,66 @@ nlohmann::json serializable_stream_info::to_json(const serializable_stream_info&
     return j;
 }
 
-std::string analysis::to_string(StreamState s)
+std::string analysis::to_string(stream_state s)
 {
     switch(s)
     {
-    case StreamState::NEEDS_INFO: return "needs_info";
-    case StreamState::READY: return "ready";
-    case StreamState::ON_GOING_ANALYSIS: return "on_going_analysis";
+    case stream_state::NEEDS_INFO: return "needs_info";
+    case stream_state::READY: return "ready";
+    case stream_state::ON_GOING_ANALYSIS: return "on_going_analysis";
     default: {
-        assert(s == StreamState::ANALYZED);
+        assert(s == stream_state::ANALYZED);
         return "analyzed";
     }
     }
 }
 
-StreamState analysis::from_string(std::string_view s)
+stream_state analysis::from_string(std::string_view s)
 {
     if(s == "needs_info")
     {
-        return StreamState::NEEDS_INFO;
+        return stream_state::NEEDS_INFO;
     }
     else if(s == "ready")
     {
-        return StreamState::READY;
+        return stream_state::READY;
     }
     else if(s == "on_going_analysis")
     {
-        return StreamState::ON_GOING_ANALYSIS;
+        return stream_state::ON_GOING_ANALYSIS;
     }
     else
     {
         assert(s == "analyzed");
-        return StreamState::ANALYZED;
+        return stream_state::ANALYZED;
     }
 }
 
-nlohmann::json media::to_json(const media::network_info& info)
+void media::to_json(json& j, const dscp_info& dscp)
 {
-    nlohmann::json j;
+    j["consistent"] = dscp.is_consistent;
+    if(dscp.value)
+    {
+        j["value"] = dscp.value.value();
+    }
+}
+
+void media::from_json(const json& j, dscp_info& dscp)
+{
+    if(const auto consistent = j.find("consistent"); consistent != j.end())
+    {
+        dscp.is_consistent = j.at("consistent").get<bool>();
+    }
+
+    if(const auto value = j.find("value"); value != j.end())
+    {
+        dscp.value = static_cast<ipv4::dscp_type>(j.at("value").get<uint8_t>());
+    }
+}
+
+json media::to_json(const media::network_info& info)
+{
+    json j;
     j["source_mac_address"]          = ethernet::to_string(info.source_mac);
     j["source_address"]              = to_string(info.source.addr);
     j["source_port"]                 = to_string(info.source.p);
@@ -78,10 +101,14 @@ nlohmann::json media::to_json(const media::network_info& info)
     j["valid_multicast_ip_address"]  = info.valid_multicast_ip_address;
     j["multicast_address_match"]     = info.multicast_address_match;
 
+    json dscp;
+    to_json(dscp, info.dscp);
+    j["dscp"] = dscp;
+
     return j;
 }
 
-media::network_info media::from_json(const nlohmann::json& j)
+media::network_info media::from_json(const json& j)
 {
     network_info stream;
 
@@ -109,6 +136,8 @@ media::network_info media::from_json(const nlohmann::json& j)
 
     const auto mcast_addr_match_key = j.find("multicast_address_match");
     if(mcast_addr_match_key != j.end()) stream.multicast_address_match = mcast_addr_match_key->get<bool>();
+
+    from_json(j, stream.dscp);
 
     return stream;
 }

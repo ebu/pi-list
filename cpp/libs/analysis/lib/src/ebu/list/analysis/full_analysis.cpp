@@ -4,8 +4,8 @@
 #include "ebu/list/analysis/handlers/video_stream_handler.h"
 #include "ebu/list/analysis/serialization/anc_stream_serializer.h"
 #include "ebu/list/analysis/serialization/audio_stream_serializer.h"
-#include "ebu/list/analysis/serialization/video_stream_serializer.h"
 #include "ebu/list/analysis/serialization/ttml_stream_serializer.h"
+#include "ebu/list/analysis/serialization/video_stream_serializer.h"
 #include "ebu/list/analysis/utils/multi_listener.h"
 #include "ebu/list/core/platform/executor.h"
 #include "ebu/list/core/platform/parallel.h"
@@ -79,10 +79,10 @@ namespace
         context.updater->update_stream_info(network_info.id, j);
 
         // TODO: add TTML support in SDP
-//        ebu_list::ttml::sdp_serializer s;
-//        ebu_list::sdp::sdp_builder sdp({"LIST Generated SDP", "TTML flow"});
-//        sdp.add_media(network_info, s);
-//        context.updater->update_sdp(network_info.id, sdp, media::media_type::TTML);
+        //        ebu_list::ttml::sdp_serializer s;
+        //        ebu_list::sdp::sdp_builder sdp({"LIST Generated SDP", "TTML flow"});
+        //        sdp.add_media(network_info, s);
+        //        context.updater->update_sdp(network_info.id, sdp, media::media_type::TTML);
     }
 
     clock::duration get_timestamp_offset(const analysis_profile& profile, const pcap_info& pcap)
@@ -244,10 +244,10 @@ void analysis::run_full_analysis(processing_context& context)
         {
             ++nr_anc;
             const auto& ttml_info = std::get<ttml::stream_details>(media_info);
-            auto doc_logger  = context.handler_factory->create_ttml_document_logger(stream_info.id);
+            auto doc_logger       = context.handler_factory->create_ttml_document_logger(stream_info.id);
 
-            auto new_handler = std::make_unique<ttml::stream_handler>(first_packet, std::move(doc_logger),
-                                                                       stream_info, ttml_info, ttml_finalizer_callback);
+            auto new_handler = std::make_unique<ttml::stream_handler>(first_packet, std::move(doc_logger), stream_info,
+                                                                      ttml_info, ttml_finalizer_callback);
             return new_handler;
         }
         else
