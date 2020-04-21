@@ -72,9 +72,15 @@ const StreamComparisonPanel = () => {
         workflowTypes.st2022_7_analysis,
     ];
 
+    const useaudioChannelSelectorMap = {};
+    useaudioChannelSelectorMap[workflowTypes.compareStreams] = true;
+    useaudioChannelSelectorMap[workflowTypes.st2022_7_analysis] = false;
+
     const workflowOptions = workflows.map(wf => ({ value: wf, label: translateC(`workflow.names.${wf}`) }));
 
     const [selectedWorkflow, setSelectedWorkflow] = useState(workflowOptions[0].value);
+
+    const enableAudioChannelSelector = useaudioChannelSelectorMap[selectedWorkflow];
 
     return (
         <Panel title={title} className="lst-stream-comparison-panel">
@@ -92,13 +98,13 @@ const StreamComparisonPanel = () => {
                 <div className="stream-selector">
                     <h3> {translateC('comparison.config.reference')}</h3>
                     <div className="col-xs-12">
-                        <StreamSelectorPanel onChange={onChangeA} />
+                        <StreamSelectorPanel onChange={onChangeA} enableAudioChannelSelector={enableAudioChannelSelector}/>
                     </div>
                 </div>
                 <div className="stream-selector">
                     <h3> {translateC('comparison.config.main')}</h3>
                     <div className="col-xs-12">
-                        <StreamSelectorPanel onChange={onChangeB} />
+                        <StreamSelectorPanel onChange={onChangeB} enableAudioChannelSelector={enableAudioChannelSelector} />
                     </div>
                 </div>
             </div>

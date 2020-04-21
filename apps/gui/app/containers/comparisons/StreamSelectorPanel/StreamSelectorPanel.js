@@ -38,7 +38,7 @@ const StreamSelectorPanel = props => {
     }, [selectedPcapId]);
 
     useEffect(() => {
-        if (!selectedStreamId || !props.enableAudioChannelSelector) {
+        if (!selectedStreamId) {
             return;
         }
         api.getStreamInformation(selectedPcapId, selectedStreamId)
@@ -47,8 +47,7 @@ const StreamSelectorPanel = props => {
                     setAudioChannels(Array.from({ length: i.media_specific.number_channels }, (v, i) => 1 + i));
                     setSelectedAudioChannel(1);
                     props.onChange({ pcap: selectedPcapId, stream: selectedStreamId, audioChannel: 1 });
-                }
-                else {
+                } else {
                     setAudioChannels([]);
                     props.onChange({ pcap: selectedPcapId, stream: selectedStreamId, audioChannel: null });
                 }
@@ -86,22 +85,25 @@ const StreamSelectorPanel = props => {
         <>
             <PcapSelector pcaps={props.pcaps} selectedPcapId={selectedPcapId} onChange={onChangePcap} />
             <StreamSelector streams={streams} selectedStreamId={selectedStreamId} onChange={onStreamChange} />
-            <AudioChannelSelector
-                channels={audioChannels}
-                onChange={onChannelChange}
-                selectedChannel={selectedAudioChannel}
-            />
+
+            {props.enableAudioChannelSelector && (
+                <AudioChannelSelector
+                    channels={audioChannels}
+                    onChange={onChannelChange}
+                    selectedChannel={selectedAudioChannel}
+                />
+            )}
         </>
     );
 };
 
 StreamSelectorPanel.propTypes = {
-    enableAudioChannelSelector: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
+    enableAudioChannelSelector: PropTypes.bool,
 };
 
 StreamSelectorPanel.defaultProps = {
-    enableAudioChannelSelector: false,
+    enableAudioChannelSelector: true,
 };
 
 export default asyncLoader(StreamSelectorPanel, {
