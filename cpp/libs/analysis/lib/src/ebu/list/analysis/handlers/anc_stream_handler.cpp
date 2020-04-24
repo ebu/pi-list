@@ -327,7 +327,7 @@ void anc_stream_handler::on_data(const rtp::packet& packet)
 
     logger()->trace("Ancillary packet={}, frame={}, marker={}", anc_description_.packet_count,
                     anc_description_.frame_count, (marked) ? "1" : "0");
-    if (anc_description_.anc.scan_type == video::scan_type::INTERLACED)
+    if(anc_description_.anc.scan_type == video::scan_type::INTERLACED)
     {
         logger()->trace("Ancillary field: last={}, cur={}", last_field_, field_);
     }
@@ -354,9 +354,8 @@ void anc_stream_handler::on_data(const rtp::packet& packet)
             logger()->debug("Ancillary: missing marker bit");
             anc_description_.wrong_marker_count++;
         }
-        if ((anc_description_.anc.scan_type == video::scan_type::INTERLACED)
-                && (last_field_ == field_)
-                && (last_field_ != static_cast<uint8_t>(field_kind::undefined)))
+        if((anc_description_.anc.scan_type == video::scan_type::INTERLACED) && (last_field_ == field_) &&
+           (last_field_ != static_cast<uint8_t>(field_kind::undefined)))
         {
             logger()->debug("Ancillary: missing field bit transition");
             anc_description_.wrong_field_count++;
@@ -364,13 +363,13 @@ void anc_stream_handler::on_data(const rtp::packet& packet)
     }
     else
     {
-        if(last_frame_was_marked_) {
+        if(last_frame_was_marked_)
+        {
             logger()->debug("Ancillary: wrong marker bit in frame");
             anc_description_.wrong_marker_count++;
         }
-        if ((anc_description_.anc.scan_type == video::scan_type::INTERLACED)
-                && (last_field_ != field_)
-                && (last_field_ != static_cast<uint8_t>(field_kind::undefined)))
+        if((anc_description_.anc.scan_type == video::scan_type::INTERLACED) && (last_field_ != field_) &&
+           (last_field_ != static_cast<uint8_t>(field_kind::undefined)))
         {
             logger()->debug("Ancillary: wrong field bit transition in frame");
             anc_description_.wrong_field_count++;
@@ -391,14 +390,15 @@ void anc_stream_handler::on_data(const rtp::packet& packet)
     }
 
     last_frame_was_marked_ = marked;
-    last_field_ = field_;
+    last_field_            = field_;
 }
 
 void anc_stream_handler::on_complete()
 {
-    if(rtp_seqnum_analyzer_.dropped_packets() > 0)
+    if(rtp_seqnum_analyzer_.num_dropped_packets() > 0)
     {
-        anc_description_.dropped_packet_count += rtp_seqnum_analyzer_.dropped_packets();
+        anc_description_.dropped_packet_count += rtp_seqnum_analyzer_.num_dropped_packets();
+        anc_description_.dropped_packet_samples = rtp_seqnum_analyzer_.dropped_packets();
         logger()->info("ancillary rtp packet drop: {}", anc_description_.dropped_packet_count);
     }
 
@@ -437,7 +437,7 @@ void anc_stream_handler::parse_packet(const rtp::packet& packet)
     const uint32_t full_sequence_number = (extended_sequence_number << 16) | packet.info.rtp.view().sequence_number();
     p += sizeof(raw_extended_sequence_number);
 
-    rtp_seqnum_analyzer_.handle_packet(full_sequence_number);
+    rtp_seqnum_analyzer_.handle_packet(full_sequence_number, packet.info.udp.packet_time);
     dscp_.handle_packet(packet);
 
     const auto anc_header = anc_header_lens(*reinterpret_cast<const raw_anc_header*>(p));
@@ -446,21 +446,22 @@ void anc_stream_handler::parse_packet(const rtp::packet& packet)
     field_ = anc_header.field_identification();
     switch(field_)
     {
-    case static_cast<uint8_t>(field_kind::invalid):
-        anc_description_.wrong_field_count++;
-        break;
+    case static_cast<uint8_t>(field_kind::invalid): anc_description_.wrong_field_count++; break;
     case static_cast<uint8_t>(field_kind::progressive):
-        if (anc_description_.anc.scan_type == video::scan_type::INTERLACED) {
+        if(anc_description_.anc.scan_type == video::scan_type::INTERLACED)
+        {
             anc_description_.wrong_field_count++;
         }
         break;
     case static_cast<uint8_t>(field_kind::interlaced_first_field):
-        if (anc_description_.anc.scan_type == video::scan_type::PROGRESSIVE) {
+        if(anc_description_.anc.scan_type == video::scan_type::PROGRESSIVE)
+        {
             anc_description_.wrong_field_count++;
         }
         break;
     case static_cast<uint8_t>(field_kind::interlaced_second_field):
-        if (anc_description_.anc.scan_type == video::scan_type::PROGRESSIVE) {
+        if(anc_description_.anc.scan_type == video::scan_type::PROGRESSIVE)
+        {
             anc_description_.wrong_field_count++;
         }
         break;

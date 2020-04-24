@@ -10,13 +10,15 @@ function getResult(dropped_packets) {
 }
 
 function addRtpSequenceAnalysisToStream(stream) {
-    const dropped_packets = _.get(stream, 'statistics.dropped_packet_count', undefined);
+    const dropped_packets_count = _.get(stream, 'statistics.dropped_packet_count', undefined);
+    const dropped_packets_samples = _.get(stream, 'statistics.dropped_packet_samples', undefined);
     const packet_count = _.get(stream, 'statistics.packet_count', undefined);
 
     const report = {
-        result: getResult(dropped_packets),
+        result: getResult(dropped_packets_count),
         details: {
-            dropped_packets,
+            dropped_packets_count,
+            dropped_packets_samples,
             packet_count
         }
     };

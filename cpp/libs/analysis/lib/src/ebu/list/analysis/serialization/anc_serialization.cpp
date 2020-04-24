@@ -10,10 +10,10 @@ nlohmann::json anc_stream_details::to_json(const anc_stream_details& details)
 {
     nlohmann::json statistics;
     analysis::to_json(statistics, static_cast<const common_stream_details&>(details));
-    statistics["last_frame_ts"]      = details.last_frame_ts;
-    statistics["frame_count"]        = details.frame_count;
-    statistics["wrong_marker_count"] = details.wrong_marker_count;
-    statistics["packets_per_frame"]  = details.anc.packets_per_frame;
+    statistics["last_frame_ts"]        = details.last_frame_ts;
+    statistics["frame_count"]          = details.frame_count;
+    statistics["wrong_marker_count"]   = details.wrong_marker_count;
+    statistics["packets_per_frame"]    = details.anc.packets_per_frame;
     statistics["last_frame_ts"]        = details.last_frame_ts;
     statistics["frame_count"]          = details.frame_count;
     statistics["packet_count"]         = details.packet_count;
@@ -47,10 +47,10 @@ anc_stream_details anc_stream_details::from_json(const nlohmann::json& j)
     if(statistics_json != j.end())
     {
         ::from_json(*statistics_json, static_cast<common_stream_details&>(desc));
-        desc.last_frame_ts        = statistics_json->at("last_frame_ts").get<uint32_t>();
-        desc.wrong_field_count    = statistics_json->at("wrong_field_count").get<uint32_t>();
-        desc.wrong_marker_count   = statistics_json->at("wrong_marker_count").get<uint32_t>();
-        desc.payload_error_count  = statistics_json->at("payload_error_count").get<uint32_t>();
+        desc.last_frame_ts       = statistics_json->at("last_frame_ts").get<uint32_t>();
+        desc.wrong_field_count   = statistics_json->at("wrong_field_count").get<uint32_t>();
+        desc.wrong_marker_count  = statistics_json->at("wrong_marker_count").get<uint32_t>();
+        desc.payload_error_count = statistics_json->at("payload_error_count").get<uint32_t>();
     }
 
     return desc;

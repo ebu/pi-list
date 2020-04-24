@@ -47,10 +47,10 @@ SCENARIO("Ancillary stream analysis")
 
     auto get_stream_info = [&stream_ids](const rtp::packet &
                                          /*first_packet*/) -> std::optional<stream_with_details> {
-        auto stream_info = serializable_stream_info{};
-        stream_info.type = media::media_type::ANCILLARY_DATA;
-        auto details     = anc_stream_details{};
-        details.anc.rate = fraction64(60); // not happy with default 0 denominator
+        auto stream_info      = serializable_stream_info{};
+        stream_info.type      = media::media_type::ANCILLARY_DATA;
+        auto details          = anc_stream_details{};
+        details.anc.rate      = fraction64(60); // not happy with default 0 denominator
         details.anc.scan_type = video::scan_type::INTERLACED;
 
         stream_ids.push_back(stream_info.id);
@@ -60,7 +60,7 @@ SCENARIO("Ancillary stream analysis")
 
     GIVEN("a pcap file a with error: 2 wrong bit markers, 2 wrong fields")
     {
-        const auto pcap_file      = test_lib::sample_file("pcap/st2110/2110-40/anc_with_wrong_2markers_and_2fields.pcap");
+        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-40/anc_with_wrong_2markers_and_2fields.pcap");
         const auto storage_folder = path("/tmp");
         auto pcap                 = pcap_info{};
 

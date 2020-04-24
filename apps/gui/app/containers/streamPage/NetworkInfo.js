@@ -26,7 +26,8 @@ const getDscpInfo = props => {
 
 const NetworkInfo = props => {
     const packet_count = _.get(props.stream, ['analyses', 'rtp_sequence', 'details', 'packet_count'], 0);
-    const dropped_count = _.get(props.stream, ['analyses', 'rtp_sequence', 'details', 'dropped_packets'], 0);
+    const dropped_count = _.get(props.stream, ['analyses', 'rtp_sequence', 'details', 'dropped_packets_count'], 0);
+    const dropped_samples = _.get(props.stream, ['analyses', 'rtp_sequence', 'details', 'dropped_packets_samples'], []);
     const invalidMulticastMacAddr =
         _.get(props.stream, ['analyses', 'destination_multicast_mac_address', 'result'], 'compliant') !== 'compliant';
     const invalidMulticastIpAddr =
@@ -71,6 +72,10 @@ const NetworkInfo = props => {
             labelTag: 'media_information.rtp.packet_count',
             value: `${packet_count}${droppedInfo}`,
             attention: dropped_count != 0,
+        },
+        {
+            labelTag: 'media_information.rtp.packet_count',
+            value: `${dropped_samples.map(pkt => `Last SN: ${pkt.last_sequence_number}, First TS: ${pkt.first_packet_timestamp}, First SN: ${pkt.first_sequence_number}`).join(' ::: ')}`,
         },
         {
             label: 'DSCP',

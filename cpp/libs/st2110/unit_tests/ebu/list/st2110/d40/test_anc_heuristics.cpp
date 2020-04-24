@@ -108,7 +108,6 @@ SCENARIO("ST2110-40 heuristics")
     {
         const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-40/anc_with_some_rtp_padding.pcap");
 
-
         rtp_source source(pcap_file);
 
         anc_format_detector detector;
