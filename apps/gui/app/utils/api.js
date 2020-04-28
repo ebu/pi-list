@@ -24,7 +24,7 @@ function getAPIPort() {
     return RestAPIPort;
 }
 
-const REST_URL = `http://${window.location.hostname}:` + getAPIPort();
+const REST_URL = `${window.location.protocol}//${window.location.hostname}:${getAPIPort()}`;
 const API_URL = `${REST_URL}/api`;
 
 axios.interceptors.response.use(

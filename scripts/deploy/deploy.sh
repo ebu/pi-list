@@ -21,6 +21,9 @@ install -d $RELEASE_DIR/server/app/bin
 install -d $RELEASE_DIR/server/app/gui
 install -d $RELEASE_DIR/server/app/listwebserver
 install -d $RELEASE_DIR/server/lib
+install -d $RELEASE_DIR/data
+install -d $RELEASE_DIR/data/config
+install -d $RELEASE_DIR/data/certs
 echo "Creating release folders... done"
 
 echo
@@ -37,7 +40,6 @@ cp -R $TOP_DIR/apps/gui/dist/* $RELEASE_DIR/server/app/gui
 cp -R $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/sedstaticconfig.sh $RELEASE_DIR/server/app/
 cp -R $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/static.config.json $RELEASE_DIR/server/app/gui
 cp -R $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/static.config.json $RELEASE_DIR/server/app/listwebserver
-
 echo "Copying apps... done"
 
 echo
@@ -46,7 +48,11 @@ install -m 755 $DEPLOY_SCRIPT_DIR/artifacts/*.sh $RELEASE_DIR/
 install -m 755 $DEPLOY_SCRIPT_DIR/artifacts/docker-compose.yml $RELEASE_DIR/
 install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/Dockerfile $RELEASE_DIR/server/
 install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/config.yml $RELEASE_DIR/server/app/listwebserver
-install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/nginx.conf $RELEASE_DIR/server/
+# nginx
+install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/data/config/nginx.conf $RELEASE_DIR/data/config/
+install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/data/config/mime.types $RELEASE_DIR/data/config/
+install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/data/certs/nginx-selfsigned.crt $RELEASE_DIR/data/certs/
+install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/data/certs/nginx-selfsigned.key $RELEASE_DIR/data/certs/
 echo "Copying artifacts... done"
 
 echo

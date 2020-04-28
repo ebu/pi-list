@@ -32,12 +32,30 @@ function parseArguments(args) {
         liveMode: args.liveMode || args.live || false,
     });
 
-    const webappDomain =
-        process.env.EBU_LIST_WEB_APP_DOMAIN || config.webappDomain;
+    // Environment variable
+    if (process.env.EBU_LIST_WEB_APP_DOMAIN) {
+        const baseUrl = new URL(process.env.EBU_LIST_WEB_APP_DOMAIN);
+        config.apiUrl = `${baseUrl.protocol}//${baseUrl.host}/api`;
+    } // Listwebserver config file
+    else if (config.webappDomain){
+        const baseUrl = new URL(config.webappDomain);
+        config.apiUrl = `${baseUrl.protocol}//${baseUrl.host}/api`;
+    }
+    else {
+        try { // Docker will write a static.config.json with public web port
+            const staticConfig = JSON.parse(loadFile('./../static.config.json'));
+            config.apiUrl = `https://localhost:${staticConfig.publicApiPort}/api`;
+        }
+        catch (err) {
+            // Use the listwebserver port
+            config.apiUrl = `https://localhost:${config.port}/api`;
+        }
+    }
+    console.log('config.apiUrl:', config.apiUrl);
 
-    config.webappDomain = webappDomain || 'http://localhost:8080';
-    
-    console.log('config.webappDomain:', config.webappDomain);
+    // const webappDomain = process.env.EBU_LIST_WEB_APP_DOMAIN || config.webappDomain;
+    // config.webappDomain = webappDomain || 'https://localhost';
+    // console.log('config.webappDomain:', config.webappDomain);
 
     const liveModeEnv =
         process.env.EBU_LIST_LIVE_MODE !== undefined &&
@@ -45,16 +63,16 @@ function parseArguments(args) {
     config.liveMode = liveModeEnv || config.liveMode;
     console.log('config.liveMode:', config.liveMode);
 
-    const baseUrl = new URL(config.webappDomain);
-    try {
-        const staticConfig = JSON.parse(loadFile('./../static.config.json'));
-        config.publicApiPort = staticConfig.publicApiPort;
-    }
-    catch (err) {
-        config.publicApiPort = config.port;
-    }
-    config.apiUrl = `${baseUrl.protocol}//${baseUrl.hostname}:${config.publicApiPort}/api`;
-    console.log('config.apiUrl:', config.apiUrl);
+    // const baseUrl = new URL(config.webappDomain);
+    // try {
+    //     const staticConfig = JSON.parse(loadFile('./../static.config.json'));
+    //     config.publicApiPort = staticConfig.publicApiPort;
+    // }
+    // catch (err) {
+    //     config.publicApiPort = config.port;
+    // }
+    // config.apiUrl = `${baseUrl.protocol}//${baseUrl.hostname}:${config.publicApiPort}/api`;
+    // console.log('config.apiUrl:', config.apiUrl);
 
     return config;
 }
