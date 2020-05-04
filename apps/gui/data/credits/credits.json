@@ -173,6 +173,12 @@
         "licenseUrl": "https://github.com/expressjs/multer/raw/master/LICENSE",
         "parents": "listwebserver"
     },
+    "node-cron@2.0.3": {
+        "licenses": "ISC",
+        "repository": "https://github.com/merencia/node-cron",
+        "licenseUrl": "https://github.com/merencia/node-cron/raw/master/LICENSE.md",
+        "parents": "listwebserver"
+    },
     "node-polyglot@2.4.0": {
         "licenses": "BSD-2-Clause",
         "repository": "https://github.com/airbnb/polyglot.js",

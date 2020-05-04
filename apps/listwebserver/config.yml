@@ -7,7 +7,8 @@ cpp: /home/ebu/list/live/cmake-build-debug/third_party/ebu_list/bin/
 
 # HTTP-related
 cookieSecret: STRD4O
-#webappDomain: http://localhost:3030
+#webappDomain: https://localhost
+#apiUrl: http://localhost:3030
 
 # MongoDB database
 database:

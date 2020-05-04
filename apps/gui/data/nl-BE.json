@@ -244,6 +244,7 @@
   "navigation.streams": "Stromen",
   "navigation.stream": "Stroom",
   "navigation.stream_comparisons": "stroom Vergelijking",
+  "navigation.download_manager": "",
   "realtime_feed.ok": "Ontvang informatie in real-time",
   "live_stream.no_streams": "Geen stroom gevonden",
   "live_stream.no_streams_message": "Start opname van een live stroom om het hier te zien.",
@@ -302,5 +303,9 @@
   "workflow.st2022_7_analysis.numberOfDifferentPackets": "Different",
   "workflow.st2022_7_analysis.numberOfMissingPackets": "Missing",
   "workflow.st2022_7_analysis.deltaBetweenPackets": "Time delta between packets in both streams",
-  "general.inconsistent": "Inconsistent"
+  "general.inconsistent": "Inconsistent",
+  "dmngr.name": "",
+  "dmngr.availableon": "",
+  "dmngr.availableuntil": "",
+  "dmngr.download": ""
 }

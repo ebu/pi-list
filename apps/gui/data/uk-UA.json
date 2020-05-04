@@ -244,6 +244,7 @@
   "navigation.streams": "Потоки",
   "navigation.stream": "Потік",
   "navigation.stream_comparisons": "потік Порівняння",
+  "navigation.download_manager": "",
   "realtime_feed.ok": "Отримання інформації в режимі реального часу",
   "live_stream.no_streams": "Потоки не знайдено",
   "live_stream.no_streams_message": "Почніть запис живого потоку, щоб побачити його тут.",
@@ -302,5 +303,9 @@
   "workflow.st2022_7_analysis.numberOfDifferentPackets": "Different",
   "workflow.st2022_7_analysis.numberOfMissingPackets": "Missing",
   "workflow.st2022_7_analysis.deltaBetweenPackets": "Time delta between packets in both streams",
-  "general.inconsistent": "Inconsistent"
+  "general.inconsistent": "Inconsistent",
+  "dmngr.name": "",
+  "dmngr.availableon": "",
+  "dmngr.availableuntil": "",
+  "dmngr.download": ""
 }

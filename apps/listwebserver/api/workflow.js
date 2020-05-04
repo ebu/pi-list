@@ -18,15 +18,9 @@ router.post('/', (req, res, next) => {
     const userId = req.session.passport.user.id;
     const userFolder = getUserFolder(req);
 
-    controller.createWorkflow(type, userId, userFolder, configuration)
-        .then(id =>
-            res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send({ id })
-        )
-        .catch(err =>
-            res
-                .status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR)
-                .send(err.message)
-        );
+    controller.createWorkflow(type, userId, userFolder, configuration);
+
+    res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
 });
 
 router.put('/', (req, res, next) => {

@@ -302,5 +302,9 @@
   "workflow.st2022_7_analysis.numberOfDifferentPackets": "Pacotes diferentes",
   "workflow.st2022_7_analysis.numberOfMissingPackets": "Pacotes em falta",
   "workflow.st2022_7_analysis.deltaBetweenPackets": "Diferença de tempo entre pacotes em ambos os streams",
-  "general.inconsistent": "Inconsistente"
+  "general.inconsistent": "Inconsistente",
+  "dmngr.name": "Nome",
+  "dmngr.availableon": "Disponível a",
+  "dmngr.availableuntil": "Disponível até",
+  "dmngr.download": "Download"
 }

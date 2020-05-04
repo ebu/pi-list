@@ -108,7 +108,6 @@ export default {
     downloadSDPUrl: pcapID => `${API_URL}/pcap/${pcapID}/sdp`,
     downloadJsonUrl: pcapID => `${API_URL}/pcap/${pcapID}/report?type=json`,
     downloadPdfUrl: pcapID => `${API_URL}/pcap/${pcapID}/report?type=pdf`,
-    downloadZipUrl: (id, type) => `${API_URL}/meta/zip?id=${id}&type=${type}`,
     uploadSDP: (sdpFile, onUploadComplete) => {
         const data = new FormData();
         data.append('sdp', sdpFile);
@@ -227,4 +226,9 @@ export default {
         getInfo: () => request.get('analysis_profile'),
         setDefaultProfile: id => request.put('analysis_profile/default', { id: id }),
     },
+
+    /* Download Manager */
+    getDownloads: () => request.get('downloadmngr'),
+    downloadFile: id =>
+        axios.request({ url: `${API_URL}/downloadmngr/download/${id}`, method: 'GET', responseType: 'blob' }),
 };
