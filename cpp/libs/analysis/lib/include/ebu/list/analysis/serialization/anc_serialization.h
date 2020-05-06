@@ -2,6 +2,7 @@
 
 #include "ebu/list/analysis/serialization/common.h"
 #include "ebu/list/st2110/d40/anc_description.h"
+#include "ebu/list/rtp/types.h"
 #include "nlohmann/json.hpp"
 
 namespace ebu_list
@@ -26,6 +27,7 @@ namespace ebu_list::analysis
         uint32_t payload_error_count = 0;
         uint32_t frame_count         = 0; // frame concept applies to ancillary too
         uint32_t last_frame_ts       = 0;
+        std::optional<rtp::ticks32> rtp_ts_delta{};
 
         /* serialization details */
         static anc_stream_details from_json(const nlohmann::json& j);

@@ -336,6 +336,12 @@ void anc_stream_handler::on_data(const rtp::packet& packet)
     const auto timestamp = packet.info.rtp.view().timestamp();
     if(timestamp != anc_description_.last_frame_ts)
     {
+        if(anc_description_.last_frame_ts)
+        {
+            const auto delta  = modulo_difference(timestamp, anc_description_.last_frame_ts);
+            anc_description_.rtp_ts_delta = rtp::to_ticks32(delta);
+        }
+
         anc_description_.last_frame_ts = timestamp;
         anc_description_.frame_count++;
 
@@ -383,7 +389,7 @@ void anc_stream_handler::on_data(const rtp::packet& packet)
         if(anc_description_.frame_count > 1)
         {
             impl_->on_data(
-                {packet.info.udp.packet_time, packets_per_frame_.count().value_or(0), first_rtp_to_packet_deltas_});
+                {packet.info.udp.packet_time, packets_per_frame_.count().value_or(0), first_rtp_to_packet_deltas_, anc_description_.rtp_ts_delta});
             packets_per_frame_.reset();
             packets_per_frame_.on_packet(packet.info.rtp.view());
         }

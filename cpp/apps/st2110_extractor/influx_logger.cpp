@@ -163,8 +163,9 @@ influxdb_anc_rtp_logger::influxdb_anc_rtp_logger(std::string_view url, std::stri
 void influxdb_anc_rtp_logger::on_data(const anc_stream_handler::frame_info& frame_info)
 {
     db_.send_data(prefix_ + "-pkt-per-frame", frame_info.packets_per_frame, frame_info.timestamp);
-    db_.send_data(prefix_ + "-pkt-vs-rtp", frame_info.first_rtp_to_packet_deltas.delta_packet_time_vs_rtp_time.count(),
-                  frame_info.timestamp);
+    db_.send_data("delta_packet_time_vs_rtp_time_ns", frame_info.first_rtp_to_packet_deltas.delta_packet_time_vs_rtp_time.count(), frame_info.timestamp);
+    //db_.send_data("delta_rtp_vs_packet_time", frame_info.first_rtp_to_packet_deltas.delta_packet_time_vs_rtp_time.count(), frame_info.timestamp);
+    db_.send_data("delta_previous_rtp_ts", from_ticks(frame_info.rtp_ts_delta), frame_info.timestamp);
 }
 
 void influxdb_anc_rtp_logger::on_complete()

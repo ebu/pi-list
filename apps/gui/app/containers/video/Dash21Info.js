@@ -4,26 +4,7 @@ import ResultPane from '../streamPage/components/ResultPane';
 import MultiValueDisplay from '../streamPage/components/MultiValueDisplay';
 import NarrowWideDisplay from '../streamPage/components/NarrowWideDisplay';
 import MinAvgMaxDisplay from '../streamPage/components/MinAvgMaxDisplay';
-
-const getAverageFromHistogram = hist => {
-    if (!hist || hist.length === 0) return 0;
-
-    const avg = hist.reduce((prev, curr) => {
-        return prev + (curr[0] * curr[1]) / 100;
-    }, 0);
-
-    return avg;
-};
-
-const getLowestFromHistogram = hist => {
-    if (!hist || hist.length === 0) return 0;
-    return hist[0][0];
-};
-
-const getHighestFromHistogram = hist => {
-    if (!hist || hist.length === 0) return 0;
-    return hist[hist.length - 1][0];
-};
+import { getAverageFromHistogram, getLowestFromHistogram, getHighestFromHistogram } from '../../utils/stats.js'
 
 const getCompliance = value => {
     if (value == 'narrow') {

@@ -6,6 +6,7 @@
 #include "ebu/list/influxdb.h"
 #include "ebu/list/ptp/state_machine.h"
 #include "ebu/list/rtp/listener.h"
+#include "ebu/list/rtp/types.h"
 #include "ebu/list/st2110/d20/rtp_ts_analyzer.h"
 #include "ebu/list/st2110/d21/c_analyzer.h"
 #include "ebu/list/st2110/d21/settings.h"

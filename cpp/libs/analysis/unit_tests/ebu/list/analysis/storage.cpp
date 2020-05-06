@@ -130,6 +130,10 @@ fs_anc_rtp_logger::fs_anc_rtp_logger(std::string_view filename) : file_stream_(f
 void fs_anc_rtp_logger::on_data(const anc_stream_handler::frame_info& frame_info)
 {
     file_stream_ << frame_info.packets_per_frame << " " << to_date_time_string(frame_info.timestamp) << std::endl;
+    file_stream_ << frame_info.first_rtp_to_packet_deltas.delta_packet_time_vs_rtp_time.count()
+                 << " " << to_date_time_string(frame_info.timestamp) << std::endl;
+    file_stream_ << from_ticks(frame_info.rtp_ts_delta).value_or(0) << " " << to_date_time_string(frame_info.timestamp)
+                 << std::endl;
 }
 
 void fs_anc_rtp_logger::on_complete()
