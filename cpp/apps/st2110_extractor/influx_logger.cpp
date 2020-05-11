@@ -87,6 +87,28 @@ void influxdb_rtp_ts_logger::on_error(std::exception_ptr)
 
 //------------------------------------------------------------------------------
 
+influxdb_rtp_logger::influxdb_rtp_logger(std::string_view url, std::string_view pcap_id,
+                                               std::string_view stream_id)
+    : db_(url, pcap_id, stream_id)
+{
+}
+
+void influxdb_rtp_logger::on_data(const rtp_analyzer::packet_info& info)
+{
+    db_.send_data("packets_per_frame", info.packets_per_frame, info.timestamp);
+}
+
+void influxdb_rtp_logger::on_complete()
+{
+    db_.on_complete();
+}
+
+void influxdb_rtp_logger::on_error(std::exception_ptr)
+{
+}
+
+//------------------------------------------------------------------------------
+
 influxdb_vrx_logger::influxdb_vrx_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id,
                                          std::string prefix)
     : db_(url, pcap_id, stream_id), prefix_(std::move(prefix))
@@ -149,30 +171,5 @@ void influxdb_audio_tsdf_logger::on_complete()
 }
 
 void influxdb_audio_tsdf_logger::on_error(std::exception_ptr)
-{
-}
-
-//------------------------------------------------------------------------------
-
-influxdb_anc_rtp_logger::influxdb_anc_rtp_logger(std::string_view url, std::string_view pcap_id,
-                                                 std::string_view stream_id, std::string prefix)
-    : db_(url, pcap_id, stream_id), prefix_(std::move(prefix))
-{
-}
-
-void influxdb_anc_rtp_logger::on_data(const anc_stream_handler::frame_info& frame_info)
-{
-    db_.send_data(prefix_ + "-pkt-per-frame", frame_info.packets_per_frame, frame_info.timestamp);
-    db_.send_data("delta_packet_time_vs_rtp_time_ns", frame_info.first_rtp_to_packet_deltas.delta_packet_time_vs_rtp_time.count(), frame_info.timestamp);
-    //db_.send_data("delta_rtp_vs_packet_time", frame_info.first_rtp_to_packet_deltas.delta_packet_time_vs_rtp_time.count(), frame_info.timestamp);
-    db_.send_data("delta_previous_rtp_ts", from_ticks(frame_info.rtp_ts_delta), frame_info.timestamp);
-}
-
-void influxdb_anc_rtp_logger::on_complete()
-{
-    db_.on_complete();
-}
-
-void influxdb_anc_rtp_logger::on_error(std::exception_ptr)
 {
 }

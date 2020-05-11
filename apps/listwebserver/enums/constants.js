@@ -9,7 +9,7 @@ const CONSTANTS = {
     HELP_FILE: '_help.json',
     CINST_FILE: 'cinst.json',
     VRX_FILE: 'vrx.json',
-    ANC_PKT_FILE: 'anc_pkt.json',
+    ANC_PKT_FILE: 'pkt_hist.json',
 
     // Maximum size for log file (10 MB)
     MAX_LOG_SIZE_10_MB: 10000000

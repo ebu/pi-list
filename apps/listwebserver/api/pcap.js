@@ -334,11 +334,11 @@ router.get('/:pcapID/stream/:streamID/analytics/AudioTimeStampedDelayFactor', (r
 
 /* Ancillary */
 
-router.get('/:pcapID/stream/:streamID/analytics/AncillaryPktPerFrame', (req, res) => {
+router.get('/:pcapID/stream/:streamID/analytics/packetsPerFrame', (req, res) => {
     const { pcapID, streamID } = req.params;
     const { from, to } = req.query;
 
-    chartData = influxDbManager.getAncillaryPktPerFrame(pcapID, streamID, from, to);
+    chartData = influxDbManager.getPacketsPerFrame(pcapID, streamID, from, to);
     chartData
         .then(data => {
             res.json(data);

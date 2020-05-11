@@ -13,7 +13,7 @@ namespace
 {
     constexpr auto cinst_file_name   = "cinst.json";
     constexpr auto vrx_file_name     = "vrx.json";
-    constexpr auto anc_pkt_file_name = "anc_pkt.json";
+    constexpr auto pkt_file_name = "pkt_hist.json";
 } // namespace
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -39,6 +39,13 @@ st2110::d20::rtp_ts_analyzer::listener_uptr pcap_reader::create_rtp_ts_logger(co
                                                                               const std::string& stream_id) const
 {
     return std::make_unique<influx::influxdb_rtp_ts_logger>(config_.influxdb_url.value_or(INFLUX_DEFAULT_URL), pcap_id,
+                                                            stream_id);
+}
+
+st2110::d20::rtp_analyzer::listener_uptr pcap_reader::create_rtp_logger(const std::string& pcap_id,
+                                                                              const std::string& stream_id) const
+{
+    return std::make_unique<influx::influxdb_rtp_logger>(config_.influxdb_url.value_or(INFLUX_DEFAULT_URL), pcap_id,
                                                             stream_id);
 }
 
@@ -72,18 +79,10 @@ audio_timing_analyser::listener_uptr pcap_reader::create_audio_tsdf_logger(const
                                                                 pcap_id, stream_id, prefix);
 }
 
-anc_stream_handler::listener_uptr pcap_reader::create_anc_rtp_logger(const std::string& pcap_id,
-                                                                     const std::string& stream_id,
-                                                                     const std::string& prefix) const
-{
-    return std::make_unique<influx::influxdb_anc_rtp_logger>(config_.influxdb_url.value_or(INFLUX_DEFAULT_URL), pcap_id,
-                                                             stream_id, prefix);
-}
-
-histogram_listener_uptr pcap_reader::create_anc_pkt_histogram_logger(const std::string& stream_id) const
+histogram_listener_uptr pcap_reader::create_pkt_histogram_logger(const std::string& stream_id) const
 {
     const auto info_path = config_.storage_folder / stream_id;
-    return std::make_unique<histogram_writer>(info_path, anc_pkt_file_name);
+    return std::make_unique<histogram_writer>(info_path, pkt_file_name);
 }
 
 ptp::state_machine::listener_ptr pcap_reader::create_ptp_logger(const std::string& pcap_id) const

@@ -44,6 +44,7 @@ struct rtp_ts_analyzer::impl
         {
             packet_info info{source_info.packet.info.udp.packet_time};
 
+            info.packets_per_frame = source_info.packet_index;
             update_frame(source_info.packet, info);
 
             listener_->on_data(info);

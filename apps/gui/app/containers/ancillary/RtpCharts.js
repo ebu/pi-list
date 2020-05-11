@@ -30,7 +30,7 @@ const RtpCharts = props => {
                 <div className="col-xs-12 col-md-6">
                     <LineChart
                         asyncData={() =>
-                            api.getAncillaryPktPerFrame(props.pcapID, props.streamID, first_packet_ts, last_packet_ts)
+                            api.getPacketsPerFrame(props.pcapID, props.streamID, first_packet_ts, last_packet_ts)
                         }
                         xAxis={chartFormatters.getTimeLineLabel}
                         data={chartFormatters.singleValueLineChart}

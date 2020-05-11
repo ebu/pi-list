@@ -1,22 +1,23 @@
+/*
+ * Copyright (C) 2020 European Broadcasting Union - Technology & Innovation
+ * Copyright (C) 2020 CBC / Radio-Canada
+ */
+
 #pragma once
 
 #include "ebu/list/rtp/listener.h"
 #include "ebu/list/rtp/types.h"
+#include "ebu/list/analysis/utils/histogram_listener.h"
 #include "ebu/list/st2110/frame_start_filter.h"
-#include <vector>
 
 namespace ebu_list::st2110::d20
 {
-    class rtp_ts_analyzer : public frame_start_filter::listener
+    class rtp_analyzer : public frame_start_filter::listener
     {
       public:
         struct packet_info
         {
             clock::time_point timestamp{};
-            rtp::ticks32 delta_rtp_vs_packet_time{};
-            rtp::ticks32 delta_rtp_vs_NTs{};
-            std::optional<rtp::ticks32> rtp_ts_delta{};
-            clock::duration delta_packet_time_vs_rtp_time{};
             int packets_per_frame = 0;
         };
 
@@ -31,9 +32,10 @@ namespace ebu_list::st2110::d20
         };
 
         using listener_uptr = std::unique_ptr<listener>;
+        using histogram_listener_uptr = std::unique_ptr<ebu_list::analysis::histogram_listener>;
 
-        rtp_ts_analyzer(listener_uptr listener, media::video::Rate rate);
-        ~rtp_ts_analyzer();
+        rtp_analyzer(listener_uptr l, histogram_listener_uptr l_h);
+        ~rtp_analyzer();
 
         void on_data(const frame_start_filter::packet_info&) override;
         void on_complete() override;

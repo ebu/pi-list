@@ -150,6 +150,8 @@ export default {
         request.get(
             `pcap/${pcapID}/stream/${streamID}/analytics/DeltaToIdealTpr0AdjustedAvgTroRaw?from=${fromNs}&to=${toNs}`
         ),
+
+    /* RTP */
     getDeltaRtpTsVsPacketTsRaw: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/DeltaRtpTsVsPacketTsRaw?from=${fromNs}&to=${toNs}`),
     getDeltaPacketTimeVsRtpTimeRaw: (pcapID, streamID, fromNs, toNs) =>
@@ -162,6 +164,8 @@ export default {
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/DeltaToPreviousRtpTsMinMax?from=${fromNs}&to=${toNs}`),
     getDeltaRtpVsNtRaw: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/DeltaRtpVsNt?from=${fromNs}&to=${toNs}`),
+    getPacketsPerFrame: (pcapID, streamID, fromNs, toNs) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/packetsPerFrame?from=${fromNs}&to=${toNs}`),
     getAudioPktTsVsRtpTs: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/AudioPktTsVsRtpTs?from=${fromNs}&to=${toNs}`),
     getAudioTimeStampedDelayFactor: (pcapID, streamID, fromNs, toNs, toleranceUs, tsdfmaxUs) =>
@@ -192,8 +196,6 @@ export default {
 
     /* Ancillary */
     downloadAncillaryUrl: (pcapID, streamID, filename) => `pcap/${pcapID}/stream/${streamID}/ancillary/${filename}`,
-    getAncillaryPktPerFrame: (pcapID, streamID, fromNs, toNs) =>
-        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/AncillaryPktPerFrame?from=${fromNs}&to=${toNs}`),
     getAncillaryPktPerFrameHistogram: (pcapID, streamID) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/AncillaryPktHistogram`),
 

@@ -6,6 +6,7 @@
 #include "ebu/list/ptp/state_machine.h"
 #include "ebu/list/rtp/listener.h"
 #include "ebu/list/st2110/d20/rtp_ts_analyzer.h"
+#include "ebu/list/st2110/d20/rtp_analyzer.h"
 #include "ebu/list/st2110/d21/c_analyzer.h"
 #include "ebu/list/st2110/d21/settings.h"
 #include "ebu/list/st2110/d21/vrx_analyzer.h"
@@ -46,6 +47,19 @@ namespace ebu_list::analysis
 
       private:
         void on_data(const st2110::d20::rtp_ts_analyzer::packet_info&) override;
+        void on_complete() override;
+        void on_error(std::exception_ptr ptr) override;
+
+        std::ofstream file_stream_;
+    };
+
+    class fs_rtp_logger : public st2110::d20::rtp_analyzer::listener
+    {
+      public:
+        fs_rtp_logger(std::string_view filename);
+
+      private:
+        void on_data(const st2110::d20::rtp_analyzer::packet_info&) override;
         void on_complete() override;
         void on_error(std::exception_ptr ptr) override;
 

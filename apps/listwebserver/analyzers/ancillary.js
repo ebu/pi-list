@@ -79,7 +79,7 @@ const ancillaryCheckPayloads = async (stream) => {
 
 const ancillaryPktPerFrame = async (req, stream) => {
     // Read from range histogram file and report everthing in stream data
-    const histogramFile = `${getUserFolder(req)}/${req.pcap.uuid}/${stream.id}/anc_pkt.json`;
+    const histogramFile = `${getUserFolder(req)}/${req.pcap.uuid}/${stream.id}/pkt_hist.json`;
     const histogram = (await fs.readFile(histogramFile))['histogram'];
 
     const limit = validation.rtp.pktPerFrame;

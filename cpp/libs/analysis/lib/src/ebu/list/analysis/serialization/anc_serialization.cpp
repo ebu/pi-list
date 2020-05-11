@@ -25,7 +25,6 @@ nlohmann::json anc_stream_details::to_json(const anc_stream_details& details)
         std::to_string(chrono::duration_cast<chrono::nanoseconds>(details.first_packet_ts.time_since_epoch()).count());
     statistics["last_packet_ts"] =
         std::to_string(chrono::duration_cast<chrono::nanoseconds>(details.last_packet_ts.time_since_epoch()).count());
-    statistics["packets_per_frame"] = details.anc.packets_per_frame;
 
     nlohmann::json j;
     j["media_specific"] = st2110::d40::to_json(details.anc);
