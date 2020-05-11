@@ -83,5 +83,3 @@ namespace ebu_list::analysis
 
     using anc_stream_handler_uptr = std::unique_ptr<anc_stream_handler>;
 } // namespace ebu_list::analysis
-
-typedef int (*callback_klvanc_smpte_12_2_t)(void*, struct klvanc_context_s*, struct klvanc_packet_smpte_12_2_s*);

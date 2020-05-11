@@ -12,5 +12,5 @@
 	url = https://github.com/bisect-pt/influxdb-cpp-rest.git
 [submodule "third_party/libklvanc"]
 	path = third_party/libklvanc
-	url = https://github.com/pkeroulas/libklvanc.git
+	url = https://github.com/stoth68000/libklvanc.git
 	branch = master
