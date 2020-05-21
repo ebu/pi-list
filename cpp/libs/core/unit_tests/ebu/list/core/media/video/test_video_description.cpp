@@ -57,19 +57,21 @@ SCENARIO("parsing rate from a string")
                 REQUIRE(Rate(50, 1) == parse_from_string("50"));
                 REQUIRE(Rate(60000, 1001) == parse_from_string("60000/1001"));
                 REQUIRE(Rate(60, 1) == parse_from_string("60"));
+                REQUIRE(Rate(123, 1) == parse_from_string("123"));
+                REQUIRE(Rate(123, 1001) == parse_from_string("123/1001"));
             }
         }
     }
 
     GIVEN("a string which does not represent a preset video rate")
     {
-        const auto not_valid = "26";
+        const auto not_valid = "26a as";
 
         WHEN("we try to convert it to a rate representation")
         {
-            THEN("it returns 0") // TODO: this should signal an error
+            THEN("it returns 0")
             {
-                REQUIRE(Rate(0) == parse_from_string(not_valid));
+                REQUIRE_THROWS_AS(parse_from_string(not_valid), std::runtime_error);
             }
         }
     }
