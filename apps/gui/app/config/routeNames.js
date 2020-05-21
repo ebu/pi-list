@@ -5,6 +5,7 @@ export default {
     PCAPS: '/pcaps',
     LIVE_SOURCES: '/live_sources',
     WORKFLOWS: '/workflows',
+    SIMULATOR_VRX: '/simulator/vrx',
     LIVE: '/live',
     NETWORK: '/network',
     LIVE_SENDERS_PAGE: '/live/senders',

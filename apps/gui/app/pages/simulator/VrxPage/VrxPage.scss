@@ -1,0 +1,45 @@
+div.app-simulator-vrx {
+    display: flex;
+
+
+    font-size: 1.25rem;
+
+    h1 {
+        margin-top: 2rem;
+    }
+
+    p {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    span {
+        margin-bottom: 0.5rem;
+    }
+
+    input {
+        background-color: transparent;
+        color: white;
+        margin-left: 1rem;
+        margin-right: 1rem;
+        border: 1px solid white;
+        width: 5rem;
+        margin-bottom: 2rem;
+        padding: 0.5rem;
+    }
+
+    div.app-plot {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+}
+
+div.app-params {
+    margin-right: 2rem;
+    height: 1200px;
+}
+
+div.app-graphs {
+    display: flex;
+    flex-direction: column;
+}

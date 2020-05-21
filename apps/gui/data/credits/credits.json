@@ -233,6 +233,12 @@
         "licenseUrl": "https://github.com/amir20/phantomjs-node/raw/master/LICENSE.md",
         "parents": "listwebserver"
     },
+    "plotly.js@1.54.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/plotly/plotly.js",
+        "licenseUrl": "https://github.com/plotly/plotly.js/raw/master/LICENSE",
+        "parents": "list-ebu-gui"
+    },
     "prop-types@15.7.2": {
         "licenses": "MIT",
         "repository": "https://github.com/facebook/prop-types",
@@ -261,6 +267,12 @@
         "licenses": "MIT",
         "repository": "https://github.com/sindresorhus/react-extras",
         "licenseUrl": "https://github.com/sindresorhus/react-extras/raw/master/license",
+        "parents": "list-ebu-gui"
+    },
+    "react-plotly.js@2.4.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/plotly/react-plotly.js",
+        "licenseUrl": "https://github.com/plotly/react-plotly.js/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
     "react-router-dom@5.1.2": {
