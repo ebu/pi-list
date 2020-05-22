@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import routeNames from './config/routeNames';
 import StreamList from './pages/StreamList';
 import ConfigureStreamsPage from './pages/ConfigureStreams';
+import DroppedPacketsPage from './pages/DroppedPacketsPage';
 import PtpPage from './pages/PtpPage';
 import LiveStreamList from './pages/LiveStreamList';
 import StreamPage from './pages/StreamPage';
@@ -14,7 +15,6 @@ import ComparisonsPage from './pages/ComparisonsPage';
 import StreamComparisonView from './pages/StreamComparisonView';
 import VrxPage from './pages/simulator/VrxPage/VrxPage';
 import DownloadMngrPage from './pages/DownloadMngr';
-
 import FlowList from './containers/live/FlowList';
 import ErrorPage from './components/ErrorPage';
 import errorEnum from './enums/errorEnum';
@@ -35,6 +35,7 @@ export default (
         <Route exact path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}`} component={StreamList} />
         <Route exact path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}/:streamID`} component={StreamPage} />
         <Route exact path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}/:streamID/${routeNames.CONFIGURE}`} component={ConfigureStreamsPage} />
+        <Route exact path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}/:streamID/${routeNames.DROPPED_PACKETS}`} component={DroppedPacketsPage} />
         <Route exact path={routeNames.STREAM_COMPARISONS} component={ComparisonsPage} />
         <Route exact path={`${routeNames.STREAM_COMPARISONS}/:comparisonID`} component={StreamComparisonView} />
         <Route exact path={routeNames.WORKFLOWS} component={WorkflowsPage} />

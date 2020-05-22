@@ -1,23 +1,24 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import _ from 'lodash';
-import { translateX } from 'utils/translation';
+import { T, translateX } from 'utils/translation';
+import { useRouteMatch } from 'react-router-dom';
 import InfoPane from './components/InfoPane';
-import { translateC } from '../../utils/translation';
+import routeNames from '../../config/routeNames';
 
 const getDscpInfo = props => {
     const dscp_consistent = _.get(props.stream, ['network_information', 'dscp', 'consistent'], undefined);
 
-    if(dscp_consistent === undefined) {
+    if (dscp_consistent === undefined) {
         return translateX('headings.unknown');
     }
 
-    if(dscp_consistent !== true) {
+    if (dscp_consistent !== true) {
         return translateX('general.inconsistent');
     }
 
     const dscp_value = _.get(props.stream, ['network_information', 'dscp', 'value'], undefined);
 
-    if(dscp_value === undefined) {
+    if (dscp_value === undefined) {
         return translateX('headings.unknown');
     }
 
@@ -25,6 +26,8 @@ const getDscpInfo = props => {
 };
 
 const NetworkInfo = props => {
+    const { url } = useRouteMatch();
+
     const packet_count = _.get(props.stream, ['analyses', 'rtp_sequence', 'details', 'packet_count'], 0);
     const dropped_count = _.get(props.stream, ['analyses', 'rtp_sequence', 'details', 'dropped_packets_count'], 0);
     const dropped_samples = _.get(props.stream, ['analyses', 'rtp_sequence', 'details', 'dropped_packets_samples'], []);
@@ -34,8 +37,33 @@ const NetworkInfo = props => {
         _.get(props.stream, ['analyses', 'destination_multicast_ip_address', 'result'], 'compliant') !== 'compliant';
     const invalidMulticastMapping =
         _.get(props.stream, ['analyses', 'unrelated_multicast_addresses', 'result'], 'compliant') !== 'compliant';
-    const droppedInfo = dropped_count == 0 ? '' : ` (${dropped_count} ${translateX('media_information.rtp.dropped')})`;
 
+    const droppedPacketsUrl = `${url}/${routeNames.DROPPED_PACKETS}`;
+
+    const droppedInfo =
+        dropped_count == 0 ? (
+            ''
+        ) : (
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <span style={{ marginLeft: '0.5rem' }}>(</span>
+                <a
+                    style={{ display: 'flex', flexDirection: 'row' }}
+                    className="lst-stream-info-value-attention"
+                    href={droppedPacketsUrl}
+                    onClick={e => {
+                        e.preventDefault();
+                        window.appHistory.push({
+                            pathname: droppedPacketsUrl,
+                            state: { droppedPackets: dropped_samples },
+                        });
+                    }}
+                >
+                    <span style={{ marginRight: '0.5rem' }}>{dropped_count}</span>
+                    <T t="media_information.rtp.dropped" />
+                </a>
+                <span>)</span>
+            </div>
+        );
 
     const values = [
         {
@@ -70,12 +98,13 @@ const NetworkInfo = props => {
         },
         {
             labelTag: 'media_information.rtp.packet_count',
-            value: `${packet_count}${droppedInfo}`,
+            value: (
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                    <span>{packet_count}</span>
+                    {droppedInfo}
+                </div>
+            ),
             attention: dropped_count != 0,
-        },
-        {
-            labelTag: 'media_information.rtp.packet_count',
-            value: `${dropped_samples.map(pkt => `Last SN: ${pkt.last_sequence_number}, First TS: ${pkt.first_packet_timestamp}, First SN: ${pkt.first_sequence_number}`).join(' ::: ')}`,
         },
         {
             label: 'DSCP',
