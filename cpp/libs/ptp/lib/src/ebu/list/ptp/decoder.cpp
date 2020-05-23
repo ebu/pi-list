@@ -35,6 +35,8 @@ namespace
         case v2::message_type::delay_resp:
             return v2::delay_resp(packet_timestamp, std::move(header), std::move(remainder));
 
+        case v2::message_type::announce: return v2::announce(packet_timestamp, std::move(header), std::move(remainder));
+
         default: return v2::other{};
         }
     }

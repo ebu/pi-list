@@ -65,6 +65,12 @@ export default (
     />
     <Route
       exact
+      path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}/:streamID/${routeNames.CONFIGURE}`}
+      render={props => (
+        <ConfigureStreamHeader {...props} pcapID={props.match.params.pcapID} />
+      )}
+    />
+    <Route
       path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}/:streamID`}
       render={props => (
         <StreamPageHeader
@@ -72,13 +78,6 @@ export default (
           pcapID={props.match.params.pcapID}
           streamID={props.match.params.streamID}
         />
-      )}
-    />
-    <Route
-      exact
-      path={`${routeNames.PCAPS}/:pcapID/${routeNames.STREAMS_PAGE}/:streamID/${routeNames.CONFIGURE}`}
-      render={props => (
-        <ConfigureStreamHeader {...props} pcapID={props.match.params.pcapID} />
       )}
     />
     <Route

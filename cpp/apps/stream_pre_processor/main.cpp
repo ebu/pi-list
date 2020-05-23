@@ -11,6 +11,7 @@
 
 using namespace ebu_list;
 using namespace ebu_list::analysis;
+using nlohmann::json;
 
 namespace
 {
@@ -38,6 +39,23 @@ namespace
 
         logger()->error("usage: {} {}", path(argv[0]).filename().string(), to_string(parse_result));
         exit(-1);
+    }
+
+    json add_ptp_info(const pcap_info& info, const std::optional<ptp::ptp_offset_calculator::info>& maybe_ptp_info)
+    {
+        auto j_fi = pcap_info::to_json(info);
+        if(!maybe_ptp_info) return j_fi;
+
+        const auto& ptp_info = *maybe_ptp_info;
+        
+        j_fi["ptp"] = json::object();
+
+        if(ptp_info.is_two_step) j_fi["ptp"]["is_two_step"] = ptp_info.is_two_step.value();
+        if(ptp_info.master_id) j_fi["ptp"]["master_id"] = ptp::v2::to_string(ptp_info.master_id.value());
+        if(ptp_info.grandmaster_id) j_fi["ptp"]["grandmaster_id"] = ptp::v2::to_string(ptp_info.grandmaster_id.value());
+        j_fi["ptp"]["average_offset"] = std::chrono::duration_cast<std::chrono::nanoseconds>(ptp_info.average_offset).count();
+
+        return j_fi;
     }
 
     pcap_info make_pcap_info(const path& pcap_file, const std::string& pcap_uuid)
@@ -80,7 +98,11 @@ namespace
             fi.truncated = true;
         }
 
-        fi.offset_from_ptp_clock = offset_calculator->get_average();
+        const auto ptp_info      = offset_calculator->get_info();
+        fi.offset_from_ptp_clock = ptp_info.has_value() ? ptp_info->average_offset : std::chrono::seconds{0};
+
+        const auto j_fi = add_ptp_info(fi, ptp_info);
+
         db_serializer db(mongo_db_url);
 
         if(db.find_one(constants::db::offline, constants::db::collections::pcaps,
@@ -88,13 +110,12 @@ namespace
         {
 
             db.update(constants::db::offline, constants::db::collections::pcaps,
-                      nlohmann::json{{"id", config.pcap_uuid}}, pcap_info::to_json(fi));
+                      nlohmann::json{{"id", config.pcap_uuid}}, j_fi);
         }
         else
-            db.insert(constants::db::offline, constants::db::collections::pcaps, pcap_info::to_json(fi));
-
-        logger()->info("----------------------------------------");
-        logger()->info("PTP average offset: {} ns", offset_calculator->get_average().count());
+        {
+            db.insert(constants::db::offline, constants::db::collections::pcaps, j_fi);
+        }
     }
 } // namespace
 

@@ -34,9 +34,8 @@ const reducer = (state, action) => {
         case actions.addFile: {
             const { index, file } = action.payload;
             const newState = _.cloneDeep(state);
-            newState.files[index] = { file: file, couves: 'batatas' };
+            newState.files[index] = { file: file };
 
-            // props.notificationsContext.updateUpload({ ...newState, files: filesRef.current });
             return newState;
         }
 
@@ -50,7 +49,6 @@ const reducer = (state, action) => {
                 uploadComplete: false,
             };
 
-            // props.notificationsContext.updateUpload({ ...newState, files: filesRef.current });
             return newState;
         }
 
@@ -64,7 +62,6 @@ const reducer = (state, action) => {
                 uploadFailed: false,
             };
 
-            // props.notificationsContext.updateUpload({ ...newState, files: filesRef.current });
             return newState;
         }
 
@@ -78,7 +75,6 @@ const reducer = (state, action) => {
                 uploadFailed: true,
             };
 
-            // props.notificationsContext.updateUpload({ ...newState, files: filesRef.current });
             return newState;
         }
 

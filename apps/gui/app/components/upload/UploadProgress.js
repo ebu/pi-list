@@ -54,25 +54,25 @@ const UploadProgress = (props) => {
 );
 };
 
-const FileShape = PropTypes.shape({
+const FileInfoShape = PropTypes.shape({
     name: PropTypes.string,
     size: PropTypes.number,
 });
 
+export const FileShape = PropTypes.shape({
+    file: FileInfoShape.isRequired,
+    isUploading: PropTypes.bool,
+    uploadComplete: PropTypes.bool,
+    uploadFailed: PropTypes.bool,
+    uploadProgress: PropTypes.number,
+});
+
 UploadProgress.propTypes = {
-    files: PropTypes.arrayOf(FileShape).isRequired,
-    isUploading: PropTypes.bool.isRequired,
-    uploadComplete: PropTypes.bool.isRequired,
-    uploadFailed: PropTypes.bool.isRequired,
-    uploadProgress: PropTypes.arrayOf(PropTypes.number).isRequired,
+    files: PropTypes.arrayOf(FileShape),
 };
 
 UploadProgress.defaultProps = {
     files: [],
-    isUploading: false,
-    uploadComplete: false,
-    uploadFailed: false,
-    uploadProgress: [],
 };
 
 export default UploadProgress;

@@ -16,18 +16,29 @@ struct ptp_offset_calculator::impl
         {
             // Two step. Record the sync packet TS
             last_sync_ts_ = message.packet_timestamp();
+
+            is_two_step_ = true;
         }
         else
         {
             // One step. Do the math.
             update_average(message.packet_timestamp(), ptp_ts);
+            is_two_step_ = false;
         }
+    }
+
+    void operator()(const ptp::v2::announce& message)
+    {
+        master_id_      = message.header().value().clock_identity();
+        grandmaster_id_ = message.header().value().clock_identity();
     }
 
     void operator()(const ptp::v2::follow_up& message)
     {
         logger()->trace("v2::follow_up");
         const auto ptp_ts = message.message().precise_origin_timestamp();
+
+        is_two_step_ = true;
 
         if(!last_sync_ts_)
         {
@@ -54,9 +65,13 @@ struct ptp_offset_calculator::impl
         ++sample_count_;
     }
 
+    bool has_info_ = false;
     std::optional<clock::time_point> last_sync_ts_;
     int sample_count_  = 0;
     double average_ns_ = 0;
+    std::optional<v2::clock_id_t> grandmaster_id_;
+    std::optional<v2::clock_id_t> master_id_;
+    std::optional<bool> is_two_step_;
 };
 
 ptp_offset_calculator::ptp_offset_calculator() : impl_(std::make_unique<impl>())
@@ -67,6 +82,8 @@ ptp_offset_calculator::~ptp_offset_calculator() = default;
 
 void ptp_offset_calculator::on_data(ptp::some_message&& message)
 {
+    impl_->has_info_ = true;
+
     std::visit(*impl_, message);
 }
 
@@ -78,7 +95,15 @@ void ptp_offset_calculator::on_error(std::exception_ptr)
 {
 }
 
-clock::duration ptp_offset_calculator::get_average() const
+std::optional<ptp_offset_calculator::info> ptp_offset_calculator::get_info() const
 {
-    return std::chrono::nanoseconds(static_cast<int64_t>(impl_->average_ns_));
+    if(!impl_->has_info_) return std::nullopt;
+
+    info i{};
+    i.average_offset = std::chrono::nanoseconds(static_cast<int64_t>(impl_->average_ns_));
+    i.grandmaster_id = impl_->grandmaster_id_;
+    i.master_id      = impl_->master_id_;
+    i.is_two_step    = impl_->is_two_step_;
+
+    return i;
 }
