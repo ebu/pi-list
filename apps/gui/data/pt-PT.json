@@ -309,5 +309,7 @@
   "dmngr.name": "Nome",
   "dmngr.availableon": "Disponível a",
   "dmngr.availableuntil": "Disponível até",
-  "dmngr.download": "Download"
+  "dmngr.download": "Download",
+  "ptp.average_offset": "Desvio médio",
+  "ptp.clock_type": "Tipo"
 }

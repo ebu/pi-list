@@ -309,5 +309,7 @@
   "dmngr.name": "",
   "dmngr.availableon": "",
   "dmngr.availableuntil": "",
-  "dmngr.download": ""
+  "dmngr.download": "",
+  "ptp.average_offset": "Average offset",
+  "ptp.clock_type": "Clock type"
 }

@@ -1,18 +1,11 @@
 import React from 'react';
+import _ from 'lodash';
 import api from 'utils/api';
 import { Scrollbars } from 'react-custom-scrollbars';
 import asyncLoader from '../components/asyncLoader';
 import StreamCard from '../components/stream/StreamCard';
 import PTPCard from '../components/stream/PTPCard';
 import { getTitleFor } from '../utils/mediaUtils';
-
-function renderPtpCard(pcapID) {
-    return (
-        <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-            <PTPCard pcapID={pcapID} />
-        </div>
-    );
-}
 
 function renderCard(pcapID, stream, index) {
     const title = getTitleFor(stream, index);
@@ -32,11 +25,17 @@ const StreamList = props => {
     const { pcapID } = props.match.params;
     const allStreams = [...videoStreams, ...audioStreams, ...metadataStreams, ...ttmlStreams, ...unknownStreams];
 
+    const ptp = _.get(props.pcap, 'ptp');
+
     return (
         <Scrollbars>
             <div className="lst-js-stream-list-page fade-in">
                 <div className="row display-flex">
-                    {props.pcap.offset_from_ptp_clock !== 0 && renderPtpCard(pcapID)}
+                    {ptp && (
+                        <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                            <PTPCard ptp={ptp} />
+                        </div>
+                    )}
                     {allStreams.map((stream, index) => renderCard(pcapID, stream, index))}
                 </div>
             </div>
