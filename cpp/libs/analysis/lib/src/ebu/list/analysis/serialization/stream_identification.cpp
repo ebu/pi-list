@@ -53,4 +53,3 @@ stream_with_details stream_with_details_serializer::from_json(const nlohmann::js
     else
         return {stream_info, {}};
 }
-

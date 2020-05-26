@@ -12,9 +12,19 @@ namespace ebu_list::ptp
         ptp_offset_calculator();
         ~ptp_offset_calculator();
 
-        // The offset is positive if the packet timestamp of the SYNC message is
-        // greater than the announced value, negative otherwise.
-        clock::duration get_average() const;
+        struct info
+        {
+            std::optional<v2::clock_id_t> grandmaster_id;
+            std::optional<v2::clock_id_t> master_id;
+            std::optional<bool> is_two_step;
+
+            // The offset is positive if the packet timestamp of the SYNC message is
+            // greater than the announced value, negative otherwise.
+            clock::duration average_offset;
+        };
+
+        // Return std::nullopt if no PTP packet was received, a value otherwise
+        std::optional<info> get_info() const;
 
         void on_data(ptp::some_message&& message) override;
         void on_complete() override;

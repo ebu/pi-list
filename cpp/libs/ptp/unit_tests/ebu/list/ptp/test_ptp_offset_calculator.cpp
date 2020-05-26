@@ -21,6 +21,15 @@ SCENARIO("PTP Offset Calculator")
     {
         ptp_offset_calculator c;
 
+        WHEN("we message is received")
+        {
+            THEN("it reports that it has no data")
+            {
+                const auto maybe_info = c.get_info();
+                REQUIRE(!maybe_info.has_value());
+            }
+        }
+
         WHEN("we provide a two-step message")
         {
             c.on_data(two_step_sequence_1::get_sync());
@@ -29,7 +38,14 @@ SCENARIO("PTP Offset Calculator")
 
             THEN("it calculates the right offset")
             {
-                REQUIRE(c.get_average() == std::chrono::nanoseconds(-37204848445));
+                const auto maybe_info = c.get_info();
+                REQUIRE(maybe_info.has_value());
+                const auto info = *maybe_info;
+                REQUIRE(info.average_offset == std::chrono::nanoseconds(-37204848445));
+                REQUIRE(info.is_two_step);
+                REQUIRE(*info.is_two_step);
+                REQUIRE(!info.master_id);
+                REQUIRE(!info.grandmaster_id);
             }
         }
 
@@ -40,7 +56,14 @@ SCENARIO("PTP Offset Calculator")
 
             THEN("it calculates the right offset")
             {
-                REQUIRE(c.get_average() == std::chrono::nanoseconds(-37204848445));
+                const auto maybe_info = c.get_info();
+                REQUIRE(maybe_info.has_value());
+                const auto info = *maybe_info;
+                REQUIRE(info.average_offset == std::chrono::nanoseconds(-37204848445));
+                REQUIRE(info.is_two_step);
+                REQUIRE(!*info.is_two_step);
+                REQUIRE(!info.master_id);
+                REQUIRE(!info.grandmaster_id);
             }
         }
 
@@ -53,7 +76,14 @@ SCENARIO("PTP Offset Calculator")
 
             THEN("it calculates the right offset")
             {
-                REQUIRE(c.get_average() == std::chrono::nanoseconds(-37204848445));
+                const auto maybe_info = c.get_info();
+                REQUIRE(maybe_info.has_value());
+                const auto info = *maybe_info;
+                REQUIRE(info.average_offset == std::chrono::nanoseconds(-37204848445));
+                REQUIRE(info.is_two_step);
+                REQUIRE(!*info.is_two_step);
+                REQUIRE(!info.master_id);
+                REQUIRE(!info.grandmaster_id);
             }
         }
     }

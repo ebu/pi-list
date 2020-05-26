@@ -1,88 +1,82 @@
-import React, { Component } from 'react';
+import React, { useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
-import UploadProgress from '../../components/upload/UploadProgress';
+import UploadProgress, { FileShape } from '../../components/upload/UploadProgress';
 
 // Create a new context for the app
 export const NotificationsContext = React.createContext('app');
 
-class Notifications extends Component {
-    render() {
-        const shouldDisplay = this.props.visible ? {} : { display: 'none' };
+const Notifications = props => {
+    const shouldDisplay = props.visible ? {} : { display: 'none' };
 
-        return (
-            <div className="lst-notifications-uploads"
-                style={{ ...shouldDisplay }}
-            >
-                <UploadProgress
-                    files={this.props.files}
-                    isUploading={this.props.isUploading}
-                    uploadComplete={this.props.uploadComplete}
-                    uploadFailed={this.props.uploadFailed}
-                    uploadProgress={this.props.uploadProgress}
-                />
-            </div>
-        );
-    }
-}
+    return (
+        <div className="lst-notifications-uploads" style={{ ...shouldDisplay }}>
+            <UploadProgress files={props.files} />
+        </div>
+    );
+};
 
-// Creates a provider Component
-class NotificationsProvider extends Component {
-    constructor(props) {
-        super(props);
+Notifications.propTypes = {
+    visible: PropTypes.bool.isRequired,
+    files: PropTypes.arrayOf(FileShape),
+};
 
-        this.state = {
-            uploads: [],
-            uploadsVisible: false,
-            timer: null
-        };
+Notifications.defaultProps = {
+    files: [],
+};
 
-        this.updateUpload = this.updateUpload.bind(this);
-    }
+const isUploading = files => {
+    if (!Array.isArray(files)) return false;
+    if (files.length === 0) return false;
+    return files.some(f => f.isUploading === true);
+};
 
-    updateUpload(info) {
-        this.setState({ uploadsVisible: true });
+const NotificationsProvider = props => {
+    const [uploads, setUploads] = useState([]);
+    const [uploadsVisible, setUploadsVisible] = useState(false);
+    const [timer, setTimer] = useState(null);
 
-        if (
-            (info.isUploading !== this.state.isUploading)
-            || (info.uploadComplete !== this.state.uploadComplete)
-            || (info.uploadFailed !== this.state.uploadFailed)
-        ) {
-            if (info.isUploading) {
-                if (this.state.timer) {
-                    clearTimeout(this.state.timer);
+    const updateUpload = useCallback(info => {
+        setUploadsVisible(true);
+
+        if (!_.isEqual(info, uploads)) {
+            if (isUploading(info.files)) {
+                if (timer) {
+                    clearTimeout(timer);
                 }
-                this.setState({ timer: null });
+                setTimer(null);
             } else {
-                const timer = setTimeout(() => {
-                    this.setState({ uploadsVisible: false });
+                if (timer !== null) {
+                    clearTimeout(timer);
+                }
+
+                const t = setTimeout(() => {
+                    setUploadsVisible(false);
                 }, 3000);
-                this.setState({ timer });
+                setTimer(t);
             }
         }
 
-        this.setState({ uploads: info });
-    }
+        setUploads(_.cloneDeep(info));
+    });
 
-    render() {
-        return (
-            <NotificationsContext.Provider
-                value={{
-                    state: this.state,
-                    updateUpload: this.updateUpload
-                }}
-            >
-                {this.props.children}
-                <Notifications
-                    files={this.state.uploads.files}
-                    isUploading={this.state.uploads.isUploading}
-                    uploadComplete={this.state.uploads.uploadComplete}
-                    uploadFailed={this.state.uploads.uploadFailed}
-                    uploadProgress={this.state.uploads.uploadProgress}
-                    visible={this.state.uploadsVisible}
-                />
-            </NotificationsContext.Provider>
-        );
-    }
-}
+    return (
+        <NotificationsContext.Provider
+            value={{
+                updateUpload: updateUpload,
+            }}
+        >
+            {props.children}
+            <Notifications
+                files={uploads.files}
+                isUploading={uploads.isUploading}
+                uploadComplete={uploads.uploadComplete}
+                uploadFailed={uploads.uploadFailed}
+                uploadProgress={uploads.uploadProgress}
+                visible={uploadsVisible}
+            />
+        </NotificationsContext.Provider>
+    );
+};
 
 export default NotificationsProvider;

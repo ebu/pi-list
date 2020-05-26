@@ -21,4 +21,10 @@ export default {
 
     /* Page that shows a live stream */
     live_stream_page: streamID => `${routeNames.LIVE}/${routeNames.STREAMS_PAGE}/${streamID}`,
+
+    /* Page that shows the list of stream comparisons */
+    comparison_list: comparisonID => `${routeNames.STREAM_COMPARISONS}`,
+
+    /* Page that shows information for a stream comparison */
+    comparison_stream_page: comparisonID => `${routeNames.STREAM_COMPARISONS}/${comparisonID}`,
 };

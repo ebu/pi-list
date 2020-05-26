@@ -7,11 +7,9 @@ using json = nlohmann::json;
 
 //------------------------------------------------------------------------------
 
-anc_stream_serializer::anc_stream_serializer(rtp::packet first_packet, listener_uptr l_rtp, histogram_listener_uptr l_h,
-                                             serializable_stream_info info, anc_stream_details details,
-                                             completion_handler ch, path base_dir)
-    : anc_stream_handler(std::move(first_packet), std::move(l_rtp), std::move(l_h), std::move(info), std::move(details),
-                         std::move(ch)),
+anc_stream_serializer::anc_stream_serializer(rtp::packet first_packet, serializable_stream_info info,
+                                             anc_stream_details details, completion_handler ch, path base_dir)
+    : anc_stream_handler(std::move(first_packet), std::move(info), std::move(details), std::move(ch)),
       base_dir_(std::move(base_dir))
 {
 }

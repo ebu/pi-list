@@ -28,15 +28,11 @@ namespace ebu_list::st2110
             std::string error_code;
         };
 
-        using details =
-            std::variant<std::nullopt_t,
-                         d20::video_description,
-                         d30::audio_description,
-                         d40::anc_description,
-                         ebu_list::ttml::description>;
+        using details = std::variant<std::nullopt_t, d20::video_description, d30::audio_description,
+                                     d40::anc_description, ebu_list::ttml::description>;
 
         virtual detector::status_description handle_data(const rtp::packet& packet) = 0;
-        virtual details get_details() const = 0;
+        virtual details get_details() const                                         = 0;
     };
 
     class sub_detector : public detector

@@ -20,19 +20,20 @@ std::tuple<udp::header, oview> udp::decode(oview&& pdu)
     return {h, udp_payload};
 }
 
-udp::datagram udp::make_datagram(clock::time_point packet_time, ethernet::mac_address source_mac_address,
+udp::datagram udp::make_datagram(ethernet::mac_address source_mac_address,
                                  ethernet::mac_address destination_mac_address, ethernet::payload_type payload_type,
-                                 ipv4::address source_address, port source_port, ipv4::address destination_address,
-                                 port destination_port, oview&& payload)
+                                 ipv4::packet_info ip_info, port source_port, port destination_port, oview&& payload)
 {
     auto d                              = udp::datagram{};
     d.ethernet_info.source_address      = source_mac_address;
     d.ethernet_info.destination_address = destination_mac_address;
     d.ethernet_info.type                = payload_type;
-    d.info.packet_time                  = packet_time;
-    d.info.source_address               = source_address;
+    d.info.packet_time                  = ip_info.packet_time;
+    d.info.source_address               = ip_info.source_address;
+    d.info.destination_address          = ip_info.destination_address;
+    d.info.dscp                         = ip_info.dscp;
+    d.info.type                         = ip_info.type;
     d.info.source_port                  = source_port;
-    d.info.destination_address          = destination_address;
     d.info.destination_port             = destination_port;
     d.info.datagram_size                = sizeof(datagram_header) + payload.view().size_bytes();
     d.sdu                               = std::move(payload);

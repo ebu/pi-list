@@ -25,7 +25,7 @@ namespace ebu_list::rtp
         uint32_t ssrc() const noexcept;
 
       private:
-        const raw_header& header_;
+        raw_header header_;
     };
 
     using header    = mapped_view<raw_header, header_lens>;
@@ -33,6 +33,7 @@ namespace ebu_list::rtp
     using maybe_pdu = std::optional<pdu>;
 
     maybe_pdu decode(oview&& raw_pdu);
+    bool validate_padding(const std::byte* start, const std::byte* end);
 
     struct packet_info
     {

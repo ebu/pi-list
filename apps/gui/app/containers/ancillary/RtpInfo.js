@@ -1,29 +1,22 @@
 import React from 'react';
+import _ from 'lodash';
 import InfoPane from '../streamPage/components/InfoPane';
 import ResultPane from '../streamPage/components/ResultPane';
 import MinMaxDisplay from '../streamPage/components/MinMaxDisplay';
-
-const nsPropAsMinMaxAvgUs = (info) => {
-    if (_.isNil(info)) return { min: '---', max: '---', avg: '---'};
-    const toUs = v => _.isNil(v) ? '---' : (v / 1000).toFixed(0);
-    return { min: toUs(info.min), max: toUs(info.max), avg: toUs(info.avg)};
-};
+import MinAvgMaxDisplay from '../streamPage/components/MinAvgMaxDisplay';
+import { getComplianceSummary, nsPropAsMinMaxAvgUs, propAsMinMaxAvg } from '../../utils/stats.js'
 
 const RtpInfo = props => {
-    const pktsPerFrameAnalysis = props.streamInfo.analyses.pkts_per_frame;
-    const pktPerFrameRange = typeof pktsPerFrameAnalysis.details.range === 'null' ? '---' : pktsPerFrameAnalysis.details.range;
-    const pktsFerFrameInvalid = pktsPerFrameAnalysis.result !== 'compliant';
+    console.log(props.streamInfo)
+    const pktsPerFrame = _.get(props.streamInfo, ['analyses', 'pkts_per_frame'], undefined);
+    console.log(pktsPerFrame)
+    const deltaPktTsVsRtpTs = _.get(props.streamInfo, ['analyses', 'packet_ts_vs_rtp_ts'], undefined);
+    const interFrameRtpDelta = _.get(props.streamInfo, ['analyses', 'inter_frame_rtp_ts_delta'], undefined);
 
-    const deltaPktTsVsRtpTsAnalysis = props.streamInfo.analyses.packet_ts_vs_rtp_ts;
-    const deltaPktTsVsRtpTsRange = typeof deltaPktTsVsRtpTsAnalysis.details.range === 'null' ? '---' : deltaPktTsVsRtpTsAnalysis.details.range;
-    const deltaPktTsVsRtpTs_invalid = deltaPktTsVsRtpTsAnalysis.result !== 'compliant';
-
-    const invalid = pktsFerFrameInvalid || deltaPktTsVsRtpTs_invalid;
     const summary = [
         {
             labelTag: 'stream.compliance',
-            value: invalid? 'not compliant' : 'compliant',
-            attention: invalid
+            ...getComplianceSummary([pktsPerFrame, deltaPktTsVsRtpTs, interFrameRtpDelta]),
         }
     ]
 
@@ -31,30 +24,46 @@ const RtpInfo = props => {
         {
             measurement: <MinMaxDisplay
                 labelTag='media_information.video.packets_per_frame'
-                min={pktPerFrameRange.min}
-                max={pktPerFrameRange.max}
-                units={pktsPerFrameAnalysis.details.unit}
-                attention={pktsFerFrameInvalid}
+                {...propAsMinMaxAvg(pktsPerFrame.details.range, 1)}
+                units={pktsPerFrame.details.unit}
+                attention={pktsPerFrame.result !== 'compliant'}
             />,
             limit: <MinMaxDisplay
                 label='range'
-                min={pktsPerFrameAnalysis.details.limit.min}
+                min={pktsPerFrame.details.limit.min}
                 max='---'
-                units={pktsPerFrameAnalysis.details.unit}
+                units={pktsPerFrame.details.unit}
             />
         },
         {
             measurement: <MinMaxDisplay
                 labelTag='media_information.rtp.delta_first_packet_time_vs_rtp_time'
-                {...nsPropAsMinMaxAvgUs(deltaPktTsVsRtpTsAnalysis.details.range)}
+                {...nsPropAsMinMaxAvgUs(deltaPktTsVsRtpTs.details.range)}
                 units={'us'}
-                attention={deltaPktTsVsRtpTs_invalid}
+                attention={deltaPktTsVsRtpTs.result !== 'compliant'}
             />,
             limit: <MinMaxDisplay
                 label='range'
-                {...nsPropAsMinMaxAvgUs(deltaPktTsVsRtpTsAnalysis.details.limit)}
+                {...nsPropAsMinMaxAvgUs(deltaPktTsVsRtpTs.details.limit)}
                 units={'us'}
             />
+        },
+        {
+            measurement: (
+                <MinAvgMaxDisplay
+                    labelTag="media_information.rtp.inter_frame_rtp_ts_delta"
+                    units="ticks"
+                    {...propAsMinMaxAvg(interFrameRtpDelta.details.range, 1)}
+                    attention={interFrameRtpDelta.result !== 'compliant'}
+                />
+            ),
+            limit: (
+                <MinMaxDisplay
+                    labelTag="range"
+                    {...interFrameRtpDelta.details.limit}
+                    units={interFrameRtpDelta.details.unit}
+                />
+            ),
         },
     ];
 

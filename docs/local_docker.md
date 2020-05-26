@@ -17,7 +17,7 @@ curl -O https://raw.githubusercontent.com/ebu/pi-list/master/docs/docker-compose
 docker-compose up
 ```
 
-You're good to go: `http://localhost`
+You're good to go: `https://localhost`
 
 ## Exposing LIST to the network
 
@@ -29,40 +29,42 @@ Change:
 
 to
 
-```EBU_LIST_WEB_APP_DOMAIN=http://192.168.1.1```
+```EBU_LIST_WEB_APP_DOMAIN=https://192.168.1.1:443```
 
 or
 
 ```sh
-export EBU_LIST_WEB_APP_DOMAIN=http://192.168.1.1
+export EBU_LIST_WEB_APP_DOMAIN=https://192.168.1.1:443
 docker-compose up
 ```
 
 ## Choose a different port
 
-To change the default port from 80 to another port please do the following:
+To change the default port from 443 to another port please do the following:
 Edit the docker-compose.yml file and change the line indicated below. That line exposes the docker port to the user network.
 Also replacing ${EBU_LIST_WEB_APP_DOMAIN} with your URL.
 
 
-Example: Change the default port 80 to port 83.
+Example: Change the default port 443 to port 555.
 
 Old:
 ``` yml
   ...
-  list_server:
-    build: ./server/
+  listreverseproxy:
+    image: nginx
     ports:
       - "80:80"
+      - "443:443"
    ...
 ```
 New:
 ``` yml
   ...
-  list_server:
-    build: ./server/
+  listreverseproxy:
+    image: nginx
     ports:
-      - "83:80"
+      - "80:80"
+      - "555:443"
    ...
 ```
 
@@ -72,12 +74,12 @@ Change:
 
 to
 
-```EBU_LIST_WEB_APP_DOMAIN=http://localhost:83```
+```EBU_LIST_WEB_APP_DOMAIN=https://localhost:555```
 
 or
 
 ```sh
-export EBU_LIST_WEB_APP_DOMAIN=http://localhost:83
+export EBU_LIST_WEB_APP_DOMAIN=https://localhost:555
 docker-compose up
 ```
 

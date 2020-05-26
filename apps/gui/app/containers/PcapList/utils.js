@@ -1,14 +1,6 @@
-import React, { useReducer, useEffect, useContext } from 'react';
 import immutable from '../../utils/immutable';
-import notifications from '../../utils/notifications';
-import { StateContext } from './Context';
-import Actions from './Actions';
-import PcapList from './PcapList';
-import asyncLoader from '../../components/asyncLoader';
-import api from '../../utils/api';
 import pcapEnums from '../../enums/pcap';
 import { translate } from '../../utils/translation';
-import PcapWsEventListener from './PcapWsEventListener';
 
 function getFullInfoFromId(id, pcaps) {
     const filtered = pcaps.filter(pcap => pcap.id === id);
@@ -20,7 +12,7 @@ function getTotalValidStreams(pcap) {
 }
 
 function isAnyStreamValid(pcap) {
-    return getTotalValidStreams(pcap) > 0;
+    return getTotalValidStreams(pcap) > 0 || getPtpStateForPcapInfo(pcap);
 }
 
 function getStatusForPcapInfo(pcap) {

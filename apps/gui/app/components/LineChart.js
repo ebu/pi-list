@@ -176,6 +176,15 @@ class LineChart extends Component {
                 .style('text-anchor', 'middle')
                 .text(this.props.yAxisLabel);
         }
+        // Renders the x axis label if the `xAxisLabel` prop exists
+        if (isString(this.props.xAxisLabel)) {
+            this.graphAreaD3
+                .append('text')
+                .attr('class', 'axis-label')
+                .attr("transform", "translate("+ (this.state.chartWidth/2) +","+(this.state.chartHeight+40)+")")
+                .style('text-anchor', 'middle')
+                .text(this.props.xAxisLabel);
+        }
     }
 
     _renderChartLines() {
@@ -183,7 +192,7 @@ class LineChart extends Component {
             const line = d3
                 .line()
                 .curve(d3.curveMonotoneX)
-                .x(item => this.xScale(item.timestamp))
+                .x(item => this.props.xAxisMode === 'linear'? this.xScale(item.index) : this.xScale(item.timestamp))
                 .y(item => this.yScale(item[chart.yValues]));
 
             this.lines.push(line);
@@ -250,18 +259,34 @@ class LineChart extends Component {
     }
 
     _initializeChart() {
-        this.xScale = d3
-            .scaleTime()
-            .range([0, this.state.chartWidth])
-            .domain(d3.extent(this.state.data, item => item.timestamp));
+        if (this.props.xAxisMode === 'linear'){
+            this.xScale = d3
+                .scaleLinear()
+                .range([0, this.state.chartWidth])
+                .domain(d3.extent(this.state.data, item => item.index));
 
-        this.densityChartXScale = d3
-            .scaleTime()
-            .domain([
-                d3.min(this.state.data, item => item.timestamp),
-                d3.max(this.state.data, item => item.timestamp),
-            ])
-            .range([0, this.state.chartWidth]);
+            this.densityChartXScale = d3
+                .scaleLinear()
+                .domain([
+                    d3.min(this.state.data, item => item.index),
+                    d3.max(this.state.data, item => item.index),
+                ])
+                .range([0, this.state.chartWidth]);
+        }
+        else {
+            this.xScale = d3
+                .scaleTime()
+                .range([0, this.state.chartWidth])
+                .domain(d3.extent(this.state.data, item => item.timestamp));
+
+            this.densityChartXScale = d3
+                .scaleTime()
+                .domain([
+                    d3.min(this.state.data, item => item.timestamp),
+                    d3.max(this.state.data, item => item.timestamp),
+                ])
+                .range([0, this.state.chartWidth]);
+        }
 
         this.xAxis = d3.axisBottom(this.xScale);
 

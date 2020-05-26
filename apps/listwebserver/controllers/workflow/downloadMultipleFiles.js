@@ -10,6 +10,9 @@ const fs = require('../../util/filesystem');
 const Pcap = require('../../models/pcap');
 const logger = require('../../util/logger');
 
+const dmngrCtrl = require('../downloadmngr');
+const { unixTimeShort } = require('../../util/unixTime');
+
 // TODO: some files may end in, say .pcap.gz but we don't deal with that
 const removeExtension = orig => path.parse(orig).name;
 
@@ -102,6 +105,23 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
 
     zipFiles(files, zipFile, ext)
         .then(() => {
+            //Add info to downloadmanager
+            const availableon = Date.now();
+            const availableuntil = availableon + (24 * 60 * 60 * 1000);
+        
+            const fileItem = {
+                name: `${wf.id}_${type}.zip`,
+                nameondisk: `${wf.id}_${type}.zip`,
+                path: `${zipFolder}`,
+                type: type,
+                availableon: availableon,
+                availableonfancy: unixTimeShort(availableon),
+                availableuntil: availableuntil,
+                availableuntilfancy: unixTimeShort(availableuntil)
+            };
+            dmngrCtrl.add(fileItem);
+
+            // Notify by ws that the download are ready
             websocketManager.instance().sendEventToUser(userID, {
                 event: WS_EVENTS.ZIP_FILE_COMPLETE,
                 data: {
