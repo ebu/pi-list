@@ -21,9 +21,9 @@ install -d $RELEASE_DIR/server/app/bin
 install -d $RELEASE_DIR/server/app/gui
 install -d $RELEASE_DIR/server/app/listwebserver
 install -d $RELEASE_DIR/server/lib
-install -d $RELEASE_DIR/data
-install -d $RELEASE_DIR/data/config
-install -d $RELEASE_DIR/data/certs
+install -d $RELEASE_DIR/server/data
+install -d $RELEASE_DIR/server/data/config
+install -d $RELEASE_DIR/server/data/certs
 echo "Creating release folders... done"
 
 echo
@@ -49,10 +49,10 @@ install -m 755 $DEPLOY_SCRIPT_DIR/artifacts/docker-compose.yml $RELEASE_DIR/
 install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/Dockerfile $RELEASE_DIR/server/
 install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/config.yml $RELEASE_DIR/server/app/listwebserver
 # nginx
-install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/data/config/nginx.conf $RELEASE_DIR/data/config/
-install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/data/config/mime.types $RELEASE_DIR/data/config/
-install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/data/certs/nginx-selfsigned.crt $RELEASE_DIR/data/certs/
-install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/data/certs/nginx-selfsigned.key $RELEASE_DIR/data/certs/
+install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/data/config/nginx.conf $RELEASE_DIR/server/data/config/
+install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/data/config/mime.types $RELEASE_DIR/server/data/config/
+install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/data/certs/listreverseproxy.crt $RELEASE_DIR/server/data/certs/
+install -m 644 $DEPLOY_SCRIPT_DIR/artifacts/data/certs/listreverseproxy.key $RELEASE_DIR/server/data/certs/
 echo "Copying artifacts... done"
 
 echo
