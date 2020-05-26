@@ -94,13 +94,8 @@ function renderMessage({ value }) {
 const WorkflowsTable = props => {
     console.log(props);
     const columns = [
-         getCheckBoxColumn(props),
-        // {
-        //     Header: translateX('live.sources.name'),
-        //     headerClassName: 'lst-text-left lst-table-header',
-        //     accessor: 'meta.label',
-        //     className: 'lst-text-left',
-        // },
+        getCheckBoxColumn(props),
+        // accessors come from props.data[]
         {
             Header: '',
             headerClassName: 'lst-text-left lst-table-header',

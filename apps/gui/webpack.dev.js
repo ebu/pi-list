@@ -24,6 +24,7 @@ module.exports = merge(common, {
         hot: true,
         port: 8080,
         host: '0.0.0.0',
+        sockPort: 443,
         historyApiFallback: true,
     },
 });

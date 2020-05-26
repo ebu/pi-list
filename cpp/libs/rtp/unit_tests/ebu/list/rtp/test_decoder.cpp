@@ -70,4 +70,31 @@ SCENARIO("RTP decoding")
             }
         }
     }
+
+    GIVEN("a RTP packet with padding")
+    {
+        auto data = oview(make_static_sbuffer(test::header_with_padding::data));
+
+        WHEN("we decode it")
+        {
+            auto decode_result = decode(std::move(data));
+
+            THEN("the values are correct")
+            {
+                REQUIRE(decode_result);
+                auto full_packet = std::move(decode_result.value());
+                auto& header     = std::get<0>(full_packet);
+                auto& sdu        = std::get<1>(full_packet);
+
+                REQUIRE(header.view().version() == test::header_with_padding::version);
+                REQUIRE(header.view().padding() == test::header_with_padding::padding);
+                REQUIRE(sdu.view().size() ==
+                        test::header_with_padding::payload_size + test::header_with_padding::padding_size);
+
+                const auto start = sdu.view().data() + test::header_with_padding::payload_size;
+                const auto stop  = sdu.view().data() + sdu.view().size();
+                REQUIRE(validate_padding(start, stop) == true);
+            }
+        }
+    }
 }

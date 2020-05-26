@@ -2,8 +2,8 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import _ from 'lodash';
-import ReactTable from "react-table";
-import "react-table/react-table.css";
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 import Icon from '../../components/common/Icon';
 import Badge from '../../components/common/Badge';
 import ProgressBar from '../../components/common/ProgressBar';
@@ -12,12 +12,10 @@ import pcapEnums from '../../enums/pcap';
 import Tooltip from '../../components/common/Tooltip';
 import { isSelected, getGetTdProps, getCheckBoxColumn } from '../../components/table/utils';
 
-
 const getWEMessage = item => {
     const id = _.get(item, ['value', 'id'], null);
-    return translateC('analysis.' + id);
-}
-
+    return translateC(`analysis.${id}`);
+};
 
 const statusSortMethod = (a, b, desc) => {
     // force null and undefined to the bottom
@@ -39,19 +37,18 @@ const statusSortMethod = (a, b, desc) => {
 function renderPcapFileName({ original }) {
     const data = original;
 
-    return data.generated_from_network ?
+    return data.generated_from_network ? (
         <Fragment>
             <Icon value="input" className="lst-table-small-icon" />
             {data.file_name}
-        </Fragment> : data.file_name;
+        </Fragment>
+    ) : (
+        data.file_name
+    );
 }
 
 function renderPcapDate({ original }) {
-    return (
-        <div className="lst-text-center">
-            {moment(original.date).format('YYYY-MM-DD HH:mm:ss')}
-        </div>
-    );
+    return <div className="lst-text-center">{moment(original.date).format('YYYY-MM-DD HH:mm:ss')}</div>;
 }
 
 function renderStatus({ value }) {
@@ -73,31 +70,39 @@ function renderStatus({ value }) {
 function getStateIcon(state) {
     if (state === pcapEnums.state.failed) {
         return 'close';
-    } else if (state === pcapEnums.state.needs_user_input) {
-        return 'warning';
-    } else if (state === pcapEnums.state.no_analysis) {
-        return 'info';
-    } else if (state === pcapEnums.state.not_compliant) {
-        return 'close';
-    } else {
-        if (state !== pcapEnums.state.compliant) { throw new Error(`unexpected state ${state}`); };
-        return 'done all';
     }
+    if (state === pcapEnums.state.needs_user_input) {
+        return 'warning';
+    }
+    if (state === pcapEnums.state.no_analysis) {
+        return 'info';
+    }
+    if (state === pcapEnums.state.not_compliant) {
+        return 'close';
+    }
+    if (state !== pcapEnums.state.compliant) {
+        throw new Error(`unexpected state ${state}`);
+    }
+    return 'done all';
 }
 
 function getStateType(state) {
     if (state === pcapEnums.state.failed) {
         return 'danger';
-    } else if (state === pcapEnums.state.needs_user_input) {
-        return 'warning';
-    } else if (state === pcapEnums.state.no_analysis) {
-        return 'info';
-    } else if (state === pcapEnums.state.not_compliant) {
-        return 'danger';
-    } else {
-        if (state !== pcapEnums.state.compliant) { throw new Error(`unexpected state ${state}`); };
-        return 'success';
     }
+    if (state === pcapEnums.state.needs_user_input) {
+        return 'warning';
+    }
+    if (state === pcapEnums.state.no_analysis) {
+        return 'info';
+    }
+    if (state === pcapEnums.state.not_compliant) {
+        return 'danger';
+    }
+    if (state !== pcapEnums.state.compliant) {
+        throw new Error(`unexpected state ${state}`);
+    }
+    return 'success';
 }
 
 function renderPcapStatusCell(state) {
@@ -116,18 +121,24 @@ function renderPcapStatusCell(state) {
 
 function renderWE(value, className) {
     if (!value || value.length === 0) {
-        return (<span />);
+        return <span />;
     }
 
-    const tooltipMessage = (<span>{value.map((w, index) => {
-        return (<p key={index}>{getWEMessage(w)}</p>);
-    })}</span>);
+    const tooltipMessage = (
+        <span>
+            {value.map((w, index) => {
+                return <p key={index}>{getWEMessage(w)}</p>;
+            })}
+        </span>
+    );
 
-    const content = (<span className="lst-color-warning">{value.length}</span>);
+    const content = <span className="lst-color-warning">{value.length}</span>;
 
     return (
         <span className="lst-text-center">
-        <Tooltip message={tooltipMessage} position={'top'}>{content}</Tooltip>
+            <Tooltip message={tooltipMessage} position="top">
+                {content}
+            </Tooltip>
         </span>
     );
 }
@@ -142,14 +153,24 @@ function renderWarnings({ value }) {
 
 function renderPtp({ value }) {
     if (value) {
-        return (<Icon className="lst-color-ok" value="check" />);
+        return <Icon className="lst-color-ok" value="check" />;
     }
 
-    return (<span />);
+    return <span />;
 }
 
-const getNumberUnknownStreams = (info) =>
-    (info.total_streams - info.video_streams - info.audio_streams - info.anc_streams);
+const getNumberUnknownStreams = info => {
+    if (
+        info.total_streams === undefined ||
+        info.video_streams === undefined ||
+        info.audio_streams === undefined ||
+        info.anc_streams === undefined
+    ) {
+        return 0;
+    }
+
+    return info.total_streams - info.video_streams - info.audio_streams - info.anc_streams;
+};
 
 const PcapTable = props => {
     const columns = [
@@ -159,7 +180,7 @@ const PcapTable = props => {
             headerClassName: 'lst-text-left lst-table-header',
             accessor: 'file_name',
             className: 'lst-text-left',
-            Cell: renderPcapFileName
+            Cell: renderPcapFileName,
         },
         {
             Header: '',
@@ -167,10 +188,14 @@ const PcapTable = props => {
             className: 'lst-text-left',
             Cell: renderStatus,
             maxWidth: 180,
-            sortMethod: statusSortMethod
+            sortMethod: statusSortMethod,
         },
         {
-            Header: (<span title={translateX('pcap.errors')}><Icon value="close" /></span>),
+            Header: (
+                <span title={translateX('pcap.errors')}>
+                    <Icon value="close" />
+                </span>
+            ),
             headerClassName: 'lst-text-center lst-table-header',
             accessor: 'summary.error_list',
             Cell: renderErrors,
@@ -179,7 +204,11 @@ const PcapTable = props => {
             maxWidth: 50,
         },
         {
-            Header: (<span title={translateX('pcap.warnings')}><Icon value="warning" /></span>),
+            Header: (
+                <span title={translateX('pcap.warnings')}>
+                    <Icon value="warning" />
+                </span>
+            ),
             headerClassName: 'lst-text-center lst-table-header',
             accessor: 'summary.warning_list',
             Cell: renderWarnings,
@@ -188,21 +217,21 @@ const PcapTable = props => {
             maxWidth: 50,
         },
         {
-            Header: (<Icon value="videocam" />),
+            Header: <Icon value="videocam" />,
             headerClassName: 'lst-text-center lst-table-header',
             accessor: 'video_streams',
             minWidth: 50,
             maxWidth: 50,
         },
         {
-            Header: (<Icon value="audiotrack" />),
+            Header: <Icon value="audiotrack" />,
             headerClassName: 'lst-text-center lst-table-header',
             accessor: 'audio_streams',
             minWidth: 50,
             maxWidth: 50,
         },
         {
-            Header: (<Icon value="assignment" />),
+            Header: <Icon value="assignment" />,
             headerClassName: 'lst-text-center lst-table-header',
             accessor: 'anc_streams',
             minWidth: 50,
@@ -210,14 +239,14 @@ const PcapTable = props => {
         },
         {
             id: 'unknwon_streams',
-            Header: (<Icon value="help" />),
+            Header: <Icon value="help" />,
             headerClassName: 'lst-text-center lst-table-header',
             accessor: info => getNumberUnknownStreams(info),
             minWidth: 50,
             maxWidth: 50,
         },
         {
-            Header: (<Icon value="timer" />),
+            Header: <Icon value="timer" />,
             headerClassName: 'lst-text-center lst-table-header',
             accessor: 'ptp',
             Cell: renderPtp,
@@ -242,14 +271,16 @@ const PcapTable = props => {
             defaultPageSize={10}
             className="-highlight lst-text-center"
             getTdProps={getGetTdProps(props)}
-            defaultSorted={[{
-                id: 'date',
-                desc: true,
-            }]}
+            defaultSorted={[
+                {
+                    id: 'date',
+                    desc: true,
+                },
+            ]}
             NoDataComponent={props.noDataComponent}
         />
     );
-}
+};
 
 PcapTable.propTypes = {
     pcaps: PropTypes.arrayOf(PropTypes.any),
@@ -258,17 +289,17 @@ PcapTable.propTypes = {
     onSelectId: PropTypes.func,
     onSelectAll: PropTypes.func,
     onClickRow: PropTypes.func,
-    noDataComponent: PropTypes.func
+    noDataComponent: PropTypes.func,
 };
 
 PcapTable.defaultProps = {
     pcaps: [],
     selectedIds: [],
     selectAll: 0,
-    onSelectId: () => { },
-    onSelectAll: () => { },
-    onClickRow: () => { },
-    noDataComponent: () => null
+    onSelectId: () => {},
+    onSelectAll: () => {},
+    onClickRow: () => {},
+    noDataComponent: () => null,
 };
 
 export default PcapTable;

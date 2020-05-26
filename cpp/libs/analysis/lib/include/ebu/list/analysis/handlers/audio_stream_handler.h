@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ebu/list/analysis/handlers/dscp_analyzer.h"
 #include "ebu/list/analysis/serialization/audio_serialization.h"
 #include "ebu/list/analysis/serialization/serializable_stream_info.h"
 #include "ebu/list/core/memory/bimo.h"
@@ -17,8 +18,8 @@ namespace ebu_list::analysis
             rtp::packet first_packet, serializable_stream_info info, audio_stream_details details,
             completion_handler ch = [](const audio_stream_handler&) {});
 
-        const audio_stream_details& info() const;
-        const serializable_stream_info& network_info() const;
+        [[nodiscard]] const audio_stream_details& info() const;
+        [[nodiscard]] const serializable_stream_info& network_info() const;
 
       private:
 #pragma region rtp::listener events
@@ -38,6 +39,7 @@ namespace ebu_list::analysis
         audio_stream_details audio_description_;
         completion_handler completion_handler_;
         rtp::sequence_number_analyzer<uint16_t> rtp_seqnum_analyzer_;
+        dscp_analyzer dscp_;
     };
 
     using audio_stream_handler_uptr = std::unique_ptr<audio_stream_handler>;

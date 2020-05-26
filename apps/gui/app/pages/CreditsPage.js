@@ -1,8 +1,8 @@
 import React from 'react';
 import './CreditsPage.scss';
-import GUIProductionCreditsList from '../../data/credits/guicredits.json';
-import MWProductionCreditsList from '../../data/credits/mwcredits.json';
-import OTHERCreditsList from '../../data/credits/staticcredits.json';
+import CreditsList from '../../data/credits/credits.json';
+import CreditsUnknownList from '../../data/credits/creditsunknown.json';
+import StaticCreditsList from '../../data/credits/staticcredits.json';
 import { T, translateC } from '../utils/translation';
 
 const ListItems = ({ title, packages }) => (
@@ -18,7 +18,9 @@ const ListItems = ({ title, packages }) => (
                         </a>
                     </div>
                     <div className="col-xs-2">
-                        <span>{packages[key].licenses}</span>
+                        <a href={packages[key].licenseUrl} target="_blank">
+                            {packages[key].licenses}
+                        </a>
                     </div>
                 </li>
             ))}
@@ -39,10 +41,13 @@ const CreditsPage = () => {
             </div>
             <div className="row">
                 <div className="col-xs-6 center">
-                    <ListItems
-                        title=""
-                        packages={{ ...GUIProductionCreditsList, ...MWProductionCreditsList, ...OTHERCreditsList }}
-                    />
+                    <ListItems title="" packages={{ ...CreditsList, ...StaticCreditsList }} />
+
+                    {Object.keys(CreditsUnknownList).length > 0 ? (
+                        <ListItems title="Unknown Licenses" packages={{ ...CreditsUnknownList }} />
+                    ) : (
+                        ''
+                    )}
                 </div>
             </div>
         </div>

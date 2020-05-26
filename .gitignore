@@ -1,3 +1,4 @@
+scripts/deploy/artifacts/data/log
 /build*
 /cmake-build*
 /release

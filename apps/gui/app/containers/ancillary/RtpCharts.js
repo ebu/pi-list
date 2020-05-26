@@ -20,7 +20,8 @@ const RtpCharts = props => {
                         labels={chartFormatters.histogramValues}
                         formatData={chartFormatters.histogramCounts}
                         xLabel={translateX('media_information.packets')}
-                        titleTag="media_information.video.packets_per_frame"
+                        titleTag=""
+                        title={translateX('media_information.video.packets_per_frame')}
                         height={300}
                         yLabel={translateX('media_information.count')}
                         displayXTicks="true"
@@ -29,7 +30,7 @@ const RtpCharts = props => {
                 <div className="col-xs-12 col-md-6">
                     <LineChart
                         asyncData={() =>
-                            api.getAncillaryPktPerFrame(props.pcapID, props.streamID, first_packet_ts, last_packet_ts)
+                            api.getPacketsPerFrame(props.pcapID, props.streamID, first_packet_ts, last_packet_ts)
                         }
                         xAxis={chartFormatters.getTimeLineLabel}
                         data={chartFormatters.singleValueLineChart}
@@ -45,7 +46,7 @@ const RtpCharts = props => {
                 <div className="col-xs-12 col-md-12">
                     <LineChart
                         asyncData={async () => {
-                            const values = await api.getAncillaryPktTsVsRtpTs(
+                            const values = await api.getDeltaPacketTimeVsRtpTimeRaw(
                                 props.pcapID,
                                 props.streamID,
                                 first_packet_ts,
@@ -62,6 +63,26 @@ const RtpCharts = props => {
                         height={300}
                         lineWidth={3}
                         legend
+                    />
+                </div>
+            </div>
+            <div className="row lst-full-height">
+                <div className="col-xs-12 col-md-12">
+                    <LineChart
+                        asyncData={() =>
+                            api.getDeltaToPreviousRtpTsRaw(
+                                pcapID,
+                                streamID,
+                                first_packet_ts,
+                                last_packet_ts
+                            )
+                        }
+                        xAxis={chartFormatters.getTimeLineLabel}
+                        data={chartFormatters.singleValueLineChart}
+                        titleTag='media_information.rtp.rtp_ts_step'
+                        yAxisLabel={translateX('media_information.ticks')}
+                        height={300}
+                        lineWidth={3}
                     />
                 </div>
             </div>

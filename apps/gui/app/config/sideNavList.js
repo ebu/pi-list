@@ -7,12 +7,17 @@ export default {
             icon: 'playlist play',
             labelTag: 'navigation.workflows',
             exact: false,
-            liveOnly: true,
         },
         {
             link: routeNames.PCAPS,
             icon: 'playlist add check',
             labelTag: 'navigation.pcaps',
+            exact: false,
+        },
+        {
+            link: routeNames.STREAM_COMPARISONS,
+            icon: 'compare',
+            labelTag: 'navigation.stream_comparisons',
             exact: false,
         },
         {
@@ -28,6 +33,12 @@ export default {
             labelTag: 'navigation.live_streams',
             exact: false,
             liveOnly: true,
+        },
+        {
+            link: routeNames.DOWNLOAD_MANAGER,
+            icon: 'archive',
+            labelTag: 'navigation.download_manager',
+            exact: false,
         },
         // {
         //     link: routeNames.NETWORK,

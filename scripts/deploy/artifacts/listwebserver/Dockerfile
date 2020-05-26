@@ -5,10 +5,8 @@ FROM gcc:7.2
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 RUN apt-get install -yq \
-        wireshark-common nginx
-
-# nginx Configuration
-ADD nginx.conf /etc/nginx/
+        wireshark-common \
+        nginx
 
 # Install node
 RUN curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh
@@ -16,7 +14,7 @@ RUN bash nodesource_setup.sh
 RUN apt-get install -y \
         ffmpeg \
         zip \
-        nodejs 
+        nodejs
 
 RUN npm install -g serve
 
@@ -25,6 +23,10 @@ ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib/
 ADD app/ /app
 ADD js/ /js
 ADD lib/ /usr/local/lib
+# nginx Configuration
+ADD data/config/ /etc/nginx/
+# nginx certs
+ADD data/certs/ /etc/ssl/certs/
 
 WORKDIR /js/common_server
 RUN rm -rf node_modules

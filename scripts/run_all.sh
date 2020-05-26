@@ -55,7 +55,7 @@ fi
 
 if [ $RUN_ALL -eq 1 ] ; then
     echo "RUN_ALL"
-    launch "apps/listwebserver" "npm run dev -- ~/.list/config.yml --dev --live"
+    launch "apps/listwebserver" "npm run dev -- $HOME/.list/config.yml --dev --live"
     launch "apps/gui" "npm start"
     launch "apps/capture_probe" "npm run dev -- config.yml"
 fi

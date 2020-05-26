@@ -26,10 +26,10 @@ Promise.all(translatePromises)
         sorted.map(r => {
             console.log(`${r.target} => ${r.res}`);
         });
-        const joined = Array.from(sorted, e => e.res).join(',');
+        const joined = Array.from(sorted, e => e.res).join('\\');
         console.log('---------------------------------\n');
         console.log('Copy this and paste in the spreadsheet, B column of the newline\n');
-        console.log(`    =SPLIT("${joined}",",")`);
+        console.log(`    =SPLIT("${joined}","\\")`);
         console.log();
     })
     .catch(err => {

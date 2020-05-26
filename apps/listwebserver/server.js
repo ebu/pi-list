@@ -27,6 +27,9 @@ logger('server').info(
 app.set('port', programArguments.port);
 const httpServer = http.createServer(app);
 
+const downloadManager = require('./controllers/downloadmngr');
+downloadManager.cleanup();
+
 websocketManager.initialize(httpServer);
 httpServer.listen(programArguments.port);
 

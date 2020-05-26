@@ -21,43 +21,54 @@ https://hub.docker.com/r/ebutech/pi-list
 ~~~~
 version: "3"
 services:
- influxdb:
-   image: influxdb:1.4.2
-   volumes:
-     - influxdb:/var/lib/influxdb
+  influxdb:
+    image: influxdb:1.4.2
+    volumes:
+      - influxdb:/var/lib/influxdb
 
- mongo:
-   image: mongo:4.1.10
-   volumes:
-     - mongo:/data/db
+  mongo:
+    image: mongo:4.1.10
+    volumes:
+      - mongo:/data/db
 
- rabbitmq:
-   image: pedroalvesferreira/rabbitmq-with-web-mqtt
-   ports:
-     - "5672:5672"
-     - "15672:15672"
-     - "15675:15675"
+  rabbitmq:
+    image: pedroalvesferreira/rabbitmq-with-web-mqtt
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "15675:15675"
 
- list_server:
-   image: ebutech/pi-list # using the latest version
-   ports:
-     - "80:80"
-     - "8080"
-     - "3030"
-   environment:
-       - EBU_LIST_WEB_APP_DOMAIN=${EBU_LIST_WEB_APP_DOMAIN}
-       - EBU_LIST_LIVE_MODE=${EBU_LIST_LIVE_MODE}
-   links:
-     - influxdb
-     - mongo
-     - rabbitmq
-   volumes:
-     - listserver:/home/
+  listserver:
+    image: ebutech/pi-list # using the latest version
+    ports:
+      - "8080"
+      - "3030"
+    environment:
+        - EBU_LIST_WEB_APP_DOMAIN=${EBU_LIST_WEB_APP_DOMAIN}
+        - EBU_LIST_LIVE_MODE=${EBU_LIST_LIVE_MODE}
+    links:
+      - influxdb
+      - mongo
+      - rabbitmq
+    volumes:
+      - ${EBU_LIST_HOST_DATA_FOLDER:-listserver}:/home/
+  
+  listreverseproxy:
+    image: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - listserver
+    volumes:
+      - ./data/config:/etc/nginx
+      - ./data/certs:/etc/ssl/certs
+      - ./data/log/nginx:/var/log/nginx/
 
 volumes:
- mongo:
- listserver:
- influxdb:
+  mongo:
+  listserver:
+  influxdb:
 ~~~~
 
 ### Start containerized EBU LIST
@@ -78,9 +89,9 @@ Pulling list_server ... downloading (71.3%)
 ~~~~
 When all images are downloaded:
 ~~~~
-LIST:EBU-LIST$ EBU_LIST_WEB_APP_DOMAIN=http://localhost:80 docker-compose up
+LIST:EBU-LIST$ EBU_LIST_WEB_APP_DOMAIN=https://localhost:443 docker-compose up
 
-EBU_LIST_WEB_APP_DOMAIN=http://localhost:80 docker-compose up
+EBU_LIST_WEB_APP_DOMAIN=https://localhost:443 docker-compose up
 WARNING: The EBU_LIST_LIVE_MODE variable is not set. Defaulting to a blank string.
 Creating network "documents_default" with the default driver
 Creating volume "documents_mongo" with default driver
@@ -119,7 +130,7 @@ Pulling influxdb (influxdb:1.4.2)...
 You are one step away from using the application.
 
 - Open Google Chrome
-- Go to: http://localhost
+- Go to: https://localhost
 - Create a user: enter a valid email address
 - Create a password
 - Click register

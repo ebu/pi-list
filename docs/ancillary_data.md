@@ -24,6 +24,7 @@ It is mostly tested on North American streams.
  * this number of packets number may vary
  * the frame rate and the media clock are the same as video
  * the last packet of each frame must have the marker bit set
+ * just as for video, RTP timestamp delta is logged for every new frame
 
 The delay between packet time and RTP timestamp should be moderate.
 Though no range has been defined anywhere, EBU-LIST applies the same
@@ -31,6 +32,13 @@ constraints as for video, i.e. [JT-NM tested program](http://jt-nm.org/documents
 proposes: "The instantaneous value of theRTP timestamp of the stream is
 not in the future, not more than 1 ms in the past (unless justified),
 and preserves a stable relation to the PTP (should not “drift”)"
+
+## Ancillary header
+
+ * field bits must have acceptable value depending on scan type and
+   frame/field transition
+ * DID/SDID must be registered values
+ * payload intergrity is validated against parity bits and checksum
 
 ## Timecode
 
@@ -46,8 +54,5 @@ Supported:
 
  * NTSC line 21
  * DTVCC Channel
-
-## Coming soon
-
-* AFD
-* SCTE 104
+ * AFD
+ * SCTE 104 (only opID is decoded)
