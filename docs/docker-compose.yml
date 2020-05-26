@@ -17,10 +17,9 @@ services:
       - "15672:15672"
       - "15675:15675"
 
-  list_server:
+  listserver:
     image: ebutech/pi-list # using the latest version
     ports:
-      - "80:80"
       - "8080"
       - "3030"
     environment:
@@ -32,7 +31,19 @@ services:
       - rabbitmq
     volumes:
       - ${EBU_LIST_HOST_DATA_FOLDER:-listserver}:/home/
-
+  
+  listreverseproxy:
+    image: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - listserver
+    volumes:
+      - ./data/config:/etc/nginx
+      - ./data/certs:/etc/ssl/certs
+      - ./data/log/nginx:/var/log/nginx/
+      
 volumes:
   mongo:
   listserver:

@@ -17,10 +17,11 @@ services:
       - "15672:15672"
       - "15675:15675"
 
-  list_server:
+  listserver:
     build: ./server/
     ports:
       - "80:80"
+      - "443:443"
       - "8080"
       - "3030"
     environment:

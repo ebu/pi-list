@@ -16,18 +16,29 @@ namespace ebu_list::ipv4
 
     struct packet_header
     {
-        uint8_t ip_hl : 4;   // header length
-        uint8_t ip_v : 4;    // version
-        uint8_t ip_tos;      // type of service
-        net_uint16_t ip_len; // total length
-        net_uint16_t ip_id;  // identification
-        net_uint16_t ip_off; // fragment offset field
-        // TODO: add the flags here
+        uint8_t ip_hl : 4; // header length
+        uint8_t ip_v : 4;  // version
 
-        uint8_t ip_ttl;       // time to live
-        uint8_t ip_p;         // protocol
-        net_uint16_t ip_sum;  // checksum
+        uint8_t ip_ecn : 2;  // type of service
+        uint8_t ip_dscp : 6; // type of service
+
+        net_uint16_t ip_len; // total length
+
+        net_uint16_t ip_id; // identification
+
+        uint8_t ip_off_2 : 5; // fragment offset field
+        uint8_t flags : 3;    // version
+
+        uint8_t ip_off_1; // fragment offset field
+
+        uint8_t ip_ttl; // time to live
+
+        uint8_t ip_p; // protocol
+
+        net_uint16_t ip_sum; // checksum
+
         ipv4::address ip_src; // source address
+
         ipv4::address ip_dst; // dest address
     };
 

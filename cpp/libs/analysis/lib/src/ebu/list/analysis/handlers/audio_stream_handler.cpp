@@ -26,7 +26,7 @@ audio_stream_handler::audio_stream_handler(rtp::packet first_packet, serializabl
     logger()->info("created handler for {:08x}, {}->{}", info_.network.ssrc, to_string(info_.network.source),
                    to_string(info_.network.destination));
 
-    info_.state = StreamState::ON_GOING_ANALYSIS;
+    info_.state = stream_state::ON_GOING_ANALYSIS;
 
     info_.network.valid_multicast_mac_address =
         is_multicast_address(first_packet.info.ethernet_info.destination_address);
@@ -63,14 +63,17 @@ void audio_stream_handler::on_data(const rtp::packet& packet)
 
 void audio_stream_handler::on_complete()
 {
-    if(rtp_seqnum_analyzer_.dropped_packets() > 0)
+    if(rtp_seqnum_analyzer_.num_dropped_packets() > 0)
     {
-        audio_description_.dropped_packet_count += rtp_seqnum_analyzer_.dropped_packets();
+        audio_description_.dropped_packet_count += rtp_seqnum_analyzer_.num_dropped_packets();
+        audio_description_.dropped_packet_samples = rtp_seqnum_analyzer_.dropped_packets();
         logger()->info("audio rtp packet drop: {}", audio_description_.dropped_packet_count);
     }
 
+    info_.network.dscp = dscp_.get_info();
+
     this->on_stream_complete();
-    info_.state = StreamState::ANALYZED;
+    info_.state = stream_state::ANALYZED;
     completion_handler_(*this);
 }
 
@@ -99,8 +102,9 @@ void audio_stream_handler::parse_packet(const rtp::packet& packet)
 
     auto p         = sdu.view().data();
     const auto end = sdu.view().data() + sdu.view().size();
-    rtp_seqnum_analyzer_.handle_packet(
-        packet.info.rtp.view().sequence_number()); // no extended sequence number for audio
+    // no extended sequence number for audio
+    rtp_seqnum_analyzer_.handle_packet(packet.info.rtp.view().sequence_number(), packet.info.udp.packet_time);
+    dscp_.handle_packet(packet);
 
     this->on_sample_data(cbyte_span(p, end));
 

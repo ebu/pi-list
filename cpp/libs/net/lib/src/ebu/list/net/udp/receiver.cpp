@@ -66,9 +66,14 @@ struct receiver::impl
                     auto source_mac_address      = to_byte_array(0, 0, 0, 0, 0, 0);
                     auto destination_mac_address = to_byte_array(0, 0, 0, 0, 0, 0);
                     auto payload_type            = ethernet::payload_type::UNKNOWN;
-                    auto datagram =
-                        udp::make_datagram(packet_timestamp, source_mac_address, destination_mac_address, payload_type,
-                                           source_addr, source_port, dest_addr_, dest_port_, std::move(udp_payload));
+
+                    ipv4::packet_info ip_info;
+                    ip_info.packet_time         = packet_timestamp;
+                    ip_info.source_address      = source_addr;
+                    ip_info.destination_address = dest_addr_;
+
+                    auto datagram = udp::make_datagram(source_mac_address, destination_mac_address, payload_type,
+                                                       ip_info, source_port, dest_port_, std::move(udp_payload));
 
                     listener_->on_data(std::move(datagram));
                     do_receive(); // register callback again

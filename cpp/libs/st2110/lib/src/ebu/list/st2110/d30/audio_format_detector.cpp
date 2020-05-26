@@ -116,7 +116,7 @@ detector::status_description packet_size_calculator::handle_data(int packet_size
     if(packet_size != packet_size_.value())
     {
         status_description_.state      = detector::state::invalid;
-        status_description_.error_code = "STATUS_CODE_AUDIO_DIFFEENT_PACKET_SIZE";
+        status_description_.error_code = "STATUS_CODE_AUDIO_DIFFERENT_PACKET_SIZE";
     }
     else
     {

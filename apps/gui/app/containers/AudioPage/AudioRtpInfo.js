@@ -1,18 +1,17 @@
 import React from 'react';
+import _ from 'lodash';
 import InfoPane from '../streamPage/components/InfoPane';
 import ResultPane from '../streamPage/components/ResultPane';
 import MinMaxDisplay from '../streamPage/components/MinMaxDisplay';
+import { getComplianceSummary, nsPropAsMinMaxAvgUs, propAsMinMaxAvg } from '../../utils/stats.js'
 
 const AudioRtpInfo = props => {
-    const analysis = props.streamInfo.analyses.packet_ts_vs_rtp_ts;
-    const range = typeof analysis.details.range === 'null' ? '---' : analysis.details.range;
-    const invalid = analysis.result !== 'compliant';
+    const deltaPktTsVsRtpTs = _.get(props.streamInfo, ['analyses', 'packet_ts_vs_rtp_ts'], undefined);
 
     const summary = [
         {
             labelTag: 'stream.compliance',
-            value:analysis.result,
-            attention:invalid
+            ...getComplianceSummary([deltaPktTsVsRtpTs]),
         }
     ]
 
@@ -20,16 +19,14 @@ const AudioRtpInfo = props => {
         {
             measurement: <MinMaxDisplay
                 labelTag='media_information.rtp.delta_packet_time_vs_rtp_time'
-                min={range.min}
-                max={range.max}
-                units={analysis.details.unit}
-                attention={invalid}
+                {...nsPropAsMinMaxAvgUs(deltaPktTsVsRtpTs.details.range)}
+                attention={deltaPktTsVsRtpTs.result !== 'compliant'}
+                units="μs"
             />,
             limit: <MinMaxDisplay
                 label='range'
-                min={analysis.details.limit.min}
-                max={analysis.details.limit.max}
-                units={analysis.details.unit}
+                {...nsPropAsMinMaxAvgUs(deltaPktTsVsRtpTs.details.limit)}
+                units="μs"
             />
         },
     ];

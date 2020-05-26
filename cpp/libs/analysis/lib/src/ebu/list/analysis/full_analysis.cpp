@@ -4,8 +4,8 @@
 #include "ebu/list/analysis/handlers/video_stream_handler.h"
 #include "ebu/list/analysis/serialization/anc_stream_serializer.h"
 #include "ebu/list/analysis/serialization/audio_stream_serializer.h"
-#include "ebu/list/analysis/serialization/video_stream_serializer.h"
 #include "ebu/list/analysis/serialization/ttml_stream_serializer.h"
+#include "ebu/list/analysis/serialization/video_stream_serializer.h"
 #include "ebu/list/analysis/utils/multi_listener.h"
 #include "ebu/list/core/platform/executor.h"
 #include "ebu/list/core/platform/parallel.h"
@@ -79,10 +79,10 @@ namespace
         context.updater->update_stream_info(network_info.id, j);
 
         // TODO: add TTML support in SDP
-//        ebu_list::ttml::sdp_serializer s;
-//        ebu_list::sdp::sdp_builder sdp({"LIST Generated SDP", "TTML flow"});
-//        sdp.add_media(network_info, s);
-//        context.updater->update_sdp(network_info.id, sdp, media::media_type::TTML);
+        //        ebu_list::ttml::sdp_serializer s;
+        //        ebu_list::sdp::sdp_builder sdp({"LIST Generated SDP", "TTML flow"});
+        //        sdp.add_media(network_info, s);
+        //        context.updater->update_sdp(network_info.id, sdp, media::media_type::TTML);
     }
 
     clock::duration get_timestamp_offset(const analysis_profile& profile, const pcap_info& pcap)
@@ -232,22 +232,43 @@ void analysis::run_full_analysis(processing_context& context)
         {
             ++nr_anc;
             const auto& anc_info = std::get<anc_stream_details>(media_info);
-            auto anc_pkt_writer  = context.handler_factory->create_anc_pkt_histogram_logger(stream_info.id);
-            auto db_anc_rtp_logger =
-                context.handler_factory->create_anc_rtp_logger(context.pcap.id, stream_info.id, "ancillary");
-            auto new_handler = std::make_unique<anc_stream_serializer>(first_packet, std::move(db_anc_rtp_logger),
-                                                                       std::move(anc_pkt_writer), stream_info, anc_info,
+            auto new_handler     = std::make_unique<anc_stream_serializer>(first_packet, stream_info, anc_info,
                                                                        anc_finalizer_callback, context.storage_folder);
-            return new_handler;
+            auto ml              = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
+            ml->add(std::move(new_handler));
+
+            {
+                auto framer_ml =
+                    std::make_unique<multi_listener_t<frame_start_filter::listener, frame_start_filter::packet_info>>();
+
+                {
+                    auto db_rtp_ts_logger =
+                        context.handler_factory->create_rtp_ts_logger(context.pcap.id, stream_info.id);
+                    auto rtp_ts_analyzer_ =
+                        std::make_unique<rtp_ts_analyzer>(std::move(db_rtp_ts_logger), anc_info.anc.rate);
+                    framer_ml->add(std::move(rtp_ts_analyzer_));
+
+                    auto db_rtp_logger   = context.handler_factory->create_rtp_logger(context.pcap.id, stream_info.id);
+                    auto pkt_hist_writer = context.handler_factory->create_pkt_histogram_logger(stream_info.id);
+                    auto rtp_analyzer_ =
+                        std::make_unique<rtp_analyzer>(std::move(db_rtp_logger), std::move(pkt_hist_writer));
+                    framer_ml->add(std::move(rtp_analyzer_));
+                }
+                auto framer =
+                    std::make_unique<frame_start_filter>(frame_start_filter::listener_uptr(std::move(framer_ml)));
+                ml->add(std::move(framer));
+            }
+
+            return ml;
         }
         else if(stream_info.type == media::media_type::TTML)
         {
             ++nr_anc;
             const auto& ttml_info = std::get<ttml::stream_details>(media_info);
-            auto doc_logger  = context.handler_factory->create_ttml_document_logger(stream_info.id);
+            auto doc_logger       = context.handler_factory->create_ttml_document_logger(stream_info.id);
 
-            auto new_handler = std::make_unique<ttml::stream_handler>(first_packet, std::move(doc_logger),
-                                                                       stream_info, ttml_info, ttml_finalizer_callback);
+            auto new_handler = std::make_unique<ttml::stream_handler>(first_packet, std::move(doc_logger), stream_info,
+                                                                      ttml_info, ttml_finalizer_callback);
             return new_handler;
         }
         else

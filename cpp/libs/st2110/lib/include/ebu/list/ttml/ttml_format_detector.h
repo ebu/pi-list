@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ebu/list/ttml/ttml_description.h"
 #include "ebu/list/st2110/format_detector.h"
+#include "ebu/list/ttml/ttml_description.h"
 
 namespace ebu_list::ttml
 {
@@ -10,19 +10,14 @@ namespace ebu_list::ttml
       public:
         format_detector();
 
-        ebu_list::st2110::detector::status_description
-            handle_data(const rtp::packet& packet) override;
+        ebu_list::st2110::detector::status_description handle_data(const rtp::packet& packet) override;
 
-        virtual ebu_list::st2110::detector::details
-            get_details() const override;
+        virtual ebu_list::st2110::detector::details get_details() const override;
 
-        inline virtual std::string
-            get_kind() const noexcept override
-                { return "ttml"; }
+        inline virtual std::string get_kind() const noexcept override { return "ttml"; }
 
       private:
         description description_{};
         std::string document_;
     };
-} // namespace ebu_list::st2110::d40
-
+} // namespace ebu_list::ttml

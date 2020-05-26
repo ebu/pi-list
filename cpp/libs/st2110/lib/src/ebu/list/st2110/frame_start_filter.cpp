@@ -14,21 +14,20 @@ struct frame_start_filter::impl
     {
         if(in_frame_)
         {
+            ++packet_index_;
             listener_->on_data({p, frame_start_, packet_index_});
 
             if(frame_start_)
             {
-                frame_start_ = false;
+                packet_index_ = 0;
+                frame_start_  = false;
             }
-
-            ++packet_index_;
         }
 
         if(p.info.rtp.view().marker())
         {
-            in_frame_     = true;
-            frame_start_  = true;
-            packet_index_ = 0;
+            in_frame_    = true;
+            frame_start_ = true;
         }
     }
 

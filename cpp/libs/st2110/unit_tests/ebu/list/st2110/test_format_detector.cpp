@@ -3,9 +3,9 @@
 #include "ebu/list/rtp/udp_handler.h"
 #include "ebu/list/st2110/d20/video_format_detector.h"
 #include "ebu/list/st2110/d30/audio_format_detector.h"
-#include "ebu/list/ttml/ttml_format_detector.h"
 #include "ebu/list/st2110/format_detector.h"
 #include "ebu/list/test_lib/sample_files.h"
+#include "ebu/list/ttml/ttml_format_detector.h"
 #include "pch.h"
 
 using namespace ebu_list;

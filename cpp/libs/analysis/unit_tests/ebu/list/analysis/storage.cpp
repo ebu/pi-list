@@ -67,6 +67,24 @@ void fs_rtp_ts_logger::on_error(std::exception_ptr)
 {
 }
 
+fs_rtp_logger::fs_rtp_logger(std::string_view filename) : file_stream_(filename.data())
+{
+}
+
+void fs_rtp_logger::on_data(const rtp_analyzer::packet_info& info)
+{
+    file_stream_ << info.packets_per_frame << " " << ebu_list::to_date_time_string(info.timestamp) << std::endl;
+}
+
+void fs_rtp_logger::on_complete()
+{
+    file_stream_.close();
+}
+
+void fs_rtp_logger::on_error(std::exception_ptr)
+{
+}
+
 fs_vrx_logger::fs_vrx_logger(std::string_view filename) : file_stream_(filename.data())
 {
 }
@@ -120,23 +138,5 @@ void fs_audio_tsdf_logger::on_complete()
 }
 
 void fs_audio_tsdf_logger::on_error(std::exception_ptr)
-{
-}
-
-fs_anc_rtp_logger::fs_anc_rtp_logger(std::string_view filename) : file_stream_(filename.data())
-{
-}
-
-void fs_anc_rtp_logger::on_data(const anc_stream_handler::frame_info& frame_info)
-{
-    file_stream_ << frame_info.packets_per_frame << " " << to_date_time_string(frame_info.timestamp) << std::endl;
-}
-
-void fs_anc_rtp_logger::on_complete()
-{
-    file_stream_.close();
-}
-
-void fs_anc_rtp_logger::on_error(std::exception_ptr)
 {
 }

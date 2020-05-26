@@ -4,27 +4,8 @@ import InfoPane from './components/InfoPane';
 import ResultPane from './components/ResultPane';
 import MinAvgMaxDisplay from './components/MinAvgMaxDisplay';
 import MinMaxDisplay from './components/MinMaxDisplay';
-import analysisConstants from '../../enums/analysis';
-
+import { getComplianceSummary, nsPropAsMinMaxAvgUs, propAsMinMaxAvg } from '../../utils/stats.js'
 const isRtpCompliant = info => {};
-
-const getCompliance = info => {
-    const v = _.get(info, ['analyses', 'packet_ts_vs_rtp_ts', 'result']);
-    return v === analysisConstants.outcome.compliant
-        ? { value: 'Compliant' }
-        : { value: 'Not compliant', attention: true };
-};
-
-const nsPropAsMinMaxAvgUs = info => {
-    if (_.isNil(info)) return { min: '---', max: '---', avg: '---' };
-    const toUs = v => (_.isNil(v) ? '---' : (v / 1000).toFixed(0));
-    return { min: toUs(info.min), max: toUs(info.max), avg: toUs(info.avg) };
-};
-
-const propAsMinMaxAvg = (info, nDecimal) => {
-    if (_.isNil(info)) return { min: '---', max: '---', avg: '---' };
-    return { min: info.min, max: info.max, avg: info.avg.toFixed(nDecimal || 0) };
-};
 
 const RtpInfo = ({ info }) => {
     const deltaPktTsVsRtpTs = _.get(info, ['analyses', 'packet_ts_vs_rtp_ts'], undefined);
@@ -34,7 +15,7 @@ const RtpInfo = ({ info }) => {
     const summaryValues = [
         {
             labelTag: 'stream.compliance',
-            ...getCompliance(info),
+            ...getComplianceSummary([deltaPktTsVsRtpTs, deltaRtpTsVsNTFrame, interFrameRtpDelta]),
         },
     ];
 

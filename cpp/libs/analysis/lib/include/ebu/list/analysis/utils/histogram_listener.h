@@ -17,6 +17,7 @@ namespace ebu_list::analysis
         virtual void on_error(std::exception_ptr e) = 0;
     };
 
+    using histogram_listener_ptr  = std::shared_ptr<histogram_listener>;
     using histogram_listener_uptr = std::unique_ptr<histogram_listener>;
 
     class null_histogram_listener : public histogram_listener
