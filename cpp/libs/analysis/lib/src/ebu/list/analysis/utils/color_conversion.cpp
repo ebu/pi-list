@@ -7,32 +7,44 @@ using namespace bisect::bimo;
 
 namespace
 {
-    std::tuple<uint8_t, uint8_t, uint8_t> ycbcr_to_rgb(int y, int cb, int cr)
+    uint8_t clip_8(double v) { return static_cast<uint8_t>(round(std::max(0.0, std::min(255.0, v)))); }
+
+    std::tuple<uint8_t, uint8_t, uint8_t> ycbcr_to_rgb_rec709(int y, int cb, int cr)
     {
-        auto Y  = static_cast<double>(y);
-        auto Cb = static_cast<double>(cb);
-        auto Cr = static_cast<double>(cr);
+        auto Y  = static_cast<double>(y - 16);
+        auto Cb = static_cast<double>(cb - 128);
+        auto Cr = static_cast<double>(cr - 128);
 
-        auto r = static_cast<uint8_t>((Y + 1.40200 * (Cr - 0x80)));
-        auto g = static_cast<uint8_t>((Y - 0.34414 * (Cb - 0x80) - 0.71414 * (Cr - 0x80)));
-        auto b = static_cast<uint8_t>((Y + 1.77200 * (Cb - 0x80)));
+        auto r = 1.16438356164384 * Y + 1.79274107142857 * Cr;
+        auto g = 1.16438356164384 * Y - 0.21324861427373 * Cb - 0.532909328559444 * Cr;
+        auto b = 1.16438356164384 * Y + 2.11240178571429 * Cb;
 
-        r = std::max(uint8_t(0), std::min(uint8_t(255), r));
-        g = std::max(uint8_t(0), std::min(uint8_t(255), g));
-        b = std::max(uint8_t(0), std::min(uint8_t(255), b));
+        return {clip_8(r), clip_8(g), clip_8(b)};
+    }
 
-        return {r, g, b};
+    std::tuple<uint8_t, uint8_t, uint8_t> ycbcr_to_rgb_rec2020(int y, int cb, int cr)
+    {
+        auto Y  = static_cast<double>(y - 16);
+        auto Cb = static_cast<double>(cb - 128);
+        auto Cr = static_cast<double>(cr - 128);
+
+        auto r = 1.16438356164384 * Y + 1.67867410714286 * Cr;
+        auto g = 1.16438356164384 * Y - 0.187326104219343 * Cb - 0.650424318505057 * Cr;
+        auto b = 1.16438356164384 * Y + 2.14177232142857 * Cb;
+
+        return {clip_8(r), clip_8(g), clip_8(b)};
     }
 } // namespace
 
 oview analysis::from_ycbcr422_to_rgba(oview ycbcr422, media::video::video_dimensions dimensions)
 {
-    const auto width           = dimensions.width;
-    const auto height          = dimensions.height;
-    const auto rgba_line_size  = width * 4;
-    const auto rgba_frame_size = height * rgba_line_size;
-    // const auto input_stride = width * 5 / 2;
+    const auto width                 = dimensions.width;
+    const auto height                = dimensions.height;
+    const auto rgba_line_size        = width * 4;
+    const auto rgba_frame_size       = height * rgba_line_size;
     constexpr auto pixels_per_pgroup = 2;
+
+    auto converter = dimensions.height > 1080 ? ycbcr_to_rgb_rec2020 : ycbcr_to_rgb_rec709;
 
     malloc_sbuffer_factory f;
     auto target = f.get_buffer(rgba_frame_size);
@@ -61,8 +73,8 @@ oview analysis::from_ycbcr422_to_rgba(oview ycbcr422, media::video::video_dimens
             auto y1 = static_cast<uint8_t>((input[3] & byte(0x03)) << 6);
             y1 |= static_cast<uint8_t>((input[4] & byte(0xFC)) >> 2);
 
-            const auto [r1, g1, b1] = ycbcr_to_rgb(y0, cb, cr);
-            const auto [r0, g0, b0] = ycbcr_to_rgb(y0, cb, cr);
+            const auto [r1, g1, b1] = converter(y0, cb, cr);
+            const auto [r0, g0, b0] = converter(y0, cb, cr);
 
             output[0] = byte(r0);
             output[1] = byte(g0);

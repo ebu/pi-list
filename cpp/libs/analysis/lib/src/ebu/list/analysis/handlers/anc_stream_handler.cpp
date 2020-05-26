@@ -1,6 +1,6 @@
 #include "ebu/list/analysis/handlers/anc_stream_handler.h"
+#include "ebu/list/analysis/handlers/anc_payload_decoder.h"
 #include "ebu/list/core/idioms.h"
-#include "ebu/list/core/math/histogram.h"
 #include "ebu/list/net/multicast_address_analyzer.h"
 #include "ebu/list/st2110/d40/anc_description.h"
 #include "ebu/list/st2110/d40/packet.h"
@@ -14,264 +14,17 @@ using namespace ebu_list::st2110::d40;
 namespace
 {
     constexpr uint32_t rtp_seqnum_window = 2048;
-
-    // TODO: replace this global variable by a proper alternative
     static struct klvanc_callbacks_s klvanc_callbacks;
 } // namespace
 
-// #define LIBVANC_DEBUG
-
-static int cb_smpte_12_2(void* callback_context, [[maybe_unused]] struct klvanc_context_s* ctx,
-                         struct klvanc_packet_smpte_12_2_s* pkt)
-{
-#ifdef LIBVANC_DEBUG
-    if(klvanc_dump_SMPTE_12_2(ctx, pkt) != 0)
-    {
-        logger()->error("Ancillary: error dumping SMPTE 12-2 packet!\n");
-        return -1;
-    }
-#endif
-
-    if(pkt->dbb1 > 2)
-    {
-        logger()->warn("Ancillary: unknown timecode type: {}", pkt->dbb1);
-        return -1;
-    }
-
-    auto s                   = static_cast<anc_sub_stream*>(callback_context);
-    const std::string DBB1[] = {"ATC LTC", "ATC VITC1", "ATC VITC2"};
-    std::string timecode =
-        fmt::format("{:02d}:{:02d}:{:02d}:{:02d}\n", pkt->hours, pkt->minutes, pkt->seconds, pkt->frames);
-
-    /* DBB1 is used as a UID */
-    auto ss = anc_sub_sub_stream(DBB1[pkt->dbb1]);
-    /* is this sub sub stream already registered? */
-    auto it = std::find(s->anc_sub_sub_streams.begin(), s->anc_sub_sub_streams.end(), ss);
-    if(it == s->anc_sub_sub_streams.end())
-    {
-        logger()->info("Ancillary: new sub-sub-stream timecode ({})", DBB1[pkt->dbb1]);
-        s->anc_sub_sub_streams.push_back(ss);
-        it = std::find(s->anc_sub_sub_streams.begin(), s->anc_sub_sub_streams.end(), ss);
-    }
-    it->decoded_data += timecode;
-
-    return 0;
-}
-
-static const char* cc_type_lookup(int cc_type)
-{
-    switch(cc_type)
-    {
-    case 0x00: return "NTSC line 21 field 1 CC";
-    case 0x01: return "NTSC line 21 field 2 CC";
-    case 0x02: return "DTVCC Channel Packet Data";
-    case 0x03: return "DTVCC Channel Packet Start";
-    default: return "Unknown";
-    }
-}
-
-static const char* cc_framerate_lookup(int frate)
-{
-    switch(frate)
-    {
-    case 0x00: return "Forbidden";
-    case 0x01: return "23.976";
-    case 0x02: return "24";
-    case 0x03: return "25";
-    case 0x04: return "29.97";
-    case 0x05: return "30";
-    case 0x06: return "50";
-    case 0x07: return "59.94";
-    case 0x08: return "60";
-    default: return "Reserved";
-    }
-}
-
-std::string cc_608_decode(uint8_t* cc)
-{
-    /* remove parity bits */
-    uint8_t cc1 = cc[0] & 0x7F;
-    uint8_t cc2 = cc[1] & 0x7F;
-
-    /* two basic characters, one special character, or one extended character */
-    if(!cc1 && !cc2) // padding
-        return "";
-    else if(cc1 & 0b01100000) // ASCII-ish char
-        return fmt::format("{}{}", static_cast<char>(cc1), static_cast<char>(cc2));
-    else if((cc2 == 0x2C) || (cc2 == 0x2D)) // end or carriage return
-        return "\n";
-    else // other control command
-        return "?";
-}
-
-static int cb_eia_708(void* callback_context, [[maybe_unused]] struct klvanc_context_s* ctx,
-                      struct klvanc_packet_eia_708b_s* pkt)
-{
-    auto s  = static_cast<anc_sub_stream*>(callback_context);
-    auto ss = anc_sub_sub_stream("Details");
-
-    auto it = std::find(s->anc_sub_sub_streams.begin(), s->anc_sub_sub_streams.end(), ss);
-    if(it == s->anc_sub_sub_streams.end())
-    {
-        logger()->info("Ancillary: new sub-sub-stream: CEA 708 details");
-        s->anc_sub_sub_streams.push_back(ss);
-        it = std::find(s->anc_sub_sub_streams.begin(), s->anc_sub_sub_streams.end(), ss);
-    }
-
-    it->decoded_data += fmt::format("-----------------------------------\n\
-header:\n\
-    cdp:\n\
-        identifier = 0x{:04x} ({})\n\
-        length = {}\n\
-        framerate = 0x{:02x} ({} FPS)\n\
-",
-                                    pkt->header.cdp_identifier,
-                                    pkt->header.cdp_identifier == 0x9669 ? "VALID" : "INVALID", pkt->header.cdp_length,
-                                    pkt->header.cdp_frame_rate, cc_framerate_lookup(pkt->header.cdp_frame_rate));
-
-    it->decoded_data +=
-        fmt::format("\
-    present:\n\
-        timecode = {}\n\
-        close caption = {}\n\
-        service info: {}\n\
-",
-                    pkt->header.time_code_present, pkt->header.ccdata_present, pkt->header.svcinfo_present);
-
-    if(pkt->header.svcinfo_present)
-    {
-        it->decoded_data += fmt::format("\
-service info:\n\
-    id = 0x{:02x} ({})\n\
-    start = {}\n\
-    change = {}\n\
-    complete = {}\n\
-    count = {}\n\
-",
-                                        pkt->ccsvc.ccsvcinfo_id, pkt->ccsvc.ccsvcinfo_id == 0x73 ? "VALID" : "INVALID",
-                                        pkt->header.svc_info_start, pkt->header.svc_info_change,
-                                        pkt->header.svc_info_complete, pkt->ccsvc.svc_count);
-
-        for(int i = 0; i < pkt->ccsvc.svc_count; i++)
-        {
-            it->decoded_data += fmt::format("\
-        {}\n\
-            service data: {}\n\
-",
-                                            pkt->ccsvc.svc[i].caption_service_number, pkt->ccsvc.svc[i].svc_data_byte);
-        }
-    }
-
-    it->decoded_data += fmt::format("\
-    caption service active = {}\n\
-    sequence counter = {}\n\
-",
-                                    pkt->header.caption_service_active, pkt->header.cdp_hdr_sequence_cntr);
-
-    if(pkt->header.ccdata_present)
-    {
-        it->decoded_data += fmt::format("\
-close caption data:\n\
-    id = 0x{:02x} ({})\n\
-    count = {}\n\
-",
-                                        pkt->ccdata.ccdata_id, pkt->ccdata.ccdata_id == 0x72 ? "VALID" : "INVALID",
-                                        pkt->ccdata.cc_count);
-
-        /*
-        for (int i = 0; i < pkt->ccdata.cc_count; i++) {
-            it->decoded_data += fmt::format("\
-        {}\n\
-            valid = 0x{:02x}\n\
-            type = 0x{:02x} ({})\n\
-            data 1 = 0x{:02x}\n\
-            data 2 = 0x{:02x}\n\
-",
-            i,
-            pkt->ccdata.cc[i].cc_valid,
-            pkt->ccdata.cc[i].cc_type,
-            cc_type_lookup(pkt->ccdata.cc[i].cc_type),
-            pkt->ccdata.cc[i].cc_data[0],
-            pkt->ccdata.cc[i].cc_data[1]);
-        }
-        */
-    }
-
-    it->decoded_data += fmt::format("\
-footer:\n\
-    id = 0x{:02x} ({})\n\
-    sequence counter = 0x{:02x} ({})\n\
-    checksum = 0x{:02x} ({})\n\
-\n",
-                                    pkt->footer.cdp_footer_id, pkt->footer.cdp_footer_id == 0x74 ? "VALID" : "INVALID",
-                                    pkt->footer.cdp_ftr_sequence_cntr,
-                                    pkt->footer.cdp_ftr_sequence_cntr == pkt->header.cdp_hdr_sequence_cntr
-                                        ? "Matches Header"
-                                        : "INVALID: does not match header",
-                                    pkt->footer.packet_checksum, pkt->checksum_valid == 1 ? "VALID" : "INVALID");
-
-    /* Save individuals CC tracks */
-    if(pkt->header.ccdata_present)
-    {
-        for(int i = 0; i < pkt->ccdata.cc_count; i++)
-        {
-            ss = anc_sub_sub_stream(cc_type_lookup(pkt->ccdata.cc[i].cc_type));
-
-            it = std::find(s->anc_sub_sub_streams.begin(), s->anc_sub_sub_streams.end(), ss);
-            if(it == s->anc_sub_sub_streams.end())
-            {
-                logger()->info("Ancillary: new sub-sub-stream: EIA 608 track ({})",
-                               cc_type_lookup(pkt->ccdata.cc[i].cc_type));
-                s->anc_sub_sub_streams.push_back(ss);
-                it = std::find(s->anc_sub_sub_streams.begin(), s->anc_sub_sub_streams.end(), ss);
-            }
-            it->decoded_data += cc_608_decode(pkt->ccdata.cc[i].cc_data);
-        }
-    }
-
-#ifdef LIBVANC_DEBUG
-    if(klvanc_dump_EIA_708B(ctx, pkt) != 0)
-    {
-        logger()->error("Ancillary: error dumping EIA-708 packet!\n");
-        return -1;
-    }
-#endif
-
-    return 0;
-}
-
-struct anc_stream_handler::impl
-{
-    impl(listener_uptr l, histogram_listener_uptr h_l) : listener_(std::move(l)), histogram_listener_(std::move(h_l)) {}
-
-    void on_data(const frame_info& frame_info)
-    {
-        listener_->on_data(frame_info);
-        histogram_.add_value(frame_info.packets_per_frame);
-    }
-
-    void on_complete()
-    {
-        histogram_listener_->on_data(histogram_.values());
-        histogram_listener_->on_complete();
-        listener_->on_complete();
-    }
-
-    const listener_uptr listener_;
-    const histogram_listener_uptr histogram_listener_;
-    histogram<int> histogram_;
-};
-
-anc_stream_handler::anc_stream_handler(rtp::packet first_packet, listener_uptr l_rtp, histogram_listener_uptr l_h,
-                                       serializable_stream_info info, anc_stream_details details, completion_handler ch)
-    : impl_(
-          std::make_unique<impl>(std::move(l_rtp), l_h ? std::move(l_h) : std::make_unique<null_histogram_listener>())),
-      info_(std::move(info)), anc_description_(std::move(details)), completion_handler_(std::move(ch))
+anc_stream_handler::anc_stream_handler(rtp::packet first_packet, serializable_stream_info info,
+                                       anc_stream_details details, completion_handler ch)
+    : info_(std::move(info)), anc_description_(std::move(details)), completion_handler_(std::move(ch))
 {
     logger()->info("Ancillary: created handler for {:08x}, {}->{}", info_.network.ssrc, to_string(info_.network.source),
                    to_string(info_.network.destination));
 
-    info_.state = StreamState::ON_GOING_ANALYSIS;
+    info_.state = stream_state::ON_GOING_ANALYSIS;
 
     anc_description_.first_packet_ts = first_packet.info.udp.packet_time;
     anc_description_.last_frame_ts   = first_packet.info.rtp.view().timestamp();
@@ -284,7 +37,7 @@ anc_stream_handler::anc_stream_handler(rtp::packet first_packet, listener_uptr l
     info_.network.multicast_address_match = is_same_multicast_address(
         first_packet.info.ethernet_info.destination_address, first_packet.info.udp.destination_address);
 
-    info_.state      = StreamState::ON_GOING_ANALYSIS; // mark as analysis started
+    info_.state      = stream_state::ON_GOING_ANALYSIS; // mark as analysis started
     const auto& anc  = this->info();
     nlohmann::json j = anc_stream_details::to_json(anc);
     logger()->trace("Stream info:\n {}", j.dump(2, ' '));
@@ -299,6 +52,8 @@ anc_stream_handler::anc_stream_handler(rtp::packet first_packet, listener_uptr l
     klvanc_ctx->callbacks       = &klvanc_callbacks;
     klvanc_callbacks.smpte_12_2 = cb_smpte_12_2;
     klvanc_callbacks.eia_708b   = cb_eia_708;
+    klvanc_callbacks.afd        = cb_afd;
+    klvanc_callbacks.scte_104   = cb_scte_104;
 }
 
 anc_stream_handler::~anc_stream_handler(void)
@@ -322,67 +77,73 @@ void anc_stream_handler::on_data(const rtp::packet& packet)
     anc_description_.last_packet_ts = packet.info.udp.packet_time;
     const auto marked               = packet.info.rtp().marker();
 
+    parse_packet(packet);
+
     logger()->trace("Ancillary packet={}, frame={}, marker={}", anc_description_.packet_count,
                     anc_description_.frame_count, (marked) ? "1" : "0");
+    if(anc_description_.anc.scan_type == video::scan_type::INTERLACED)
+    {
+        logger()->trace("Ancillary field: last={}, cur={}", last_field_, field_);
+    }
 
-    packets_per_frame_.on_packet(packet.info.rtp.view());
-
-    const auto timestamp = packet.info.rtp.view().timestamp();
     /* frame transition based on RTP TS change */
+    const auto timestamp = packet.info.rtp.view().timestamp();
     if(timestamp != anc_description_.last_frame_ts)
     {
         anc_description_.last_frame_ts = timestamp;
         anc_description_.frame_count++;
 
-        const auto packet_time_ns =
-            std::chrono::duration_cast<std::chrono::nanoseconds>(packet.info.udp.packet_time.time_since_epoch())
-                .count();
-        const auto packet_time      = fraction64(packet_time_ns, std::giga::num);
-        const auto rtp_timestamp    = packet.info.rtp.view().timestamp();
-        const auto tframe           = fraction64(1, anc_description_.anc.rate);
-        first_rtp_to_packet_deltas_ = calculate_rtp_to_packet_deltas(tframe, rtp_timestamp, packet_time);
-
+        /* a good transition means a marker bit in the last packet and
+         * field transition if interlaced */
         if(!last_frame_was_marked_)
         {
             logger()->debug("Ancillary: missing marker bit");
             anc_description_.wrong_marker_count++;
         }
-    }
-    else if(last_frame_was_marked_)
-    {
-        logger()->debug("Ancillary: wrong marker bit in frame");
-        anc_description_.wrong_marker_count++;
-    }
-
-    /* report variable pkts/frame on every marker bit after a complete
-     * frame was received */
-    if(marked)
-    {
-        if(anc_description_.frame_count > 1)
+        if((anc_description_.anc.scan_type == video::scan_type::INTERLACED) && (last_field_ == field_) &&
+           (last_field_ != static_cast<uint8_t>(field_kind::undefined)))
         {
-            impl_->on_data(
-                {packet.info.udp.packet_time, packets_per_frame_.count().value_or(0), first_rtp_to_packet_deltas_});
-            packets_per_frame_.reset();
-            packets_per_frame_.on_packet(packet.info.rtp.view());
+            logger()->debug("Ancillary: missing field bit transition");
+            anc_description_.wrong_field_count++;
+        }
+    }
+    else
+    {
+        if(last_frame_was_marked_)
+        {
+            logger()->debug("Ancillary: wrong marker bit in frame");
+            anc_description_.wrong_marker_count++;
+        }
+        if((anc_description_.anc.scan_type == video::scan_type::INTERLACED) && (last_field_ != field_) &&
+           (last_field_ != static_cast<uint8_t>(field_kind::undefined)))
+        {
+            logger()->debug("Ancillary: wrong field bit transition in frame");
+            anc_description_.wrong_field_count++;
         }
     }
 
     last_frame_was_marked_ = marked;
-
-    parse_packet(packet);
+    last_field_            = field_;
 }
 
 void anc_stream_handler::on_complete()
 {
-    if(rtp_seqnum_analyzer_.dropped_packets() > 0)
+    if(rtp_seqnum_analyzer_.num_dropped_packets() > 0)
     {
-        anc_description_.dropped_packet_count += rtp_seqnum_analyzer_.dropped_packets();
+        anc_description_.dropped_packet_count += rtp_seqnum_analyzer_.num_dropped_packets();
+        anc_description_.dropped_packet_samples = rtp_seqnum_analyzer_.dropped_packets();
         logger()->info("ancillary rtp packet drop: {}", anc_description_.dropped_packet_count);
     }
 
-    impl_->on_complete();
+    auto anc_sub_streams = anc_description_.anc.sub_streams;
+    for(auto it = anc_sub_streams.begin(); it != anc_sub_streams.end(); it++)
+    {
+        anc_description_.payload_error_count += it->errors();
+    }
+
     this->on_stream_complete();
-    info_.state = StreamState::ANALYZED;
+    info_.network.dscp = dscp_.get_info();
+    info_.state        = stream_state::ANALYZED;
     completion_handler_(*this);
 }
 
@@ -408,10 +169,35 @@ void anc_stream_handler::parse_packet(const rtp::packet& packet)
     const uint32_t full_sequence_number = (extended_sequence_number << 16) | packet.info.rtp.view().sequence_number();
     p += sizeof(raw_extended_sequence_number);
 
-    rtp_seqnum_analyzer_.handle_packet(full_sequence_number);
+    rtp_seqnum_analyzer_.handle_packet(full_sequence_number, packet.info.udp.packet_time);
+    dscp_.handle_packet(packet);
 
     const auto anc_header = anc_header_lens(*reinterpret_cast<const raw_anc_header*>(p));
     p += sizeof(raw_anc_header);
+
+    field_ = anc_header.field_identification();
+    switch(field_)
+    {
+    case static_cast<uint8_t>(field_kind::invalid): anc_description_.wrong_field_count++; break;
+    case static_cast<uint8_t>(field_kind::progressive):
+        if(anc_description_.anc.scan_type == video::scan_type::INTERLACED)
+        {
+            anc_description_.wrong_field_count++;
+        }
+        break;
+    case static_cast<uint8_t>(field_kind::interlaced_first_field):
+        if(anc_description_.anc.scan_type == video::scan_type::PROGRESSIVE)
+        {
+            anc_description_.wrong_field_count++;
+        }
+        break;
+    case static_cast<uint8_t>(field_kind::interlaced_second_field):
+        if(anc_description_.anc.scan_type == video::scan_type::PROGRESSIVE)
+        {
+            anc_description_.wrong_field_count++;
+        }
+        break;
+    }
 
     /*
      * for every embedded sub-stream in the packet:
@@ -452,15 +238,8 @@ void anc_stream_handler::parse_packet(const rtp::packet& packet)
         udw_buf.push_back(anc_packet_header.sdid);
         udw_buf.push_back(anc_packet_header.data_count);
 
-        /* is it acceptable data? */
         const auto anc_packet = anc_packet_header_lens(anc_packet_header);
         auto s                = anc_sub_stream(anc_packet);
-        if(!s.is_valid())
-        {
-            logger()->warn("Ancillary: sub-stream invalid");
-            continue;
-        }
-
         /* is this sub-stream already registered? */
         auto it = std::find(anc_description_.anc.sub_streams.begin(), anc_description_.anc.sub_streams.end(), s);
         if(it == anc_description_.anc.sub_streams.end())
@@ -469,8 +248,14 @@ void anc_stream_handler::parse_packet(const rtp::packet& packet)
             anc_description_.anc.sub_streams.push_back(s);
             it = std::find(anc_description_.anc.sub_streams.begin(), anc_description_.anc.sub_streams.end(), s);
         }
+
         uint16_t errors = it->errors();
         ++it->packet_count;
+        if(!s.is_valid())
+        {
+            logger()->warn("Ancillary: sub-stream invalid");
+            errors++;
+        }
 
         /* walkthrough the UDW payload */
         for(uint8_t j = 0; j < anc_packet.data_count(); j++)

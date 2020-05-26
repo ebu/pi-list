@@ -2,7 +2,6 @@
 #include "ebu/list/core/media/anc_description.h"
 #include "ebu/list/st2110/d40/anc_description.h"
 #include "ebu/list/st2110/d40/packet.h"
-#include "ebu/list/st2110/pch.h"
 
 using namespace ebu_list::st2110::d40;
 using namespace ebu_list::st2110;
@@ -48,7 +47,7 @@ detector::status_description anc_format_detector::handle_data(const rtp::packet&
         return detector::status_description{/*.state*/ detector::state::invalid,
                                             /*.error_code*/ "STATUS_CODE_ANC_WRONG_FIELD_VALUE"};
         break;
-    case 0: description_.scan_type = video::scan_type::PROGRESSIVE; break;
+    case static_cast<uint8_t>(field_kind::progressive): description_.scan_type = video::scan_type::PROGRESSIVE; break;
     default: description_.scan_type = video::scan_type::INTERLACED; break;
     }
 
@@ -61,7 +60,7 @@ detector::status_description anc_format_detector::handle_data(const rtp::packet&
     p += sizeof(raw_anc_header);
 
     /* empty data is ok but must announced as such */
-    if(!anc_header.anc_count() && !anc_header.length() && (p != end))
+    if((!anc_header.anc_count() && anc_header.length()) || (anc_header.anc_count() && !anc_header.length()))
     {
         return detector::status_description{/*.state*/ detector::state::invalid,
                                             /*.error_code*/ "STATUS_CODE_ANC_WRONG_HEADER"};
@@ -132,7 +131,7 @@ detector::status_description anc_format_detector::handle_data(const rtp::packet&
         /* crc */
         get_bits<10>(&p, &bit_counter);
 
-        /* skip the padding */
+        /* skip the anc padding (!= rtp padding) */
         while(bit_counter % 32)
         {
             get_bits<1>(&p, &bit_counter);
@@ -146,6 +145,18 @@ detector::status_description anc_format_detector::handle_data(const rtp::packet&
         return detector::status_description{/*.state*/ detector::state::detecting,
                                             /*.error_code*/ "STATUS_CODE_ANC_DETECTING"};
     }
+    else if((p < end) && !packet.info.rtp.view().padding())
+    {
+        logger()->warn("Ancillary stream longer than expected");
+        return detector::status_description{/*.state*/ detector::state::invalid,
+                                            /*.error_code*/ "STATUS_CODE_ANC_PKT_TOO_LONG"};
+    }
+    else if(packet.info.rtp.view().padding() && !rtp::validate_padding(p, end))
+    {
+        logger()->warn("Ancillary wrong padding value");
+        return detector::status_description{/*.state*/ detector::state::invalid,
+                                            /*.error_code*/ "STATUS_CODE_ANC_WRONG_PADDING"};
+    }
 
     const auto res = detector_.handle_data(packet);
 
@@ -158,6 +169,7 @@ detector::details anc_format_detector::get_details() const
 
     result.packets_per_frame = detector_.packets_per_frame();
     result.rate              = detector_.rate();
+    result.scan_type         = description_.scan_type;
     for(auto& it : description_.sub_streams)
     {
         result.sub_streams.push_back(it);

@@ -33,5 +33,7 @@ module.exports = {
         ttml_inconsistent_sequence_identifier: 'TTML inconsistent sequence identifier',
         pkts_per_frame: 'RTP packets per frame/field',
         marker_bit: 'RTP marker bit',
+        field_bits: 'Field bits',
+        anc_payloads: 'Ancillary payloads',
     },
 };

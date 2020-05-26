@@ -25,7 +25,7 @@ router.post('/', (req, res, next) => {
         .catch(err =>
             res
                 .status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR)
-                .send(err)
+                .send(err.message)
         );
 });
 

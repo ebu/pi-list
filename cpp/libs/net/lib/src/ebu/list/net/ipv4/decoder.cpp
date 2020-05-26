@@ -21,7 +21,8 @@ std::tuple<ipv4::header, oview> ipv4::decode(oview&& pdu)
     using ipv4_header_slice          = mapped_oview<ipv4::packet_header>;
     auto [ipv4_header, ipv4_payload] = split(std::move(pdu), header_length);
     ipv4_header_slice s(std::move(ipv4_header));
-    header header{s.value().ip_dst, s.value().ip_src, static_cast<protocol_type>(s.value().ip_p)};
+    header header{s.value().ip_dst, s.value().ip_src, static_cast<protocol_type>(s.value().ip_p),
+                  static_cast<dscp_type>(s.value().ip_dscp)};
 
     auto [payload, fcs] = split(std::move(ipv4_payload), payload_length);
     (void)fcs; // [[maybe_unused]]

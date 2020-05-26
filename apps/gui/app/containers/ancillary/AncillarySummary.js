@@ -21,6 +21,7 @@ const AncillarySummary = props => {
             {
                 label: 'Type',
                 value: type.label,
+                attention: type.label === 'Unknown',
             },
         ];
 

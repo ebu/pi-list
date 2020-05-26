@@ -85,7 +85,7 @@ SCENARIO("TTML stream analysis")
             REQUIRE(stream_ids.size() == 1);
             const auto stream = load_stream_json(storage_folder / stream_ids[0]);
             REQUIRE(stream["id"] == stream_ids[0]);
-            REQUIRE(stream["state"] == to_string(StreamState::ANALYZED));
+            REQUIRE(stream["state"] == to_string(stream_state::ANALYZED));
             REQUIRE(stream["statistics"]["first_packet_ts"] == "1576250230948449000");
             REQUIRE(stream["statistics"]["last_packet_ts"] == "1576250233955780000");
             REQUIRE(stream["statistics"]["packet_count"] == 4);
@@ -176,7 +176,7 @@ SCENARIO("TTML stream analysis")
             REQUIRE(stream_ids.size() == 1);
             const auto stream = load_stream_json(storage_folder / stream_ids[0]);
             REQUIRE(stream["id"] == stream_ids[0]);
-            REQUIRE(stream["state"] == to_string(StreamState::ANALYZED));
+            REQUIRE(stream["state"] == to_string(stream_state::ANALYZED));
             REQUIRE(stream["statistics"]["first_packet_ts"] == "1576249998818743000");
             REQUIRE(stream["statistics"]["last_packet_ts"] == "1576250000824328000");
             REQUIRE(stream["statistics"]["packet_count"] == 12);
@@ -198,7 +198,7 @@ SCENARIO("TTML stream analysis")
             REQUIRE(stream_ids.size() == 1);
             const auto stream = load_stream_json(storage_folder / stream_ids[0]);
             REQUIRE(stream["id"] == stream_ids[0]);
-            REQUIRE(stream["state"] == to_string(StreamState::ANALYZED));
+            REQUIRE(stream["state"] == to_string(stream_state::ANALYZED));
             REQUIRE(stream["statistics"]["first_packet_ts"] == "1576249998818908000");
             REQUIRE(stream["statistics"]["last_packet_ts"] == "1576250000824328000");
             REQUIRE(stream["statistics"]["packet_count"] == 10);

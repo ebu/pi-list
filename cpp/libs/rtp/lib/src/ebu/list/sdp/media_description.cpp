@@ -10,7 +10,7 @@ string media::to_string(media_type media_type)
     case media_type::VIDEO: return "video";
     case media_type::AUDIO: return "audio";
     case media_type::ANCILLARY_DATA: return "ancillary_data";
-    case media_type::TTML : return "ttml";
+    case media_type::TTML: return "ttml";
     default: assert(media_type == media_type::UNKNOWN); return "unknown";
     }
 }

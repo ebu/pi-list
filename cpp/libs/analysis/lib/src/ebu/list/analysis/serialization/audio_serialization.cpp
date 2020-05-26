@@ -7,15 +7,10 @@ using namespace std;
 nlohmann::json audio_stream_details::to_json(const audio_stream_details& details)
 {
     nlohmann::json statistics;
-    statistics["packet_size"]          = details.packet_size;
-    statistics["samples_per_packet"]   = details.samples_per_packet;
-    statistics["packet_count"]         = details.packet_count;
-    statistics["dropped_packet_count"] = details.dropped_packet_count;
-    statistics["sample_count"]         = details.sample_count;
-    statistics["first_packet_ts"] =
-        std::to_string(chrono::duration_cast<chrono::nanoseconds>(details.first_packet_ts.time_since_epoch()).count());
-    statistics["last_packet_ts"] =
-        std::to_string(chrono::duration_cast<chrono::nanoseconds>(details.last_packet_ts.time_since_epoch()).count());
+    analysis::to_json(statistics, static_cast<const common_stream_details&>(details));
+    statistics["packet_size"]        = details.packet_size;
+    statistics["samples_per_packet"] = details.samples_per_packet;
+    statistics["sample_count"]       = details.sample_count;
 
     nlohmann::json j;
     j["media_specific"] = st2110::d30::to_json(details.audio);
@@ -32,15 +27,11 @@ audio_stream_details audio_stream_details::from_json(const nlohmann::json& j)
     const auto statistics_json = j.find("statistics");
     if(statistics_json != j.end())
     {
-        desc.packet_size          = statistics_json->at("packet_size").get<int>();
-        desc.samples_per_packet   = statistics_json->at("samples_per_packet").get<int>();
-        desc.packet_count         = statistics_json->at("packet_count").get<uint32_t>();
-        desc.dropped_packet_count = statistics_json->at("dropped_packet_count").get<uint32_t>();
-        desc.sample_count         = statistics_json->at("sample_count").get<uint32_t>();
-        desc.first_packet_ts =
-            clock::time_point{clock::duration{std::stol(statistics_json->at("first_packet_ts").get<std::string>())}};
-        desc.last_packet_ts =
-            clock::time_point{clock::duration{std::stol(statistics_json->at("last_packet_ts").get<std::string>())}};
+        logger()->info(statistics_json->dump());
+        ::from_json(*statistics_json, static_cast<common_stream_details&>(desc));
+        desc.packet_size        = statistics_json->at("packet_size").get<int>();
+        desc.samples_per_packet = statistics_json->at("samples_per_packet").get<int>();
+        desc.sample_count       = statistics_json->at("sample_count").get<uint32_t>();
     }
 
     return desc;

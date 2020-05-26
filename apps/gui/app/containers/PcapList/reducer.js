@@ -2,17 +2,12 @@ import _ from 'lodash';
 import immutable from '../../utils/immutable';
 import Actions from './Actions';
 import { translate } from '../../utils/translation';
-import {
-    getFullInfoFromId,
-    addStateToPcapInfo,
-    updatePcap
-} from './utils';
+import { getFullInfoFromId, addStateToPcapInfo, updatePcap } from './utils';
 import notifications from '../../utils/notifications';
 import api from '../../utils/api';
 import { downloadFileFromUrl } from '../../utils/download';
 
 const reducer = (state, action) => {
-
     switch (action.type) {
         case Actions.selectBefore: {
             const id = action.data.id;
@@ -20,10 +15,7 @@ const reducer = (state, action) => {
             const baseDate = pcap.date;
             const newSelected = state.data.filter(item => item.date <= baseDate).map(item => item.id);
 
-            return Object.assign({}, { ...state }, {
-                selected: newSelected,
-                selectAll: state.selectAll === 0 ? 1 : 0
-            });
+            return { ...state, selected: newSelected, selectAll: state.selectAll === 0 ? 1 : 0 };
         }
 
         case Actions.selectAfter: {
@@ -32,10 +24,7 @@ const reducer = (state, action) => {
             const baseDate = pcap.date;
             const newSelected = state.data.filter(item => item.date >= baseDate).map(item => item.id);
 
-            return Object.assign({}, { ...state }, {
-                selected: newSelected,
-                selectAll: state.selectAll === 0 ? 1 : 0
-            });
+            return { ...state, selected: newSelected, selectAll: state.selectAll === 0 ? 1 : 0 };
         }
 
         case Actions.pcapReceived: {
@@ -46,9 +35,7 @@ const reducer = (state, action) => {
 
             const newData = [info, ...state.data];
 
-            const newState = Object.assign({}, { ...state }, {
-                data: newData
-            });
+            const newState = { ...state, data: newData };
 
             return newState;
         }
@@ -56,9 +43,7 @@ const reducer = (state, action) => {
         case Actions.pcapProcessed: {
             const newData = updatePcap(state.data, action.data, 'workflow.processing_streams');
 
-            const newState = Object.assign({}, { ...state }, {
-                data: newData
-            });
+            const newState = { ...state, data: newData };
 
             return newState;
         }
@@ -66,9 +51,7 @@ const reducer = (state, action) => {
         case Actions.pcapFailed: {
             const newData = updatePcap(state.data, action.data, 'workflow.processing_streams');
 
-            const newState = Object.assign({}, { ...state }, {
-                data: newData
-            });
+            const newState = { ...state, data: newData };
 
             return newState;
         }
@@ -76,9 +59,7 @@ const reducer = (state, action) => {
         case Actions.pcapDone: {
             const newData = updatePcap(state.data, action.data, 'workflow.done');
 
-            const newState = Object.assign({}, { ...state }, {
-                data: newData
-            });
+            const newState = { ...state, data: newData };
 
             return newState;
         }
@@ -87,19 +68,15 @@ const reducer = (state, action) => {
             const id = action.data.id;
             const newData = immutable.findAndRemoveElementInArray({ id }, state.data);
 
-            return Object.assign({}, { ...state }, {
-                data: newData
-            });
+            return { ...state, data: newData };
         }
 
         case Actions.requestPcapReanalysis: {
             const id = action.data.id;
-            return Object.assign({}, { ...state }, {
-                itemToReanalyze: id
-            });
+            return { ...state, itemToReanalyze: id };
         }
 
-        case Actions.zipFileFailed : {
+        case Actions.zipFileFailed: {
             notifications.error({
                 titleTag: 'Zip failed',
                 messageTag: action.data.msg,
@@ -107,12 +84,11 @@ const reducer = (state, action) => {
             return state;
         }
 
-        case Actions.zipFileComplete : {
+        case Actions.zipFileComplete: {
             notifications.success({
                 titleTag: 'Zip complete',
                 messageTag: action.data.msg,
             });
-            downloadFileFromUrl(api.downloadZipUrl(action.data.id,action.data.type));
         }
 
         default:
@@ -120,6 +96,4 @@ const reducer = (state, action) => {
     }
 };
 
-export {
-    reducer
-};
+export { reducer };

@@ -11,7 +11,7 @@ import { T } from '../../utils/translation';
 import api from '../../utils/api';
 
 const NoData = () => (
-    <div className="lst-text-center"><T t="pcap.no_pcaps" /></div>
+    <div className="lst-text-center"><T t="pcap.no_pcaps" />< br/><T t="pcap.no_pcaps.message" /></div>
 );
 
 const PcapList = (props) => {

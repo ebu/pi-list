@@ -46,4 +46,20 @@ namespace ebu_list::rtp::test
                           0xd5, 0x62, 0x03, 0x93, 0x04, 0x37, 0x06, 0x12                          // payload
             );
     } // namespace header_with_extension
+
+    namespace header_with_padding
+    {
+        constexpr auto version = 0x02;
+        constexpr auto padding = true;
+
+        constexpr auto payload_size = 8;
+        constexpr auto padding_size = 4;
+
+        constexpr auto data =
+            to_byte_array(0xa2, 0x3f, 0xe9, 0xe2, 0xa1, 0x10, 0x78, 0xb9, 0x13, 0x1b, 0x69, 0x7c, // header
+                          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,                         // CSRC
+                          0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a,                         // 8 bytes of data
+                          0x00, 0x00, 0x00, 0x04                                                  // 4 bytes of padding
+            );
+    } // namespace header_with_padding
 } // namespace ebu_list::rtp::test

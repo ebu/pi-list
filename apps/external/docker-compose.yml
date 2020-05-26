@@ -1,16 +1,30 @@
-influxdb:
-  image: influxdb:1.4.2
-  ports:
-    - "8086:8086"
+version: '3'
 
-mongo:
-    image: mongo:4.1.10
+services:
+  influxdb:
+    image: influxdb:1.4.2
     ports:
-    - "27017:27017"
+      - "8086:8086"
 
-rabbitmq:
-  image: pedroalvesferreira/rabbitmq-with-web-mqtt
-  ports:
-    - "5672:5672"
-    - "15672:15672"
-    - "15675:15675"
+  mongo:
+      image: mongo:4.1.10
+      ports:
+      - "27017:27017"
+
+  rabbitmq:
+    image: pedroalvesferreira/rabbitmq-with-web-mqtt
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "15675:15675"
+
+  listreverseproxy:
+    image: nginx
+    network_mode: host
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./data/config:/etc/nginx
+      - ../../scripts/deploy/artifacts/data/certs:/etc/ssl/certs
+      - ../../scripts/deploy/artifacts/data/log/nginx:/var/log/nginx/

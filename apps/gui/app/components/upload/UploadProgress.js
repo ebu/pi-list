@@ -9,12 +9,12 @@ const UploadProgress = (props) => {
     return (
         <div className="lst-file-uploader-list fade-in">
         <ul className="lst-file-uploader-files">
-            {props.files.map((file, index) => (
-                <li key={file.name} className="row lst-no-padding">
+            {props.files.map((item) => (
+                <li key={item.file.name} className="row lst-no-padding">
                     <div className="col-xs-1 middle-xs">
                         <Icon
                             className={classNames('file-icon', {
-                                'lst-text-red': props.uploadFailed
+                                'lst-text-red': item.uploadFailed
                             })}
                             value="insert drive file"
                         />
@@ -23,26 +23,26 @@ const UploadProgress = (props) => {
                         <div className="file-upload-file-info col-xs-12 row">
                             <div
                                 className={classNames('col-xs-10 file-file-name', {
-                                    'lst-text-red': props.uploadFailed && !props.isUploading
+                                    'lst-text-red': item.uploadFailed && !item.isUploading
                                 })}
                             >
-                                <span>{file.name}</span>
-                                <span className="lst-file-uploader-file-size">({bytes(file.size)})</span>
+                                <span>{item.file.name}</span>
+                                <span className="lst-file-uploader-file-size">({bytes(item.file.size)})</span>
                             </div>
                             <div className="col-xs-2 file-upload-progress">
-                                {props.isUploading && `${props.uploadProgress[index] ? props.uploadProgress[index] : 0}%`}
-                                {props.uploadComplete && (
+                                {item.isUploading && `${item.uploadProgress ? item.uploadProgress : 0}%`}
+                                {item.uploadComplete && (
                                     <Icon className="lst-text-green fade-in upload-state-icon" value="check" />
                                 )}
-                                {props.uploadFailed && !props.isUploading && (
+                                {item.uploadFailed && !item.isUploading && (
                                     <Icon className="lst-text-red fade-in upload-state-icon" value="error" />
                                 )}
                             </div>
                         </div>
-                        {(props.isUploading) && (
+                        {(item.isUploading) && (
                             <ProgressBar
                                 className="lst-file-uploader-bar fade-in"
-                                percentage={props.uploadProgress[index] ? props.uploadProgress[index] : 0}
+                                percentage={item.uploadProgress ? item.uploadProgress : 0}
                             />
                         )}
                     </div>
@@ -54,20 +54,25 @@ const UploadProgress = (props) => {
 );
 };
 
-UploadProgress.propTypes = {
-    files: PropTypes.arrayOf(PropTypes.object),
+const FileInfoShape = PropTypes.shape({
+    name: PropTypes.string,
+    size: PropTypes.number,
+});
+
+export const FileShape = PropTypes.shape({
+    file: FileInfoShape.isRequired,
     isUploading: PropTypes.bool,
     uploadComplete: PropTypes.bool,
     uploadFailed: PropTypes.bool,
-    uploadProgress: PropTypes.arrayOf(PropTypes.number),
+    uploadProgress: PropTypes.number,
+});
+
+UploadProgress.propTypes = {
+    files: PropTypes.arrayOf(FileShape),
 };
 
 UploadProgress.defaultProps = {
     files: [],
-    isUploading: false,
-    uploadComplete: false,
-    uploadFailed: false,
-    uploadProgress: [],
 };
 
 export default UploadProgress;

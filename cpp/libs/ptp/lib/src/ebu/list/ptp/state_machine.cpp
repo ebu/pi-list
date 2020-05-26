@@ -350,6 +350,13 @@ struct state_machine::impl
 
     void operator()(const ptp::v1::message&) { logger()->trace("v1::message"); }
 
+    void operator()(const ptp::v2::announce& message)
+    {
+        logger()->trace("v2::announce");
+        const auto id = message.message().grandmaster_identity();
+        logger()->trace("gm id: {}", ptp::v2::to_string(id));
+    }
+
     void operator()(const ptp::v2::sync& message)
     {
         logger()->trace("v2::sync");

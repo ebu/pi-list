@@ -20,9 +20,9 @@ uint16_t message_header_lens::sequence_id() const noexcept
     return to_native(h_.sequence_id);
 }
 
-uint64_t message_header_lens::clock_identity() const noexcept
+const clock_id_t& message_header_lens::clock_identity() const noexcept
 {
-    return to_native(h_.clock_identity);
+    return h_.clock_identity;
 }
 
 uint8_t message_header_lens::subdomain_number() const noexcept

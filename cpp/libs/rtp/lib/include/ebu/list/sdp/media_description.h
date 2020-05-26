@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ebu/list/net/ethernet/mac.h"
-#include "ebu/list/net/ipv4/address.h"
+#include "ebu/list/net/ipv4/decoder.h"
 #include <string>
 #include <vector>
 
@@ -19,6 +19,12 @@ namespace ebu_list::media
     std::string to_string(media_type media_type);
     media_type from_string(std::string_view media);
 
+    struct dscp_info
+    {
+        std::optional<ipv4::dscp_type> value; // the last value found
+        bool is_consistent = true;            // true if always the same
+    };
+
     struct network_info
     {
         ethernet::mac_address source_mac      = to_byte_array(0, 0, 0, 0, 0, 0);
@@ -30,6 +36,7 @@ namespace ebu_list::media
         bool valid_multicast_mac_address = true;
         bool valid_multicast_ip_address  = true;
         bool multicast_address_match     = true;
+        dscp_info dscp{};
     };
 
     struct network_media_description

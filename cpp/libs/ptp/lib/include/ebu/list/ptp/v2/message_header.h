@@ -8,6 +8,8 @@
 
 namespace ebu_list::ptp::v2
 {
+    using clock_id_t = std::array<uint8_t, 8>;
+
 #pragma pack(push, 1)
     struct message_header
     {
@@ -21,7 +23,7 @@ namespace ebu_list::ptp::v2
         net_uint16_t flags;
         net_uint64_t correction_field;
         net_uint32_t reserved_3;
-        net_uint64_t clock_identity;
+        clock_id_t clock_identity;
         net_uint16_t source_port_identity;
         net_uint16_t sequence_id;
         uint8_t control_field;
@@ -32,10 +34,11 @@ namespace ebu_list::ptp::v2
 
     enum class message_type : uint8_t
     {
-        sync       = 0,
-        delay_req  = 1,
-        follow_up  = 8,
-        delay_resp = 9
+        sync       = 0x0,
+        delay_req  = 0x1,
+        follow_up  = 0x8,
+        delay_resp = 0x9,
+        announce   = 0xb
     };
 
     class message_header_lens
@@ -45,7 +48,7 @@ namespace ebu_list::ptp::v2
 
         message_type type() const noexcept;
         uint16_t sequence_id() const noexcept;
-        uint64_t clock_identity() const noexcept;
+        const clock_id_t& clock_identity() const noexcept;
         uint8_t subdomain_number() const noexcept;
 
       private:
@@ -70,4 +73,6 @@ namespace ebu_list::ptp::v2
 
     template <class MessageBody, class MessageLens>
     using v2_base_message = base_message<header, MessageBody, MessageLens>;
+
+    std::string to_string(const clock_id_t& id);
 } // namespace ebu_list::ptp::v2
