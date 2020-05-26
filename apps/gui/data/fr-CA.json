@@ -232,6 +232,7 @@
   "buttons.go_back": "Arrière",
   "buttons.login": "Ouverture de session",
   "buttons.register": "S'enregistrer",
+  "navigation.home": "Page d'accueil",
   "navigation.capture": "Capturer",
   "navigation.live_streams": "Flux en direct",
   "navigation.live_sources": "Sources",
@@ -244,6 +245,8 @@
   "navigation.streams": "Flux",
   "navigation.stream": "Flux",
   "navigation.stream_comparisons": "Comparaison de flux",
+  "navigation.download_manager": "Gestionnaire de téléchargement",
+  "navigation.credits": "Crédits",
   "realtime_feed.ok": "Information reçue en temps réel",
   "live_stream.no_streams": "Pas de flux trouvé",
   "live_stream.no_streams_message": "Commencer à enregistrer un flux en direct afin de le visualiser ici.",
@@ -302,5 +305,11 @@
   "workflow.st2022_7_analysis.numberOfDifferentPackets": "Different",
   "workflow.st2022_7_analysis.numberOfMissingPackets": "Missing",
   "workflow.st2022_7_analysis.deltaBetweenPackets": "Time delta between packets in both streams",
-  "general.inconsistent": "Inconsistent"
+  "general.inconsistent": "Inconsistent",
+  "dmngr.name": "",
+  "dmngr.availableon": "",
+  "dmngr.availableuntil": "",
+  "dmngr.download": "",
+  "ptp.average_offset": "Average offset",
+  "ptp.clock_type": "Clock type"
 }

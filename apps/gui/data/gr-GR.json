@@ -232,6 +232,7 @@
   "buttons.go_back": "Επιστροφή",
   "buttons.login": "Σύνδεση",
   "buttons.register": "Εγγραφή",
+  "navigation.home": "Αρχική σελίδα",
   "navigation.capture": "Πιάνω",
   "navigation.live_streams": "Ζωντανές ροές",
   "navigation.live_sources": "*** navigation.capture",
@@ -244,6 +245,8 @@
   "navigation.streams": "Ροές",
   "navigation.stream": "Ροή",
   "navigation.stream_comparisons": "ροή Σύγκριση",
+  "navigation.download_manager": "Διαχειριστής λήψης",
+  "navigation.credits": "Συντελεστές",
   "realtime_feed.ok": "Λήψη πληροφοριών σε πραγματικό χρόνο",
   "live_stream.no_streams": "Δεν βρέθηκαν ροές",
   "live_stream.no_streams_message": "Ξεκινήστε την εγγραφή μιας ζωντανής ροής για να την δείτε εδώ.",
@@ -302,5 +305,7 @@
   "workflow.st2022_7_analysis.numberOfDifferentPackets": "Different",
   "workflow.st2022_7_analysis.numberOfMissingPackets": "Missing",
   "workflow.st2022_7_analysis.deltaBetweenPackets": "Time delta between packets in both streams",
-  "general.inconsistent": "Inconsistent"
+  "general.inconsistent": "Inconsistent",
+  "ptp.average_offset": "Average offset",
+  "ptp.clock_type": "Clock type"
 }

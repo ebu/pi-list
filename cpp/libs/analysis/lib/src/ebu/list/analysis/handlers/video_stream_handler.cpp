@@ -140,9 +140,10 @@ void video_stream_handler::on_complete()
 {
     if(!current_frame_) return;
 
-    if(rtp_seqnum_analyzer_.dropped_packets() > 0)
+    if(rtp_seqnum_analyzer_.num_dropped_packets() > 0)
     {
-        video_description_.dropped_packet_count += rtp_seqnum_analyzer_.dropped_packets();
+        video_description_.dropped_packet_count += rtp_seqnum_analyzer_.num_dropped_packets();
+        video_description_.dropped_packet_samples = rtp_seqnum_analyzer_.dropped_packets();
         logger()->info("video rtp packet drop: {}", video_description_.dropped_packet_count);
     }
 
@@ -260,7 +261,7 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
         }
     }
 
-    rtp_seqnum_analyzer_.handle_packet(info.full_sequence_number);
+    rtp_seqnum_analyzer_.handle_packet(info.full_sequence_number, packet.info.udp.packet_time);
     dscp_.handle_packet(packet);
 
     this->on_packet(info);

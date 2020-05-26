@@ -88,8 +88,8 @@ SCENARIO("RTP decoding")
 
                 REQUIRE(header.view().version() == test::header_with_padding::version);
                 REQUIRE(header.view().padding() == test::header_with_padding::padding);
-                REQUIRE(sdu.view().size() == test::header_with_padding::payload_size + \
-                        test::header_with_padding::padding_size);
+                REQUIRE(sdu.view().size() ==
+                        test::header_with_padding::payload_size + test::header_with_padding::padding_size);
 
                 const auto start = sdu.view().data() + test::header_with_padding::payload_size;
                 const auto stop  = sdu.view().data() + sdu.view().size();

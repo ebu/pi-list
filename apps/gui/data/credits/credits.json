@@ -173,6 +173,12 @@
         "licenseUrl": "https://github.com/expressjs/multer/raw/master/LICENSE",
         "parents": "listwebserver"
     },
+    "node-cron@2.0.3": {
+        "licenses": "ISC",
+        "repository": "https://github.com/merencia/node-cron",
+        "licenseUrl": "https://github.com/merencia/node-cron/raw/master/LICENSE.md",
+        "parents": "listwebserver"
+    },
     "node-polyglot@2.4.0": {
         "licenses": "BSD-2-Clause",
         "repository": "https://github.com/airbnb/polyglot.js",
@@ -197,7 +203,7 @@
         "licenseUrl": "https://github.com/needim/noty/raw/master/LICENSE.txt",
         "parents": "list-ebu-gui"
     },
-    "npm@6.13.1": {
+    "npm@6.14.5": {
         "licenses": "Artistic-2.0",
         "repository": "https://github.com/npm/cli",
         "licenseUrl": "https://github.com/npm/cli/raw/master/.licensee.json",
@@ -227,6 +233,12 @@
         "licenseUrl": "https://github.com/amir20/phantomjs-node/raw/master/LICENSE.md",
         "parents": "listwebserver"
     },
+    "plotly.js@1.54.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/plotly/plotly.js",
+        "licenseUrl": "https://github.com/plotly/plotly.js/raw/master/LICENSE",
+        "parents": "list-ebu-gui"
+    },
     "prop-types@15.7.2": {
         "licenses": "MIT",
         "repository": "https://github.com/facebook/prop-types",
@@ -245,7 +257,7 @@
         "licenseUrl": "https://github.com/facebook/react/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
-    "react-dropzone@7.0.1": {
+    "react-dropzone@11.0.1": {
         "licenses": "MIT",
         "repository": "https://github.com/react-dropzone/react-dropzone",
         "licenseUrl": "https://github.com/react-dropzone/react-dropzone/raw/master/LICENSE",
@@ -255,6 +267,12 @@
         "licenses": "MIT",
         "repository": "https://github.com/sindresorhus/react-extras",
         "licenseUrl": "https://github.com/sindresorhus/react-extras/raw/master/license",
+        "parents": "list-ebu-gui"
+    },
+    "react-plotly.js@2.4.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/plotly/react-plotly.js",
+        "licenseUrl": "https://github.com/plotly/react-plotly.js/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
     "react-router-dom@5.1.2": {

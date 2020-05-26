@@ -232,6 +232,7 @@
   "buttons.go_back": "Zurück",
   "buttons.login": "Login",
   "buttons.register": "Resistrieren",
+  "navigation.home": "Startseite",
   "navigation.capture": "Aufnehmen",
   "navigation.live_streams": "Livestreams",
   "navigation.live_sources": "*** navigation.capture",
@@ -244,6 +245,8 @@
   "navigation.streams": "Streams",
   "navigation.stream": "Stream",
   "navigation.stream_comparisons": "Stream-Vergleich",
+  "navigation.download_manager": "Download-Manager",
+  "navigation.credits": "Credits",
   "realtime_feed.ok": "Informationen in Echtzeit erhalten",
   "live_stream.no_streams": "Keine Streams gefunden",
   "live_stream.no_streams_message": "Starten Sie die Aufnahme eines Livestreams um sie hier zu sehen",
@@ -302,5 +305,7 @@
   "workflow.st2022_7_analysis.numberOfDifferentPackets": "Different",
   "workflow.st2022_7_analysis.numberOfMissingPackets": "Missing",
   "workflow.st2022_7_analysis.deltaBetweenPackets": "Time delta between packets in both streams",
-  "general.inconsistent": "Inconsistent"
+  "general.inconsistent": "Inconsistent",
+  "ptp.average_offset": "Average offset",
+  "ptp.clock_type": "Clock type"
 }

@@ -7,10 +7,7 @@ using namespace bisect::bimo;
 
 namespace
 {
-    uint8_t clip_8(double v)
-    {
-        return static_cast<uint8_t>(round(std::max(0.0, std::min(255.0, v))));
-    }
+    uint8_t clip_8(double v) { return static_cast<uint8_t>(round(std::max(0.0, std::min(255.0, v)))); }
 
     std::tuple<uint8_t, uint8_t, uint8_t> ycbcr_to_rgb_rec709(int y, int cb, int cr)
     {
@@ -24,7 +21,6 @@ namespace
 
         return {clip_8(r), clip_8(g), clip_8(b)};
     }
-
 
     std::tuple<uint8_t, uint8_t, uint8_t> ycbcr_to_rgb_rec2020(int y, int cb, int cr)
     {
@@ -42,10 +38,10 @@ namespace
 
 oview analysis::from_ycbcr422_to_rgba(oview ycbcr422, media::video::video_dimensions dimensions)
 {
-    const auto width           = dimensions.width;
-    const auto height          = dimensions.height;
-    const auto rgba_line_size  = width * 4;
-    const auto rgba_frame_size = height * rgba_line_size;
+    const auto width                 = dimensions.width;
+    const auto height                = dimensions.height;
+    const auto rgba_line_size        = width * 4;
+    const auto rgba_frame_size       = height * rgba_line_size;
     constexpr auto pixels_per_pgroup = 2;
 
     auto converter = dimensions.height > 1080 ? ycbcr_to_rgb_rec2020 : ycbcr_to_rgb_rec709;

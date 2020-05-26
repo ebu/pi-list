@@ -14,6 +14,8 @@ namespace ebu_list::analysis
         histogram_listener_uptr create_c_inst_histogram_logger(const std::string& stream_id) const override;
         st2110::d20::rtp_ts_analyzer::listener_uptr create_rtp_ts_logger(const std::string& pcap_id,
                                                                          const std::string& stream_id) const override;
+        st2110::d20::rtp_analyzer::listener_uptr create_rtp_logger(const std::string& pcap_id,
+                                                                         const std::string& stream_id) const override;
         st2110::d21::vrx_analyzer::listener_uptr create_vrx_data_logger(const std::string& pcap_id,
                                                                         const std::string& stream_id,
                                                                         const std::string& prefix) const override;
@@ -24,10 +26,7 @@ namespace ebu_list::analysis
         audio_timing_analyser::listener_uptr create_audio_tsdf_logger(const std::string& pcap_id,
                                                                       const std::string& stream_id,
                                                                       const std::string& prefix) const override;
-        anc_stream_handler::listener_uptr create_anc_rtp_logger(const std::string& pcap_id,
-                                                                const std::string& stream_id,
-                                                                const std::string& prefix) const override;
-        histogram_listener_uptr create_anc_pkt_histogram_logger(const std::string& stream_id) const override;
+        histogram_listener_uptr create_pkt_histogram_logger(const std::string& stream_id) const override;
         ttml::stream_handler::listener_uptr create_ttml_document_logger(const std::string& stream_id) const override;
         ptp::state_machine::listener_ptr create_ptp_logger(const std::string& pcap_id) const override;
 

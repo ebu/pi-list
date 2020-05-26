@@ -17,13 +17,17 @@ Drill drown on each stream and understand the details | ![](docs/stream_drilldow
 
 ## Dematerialized version
 
-We deployed an [online version](http://list.ebu.io/) that you can start using right away.
+We deployed an [online version](https://list.ebu.io/) that you can start using right away.
 
 ## Your own instance of LIST
+
+:bangbang: LIST instance moved from HTTP to HTTPS.
 
 * [How to run your instance of LIST](./docs/local_docker.md)
 
 ## For developers
+
+:bangbang: LIST instance moved from HTTP to HTTPS.
 
 * [How to compile LIST](./docs/compiling_list.md)
 * [How to further develop LIST](./docs/list_development.md)

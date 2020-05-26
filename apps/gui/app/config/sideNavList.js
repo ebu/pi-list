@@ -34,6 +34,12 @@ export default {
             exact: false,
             liveOnly: true,
         },
+        {
+            link: routeNames.DOWNLOAD_MANAGER,
+            icon: 'archive',
+            labelTag: 'navigation.download_manager',
+            exact: false,
+        },
         // {
         //     link: routeNames.NETWORK,
         //     icon: 'wifi_tethering',

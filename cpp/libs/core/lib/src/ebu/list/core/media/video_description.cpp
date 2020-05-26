@@ -1,6 +1,8 @@
 #include "ebu/list/core/media/video_description.h"
 #include <cassert>
+#include <regex>
 #include <stdexcept>
+#include <string>
 
 using namespace ebu_list;
 using namespace ebu_list::media;
@@ -47,9 +49,28 @@ Rate video::parse_from_string(std::string_view s)
         return video::Rate(60, 1);
     else
     {
-        logger()->error("Invalid rate: {}", s);
-        // TODO: review this
-        // throw std::runtime_error("invalid preset value");
-        return {};
+        static const std::regex fraction_regex("^(\\d+)(\\/(\\d+))?$");
+
+        std::cmatch fraction_match;
+        const auto matches_fraction = std::regex_match(s.begin(), s.end(), fraction_match, fraction_regex);
+        LIST_ENFORCE(matches_fraction, std::runtime_error, "Unknown rate: {}", s);
+
+        assert(fraction_match.size() >= 4);
+        assert(fraction_match[1].matched);
+
+        if(fraction_match[3].matched)
+        {
+            // It is a fraction
+            const std::string d{fraction_match[1].first, fraction_match[1].second};
+            const std::string n{fraction_match[3].first, fraction_match[3].second};
+            auto den = std::stoi(d);
+            auto num = std::stoi(n);
+            return video::Rate(den, num);
+        }
+
+        // It is a single number
+        const std::string n{fraction_match[1].first, fraction_match[0].second};
+        auto rate = std::stoi(n);
+        return video::Rate(rate, 1);
     }
 }

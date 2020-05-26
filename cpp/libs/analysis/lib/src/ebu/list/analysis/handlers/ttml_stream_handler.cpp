@@ -46,9 +46,10 @@ struct ebu_list::analysis::ttml::stream_handler::impl
 
     void on_complete()
     {
-        if(rtp_seqnum_analyzer_.dropped_packets() > 0)
+        if(rtp_seqnum_analyzer_.num_dropped_packets() > 0)
         {
-            ttml_description_.dropped_packet_count += rtp_seqnum_analyzer_.dropped_packets();
+            ttml_description_.dropped_packet_count += rtp_seqnum_analyzer_.num_dropped_packets();
+            ttml_description_.dropped_packet_samples = rtp_seqnum_analyzer_.dropped_packets();
             logger()->info("TTML RTP packet drop: {}", ttml_description_.dropped_packet_count);
         }
 
@@ -72,7 +73,7 @@ struct ebu_list::analysis::ttml::stream_handler::impl
 
         const auto end = ptr + payload_header.length;
 
-        rtp_seqnum_analyzer_.handle_packet(sequence_number);
+        rtp_seqnum_analyzer_.handle_packet(sequence_number, packet.info.udp.packet_time);
         dscp_.handle_packet(packet);
 
         current_doc_.insert(current_doc_.end(), ptr, end);

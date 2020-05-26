@@ -47,9 +47,7 @@ detector::status_description anc_format_detector::handle_data(const rtp::packet&
         return detector::status_description{/*.state*/ detector::state::invalid,
                                             /*.error_code*/ "STATUS_CODE_ANC_WRONG_FIELD_VALUE"};
         break;
-    case static_cast<uint8_t>(field_kind::progressive):
-        description_.scan_type = video::scan_type::PROGRESSIVE;
-        break;
+    case static_cast<uint8_t>(field_kind::progressive): description_.scan_type = video::scan_type::PROGRESSIVE; break;
     default: description_.scan_type = video::scan_type::INTERLACED; break;
     }
 
@@ -146,19 +144,19 @@ detector::status_description anc_format_detector::handle_data(const rtp::packet&
         /* could be truncated */
         logger()->warn("Ancillary stream shorter than expected");
         return detector::status_description{/*.state*/ detector::state::detecting,
-                                            /*.error_code*/ "STATUS_CODE_ANC_DETECTING"};
+            /*.error_code*/ "STATUS_CODE_ANC_DETECTING"};
     }
-    else if ((p < end) && !packet.info.rtp.view().padding())
+    else if((p < end) && !packet.info.rtp.view().padding())
     {
         logger()->warn("Ancillary stream longer than expected");
         return detector::status_description{/*.state*/ detector::state::invalid,
-                                            /*.error_code*/ "STATUS_CODE_ANC_PKT_TOO_LONG"};
+            /*.error_code*/ "STATUS_CODE_ANC_PKT_TOO_LONG"};
     }
-    else if (packet.info.rtp.view().padding() && !rtp::validate_padding(p, end))
+    else if(packet.info.rtp.view().padding() && !rtp::validate_padding(p, end))
     {
         logger()->warn("Ancillary wrong padding value");
         return detector::status_description{/*.state*/ detector::state::invalid,
-                                    /*.error_code*/ "STATUS_CODE_ANC_WRONG_PADDING"};
+            /*.error_code*/ "STATUS_CODE_ANC_WRONG_PADDING"};
     }
 
     const auto res = detector_.handle_data(packet);

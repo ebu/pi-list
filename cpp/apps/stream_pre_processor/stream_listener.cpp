@@ -1,6 +1,7 @@
 #include "stream_listener.h"
 #include "ebu/list/analysis/constants.h"
 #include "ebu/list/analysis/serialization/stream_identification.h"
+#include <vector>
 
 using namespace ebu_list;
 using namespace ebu_list::analysis;
@@ -12,13 +13,16 @@ namespace
 {
     void save_on_db(const db_serializer& db, const stream_with_details& stream_info,
                     std::map<std::string, std::vector<std::string>>& detectors_error_codes,
-                    int64_t num_packets = 0, uint16_t num_dropped_packets = 0)
+                    int64_t num_packets = 0,
+                    uint16_t num_dropped_packets = 0,
+                    std::vector<ebu_list::rtp::packet_gap_info> dropped_packet_samples = {})
     {
         nlohmann::json serialized_streams_details = stream_with_details_serializer::to_json(stream_info);
         if(num_packets > 0)
         {
             serialized_streams_details["statistics"]["packet_count"]         = num_packets;
             serialized_streams_details["statistics"]["dropped_packet_count"] = num_dropped_packets;
+            serialized_streams_details["statistics"]["dropped_packet_samples"] = dropped_packet_samples;
         }
 
         if(detectors_error_codes["video"].size() > 0)
@@ -37,7 +41,8 @@ namespace
 stream_listener::stream_listener(rtp::packet first_packet, std::string pcap_id, std::string mongo_url)
     : detector_(first_packet), num_packets_(1), db_(mongo_url)
 {
-    seqnum_analyzer_.handle_packet(static_cast<uint16_t>(first_packet.info.rtp.view().sequence_number()));
+    seqnum_analyzer_.handle_packet(static_cast<uint16_t>(first_packet.info.rtp.view().sequence_number()),
+                                   first_packet.info.udp.packet_time);
 
     stream_id_.network.source_mac      = first_packet.info.ethernet_info.source_address;
     stream_id_.network.source          = source(first_packet.info.udp);
@@ -62,7 +67,8 @@ void stream_listener::on_data(const rtp::packet& packet)
     // NOTE: seqnum_analyzer_ is looking for dropped packets but only for
     // streams of unknown types. Therefore it only assumes the presence of
     // RTP's sequence number field, hence the uint16_t qualification.
-    seqnum_analyzer_.handle_packet(static_cast<uint16_t>(packet.info.rtp.view().sequence_number()));
+    seqnum_analyzer_.handle_packet(static_cast<uint16_t>(packet.info.rtp.view().sequence_number()),
+                                   packet.info.udp.packet_time);
 
     dscp_.handle_packet(packet);
 
@@ -138,7 +144,8 @@ void stream_listener::on_complete()
             save_on_db(db_, swd, detectors_error_codes);
         else
             save_on_db(db_, swd, detectors_error_codes, num_packets_,
-                       static_cast<uint16_t>(seqnum_analyzer_.dropped_packets()));
+                       static_cast<uint16_t>(seqnum_analyzer_.num_dropped_packets()),
+                       seqnum_analyzer_.dropped_packets());
     }
 
     return;

@@ -60,12 +60,12 @@ uint32_t header_lens::ssrc() const noexcept
 bool rtp::validate_padding(const std::byte* start, const std::byte* end)
 {
     auto padding_count = 0;
-    auto p = start;
+    auto p             = start;
 
     /* padding bytes must be 0 */
     while(p < (end - 1))
     {
-        if (static_cast<uint8_t>(*p++))
+        if(static_cast<uint8_t>(*p++))
         {
             return false;
         }

@@ -49,8 +49,8 @@ namespace ebu_list::rtp::test
 
     namespace header_with_padding
     {
-        constexpr auto version         = 0x02;
-        constexpr auto padding         = true;
+        constexpr auto version = 0x02;
+        constexpr auto padding = true;
 
         constexpr auto payload_size = 8;
         constexpr auto padding_size = 4;

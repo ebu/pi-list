@@ -3,6 +3,7 @@ const influxDbManager = require('../managers/influx-db');
 const Stream = require('../models/stream');
 const constants = require('../enums/analysis');
 const { appendError, validateMulticastAddresses } = require('./utils');
+const { doRtpTicksAnalysis, validateRtpTicks, doRtpTsAnalysis, validateRtpTs, doInterFrameRtpTsDeltaAnalysis, validateInterFrameRtpTsDelta } = require('./rtp');
 
 // Definitions
 // TODO get from a validation template
@@ -54,199 +55,15 @@ function map2110d21Vrx(stream) {
     return stream;
 }
 
-// Sets analyses.packet_ts_vs_rtp_ts.result to compliant or not_compliant
-// - if not compliant, adds and error to analyses.errors
-function validateRtpTimes(stream) {
-    const delta = _.get(stream, 'analyses.packet_ts_vs_rtp_ts.details.range', null);
-
-    if (delta === null) {
-        _.set(stream, 'analyses.packet_ts_vs_rtp_ts.result', constants.outcome.not_compliant);
-        stream = appendError(stream, {
-            id: constants.errors.missing_information,
-            value: 'no value for "analyses.packet_ts_vs_rtp_ts.details.range"',
-        });
-
-        return;
-    }
-    const limit = validation.rtp.deltaPktTsVsRtpTsLimit;
-    _.set(stream, 'analyses.packet_ts_vs_rtp_ts.details.limit', limit);
-    _.set(stream, 'analyses.packet_ts_vs_rtp_ts.details.unit', 'ns');
-
-    const { min, max } = delta;
-    if (min < limit.min || max > limit.max) {
-        _.set(stream, 'analyses.packet_ts_vs_rtp_ts.result', constants.outcome.not_compliant);
-        stream = appendError(stream, {
-            id: constants.errors.invalid_delta_packet_ts_vs_rtp_ts,
-        });
-    } else {
-        _.set(stream, 'analyses.packet_ts_vs_rtp_ts.result', constants.outcome.compliant);
-    }
-
-    return stream;
-}
-
-function getInterFrameRtpTsDeltaLimit(stream) {
-    const rate = _.get(stream, 'statistics.rate', null);
-
-    if (rate === null) {
-        return null;
-    }
-
-    const rtpClockRate = 90000;
-    const interTicks = rtpClockRate / rate;
-
-    return {
-        min: Math.floor(interTicks),
-        max: Math.ceil(interTicks),
-    };
-}
-
-// Sets analyses.inter_frame_rtp_ts_delta.result to compliant or not_compliant
-// - if not compliant, adds and error to analyses.errors
-function validateInterFrameRtpTSDelta(stream) {
-    const delta = _.get(stream, 'analyses.inter_frame_rtp_ts_delta.details.range', null);
-
-    if (delta === null) {
-        _.set(stream, 'analyses.inter_frame_rtp_ts_delta.result', constants.outcome.not_compliant);
-        stream = appendError(stream, {
-            id: constants.errors.missing_information,
-            value: 'no value for "analyses.inter_frame_rtp_ts_delta.details.range"',
-        });
-
-        return;
-    }
-
-    const limit = getInterFrameRtpTsDeltaLimit(stream);
-    if (limit === null) {
-        _.set(stream, 'analyses.inter_frame_rtp_ts_delta.result', constants.outcome.not_compliant);
-        stream = appendError(stream, {
-            id: constants.errors.missing_information,
-            value: 'could not calculate the limits',
-        });
-
-        return;
-    }
-
-    _.set(stream, 'analyses.inter_frame_rtp_ts_delta.details.limit', limit);
-    _.set(stream, 'analyses.inter_frame_rtp_ts_delta.details.unit', 'ticks');
-
-    const { min, max } = delta;
-    if (min < limit.min || max > limit.max) {
-        _.set(stream, 'analyses.inter_frame_rtp_ts_delta.result', constants.outcome.not_compliant);
-        stream = appendError(stream, {
-            id: constants.errors.invalid_inter_frame_rtp_ts_delta,
-        });
-    } else {
-        _.set(stream, 'analyses.inter_frame_rtp_ts_delta.result', constants.outcome.compliant);
-    }
-
-    return stream;
-}
-
-// Sets analyses.rtp_ts_vs_nt.result to compliant or not_compliant
-// - if not compliant, adds and error to analyses.errors
-function validateRtpTicks(stream) {
-    const delta = _.get(stream, 'analyses.rtp_ts_vs_nt.details.range', null);
-    if (delta === null) {
-        _.set(stream, 'analyses.rtp_ts_vs_nt.result', constants.outcome.not_compliant);
-        stream = appendError(stream, {
-            id: constants.errors.missing_information,
-            value: 'no value for "analyses.rtp_ts_vs_nt.details.range"',
-        });
-
-        return stream;
-    }
-
-    const limit = validation.rtp.deltaRtpTsVsNtLimit;
-    _.set(stream, 'analyses.rtp_ts_vs_nt.details.limit', limit);
-    _.set(stream, 'analyses.rtp_ts_vs_nt.details.unit', 'ticks');
-
-    if (delta.min < limit.min || delta.max > limit.max) {
-        _.set(stream, 'analyses.rtp_ts_vs_nt.result', constants.outcome.not_compliant);
-        stream = appendError(stream, {
-            id: constants.errors.invalid_rtp_ts_vs_nt,
-        });
-    } else {
-        _.set(stream, 'analyses.rtp_ts_vs_nt.result', constants.outcome.compliant);
-    }
-
-    return stream;
-}
-
-// Returns one promise that resolves to an object with the updated analysis.
-const doRtpTicksAnalysis = async (pcapId, stream) => {
-    const value = await influxDbManager.getDeltaRtpVsNtTicksMinMax(pcapId, stream.id);
-
-    if (_.isNil(value) || value.length < 1 || _.isNil(value[0])) {
-        stream = appendError(stream, {
-            id: constants.errors.missing_information,
-            value: 'no DeltaRtpVsNtTicksMinMax for stream `stream.id` in `pcapId`',
-        });
-        return stream;
-    }
-
-    const { min, max, avg } = value[0];
-    _.set(stream, 'analyses.rtp_ts_vs_nt.details.range', {
-        min,
-        max,
-        avg,
-    });
-
-    return stream;
-};
-
-// Returns one promise that resolves to an object with the updated analysis.
-const doRtpTimeAnalysis = async (pcapId, stream) => {
-    const value = await influxDbManager.getDeltaPacketTimeVsRtpTimeMinMax(pcapId, stream.id);
-
-    if (_.isNil(value) || value.length < 1 || _.isNil(value[0])) {
-        stream = appendError(stream, {
-            id: constants.errors.missing_information,
-            value: 'no DeltaPacketTimeVsRtpTimeMinMax for stream `stream.id` in `pcapId`',
-        });
-        return stream;
-    }
-
-    const { min, max, avg } = value[0];
-    _.set(stream, 'analyses.packet_ts_vs_rtp_ts.details.range', {
-        min,
-        max,
-        avg,
-    });
-
-    return stream;
-};
-
-// Returns one promise that resolves to an object with the updated analysis.
-const doInterFrameRtpTSDeltaAnalysis = async (pcapId, stream) => {
-    const value = await influxDbManager.getDeltaToPreviousRtpTsMinMax(pcapId, stream.id);
-
-    if (_.isNil(value) || value.length < 1 || _.isNil(value[0])) {
-        stream = appendError(stream, {
-            id: constants.errors.missing_information,
-            value: 'no DeltaToPreviousRtpTsMinMax for stream `stream.id` in `pcapId`',
-        });
-        return stream;
-    }
-
-    const { min, max, avg } = value[0];
-    _.set(stream, 'analyses.inter_frame_rtp_ts_delta.details.range', {
-        min,
-        max,
-        avg,
-    });
-
-    return stream;
-};
 
 // Returns one promise, which result is undefined.
 const doVideoStreamAnalysis = async (pcapId, stream) => {
     await doRtpTicksAnalysis(pcapId, stream);
-    await doRtpTimeAnalysis(pcapId, stream);
-    await validateRtpTimes(stream);
-    await doInterFrameRtpTSDeltaAnalysis(pcapId, stream);
-    await validateInterFrameRtpTSDelta(stream);
-    await validateRtpTicks(stream);
+    await validateRtpTicks(stream, validation);
+    await doRtpTsAnalysis(pcapId, stream);
+    await validateRtpTs(stream, validation);
+    await doInterFrameRtpTsDeltaAnalysis(pcapId, stream);
+    await validateInterFrameRtpTsDelta(stream);
     await map2110d21Cinst(stream);
     await map2110d21Vrx(stream);
     await validateMulticastAddresses(stream);

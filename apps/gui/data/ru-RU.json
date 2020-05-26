@@ -232,6 +232,7 @@
   "buttons.go_back": "Вернуться",
   "buttons.login": "Авторизоваться",
   "buttons.register": "Зарегистрироваться",
+  "navigation.home": "домашняя страница",
   "navigation.capture": "Захватить",
   "navigation.live_streams": "Живые потоки",
   "navigation.live_sources": "*** navigation.capture",
@@ -244,6 +245,8 @@
   "navigation.streams": "Потоки",
   "navigation.stream": "Поток",
   "navigation.stream_comparisons": "поток Сравнение",
+  "navigation.download_manager": "Менеджер закачек",
+  "navigation.credits": "кредиты",
   "realtime_feed.ok": "Получение информации в режиме реального времени",
   "live_stream.no_streams": "Потоки не найдены",
   "live_stream.no_streams_message": "Начьните записи живого потока, чтобы увидеть его здесь.",
@@ -302,5 +305,11 @@
   "workflow.st2022_7_analysis.numberOfDifferentPackets": "Different",
   "workflow.st2022_7_analysis.numberOfMissingPackets": "Missing",
   "workflow.st2022_7_analysis.deltaBetweenPackets": "Time delta between packets in both streams",
-  "general.inconsistent": "Inconsistent"
+  "general.inconsistent": "Inconsistent",
+  "dmngr.name": "",
+  "dmngr.availableon": "",
+  "dmngr.availableuntil": "",
+  "dmngr.download": "",
+  "ptp.average_offset": "Average offset",
+  "ptp.clock_type": "Clock type"
 }

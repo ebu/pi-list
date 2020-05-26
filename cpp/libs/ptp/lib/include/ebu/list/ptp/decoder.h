@@ -38,14 +38,14 @@ namespace ebu_list::ptp
         };
     } // namespace v2
 
-    using some_message = std::variant<v1::message, v2::sync, v2::follow_up, v2::delay_req, v2::delay_resp, v2::other>;
+    using some_message = std::variant<v1::message, v2::announce, v2::sync, v2::follow_up, v2::delay_req, v2::delay_resp, v2::other>;
 
     using maybe_message = std::optional<some_message>;
     maybe_message decode(clock::time_point packet_timestamp, oview&& pdu);
 
     struct origin
     {
-        uint64_t clock_identity;
+        v2::clock_id_t clock_identity;
         uint8_t subdomain_number;
     };
 
