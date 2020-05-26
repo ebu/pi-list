@@ -12,18 +12,18 @@ using namespace ebu_list::analysis;
 
 namespace
 {
-    constexpr auto pcap_file_name    = "pcap.json";
-    constexpr auto stream_file_name  = "stream.json";
-    constexpr auto cinst_file_name   = "cinst.json";
-    constexpr auto vrx_file_name     = "vrx.json";
-    constexpr auto ptp_log_file      = "ptp_log.txt";
-    constexpr auto c_inst_log_file   = "c_inst_log.txt";
-    constexpr auto rtp_ts_log_file   = "rtp_ts_log.txt";
-    constexpr auto vrx_log_file      = "vrx_log.txt";
-    constexpr auto rtp_log_file      = "rtp_log.txt";
-    constexpr auto audio_rtp_log_file= "rtp_log.txt";
-    constexpr auto tsdf_log_file     = "tsdf_log.txt";
-    constexpr auto pkt_hist_file_name= "pkt_hist.json";
+    constexpr auto pcap_file_name     = "pcap.json";
+    constexpr auto stream_file_name   = "stream.json";
+    constexpr auto cinst_file_name    = "cinst.json";
+    constexpr auto vrx_file_name      = "vrx.json";
+    constexpr auto ptp_log_file       = "ptp_log.txt";
+    constexpr auto c_inst_log_file    = "c_inst_log.txt";
+    constexpr auto rtp_ts_log_file    = "rtp_ts_log.txt";
+    constexpr auto vrx_log_file       = "vrx_log.txt";
+    constexpr auto rtp_log_file       = "rtp_log.txt";
+    constexpr auto audio_rtp_log_file = "rtp_log.txt";
+    constexpr auto tsdf_log_file      = "tsdf_log.txt";
+    constexpr auto pkt_hist_file_name = "pkt_hist.json";
 } // namespace
 
 fs_handler_factory::fs_handler_factory(const path& storage_base_dir) : storage_base_dir_(storage_base_dir)
@@ -49,7 +49,7 @@ st2110::d20::rtp_ts_analyzer::listener_uptr fs_handler_factory::create_rtp_ts_lo
 }
 
 st2110::d20::rtp_analyzer::listener_uptr fs_handler_factory::create_rtp_logger(const std::string& pcap_id,
-                                                                                     const std::string& stream_id) const
+                                                                               const std::string& stream_id) const
 {
     return std::make_unique<fs_rtp_logger>((storage_base_dir_ / pcap_id / stream_id / rtp_log_file).string());
 }

@@ -47,13 +47,14 @@ namespace
         if(!maybe_ptp_info) return j_fi;
 
         const auto& ptp_info = *maybe_ptp_info;
-        
+
         j_fi["ptp"] = json::object();
 
         if(ptp_info.is_two_step) j_fi["ptp"]["is_two_step"] = ptp_info.is_two_step.value();
         if(ptp_info.master_id) j_fi["ptp"]["master_id"] = ptp::v2::to_string(ptp_info.master_id.value());
         if(ptp_info.grandmaster_id) j_fi["ptp"]["grandmaster_id"] = ptp::v2::to_string(ptp_info.grandmaster_id.value());
-        j_fi["ptp"]["average_offset"] = std::chrono::duration_cast<std::chrono::nanoseconds>(ptp_info.average_offset).count();
+        j_fi["ptp"]["average_offset"] =
+            std::chrono::duration_cast<std::chrono::nanoseconds>(ptp_info.average_offset).count();
 
         return j_fi;
     }

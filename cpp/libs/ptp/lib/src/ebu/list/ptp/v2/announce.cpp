@@ -17,5 +17,6 @@ auto announce_message_lens::grandmaster_identity() const noexcept -> const std::
 
 std::string v2::to_string(const clock_id_t& id)
 {
-    return fmt::format("{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}", id[0], id[1], id[2], id[3], id[4], id[5], id[6], id[7]);
+    return fmt::format("{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}-{:02X}", id[0], id[1], id[2], id[3], id[4],
+                       id[5], id[6], id[7]);
 }

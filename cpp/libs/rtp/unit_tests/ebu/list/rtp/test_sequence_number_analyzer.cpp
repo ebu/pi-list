@@ -117,7 +117,7 @@ SCENARIO("Sequence number analyser")
     GIVEN("a sequence with a single missed packet")
     {
         sequence_number_analyzer<uint32_t> analyzer;
-        const clock::time_point ignore_timestamp {};
+        const clock::time_point ignore_timestamp{};
         const clock::time_point ts = clock::now();
 
         analyzer.handle_packet(0, ignore_timestamp);
@@ -131,16 +131,25 @@ SCENARIO("Sequence number analyser")
         WHEN("we check the dropped packet gaps")
         {
             THEN("it has one") { REQUIRE(analyzer.dropped_packets().size() == 1); }
-            THEN("last packet has sequence number #1") { REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == 1); }
-            THEN("newest packet has sequence number #3") { REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == 3); }
-            THEN("newest packet timestamp is ts") { REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts); }
+            THEN("last packet has sequence number #1")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == 1);
+            }
+            THEN("newest packet has sequence number #3")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == 3);
+            }
+            THEN("newest packet timestamp is ts")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts);
+            }
         }
     }
 
     GIVEN("a sequence with 5 missed packets")
     {
         sequence_number_analyzer<uint32_t> analyzer;
-        const clock::time_point ignore_timestamp {};
+        const clock::time_point ignore_timestamp{};
         const clock::time_point ts = clock::now();
 
         analyzer.handle_packet(0, ignore_timestamp);
@@ -154,16 +163,25 @@ SCENARIO("Sequence number analyser")
         WHEN("we check the dropped packet gaps")
         {
             THEN("it has one") { REQUIRE(analyzer.dropped_packets().size() == 1); }
-            THEN("last packet has sequence number #1") { REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == 1); }
-            THEN("newest packet has sequence number #7") { REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == 7); }
-            THEN("newest packet timestamp is ts") { REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts); }
+            THEN("last packet has sequence number #1")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == 1);
+            }
+            THEN("newest packet has sequence number #7")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == 7);
+            }
+            THEN("newest packet timestamp is ts")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts);
+            }
         }
     }
 
     GIVEN("a sequence with 5 missed packets before the numeric limit")
     {
         sequence_number_analyzer<uint32_t> analyzer;
-        const clock::time_point ignore_timestamp {};
+        const clock::time_point ignore_timestamp{};
         const clock::time_point ts = clock::now();
 
         analyzer.handle_packet(UINT32_MAX - 6, ignore_timestamp);
@@ -177,16 +195,25 @@ SCENARIO("Sequence number analyser")
         WHEN("we check the dropped packet gaps")
         {
             THEN("it has one") { REQUIRE(analyzer.dropped_packets().size() == 1); }
-            THEN("last packet has sequence number #UINT32_MAX - 6") { REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == UINT32_MAX - 6); }
-            THEN("newest packet has sequence number #UINT32_MAX") { REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == UINT32_MAX); }
-            THEN("newest packet timestamp is ts") { REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts); }
+            THEN("last packet has sequence number #UINT32_MAX - 6")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == UINT32_MAX - 6);
+            }
+            THEN("newest packet has sequence number #UINT32_MAX")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == UINT32_MAX);
+            }
+            THEN("newest packet timestamp is ts")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts);
+            }
         }
     }
 
     GIVEN("a sequence with a single missed packet at the numeric limit")
     {
         sequence_number_analyzer<uint32_t> analyzer;
-        const clock::time_point ignore_timestamp {};
+        const clock::time_point ignore_timestamp{};
         const clock::time_point ts = clock::now();
 
         analyzer.handle_packet(UINT32_MAX - 4, ignore_timestamp);
@@ -205,16 +232,25 @@ SCENARIO("Sequence number analyser")
         WHEN("we check the dropped packet gaps")
         {
             THEN("it has one") { REQUIRE(analyzer.dropped_packets().size() == 1); }
-            THEN("last packet has sequence number #UINT32_MAX - 1") { REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == UINT32_MAX - 1); }
-            THEN("newest packet has sequence number #0") { REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == 0); }
-            THEN("newest packet timestamp is ts") { REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts); }
+            THEN("last packet has sequence number #UINT32_MAX - 1")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == UINT32_MAX - 1);
+            }
+            THEN("newest packet has sequence number #0")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == 0);
+            }
+            THEN("newest packet timestamp is ts")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts);
+            }
         }
     }
 
     GIVEN("a sequence with 5 missed packets around the numeric limit")
     {
         sequence_number_analyzer<uint32_t> analyzer;
-        const clock::time_point ignore_timestamp {};
+        const clock::time_point ignore_timestamp{};
         const clock::time_point ts1 = clock::now();
         const clock::time_point ts2 = clock::now();
         const clock::time_point ts3 = clock::now();
@@ -231,22 +267,49 @@ SCENARIO("Sequence number analyser")
         WHEN("we check the dropped packet gaps")
         {
             THEN("it has three") { REQUIRE(analyzer.dropped_packets().size() == 3); }
-            THEN("first gap's last packet has sequence number #UINT32_MAX - 4") { REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == UINT32_MAX - 4); }
-            THEN("first gap's newest packet has sequence number #UINT32_MAX - 1") { REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == UINT32_MAX - 1); }
-            THEN("first gap's newest packet timestamp is ts1") { REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts1); }
-            THEN("second gap's last packet has sequence number #UINT32_MAX - 1") { REQUIRE(analyzer.dropped_packets()[1].last_sequence_number == UINT32_MAX - 1); }
-            THEN("second gap's newest packet has sequence number #0") { REQUIRE(analyzer.dropped_packets()[1].first_sequence_number == 0); }
-            THEN("second gap's newest packet timestamp is ts2") { REQUIRE(analyzer.dropped_packets()[1].first_packet_timestamp == ts2); }
-            THEN("third gap's last packet has sequence number #0") { REQUIRE(analyzer.dropped_packets()[2].last_sequence_number == 0); }
-            THEN("third gap's newest packet has sequence number #3") { REQUIRE(analyzer.dropped_packets()[2].first_sequence_number == 3); }
-            THEN("third gap's newest packet timestamp is ts3") { REQUIRE(analyzer.dropped_packets()[2].first_packet_timestamp == ts3); }
+            THEN("first gap's last packet has sequence number #UINT32_MAX - 4")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == UINT32_MAX - 4);
+            }
+            THEN("first gap's newest packet has sequence number #UINT32_MAX - 1")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == UINT32_MAX - 1);
+            }
+            THEN("first gap's newest packet timestamp is ts1")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts1);
+            }
+            THEN("second gap's last packet has sequence number #UINT32_MAX - 1")
+            {
+                REQUIRE(analyzer.dropped_packets()[1].last_sequence_number == UINT32_MAX - 1);
+            }
+            THEN("second gap's newest packet has sequence number #0")
+            {
+                REQUIRE(analyzer.dropped_packets()[1].first_sequence_number == 0);
+            }
+            THEN("second gap's newest packet timestamp is ts2")
+            {
+                REQUIRE(analyzer.dropped_packets()[1].first_packet_timestamp == ts2);
+            }
+            THEN("third gap's last packet has sequence number #0")
+            {
+                REQUIRE(analyzer.dropped_packets()[2].last_sequence_number == 0);
+            }
+            THEN("third gap's newest packet has sequence number #3")
+            {
+                REQUIRE(analyzer.dropped_packets()[2].first_sequence_number == 3);
+            }
+            THEN("third gap's newest packet timestamp is ts3")
+            {
+                REQUIRE(analyzer.dropped_packets()[2].first_packet_timestamp == ts3);
+            }
         }
     }
 
     GIVEN("a sequence with a single missed packet at the 16-bit numeric limit")
     {
         sequence_number_analyzer<uint16_t> analyzer;
-        const clock::time_point ignore_timestamp {};
+        const clock::time_point ignore_timestamp{};
         const clock::time_point ts = clock::now();
 
         analyzer.handle_packet(UINT16_MAX - 4, ignore_timestamp);
@@ -265,16 +328,25 @@ SCENARIO("Sequence number analyser")
         WHEN("we check the dropped packet gaps")
         {
             THEN("it has one") { REQUIRE(analyzer.dropped_packets().size() == 1); }
-            THEN("last packet has sequence number #UINT16_MAX - 1") { REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == UINT16_MAX - 1); }
-            THEN("newest packet has sequence number #0") { REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == 0); }
-            THEN("newest packet timestamp is ts") { REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts); }
+            THEN("last packet has sequence number #UINT16_MAX - 1")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == UINT16_MAX - 1);
+            }
+            THEN("newest packet has sequence number #0")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == 0);
+            }
+            THEN("newest packet timestamp is ts")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts);
+            }
         }
     }
 
     GIVEN("a sequence with a 5 missed packets around the 16-bit numeric limit")
     {
         sequence_number_analyzer<uint16_t> analyzer;
-        const clock::time_point ignore_timestamp {};
+        const clock::time_point ignore_timestamp{};
         const clock::time_point ts1 = clock::now();
         const clock::time_point ts2 = clock::now();
         const clock::time_point ts3 = clock::now();
@@ -291,15 +363,42 @@ SCENARIO("Sequence number analyser")
         WHEN("we check the dropped packet gaps")
         {
             THEN("it has three") { REQUIRE(analyzer.dropped_packets().size() == 3); }
-            THEN("first gap's last packet has sequence number #UINT16_MAX - 4") { REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == UINT16_MAX - 4); }
-            THEN("first gap's newest packet has sequence number #UINT16_MAX - 1") { REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == UINT16_MAX - 1); }
-            THEN("first gap's newest packet timestamp is ts1") { REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts1); }
-            THEN("second gap's last packet has sequence number #UINT16_MAX - 1") { REQUIRE(analyzer.dropped_packets()[1].last_sequence_number == UINT16_MAX - 1); }
-            THEN("second gap's newest packet has sequence number #0") { REQUIRE(analyzer.dropped_packets()[1].first_sequence_number == 0); }
-            THEN("second gap's newest packet timestamp is ts2") { REQUIRE(analyzer.dropped_packets()[1].first_packet_timestamp == ts2); }
-            THEN("third gap's last packet has sequence number #0") { REQUIRE(analyzer.dropped_packets()[2].last_sequence_number == 0); }
-            THEN("third gap's newest packet has sequence number #3") { REQUIRE(analyzer.dropped_packets()[2].first_sequence_number == 3); }
-            THEN("third gap's newest packet timestamp is ts3") { REQUIRE(analyzer.dropped_packets()[2].first_packet_timestamp == ts3); }
+            THEN("first gap's last packet has sequence number #UINT16_MAX - 4")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == UINT16_MAX - 4);
+            }
+            THEN("first gap's newest packet has sequence number #UINT16_MAX - 1")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == UINT16_MAX - 1);
+            }
+            THEN("first gap's newest packet timestamp is ts1")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts1);
+            }
+            THEN("second gap's last packet has sequence number #UINT16_MAX - 1")
+            {
+                REQUIRE(analyzer.dropped_packets()[1].last_sequence_number == UINT16_MAX - 1);
+            }
+            THEN("second gap's newest packet has sequence number #0")
+            {
+                REQUIRE(analyzer.dropped_packets()[1].first_sequence_number == 0);
+            }
+            THEN("second gap's newest packet timestamp is ts2")
+            {
+                REQUIRE(analyzer.dropped_packets()[1].first_packet_timestamp == ts2);
+            }
+            THEN("third gap's last packet has sequence number #0")
+            {
+                REQUIRE(analyzer.dropped_packets()[2].last_sequence_number == 0);
+            }
+            THEN("third gap's newest packet has sequence number #3")
+            {
+                REQUIRE(analyzer.dropped_packets()[2].first_sequence_number == 3);
+            }
+            THEN("third gap's newest packet timestamp is ts3")
+            {
+                REQUIRE(analyzer.dropped_packets()[2].first_packet_timestamp == ts3);
+            }
         }
     }
 
@@ -307,7 +406,7 @@ SCENARIO("Sequence number analyser")
           "at the lower and upper numeric limits")
     {
         sequence_number_analyzer<uint32_t> analyzer;
-        const clock::time_point ignore_timestamp {};
+        const clock::time_point ignore_timestamp{};
         const clock::time_point ts = clock::now();
 
         analyzer.handle_packet(0, ignore_timestamp);
@@ -324,16 +423,25 @@ SCENARIO("Sequence number analyser")
         WHEN("we check the dropped packet gaps")
         {
             THEN("it has one") { REQUIRE(analyzer.dropped_packets().size() == 1); }
-            THEN("last packet has sequence number #0") { REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == 0); }
-            THEN("newest packet has sequence number #UINT32_MAX") { REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == UINT32_MAX); }
-            THEN("newest packet timestamp is ts") { REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts); }
+            THEN("last packet has sequence number #0")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == 0);
+            }
+            THEN("newest packet has sequence number #UINT32_MAX")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == UINT32_MAX);
+            }
+            THEN("newest packet timestamp is ts")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts);
+            }
         }
     }
 
     GIVEN("a sequence that drops all packets between index 2 and the next index 1")
     {
         sequence_number_analyzer<uint32_t> analyzer;
-        const clock::time_point ignore_timestamp {};
+        const clock::time_point ignore_timestamp{};
         const clock::time_point ts = clock::now();
 
         analyzer.handle_packet(2, ignore_timestamp);
@@ -350,16 +458,25 @@ SCENARIO("Sequence number analyser")
         WHEN("we check the dropped packet gaps")
         {
             THEN("it has one") { REQUIRE(analyzer.dropped_packets().size() == 1); }
-            THEN("last packet has sequence number #2") { REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == 2); }
-            THEN("newest packet has sequence number #1") { REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == 1); }
-            THEN("newest packet timestamp is ts") { REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts); }
+            THEN("last packet has sequence number #2")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == 2);
+            }
+            THEN("newest packet has sequence number #1")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == 1);
+            }
+            THEN("newest packet timestamp is ts")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts);
+            }
         }
     }
 
     GIVEN("a sequence that drops all packets between index 2 and the next index 1, three times in a row")
     {
         sequence_number_analyzer<uint32_t> analyzer;
-        const clock::time_point ignore_timestamp {};
+        const clock::time_point ignore_timestamp{};
         const clock::time_point ts1 = clock::now();
         const clock::time_point ts2 = clock::now();
         const clock::time_point ts3 = clock::now();
@@ -382,15 +499,42 @@ SCENARIO("Sequence number analyser")
         WHEN("we check the dropped packet gaps")
         {
             THEN("it has three") { REQUIRE(analyzer.dropped_packets().size() == 3); }
-            THEN("first gap's last packet has sequence number #2") { REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == 2); }
-            THEN("first gap's newest packet has sequence number #1") { REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == 1); }
-            THEN("first gap's newest packet timestamp is ts1") { REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts1); }
-            THEN("second gap's last packet has sequence number #2") { REQUIRE(analyzer.dropped_packets()[1].last_sequence_number == 2); }
-            THEN("second gap's newest packet has sequence number #1") { REQUIRE(analyzer.dropped_packets()[1].first_sequence_number == 1); }
-            THEN("second gap's newest packet timestamp is ts2") { REQUIRE(analyzer.dropped_packets()[1].first_packet_timestamp == ts2); }
-            THEN("third gap's last packet has sequence number #2") { REQUIRE(analyzer.dropped_packets()[2].last_sequence_number == 2); }
-            THEN("third gap's newest packet has sequence number #1") { REQUIRE(analyzer.dropped_packets()[2].first_sequence_number == 1); }
-            THEN("third gap's newest packet timestamp is ts3") { REQUIRE(analyzer.dropped_packets()[2].first_packet_timestamp == ts3); }
+            THEN("first gap's last packet has sequence number #2")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == 2);
+            }
+            THEN("first gap's newest packet has sequence number #1")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_sequence_number == 1);
+            }
+            THEN("first gap's newest packet timestamp is ts1")
+            {
+                REQUIRE(analyzer.dropped_packets()[0].first_packet_timestamp == ts1);
+            }
+            THEN("second gap's last packet has sequence number #2")
+            {
+                REQUIRE(analyzer.dropped_packets()[1].last_sequence_number == 2);
+            }
+            THEN("second gap's newest packet has sequence number #1")
+            {
+                REQUIRE(analyzer.dropped_packets()[1].first_sequence_number == 1);
+            }
+            THEN("second gap's newest packet timestamp is ts2")
+            {
+                REQUIRE(analyzer.dropped_packets()[1].first_packet_timestamp == ts2);
+            }
+            THEN("third gap's last packet has sequence number #2")
+            {
+                REQUIRE(analyzer.dropped_packets()[2].last_sequence_number == 2);
+            }
+            THEN("third gap's newest packet has sequence number #1")
+            {
+                REQUIRE(analyzer.dropped_packets()[2].first_sequence_number == 1);
+            }
+            THEN("third gap's newest packet timestamp is ts3")
+            {
+                REQUIRE(analyzer.dropped_packets()[2].first_packet_timestamp == ts3);
+            }
         }
     }
 }

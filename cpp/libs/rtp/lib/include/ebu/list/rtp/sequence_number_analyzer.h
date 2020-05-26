@@ -11,9 +11,10 @@ namespace ebu_list::rtp
 {
     struct packet_gap_info
     {
-        uint32_t last_sequence_number; // SN of the last packet before the gap
+        uint32_t last_sequence_number;  // SN of the last packet before the gap
         uint32_t first_sequence_number; // SN of the first packet after the gap
-        clock::time_point first_packet_timestamp; // Timestamp of the first packet after the gap (packet timestamp, not RTP timestamp)
+        clock::time_point
+            first_packet_timestamp; // Timestamp of the first packet after the gap (packet timestamp, not RTP timestamp)
     };
 
     template <typename Counter> class sequence_number_analyzer
@@ -27,9 +28,9 @@ namespace ebu_list::rtp
       private:
         bool started_ = false;
 
-        int64_t num_dropped_ = 0;
+        int64_t num_dropped_    = 0;
         Counter current_seqnum_ = 0;
-        clock::time_point current_timestamp_ {};
+        clock::time_point current_timestamp_{};
 
         std::vector<packet_gap_info> dropped_packet_samples_{};
         size_t max_samples_ = 10;

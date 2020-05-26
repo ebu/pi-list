@@ -232,9 +232,9 @@ void analysis::run_full_analysis(processing_context& context)
         {
             ++nr_anc;
             const auto& anc_info = std::get<anc_stream_details>(media_info);
-            auto new_handler = std::make_unique<anc_stream_serializer>(first_packet, stream_info, anc_info,
+            auto new_handler     = std::make_unique<anc_stream_serializer>(first_packet, stream_info, anc_info,
                                                                        anc_finalizer_callback, context.storage_folder);
-            auto ml          = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
+            auto ml              = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
             ml->add(std::move(new_handler));
 
             {
@@ -242,13 +242,16 @@ void analysis::run_full_analysis(processing_context& context)
                     std::make_unique<multi_listener_t<frame_start_filter::listener, frame_start_filter::packet_info>>();
 
                 {
-                    auto db_rtp_ts_logger = context.handler_factory->create_rtp_ts_logger(context.pcap.id, stream_info.id);
-                    auto rtp_ts_analyzer_  = std::make_unique<rtp_ts_analyzer>(std::move(db_rtp_ts_logger), anc_info.anc.rate);
+                    auto db_rtp_ts_logger =
+                        context.handler_factory->create_rtp_ts_logger(context.pcap.id, stream_info.id);
+                    auto rtp_ts_analyzer_ =
+                        std::make_unique<rtp_ts_analyzer>(std::move(db_rtp_ts_logger), anc_info.anc.rate);
                     framer_ml->add(std::move(rtp_ts_analyzer_));
 
-                    auto db_rtp_logger = context.handler_factory->create_rtp_logger(context.pcap.id, stream_info.id);
-                    auto pkt_hist_writer  = context.handler_factory->create_pkt_histogram_logger(stream_info.id);
-                    auto rtp_analyzer_  = std::make_unique<rtp_analyzer>(std::move(db_rtp_logger), std::move(pkt_hist_writer));
+                    auto db_rtp_logger   = context.handler_factory->create_rtp_logger(context.pcap.id, stream_info.id);
+                    auto pkt_hist_writer = context.handler_factory->create_pkt_histogram_logger(stream_info.id);
+                    auto rtp_analyzer_ =
+                        std::make_unique<rtp_analyzer>(std::move(db_rtp_logger), std::move(pkt_hist_writer));
                     framer_ml->add(std::move(rtp_analyzer_));
                 }
                 auto framer =

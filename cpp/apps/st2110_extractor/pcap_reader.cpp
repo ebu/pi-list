@@ -11,9 +11,9 @@ using namespace ebu_list::st2110_extractor;
 
 namespace
 {
-    constexpr auto cinst_file_name   = "cinst.json";
-    constexpr auto vrx_file_name     = "vrx.json";
-    constexpr auto pkt_file_name = "pkt_hist.json";
+    constexpr auto cinst_file_name = "cinst.json";
+    constexpr auto vrx_file_name   = "vrx.json";
+    constexpr auto pkt_file_name   = "pkt_hist.json";
 } // namespace
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -43,10 +43,10 @@ st2110::d20::rtp_ts_analyzer::listener_uptr pcap_reader::create_rtp_ts_logger(co
 }
 
 st2110::d20::rtp_analyzer::listener_uptr pcap_reader::create_rtp_logger(const std::string& pcap_id,
-                                                                              const std::string& stream_id) const
+                                                                        const std::string& stream_id) const
 {
     return std::make_unique<influx::influxdb_rtp_logger>(config_.influxdb_url.value_or(INFLUX_DEFAULT_URL), pcap_id,
-                                                            stream_id);
+                                                         stream_id);
 }
 
 st2110::d21::vrx_analyzer::listener_uptr pcap_reader::create_vrx_data_logger(const std::string& pcap_id,

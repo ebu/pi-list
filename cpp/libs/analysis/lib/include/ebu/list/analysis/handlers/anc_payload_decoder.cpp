@@ -12,7 +12,7 @@ using namespace ebu_list::st2110::d40;
 // #define LIBVANC_DEBUG
 
 int cb_smpte_12_2(void* callback_context, [[maybe_unused]] struct klvanc_context_s* ctx,
-                         struct klvanc_packet_smpte_12_2_s* pkt)
+                  struct klvanc_packet_smpte_12_2_s* pkt)
 {
 #ifdef LIBVANC_DEBUG
     if(klvanc_dump_SMPTE_12_2(ctx, pkt) != 0)
@@ -95,7 +95,7 @@ std::string cc_608_decode(uint8_t* cc)
 }
 
 int cb_eia_708(void* callback_context, [[maybe_unused]] struct klvanc_context_s* ctx,
-                      struct klvanc_packet_eia_708b_s* pkt)
+               struct klvanc_packet_eia_708b_s* pkt)
 {
     auto s  = static_cast<anc_sub_stream*>(callback_context);
     auto ss = anc_sub_sub_stream("Details");
@@ -230,8 +230,7 @@ footer:\n\
     return 0;
 }
 
-int cb_afd(void* callback_context, [[maybe_unused]] struct klvanc_context_s* ctx,
-                         struct klvanc_packet_afd_s* pkt)
+int cb_afd(void* callback_context, [[maybe_unused]] struct klvanc_context_s* ctx, struct klvanc_packet_afd_s* pkt)
 {
 #ifdef LIBVANC_DEBUG
     if(klvanc_dump_AFD(ctx, pkt) != 0)
@@ -252,12 +251,10 @@ int cb_afd(void* callback_context, [[maybe_unused]] struct klvanc_context_s* ctx
         it = std::find(s->anc_sub_sub_streams.begin(), s->anc_sub_sub_streams.end(), ss);
     }
 
-    it->decoded_data += fmt::format("AFD: {} ({}) Aspect Ratio: {} Bar Flags: {} (0x{:02x})\n",
-            klvanc_afd_to_string(pkt->afd),
-            pkt->afd,
-            klvanc_aspectRatio_to_string(pkt->aspectRatio),
-            klvanc_barFlags_to_string(pkt->barDataFlags),
-            pkt->barDataFlags);
+    it->decoded_data +=
+        fmt::format("AFD: {} ({}) Aspect Ratio: {} Bar Flags: {} (0x{:02x})\n", klvanc_afd_to_string(pkt->afd),
+                    pkt->afd, klvanc_aspectRatio_to_string(pkt->aspectRatio),
+                    klvanc_barFlags_to_string(pkt->barDataFlags), pkt->barDataFlags);
 
     return 0;
 }
@@ -268,7 +265,7 @@ int cb_afd(void* callback_context, [[maybe_unused]] struct klvanc_context_s* ctx
  * So this callback does the minimum for now, records the opID.
  * */
 int cb_scte_104(void* callback_context, [[maybe_unused]] struct klvanc_context_s* ctx,
-                     struct klvanc_packet_scte_104_s* pkt)
+                struct klvanc_packet_scte_104_s* pkt)
 {
 #ifdef LIBVANC_DEBUG
     if(klvanc_dump_SCTE_104(ctx, pkt) != 0)
@@ -289,7 +286,8 @@ int cb_scte_104(void* callback_context, [[maybe_unused]] struct klvanc_context_s
         it = std::find(s->anc_sub_sub_streams.begin(), s->anc_sub_sub_streams.end(), ss);
     }
 
-    it->decoded_data += fmt::format("{} operation detected\n", pkt->so_msg.opID == SO_INIT_REQUEST_DATA ? "single" : "multiple");
+    it->decoded_data +=
+        fmt::format("{} operation detected\n", pkt->so_msg.opID == SO_INIT_REQUEST_DATA ? "single" : "multiple");
 
     return 0;
 }
