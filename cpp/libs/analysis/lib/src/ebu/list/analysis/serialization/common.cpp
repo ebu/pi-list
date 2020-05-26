@@ -50,8 +50,8 @@ void analysis::to_json(json& j, const common_stream_details& details)
 
 void analysis::from_json(const json& j, common_stream_details& details)
 {
-    details.packet_count           = j.at("packet_count").get<uint32_t>();
-    details.dropped_packet_count   = j.at("dropped_packet_count").get<uint32_t>();
+    details.packet_count         = j.at("packet_count").get<uint32_t>();
+    details.dropped_packet_count = j.at("dropped_packet_count").get<uint32_t>();
     from_json(j["dropped_packet_samples"], details.dropped_packet_samples);
     details.first_packet_ts = clock::time_point{clock::duration{std::stol(j.at("first_packet_ts").get<std::string>())}};
     details.last_packet_ts  = clock::time_point{clock::duration{std::stol(j.at("last_packet_ts").get<std::string>())}};

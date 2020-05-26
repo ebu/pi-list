@@ -16,11 +16,7 @@ using namespace ebu_list::st2110::d20;
 
 struct rtp_analyzer::impl
 {
-    impl(listener_uptr l, histogram_listener_uptr l_h) :
-        listener_(std::move(l)),
-        histogram_listener_(std::move(l_h))
-    {
-    }
+    impl(listener_uptr l, histogram_listener_uptr l_h) : listener_(std::move(l)), histogram_listener_(std::move(l_h)) {}
 
     void on_data(const frame_start_filter::packet_info& source_info)
     {
@@ -45,7 +41,6 @@ struct rtp_analyzer::impl
 };
 
 //------------------------------------------------------------------------------
-
 
 rtp_analyzer::rtp_analyzer(listener_uptr l, histogram_listener_uptr l_h)
     : impl_(std::make_unique<impl>(std::move(l), std::move(l_h)))

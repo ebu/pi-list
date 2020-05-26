@@ -11,8 +11,7 @@ namespace ebu_list::rtp
     void from_json(const nlohmann::json& j, packet_gap_info& p);
     void to_json(nlohmann::json& j, const std::vector<ebu_list::rtp::packet_gap_info>& p);
     void from_json(const nlohmann::json& j, std::vector<ebu_list::rtp::packet_gap_info>& p);
-}
-
+} // namespace ebu_list::rtp
 
 namespace ebu_list::analysis
 {

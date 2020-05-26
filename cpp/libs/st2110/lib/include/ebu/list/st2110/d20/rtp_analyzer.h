@@ -5,9 +5,9 @@
 
 #pragma once
 
+#include "ebu/list/analysis/utils/histogram_listener.h"
 #include "ebu/list/rtp/listener.h"
 #include "ebu/list/rtp/types.h"
-#include "ebu/list/analysis/utils/histogram_listener.h"
 #include "ebu/list/st2110/frame_start_filter.h"
 
 namespace ebu_list::st2110::d20
@@ -31,7 +31,7 @@ namespace ebu_list::st2110::d20
             virtual void on_error(std::exception_ptr e) = 0;
         };
 
-        using listener_uptr = std::unique_ptr<listener>;
+        using listener_uptr           = std::unique_ptr<listener>;
         using histogram_listener_uptr = std::unique_ptr<ebu_list::analysis::histogram_listener>;
 
         rtp_analyzer(listener_uptr l, histogram_listener_uptr l_h);

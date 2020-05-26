@@ -20,14 +20,14 @@ struct frame_start_filter::impl
             if(frame_start_)
             {
                 packet_index_ = 0;
-                frame_start_ = false;
+                frame_start_  = false;
             }
         }
 
         if(p.info.rtp.view().marker())
         {
-            in_frame_     = true;
-            frame_start_  = true;
+            in_frame_    = true;
+            frame_start_ = true;
         }
     }
 

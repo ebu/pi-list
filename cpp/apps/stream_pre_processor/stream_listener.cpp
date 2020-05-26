@@ -12,16 +12,15 @@ using nlohmann::json;
 namespace
 {
     void save_on_db(const db_serializer& db, const stream_with_details& stream_info,
-                    std::map<std::string, std::vector<std::string>>& detectors_error_codes,
-                    int64_t num_packets = 0,
-                    uint16_t num_dropped_packets = 0,
+                    std::map<std::string, std::vector<std::string>>& detectors_error_codes, int64_t num_packets = 0,
+                    uint16_t num_dropped_packets                                       = 0,
                     std::vector<ebu_list::rtp::packet_gap_info> dropped_packet_samples = {})
     {
         nlohmann::json serialized_streams_details = stream_with_details_serializer::to_json(stream_info);
         if(num_packets > 0)
         {
-            serialized_streams_details["statistics"]["packet_count"]         = num_packets;
-            serialized_streams_details["statistics"]["dropped_packet_count"] = num_dropped_packets;
+            serialized_streams_details["statistics"]["packet_count"]           = num_packets;
+            serialized_streams_details["statistics"]["dropped_packet_count"]   = num_dropped_packets;
             serialized_streams_details["statistics"]["dropped_packet_samples"] = dropped_packet_samples;
         }
 

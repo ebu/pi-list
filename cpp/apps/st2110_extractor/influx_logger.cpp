@@ -87,8 +87,7 @@ void influxdb_rtp_ts_logger::on_error(std::exception_ptr)
 
 //------------------------------------------------------------------------------
 
-influxdb_rtp_logger::influxdb_rtp_logger(std::string_view url, std::string_view pcap_id,
-                                               std::string_view stream_id)
+influxdb_rtp_logger::influxdb_rtp_logger(std::string_view url, std::string_view pcap_id, std::string_view stream_id)
     : db_(url, pcap_id, stream_id)
 {
 }

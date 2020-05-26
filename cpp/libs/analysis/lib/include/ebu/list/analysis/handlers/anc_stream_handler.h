@@ -6,8 +6,8 @@
 #include "ebu/list/analysis/utils/rtp_utils.h"
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/rtp/listener.h"
-#include "ebu/list/rtp/types.h"
 #include "ebu/list/rtp/sequence_number_analyzer.h"
+#include "ebu/list/rtp/types.h"
 #include "ebu/list/st2110/d40/header.h"
 #include "ebu/list/st2110/packets_per_frame_calculator.h"
 

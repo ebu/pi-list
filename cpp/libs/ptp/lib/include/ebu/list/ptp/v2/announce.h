@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ebu/list/core/types.h"
-#include <array>
 #include "ebu/list/ptp/v2/message_header.h"
+#include <array>
 
 //------------------------------------------------------------------------------
 
