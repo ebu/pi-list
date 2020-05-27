@@ -50,8 +50,8 @@ Example: Change the default port 443 to port 555.
 Old:
 ``` yml
   ...
-  listreverseproxy:
-    image: nginx
+  listserver:
+    image: ebutech/pi-list # using the latest version
     ports:
       - "80:80"
       - "443:443"
@@ -60,8 +60,8 @@ Old:
 New:
 ``` yml
   ...
-  listreverseproxy:
-    image: nginx
+  listserver:
+    image: ebutech/pi-list # using the latest version
     ports:
       - "80:80"
       - "555:443"
