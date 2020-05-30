@@ -23,8 +23,8 @@ export default (
     />
     <Route
       exact
-      path={routeNames.LIVE_SOURCES}
-      render={() => <Header labelTag="navigation.live_sources" />}
+      path={routeNames.CAPTURE}
+      render={() => <Header labelTag="navigation.capture" />}
     />
     <Route
       exact

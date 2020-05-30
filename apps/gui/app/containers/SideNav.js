@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import api from '../utils/api';
 import MenuItem from '../components/MenuItem';
-import sideNavItems from '../config/sideNavList';
+import navItems from '../config/navList';
 import Icon from '../components/common/Icon';
 import Button from '../components/common/Button';
 import { T } from '../utils/translation';
@@ -70,9 +70,9 @@ class SideNav extends Component {
                     <img src="/static/ebu-white.png" alt="ebu logo" />
                 </div>
                 <ul className="lst-side-nav__items">
-                    {this.renderItems(sideNavItems.top, live)}
+                    {this.renderItems(navItems.top, live)}
                 </ul>
-                {this.renderItems(sideNavItems.bottom, live)}
+                {this.renderItems(navItems.bottom, live)}
                 <div className="lst-side-nav__options">
                     <Button noStyle onClick={() => this.toggleSideNav()}>
                         <div className="center-xs">
