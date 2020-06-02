@@ -1,5 +1,6 @@
 # Configurations for LIST Web Server
 # Use this file for development mode
+port: 3030
 
 # Filesystem related
 folder: /home/ebu/tmp/list/

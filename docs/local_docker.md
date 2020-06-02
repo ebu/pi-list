@@ -17,11 +17,13 @@ curl -O https://raw.githubusercontent.com/ebu/pi-list/master/docs/docker-compose
 docker-compose up
 ```
 
-You're good to go: `https://localhost`
+You're good to go: `http://localhost`
 
 ## Exposing LIST to the network
 
 The steps above will restrict the usage of LIST on the machine where the docker containers are being run. In order to allow it to be used from other machines, you just need to edit the docker-compose.yml file and change the line indicated below, replacing ${EBU_LIST_WEB_APP_DOMAIN} with your URL (in the example below, replace 192.168.1.1 with the IP address of your machine). To specify a new port, please see the next section :
+
+`Note: to use https, change the url to https://*******:443 on the following commands`
 
 Change:
 
@@ -29,23 +31,25 @@ Change:
 
 to
 
-```EBU_LIST_WEB_APP_DOMAIN=https://192.168.1.1:443```
+```EBU_LIST_WEB_APP_DOMAIN=http://192.168.1.1:80```
 
 or
 
 ```sh
-export EBU_LIST_WEB_APP_DOMAIN=https://192.168.1.1:443
+export EBU_LIST_WEB_APP_DOMAIN=http://192.168.1.1:80
 docker-compose up
 ```
 
 ## Choose a different port
 
-To change the default port from 443 to another port please do the following:
+To change the default port from 80 to another port please do the following:
 Edit the docker-compose.yml file and change the line indicated below. That line exposes the docker port to the user network.
 Also replacing ${EBU_LIST_WEB_APP_DOMAIN} with your URL.
 
 
-Example: Change the default port 443 to port 555.
+Example: Change the default port 80 to port 81.
+
+`Note: Change 443 if using HTTPS`
 
 Old:
 ``` yml
@@ -63,8 +67,8 @@ New:
   listserver:
     image: ebutech/pi-list # using the latest version
     ports:
-      - "80:80"
-      - "555:443"
+      - "81:80"
+      - "443:443"
    ...
 ```
 
@@ -74,12 +78,12 @@ Change:
 
 to
 
-```EBU_LIST_WEB_APP_DOMAIN=https://localhost:555```
+```EBU_LIST_WEB_APP_DOMAIN=http://localhost:81```
 
 or
 
 ```sh
-export EBU_LIST_WEB_APP_DOMAIN=https://localhost:555
+export EBU_LIST_WEB_APP_DOMAIN=http://localhost:81
 docker-compose up
 ```
 
