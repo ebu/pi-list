@@ -183,7 +183,7 @@ const SourcesList = props => {
             <DragAndDropUploader
                 uploadButtonLabel="SDP"
                 uploadApi={onUpload}
-                title={translateX('navigation.live_sources')}
+                title={translateX('navigation.capture')}
             >
                 <Toolbar dispatch={dispatch} selectedItems={state.selected} filterString={state.filterString} />
                 <SourcesTable

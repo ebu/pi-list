@@ -1,9 +1,10 @@
 export default {
-    HOME: '/',
+    DEFAULT: '/',
+    HOME: '/home',
     SETTINGS: '/settings',
     CREDITS: '/credits',
     PCAPS: '/pcaps',
-    LIVE_SOURCES: '/live_sources',
+    CAPTURE: '/capture',
     WORKFLOWS: '/workflows',
     SIMULATOR_VRX: '/simulator/vrx',
     LIVE: '/live',
