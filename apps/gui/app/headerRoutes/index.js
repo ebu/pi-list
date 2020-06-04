@@ -87,12 +87,5 @@ export default (
         <ComparisonPageHeader {...props} />
       )}
     />
-    <Route
-      exact
-      path={`${routeNames.STREAM_COMPARISONS}/:comparisonID`}
-      render={props => (
-        <ComparisonPageHeader {...props} />
-      )}
-    />
   </Switch>
 );

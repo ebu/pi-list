@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { T, translateX } from 'utils/translation';
 import { useRouteMatch } from 'react-router-dom';
 import InfoPane from './components/InfoPane';
-import { translateC } from '../../utils/translation';
 import routeNames from '../../config/routeNames';
 
 const getDscpInfo = props => {
