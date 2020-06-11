@@ -65,6 +65,7 @@ const NetworkInfo = props => {
             </div>
         );
 
+
     const values = [
         {
             labelTag: 'stream.detected_stream',

@@ -83,7 +83,6 @@ When all images are downloaded:
 
 `Note: If you already have the LIST running, you must stop all the containers. Please see Troubleshooting section in the end of this page`
 
-
 ~~~~
 LIST:EBU-LIST$ EBU_LIST_WEB_APP_DOMAIN=http://localhost:80 docker-compose up
 

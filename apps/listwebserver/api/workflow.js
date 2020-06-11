@@ -3,7 +3,7 @@ const router = Router();
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const logger = require('../util/logger');
 const controller = require('../controllers/workflow');
-const { getUserFolder, } = require('../util/analysis');
+const { getUserFolder } = require('../util/analysis');
 
 router.get('/', (req, res, next) => {
     const workflows = controller.getWorkflows();
@@ -28,15 +28,10 @@ router.put('/', (req, res, next) => {
     logger('workflow-api').info(`Cancel workflow request for ${type}`);
     configuration.cookie = req.headers.cookie;
 
-    controller.cancelWorkflow(type, configuration)
-        .then(id =>
-            res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send({ id })
-        )
-        .catch(err =>
-            res
-                .status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR)
-                .send(err)
-        );
+    controller
+        .cancelWorkflow(type, configuration)
+        .then((id) => res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send({ id }))
+        .catch((err) => res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(err));
 });
 
 module.exports = router;
