@@ -19,15 +19,17 @@ import FlowList from './containers/live/FlowList';
 import ErrorPage from './components/ErrorPage';
 import errorEnum from './enums/errorEnum';
 import Panel from './components/common/Panel';
+import HomePage from './pages/Home';
 import Settings from './pages/Settings';
 import CreditsPage from './pages/CreditsPage';
 import { LiveRoute } from './utils/AppContext';
 
-const DB = () => (<Redirect to={routeNames.PCAPS}  />);
+const HOME = () => (<Redirect to={routeNames.HOME}/>);
 
 export default (
     <Switch>
-        <Route exact path={routeNames.HOME} component={DB} />
+        <Route exact path={routeNames.DEFAULT} component={HOME} />
+        <Route exact path={routeNames.HOME} component={HomePage} />
         <Route exact path={routeNames.SETTINGS} component={Settings} />
         <Route exact path={routeNames.CREDITS} component={CreditsPage} />
         <Route exact path={routeNames.PCAPS} component={PcapsPage} />
@@ -43,7 +45,7 @@ export default (
 
         <Route exact path={routeNames.SIMULATOR_VRX} component={VrxPage} />
 
-        <LiveRoute exact path={routeNames.LIVE_SOURCES} component={CapturePage} />
+        <LiveRoute exact path={routeNames.CAPTURE} component={CapturePage} />
         <LiveRoute exact path={routeNames.LIVE} component={LiveStreamList} />
         <LiveRoute
             exact

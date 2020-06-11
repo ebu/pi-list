@@ -41,6 +41,8 @@ services:
   listserver:
     image: ebutech/pi-list # using the latest version
     ports:
+      - "80:80"
+      - "443:443"
       - "8080"
       - "3030"
     environment:
@@ -52,18 +54,6 @@ services:
       - rabbitmq
     volumes:
       - ${EBU_LIST_HOST_DATA_FOLDER:-listserver}:/home/
-  
-  listreverseproxy:
-    image: nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    links:
-      - listserver
-    volumes:
-      - ./data/config:/etc/nginx
-      - ./data/certs:/etc/ssl/certs
-      - ./data/log/nginx:/var/log/nginx/
 
 volumes:
   mongo:
@@ -88,10 +78,11 @@ Pulling list_server ... downloading (71.3%)
 ...
 ~~~~
 When all images are downloaded:
-~~~~
-LIST:EBU-LIST$ EBU_LIST_WEB_APP_DOMAIN=https://localhost:443 docker-compose up
 
-EBU_LIST_WEB_APP_DOMAIN=https://localhost:443 docker-compose up
+`Note: to use https, change the url to https://localhost:443 on the following commands`
+~~~~
+LIST:EBU-LIST$ EBU_LIST_WEB_APP_DOMAIN=http://localhost:80 docker-compose up
+
 WARNING: The EBU_LIST_LIVE_MODE variable is not set. Defaulting to a blank string.
 Creating network "documents_default" with the default driver
 Creating volume "documents_mongo" with default driver
@@ -130,7 +121,7 @@ Pulling influxdb (influxdb:1.4.2)...
 You are one step away from using the application.
 
 - Open Google Chrome
-- Go to: https://localhost
+- Go to: http://localhost or https://localhost if using https
 - Create a user: enter a valid email address
 - Create a password
 - Click register
