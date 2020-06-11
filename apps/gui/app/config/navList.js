@@ -3,9 +3,9 @@ import routeNames from './routeNames';
 export default {
     top: [
         {
-            link: routeNames.WORKFLOWS,
-            icon: 'playlist play',
-            labelTag: 'navigation.workflows',
+            link: routeNames.HOME,
+            icon: 'home',
+            labelTag: 'navigation.home',
             exact: false,
         },
         {
@@ -15,15 +15,9 @@ export default {
             exact: false,
         },
         {
-            link: routeNames.STREAM_COMPARISONS,
-            icon: 'compare',
-            labelTag: 'navigation.stream_comparisons',
-            exact: false,
-        },
-        {
-            link: routeNames.LIVE_SOURCES,
+            link: routeNames.CAPTURE,
             icon: 'fiber_manual_record',
-            labelTag: 'navigation.live_sources',
+            labelTag: 'navigation.capture',
             exact: false,
             liveOnly: true,
         },
@@ -35,9 +29,21 @@ export default {
             liveOnly: true,
         },
         {
+            link: routeNames.STREAM_COMPARISONS,
+            icon: 'compare',
+            labelTag: 'navigation.stream_comparisons',
+            exact: false,
+        },
+        {
             link: routeNames.DOWNLOAD_MANAGER,
             icon: 'archive',
             labelTag: 'navigation.download_manager',
+            exact: false,
+        },
+        {
+            link: routeNames.WORKFLOWS,
+            icon: 'playlist play',
+            labelTag: 'navigation.workflows',
             exact: false,
         },
         // {

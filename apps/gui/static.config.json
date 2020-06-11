@@ -1,3 +1,4 @@
 {
-    "publicApiPort" : "443"
+    "publicApiPort" : "80",
+    "publicApiProtocol" : "http"
 }

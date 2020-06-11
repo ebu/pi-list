@@ -20,6 +20,7 @@ function parseArguments(args) {
 
     const config = Object.assign({}, args, {
         port: args.port || '3030',
+        protocol: args.protocol || 'http',
         folder: pathSanitization.sanitizeDirectoryPath(args.folder),
         cpp: pathSanitization.sanitizeDirectoryPath(args.cpp),
         influxURL: `http://${args.influx.hostname}:${args.influx.port}`,
@@ -42,20 +43,20 @@ function parseArguments(args) {
         try { // Docker will write a static.config.json with public web port
             const staticConfig = JSON.parse(loadFile('./../static.config.json'));
             if (!config.webappDomain){
-                config.webappDomain = `https://localhost:${staticConfig.publicApiPort}`
+                config.webappDomain = `${staticConfig.publicApiProtocol}://localhost:${staticConfig.publicApiPort}`
             }
             if (!config.apiUrl) {
-                config.apiUrl = `https://localhost:${staticConfig.publicApiPort}/api`;
+                config.apiUrl = `${staticConfig.publicApiProtocol}://localhost:${staticConfig.publicApiPort}/api`;
             }
         }
         catch (err) {
             // Use the listwebserver port
             if (!config.webappDomain){
-                config.webappDomain = `https://localhost:${config.port}`
+                config.webappDomain = `${config.protocol}://localhost:${config.port}`
                 
             }
             if (!config.apiUrl) {
-                config.apiUrl = `https://localhost:${config.port}/api`;
+                config.apiUrl = `${config.protocol}://localhost:${config.port}/api`;
             }
         }
     }
