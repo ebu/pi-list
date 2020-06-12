@@ -80,6 +80,9 @@ Pulling list_server ... downloading (71.3%)
 When all images are downloaded:
 
 `Note: to use https, change the url to https://localhost:443 on the following commands`
+
+`Note: If you already have LIST running, you must stop all the containers. Please see Troubleshooting section in the end of this page`
+
 ~~~~
 LIST:EBU-LIST$ EBU_LIST_WEB_APP_DOMAIN=http://localhost:80 docker-compose up
 
@@ -131,9 +134,37 @@ You will be redirected to the main interface of EBU LIST
 
 You are ready to drop your pcap file on the canvas …
 
+## Troubleshooting
+
 ### Cleaning up your local Docker instance
 
+`Warning: Volumes used by the running containers will not be pruned. Stop all containers first.`
 ~~~~
 docker system prune --volumes
 ~~~~
 
+### Force the browser not to use the cache
+
+`Note: A better way is to clean the entire browser cache.`
+
+Add a URL parameter with some random numbers to force the browser not to use the cached information.
+
+Example: http://localhost/?t=783827
+
+### Prune docker images
+
+`Warning: Images used by the running containers will not be pruned. Stop all containers first.`
+
+~~~
+docker system prune -af
+~~~
+
+### Manually stop running containers
+
+List all running containers:
+~~~
+docker ps
+~~~
+~~~
+docker stop <NAME of the running container>
+~~~
