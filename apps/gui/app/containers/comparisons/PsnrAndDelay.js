@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { translateX } from '../../utils/translation';
-import chartFormatters from '../../utils/chartFormatters';
-import LineChart from '../../components/LineChart';
+import Graphs from '../../components/graphs';
 import Panel from '../../components/common/Panel';
 import InfoPane from '../streamPage/components/InfoPane';
 
@@ -51,8 +49,11 @@ const PsnrAndDelayPane = props => {
             <Panel className="lst-stream-info-tab">
                 <div className="row lst-full-height">
                     <div className="col-xs-12">
-                        <LineChart
-                            asyncData={async () => {
+                        <Graphs.Line
+                            titleTag="comparison.result.psnr_vs_time_shift"
+                            xTitle={`Time (${interlaced? 'Fields' : 'Frames'})`}
+                            yTitle="PSNR (dB)"
+                            asyncGetter={async () => {
                                 return psnr.raw.map((e, i) => {
                                     return {
                                         value: e === 'inf' ? 100 : e,
@@ -60,15 +61,6 @@ const PsnrAndDelayPane = props => {
                                     };
                                 });
                             }}
-                            titleTag="comparison.result.psnr_vs_time_shift"
-                            data={chartFormatters.singleValueLineChart}
-                            xAxisMode="linear"
-                            xAxis={chartFormatters.xAxisLinearDomain}
-                            yAxisLabel={'PSNR (dB)'}
-                            xAxisLabel={`Time (${interlaced? 'Fields' : 'Frames'})`}
-                            height={300}
-                            lineWidth={3}
-                            legend
                         />
                     </div>
                 </div>
