@@ -161,8 +161,6 @@ bc45384dc9cd        influxdb:1.4.2
 
 ## Troubleshooting
 
-## Troubleshooting
-
 ### Cleaning up your local Docker instance
 
 `Warning: Volumes used by the running containers will not be pruned. Stop all containers first.`
