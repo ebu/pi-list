@@ -23,7 +23,7 @@ We deployed an [online version](https://list.ebu.io/) that you can start using r
 
 :bangbang: LIST instance moved from HTTP to HTTPS.
 
-* [How to run your instance of LIST](./docs/local_docker.md)
+* [How to run your instance of LIST](./docs/how-to-install-on-local-docker.md)
 
 ## For developers
 

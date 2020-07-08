@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import api from 'utils/api';
 import asyncLoader from 'components/asyncLoader';
 import StreamTimeline from 'components/stream/StreamTimeline';
-import chartFormatters from 'utils/chartFormatters';
-import LineChart from 'components/LineChart';
+import Graphs from '../../components/graphs';
 
 class PerFrameAnalysisViewer extends Component {
     constructor(props) {
@@ -35,25 +34,19 @@ class PerFrameAnalysisViewer extends Component {
                 </div>
                 <div className="row">
                     <div className="col-xs-12">
-                        <LineChart
-                            key={this.state.first_packet_ts}
-                            asyncData={() => api.getCInstRaw(this.props.pcapID, this.props.streamID, this.state.first_packet_ts, this.state.last_packet_ts)}
-                            xAxis={chartFormatters.getTimeLineLabel}
-                            data={chartFormatters.singleValueLineChart}
-                            title="CInst"
-                            yAxisLabel="packets" //RS
-                            height={300}
-                            lineWidth={3}
+                        <Graphs.Line
+                            key={this.state.first_packet_ts+'0'}
+                            titleTag="Cinst"
+                            xTitleTag="media_information.timeline"
+                            yTitleTag="media_information.rtp.packet_count"
+                            asyncGetter={() => api.getCInstRaw(this.props.pcapID, this.props.streamID, this.state.first_packet_ts, this.state.last_packet_ts)}
                         />
-                        <LineChart
-                            key={this.state.first_packet_ts + "s"}
-                            asyncData={() => api.getVrxIdealRaw(this.props.pcapID, this.props.streamID, this.state.first_packet_ts, this.state.last_packet_ts)}
-                            xAxis={chartFormatters.getTimeLineLabel}
-                            data={chartFormatters.singleValueLineChart}
-                            title="Vrx"
-                            yAxisLabel="packets"  //RS
-                            height={300}
-                            lineWidth={3}
+                        <Graphs.Line
+                            key={this.state.first_packet_ts+"1"}
+                            titleTag="Vrx"
+                            xTitleTag="media_information.timeline"
+                            yTitleTag="media_information.rtp.packet_count"
+                            asyncGetter={() => api.getVrxIdealRaw(this.props.pcapID, this.props.streamID, this.state.first_packet_ts, this.state.last_packet_ts)}
                         />
                     </div>
                 </div>

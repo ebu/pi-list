@@ -1,13 +1,12 @@
 import React from 'react';
 import api from 'utils/api';
-import LineChart from 'components/LineChart';
-import chartFormatters from 'utils/chartFormatters';
-import { translateX } from 'utils/translation';
+import Graphs from '../../components/graphs';
 
-const dataAsNanoseconds = data => {
-    const values = data.map(item => Object.assign(item, { value: item.value * 1e9 }));
+const dataAsMicroseconds = data => {
+    const values = data.map(item => Object.assign(item, { value: item.value * 1e6 }));
     return values;
 };
+
 const TvdAnalysis = props => {
     const { first_packet_ts, last_packet_ts } = props.streamInfo.statistics;
     const { streamID, pcapID } = props;
@@ -25,31 +24,27 @@ const TvdAnalysis = props => {
     return (
         <div className="row">
             <div className="col-xs-12">
-                <LineChart
-                    asyncData={() =>
+                <Graphs.Line
+                    titleTag="Tvd"
+                    titleParam={`TRoffset = TROdefault = ${default_tro} μs`}
+                    xTitleTag="media_information.timeline"
+                    yTitle="Value (μs)"
+                    asyncGetter={() =>
                         api
                             .getDeltaToIdealTpr0Raw(pcapID, streamID, first_packet_ts, last_packet_ts)
-                            .then(data => dataAsNanoseconds(data))
+                            .then(data => dataAsMicroseconds(data))
                     }
-                    xAxis={chartFormatters.xAxisTimeDomain}
-                    data={chartFormatters.singleValueLineChart}
-                    title={ComposeComplexChartTitle(translateX('media_information.tvd'), default_tro)}
-                    yAxisLabel="ns"
-                    height={300}
-                    lineWidth={3}
                 />
-                <LineChart
-                    asyncData={() =>
+                <Graphs.Line
+                    titleTag="Adjusted Tvd"
+                    titleParam={`TRoffset = Avg(FPO)  = ${avg_tro} μs`}
+                    xTitleTag="media_information.timeline"
+                    yTitle="Value (μs)"
+                    asyncGetter={() =>
                         api
                             .getDeltaToIdealTpr0AdjustedAvgTroRaw(pcapID, streamID, first_packet_ts, last_packet_ts)
-                            .then(data => dataAsNanoseconds(data))
+                            .then(data => dataAsMicroseconds(data))
                     }
-                    xAxis={chartFormatters.xAxisTimeDomain}
-                    data={chartFormatters.singleValueLineChart}
-                    title={ComposeComplexChartTitle(translateX('media_information.tvd_adjusted'), avg_tro)}
-                    yAxisLabel="ns"
-                    height={300}
-                    lineWidth={3}
                 />
             </div>
         </div>

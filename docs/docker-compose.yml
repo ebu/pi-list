@@ -25,8 +25,8 @@ services:
       - "8080"
       - "3030"
     environment:
-        - EBU_LIST_WEB_APP_DOMAIN=${EBU_LIST_WEB_APP_DOMAIN}
-        - EBU_LIST_LIVE_MODE=${EBU_LIST_LIVE_MODE}
+      - EBU_LIST_WEB_APP_DOMAIN=${EBU_LIST_WEB_APP_DOMAIN:-}
+      - EBU_LIST_LIVE_MODE=${EBU_LIST_LIVE_MODE:-false}
     links:
       - influxdb
       - mongo

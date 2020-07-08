@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Panel from 'components/common/Panel';
 import api from 'utils/api';
+
+import Graphs from 'components/graphs'
+// TODO remove thata convert to Line.graph
 import chartFormatters from 'utils/chartFormatters';
 import Chart from 'components/StyledChart';
 import { translateX } from 'utils/translation';

@@ -1,0 +1,17 @@
+@import '../../style/variables/index.scss';
+
+div.lst-graph {
+    background-color: #2E3440;
+    padding: 2rem;
+
+    margin-bottom: 1rem;
+
+    hr {
+        margin-top: 3rem;
+    }
+
+    h1 {
+        color: #f1cb85;
+        margin-bottom: 0;
+    }
+}

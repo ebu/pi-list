@@ -52,7 +52,7 @@ Use the docker wrapper script:
 
 A new folder `release` will appear on the top-level directory of this repository. It contains the artefact to be installed on the LIST server and all docker-compose files to instantiate all the micro-services.
 
-If necessary, [make you server visible from another host.](./local_docker.md#exposing-list-to-the-network)
+If necessary, [make you server visible from another host.](./how-to-install-on-local-docker.md#exposing-list-to-the-network)
 
 ```
 cd release

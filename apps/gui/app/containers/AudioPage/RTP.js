@@ -1,9 +1,7 @@
 import React from 'react';
 import Panel from '../../components/common/Panel';
-import LineChart from '../../components/LineChart';
 import api from '../../utils/api';
-import chartFormatters from '../../utils/chartFormatters';
-import { translateX } from '../../utils/translation';
+import Graphs from '../../components/graphs';
 
 const RTP = props => {
     const { first_packet_ts, last_packet_ts } = props.streamInfo.statistics;
@@ -12,22 +10,17 @@ const RTP = props => {
         <Panel className="lst-stream-info-tab">
             <div className="row lst-full-height">
                 <div className="col-xs-12">
-                    <LineChart
-                        asyncData={() =>
+                    <Graphs.Line
+                        titleTag="media_information.rtp.delta_packet_time_vs_rtp_time"
+                        xTitleTag="media_information.timeline"
+                        yTitleTag="media_information.delay"
+                        asyncGetter={() =>
                             api.getAudioPktTsVsRtpTs(
                                 props.pcapID,
                                 props.streamID,
                                 first_packet_ts,
-                                last_packet_ts
-                            )
+                                last_packet_ts)
                         }
-                        xAxis={chartFormatters.getTimeLineLabel}
-                        data={chartFormatters.singleValueLineChart}
-                        titleTag="media_information.rtp.delta_packet_time_vs_rtp_time"
-                        yAxisLabel={translateX('media_information.delay')}
-                        height={300}
-                        lineWidth={3}
-                        legend
                     />
                 </div>
             </div>
