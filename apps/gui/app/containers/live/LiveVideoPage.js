@@ -6,6 +6,8 @@ import Dash21Info from '../../containers/video/Dash21Info';
 import Panel from '../../components/common/Panel';
 import websocketEventsEnum from '../../enums/websocketEventsEnum';
 import websocket from '../../utils/websocket';
+import Graphs from '../../components/graphs'
+// TODO remove thata convert to Line.graph
 import chartFormatters from '../../utils/chartFormatters';
 import Chart from '../../components/StyledChart';
 
