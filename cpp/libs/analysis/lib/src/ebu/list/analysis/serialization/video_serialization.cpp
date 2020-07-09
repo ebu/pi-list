@@ -51,6 +51,7 @@ nlohmann::json st2110::d20::to_json(const st2110::d20::video_description& desc)
     j["colorimetry"]       = to_string(desc.colorimetry);
     j["scan_type"]         = to_string(desc.scan_type);
     j["packets_per_frame"] = desc.packets_per_frame;
+    j["has_continuation_bit_set"] = desc.has_continuation_bit_set;
     j["schedule"]          = to_string(desc.schedule);
     j["avg_tro_ns"]        = desc.avg_tro_ns;
     j["max_tro_ns"]        = desc.max_tro_ns;
@@ -85,6 +86,12 @@ st2110::d20::video_description st2110::d20::from_json(const nlohmann::json& j)
     if(packets_per_frame_json != j.end())
     {
         desc.packets_per_frame = packets_per_frame_json->get<int>();
+    }
+
+    const auto has_continuation_bit_set_json = j.find("has_continuation_bit_set");
+    if(has_continuation_bit_set_json != j.end())
+    {
+        desc.has_continuation_bit_set = has_continuation_bit_set_json->get<bool>();
     }
 
     const auto schedule_json = j.find("schedule");
