@@ -123,21 +123,16 @@ const createComparator = async (config) => {
         refDirList = refDirList.slice(-deltaIndex + clip, refDirList.length - clip);
         mainDirList = mainDirList.slice(clip, refDirList.length + clip);
     }
-    logger('psnr-delay').info(`Compare ${mainDirList.length} frames of main sequence with ${refDirList.length} frame reference sequence, one to one.`);
+    logger('psnr-delay').info(`Compare ${mainDirList.length} frames of main sequence with ${refDirList.length} frames of shifted reference sequence, one to one.`);
     const psnrMaxList = await getPsnrList(mainDirList, refDirList);
 
-    // get the average
-    if (psnrMax.psnr === 'inf') {
-        if (await getPsnrInfCounter(psnrMaxList) !== psnrMaxList.length) {
-            // replace 'inf' with real high but arbitrary value and get average
-            const tmp = Array.from(psnrMaxList,
-                e => e.psnr === 'inf'? {index:e.index, psnr: 100}: e);
-            psnrMax.psnr = await getPsnrAvg(tmp);
-        }
-        // else, it's all 'inf' and let psnrMax unchanged
-    } else {
-        psnrMax.psnr = await getPsnrAvg(psnrMaxList);
+    // if psnrMaxList is a mix of 'inf' and numerical values, replace
+    // 'inf' with real high but arbitrary value in order to get average
+    if (await getPsnrInfCounter(psnrMaxList) !== psnrMaxList.length) {
+        const tmp = Array.from(psnrMaxList, e => e === 'inf'? 999: e);
+        psnrMax.psnr = await getPsnrAvg(tmp);
     }
+    // else, (psnrMax.psnr === 'inf') anyway
 
     const delay = {
         sample: deltaIndex,
