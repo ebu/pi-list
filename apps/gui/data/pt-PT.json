@@ -73,7 +73,8 @@
   "media_information.video.width": "Largura",
   "media_information.video.height": "Altura",
   "media_information.video.colorimetry": "Colorimetria",
-  "media_information.video.packets_per_frame": "Nº pacotes por frame/field",
+  "media_information.video.packets_per_field": "Nº pacotes por campo",
+  "media_information.video.packets_per_frame": "Nº pacotes por imagem",
   "media_information.video.continuation_bit": "Continuation bit",
   "media_information.video.continuation_bit.present": "Usado",
   "media_information.video.continuation_bit.not_present": "Não usado",
@@ -121,9 +122,9 @@
   "media_information.rtp.source_mac_address": "Endereço MAC de Origem",
   "media_information.rtp.source_port": "Porto de Origem",
   "media_information.rtp.duration": "Duração",
-  "media_information.rtp.delta_rtp_ts_vs_nt": "Delta RTP vs quadro de referência",
+  "media_information.rtp.delta_rtp_ts_vs_nt": "RTP Offset",
   "media_information.rtp.inter_frame_rtp_ts_delta": "Delta do RTP TS entre frames",
-  "media_information.rtp.delta_first_packet_time_vs_rtp_time": "Delta 1st Packet vs RTP",
+  "media_information.rtp.delta_first_packet_time_vs_rtp_time": "Latency",
   "media_information.rtp.delta_packet_time_vs_rtp_time": "Delta Packet vs RTP",
   "media_information.rtp.rtp_ts_step": "Etapa de tempo RTP",
   "media_information.rtp.wrong_marker_bit": "Bit de marcador errado",
@@ -316,5 +317,6 @@
   "dmngr.availableuntil": "Disponível até",
   "dmngr.download": "Download",
   "ptp.average_offset": "Desvio médio",
-  "ptp.clock_type": "Tipo"
+  "ptp.clock_type": "Tipo",
+  "general.buffer_level": "Nível do buffer"
 }

@@ -20,24 +20,27 @@ const RtpAnalysisViewer = props => {
         <div className="row">
             <div className="col-xs-12">
                 <Graphs.Line
-                    titleTag="media_information.rtp.delta_first_packet_time_vs_rtp_time"
-                    xTitle="Absolute time"
-                    yTitle="Value (μs)"
+                    title="Latency"
+                    xTitle="Time (TAI)"
+                    yTitle="Latency (μs)"
                     asyncGetter={getDeltaFPTvsRTP}
+                    layoutProperties={{ yaxis: { tickformat: ',.3f'}}}
                 />
 
                 <Graphs.Line
                     titleTag="media_information.rtp.delta_rtp_ts_vs_nt"
-                    xTitle="Absolute time"
-                    yTitleTag="media_information.ticks"
+                    xTitle="Time (TAI)"
+                    yTitle="RTP offset (ticks)"
                     asyncGetter={getDeltaRTPvsNT}
+                    layoutProperties={{ yaxis: { tickformat: ',d'}}}
                 />
 
                 <Graphs.Line
                     titleTag="media_information.rtp.rtp_ts_step"
-                    xTitle="Absolute time"
-                    yTitleTag="media_information.ticks"
+                    xTitle="Time (TAI)"
+                    yTitle="RTP Time Step (ticks)"
                     asyncGetter={getDeltaToPreviousRTP}
+                    layoutProperties={{ yaxis: { tickformat: ',d'}}}
                 />
             </div>
         </div>

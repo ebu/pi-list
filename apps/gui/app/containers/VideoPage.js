@@ -5,7 +5,7 @@ import VideoAnalysis from './video/VideoAnalysis';
 import Summary from './video/Summary';
 import CbufferAnalysis from './video/CbufferAnalysis';
 import VrxAnalysis from './video/VrxAnalysis';
-import TvdAnalysis from './video/TvdAnalysis';
+import FptAnalysis from './video/FptAnalysis';
 import VideoExplorer from './video/VideoExplorer';
 import PerFrameAnalysisViewer from './video/PerFrameAnalysisViewer';
 import RtpAnalysisViewer from './video/RtpAnalysisViewer';
@@ -16,7 +16,7 @@ const TABS = [
     VideoExplorer,
     CbufferAnalysis,
     VrxAnalysis,
-    TvdAnalysis,
+    FptAnalysis,
     RtpAnalysisViewer,
     PerFrameAnalysisViewer,
 ];
@@ -43,15 +43,15 @@ const VideoPage = props => {
                         icon: 'view module',
                     },
                     {
-                        label: 'Cinst',
+                        label: 'C',
                         icon: 'timeline',
                     },
                     {
-                        label: 'Vrx',
+                        label: 'VRX',
                         icon: 'timeline',
                     },
                     {
-                        label: 'Tvd',
+                        label: 'FPT',
                         icon: 'timeline',
                     },
                     {

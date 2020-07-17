@@ -73,6 +73,7 @@
   "media_information.video.width": "Ширина",
   "media_information.video.height": "Высота",
   "media_information.video.colorimetry": "Колориметрия",
+  "media_information.video.packets_per_field": "Пакетов на кадр",
   "media_information.video.packets_per_frame": "Пакетов на кадр",
   "media_information.video.continuation_bit": "Continuation bit",
   "media_information.video.continuation_bit.present": "Used",
@@ -121,9 +122,9 @@
   "media_information.rtp.source_mac_address": "*** media_information.rtp.source_mac_address",
   "media_information.rtp.source_port": "Порт источника",
   "media_information.rtp.duration": "Продолжительность",
-  "media_information.rtp.delta_rtp_ts_vs_nt": "Дельта RTP против референцной",
+  "media_information.rtp.delta_rtp_ts_vs_nt": "RTP Offset",
   "media_information.rtp.inter_frame_rtp_ts_delta": "*** media_information.rtp.inter_frame_rtp_delta",
-  "media_information.rtp.delta_first_packet_time_vs_rtp_time": "Дельта 1-й пакет против RTP",
+  "media_information.rtp.delta_first_packet_time_vs_rtp_time": "Latency",
   "media_information.rtp.delta_packet_time_vs_rtp_time": "Дельта пакет против RTP",
   "media_information.rtp.rtp_ts_step": "Шаг по времени RTP",
   "media_information.rtp.wrong_marker_bit": "Неверный маркерный бит",
@@ -316,5 +317,6 @@
   "dmngr.availableuntil": "",
   "dmngr.download": "",
   "ptp.average_offset": "Average offset",
-  "ptp.clock_type": "Clock type"
+  "ptp.clock_type": "Clock type",
+  "general.buffer_level": "Buffer level"
 }

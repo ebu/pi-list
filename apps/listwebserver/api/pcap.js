@@ -356,16 +356,16 @@ router.get('/:pcapID/stream/:streamID/analytics/AncillaryPktHistogram', (req, re
 /* */
 router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
     const { pcapID, streamID, measurement } = req.params;
-    const { from, to } = req.query;
+    const { from, to, groupByNanoseconds } = req.query;
 
     let chartData = null;
-
+    
     if (measurement === 'CInst') {
         chartData = influxDbManager.getCInstByStream(pcapID, streamID, from, to);
     } else if (measurement === 'CInstRaw') {
         chartData = influxDbManager.getCInstRaw(pcapID, streamID, from, to);
     } else if (measurement === 'VrxIdeal') {
-        chartData = influxDbManager.getVrxIdeal(pcapID, streamID, from, to);
+        chartData = influxDbManager.getVrxIdeal(pcapID, streamID, from, to, groupByNanoseconds);
     } else if (measurement === 'VrxIdealRaw') {
         chartData = influxDbManager.getVrxIdealRaw(pcapID, streamID, from, to);
     } else if (measurement === 'VrxAdjustedAvgTro') {

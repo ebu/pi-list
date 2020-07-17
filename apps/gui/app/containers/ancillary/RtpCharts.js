@@ -2,10 +2,7 @@ import React from 'react';
 import Panel from '../../components/common/Panel';
 import Graphs from '../../components/graphs';
 import api from '../../utils/api';
-
-import chartFormatters from '../../utils/chartFormatters';
-import Chart from '../../components/StyledChart';
-import { translateX } from '../../utils/translation';
+import { histogramAsPercentages } from '../../components/graphs';
 
 const dataAsMicroseconds = data => {
     return data.map(item => Object.assign(item, { value: item.value / 1000 }));
@@ -18,21 +15,20 @@ const RtpCharts = props => {
     return (
         <Panel className="lst-stream-info-tab">
             <div className="row lst-full-height">
-                <div className="col-xs-12 col-md-6">
-                    <Chart
-                        type="bar"
-                        request={() => api.getAncillaryPktPerFrameHistogram(pcapID, streamID)}
-                        labels={chartFormatters.histogramValues}
-                        formatData={chartFormatters.histogramCounts}
-                        xLabel={translateX('media_information.packets')}
-                        titleTag=""
-                        title={translateX('media_information.video.packets_per_frame')}
-                        height={300}
-                        yLabel={translateX('media_information.count')}
-                        displayXTicks="true"
+                <div className="col-xs-12">
+                    <Graphs.Histogram
+                        titleTag="media_information.video.packets_per_frame"
+                        xTitleTag="media_information.video.packets_per_frame"
+                        yTitle="%"
+                        asyncGetter={async () => {
+                            const v = await api.getAncillaryPktPerFrameHistogram(pcapID, streamID);
+                            return histogramAsPercentages(v);
+                        }}
                     />
                 </div>
-                <div className="col-xs-12 col-md-6">
+            </div>
+            <div className="row lst-full-height">
+                <div className="col-xs-12">
                     <Graphs.Line
                         titleTag="media_information.video.packets_per_frame"
                         xTitleTag="media_information.timeline"
@@ -44,32 +40,32 @@ const RtpCharts = props => {
                 </div>
             </div>
             <div className="row lst-full-height">
-                <div className="col-xs-12 col-md-12">
+                <div className="col-xs-12">
                     <Graphs.Line
                         titleTag="media_information.rtp.delta_first_packet_time_vs_rtp_time"
                         xTitleTag="media_information.timeline"
                         yTitle="Value (μs)"
                         asyncGetter={() =>
                             api
-                                .getDeltaPacketTimeVsRtpTimeRaw( props.pcapID, props.streamID, first_packet_ts, last_packet_ts)
+                                .getDeltaPacketTimeVsRtpTimeRaw(
+                                    props.pcapID,
+                                    props.streamID,
+                                    first_packet_ts,
+                                    last_packet_ts
+                                )
                                 .then(data => dataAsMicroseconds(data))
                         }
                     />
                 </div>
             </div>
             <div className="row lst-full-height">
-                <div className="col-xs-12 col-md-12">
+                <div className="col-xs-12">
                     <Graphs.Line
                         titleTag="media_information.rtp.rtp_ts_step"
                         xTitleTag="media_information.timeline"
                         yTitleTag="media_information.ticks"
                         asyncGetter={() =>
-                            api.getDeltaToPreviousRtpTsRaw(
-                                pcapID,
-                                streamID,
-                                first_packet_ts,
-                                last_packet_ts
-                            )
+                            api.getDeltaToPreviousRtpTsRaw(pcapID, streamID, first_packet_ts, last_packet_ts)
                         }
                     />
                 </div>

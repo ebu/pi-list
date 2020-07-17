@@ -61,7 +61,7 @@ const VideoInfo = props => {
                   units: 'bit',
               },
               {
-                  labelTag: 'media_information.video.packets_per_frame',
+                  labelTag: isInterlaced ? 'media_information.video.packets_per_field' : 'media_information.video.packets_per_frame',
                   value: props.packets_per_frame,
               },
               {

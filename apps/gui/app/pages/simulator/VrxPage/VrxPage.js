@@ -195,7 +195,7 @@ const Graph = ({ activeAreas, x, y, title }) => {
                 title: title,
             }}
             useResizeHandler
-            config={{ scrollZoom: true, responsive: true }}
+            config={{ scrollZoom: false, responsive: true }}
             style={{ width: '100%', height: '100%' }}
         />
     );

@@ -7,7 +7,7 @@ const dataAsMicroseconds = data => {
     return values;
 };
 
-const TvdAnalysis = props => {
+const FptAnalysis = props => {
     const { first_packet_ts, last_packet_ts } = props.streamInfo.statistics;
     const { streamID, pcapID } = props;
     const default_tro = props.streamInfo.media_specific.tro_default_ns / 1000;
@@ -25,17 +25,17 @@ const TvdAnalysis = props => {
         <div className="row">
             <div className="col-xs-12">
                 <Graphs.Line
-                    titleTag="Tvd"
-                    titleParam={`TRoffset = TROdefault = ${default_tro} μs`}
-                    xTitleTag="media_information.timeline"
-                    yTitle="Value (μs)"
+                    title="First Packet Time"
+                    xTitle="Time (TAI)"
+                    yTitle="FPT (μs)"
                     asyncGetter={() =>
                         api
                             .getDeltaToIdealTpr0Raw(pcapID, streamID, first_packet_ts, last_packet_ts)
                             .then(data => dataAsMicroseconds(data))
                     }
+                    layoutProperties={{ yaxis: { tickformat: ',.3f'}}}
                 />
-                <Graphs.Line
+                {/* <Graphs.Line
                     titleTag="Adjusted Tvd"
                     titleParam={`TRoffset = Avg(FPO)  = ${avg_tro} μs`}
                     xTitleTag="media_information.timeline"
@@ -45,10 +45,10 @@ const TvdAnalysis = props => {
                             .getDeltaToIdealTpr0AdjustedAvgTroRaw(pcapID, streamID, first_packet_ts, last_packet_ts)
                             .then(data => dataAsMicroseconds(data))
                     }
-                />
+                /> */}
             </div>
         </div>
     );
 };
 
-export default TvdAnalysis;
+export default FptAnalysis;
