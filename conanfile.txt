@@ -10,6 +10,7 @@ mongo-c-driver/1.11.0@bisect/stable
 mongo-cxx-driver/3.3.0@bisect/stable
 zlib/1.2.11@conan/stable
 libuuid/1.0.3@bincrafters/stable
+rabbitmq-c/0.8.0@bisect/stable
 
 [options]
 cpprestsdk:exclude_websockets=False
