@@ -1,45 +1,46 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import api from '../../utils/api';
-import chartFormatters from '../../utils/chartFormatters';
-import Chart from '../../components/StyledChart';
-import LineChart from '../../components/LineChart';
-import { translateX } from 'utils/translation';
+import Graphs from '../../components/graphs';
+import { histogramAsPercentages } from '../../components/graphs';
 
-const CbufferAnalysis = (props) => {
-    const {first_packet_ts, last_packet_ts} = props.streamInfo.statistics;
-    const {streamID, pcapID} = props;
+const CbufferAnalysis = props => {
+    const { first_packet_ts, last_packet_ts } = props.streamInfo.statistics;
+    const { streamID, pcapID } = props;
 
-    const ComposeChartTitle = (value) => {
-            return "Cinst - " + value;
-    }
+    const ComposeChartTitle = value => {
+        return `Cinst - ${value}`;
+    };
 
     return (
         <div className="row">
             <div className="col-xs-12">
-                <Chart
-                    type="bar"
-                    request={() => api.getCInstHistogramForStream(pcapID, streamID)}
-                    labels={chartFormatters.histogramValues}
-                    formatData={chartFormatters.histogramCounts}
-                    xLabel={translateX('media_information.rtp.packet_count')}  //RS
-                    title={ComposeChartTitle(translateX('media_information.histogram'))}  //RS
-                    height={300}
-                    yLabel={translateX('media_information.rtp.count')}  //RS
-                    displayXTicks="true"
+                <Graphs.Histogram
+                    title="C"
+                    xTitleTag="general.buffer_level"
+                    yTitle="%"
+                    asyncGetter={async () => {
+                        const v = await api.getCInstHistogramForStream(pcapID, streamID);
+                        return histogramAsPercentages(v);
+                    }}
                 />
-                <LineChart
-                    asyncData={() => api.getCInstForStream(pcapID, streamID, first_packet_ts, last_packet_ts)}
-                    xAxis={chartFormatters.xAxisTimeDomain}
-                    data={chartFormatters.statsLineChart}
-                    title={ComposeChartTitle(translateX('media_information.timeline'))}
-                    yAxisLabel={translateX('media_information.rtp.packet_count')}
-                    height={300}
-                    lineWidth={3}
-                    legend
+                <Graphs.Line
+                    title="Cinst"
+                    xTitle="Time (TAI)"
+                    yTitleTag="media_information.rtp.packet_count"
+                    asyncGetter={async () =>
+                        await api.getCInstForStream(pcapID, streamID, first_packet_ts, last_packet_ts)
+                    }
+                    layoutProperties={{ yaxis: { tickformat: ',d' } }}
                 />
             </div>
         </div>
     );
+};
+
+CbufferAnalysis.propTypes = {
+    streamID: PropTypes.string.isRequired,
+    pcapID: PropTypes.string.isRequired,
 };
 
 export default CbufferAnalysis;

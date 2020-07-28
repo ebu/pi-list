@@ -2,7 +2,9 @@
 
 ## RTP timestamp validation
 
-[JT-NM TESTED program](http://jt-nm.org/documents/JT-NM_Tested_Catalog_Full-Online-2019-04-05.pdf)
+`Delta Packet vs RTP`:
+
+[JT-NM TESTED program - 5.3](https://jt-nm.org/documents/JT-NM_Tested_Catalog_ST2110_Full-Online-2020-05-12.pdf)
 recommends to compute the delta between the packet arrival time
 (corresponding to PTP time) and the RTP timestamp. The value must not
 be negative (RTP time in the future) and lower than 500ms (in the past).
@@ -18,7 +20,9 @@ In a minimalist setup composed of an Embrionix SFP source and a
 capturing device plugged to the same Arista switch, results showed that
 the delay was about 1 packet time.
 
-## TimeStamped Delay Factor (TSDF)
+## TS-DF
+
+`TimeStamped Delay Factor`:
 
 [technical recommendation of EBU](https://tech.ebu.ch/docs/tech/tech3337.pdf)
 addresses the measurement of network jitter. The calculation is based

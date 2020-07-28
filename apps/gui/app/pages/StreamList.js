@@ -33,7 +33,7 @@ const StreamList = props => {
                 <div className="row display-flex">
                     {ptp && (
                         <div className="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                            <PTPCard ptp={ptp} />
+                            <PTPCard pcapID={pcapID} ptp={ptp} />
                         </div>
                     )}
                     {allStreams.map((stream, index) => renderCard(pcapID, stream, index))}
