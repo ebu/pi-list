@@ -3,7 +3,7 @@ import _ from 'lodash';
 import InfoPane from '../streamPage/components/InfoPane';
 import ResultPane from '../streamPage/components/ResultPane';
 import MinMaxDisplay from '../streamPage/components/MinMaxDisplay';
-import { getComplianceSummary, nsPropAsMinMaxAvgUs, propAsMinMaxAvg } from '../../utils/stats.js'
+import { getComplianceSummary } from '../../utils/stats.js'
 
 const AudioRtpInfo = props => {
     const deltaPktTsVsRtpTs = _.get(props.streamInfo, ['analyses', 'packet_ts_vs_rtp_ts'], undefined);
@@ -19,13 +19,13 @@ const AudioRtpInfo = props => {
         {
             measurement: <MinMaxDisplay
                 labelTag='media_information.rtp.delta_packet_time_vs_rtp_time'
-                {...nsPropAsMinMaxAvgUs(deltaPktTsVsRtpTs.details.range)}
+                {...deltaPktTsVsRtpTs.details.range}
                 attention={deltaPktTsVsRtpTs.result !== 'compliant'}
                 units="μs"
             />,
             limit: <MinMaxDisplay
                 label='range'
-                {...nsPropAsMinMaxAvgUs(deltaPktTsVsRtpTs.details.limit)}
+                {...deltaPktTsVsRtpTs.details.limit}
                 units="μs"
             />
         },

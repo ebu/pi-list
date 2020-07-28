@@ -1,109 +1,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import Plot from 'react-plotly.js';
+import { Line, getBaseLayout, CHART_COLORS, graphHeight } from './common';
 
-export const CHART_COLORS = {
-    RED: '#C00000',
-    DARK_RED: '#30000',
-    ORANGE: '#FFB000',
-    YELLOW: '#ECB857',
-    GREEN: '#4CAF4F',
-    CYAN: '#00E0E0',
-    BLUE: '#5086D8',
-    DARK_BLUE: '#000080',
-};
-const transparent = 'rgba(0,0,0,0)';
-const gridColor = '#ffffff30';
-const graphHeight = '600px';
-const lineWidth = 3;
-
-const axisFont = {
-    family: 'Roboto',
-    weight: 100,
-    size: 24,
-    color: '#ffffff',
-};
-
-const titleProps = {
-    font: axisFont,
-};
-
-const tickProps = {
-    // tickangle : -45,
-    tickfont: {
-        family: 'Roboto',
-        weight: 100,
-        size: 16,
-        color: '#ffffff',
-    },
-};
-
-const commonAxis = {
-    automargin: true,
-    gridcolor: gridColor,
-    gridwidth: 1,
-};
-
-const xaxis = {
-    ...commonAxis,
-    title: {
-        ...titleProps,
-    },
-    ...titleProps,
-    ...tickProps,
-};
-
-const yaxis = {
-    ...commonAxis,
-    title: {
-        ...titleProps,
-    },
-    ...tickProps,
-    tickformat: '+20',
-    showgrid: true,
-};
-
-const Line = (name, x, y, color, dashed) => {
-    const line = {
-        color: color,
-        width: lineWidth,
-        dash: dashed ? 'dash' : '',
-    };
-    const mode = dashed ? 'lines' : 'lines+markers';
-
-    return y.length > 0
-        ? {
-              name: name,
-              x: x,
-              y: y,
-              type: 'scatter',
-              marker: { color: color },
-              mode: mode,
-              line: line,
-          }
-        : {};
-};
-
-const Graph = ({ x, y, min, max, mean, stddev, highLimit, highTolerance, title, xTitle, yTitle }) => {
-    const layout = {
-        autosize: true,
-        xaxis: { ...xaxis },
-        yaxis: { ...yaxis },
-        margin: {},
-        paper_bgcolor: transparent,
-        plot_bgcolor: transparent,
-    };
+// layoutProperties
+//    y axis integer:  { yaxis: { tickformat: ',d'}};
+//    y axis 3 digits: { yaxis: { tickformat: ',.3f'}}
+const Graph = ({
+    x,
+    y,
+    value,
+    min,
+    max,
+    mean,
+    stddev,
+    highLimit,
+    highTolerance,
+    title,
+    xTitle,
+    yTitle,
+    layoutProperties,
+}) => {
+    const layout = _.merge(getBaseLayout(), layoutProperties);
     layout.xaxis.title.text = xTitle;
     layout.yaxis.title.text = yTitle;
+    layout.xaxis.tickformat = '%H:%M:%S.%L';
+    layout.legend = {
+        font: {
+            color: '#000',
+        },
+        bgcolor: '#E2E2E2',
+    };
 
     const data = [];
-    data.push(Line('value', x, y, CHART_COLORS.GREEN, false));
-    data.push(Line('Min', x, min, CHART_COLORS.GREEN, false));
-    data.push(Line('Max', x, max, CHART_COLORS.RED, false));
-    data.push(Line('Mean', x, mean, CHART_COLORS.YELLOW, false));
-    data.push(Line('Std. Deviation', x, stddev, CHART_COLORS.BLUE, false));
-    data.push(Line('High limit', x, highLimit, CHART_COLORS.RED, true));
-    data.push(Line('High tolerance', x, highTolerance, CHART_COLORS.ORANGE, true));
+    data.push(Line('value', x, value, CHART_COLORS.GREEN, false, 'scatter'));
+    data.push(Line('value', x, y, CHART_COLORS.GREEN, false, 'scatter'));
+    data.push(Line('Min', x, min, CHART_COLORS.GREEN, false, 'scatter'));
+    data.push(Line('Max', x, max, CHART_COLORS.RED, false, 'scatter'));
+    data.push(Line('Mean', x, mean, CHART_COLORS.YELLOW, false, 'scatter'));
+    data.push(Line('Std. Deviation', x, stddev, CHART_COLORS.BLUE, false, 'scatter'));
+    data.push(Line('High limit', x, highLimit, CHART_COLORS.RED, true, 'scatter'));
+    data.push(Line('High tolerance', x, highTolerance, CHART_COLORS.ORANGE, true, 'scatter'));
 
     return (
         <div className="lst-graph">
@@ -113,7 +51,7 @@ const Graph = ({ x, y, min, max, mean, stddev, highLimit, highTolerance, title, 
                 data={data}
                 layout={layout}
                 useResizeHandler
-                config={{ scrollZoom: true, responsive: true }}
+                config={{ scrollZoom: false, responsive: true }}
                 style={{ height: graphHeight }}
             />
         </div>
@@ -123,6 +61,7 @@ const Graph = ({ x, y, min, max, mean, stddev, highLimit, highTolerance, title, 
 Graph.propTypes = {
     x: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])),
     y: PropTypes.arrayOf(PropTypes.number),
+    value: PropTypes.arrayOf(PropTypes.number),
     min: PropTypes.arrayOf(PropTypes.number),
     max: PropTypes.arrayOf(PropTypes.number),
     mean: PropTypes.arrayOf(PropTypes.number),
@@ -132,17 +71,20 @@ Graph.propTypes = {
     title: PropTypes.string.isRequired,
     xTitle: PropTypes.string.isRequired,
     yTitle: PropTypes.string.isRequired,
+    layoutProperties: PropTypes.object,
 };
 
 Graph.defaultProps = {
     x: [],
     y: [],
+    value: [],
     min: [],
     max: [],
     mean: [],
     stddev: [],
     highLimit: [],
     highTolerance: [],
+    layoutProperties: {},
 };
 
 export default Graph;

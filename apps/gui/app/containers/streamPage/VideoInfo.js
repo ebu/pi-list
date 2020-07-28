@@ -1,6 +1,6 @@
 import React from 'react';
 import Timecode from 'smpte-timecode';
-import { translateX } from '../../utils/translation';
+import { translateX, translateC } from '../../utils/translation';
 import InfoPane from './components/InfoPane';
 
 const getTimeCode = props => {
@@ -28,7 +28,7 @@ const VideoInfo = props => {
     const size = `${props.width}x${props.height}`;
     const isInterlaced = props.scan_type === 'interlaced';
     const rate = typeof props.rate === 'string' ? props.rate : props.rate.toFixed(2).toString();
-    var values = isAncillary
+    const values = isAncillary
         ? [
               {
                   labelTag: 'media_information.rtp.wrong_marker_bit',
@@ -61,8 +61,14 @@ const VideoInfo = props => {
                   units: 'bit',
               },
               {
-                  labelTag: 'media_information.video.packets_per_frame',
+                  labelTag: isInterlaced ? 'media_information.video.packets_per_field' : 'media_information.video.packets_per_frame',
                   value: props.packets_per_frame,
+              },
+              {
+                  labelTag: 'media_information.video.continuation_bit',
+                  value: props.has_continuation_bit_set
+                      ? translateX('media_information.video.continuation_bit.present')
+                      : translateX('media_information.video.continuation_bit.not_present'),
               },
               {
                   labelTag: 'media_information.video.packing_mode',
@@ -70,7 +76,7 @@ const VideoInfo = props => {
               },
           ];
 
-    values = values.concat([
+    const allValues = values.concat([
         {
             labelTag: 'media_information.video.scan_type',
             value: translateX(
@@ -92,7 +98,7 @@ const VideoInfo = props => {
         },
     ]);
 
-    return <InfoPane icon="ondemand_video" headingTag="headings.media_information" values={values} />;
+    return <InfoPane icon="ondemand_video" headingTag="headings.media_information" values={allValues} />;
 };
 
 export default VideoInfo;

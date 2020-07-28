@@ -54,11 +54,12 @@ const fetchData = async asyncGetter => {
     }
 };
 
-const LineGraphHoc = ({ asyncGetter, title, titleTag, titleParam, xTitle, xTitleTag, yTitle, yTitleTag }) => {
+const LineGraphHoc = ({ asyncGetter, title, titleTag, titleParam, xTitle, xTitleTag, yTitle, yTitleTag, layoutProperties }) => {
     const [state, setState] = useState({
         key: '',
         x: [],
         y: [],
+        value: [],
         min: [],
         max: [],
         mean: [],
@@ -92,6 +93,7 @@ const LineGraphHoc = ({ asyncGetter, title, titleTag, titleParam, xTitle, xTitle
             title={actualTitle}
             x={state.x}
             y={state.y}
+            value={state.value}
             min={state.min}
             max={state.max}
             mean={state.mean}
@@ -100,6 +102,7 @@ const LineGraphHoc = ({ asyncGetter, title, titleTag, titleParam, xTitle, xTitle
             highTolerance={state.highTolerance}
             xTitle={xt}
             yTitle={yt}
+            layoutProperties={layoutProperties}
         />
     );
 };
@@ -113,6 +116,7 @@ LineGraphHoc.propTypes = {
     xTitleTag: PropTypes.string,
     yTitle: PropTypes.string,
     yTitleTag: PropTypes.string,
+    layoutProperties: PropTypes.object,
 };
 
 LineGraphHoc.defaultProps = {
@@ -123,6 +127,7 @@ LineGraphHoc.defaultProps = {
     xTitleTag: undefined,
     yTitle: undefined,
     yTitleTag: undefined,
+    layoutProperties: {}
 };
 
 export default LineGraphHoc;

@@ -22,7 +22,7 @@ const nsAsMicroseconds = value => (value / 1000).toFixed(3);
 
 const FpoDisplay = props => (
     <MinAvgMaxDisplay
-        label={<span>FPO</span>}
+        label={<span>FPT</span>}
         units="μs"
         min={nsAsMicroseconds(props.min_tro_ns)}
         avg={nsAsMicroseconds(props.avg_tro_ns)}

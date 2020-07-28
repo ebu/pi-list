@@ -73,7 +73,11 @@
   "media_information.video.width": "Breedte",
   "media_information.video.height": "Hoogte",
   "media_information.video.colorimetry": "Colorimetry",
-  "media_information.video.packets_per_frame": "Packets per Frame/Field",
+  "media_information.video.packets_per_field": "Packets per Field",
+  "media_information.video.packets_per_frame": "Packets per Frame",
+  "media_information.video.continuation_bit": "Continuation bit",
+  "media_information.video.continuation_bit.present": "Used",
+  "media_information.video.continuation_bit.not_present": "Not used",
   "media_information.video.packing_mode": "Packing mode",
   "media_information.video.scan_type": "Scan Type",
   "media_information.video.rate": "Rate",
@@ -118,9 +122,9 @@
   "media_information.rtp.source_mac_address": "Bron MAC adres",
   "media_information.rtp.source_port": "Bron port",
   "media_information.rtp.duration": "Duur",
-  "media_information.rtp.delta_rtp_ts_vs_nt": "Delta RTP vs Reference Frame",
+  "media_information.rtp.delta_rtp_ts_vs_nt": "RTP Offset",
   "media_information.rtp.inter_frame_rtp_ts_delta": "Inter frame RTP TS verschil",
-  "media_information.rtp.delta_first_packet_time_vs_rtp_time": "Verschil 1ste packet vs. RTP",
+  "media_information.rtp.delta_first_packet_time_vs_rtp_time": "Latency",
   "media_information.rtp.delta_packet_time_vs_rtp_time": "Verschil packet vs RTP",
   "media_information.rtp.rtp_ts_step": "RTP time step",
   "media_information.rtp.wrong_marker_bit": "Verkeer marker bit",
@@ -308,5 +312,6 @@
   "workflow.st2022_7_analysis.deltaBetweenPackets": "Time delta between packets in both streams",
   "general.inconsistent": "Inconsistent",
   "ptp.average_offset": "Average offset",
-  "ptp.clock_type": "Clock type"
+  "ptp.clock_type": "Clock type",
+  "general.buffer_level": "Buffer level"
 }

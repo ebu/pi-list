@@ -73,7 +73,11 @@
   "media_information.video.width": "Largeur",
   "media_information.video.height": "Hauteur",
   "media_information.video.colorimetry": "Colorimétrie",
-  "media_information.video.packets_per_frame": "Paquets par Trame/Champ",
+  "media_information.video.packets_per_field": "Paquets par Champ",
+  "media_information.video.packets_per_frame": "Paquets par Trame",
+  "media_information.video.continuation_bit": "Continuation bit",
+  "media_information.video.continuation_bit.present": "Used",
+  "media_information.video.continuation_bit.not_present": "Not used",
   "media_information.video.packing_mode": "Packing mode",
   "media_information.video.scan_type": "Type de balayage",
   "media_information.video.rate": "Taux",
@@ -118,9 +122,9 @@
   "media_information.rtp.source_mac_address": "Adresse MAC source",
   "media_information.rtp.source_port": "Port de source",
   "media_information.rtp.duration": "Durée",
-  "media_information.rtp.delta_rtp_ts_vs_nt": "Différence entre RTP et l'image de référence",
+  "media_information.rtp.delta_rtp_ts_vs_nt": "RTP Offset",
   "media_information.rtp.inter_frame_rtp_ts_delta": "*** media_information.rtp.inter_frame_rtp_delta",
-  "media_information.rtp.delta_first_packet_time_vs_rtp_time": "Ecart 1er paquet vs RTP",
+  "media_information.rtp.delta_first_packet_time_vs_rtp_time": "Latency",
   "media_information.rtp.delta_packet_time_vs_rtp_time": "Ecart paquet vs RTP",
   "media_information.rtp.rtp_ts_step": "Increment de temps RTP",
   "media_information.rtp.wrong_marker_bit": "Mauvais marqueur",
@@ -313,5 +317,6 @@
   "dmngr.availableuntil": "",
   "dmngr.download": "",
   "ptp.average_offset": "Average offset",
-  "ptp.clock_type": "Clock type"
+  "ptp.clock_type": "Clock type",
+  "general.buffer_level": "Buffer level"
 }

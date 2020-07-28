@@ -11,11 +11,17 @@ const RtpInfo = ({ info }) => {
     const deltaPktTsVsRtpTs = _.get(info, ['analyses', 'packet_ts_vs_rtp_ts'], undefined);
     const deltaRtpTsVsNTFrame = _.get(info, ['analyses', 'rtp_ts_vs_nt'], undefined);
     const interFrameRtpDelta = _.get(info, ['analyses', 'inter_frame_rtp_ts_delta'], undefined);
+    const packet_count = _.get(info, ['analyses', 'rtp_sequence', 'details', 'packet_count'], 0);
 
     const summaryValues = [
         {
             labelTag: 'stream.compliance',
             ...getComplianceSummary([deltaPktTsVsRtpTs, deltaRtpTsVsNTFrame, interFrameRtpDelta]),
+        },
+        {
+            // Just to pad one line
+            labelTag: 'media_information.rtp.packet_count',
+            value: packet_count,
         },
     ];
 

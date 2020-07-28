@@ -73,7 +73,11 @@
   "media_information.video.width": "Ширина",
   "media_information.video.height": "Висота",
   "media_information.video.colorimetry": "Колориметрія",
+  "media_information.video.packets_per_field": "Пакетів на кадр",
   "media_information.video.packets_per_frame": "Пакетів на кадр",
+  "media_information.video.continuation_bit": "Continuation bit",
+  "media_information.video.continuation_bit.present": "Used",
+  "media_information.video.continuation_bit.not_present": "Not used",
   "media_information.video.packing_mode": "Packing mode",
   "media_information.video.scan_type": "Тип розгортки",
   "media_information.video.rate": "Темп",
@@ -118,9 +122,9 @@
   "media_information.rtp.source_mac_address": "*** media_information.rtp.source_mac_address",
   "media_information.rtp.source_port": "Порт джерела",
   "media_information.rtp.duration": "Тривалість",
-  "media_information.rtp.delta_rtp_ts_vs_nt": "Delta RTP проти опорного кадру",
+  "media_information.rtp.delta_rtp_ts_vs_nt": "RTP Offset",
   "media_information.rtp.inter_frame_rtp_ts_delta": "*** media_information.rtp.inter_frame_rtp_delta",
-  "media_information.rtp.delta_first_packet_time_vs_rtp_time": "Дельта 1-й пакет проти RTP",
+  "media_information.rtp.delta_first_packet_time_vs_rtp_time": "Latency",
   "media_information.rtp.delta_packet_time_vs_rtp_time": "Дельта пакет проти RTP",
   "media_information.rtp.rtp_ts_step": "Час часу RTP",
   "media_information.rtp.wrong_marker_bit": "Неправильний маркерний біт",
@@ -313,5 +317,6 @@
   "dmngr.availableuntil": "",
   "dmngr.download": "",
   "ptp.average_offset": "Average offset",
-  "ptp.clock_type": "Clock type"
+  "ptp.clock_type": "Clock type",
+  "general.buffer_level": "Buffer level"
 }

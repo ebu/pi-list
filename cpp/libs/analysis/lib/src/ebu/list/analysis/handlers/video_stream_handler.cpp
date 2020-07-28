@@ -209,6 +209,11 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
         info.line_info[line_index].offset               = line_header.offset();
         info.line_info[line_index].valid                = true;
 
+        if(line_header.continuation())
+        {
+            video_description_.video.has_continuation_bit_set = true;
+        }
+
 #if defined(LIST_TRACE)
         logger()->info("Line in packet: {} Line no: {} Offset: {} Length: {}", line_index,
                        info.line_info[line_index].line_number, info.line_info[line_index].offset,

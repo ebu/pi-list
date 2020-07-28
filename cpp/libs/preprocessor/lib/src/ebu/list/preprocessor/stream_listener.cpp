@@ -1,4 +1,4 @@
-#include "stream_listener.h"
+#include "ebu/list/preprocessor/stream_listener.h"
 #include "ebu/list/analysis/constants.h"
 #include "ebu/list/analysis/serialization/stream_identification.h"
 #include <vector>
@@ -11,12 +11,12 @@ using nlohmann::json;
 
 namespace
 {
-    void save_on_db(const db_serializer& db, const stream_with_details& stream_info,
-                    std::map<std::string, std::vector<std::string>>& detectors_error_codes, int64_t num_packets = 0,
-                    uint16_t num_dropped_packets                                       = 0,
-                    std::vector<ebu_list::rtp::packet_gap_info> dropped_packet_samples = {})
+    json make_stream_info(const stream_with_details& stream_info,
+                          std::map<std::string, std::vector<std::string>>& detectors_error_codes,
+                          int64_t num_packets = 0, uint16_t num_dropped_packets = 0,
+                          std::vector<ebu_list::rtp::packet_gap_info> dropped_packet_samples = {})
     {
-        nlohmann::json serialized_streams_details = stream_with_details_serializer::to_json(stream_info);
+        json serialized_streams_details = stream_with_details_serializer::to_json(stream_info);
         if(num_packets > 0)
         {
             serialized_streams_details["statistics"]["packet_count"]           = num_packets;
@@ -33,12 +33,12 @@ namespace
         if(detectors_error_codes["ttml"].size() > 0)
             serialized_streams_details["media_type_validation"]["ttml"] = detectors_error_codes["ttml"];
 
-        db.insert(constants::db::offline, constants::db::collections::streams, serialized_streams_details);
+        return serialized_streams_details;
     }
 } // namespace
 
-stream_listener::stream_listener(rtp::packet first_packet, std::string pcap_id, std::string mongo_url)
-    : detector_(first_packet), num_packets_(1), db_(mongo_url)
+stream_listener::stream_listener(rtp::packet first_packet, std::string_view pcap_id)
+    : detector_(first_packet), num_packets_(1)
 {
     seqnum_analyzer_.handle_packet(static_cast<uint16_t>(first_packet.info.rtp.view().sequence_number()),
                                    first_packet.info.udp.packet_time);
@@ -49,7 +49,7 @@ stream_listener::stream_listener(rtp::packet first_packet, std::string pcap_id, 
     stream_id_.network.destination     = destination(first_packet.info.udp);
     stream_id_.network.ssrc            = first_packet.info.rtp.view().ssrc();
     stream_id_.network.payload_type    = first_packet.info.rtp.view().payload_type();
-    stream_id_.pcap                    = std::move(pcap_id);
+    stream_id_.pcap                    = pcap_id;
 }
 
 void stream_listener::on_data(const rtp::packet& packet)
@@ -82,8 +82,6 @@ void stream_listener::on_complete()
     std::map<std::string, std::vector<std::string>> detectors_error_codes = detector_.get_error_codes();
 
     media_stream_details details;
-
-    bool is_valid = true;
 
     stream_id_.network.dscp = dscp_.get_info();
 
@@ -135,19 +133,16 @@ void stream_listener::on_complete()
         stream_id_.state = stream_state::NEEDS_INFO;
     }
 
-    if(is_valid)
-    {
-        stream_with_details swd{stream_id_, details};
+    stream_with_details swd{stream_id_, details};
 
-        if(stream_id_.state != stream_state::NEEDS_INFO)
-            save_on_db(db_, swd, detectors_error_codes);
-        else
-            save_on_db(db_, swd, detectors_error_codes, num_packets_,
-                       static_cast<uint16_t>(seqnum_analyzer_.num_dropped_packets()),
-                       seqnum_analyzer_.dropped_packets());
-    }
+    info_ = make_stream_info(swd, detectors_error_codes, num_packets_,
+                             static_cast<uint16_t>(seqnum_analyzer_.num_dropped_packets()),
+                             seqnum_analyzer_.dropped_packets());
+}
 
-    return;
+nlohmann::json stream_listener::get_info() const
+{
+    return info_;
 }
 
 void stream_listener::on_error(std::exception_ptr ex)
