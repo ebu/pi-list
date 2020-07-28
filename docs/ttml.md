@@ -4,7 +4,7 @@ The EBU-TT Live specification (EBU Tech 3370, https://tech.ebu.ch/publications/t
 
 The [IETF RFC 8759 RTP Payload for Timed Text Markup Language (TTML)](https://tools.ietf.org/html/rfc8759) describes how to map TTML subtitles (including EBU-TT Live) into RTP. This RFC is based on a proposal submitted to the IETF by the BBC, with the goal of enabling the use of TTML-based subtitles in Live IP environments.
 
-In order for EBU Members and other professional users to be able to verify the presence and correctness of subtitles carried in RTP in IP Live production set ups, EBU LIST integrates a TTML analysis module.
+In order for EBU Members and other professional users to be able to verify the presence and correctness of subtitles carried in RTP in IP Live production set ups, EBU LIST includes a TTML analysis module.
 
 
 ## How to use it
@@ -17,7 +17,7 @@ LIST will validate the RTP parameters of the TTML stream, as well as the validit
 
 ## Examples
 
-1 - Summary of the analysis of three pcap file, each containing one TTML stream:
+1 - Summary of the analysis of three pcap files, each containing one TTML stream:
 - single packet documents
 - multiple packet documents
 - invalid timing
@@ -48,4 +48,4 @@ LIST does not allow the user to link a pcap to the corresponding SDP file. There
 
 ## Acknowledgments
 
-This work has been done with close collaboration with the BBC.
+This work has been done in close collaboration with the BBC.
