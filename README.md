@@ -27,8 +27,6 @@ We deployed an [online version](https://list.ebu.io/) that you can start using r
 
 ## For developers
 
-:bangbang: LIST instance moved from HTTP to HTTPS.
-
 * [How to compile LIST](./docs/compiling_list.md)
 * [How to further develop LIST](./docs/list_development.md)
 
@@ -38,6 +36,7 @@ We deployed an [online version](https://list.ebu.io/) that you can start using r
 * [Audio timing analysis](./docs/audio_timing_analysis.md)
 * [Ancillary data](./docs/ancillary_data.md)
 * [Stream compare](./docs/stream_compare.md)
+* [TTML](./docs/ttml.md)
 
 ## License
 
