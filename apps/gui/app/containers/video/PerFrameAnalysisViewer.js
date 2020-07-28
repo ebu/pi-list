@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import api from 'utils/api';
 import asyncLoader from 'components/asyncLoader';
 import StreamTimeline from 'components/stream/StreamTimeline';
-import chartFormatters from 'utils/chartFormatters';
-import LineChart from 'components/LineChart';
+import Graphs from '../../components/graphs';
 
 class PerFrameAnalysisViewer extends Component {
     constructor(props) {
@@ -23,11 +22,11 @@ class PerFrameAnalysisViewer extends Component {
                         pcapID={this.props.pcapID}
                         streamID={this.props.streamID}
                         frames={this.props.frames}
-                        onFrameChange={(frame) => {
+                        onFrameChange={frame => {
                             if (frame) {
                                 this.setState({
                                     first_packet_ts: frame.first_packet_ts,
-                                    last_packet_ts: frame.last_packet_ts
+                                    last_packet_ts: frame.last_packet_ts,
                                 });
                             }
                         }}
@@ -35,25 +34,35 @@ class PerFrameAnalysisViewer extends Component {
                 </div>
                 <div className="row">
                     <div className="col-xs-12">
-                        <LineChart
-                            key={this.state.first_packet_ts}
-                            asyncData={() => api.getCInstRaw(this.props.pcapID, this.props.streamID, this.state.first_packet_ts, this.state.last_packet_ts)}
-                            xAxis={chartFormatters.getTimeLineLabel}
-                            data={chartFormatters.singleValueLineChart}
-                            title="CInst"
-                            yAxisLabel="packets" //RS
-                            height={300}
-                            lineWidth={3}
+                        <Graphs.Line
+                            key={this.state.first_packet_ts + '0'}
+                            title="Cinst"
+                            xTitle="Time (TAI)"
+                            yTitleTag="media_information.rtp.packet_count"
+                            asyncGetter={async () =>
+                                api.getCInstRaw(
+                                    this.props.pcapID,
+                                    this.props.streamID,
+                                    this.state.first_packet_ts,
+                                    this.state.last_packet_ts
+                                )
+                            }
+                            layoutProperties={{ yaxis: { tickformat: ',d' } }}
                         />
-                        <LineChart
-                            key={this.state.first_packet_ts + "s"}
-                            asyncData={() => api.getVrxIdealRaw(this.props.pcapID, this.props.streamID, this.state.first_packet_ts, this.state.last_packet_ts)}
-                            xAxis={chartFormatters.getTimeLineLabel}
-                            data={chartFormatters.singleValueLineChart}
-                            title="Vrx"
-                            yAxisLabel="packets"  //RS
-                            height={300}
-                            lineWidth={3}
+                        <Graphs.Line
+                            key={this.state.first_packet_ts + '1'}
+                            title="VRX"
+                            xTitle="Time (TAI)"
+                            yTitleTag="media_information.rtp.packet_count"
+                            asyncGetter={() =>
+                                api.getVrxIdealRaw(
+                                    this.props.pcapID,
+                                    this.props.streamID,
+                                    this.state.first_packet_ts,
+                                    this.state.last_packet_ts
+                                )
+                            }
+                            layoutProperties={{ yaxis: { tickformat: ',d' } }}
                         />
                     </div>
                 </div>
@@ -64,10 +73,10 @@ class PerFrameAnalysisViewer extends Component {
 
 export default asyncLoader(PerFrameAnalysisViewer, {
     asyncRequests: {
-        frames: (props) => {
+        frames: props => {
             const { pcapID, streamID } = props;
 
             return api.getFramesFromStream(pcapID, streamID);
-        }
-    }
+        },
+    },
 });

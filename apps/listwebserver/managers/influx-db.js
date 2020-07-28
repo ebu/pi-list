@@ -55,12 +55,11 @@ class InfluxDbManager {
 
         return this.sendQueryAndFormatResults(query);
     }
-
     getCInstByStream(pcapID, streamID, startTime, endTime) {
         const wanted_resolution = Math.ceil((endTime - startTime) / 2000);
         const resolution = wanted_resolution <= 1 ? '1ns' : `${wanted_resolution}ns`;
         const query = `
-            select max("cinst"), min("cinst"), mean("cinst"), stddev("cinst")
+            select max("cinst")
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
             group by time(${resolution})
         `;
@@ -70,11 +69,12 @@ class InfluxDbManager {
         return this.sendQueryAndFormatResults(query);
     }
 
-    getVrxIdeal(pcapID, streamID, startTime, endTime) {
+    getVrxIdeal(pcapID, streamID, startTime, endTime, groupByNanoseconds) {
+        const groupBy = groupByNanoseconds ? `group by time(${groupByNanoseconds}ns)`: 'group by time(2ms)';
         const query = `
-            select max("gapped-ideal-vrx"), min("gapped-ideal-vrx")
+            select max("gapped-ideal-vrx")
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
-            group by time(2ms)
+            ${groupBy}
         `;
 
         log.info(`Get VRX Ideal for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);

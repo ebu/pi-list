@@ -66,6 +66,7 @@ export const PtpInfoShape = PropTypes.shape({
 });
 
 PTPCard.propTypes = {
+    pcapID: PropTypes.string.isRequired,
     ptp: PtpInfoShape.isRequired,
 };
 

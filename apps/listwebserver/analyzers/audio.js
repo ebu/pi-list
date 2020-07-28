@@ -12,7 +12,7 @@ const validation = {
     rtp: {
         deltaPktTsVsRtpTsLimit: {
             min: 0,
-            max: 2000
+            max:1000 //us
         },
     },
 };

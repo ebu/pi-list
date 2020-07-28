@@ -138,8 +138,10 @@ export default {
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/CInstRaw?from=${fromNs}&to=${toNs}`),
     getVrxHistogramForStream: (pcapID, streamID) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/Vrx/histogram`),
-    getVrxIdealForStream: (pcapID, streamID, fromNs, toNs) =>
-        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/VrxIdeal?from=${fromNs}&to=${toNs}`),
+    getVrxIdealForStream: (pcapID, streamID, fromNs, toNs, groupByNanoseconds) => {
+        const groupBy = groupByNanoseconds ? `&groupByNanoseconds=${groupByNanoseconds}` : '';
+        return request.get(`pcap/${pcapID}/stream/${streamID}/analytics/VrxIdeal?from=${fromNs}&to=${toNs}${groupBy}`);
+    },
     getVrxIdealRaw: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/VrxIdealRaw?from=${fromNs}&to=${toNs}`),
     getVrxAdjustedAvgTro: (pcapID, streamID, fromNs, toNs) =>
