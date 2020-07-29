@@ -55,6 +55,17 @@ axios.interceptors.request.use(
 
 axios.defaults.withCredentials = true;
 
+const getAuthUrl = path => {
+    const url = new URL(path);
+
+    if (isAuthenticated()) {
+        const token = getToken();
+        url.searchParams.append('token', `Bearer ${token}`);
+    }
+
+    return url;
+};
+
 const request = {
     get: url => axios.get(`${API_URL}/${url}`).then(response => response.data),
     put: (url, data, config = null) => axios.put(`${API_URL}/${url}`, data, config),
@@ -205,16 +216,10 @@ export default {
 
     /* Video */
     getFramesFromStream: (pcapID, streamID) => request.get(`pcap/${pcapID}/stream/${streamID}/frames`),
-    getImageFromStream: (pcapID, streamID, timestamp) =>
-        `${API_URL}/pcap/${pcapID}/stream/${streamID}/frame/${timestamp}/png`,
     getPacketsFromFrame: (pcapID, streamID, frameNumber) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/frame/${frameNumber}/packets`),
 
     /* Audio */
-    downloadMp3Url: (pcapID, streamID, channelsString) =>
-        `${API_URL}/pcap/${pcapID}/stream/${streamID}/downloadmp3${
-            channelsString ? `?channels=${channelsString}` : ''
-        }`,
     renderMp3: (pcapID, streamID, channelsString) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/rendermp3?channels=${channelsString}`),
 
@@ -255,4 +260,15 @@ export default {
     getDownloads: () => request.get('downloadmngr'),
     downloadFile: id =>
         axios.request({ url: `${API_URL}/downloadmngr/download/${id}`, method: 'GET', responseType: 'blob' }),
+
+    // URLs
+    getImageFromStream: (pcapID, streamID, timestamp) =>
+        getAuthUrl(`${API_URL}/pcap/${pcapID}/stream/${streamID}/frame/${timestamp}/png`),
+
+    downloadMp3Url: (pcapID, streamID, channelsString) =>
+        getAuthUrl(
+            `${API_URL}/pcap/${pcapID}/stream/${streamID}/downloadmp3${
+                channelsString ? `?channels=${channelsString}` : ''
+            }`
+        ),
 };

@@ -16,7 +16,7 @@ const defaultPreferences = {
     },
 };
 
-const getUsername = req => {
+const getUsername = (req) => {
     const token = getToken(req);
     if (token) {
         const username = jwt.verify(token, config.secret, (err, decoded) => {
@@ -32,7 +32,7 @@ const getUsername = req => {
     }
 };
 
-const getUserId = req => {
+const getUserId = (req) => {
     const token = getToken(req);
     if (token) {
         const id = jwt.verify(token, config.secret, (err, decoded) => {
@@ -48,14 +48,22 @@ const getUserId = req => {
     }
 };
 
-const getToken = req => {
+const getTokenFromHeaderOrQuery = (req) => {
     const token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
+    if (token) return token;
+
+    // If it is not on the headers, maybe it is on a query parameter
+    return req.query.token;
+};
+
+const getToken = (req) => {
+    const token = getTokenFromHeaderOrQuery(req);
     if (token && token.startsWith('Bearer ')) {
         // Remove Bearer from string
         return token.slice(7, token.length);
     }
 
-    return token;
+    return null;
 };
 
 const checkToken = (req, res, next) => {
@@ -79,53 +87,54 @@ const checkToken = (req, res, next) => {
 };
 
 function authenticate(plainPassword, salt, password) {
-    return (crypto.createHmac('sha512', salt).update(plainPassword).digest("base64").toString() === password);
+    return crypto.createHmac('sha512', salt).update(plainPassword).digest('base64').toString() === password;
 }
 
 const handleLogin = (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    
-    collection.findOne({ username: username }).exec()
-    .then(user => {
-        if (user) {
-            if (authenticate(password, user.salt, user.password)) {
-                const token = jwt.sign({ username: username, id: user.id }, config.secret, {
-                     expiresIn: '24h', // expires in 24 hours
-                 });
-                
-                // return the JWT token for the future API calls
-                res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
-                    result: 0,
-                    desc: 'Authentication successful',
-                    content: { success: true, token: token }
-                });
-                return;
-            } else {
-                res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
-                    result: HTTP_STATUS_CODE.CLIENT_ERROR.UNAUTHORIZED,
-                    desc: 'Unauthorized Access',
-                    content: { success: false, token: null }
-                });
-                return;
-            }
-        }
 
-        res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
-            result: HTTP_STATUS_CODE.CLIENT_ERROR.UNAUTHORIZED,
-            desc: 'Unauthorized Access',
-            content: { success: false, token: null }
+    collection
+        .findOne({ username: username })
+        .exec()
+        .then((user) => {
+            if (user) {
+                if (authenticate(password, user.salt, user.password)) {
+                    const token = jwt.sign({ username: username, id: user.id }, config.secret, {
+                        expiresIn: '24h', // expires in 24 hours
+                    });
+
+                    // return the JWT token for the future API calls
+                    res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
+                        result: 0,
+                        desc: 'Authentication successful',
+                        content: { success: true, token: token },
+                    });
+                    return;
+                } else {
+                    res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
+                        result: HTTP_STATUS_CODE.CLIENT_ERROR.UNAUTHORIZED,
+                        desc: 'Unauthorized Access',
+                        content: { success: false, token: null },
+                    });
+                    return;
+                }
+            }
+
+            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
+                result: HTTP_STATUS_CODE.CLIENT_ERROR.UNAUTHORIZED,
+                desc: 'Unauthorized Access',
+                content: { success: false, token: null },
+            });
+            return;
         })
-        return;
-    })
-    .catch(() => 
-    {
-        res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send({
-            result: HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR,
-            desc: `Failed to read user from the Database.`,
-            content: 0
+        .catch(() => {
+            res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send({
+                result: HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+                desc: `Failed to read user from the Database.`,
+                content: 0,
+            });
         });
-    });
 };
 
 const handleLogout = (req, res) => {
@@ -136,40 +145,37 @@ const handleLogout = (req, res) => {
     });
 };
 
-
 /* Salt and Encrypt password */
 
 function generateSalt() {
     var buf = crypto.randomBytes(16);
     return buf.toString('base64');
-    
 }
 
 function encodePassword(password, salt) {
-    return crypto.createHmac('sha512', salt).update(password).digest("base64").toString();
+    return crypto.createHmac('sha512', salt).update(password).digest('base64').toString();
 }
 
 /*
 
 */
 const handleRegister = (req, res) => {
-    
     let user = req.body;
-    
+
     user.salt = generateSalt();
     user.password = encodePassword(user.password, user.salt);
-    
+
     user.preferences = defaultPreferences;
 
     collection
         .create(user)
-        .then(function(data) {
+        .then(function (data) {
             res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send(data);
         })
-        .catch(function(err) {
+        .catch(function (err) {
             res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send();
         });
-}
+};
 
 module.exports = {
     checkToken,
@@ -180,5 +186,5 @@ module.exports = {
     handleRegister,
     authenticate,
     generateSalt,
-    encodePassword
+    encodePassword,
 };
