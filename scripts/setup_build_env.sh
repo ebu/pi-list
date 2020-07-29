@@ -13,9 +13,12 @@ if [ -f /etc/os-release ]; then
         # at least support our ref dockerized distro, i.e. Debian Stretch where default cmake is v3.7
         echo "deb http://ftp.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/stretch-backports.list
         CMAKE_INSTALL_OPTIONS="-t stretch-backports --no-install-recommends"
+        echo "deb http://ftp.debian.org/debian stretch-backports-sloppy main" > /etc/apt/sources.list.d/stretch-backports-sloppy.list
+        LIBARCHIVE_INSTALL_OPTIONS="-t stretch-backports-sloppy --no-install-recommends"
     fi
 fi
 apt update
+apt install -y $LIBARCHIVE_INSTALL_OPTIONS libarchive13
 apt install -y $CMAKE_INSTALL_OPTIONS cmake
 
 # utilities

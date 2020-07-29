@@ -23,9 +23,11 @@ const { doMulticastAddressAnalysis } = require('../../analyzers/multicast.js');
 const constants = require('../../enums/analysis');
 const glob = util.promisify(require('glob'));
 const { zipFilesExt } = require('../zip');
+const { getUserId } = require('../../auth/middleware');
 
 function getUserFolder(req) {
-    return `${program.folder}/${req.session.passport.user.id}`;
+    const userId = getUserId(req);
+    return `${program.folder}/${userId}`;
 }
 
 function generateRandomPcapFilename(file) {
@@ -67,11 +69,11 @@ function pcapFileAvailableFromReq(req, res, next) {
  * Given a network capture file, convert it to PCAP format before ingestion.
  */
 function pcapFormatConversion(req, res, next) {
-    const userID = req.session.passport.user.id;
+    const userId = getUserId(req);
     const pcapId = req.pcap.uuid;
     const originalFilename = req.body.originalFilename || req.file.originalname;
 
-    websocketManager.instance().sendEventToUser(userID, {
+    websocketManager.instance().sendEventToUser(userId, {
         event: WS_EVENTS.PCAP_FILE_RECEIVED,
         data: {
             id: pcapId,
@@ -112,7 +114,7 @@ function pcapFormatConversion(req, res, next) {
                 logger('pcap-conversion-process').info('Failed to convert capture file');
                 logger('pcap-conversion--process').info(err.toString());
 
-                websocketManager.instance().sendEventToUser(userID, {
+                websocketManager.instance().sendEventToUser(userId, {
                     event: WS_EVENTS.PCAP_FILE_FAILED,
                     data: { id: pcapId, progress: 0, error: err.toString() },
                 });
@@ -125,7 +127,7 @@ function pcapFormatConversion(req, res, next) {
 }
 
 function pcapPreProcessing(req, res, next) {
-    const userID = req.session.passport.user.id;
+    const userId = getUserId(req);
     const pcapId = req.pcap.uuid;
     const { withMongo } = argumentsToCmd();
 
@@ -146,14 +148,14 @@ function pcapPreProcessing(req, res, next) {
                     file_name: originalFilename,
                     capture_file_name: req.file.filename,
                     pcap_file_name: res.locals.pcapFileName,
-                    owner_id: userID,
+                    owner_id: userId,
                     generated_from_network: req.pcap.from_network ? true : false,
                 },
                 { new: true }
             ).exec();
         })
         .then(data => {
-            websocketManager.instance().sendEventToUser(userID, {
+            websocketManager.instance().sendEventToUser(userId, {
                 event: WS_EVENTS.PCAP_FILE_PROCESSED,
                 data: Object.assign({}, data._doc, { progress: 66 }),
             });
@@ -169,14 +171,14 @@ function pcapPreProcessing(req, res, next) {
                     file_name: originalFilename,
                     capture_file_name: req.file.filename,
                     pcap_file_name: res.locals.pcapFileName,
-                    owner_id: userID,
+                    owner_id: userId,
                     generated_from_network: req.pcap.from_network ? true : false,
                     error: err.toString(),
                 },
                 { new: true }
             ).exec();
 
-            websocketManager.instance().sendEventToUser(userID, {
+            websocketManager.instance().sendEventToUser(userId, {
                 event: WS_EVENTS.PCAP_FILE_FAILED,
                 data: { id: pcapId, progress: 0, error: err.toString() },
             });
@@ -278,11 +280,13 @@ function resetStreamCountersAndErrors(req, res, next) {
 }
 
 const pcapFullAnalysis = async (req, res, next) => {
+    const userId = getUserId(req);
+
     const params = {
         pcapId: req.pcap.uuid,
         pcapFolder: req.pcap.folder,
         pcapFile: res.locals.pcapFilePath,
-        userId: req.session.passport.user.id,
+        userId: userId,
         analysisProfileFile: req.analysisProfileFile,
     };
 
@@ -291,12 +295,14 @@ const pcapFullAnalysis = async (req, res, next) => {
 };
 
 const singleStreamAnalysis = async (req, res, next) => {
+    const userId = getUserId(req);
+
     const params = {
         pcapId: req.pcap.uuid,
         pcapFolder: req.pcap.folder,
         streamID: req.params.streamID,
         pcapFile: req.file.path,
-        userId: req.session.passport.user.id,
+        userId: userId,
         analysisProfileFile: req.analysisProfileFile,
     };
 
@@ -431,14 +437,14 @@ function commonConsolidation(req, res, next) {
 }
 
 function pcapIngestEnd(req, res, next) {
-    const userID = req.session.passport.user.id;
+    const userId = getUserId(req);
     const pcapId = req.pcap.uuid;
 
     Pcap.findOne({ id: pcapId })
         .exec() // it returns the mongo db record of the PCAP
         .then(pcapData => {
             // Everything is done, we must notify the GUI
-            websocketManager.instance().sendEventToUser(userID, {
+            websocketManager.instance().sendEventToUser(userId, {
                 event: WS_EVENTS.PCAP_FILE_PROCESSING_DONE,
                 data: Object.assign({}, pcapData._doc, { progress: 100 }),
             });
@@ -446,7 +452,7 @@ function pcapIngestEnd(req, res, next) {
 }
 
 function sdpCheck(req, res, next) {
-    const userID = req.session.passport.user.id;
+    const userId = getUserId(req);
     sdpoker
         .getSDP(req.file.path, false)
         .then(sdp => {
@@ -461,7 +467,7 @@ function sdpCheck(req, res, next) {
                 }
             }
 
-            websocketManager.instance().sendEventToUser(userID, {
+            websocketManager.instance().sendEventToUser(userId, {
                 event: WS_EVENTS.SDP_VALIDATION_RESULTS,
                 data: {
                     errors: errors.map(e => e.toString()),
@@ -476,7 +482,7 @@ function sdpCheck(req, res, next) {
 }
 
 function sdpParseIp(req, res, next) {
-    const userID = req.session.passport.user.id;
+    const userId = getUserId(req);
     const readFileAsync = util.promisify(fs.readFile);
 
     readFileAsync(req.file.path)
@@ -492,7 +498,7 @@ function sdpParseIp(req, res, next) {
             });
 
             // notify the live subscription panel
-            websocketManager.instance().sendEventToUser(userID, {
+            websocketManager.instance().sendEventToUser(userId, {
                 event: WS_EVENTS.IP_PARSED_FROM_SDP,
                 data: {
                     success: true,
@@ -506,7 +512,7 @@ function sdpParseIp(req, res, next) {
         })
         .catch(err => {
             logger('sdp-parse').error(`exception: ${err}`);
-            websocketManager.instance().sendEventToUser(userID, {
+            websocketManager.instance().sendEventToUser(userId, {
                 event: WS_EVENTS.IP_PARSED_FROM_SDP,
                 data: {
                     success: false,

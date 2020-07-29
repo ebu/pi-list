@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import api from 'utils/api';
-import encrypt from 'utils/passwordEncrypter';
 import Button from 'components/common/Button';
 import Alert from 'components/common/Alert';
 import AsyncErrorsManager from 'components/AsyncErrorsManager';
 import keyEnum from 'enums/keyEnum';
 import { translate } from 'utils/translation';
+import { setToken } from '../utils/authorization';
 
 class Login extends Component {
     constructor() {
@@ -26,16 +26,14 @@ class Login extends Component {
     }
 
     onClickRegister() {
-        const email = this.email.value;
+        const username = this.username.value;
         const password = this.password.value;
 
-        api.getToken()
-            .then(data => encrypt(password, data.t))
-            .then(passwordEncrypted => api.register({ email, password: passwordEncrypted }))
+        api.register({ username: username, password: password })
             .then(() => {
                 this.setState({ userSuccessfullyRegistered: true, errors: [] });
             })
-            .catch((error) => {
+            .catch(error => {
                 this.setState({
                     errors: [error.response.data],
                     userSuccessfullyRegistered: false,
@@ -44,16 +42,15 @@ class Login extends Component {
     }
 
     onClickLogin() {
-        const email = this.email.value;
+        const username = this.username.value;
         const password = this.password.value;
 
-        api.getToken()
-            .then(data => encrypt(password, data.t))
-            .then(passwordEncrypted => api.login({ email, password: passwordEncrypted }))
-            .then(() => {
+        api.login({ username: username, password: password })
+            .then((response) => {
+                setToken(response.content.token);
                 this.props.history.push('/');
             })
-            .catch((error) => {
+            .catch(error => {
                 this.setState({ errors: [error.response.data] });
             });
     }
@@ -72,27 +69,19 @@ class Login extends Component {
         return (
             <div className="lst-login--container row center-xs middle-xs fade-in">
                 <div className="lst-login--logo lst-text-center">
-                    <img
-                        src="/static/ebu_logo.svg"
-                        alt="EBU List logo"
-                        height="45px"
-                    />
+                    <img src="/static/ebu_logo.svg" alt="EBU List logo" height="45px" />
                 </div>
                 <div className="lst-login--logo lst-text-center">
-                    <b>LIST</b>
-                    {' '}
-- LiveIP Software Toolkit
+                    <b>LIST</b> - LiveIP Software Toolkit
                 </div>
                 <div className="lst-login--form lst-text-center">
-                    <h1 className="lst-login--header">
-                        {translate('user_account.sign_in')}
-                    </h1>
+                    <h1 className="lst-login--header">{translate('user_account.sign_in')}</h1>
                     <div className="lst-login--group">
                         <input
                             className="lst-input"
-                            ref={ref => (this.email = ref)}
-                            type="email"
-                            placeholder={translate('user_account.email')}
+                            ref={ref => (this.username = ref)}
+                            type="username"
+                            placeholder={translate('user_account.username')}
                         />
                     </div>
                     <div className="lst-login--group">
@@ -107,9 +96,7 @@ class Login extends Component {
                     <div className="lst-login--group lst-no-margin">
                         {this.state.userSuccessfullyRegistered && (
                             <Alert type="success" showIcon>
-                                {translate(
-                                    'user_account.user_registered_message'
-                                )}
+                                {translate('user_account.user_registered_message')}
                             </Alert>
                         )}
                         <AsyncErrorsManager errors={this.state.errors} />

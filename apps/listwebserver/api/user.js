@@ -3,20 +3,12 @@ const router = Router();
 const fs = require('../util/filesystem');
 const program = require('../util/programArguments');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
-const User = require('../models/user');
+const API_ERRORS = require('../enums/apiErrors');
+const collection = require('../models/user');
 const userController = require('../controllers/user');
-
-/**
- * GET /api/user
- *
- * Gets the information about current logged user
- */
-router.get('/',
-    userController.getUser,
-    (req, res) => {
-        res.send(req.userInfo);
-    }
-);
+const { getUsername } = require('../auth/middleware');
+const { getUserId } = require('../auth/middleware');
+const websocket = require('../managers/websocket');
 
 /**
  * DELETE /api/user
@@ -24,21 +16,53 @@ router.get('/',
  * Deletes the current logged user.
  * This method actually deletes the current user information and files associated with it.
  */
-router.delete('/', (req, res) => {
-    const { user } = req.session.passport;
-    User.remove({ _id: user.id })
+router.post('/delete', (req, res) => {
+    const userId = getUserId(req);
+
+    collection.remove({ id: userId })
         .then(() => {
             // delete folders
-            fs.delete(`${program.folder}/${req.session.passport.user.id}`);
+            //fs.delete(`${program.folder}/${userId}`);
 
             // logout
-            req.logout();
             res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
+            //websocket.instance().disconnectUser(req.body.socketid);
         })
         .catch((data) => {
             res.status(400).send(data);
         });
 });
+
+/**
+ * GET /api/user
+ *
+ * Gets the information about current logged user
+ */
+// router.get('/',
+//     userController.getUser,
+//     (req, res) => {
+//         res.send(req.userInfo);
+//     }
+// );
+
+router.get('/', (req, res) => {
+    const username = getUsername(req);
+    
+    userController.getUser(username)
+        .then(user => { 
+            if (user) {
+                res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(user)
+            }else {
+                res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND);
+            }
+        })
+        .catch(() => 
+        {
+            res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send()
+        });
+});
+
+
 
 
 /**

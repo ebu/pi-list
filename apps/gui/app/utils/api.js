@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { getToken, removeToken, isAuthenticated } from './authorization';
 
 function loadFile(filePath) {
-    var result = null;
-    var xmlhttp = new XMLHttpRequest();
+    let result = null;
+    const xmlhttp = new XMLHttpRequest();
     xmlhttp.open('GET', filePath, false);
     xmlhttp.send();
     if (xmlhttp.status == 200) {
@@ -15,7 +16,7 @@ function getAPIPort() {
     let RestAPIPort;
 
     try {
-        let staticConfig = JSON.parse(loadFile('./../../static.config.json'));
+        const staticConfig = JSON.parse(loadFile('./../../static.config.json'));
         RestAPIPort = staticConfig.publicApiPort;
     } catch (err) {
         RestAPIPort = '3030';
@@ -38,6 +39,20 @@ axios.interceptors.response.use(
     }
 );
 
+axios.interceptors.request.use(
+    config => {
+        const newConfig = config;
+
+        if (isAuthenticated()) {
+            const token = getToken();
+            newConfig.headers.Authorization = `Bearer ${token}`;
+        }
+
+        return newConfig;
+    },
+    err => Promise.reject(err)
+);
+
 axios.defaults.withCredentials = true;
 
 const request = {
@@ -46,6 +61,7 @@ const request = {
     post: (url, data) => axios.post(`${API_URL}/${url}`, data),
     patch: (url, data, config = null) => axios.patch(`${API_URL}/${url}`, data, config),
     delete: (url, data) => axios.delete(`${API_URL}/${url}`, data),
+    httpRedirect: url => `${REST_URL}/${url}`,
 };
 
 export const WS_SERVER_URL = REST_URL;
@@ -62,20 +78,24 @@ export default {
     /* Auth */
     getUser: () => request.get('user'),
     updateUserPreferences: value => request.patch('user/preferences', { value }),
-    deleteUser: () => request.delete('user'),
+    deleteUser: data => request.post('user/delete', data).then(removeToken(), request.httpRedirect('/login')),
 
     register: loginData => axios.post(`${REST_URL}/user/register`, loginData).then(response => response.data),
     getToken: () => axios.get(`${REST_URL}/auth/token`).then(response => response.data),
 
     login: loginData => axios.post(`${REST_URL}/auth/login`, loginData).then(response => response.data),
-    logout: () => `${REST_URL}/auth/logout`,
+    logout: data => {
+        axios.post('auth/logout', data).then(removeToken(), request.httpRedirect('/login'));
+    },
 
     /* PCAP */
     getPcaps: () => request.get('pcap'),
     getPcap: pcapID => request.get(`pcap/${pcapID}`),
-    downloadPcap: pcapID => request.get(`pcap/${pcapID}/download`),
-    downloadOriginalCaptureUrl: pcapID => `${API_URL}/pcap/${pcapID}/download_original`,
-    downloadPcapUrl: pcapID => `${API_URL}/pcap/${pcapID}/download`,
+    downloadOriginalCapture: pcapID =>
+        axios.request({ url: `${API_URL}/pcap/${pcapID}/download_original`, method: 'GET', responseType: 'blob' }),
+    downloadPcap: pcapID =>
+        axios.request({ url: `${API_URL}/pcap/${pcapID}/download`, method: 'GET', responseType: 'blob' }),
+
     deletePcap: pcapID => request.delete(`pcap/${pcapID}`),
     getStreamsFromPcap: pcapID => request.get(`pcap/${pcapID}/streams`),
     updatePcapAnalysis: (pcapId, onAnalysisProgress) => {
@@ -104,10 +124,12 @@ export default {
     },
 
     /* SDP and reports */
-    downloadSDP: pcapID => request.get(`pcap/${pcapID}/sdp`),
-    downloadSDPUrl: pcapID => `${API_URL}/pcap/${pcapID}/sdp`,
-    downloadJsonUrl: pcapID => `${API_URL}/pcap/${pcapID}/report?type=json`,
-    downloadPdfUrl: pcapID => `${API_URL}/pcap/${pcapID}/report?type=pdf`,
+    downloadSDP: pcapID => axios.request({ url: `${API_URL}/pcap/${pcapID}/sdp`, method: 'GET', responseType: 'blob' }),
+    downloadJson: pcapID =>
+        axios.request({ url: `${API_URL}/pcap/${pcapID}/report?type=json`, method: 'GET', responseType: 'blob' }),
+    downloadPdf: pcapID =>
+        axios.request({ url: `${API_URL}/pcap/${pcapID}/report?type=pdf`, method: 'GET', responseType: 'blob' }),
+
     uploadSDP: (sdpFile, onUploadComplete) => {
         const data = new FormData();
         data.append('sdp', sdpFile);

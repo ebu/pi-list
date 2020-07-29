@@ -2,6 +2,8 @@ import immutable from '../../utils/immutable';
 import pcapEnums from '../../enums/pcap';
 import { translate } from '../../utils/translation';
 
+import api from '../../utils/api';
+
 function getFullInfoFromId(id, pcaps) {
     const filtered = pcaps.filter(pcap => pcap.id === id);
     return filtered.length > 0 ? filtered[0] : null;
@@ -20,50 +22,48 @@ function getStatusForPcapInfo(pcap) {
         return {
             state: pcapEnums.state.processing,
             progress: pcap.progress,
-            stateLabel: pcap.stateLabel
+            stateLabel: pcap.stateLabel,
         };
     }
 
     if (pcap.error) {
         return {
-            state: pcapEnums.state.failed
+            state: pcapEnums.state.failed,
         };
-
     }
 
     if (!pcap.analyzed || !isAnyStreamValid(pcap)) {
         return {
-            state: pcapEnums.state.needs_user_input
+            state: pcapEnums.state.needs_user_input,
         };
-
     }
 
     if (pcap.total_streams === 0) {
         return {
-            state: pcapEnums.state.no_analysis
+            state: pcapEnums.state.no_analysis,
         };
     }
 
     if (pcap.summary === undefined) {
         // TODO: this is to deal with legacy
         return {
-            state: pcapEnums.state.no_analysis
+            state: pcapEnums.state.no_analysis,
         };
     }
 
     if (pcap.summary.error_list.length > 0) {
         return {
-            state: pcapEnums.state.not_compliant
+            state: pcapEnums.state.not_compliant,
         };
     }
 
     return {
-        state: pcapEnums.state.compliant
+        state: pcapEnums.state.compliant,
     };
 }
 
 function getPtpStateForPcapInfo(pcap) {
-    return (pcap.offset_from_ptp_clock !== 0); // Todo: add an alternative way of getting this information
+    return pcap.offset_from_ptp_clock !== 0; // Todo: add an alternative way of getting this information
 }
 
 function addStateToPcapInfo(pcap) {
@@ -83,8 +83,65 @@ function updatePcap(pcaps, pcap, newStateLabel) {
     return newPcaps;
 }
 
+const ExtractFileFromResponse = data => {
+    const disposition = data.headers['content-disposition'];
+    let fileName = '';
+    const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+    const matches = filenameRegex.exec(disposition);
+    if (matches != null && matches[1]) {
+        fileName = matches[1].replace(/['"]/g, '');
+    }
+    const downloadUrl = window.URL.createObjectURL(new Blob([data.data]));
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.setAttribute('download', fileName);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+};
+
+const DownloadOriginal = id => {
+    return api
+        .downloadOriginalCapture(id)
+        .then(data => ExtractFileFromResponse(data))
+        .catch(() => {});
+};
+
+const DownloadPcap = id => {
+    return api
+        .downloadPcap(id)
+        .then(data => ExtractFileFromResponse(data))
+        .catch(() => {});
+};
+
+const DownloadSDP = id => {
+    return api
+        .downloadSDP(id)
+        .then(data => ExtractFileFromResponse(data))
+        .catch(() => {});
+};
+
+const DownloadJson = id => {
+    return api
+        .downloadJson(id)
+        .then(data => ExtractFileFromResponse(data))
+        .catch(() => {});
+};
+
+const DownloadPdf = id => {
+    return api
+        .downloadPdf(id)
+        .then(data => ExtractFileFromResponse(data))
+        .catch(() => {});
+};
+
 export {
     getFullInfoFromId,
     addStateToPcapInfo,
-    updatePcap
+    updatePcap,
+    DownloadOriginal,
+    DownloadPcap,
+    DownloadSDP,
+    DownloadJson,
+    DownloadPdf,
 };
