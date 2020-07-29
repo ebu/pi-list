@@ -9,6 +9,7 @@ import Icon from '../../../components/common/Icon';
 
 import {
     getGetTdProps,
+    getGetTableProps,
     getKindColumn,
     getCheckBoxColumn,
 } from '../../../components/table/utils';
@@ -55,6 +56,7 @@ const SourcesTable = props => {
             defaultPageSize={10}
             className="-highlight lst-text-center"
             getTdProps={getGetTdProps(props)}
+            getTableProps={getGetTableProps(props)}
             defaultSorted={[
                 {
                     id: 'date',
@@ -95,6 +97,7 @@ SourcesTable.propTypes = {
     onSelectId: PropTypes.func,
     onSelectAll: PropTypes.func,
     onClickRow: PropTypes.func,
+    getVisible: PropTypes.func,
     noDataComponent: PropTypes.func,
 };
 
@@ -105,6 +108,7 @@ SourcesTable.defaultProps = {
     onSelectId: () => {},
     onSelectAll: () => {},
     onClickRow: () => {},
+    getVisible: () => {},
     noDataComponent: () => null,
 };
 

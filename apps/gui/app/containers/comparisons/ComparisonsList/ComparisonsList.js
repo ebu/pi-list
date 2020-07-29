@@ -31,6 +31,7 @@ const ComparisonsList = () => {
 
     const toggleRow = id => dispatch({ type: tableactions.toggleRow, data: { id } });
     const toggleSelectAll = () => dispatch({ type: tableactions.toggleSelectAll });
+    const getVisible = (rows) => { state.visible = rows.map(e => e._original); };
 
     const onMessage = (topic, message) => {
         console.log(`Stream compare: on MQTT message: ${message}`);
@@ -129,6 +130,7 @@ const ComparisonsList = () => {
                     onSelectId={toggleRow}
                     onSelectAll={toggleSelectAll}
                     onClickRow={onClickRow}
+                    getVisible={getVisible}
                 />
             </div>
         </div>

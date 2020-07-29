@@ -69,6 +69,7 @@ const SourcesList = props => {
 
     const toggleRow = id => dispatch({ type: tableactions.toggleRow, data: { id } });
     const toggleSelectAll = () => dispatch({ type: tableactions.toggleSelectAll });
+    const getVisible = (rows) => { state.visible = rows.map(e => e._original); };
 
     const onClickRow = id => {
         dispatch({ type: Actions.showSDPErrorPopUp, payload: { id } });
@@ -193,6 +194,7 @@ const SourcesList = props => {
                     onSelectId={toggleRow}
                     onSelectAll={toggleSelectAll}
                     onClickRow={onClickRow}
+                    getVisible={getVisible}
                 />
             </DragAndDropUploader>
         </div>
