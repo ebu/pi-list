@@ -16,7 +16,7 @@ function getAPIPort() {
     let RestAPIPort;
 
     try {
-        const staticConfig = JSON.parse(loadFile('./../../static.config.json'));
+        const staticConfig = JSON.parse(loadFile('/static.config.json'));
         RestAPIPort = staticConfig.publicApiPort;
     } catch (err) {
         RestAPIPort = '3030';
