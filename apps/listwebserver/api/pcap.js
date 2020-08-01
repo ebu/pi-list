@@ -385,7 +385,7 @@ router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
     const { from, to, groupByNanoseconds } = req.query;
 
     let chartData = null;
-    
+
     if (measurement === 'CInst') {
         chartData = influxDbManager.getCInstByStream(pcapID, streamID, from, to);
     } else if (measurement === 'CInstRaw') {
