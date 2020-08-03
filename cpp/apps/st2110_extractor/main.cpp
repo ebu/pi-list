@@ -99,6 +99,8 @@ namespace
         db_serializer db(db_url);
 
         auto streams_to_process = get_ids_to_process(db, config);
+
+        // TODO: we no longer need to calculate this up front. This should be done on the fly, with the other measurements.
         const auto tro_info     = calculate_average_troffset(config.pcap_file, streams_to_process);
         update_tr_info(tro_info, streams_to_process);
 

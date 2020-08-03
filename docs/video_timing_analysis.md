@@ -23,7 +23,7 @@
 | C<sub>MAX</sub> | Maximum allowed value that C<sub>INST</sub> shall not exceed. This value is dependend on the type of sender, the video format and the packing of the video. A narrow sender has a tighter packet pacing on the network and will have a lower allowed C<sub>MAX</sub> value than a wide sender. Both sender type are limited in their burstiness. |
 | VRX | Measured level of the *Virtual Receive Buffer* as defined in SMPTE ST 2110-21 |
 | VRX<sub>FULL</sub> | Maximum allowed value the VRX buffer. This value is dependend on the type of sender, the video format and the packing of the video. A narrow sender has a smaller receiving buffer and will have a lower allowed VRX<sub>Full</sub> value than a wide sender. Both sender type are limited in their burstiness. |
-| FPT | First Packet Time measured between frame/field reference time and the first *captured* packet of a frame/field. This is a like a measured TR<sub>offset</sub> supposedly close to TRO<sub>default</sub>. In practise this value will be a bit smaller, as a result of this difference some packets will be sinked into the VRX buffer. |
+| FPT | First Packet Time measured between frame/field reference time and the first *captured* packet of a frame/field. This is a like a measured TR<sub>offset</sub> supposedly close to TRO<sub>default</sub>. In practice, this value will be a bit smaller, as a result of this difference some packets will be sinked into the VRX buffer. |
 | TRO<sub>default</sub> | Default *theoretical* offset between the frame/field reference time and the first packet of a field or frame to be *read*. |
 |T<sub>CF</sub>| Time of the current frame: T<sub>CF</sub> = N x T<sub>FRAME</sub>|
 

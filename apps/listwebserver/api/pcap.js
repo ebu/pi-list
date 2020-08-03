@@ -394,12 +394,8 @@ router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
         chartData = influxDbManager.getVrxIdeal(pcapID, streamID, from, to, groupByNanoseconds);
     } else if (measurement === 'VrxIdealRaw') {
         chartData = influxDbManager.getVrxIdealRaw(pcapID, streamID, from, to);
-    } else if (measurement === 'VrxAdjustedAvgTro') {
-        chartData = influxDbManager.getVrxAdjustedAvgTro(pcapID, streamID, from, to);
     } else if (measurement === 'DeltaToIdealTpr0Raw') {
         chartData = influxDbManager.getDeltaToIdealTpr0Raw(pcapID, streamID, from, to);
-    } else if (measurement === 'DeltaToIdealTpr0AdjustedAvgTroRaw') {
-        chartData = influxDbManager.getDeltaToIdealTpr0AdjustedAvgTroRaw(pcapID, streamID, from, to);
     } else if (measurement === 'DeltaRtpTsVsPacketTsRaw') {
         chartData = influxDbManager.getDeltaRtpTsVsPacketTsRaw(pcapID, streamID, from, to);
     } else if (measurement === 'DeltaPacketTimeVsRtpTimeRaw') {
