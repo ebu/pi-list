@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const db = require('../managers/database')('list');
+const uuidv1 = require('uuid/v1');
 
 const GuiPreferencesSchema = new mongoose.Schema({
     language: {
@@ -18,26 +19,36 @@ const PreferencesSchema = new mongoose.Schema({
     },
 });
 
-const UserSchema = new mongoose.Schema({
-    email: {
-        type: String,
-        unique: true,
-        trim: true,
-        required: true,
+const UserSchema = new mongoose.Schema(
+    {
+        id: {
+            type: String,
+            required: true,
+            index: { unique: true, sparse: true },
+            default: uuidv1()
+        },
+        username: {
+            type: String,
+            required: true,
+            index: { unique: true, sparse: true }
+        },
+        salt: {
+            type: String
+        },
+        password: {
+            type: String
+        },
+        preferences: PreferencesSchema,
     },
-    password: {
-        type: String,
-        required: true,
-    },
-    preferences: PreferencesSchema,
-});
+    {
+        versionKey: false,
+    }
+);
 
 UserSchema.set('toJSON', {
-    virtuals: true,
-    versionKey: false,
     transform: (doc, user) => {
-        delete user.password;
-        delete user._id;
+        user._id = undefined;
+        
     },
 });
 

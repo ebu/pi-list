@@ -29,6 +29,7 @@ const WorkflowsList = () => {
 
     const toggleRow = id => dispatch({ type: tableactions.toggleRow, data: { id } });
     const toggleSelectAll = () => dispatch({ type: tableactions.toggleSelectAll });
+    const getVisible = (rows) => { state.visible = rows.map(e => e._original); };
     // const onClickRow = () => {};
 
     const onMessage = (topic, message) => {
@@ -114,6 +115,7 @@ const WorkflowsList = () => {
                 onSelectId={toggleRow}
                 onSelectAll={toggleSelectAll}
                 onClickRow={toggleRow}
+                getVisible={getVisible}
             />
         </div>
     );

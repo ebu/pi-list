@@ -40,9 +40,9 @@ namespace
 
         return j_fi;
     }
-}
+} // namespace
 
-nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view &pcap_file, const std::string_view & pcap_uuid)
+nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_file, const std::string_view& pcap_uuid)
 {
     // These will hold pointers to the stream handlers.
     // They will, however, be owned by the udp_handler, so we cannot access these after the stream handler is
@@ -55,10 +55,10 @@ nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view &pcap_f
         return listener;
     };
 
-    auto offset_calculator  = std::make_shared<ptp::ptp_offset_calculator>();
-    auto udp_handler = std::make_shared<rtp::udp_handler>(create_handler);
-    auto filter      = std::make_shared<ptp::udp_filter>(offset_calculator, udp_handler);
-    auto player      = std::make_unique<pcap::pcap_player>(path(pcap_file), filter, on_error_exit);
+    auto offset_calculator = std::make_shared<ptp::ptp_offset_calculator>();
+    auto udp_handler       = std::make_shared<rtp::udp_handler>(create_handler);
+    auto filter            = std::make_shared<ptp::udp_filter>(offset_calculator, udp_handler);
+    auto player            = std::make_unique<pcap::pcap_player>(path(pcap_file), filter, on_error_exit);
 
     const auto start_time = std::chrono::steady_clock::now();
 
@@ -72,17 +72,15 @@ nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view &pcap_f
         static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(processing_time).count());
     logger()->info("Processing time: {:.3f} s", processing_time_ms / 1000.0);
 
-    auto j_pcap_info =
-        make_pcap_info(pcap_file, pcap_uuid, launcher.target().pcap_has_truncated_packets(),
-                       offset_calculator->get_info());
+    auto j_pcap_info = make_pcap_info(pcap_file, pcap_uuid, launcher.target().pcap_has_truncated_packets(),
+                                      offset_calculator->get_info());
 
     json j_info;
-    j_info["pcap"] =j_pcap_info;
+    j_info["pcap"] = j_pcap_info;
     json j_streams = json::array();
 
-    std::transform(begin(streams), end(streams), std::back_inserter(j_streams), [&](const stream_listener* stream) {
-                   return stream->get_info();
-                   });
+    std::transform(begin(streams), end(streams), std::back_inserter(j_streams),
+                   [&](const stream_listener* stream) { return stream->get_info(); });
 
     j_info["streams"] = j_streams;
 

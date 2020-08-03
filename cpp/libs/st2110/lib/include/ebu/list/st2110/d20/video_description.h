@@ -29,7 +29,7 @@ namespace ebu_list::st2110::d20
         video::colorimetry colorimetry{};
         st2110::d21::read_schedule schedule{};
 
-        int packets_per_frame = 0;
+        int packets_per_frame         = 0;
         bool has_continuation_bit_set = false;
 
         // optional

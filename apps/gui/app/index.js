@@ -8,6 +8,7 @@ import App from 'containers/App';
 import Login from 'pages/Login';
 
 import 'style/index.scss';
+import LogoutPage from "./pages/LogoutPage";
 
 render(
     <BrowserRouter>
@@ -15,6 +16,10 @@ render(
             <Route
                 path="/login"
                 component={Login}
+            />
+            <Route
+                path="/logout"
+                component={LogoutPage}
             />
             <Route
                 path="/"

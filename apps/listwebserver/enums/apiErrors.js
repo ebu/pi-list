@@ -26,12 +26,6 @@ const API_ERRORS = {
         message: 'Invalid login credentials. Invalid e-mail or password.'
     },
 
-    // USER REGISTRATION
-    USER_REGISTRATION_INVALID_EMAIL: {
-        code: 'USER_REGISTRATION_INVALID_EMAIL',
-        message: 'Please provide a valid e-mail address.'
-    },
-
     USER_ALREADY_REGISTERED: {
         code: 'USER_ALREADY_REGISTERED',
         message: 'The e-mail is already registered in our system.'

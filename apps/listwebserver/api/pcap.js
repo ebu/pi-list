@@ -5,6 +5,7 @@ const util = require('util');
 const program = require('../util/programArguments');
 const influxDbManager = require('../managers/influx-db');
 const fs = require('../util/filesystem');
+const path = require('path');
 const logger = require('../util/logger');
 const API_ERRORS = require('../enums/apiErrors');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
@@ -25,14 +26,15 @@ const {
 const websocketManager = require('../managers/websocket');
 const WS_EVENTS = require('../enums/wsEvents');
 const exec = util.promisify(child_process.exec);
+const { getUserId } = require('../auth/middleware');
 
 function isAuthorized(req, res, next) {
     const { pcapID } = req.params;
 
     if (pcapID) {
-        const userID = req.session.passport.user.id;
+        const userId = getUserId(req);
 
-        Pcap.findOne({ owner_id: userID, id: pcapID })
+        Pcap.findOne({ owner_id: userId, id: pcapID })
             .exec()
             .then(data => {
                 if (data) next();
@@ -67,7 +69,7 @@ router.put(
     '/',
     upload.single('pcap', 'originalFilename'),
     (req, res, next) => {
-        res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send();
+        res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send(req.pcap);
         next();
     },
     pcapIngest
@@ -124,8 +126,8 @@ router.patch(
 
 /* Get all Pcaps found */
 router.get('/', (req, res) => {
-    const userID = req.session.passport.user.id;
-    Pcap.find({ owner_id: userID })
+    const userId = getUserId(req);
+    Pcap.find({ owner_id: userId })
         .exec()
         .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
@@ -154,8 +156,8 @@ router.delete('/:pcapID/', (req, res) => {
             res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
         })
         .then(() => {
-            const userID = req.session.passport.user.id;
-            websocketManager.instance().sendEventToUser(userID, {
+            const userId = getUserId(req);
+            websocketManager.instance().sendEventToUser(userId, {
                 event: WS_EVENTS.PCAP_FILE_DELETED,
                 data: { id: pcapID },
             });
@@ -171,8 +173,7 @@ router.get('/:pcapID/report', (req, res) => {
     const { pcapID } = req.params;
     const reportType = req.query.type;
 
-    pcapController
-        .getReport(pcapID, reportType)
+    pcapController.getReport(pcapID, reportType)
         .then(report => {
             Pcap.findOne({ id: pcapID })
                 .exec()
@@ -186,14 +187,23 @@ router.get('/:pcapID/report', (req, res) => {
 });
 
 /* Download a original capture file */
-router.get('/:pcapID/download_original', (req, res) => {
+router.get('/:pcapID/download_original', (req, res, next) => {
     const { pcapID } = req.params;
+
+    logger('original-get').info(`Getting Original PCAP for ${pcapID}`);
 
     Pcap.findOne({ id: pcapID })
         .exec()
         .then(data => {
-            const path = `${getUserFolder(req)}/${pcapID}/${data.capture_file_name}`;
-            fs.downloadFile(path, `${data.file_name}`, res);
+            const pcapPath =  path.join(`${getUserFolder(req)}`, `${pcapID}`, data.capture_file_name);// `${getUserFolder(req)}/${pcapID}/`;
+
+            res.download(pcapPath, err => {
+                if (err) {
+                    next(err);
+                  } else {
+                    logger('download-').info(`File ${pcapPath}`);
+                  }
+            });
         });
 });
 
@@ -201,12 +211,21 @@ router.get('/:pcapID/download_original', (req, res) => {
 router.get('/:pcapID/download', (req, res) => {
     const { pcapID } = req.params;
 
+    logger('pcap-get').info(`Getting PCAP for ${pcapID}`);
+
     Pcap.findOne({ id: pcapID })
         .exec()
         .then(data => {
-            const path = `${getUserFolder(req)}/${pcapID}/${data.pcap_file_name}`;
             const filename = data.file_name.replace(/\.[^\.]*$/, '') + '.pcap';
-            fs.downloadFile(path, filename, res);
+            const pcapPath = path.join(`${getUserFolder(req)}`, `${pcapID}`, `${data.pcap_file_name}`);
+
+            res.download(pcapPath, filename, err => {
+                if (err) {
+                    next(err);
+                  } else {
+                    logger('download').info(`File ${pcapPath}`);
+                  }
+            });
         });
 });
 
@@ -220,8 +239,15 @@ router.get('/:pcapID/sdp', (req, res) => {
         .exec()
         .then(data => {
             const filename = data.file_name.replace(/\.[^\.]*$/, '-sdp.zip');
-            const path = `${getUserFolder(req)}/${pcapID}/${filename}`;
-            fs.downloadFile(path, filename, res);
+            const sdpPath = path.join(`${getUserFolder(req)}`, `${pcapID}`, `${filename}`);
+            
+            res.download(sdpPath, filename, err => {
+                if (err) {
+                    next(err);
+                  } else {
+                    logger('download').info(`File ${sdpPath}`);
+                  }
+            });
         });
 });
 
@@ -368,12 +394,8 @@ router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
         chartData = influxDbManager.getVrxIdeal(pcapID, streamID, from, to, groupByNanoseconds);
     } else if (measurement === 'VrxIdealRaw') {
         chartData = influxDbManager.getVrxIdealRaw(pcapID, streamID, from, to);
-    } else if (measurement === 'VrxAdjustedAvgTro') {
-        chartData = influxDbManager.getVrxAdjustedAvgTro(pcapID, streamID, from, to);
     } else if (measurement === 'DeltaToIdealTpr0Raw') {
         chartData = influxDbManager.getDeltaToIdealTpr0Raw(pcapID, streamID, from, to);
-    } else if (measurement === 'DeltaToIdealTpr0AdjustedAvgTroRaw') {
-        chartData = influxDbManager.getDeltaToIdealTpr0AdjustedAvgTroRaw(pcapID, streamID, from, to);
     } else if (measurement === 'DeltaRtpTsVsPacketTsRaw') {
         chartData = influxDbManager.getDeltaRtpTsVsPacketTsRaw(pcapID, streamID, from, to);
     } else if (measurement === 'DeltaPacketTimeVsRtpTimeRaw') {
@@ -506,8 +528,8 @@ function renderMp3(req, res) {
                 .then(output => {
                     logger('render-mp3').info(output.stdout);
                     logger('render-mp3').info(output.stderr);
-                    const userID = req.session.passport.user.id;
-                    websocketManager.instance().sendEventToUser(userID, {
+                    const userId = getUserId(req);
+                    websocketManager.instance().sendEventToUser(userId, {
                         event: WS_EVENTS.MP3_FILE_RENDERED,
                         data: { channels: channels },
                     });
@@ -515,8 +537,8 @@ function renderMp3(req, res) {
                 .catch(output => {
                     logger('render-mp3').error(output.stdout);
                     logger('render-mp3').error(output.stderr);
-                    const userID = req.session.passport.user.id;
-                    websocketManager.instance().sendEventToUser(userID, {
+                    const userId = getUserId(req);
+                    websocketManager.instance().sendEventToUser(userId, {
                         event: WS_EVENTS.MP3_FILE_FAILED,
                     });
                 });

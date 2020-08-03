@@ -39,15 +39,6 @@ const VrxAnalysis = props => {
                     }
                     layoutProperties={{ yaxis: { tickformat: ',d' } }}
                 />
-                {/* <Graphs.Line
-                    title="Adjusted Vrx"
-                    titleParam={`TRoffset = TROdefault = ${default_tro} μs`}
-                    xTitleTag="media_information.timeline"
-                    yTitleTag="media_information.rtp.packet_count"
-                    asyncGetter={() =>
-                        api.getVrxAdjustedAvgTro(pcapID, streamID, first_packet_ts, last_packet_ts).then(trimNull)
-                    }
-                /> */}
             </div>
         </div>
     );

@@ -43,21 +43,21 @@ video_stream_details video_stream_details::from_json(const nlohmann::json& j)
 nlohmann::json st2110::d20::to_json(const st2110::d20::video_description& desc)
 {
     nlohmann::json j;
-    j["rate"]              = to_string(desc.rate);
-    j["sampling"]          = to_string(desc.sampling);
-    j["color_depth"]       = desc.color_depth;
-    j["width"]             = desc.dimensions.width;
-    j["height"]            = desc.dimensions.height;
-    j["colorimetry"]       = to_string(desc.colorimetry);
-    j["scan_type"]         = to_string(desc.scan_type);
-    j["packets_per_frame"] = desc.packets_per_frame;
+    j["rate"]                     = to_string(desc.rate);
+    j["sampling"]                 = to_string(desc.sampling);
+    j["color_depth"]              = desc.color_depth;
+    j["width"]                    = desc.dimensions.width;
+    j["height"]                   = desc.dimensions.height;
+    j["colorimetry"]              = to_string(desc.colorimetry);
+    j["scan_type"]                = to_string(desc.scan_type);
+    j["packets_per_frame"]        = desc.packets_per_frame;
     j["has_continuation_bit_set"] = desc.has_continuation_bit_set;
-    j["schedule"]          = to_string(desc.schedule);
-    j["avg_tro_ns"]        = desc.avg_tro_ns;
-    j["max_tro_ns"]        = desc.max_tro_ns;
-    j["min_tro_ns"]        = desc.min_tro_ns;
-    j["tro_default_ns"]    = desc.tro_default_ns;
-    j["packing_mode"]      = desc.packing_mode;
+    j["schedule"]                 = to_string(desc.schedule);
+    j["avg_tro_ns"]               = desc.avg_tro_ns;
+    j["max_tro_ns"]               = desc.max_tro_ns;
+    j["min_tro_ns"]               = desc.min_tro_ns;
+    j["tro_default_ns"]           = desc.tro_default_ns;
+    j["packing_mode"]             = desc.packing_mode;
 
     return j;
 }

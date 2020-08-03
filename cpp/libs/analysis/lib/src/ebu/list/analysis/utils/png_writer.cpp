@@ -88,7 +88,7 @@ void analysis::write_png(oview data, media::video::video_dimensions dimensions, 
     LIST_ENFORCE(count == out.size(), std::runtime_error, "Did not write the full PNG buffer");
 }
 
-#else  // defined(EBU_LIST_USE_LIBPNG)
+#else // defined(EBU_LIST_USE_LIBPNG)
 
 void ebu_list::write_png(oview data, media::video::video_dimensions dimensions, path target)
 {
