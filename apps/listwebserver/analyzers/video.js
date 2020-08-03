@@ -3,22 +3,36 @@ const influxDbManager = require('../managers/influx-db');
 const Stream = require('../models/stream');
 const constants = require('../enums/analysis');
 const { appendError, validateMulticastAddresses } = require('./utils');
-const { doRtpTicksAnalysis, validateRtpTicks, doRtpTsAnalysis, validateRtpTs, doInterFrameRtpTsDeltaAnalysis, validateInterFrameRtpTsDelta } = require('./rtp');
+const {
+    doRtpTicksAnalysis,
+    validateRtpTicks,
+    doRtpTsAnalysis,
+    validateRtpTs,
+    doInterFrameRtpTsDeltaAnalysis,
+    validateInterFrameRtpTsDelta,
+} = require('./rtp');
 
-// Definitions
-// TODO get from a validation template
-const validation = {
-    rtp: {
-        // See docs/video_timing_analysis.md
-        deltaRtpTsVsNtLimit: {
-            min: -90,
-            max: 0,
+const get_rtp_validation = (stream) => {
+    // TODO get from a validation template
+    const validation = {
+        rtp: {
+            // See docs/video_timing_analysis.md
+            deltaRtpTsVsNtLimit: {
+                min: -1,
+                max: 0,
+            },
+            deltaPktTsVsRtpTsLimit: {
+                min: 0,
+                max: 1000000,
+            },
         },
-        deltaPktTsVsRtpTsLimit: {
-            min: 0,
-            max: 1000000,
-        },
-    },
+    };
+
+    const v = _.cloneDeep(validation);
+    const tro_default = stream.media_specific.tro_default_ns / 1000000000;
+    const max_ticks_offset = tro_default * 90000;
+    v.rtp.deltaRtpTsVsNtLimit.max = Math.ceil(max_ticks_offset) + 1;
+    return v;
 };
 
 // Sets analyses.2110_21_cinst.result to compliant or not_compliant
@@ -55,13 +69,13 @@ function map2110d21Vrx(stream) {
     return stream;
 }
 
-
 // Returns one promise, which result is undefined.
 const doVideoStreamAnalysis = async (pcapId, stream) => {
     await doRtpTicksAnalysis(pcapId, stream);
-    await validateRtpTicks(stream, validation);
+    const rtp_validation = get_rtp_validation(stream);
+    await validateRtpTicks(stream, rtp_validation);
     await doRtpTsAnalysis(pcapId, stream);
-    await validateRtpTs(stream, validation);
+    await validateRtpTs(stream, rtp_validation);
     await doInterFrameRtpTsDeltaAnalysis(pcapId, stream);
     await validateInterFrameRtpTsDelta(stream);
     await map2110d21Cinst(stream);
@@ -74,7 +88,7 @@ const doVideoStreamAnalysis = async (pcapId, stream) => {
 
 // Returns one array with a promise for each stream. The result of the promise is undefined.
 function doVideoAnalysis(pcapId, streams) {
-    const promises = streams.map(stream => doVideoStreamAnalysis(pcapId, stream));
+    const promises = streams.map((stream) => doVideoStreamAnalysis(pcapId, stream));
     return Promise.all(promises);
 }
 

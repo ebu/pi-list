@@ -3,8 +3,8 @@
 port: 3030
 
 # Filesystem related
-folder: /home/ebu/tmp/list/
-cpp: /home/ebu/list/live/cmake-build-debug/third_party/ebu_list/bin/
+folder: /home/kalstong/tmp/
+cpp: /home/kalstong/vol1/work/ebu/EBU-LIST/build/debug/bin
 
 # HTTP-related
 cookieSecret: STRD4O

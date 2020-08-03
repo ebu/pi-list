@@ -62,7 +62,7 @@ SCENARIO("TTML stream analysis")
 
     const auto storage_folder = path("/tmp");
 
-    auto get_stream_info = [&stream_ids](const rtp::packet &
+    auto get_stream_info = [&stream_ids](const rtp::packet&
                                          /*first_packet*/) -> std::optional<stream_with_details> {
         auto stream_info = serializable_stream_info{};
         stream_info.type = media::media_type::TTML;

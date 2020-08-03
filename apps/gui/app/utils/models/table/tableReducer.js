@@ -4,6 +4,7 @@ import actions from './actions';
 const tableInitialState = () => ({
     data: [],
     selected: [],
+    visible: [],
     selectAll: 0,
     itemsToDelete: [],
     filterString: null,
@@ -31,7 +32,7 @@ const makeTableReducer = (options) => (state, action) => {
             let newSelected = [];
 
             if (state.selectAll === 0) {
-                newSelected = state.data.map(item => item.id);
+                newSelected = state.visible.map(item => item.id);
             }
 
             return Object.assign({}, { ...state }, {

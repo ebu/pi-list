@@ -22,6 +22,7 @@ const PcapList = (props) => {
 
     const toggleRow = (id) => dispatch({ type: Actions.toggleRow, data: { id } });
     const toggleSelectAll = () => dispatch({ type: Actions.toggleSelectAll });
+    const getVisible = (rows) => { state.visible = rows.map(e => e._original); };
 
     const onClickRow = (pcapId) => {
         const pcapInfo = state.data.find(element => {
@@ -67,6 +68,7 @@ const PcapList = (props) => {
                 onSelectId={toggleRow}
                 onSelectAll={toggleSelectAll}
                 onClickRow={onClickRow}
+                getVisible={getVisible}
             />
         </div>
     );

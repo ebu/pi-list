@@ -10,8 +10,8 @@ namespace ebu_list::platform::config
     constexpr auto posix   = false;
 #else // defined(_WIN32)
 #define LIST_HAS_POSIX
-    constexpr auto windows       = false;
-    constexpr auto posix         = true;
+    constexpr auto windows = false;
+    constexpr auto posix   = true;
 #endif
 
 #if defined(WIN32)

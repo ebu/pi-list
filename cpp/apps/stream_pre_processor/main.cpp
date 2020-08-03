@@ -1,9 +1,13 @@
 #include "bisect/bicla.h"
-#include "ebu/list/analysis/constants.h"
-#include "ebu/list/version.h"
-#include "ebu/list/database.h"
-#include "ebu/list/preprocessor/stream_listener.h"
+#include "bisect/bimo/mq/receiver.h"
+#include "bisect/bimo/mq/sender.h"
+#include "ebu/list/definitions/exchanges.h"
+#include "ebu/list/definitions/queues.h"
 #include "ebu/list/preprocessor/stream_analyzer.h"
+#include "ebu/list/version.h"
+#include "timer.h"
+
+#include <boost/asio/io_service.hpp>
 
 using namespace ebu_list;
 using namespace ebu_list::analysis;
@@ -12,79 +16,128 @@ using nlohmann::json;
 
 namespace
 {
-    constexpr auto MONGO_DEFAULT_URL = "mongodb://localhost:27017";
+
+    json compose_response(const std::string& workflow_id, const std::string& status, unsigned int progress,
+                          const std::string& error, const json& analysis_result)
+    {
+        json response;
+        response["workflow_id"] = workflow_id;
+        response["status"]      = status;
+        response["progress"]    = progress;
+
+        if(!error.empty())
+        {
+            response["error"] = error;
+        }
+        else if(!analysis_result.empty())
+        {
+            response["data"] = analysis_result;
+        }
+
+        return response;
+    }
+
+    bool is_action_valid(const json& msg, const json::const_iterator& action)
+    {
+        return action != msg.end() && action->is_string() && action->get<std::string>() == "preprocessing.request";
+    }
+
+    bool is_workflow_id_valid(const json& msg, const json::const_iterator& workflow_id)
+    {
+        return workflow_id != msg.end() && workflow_id->is_string();
+    }
+
+    bool is_pcap_id_valid(const json& msg, const json::const_iterator& pcap_id)
+    {
+        return pcap_id != msg.end() && pcap_id->is_string();
+    }
+
+    bool is_pcap_path_valid(const json& msg, const json::const_iterator& pcap_path)
+    {
+        return pcap_path != msg.end() && pcap_path->is_string();
+    }
 
     struct config
     {
-        path pcap_file;
-        std::string pcap_uuid;
-        std::optional<std::string> mongo_db_url;
+        std::string id         = "5126c43c-076c-4fc1-befa-7e273a4c8cd9";
+        std::string label      = "EBU LIST Stream Pre-Processor";
+        std::string broker_url = "amqp://localhost:5672";
     };
 
-    config parse_or_usage_and_exit(int argc, char const* const* argv)
-    {
-        using namespace bisect::bicla;
-
-        const auto [parse_result, config] =
-            parse(argc, argv, argument(&config::pcap_file, "pcap file", "the path to the pcap file to use as input"),
-                  argument(&config::pcap_uuid, "pcap uuid",
-                           "the identifier that will be used as the name of the directory and the id of the pcap file"),
-                  option(&config::mongo_db_url, "mongo_url", "mongo url",
-                         "url to mongoDB. Usually mongodb://localhost:27017."));
-
-        if(parse_result) return config;
-
-        logger()->error("usage: {} {}", path(argv[0]).filename().string(), to_string(parse_result));
-        exit(-1);
-    }
-
-    void save_pcap_info_on_db(db_serializer& db, std::string_view pcap_uuid, const json& info)
-    {
-        if(db.find_one(constants::db::offline, constants::db::collections::pcaps, nlohmann::json{{"id", pcap_uuid}}))
-        {
-
-            db.update(constants::db::offline, constants::db::collections::pcaps, nlohmann::json{{"id", pcap_uuid}},
-                      info);
-        }
-        else
-        {
-            db.insert(constants::db::offline, constants::db::collections::pcaps, info);
-        }
-    }
-
-    void save_stream_info_on_db(db_serializer& db, const json& info)
-    {
-        db.insert(constants::db::offline, constants::db::collections::streams, info);
-    }
-
-    void save_to_db(std::string_view mongo_db_url, json info)
-    {
-        db_serializer db(mongo_db_url);
-        const auto pcap = info["pcap"];
-        const auto pcap_uuid = pcap["id"].get<std::string>();
-        save_pcap_info_on_db(db, pcap_uuid, pcap);
-
-        const auto streams = info["streams"];
-
-        std::for_each(begin(streams), end(streams), [&](const json& stream) {
-          save_stream_info_on_db(db, stream);
-        });
-    }
 } // namespace
 
 //------------------------------------------------------------------------------
 
-int main(int argc, char* argv[])
+int main(int /* argc */, char** /* argv*/)
 {
     auto console = logger();
-    console->info("Based on EBU LIST v{}", ebu_list::version());
 
-    const auto config = parse_or_usage_and_exit(argc, argv);
+    const config configuration;
+    console->info("{}, based on EBU LIST v{}", configuration.label, ebu_list::version());
+    console->info("id: {}", configuration.id);
+    console->info("RabbitMQ url: {}", configuration.broker_url);
 
     try
     {
-        const auto info = analyze_stream(config.pcap_file.string(), config.pcap_uuid);
-        save_to_db(config.mongo_db_url.value_or(MONGO_DEFAULT_URL), info);
+        boost::asio::io_service io;
+
+        bisect::bimo::mq::exchange_sender exchange(configuration.broker_url,
+                                                   ebu_list::definitions::exchanges::preprocessor_status::info);
+
+        auto timer = ebu_list::preprocessor::interval_timer(io, std::chrono::seconds(1), []() {});
+
+        auto on_message = [&exchange, &timer, &console](const std::string& /*routing_key*/, const json& message,
+                                                        const bisect::bimo::mq::ack_callback& ack) {
+            const auto action      = message.find("action");
+            const auto workflow_id = message.find("workflow_id");
+            const auto pcap_id     = message.find("pcap_id");
+            const auto pcap_path   = message.find("pcap_path");
+            json response{};
+
+            if(!is_action_valid(message, action))
+            {
+                response = compose_response("", "failed", 0, "Invalid \"action\" field.", "");
+            }
+            else if(!is_workflow_id_valid(message, workflow_id))
+            {
+                response = compose_response("", "failed", 0, "Invalid \"workflow_id\" field.", "");
+            }
+            else if(!is_pcap_id_valid(message, pcap_id))
+            {
+                response =
+                    compose_response(workflow_id->get<std::string>(), "failed", 0, "Invalid \"pcap_id\" field.", "");
+            }
+            else if(!is_pcap_path_valid(message, pcap_id))
+            {
+                response =
+                    compose_response(workflow_id->get<std::string>(), "failed", 0, "Invalid \"pcap_path\" field.", "");
+            }
+            else
+            {
+                console->info("Processing {}.", pcap_id->get<std::string>());
+                try
+                {
+                    const json analysis_result =
+                        analyze_stream(pcap_path->get<std::string>(), pcap_id->get<std::string>());
+                    response = compose_response(workflow_id->get<std::string>(), "completed", 100, "", analysis_result);
+                    console->info("Processing {} succeeded.", pcap_id->get<std::string>());
+                }
+                catch(std::exception& ex)
+                {
+                    response = compose_response(workflow_id->get<std::string>(), "failed", 100, ex.what(), "");
+                    console->info("Processing {} failed.", pcap_id->get<std::string>());
+                }
+
+                ack();
+            }
+
+            exchange.send(ebu_list::definitions::exchanges::preprocessor_status::keys::announce, response.dump());
+            timer.fire_async();
+        };
+
+        const bisect::bimo::mq::receiver inbound_work_queue(
+            configuration.broker_url, ebu_list::definitions::queues::preprocessor::start_request, on_message);
+        io.run();
     }
     catch(std::exception& ex)
     {
@@ -92,5 +145,6 @@ int main(int argc, char* argv[])
         return -1;
     }
 
+    console->info("Exiting.");
     return 0;
 }

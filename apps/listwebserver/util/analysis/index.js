@@ -4,7 +4,7 @@ const _ = require('lodash');
 const child_process = require('child_process');
 const sdp_parser = require('sdp-transform');
 const sdpoker = require('sdpoker');
-const uuidv1 = require('uuid/v1');
+const uuidv4 = require('uuid/v4');
 const program = require('../programArguments');
 const websocketManager = require('../../managers/websocket');
 const logger = require('../logger');
@@ -23,20 +23,25 @@ const { doMulticastAddressAnalysis } = require('../../analyzers/multicast.js');
 const constants = require('../../enums/analysis');
 const glob = util.promisify(require('glob'));
 const { zipFilesExt } = require('../zip');
+const mqSend = require('../../../../js/common_server/mq/send');
+const mqReceive = require('../../../../js/common_server/mq/receive');
+const mqTypes = require('../../../../js/common/mq/types');
+const { getUserId } = require('../../auth/middleware');
 
 function getUserFolder(req) {
-    return `${program.folder}/${req.session.passport.user.id}`;
+    const userId = getUserId(req);
+    return `${program.folder}/${userId}`;
 }
 
 function generateRandomPcapFilename(file) {
     const extensionCharIdx = file.originalname.lastIndexOf('.');
     const fileExtension = extensionCharIdx > -1 ? '.' + file.originalname.substring(extensionCharIdx + 1) : '';
 
-    return `${Date.now()}_${uuidv1()}${fileExtension}`;
+    return `${Date.now()}_${uuidv4()}${fileExtension}`;
 }
 
 function generateRandomPcapDefinition(req, optionalPcapId) {
-    const pcapId = optionalPcapId || uuidv1();
+    const pcapId = optionalPcapId || uuidv4();
     return {
         uuid: pcapId,
         folder: `${getUserFolder(req)}/${pcapId}`,
@@ -67,11 +72,11 @@ function pcapFileAvailableFromReq(req, res, next) {
  * Given a network capture file, convert it to PCAP format before ingestion.
  */
 function pcapFormatConversion(req, res, next) {
-    const userID = req.session.passport.user.id;
+    const userId = getUserId(req);
     const pcapId = req.pcap.uuid;
     const originalFilename = req.body.originalFilename || req.file.originalname;
 
-    websocketManager.instance().sendEventToUser(userID, {
+    websocketManager.instance().sendEventToUser(userId, {
         event: WS_EVENTS.PCAP_FILE_RECEIVED,
         data: {
             id: pcapId,
@@ -97,7 +102,7 @@ function pcapFormatConversion(req, res, next) {
         logger('pcap-format-conversion').info(`Command: ${editcapConversionCommand}`);
 
         exec(editcapConversionCommand)
-            .then(output => {
+            .then((output) => {
                 if (output.stdout.length > 0) logger('pcap-conversion-process').info(output.stdout);
                 if (output.stderr.length > 0) logger('pcap-conversion-process').info(output.stderr);
 
@@ -108,11 +113,11 @@ function pcapFormatConversion(req, res, next) {
                 res.locals.pcapFilePath = convertedFilePath;
                 next();
             })
-            .catch(err => {
+            .catch((err) => {
                 logger('pcap-conversion-process').info('Failed to convert capture file');
                 logger('pcap-conversion--process').info(err.toString());
 
-                websocketManager.instance().sendEventToUser(userID, {
+                websocketManager.instance().sendEventToUser(userId, {
                     event: WS_EVENTS.PCAP_FILE_FAILED,
                     data: { id: pcapId, progress: 0, error: err.toString() },
                 });
@@ -124,44 +129,41 @@ function pcapFormatConversion(req, res, next) {
     }
 }
 
-function pcapPreProcessing(req, res, next) {
-    const userID = req.session.passport.user.id;
-    const pcapId = req.pcap.uuid;
-    const { withMongo } = argumentsToCmd();
+const preprocessorRequestSender = mqSend.createQueueSender(program.rabbitmqUrl, mqTypes.queues.preprocessorRequest);
+const preprocessorAnnounceReceiver = mqReceive.createExchangeReceiver(
+    program.rabbitmqUrl,
+    mqTypes.exchanges.preprocessorStatus,
+    [mqTypes.exchanges.preprocessorStatus.keys.announce]
+);
 
-    const streamPreProcessorCommand = `"${program.cpp}/stream_pre_processor" "${res.locals.pcapFilePath}" ${pcapId} ${withMongo}`;
+const outstandingPreprocessorRequests = {};
 
-    const originalFilename = req.body.originalFilename || req.file.originalname;
+function handlePreprocessorResponse({ msg, ack }) {
+    try {
+        const message = JSON.parse(msg.content.toString());
+        let preprocessorRequest = null;
 
-    logger('stream-pre-processor').info(`Command: ${streamPreProcessorCommand}`);
+        if (outstandingPreprocessorRequests[message.data.pcap.id]) {
+            preprocessorRequest = outstandingPreprocessorRequests[message.data.pcap.id];
+            delete outstandingPreprocessorRequests[message.data.pcap.id];
+        } else {
+            logger('stream-pre-processor').info(`Pcap ID not found in outstand jobs: ${message.data.pcap.id}`);
+            ack();
+            return;
+        }
 
-    exec(streamPreProcessorCommand)
-        .then(output => {
-            logger('stream-pre-process').info(output.stdout);
-            logger('stream-pre-process').info(output.stderr);
+        const { req, res, next } = preprocessorRequest;
 
-            return Pcap.findOneAndUpdate(
-                { id: pcapId },
-                {
-                    file_name: originalFilename,
-                    capture_file_name: req.file.filename,
-                    pcap_file_name: res.locals.pcapFileName,
-                    owner_id: userID,
-                    generated_from_network: req.pcap.from_network ? true : false,
-                },
-                { new: true }
-            ).exec();
-        })
-        .then(data => {
-            websocketManager.instance().sendEventToUser(userID, {
-                event: WS_EVENTS.PCAP_FILE_PROCESSED,
-                data: Object.assign({}, data._doc, { progress: 66 }),
-            });
+        const userId = getUserId(req);
+        const pcapId = req.pcap.uuid;
 
-            next();
-        })
-        .catch(err => {
-            logger('pcap-pre-processing').error(`exception: ${err.toString()}`);
+        const originalFilename = req.body.originalFilename || req.file.originalname;
+
+        logger('stream-pre-processor').info(`${pcapId} vs. ${message.data.pcap.id}`);
+        if (pcapId !== message.data.pcap.id) return;
+
+        if (message.error) {
+            logger('stream-pre-processor').error(`Failed process the Pcap file: ${message.error}`);
 
             Pcap.findOneAndUpdate(
                 { id: pcapId },
@@ -169,32 +171,134 @@ function pcapPreProcessing(req, res, next) {
                     file_name: originalFilename,
                     capture_file_name: req.file.filename,
                     pcap_file_name: res.locals.pcapFileName,
-                    owner_id: userID,
+                    owner_id: userId,
                     generated_from_network: req.pcap.from_network ? true : false,
-                    error: err.toString(),
+                    error: message.error,
                 },
-                { new: true }
+                { upsert: true }
             ).exec();
 
-            websocketManager.instance().sendEventToUser(userID, {
+            websocketManager.instance().sendEventToUser(userId, {
                 event: WS_EVENTS.PCAP_FILE_FAILED,
-                data: { id: pcapId, progress: 0, error: err.toString() },
+                data: { id: pcapId, progress: 0, error: message.error },
             });
+
+            ack();
+            return;
+        }
+
+        const pcapData = message.data.pcap;
+        const pcapAdditionalData = {
+            file_name: originalFilename,
+            capture_file_name: req.file.filename,
+            pcap_file_name: res.locals.pcapFileName,
+            owner_id: userId,
+            generated_from_network: req.pcap.from_network ? true : false,
+        };
+
+        Pcap.findOneAndUpdate({ id: pcapId }, _.merge(pcapData, pcapAdditionalData), { upsert: true, new: true })
+            .exec()
+            .then(function (pcapDbData) {
+                logger('stream-pre-processor').info(`Added new Pcap file to the database: ${pcapId}`);
+
+                Stream.insertMany(message.data.streams)
+                    .then(function (streamsDbData) {
+                        logger('stream-pre-processor').info(
+                            `Added ${message.data.streams.length} new streams to the database extract from Pcap with id ${pcapId}`
+                        );
+
+                        websocketManager.instance().sendEventToUser(userId, {
+                            event: WS_EVENTS.PCAP_FILE_PROCESSED,
+                            data: Object.assign({}, pcapDbData._doc, { progress: 66 }),
+                        });
+
+                        ack();
+                        next();
+                        return;
+                    })
+                    .catch(function (err) {
+                        logger('stream-pre-processor').error(`Failed to add Streams to the database: ${err}`);
+
+                        websocketManager.instance().sendEventToUser(userId, {
+                            event: WS_EVENTS.PCAP_FILE_FAILED,
+                            data: { id: pcapId, progress: 0, error: err.toString() },
+                        });
+
+                        ack();
+                        return;
+                    });
+            })
+            .catch(function (err) {
+                logger('stream-pre-processor').error(`Failed to add Pcap analysis to the database: ${err}`);
+
+                Pcap.findOneAndUpdate(
+                    { id: pcapId },
+                    {
+                        file_name: originalFilename,
+                        capture_file_name: req.file.filename,
+                        pcap_file_name: res.locals.pcapFileName,
+                        owner_id: userId,
+                        generated_from_network: req.pcap.from_network ? true : false,
+                        error: err.toString(),
+                    },
+                    { upsert: true }
+                ).exec();
+
+                websocketManager.instance().sendEventToUser(userId, {
+                    event: WS_EVENTS.PCAP_FILE_FAILED,
+                    data: { id: pcapId, progress: 0, error: err.toString() },
+                });
+
+                ack();
+                return;
+            });
+    } catch (err) {
+        logger('stream-pre-processor').error(`${err}`);
+
+        websocketManager.instance().sendEventToUser(userId, {
+            event: WS_EVENTS.PCAP_FILE_FAILED,
+            data: { id: pcapId, progress: 0, error: err.toString() },
         });
+
+        ack();
+        return;
+    }
+}
+
+preprocessorAnnounceReceiver.emitter.on(mqReceive.onMessageKey, handlePreprocessorResponse);
+
+function pcapPreProcessing(req, res, next) {
+    logger('stream-pre-processor').info(
+        `Pcap original file name: ${req.body.originalFilename || req.file.originalname}`
+    );
+    logger('stream-pre-processor').info(`Pcap ID: ${req.pcap.uuid}`);
+
+    const key = req.pcap.uuid;
+    outstandingPreprocessorRequests[key] = { req, res, next };
+
+    preprocessorRequestSender.send({
+        msg: {
+            action: 'preprocessing.request',
+            workflow_id: uuidv4(),
+            pcap_id: req.pcap.uuid,
+            pcap_path: res.locals.pcapFilePath,
+        },
+        persistent: mqSend.persistent,
+    });
 }
 
 const postProcessSdpFiles = async (pcapId, folder) => {
     Pcap.findOne({ id: pcapId })
         .exec()
-        .then(async data => {
+        .then(async (data) => {
             const filename = data.file_name.replace(/\.[^\.]*$/, '-sdp.zip');
             const files = await glob(`${folder}/**/*.sdp`);
             await zipFilesExt(files, `${folder}/${filename}`, 'sdp');
-        })
+        });
 };
 
 // Returns undefined on success; otherwise, the error.
-const runAnalysis = async params => {
+const runAnalysis = async (params) => {
     const { pcapId, pcapFolder, streamID, pcapFile, userId, analysisProfileFile } = params;
     const { withMongo, withInflux } = argumentsToCmd();
 
@@ -207,13 +311,11 @@ const runAnalysis = async params => {
     try {
         const output = await exec(st2110ExtractorCommand);
 
-        Pcap.findOne({ id: pcapId }).exec()
-            .then(pcap => {
+        Pcap.findOne({ id: pcapId })
+            .exec()
+            .then((pcap) => {
                 if (pcap.error) {
-                    Pcap.findOneAndUpdate(
-                        { id: pcapId },
-                        { error: "", },
-                        { new: true }).exec()
+                    Pcap.findOneAndUpdate({ id: pcapId }, { error: '' }, { new: true }).exec();
                 }
             });
 
@@ -232,8 +334,8 @@ const runAnalysis = async params => {
             { new: true }
         ).exec();
 
-        const userID = userId;
-        websocketManager.instance().sendEventToUser(userID, {
+        const userId = userId;
+        websocketManager.instance().sendEventToUser(userId, {
             event: WS_EVENTS.PCAP_FILE_FAILED,
             data: { id: pcapId, progress: 0, error: err.toString() },
         });
@@ -247,10 +349,11 @@ function resetStreamCountersAndErrors(req, res, next) {
 
     Stream.findOne({ id: streamID })
         .exec()
-        .then(data => {
+        .then((data) => {
             if (typeof data.statistics !== 'undefined') {
                 if (typeof data.statistics.packet_count !== 'undefined') data.statistics.packet_count = 0;
-                if (typeof data.statistics.dropped_packet_count !== 'undefined') data.statistics.dropped_packet_count = 0;
+                if (typeof data.statistics.dropped_packet_count !== 'undefined')
+                    data.statistics.dropped_packet_count = 0;
                 if (typeof data.statistics.sample_count !== 'undefined') data.statistics.sample_count = 0;
                 if (typeof data.statistics.frame_count !== 'undefined') data.statistics.frame_count = 0;
                 if (typeof data.statistics.wrong_marker_count !== 'undefined') data.statistics.wrong_marker_count = 0;
@@ -268,21 +371,23 @@ function resetStreamCountersAndErrors(req, res, next) {
 
             Stream.findOneAndUpdate({ id: streamID }, data)
                 .exec()
-                .then(data => {
+                .then((data) => {
                     next();
                 });
         })
-        .catch(err => {
+        .catch((err) => {
             logger('stream-reset-counters').error(`exception: ${err}`);
         });
 }
 
 const pcapFullAnalysis = async (req, res, next) => {
+    const userId = getUserId(req);
+
     const params = {
         pcapId: req.pcap.uuid,
         pcapFolder: req.pcap.folder,
         pcapFile: res.locals.pcapFilePath,
-        userId: req.session.passport.user.id,
+        userId: userId,
         analysisProfileFile: req.analysisProfileFile,
     };
 
@@ -291,12 +396,14 @@ const pcapFullAnalysis = async (req, res, next) => {
 };
 
 const singleStreamAnalysis = async (req, res, next) => {
+    const userId = getUserId(req);
+
     const params = {
         pcapId: req.pcap.uuid,
         pcapFolder: req.pcap.folder,
         streamID: req.params.streamID,
         pcapFile: req.file.path,
-        userId: req.session.passport.user.id,
+        userId: userId,
         analysisProfileFile: req.analysisProfileFile,
     };
 
@@ -305,7 +412,7 @@ const singleStreamAnalysis = async (req, res, next) => {
 };
 
 function addStreamErrorsToSummary(stream, error_list) {
-    stream.error_list.forEach(error =>
+    stream.error_list.forEach((error) =>
         error_list.push({
             stream_id: stream.id,
             value: error,
@@ -331,7 +438,7 @@ const pcapConsolidation = async (req, res, next) => {
     };
 
     const streams = _.get(req, 'streams', []);
-    streams.forEach(stream => addStreamErrorsToSummary(stream, summary.error_list));
+    streams.forEach((stream) => addStreamErrorsToSummary(stream, summary.error_list));
 
     const pcapData = await Pcap.findOne({ id: pcapId }).exec();
     addWarningsToSummary(pcapData, summary.warning_list);
@@ -367,12 +474,12 @@ function audioConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
     Stream.find({ pcap: pcapId, media_type: 'audio' })
         .exec()
-        .then(streams => doAudioAnalysis(pcapId, streams))
-        .then(streams => {
+        .then((streams) => doAudioAnalysis(pcapId, streams))
+        .then((streams) => {
             addStreamsToReq(streams, req);
         })
         .then(() => next())
-        .catch(err => {
+        .catch((err) => {
             logger('audio-consolidation').error(`exception: ${err}`);
         });
 }
@@ -381,12 +488,12 @@ function ancillaryConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
     Stream.find({ pcap: pcapId, media_type: 'ancillary_data' })
         .exec()
-        .then(streams => doAncillaryAnalysis(req, streams))
-        .then(streams => {
+        .then((streams) => doAncillaryAnalysis(req, streams))
+        .then((streams) => {
             addStreamsToReq(streams, req);
         })
         .then(() => next())
-        .catch(err => {
+        .catch((err) => {
             logger('ancillary-consolidation').error(`exception: ${err}`);
         });
 }
@@ -395,12 +502,12 @@ function ttmlConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
     Stream.find({ pcap: pcapId, media_type: 'ttml' })
         .exec()
-        .then(streams => doTtmlAnalysis(req, streams))
-        .then(streams => {
+        .then((streams) => doTtmlAnalysis(req, streams))
+        .then((streams) => {
             addStreamsToReq(streams, req);
         })
         .then(() => next())
-        .catch(err => {
+        .catch((err) => {
             logger('ttml-consolidation').error(`exception: ${err}`);
         });
 }
@@ -409,11 +516,11 @@ function unknownConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
     Stream.find({ pcap: pcapId, media_type: 'unknown' })
         .exec()
-        .then(streams => {
+        .then((streams) => {
             addStreamsToReq(streams, req);
         })
         .then(() => next())
-        .catch(err => {
+        .catch((err) => {
             logger('unknown-consolidation').error(`exception: ${err}`);
         });
 }
@@ -425,20 +532,20 @@ function commonConsolidation(req, res, next) {
     doRtpAnalysis(pcapId, streams)
         .then(() => doMulticastAddressAnalysis(pcapId, streams))
         .then(() => next())
-        .catch(err => {
+        .catch((err) => {
             logger('common-consolidation').error(`exception: ${err}`);
         });
 }
 
 function pcapIngestEnd(req, res, next) {
-    const userID = req.session.passport.user.id;
+    const userId = getUserId(req);
     const pcapId = req.pcap.uuid;
 
     Pcap.findOne({ id: pcapId })
         .exec() // it returns the mongo db record of the PCAP
-        .then(pcapData => {
+        .then((pcapData) => {
             // Everything is done, we must notify the GUI
-            websocketManager.instance().sendEventToUser(userID, {
+            websocketManager.instance().sendEventToUser(userId, {
                 event: WS_EVENTS.PCAP_FILE_PROCESSING_DONE,
                 data: Object.assign({}, pcapData._doc, { progress: 100 }),
             });
@@ -446,10 +553,10 @@ function pcapIngestEnd(req, res, next) {
 }
 
 function sdpCheck(req, res, next) {
-    const userID = req.session.passport.user.id;
+    const userId = getUserId(req);
     sdpoker
         .getSDP(req.file.path, false)
-        .then(sdp => {
+        .then((sdp) => {
             const rfcErrors = sdpoker.checkRFC4566(sdp, {});
             const st2110Errors = sdpoker.checkST2110(sdp, {});
             const errors = rfcErrors.concat(st2110Errors);
@@ -461,30 +568,30 @@ function sdpCheck(req, res, next) {
                 }
             }
 
-            websocketManager.instance().sendEventToUser(userID, {
+            websocketManager.instance().sendEventToUser(userId, {
                 event: WS_EVENTS.SDP_VALIDATION_RESULTS,
                 data: {
-                    errors: errors.map(e => e.toString()),
+                    errors: errors.map((e) => e.toString()),
                 },
             });
 
             next();
         })
-        .catch(err => {
+        .catch((err) => {
             logger('sdp-check').error(`exception: ${err}`);
         });
 }
 
 function sdpParseIp(req, res, next) {
-    const userID = req.session.passport.user.id;
+    const userId = getUserId(req);
     const readFileAsync = util.promisify(fs.readFile);
 
     readFileAsync(req.file.path)
-        .then(sdp => {
+        .then((sdp) => {
             const parsed = sdp_parser.parse(sdp.toString());
 
             // grab src and dst IPs for each stream
-            const streams = parsed.media.map(function(media) {
+            const streams = parsed.media.map(function (media) {
                 const dstAddr = _.get(media, 'sourceFilter.destAddress');
                 const dstPort = _.get(media, 'port');
                 const src = _.get(media, 'sourceFilter.srcList');
@@ -492,7 +599,7 @@ function sdpParseIp(req, res, next) {
             });
 
             // notify the live subscription panel
-            websocketManager.instance().sendEventToUser(userID, {
+            websocketManager.instance().sendEventToUser(userId, {
                 event: WS_EVENTS.IP_PARSED_FROM_SDP,
                 data: {
                     success: true,
@@ -504,9 +611,9 @@ function sdpParseIp(req, res, next) {
         .then(() => {
             next();
         })
-        .catch(err => {
+        .catch((err) => {
             logger('sdp-parse').error(`exception: ${err}`);
-            websocketManager.instance().sendEventToUser(userID, {
+            websocketManager.instance().sendEventToUser(userId, {
                 event: WS_EVENTS.IP_PARSED_FROM_SDP,
                 data: {
                     success: false,

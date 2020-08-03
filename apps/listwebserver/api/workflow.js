@@ -4,6 +4,7 @@ const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const logger = require('../util/logger');
 const controller = require('../controllers/workflow');
 const { getUserFolder } = require('../util/analysis');
+const { getUserId } = require('../auth/middleware');
 
 router.get('/', (req, res, next) => {
     const workflows = controller.getWorkflows();
@@ -15,7 +16,7 @@ router.post('/', (req, res, next) => {
     logger('workflow-api').info(`Create workflow request for ${type}`);
     configuration.cookie = req.headers.cookie;
 
-    const userId = req.session.passport.user.id;
+    const userId = getUserId(req);
     const userFolder = getUserFolder(req);
 
     controller.createWorkflow(type, userId, userFolder, configuration);
