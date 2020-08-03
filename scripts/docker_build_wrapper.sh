@@ -35,7 +35,7 @@ init() {
 # This Dockerfile creates a environment to compile the CPP apps, build
 # the Node server, and the UI.
 
-FROM gcc:7.2
+FROM gcc:10.2
 
 RUN apt update
 
