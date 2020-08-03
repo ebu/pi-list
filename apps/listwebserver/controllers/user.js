@@ -3,6 +3,7 @@ const collection = require('../models/user');
 const logger = require('../util/logger');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const { getUserId } = require('../auth/middleware');
+const { defaultPreferences } = require('../auth/middleware');
 
 const getPreferences = async userId => {
     const user = await collection.findOne({ id: userId }).exec();
@@ -20,8 +21,14 @@ const setPreferences = async (userId, newPreferences) => {
     await user.save();
 };
 
-function getUser(username) {
-    return collection.findOne({ username: username }).select(["-salt", "-password"]).exec();
+async function getUser(username) {
+    const user = await collection.findOne({ username: username }).select(["-salt", "-password"]).exec();
+    if (user === null) return null;
+    if (user.preferences === null) user.preferences = defaultPreferences;
+
+    setPreferences(user.id, defaultPreferences);
+
+    return user;
 }
 
 function updatePreferences(req, res, next) {
