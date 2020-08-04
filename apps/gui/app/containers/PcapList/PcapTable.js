@@ -10,7 +10,7 @@ import ProgressBar from '../../components/common/ProgressBar';
 import { translateX, translateC } from '../../utils/translation';
 import pcapEnums from '../../enums/pcap';
 import Tooltip from '../../components/common/Tooltip';
-import { isSelected, getGetTdProps, getCheckBoxColumn } from '../../components/table/utils';
+import { isSelected, getGetTableProps, getGetTdProps, getCheckBoxColumn } from '../../components/table/utils';
 
 const getWEMessage = item => {
     const id = _.get(item, ['value', 'id'], null);
@@ -271,6 +271,7 @@ const PcapTable = props => {
             defaultPageSize={10}
             className="-highlight lst-text-center"
             getTdProps={getGetTdProps(props)}
+            getTableProps={getGetTableProps(props)}
             defaultSorted={[
                 {
                     id: 'date',
@@ -289,6 +290,7 @@ PcapTable.propTypes = {
     onSelectId: PropTypes.func,
     onSelectAll: PropTypes.func,
     onClickRow: PropTypes.func,
+    getVisible: PropTypes.func,
     noDataComponent: PropTypes.func,
 };
 
@@ -299,6 +301,7 @@ PcapTable.defaultProps = {
     onSelectId: () => {},
     onSelectAll: () => {},
     onClickRow: () => {},
+    getVisible: () => {},
     noDataComponent: () => null,
 };
 

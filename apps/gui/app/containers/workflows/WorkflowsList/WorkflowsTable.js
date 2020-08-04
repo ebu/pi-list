@@ -11,6 +11,7 @@ import Badge from '../../../components/common/Badge';
 import { T, translateX } from '../../../utils/translation';
 import {
     getGetTdProps,
+    getGetTableProps,
     getCheckBoxColumn,
 } from '../../../components/table/utils';
 
@@ -146,6 +147,7 @@ const WorkflowsTable = props => {
             defaultPageSize={10}
             className="-highlight lst-text-center"
             getTdProps={getGetTdProps(props)}
+            getTableProps={getGetTableProps(props)}
             defaultSorted={[
                 {
                     id: 'date',

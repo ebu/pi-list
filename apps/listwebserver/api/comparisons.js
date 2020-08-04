@@ -6,14 +6,15 @@ const API_ERRORS = require('../enums/apiErrors');
 const StreamCompare = require('../models/streamCompare');
 const websocketManager = require('../managers/websocket');
 const WS_EVENTS = require('../enums/wsEvents');
+const { getUserId } = require('../auth/middleware');
 
 function isAuthorized(req, res, next) {
     const { comparisonID } = req.params;
 
     if (comparisonID) {
-        const userID = req.session.passport.user.id;
+        const userId = getUserId(req);
 
-        StreamCompare.findOne({ owner_id: userID, id: comparisonID })
+        StreamCompare.findOne({ owner_id: userId, id: comparisonID })
             .exec()
             .then(data => {
                 if (data) next();
@@ -27,8 +28,8 @@ router.use('/:comparisonID', isAuthorized);
 
 /* Get all StreamCompares found */
 router.get('/', (req, res) => {
-    const userID = req.session.passport.user.id;
-    StreamCompare.find({ owner_id: userID })
+    const userId = getUserId(req);
+    StreamCompare.find({ owner_id: userId })
         .exec()
         .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
@@ -46,7 +47,7 @@ router.get('/:comparisonID/', (req, res) => {
 /* Delete a StreamCompare */
 router.delete('/:comparisonID/', (req, res) => {
     const { comparisonID } = req.params;
-    const userID = req.session.passport.user.id;
+    const userId = getUserId(req);
 
     StreamCompare.deleteOne({ id: comparisonID })
         .exec()
@@ -54,7 +55,7 @@ router.delete('/:comparisonID/', (req, res) => {
             res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
         })
         .then(() => {
-            websocketManager.instance().sendEventToUser(userID, {
+            websocketManager.instance().sendEventToUser(userId, {
                 event: WS_EVENTS.STREAM_COMPARE_DELETED,
                 data: { id: comparisonID },
             });

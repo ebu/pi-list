@@ -5,7 +5,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import Icon from '../../../components/common/Icon';
 import { translateX } from '../../../utils/translation';
-import { getGetTdProps, getCheckBoxColumn } from '../../../components/table/utils';
+import { getGetTdProps, getGetTableProps, getCheckBoxColumn } from '../../../components/table/utils';
 
 const renderLabel = ({ value }) => {
     return <span>{value}</span>;
@@ -120,6 +120,7 @@ const ComparisonsTable = props => {
             defaultPageSize={10}
             className="-highlight lst-text-center"
             getTdProps={getGetTdProps(props)}
+            getTableProps={getGetTableProps(props)}
             defaultSorted={[
                 {
                     id: 'date',
@@ -138,6 +139,7 @@ ComparisonsTable.propTypes = {
     onSelectId: PropTypes.func,
     onSelectAll: PropTypes.func,
     onClickRow: PropTypes.func,
+    getVisible: PropTypes.func,
     noDataComponent: PropTypes.func,
 };
 
@@ -148,6 +150,7 @@ ComparisonsTable.defaultProps = {
     onSelectId: () => {},
     onSelectAll: () => {},
     onClickRow: () => {},
+    getVisible: () => {},
     noDataComponent: () => null,
 };
 

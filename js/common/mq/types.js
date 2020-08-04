@@ -2,6 +2,21 @@ const anySubtopic = topic => topic + '.*';
 const makeSubtopic = (topic, subTopic) => topic + '.' + subTopic;
 
 const queues = {
+    /* Schema:
+    {
+        action: "preprocessing.request",
+        workflow_id: "<>",
+        pcap_id: "<>",
+        pcap_path: "<path to pcap>"
+    }
+    */
+    preprocessorRequest: {
+        name: 'ebu-list.preprocessor.request',
+        options: {
+            durable: true,
+        },
+    },
+
     workflowRequest: {
         name: 'ebu-list.workflow.request',
         options: {
@@ -13,7 +28,7 @@ const queues = {
     {
         id: string (workflow id)
         status: string (see workflows.schema.status)
-        payload: 
+        payload:
             - if status == failed, string (error message)
     }
     */
@@ -53,6 +68,7 @@ const exchanges = {
             },
         },
     },
+
     probeStatus: {
         name: 'ebu-list.probe',
         type: 'fanout',
@@ -82,6 +98,13 @@ const exchanges = {
         topics: {
             stream_update: 'stream_update',
         },
+    },
+
+    preprocessorStatus: {
+        name: 'ebu-list.preprocessor.status',
+        type: 'fanout',
+        options: { durable: false },
+        keys: { announce: 'announce' },
     },
 };
 

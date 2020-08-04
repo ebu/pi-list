@@ -8,6 +8,7 @@ import Icon from '../components/common/Icon';
 import Button from '../components/common/Button';
 import { T } from '../utils/translation';
 import { StateContext } from '../utils/AppContext';
+import websocket from '../utils/websocket';
 
 class SideNav extends Component {
     constructor(props) {
@@ -91,7 +92,7 @@ class SideNav extends Component {
                             </div>
                         )}
                     </a>
-                    <a className="row middle-xs" href={api.logout()}>
+                    <a className="row middle-xs" href={'/logout'}>
                         <Icon value="power settings new" />
                         {this.state.showMenuItems && (
                             <div className="fade-in">

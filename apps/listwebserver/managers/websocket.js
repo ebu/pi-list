@@ -5,7 +5,7 @@ let instance = null;
 
 class WebSocket {
     constructor(app) {
-        this.connections = new Map(); //<userID, socketID>
+        this.connections = new Map(); //<userID, [socketID]>
 
         this.websocket = require('socket.io')(app, { path: '/socket'});
 
@@ -14,12 +14,10 @@ class WebSocket {
         this.websocket.on('connection', (socket) => {
             socket.on('register', (userID) => {
 
-                // This step will verify is the user has already any connection and close that connection
-                if(this.connections.has(userID)) {
-                    this.disconnectUser(userID);
-                }
-
-                this.connections.set(userID, socket.id);
+                // Add new connection
+                let socketPool = this.connections.get(userID);
+                socketPool === undefined ? socketPool = [socket.id] : socketPool.push(socket.id);
+                this.connections.set(userID, socketPool);
 
                 const sessionCount = Object.keys(this.websocket.sockets.connected).length;
 
@@ -28,6 +26,7 @@ class WebSocket {
             });
 
             socket.on('disconnect', () => {
+                this.disconnectSession(socket.id);
                 const sessionCount = Object.keys(this.websocket.sockets.connected).length;
 
                 logger('websocket-manager').info(`Websocket connection ended (id: ${socket.id})` +
@@ -40,7 +39,10 @@ class WebSocket {
 
     sendEventToUser(userID, dataObject) {
         // logger('websocket-manager').info(`Message sent to ${userID} websocket channel`);
-        this.websocket.to(this.connections.get(userID)).emit('message', dataObject);
+        const socketPool = this.connections.get(userID);
+        socketPool.forEach( sID => {
+            this.websocket.to(sID).emit('message', dataObject);    
+        });
     }
 
     sendEventToAllUsers(dataObject) {
@@ -50,18 +52,18 @@ class WebSocket {
         });
     }
 
-    disconnectUser(userID) {
-        logger('websocket-manager').info(
-            `User ${userID} disconnected from websocket channel ${this.connections[userID]}`
-        );
-
-        // Yep sockets.sockets are really necessary!
-        if (this.connections.has(userID) && isObject(this.websocket.sockets.sockets[this.connections.get(userID)])) {
-            this.websocket.sockets.sockets[this.connections.get(userID)].disconnect();
-        }
-
-        if (this.connections.has(userID)) { // keep me to remove me from map
-            this.connections.delete(userID);
+    disconnectSession(socketID) {
+        for (let [key, value] of this.connections) {
+            value.forEach(sID => {
+                if ( sID === socketID) {
+                    if ( isObject(this.websocket.sockets.sockets[sID]) )
+                        this.websocket.sockets.sockets[sID].disconnect();
+                    
+                    var newSocketPool = value.filter(function(el) { return el != socketID }); 
+                    this.connections.set(key, newSocketPool);
+                    logger('websocket-manager').info(key + " Will be removed " + sID);
+                }
+            });
         }
     }
 }
