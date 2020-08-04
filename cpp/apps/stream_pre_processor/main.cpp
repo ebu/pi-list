@@ -6,7 +6,6 @@
 #include "ebu/list/preprocessor/stream_analyzer.h"
 #include "ebu/list/version.h"
 #include "timer.h"
-
 #include <boost/asio/io_service.hpp>
 
 using namespace ebu_list;
@@ -16,7 +15,6 @@ using nlohmann::json;
 
 namespace
 {
-
     json compose_response(const std::string& workflow_id, const std::string& status, unsigned int progress,
                           const std::string& error, const json& analysis_result)
     {
@@ -59,20 +57,42 @@ namespace
 
     struct config
     {
-        std::string id         = "5126c43c-076c-4fc1-befa-7e273a4c8cd9";
-        std::string label      = "EBU LIST Stream Pre-Processor";
+        std::string id    = "5126c43c-076c-4fc1-befa-7e273a4c8cd9";
+        std::string label = "EBU LIST Stream Pre-Processor";
+        std::optional<std::string> cli_broker_url;
+
         std::string broker_url = "amqp://localhost:5672";
     };
+
+    config parse_or_usage_and_exit(int argc, char const* const* argv)
+    {
+        using namespace bisect::bicla;
+
+        auto [parse_result, config] = parse(argc, argv,
+                                            argument(&config::cli_broker_url, "broker URL",
+                                                     "the RabbitMQ broker URL (default is amqp://localhost:5672)"));
+
+        if(config.cli_broker_url)
+        {
+            config.broker_url = *config.cli_broker_url;
+        }
+
+        if(parse_result) return config;
+
+        logger()->error("usage: {} {}", path(argv[0]).filename().string(), to_string(parse_result));
+        exit(-1);
+    }
 
 } // namespace
 
 //------------------------------------------------------------------------------
 
-int main(int /* argc */, char** /* argv*/)
+int main(int argc, char* argv[])
 {
     auto console = logger();
 
-    const config configuration;
+    const auto configuration = parse_or_usage_and_exit(argc, argv);
+
     console->info("{}, based on EBU LIST v{}", configuration.label, ebu_list::version());
     console->info("id: {}", configuration.id);
     console->info("RabbitMQ url: {}", configuration.broker_url);

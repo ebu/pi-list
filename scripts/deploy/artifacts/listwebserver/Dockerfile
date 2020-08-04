@@ -1,6 +1,6 @@
 # This is the LIST server's runtime Dockerfile
 
-FROM gcc:7.2
+FROM gcc:10.2
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
@@ -16,6 +16,7 @@ RUN apt-get install -y \
         zip \
         nodejs
 
+RUN apt-get install -y npm
 RUN npm install -g serve
 
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib/
@@ -36,4 +37,4 @@ WORKDIR /app/listwebserver/
 RUN rm -rf node_modules
 RUN npm install
 
-CMD bash /app/sedstaticconfig.sh & service nginx start & serve -s /app/gui -p 8080 & npm start -- config.yml --dev
+CMD bash /app/sedstaticconfig.sh & service nginx start & serve -s /app/gui -p 8080 & npm start -- config.yml --dev & ../bin/stream_pre_processor amqp://rabbitmq:5672
