@@ -86,20 +86,24 @@ const checkToken = (req, res, next) => {
     }
 };
 
-function authenticate(plainPassword, salt, password) {
+function authenticate(plainPassword, salt, password, unsecure) {
+    if (unsecure)
+        return (plainPassword === password);
+
     return crypto.createHmac('sha512', salt).update(plainPassword).digest('base64').toString() === password;
 }
 
 const handleLogin = (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
+    const unsecure = req.body.unsecure;
 
     collection
         .findOne({ username: username })
         .exec()
         .then((user) => {
             if (user) {
-                if (authenticate(password, user.salt, user.password)) {
+                if (authenticate(password, user.salt, user.password, unsecure)) {
                     const token = jwt.sign({ username: username, id: user.id }, config.secret, {
                         expiresIn: '24h', // expires in 24 hours
                     });
@@ -178,6 +182,7 @@ const handleRegister = (req, res) => {
 };
 
 module.exports = {
+    defaultPreferences,
     checkToken,
     getUserId,
     getUsername,
