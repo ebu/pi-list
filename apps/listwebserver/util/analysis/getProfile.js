@@ -6,9 +6,11 @@ const controller = require('../../controllers/analysis_profile');
 const path = require('path');
 const { promisify } = require('util');
 const writeFile = promisify(fs.writeFile);
+const { getUserId } = require('../../auth/middleware');
 
 const getAnalysisProfile = async (req, res, next) => {
-    const defaultProfile = await controller.getDefault(req.session.passport.user.id);
+    const userId = getUserId(req);
+    const defaultProfile = await controller.getDefault(userId);
     console.dir(defaultProfile);
     const pcapFolder = req.pcap.folder;
     const profileFile = path.join(pcapFolder, 'profile.json');

@@ -4,12 +4,15 @@ const constants = require('../enums/analysis');
 const Stream = require('../models/stream');
 const { appendError, validateMulticastAddresses } = require('./utils');
 const { doRtpTsAnalysis, validateRtpTs, doInterFrameRtpTsDeltaAnalysis, validateInterFrameRtpTsDelta, addRtpSequenceAnalysisToStream } = require('./rtp');
+const { getUserId } = require('../auth/middleware');
 
 // For some reason, getUserFolder can't be imported...
 //const { getUserFolder, } = require('../util/analysis');
 function getUserFolder(req) {
     const program = require('../util/programArguments');
-    return `${program.folder}/${req.session.passport.user.id}`;
+    const userId = getUserId(req);
+
+    return `${program.folder}/${userId}`;
 }
 
 const validation = {

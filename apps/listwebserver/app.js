@@ -9,10 +9,10 @@ const bodyParser = require('body-parser');
 const { promisify } = require('util');
 const child_process = require('child_process');
 const api = require('./api');
-const auth = require('./auth');
 const { apiErrorHandler, resourceNotFoundHandler, isAuthenticated } = require('./util/express-middleware');
 const programArguments = require('./util/programArguments');
 const logger = require('./util/logger');
+const authMiddleware = require('./auth/middleware');
 
 const app = express();
 
@@ -49,10 +49,11 @@ app.use(
     })
 );
 
-auth(app);
-
 // API Router
-app.use('/api/', isAuthenticated, api);
+app.post('/auth/login', authMiddleware.handleLogin);
+app.post('/auth/logout', authMiddleware.handleLogout);
+app.post('/user/register', authMiddleware.handleRegister);
+app.use('/api/', authMiddleware.checkToken, api);
 logger('app').info('API initialized');
 
 // Handles with the 404 Not Found

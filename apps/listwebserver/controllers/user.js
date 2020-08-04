@@ -1,26 +1,18 @@
 const _ = require('lodash');
-const User = require('../models/user');
+const collection = require('../models/user');
 const logger = require('../util/logger');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
-
-const defaultPreferences = {
-    gui: {
-        theme: 'dark',
-        language: 'en-US',
-    },
-    analysis: {
-        currentProfileId: null,
-    },
-};
+const { getUserId } = require('../auth/middleware');
+const { defaultPreferences } = require('../auth/middleware');
 
 const getPreferences = async userId => {
-    const user = await User.findOne({ _id: userId }).exec();
+    const user = await collection.findOne({ id: userId }).exec();
     if (user === null) return null;
     return user.preferences;
 };
 
 const setPreferences = async (userId, newPreferences) => {
-    const user = await User.findOne({ _id: userId }).exec();
+    const user = await collection.findOne({ id: userId }).exec();
     if (user === null) {
         throw new Error(`User ${userId} not found`);
     }
@@ -29,41 +21,22 @@ const setPreferences = async (userId, newPreferences) => {
     await user.save();
 };
 
-function getUser(req, res, next) {
-    const info = req.session.passport.user;
+async function getUser(username) {
+    const user = await collection.findOne({ username: username }).select(["-salt", "-password"]).exec();
+    if (user === null) return null;
+    if (user.preferences === null) user.preferences = defaultPreferences;
 
-    const hasPreferences = !!info.preferences;
+    setPreferences(user.id, defaultPreferences);
 
-    info.preferences = _.merge(defaultPreferences, info.preferences || {});
-    req.userInfo = info;
-
-    if (!hasPreferences) {
-        User.findOne({ _id: info.id })
-            .exec()
-            .then(user => {
-                if (user === null) {
-                    res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND);
-                    return;
-                }
-
-                user.preferences = info.preferences;
-                return user.save().then(d => {
-                    next();
-                });
-            })
-            .catch(e => {
-                res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send();
-            });
-    } else {
-        next();
-    }
+    return user;
 }
 
 function updatePreferences(req, res, next) {
-    const { user } = req.session.passport;
+    const userId = getUserId(req);
+
     const value = req.body.value;
 
-    User.findOne({ _id: user.id })
+    collection.findOne({ id: userId })
         .exec()
         .then(user => {
             if (user === null) {

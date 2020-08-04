@@ -189,17 +189,6 @@ void analysis::run_full_analysis(processing_context& context)
                     framer_ml->add(std::move(analyzer));
                 }
 
-                {
-                    auto db_logger = context.handler_factory->create_vrx_data_logger(context.pcap.id, stream_info.id,
-                                                                                     "gapped-adjusted-avg-tro");
-                    const auto settings = vrx_settings{in_video_info.video.schedule, tvd_kind::ideal,
-                                                       std::chrono::nanoseconds(in_video_info.video.avg_tro_ns)};
-                    auto analyzer =
-                        std::make_unique<vrx_analyzer>(std::move(db_logger), histogram_listener_uptr(),
-                                                       in_video_info.video.packets_per_frame, video_info, settings);
-                    framer_ml->add(std::move(analyzer));
-                }
-
                 auto framer =
                     std::make_unique<frame_start_filter>(frame_start_filter::listener_uptr(std::move(framer_ml)));
                 ml->add(std::move(framer));

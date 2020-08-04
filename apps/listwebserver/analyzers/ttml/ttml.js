@@ -2,6 +2,7 @@ const _ = require('lodash');
 const path = require('path');
 const Stream = require('../../models/stream');
 const { doLoadTtmlDocuments, doAnalyseTimeBase, doAnalyseSequenceIdentifier } = require('./util');
+const { getUserId } = require('../../auth/middleware');
 
 // stream structure:
 //  media_specific:
@@ -19,7 +20,8 @@ const { doLoadTtmlDocuments, doAnalyseTimeBase, doAnalyseSequenceIdentifier } = 
 //const { getUserFolder, } = require('../util/analysis');
 function getUserFolder(req) {
     const program = require('../../util/programArguments');
-    return `${program.folder}/${req.session.passport.user.id}`;
+    const userId = getUserId(req);
+    return `${program.folder}/${userId}`;
 }
 
 // sync

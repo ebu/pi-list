@@ -77,6 +77,12 @@
         "licenseUrl": "https://github.com/expressjs/cors/raw/master/LICENSE",
         "parents": "listwebserver"
     },
+    "crypto@1.0.1": {
+        "licenses": "ISC",
+        "repository": "https://github.com/npm/deprecate-holder",
+        "licenseUrl": "https://github.com/npm/deprecate-holder",
+        "parents": "listwebserver"
+    },
     "d3@5.14.2": {
         "licenses": "BSD-3-Clause",
         "repository": "https://github.com/d3/d3",
@@ -136,6 +142,18 @@
         "repository": "https://github.com/node-influx/node-influx",
         "licenseUrl": "https://github.com/node-influx/node-influx/raw/master/LICENSE",
         "parents": "listwebserver"
+    },
+    "jsonwebtoken@8.5.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/auth0/node-jsonwebtoken",
+        "licenseUrl": "https://github.com/auth0/node-jsonwebtoken/raw/master/LICENSE",
+        "parents": "listwebserver"
+    },
+    "jwt-decode@2.2.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/auth0/jwt-decode",
+        "licenseUrl": "https://github.com/auth0/jwt-decode/raw/master/LICENSE",
+        "parents": "list-ebu-gui"
     },
     "lodash@4.17.15": {
         "licenses": "MIT",
@@ -215,16 +233,10 @@
         "licenseUrl": "https://github.com/eclipse/paho.mqtt.javascript",
         "parents": "list-ebu-gui"
     },
-    "passport-local@1.0.0": {
+    "path@0.12.7": {
         "licenses": "MIT",
-        "repository": "https://github.com/jaredhanson/passport-local",
-        "licenseUrl": "http://www.opensource.org/licenses/MIT",
-        "parents": "listwebserver"
-    },
-    "passport@0.4.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/jaredhanson/passport",
-        "licenseUrl": "https://github.com/jaredhanson/passport/raw/master/LICENSE",
+        "repository": "https://github.com/jinder/path",
+        "licenseUrl": "https://github.com/jinder/path/raw/master/LICENSE",
         "parents": "listwebserver"
     },
     "phantom@6.3.0": {

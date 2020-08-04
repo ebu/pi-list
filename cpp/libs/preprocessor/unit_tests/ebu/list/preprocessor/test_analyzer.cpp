@@ -12,9 +12,7 @@ SCENARIO("ST2110-X stream identification")
         {
             const std::string uuid = "62df0243-7154-4d2c-b005-7e11a2b9ea38";
 
-            nlohmann::json analysis = ebu_list::analysis::analyze_stream(
-                pcap_file.string(), uuid
-            );
+            nlohmann::json analysis = ebu_list::analysis::analyze_stream(pcap_file.string(), uuid);
 
             THEN("A video stream is found")
             {
@@ -32,14 +30,9 @@ SCENARIO("ST2110-X stream identification")
         {
             const std::string uuid = "62df0243-7154-4d2c-b005-7e11a2b9ea38";
 
-            nlohmann::json analysis = ebu_list::analysis::analyze_stream(
-                pcap_file.string(), uuid
-            );
+            nlohmann::json analysis = ebu_list::analysis::analyze_stream(pcap_file.string(), uuid);
 
-            THEN("An audio stream is found")
-            {
-                REQUIRE(analysis["streams"][0]["media_type"] == "audio");
-            }
+            THEN("An audio stream is found") { REQUIRE(analysis["streams"][0]["media_type"] == "audio"); }
         }
     }
 
@@ -51,14 +44,9 @@ SCENARIO("ST2110-X stream identification")
         {
             const std::string uuid = "62df0243-7154-4d2c-b005-7e11a2b9ea38";
 
-            nlohmann::json analysis = ebu_list::analysis::analyze_stream(
-                pcap_file.string(), uuid
-            );
+            nlohmann::json analysis = ebu_list::analysis::analyze_stream(pcap_file.string(), uuid);
 
-            THEN("An anc stream is found")
-            {
-                REQUIRE(analysis["streams"][0]["media_type"] == "ancillary_data");
-            }
+            THEN("An anc stream is found") { REQUIRE(analysis["streams"][0]["media_type"] == "ancillary_data"); }
         }
     }
 }

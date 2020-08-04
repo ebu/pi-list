@@ -5,7 +5,15 @@ const isSelected = (id, all) => {
     return all.some(item => item === id);
 }
 
+const getGetTableProps = (props) => (state, dum1, dum2, instance) => {
+    if (state.pageRows) {
+        props.getVisible(state.pageRows);
+    }
+    return { onClick: (e, handleOriginal) => { } };
+}
+
 const getGetTdProps = (props) => (state, rowInfo, column, instance) => {
+
     return {
         onClick: (e, handleOriginal) => {
             if (column.id === 'checkbox') {
@@ -44,7 +52,6 @@ const getKindColumn = sources => ({
                                 SDP
                             </span>
                         </div>
-                        
                     );
                 } else {
                     return <span style={{ color: 'green' }}>SDP</span>;
@@ -100,6 +107,7 @@ const getCheckBoxColumn = (props) => (
 
 export {
     isSelected,
+    getGetTableProps,
     getGetTdProps,
     getKindColumn,
     getCheckBoxColumn
