@@ -5,7 +5,6 @@ import websocket from '../utils/websocket';
 
 const LogoutPage = () => {
     useEffect(() => {
-        debugger;
         api.logout({ socketid: websocket.socketId() });
         websocket.shutdown();
     }, []);

@@ -25,20 +25,8 @@ class Login extends Component {
         document.addEventListener(keyEnum.EVENTS.KEY_UP, this.onKeyUpEnter);
     }
 
-    onClickRegister() {
-        const username = this.username.value;
-        const password = this.password.value;
-
-        api.register({ username: username, password: password })
-            .then(() => {
-                this.setState({ userSuccessfullyRegistered: true, errors: [] });
-            })
-            .catch(error => {
-                this.setState({
-                    errors: [error.response.data],
-                    userSuccessfullyRegistered: false,
-                });
-            });
+    componentWillUnmount() {
+        document.removeEventListener(keyEnum.EVENTS.KEY_UP, this.onKeyUpEnter);
     }
 
     onClickLogin() {
@@ -46,7 +34,7 @@ class Login extends Component {
         const password = this.password.value;
 
         api.login({ username: username, password: password })
-            .then((response) => {
+            .then(response => {
                 setToken(response.content.token);
                 this.props.history.push('/');
             })
@@ -61,8 +49,20 @@ class Login extends Component {
         }
     }
 
-    componentWillUnmount() {
-        document.removeEventListener(keyEnum.EVENTS.KEY_UP, this.onKeyUpEnter);
+    onClickRegister() {
+        const username = this.username.value;
+        const password = this.password.value;
+
+        api.register({ username: username, password: password })
+            .then(() => {
+                this.setState({ userSuccessfullyRegistered: true, errors: [] });
+            })
+            .catch(error => {
+                this.setState({
+                    errors: [error.response.data],
+                    userSuccessfullyRegistered: false,
+                });
+            });
     }
 
     render() {
@@ -81,7 +81,7 @@ class Login extends Component {
                             className="lst-input"
                             ref={ref => (this.username = ref)}
                             type="username"
-                            placeholder={translate('user_account.username')}
+                            placeholder={translate('user_account.email')}
                         />
                     </div>
                     <div className="lst-login--group">
