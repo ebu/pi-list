@@ -5,6 +5,7 @@ const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const collection = require('../models/user');
 const websocket = require('../managers/websocket');
 const crypto = require('crypto');
+const uuidv1 = require('uuid/v1');
 
 const defaultPreferences = {
     gui: {
@@ -87,8 +88,7 @@ const checkToken = (req, res, next) => {
 };
 
 function authenticate(plainPassword, salt, password, unsecure) {
-    if (unsecure)
-        return (plainPassword === password);
+    if (unsecure) return plainPassword === password;
 
     return crypto.createHmac('sha512', salt).update(plainPassword).digest('base64').toString() === password;
 }
@@ -168,8 +168,11 @@ const handleRegister = (req, res) => {
 
     user.salt = generateSalt();
     user.password = encodePassword(user.password, user.salt);
-
     user.preferences = defaultPreferences;
+
+    if (user.id === undefined) {
+        user.id = uuidv1();
+    }
 
     collection
         .create(user)
@@ -177,7 +180,7 @@ const handleRegister = (req, res) => {
             res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send(data);
         })
         .catch(function (err) {
-            res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send();
+            res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(err.message);
         });
 };
 
