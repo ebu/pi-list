@@ -17,6 +17,8 @@ const defaultPreferences = {
     },
 };
 
+const tokenExpiration = '10m';
+
 const getUsername = (req) => {
     const token = getToken(req);
     if (token) {
@@ -93,6 +95,23 @@ function authenticate(plainPassword, salt, password, unsecure) {
     return crypto.createHmac('sha512', salt).update(plainPassword).digest('base64').toString() === password;
 }
 
+const revalidateToken = (req, res) => {
+    const username = getUsername(req);
+
+    const token = jwt.sign({ username: username }, config.secret, {
+        expiresIn: tokenExpiration, // expires in 24 hours
+    });
+
+    // return the JWT token for the future API calls
+    res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
+        result: 0,
+        desc: 'Revalidated successfully',
+        content: { success: true, token: token }
+    });
+
+    return;
+}
+
 const handleLogin = (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -105,7 +124,7 @@ const handleLogin = (req, res) => {
             if (user) {
                 if (authenticate(password, user.salt, user.password, unsecure)) {
                     const token = jwt.sign({ username: username, id: user.id }, config.secret, {
-                        expiresIn: '24h', // expires in 24 hours
+                        expiresIn: tokenExpiration, // expires in 24 hours
                     });
 
                     // return the JWT token for the future API calls
@@ -195,4 +214,5 @@ module.exports = {
     authenticate,
     generateSalt,
     encodePassword,
+    revalidateToken
 };
