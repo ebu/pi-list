@@ -9,14 +9,13 @@ RUN apt-get install -yq \
         nginx
 
 # Install node
-RUN curl -sL https://deb.nodesource.com/setup_8.x -o nodesource_setup.sh
+RUN curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
 RUN bash nodesource_setup.sh
 RUN apt-get install -y \
         ffmpeg \
         zip \
         nodejs
 
-RUN apt-get install -y npm
 RUN npm install -g serve
 
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib/

@@ -8,9 +8,9 @@ if ! which apt > /dev/null; then
 fi
 
 # get cmake >=3.9
-apt update
-apt install -y libarchive13
-apt install -y cmake
+apt-get update
+apt-get install -y libarchive13
+apt-get install -y cmake
 
 # utilities
 apt install -y \
@@ -18,15 +18,14 @@ apt install -y \
     libpcap-dev \
     libssl-dev \
     python-pip \
-    uuid-dev
+    uuid-dev 
 
 # Conan is a python package used to build CPP dependencies
 pip install conan
 
 # custom node version
-curl -sL https://deb.nodesource.com/setup_8.x | bash -
+curl -sL https://deb.nodesource.com/setup_12.x | bash -
 apt install -y nodejs
-apt install -y npm
 
 echo "Please install FFMPEG v2.8 or newer using your package manager or https://www.ffmpeg.org/download.html"
 echo "If you're going to run LIST via Docker, ignore the above message, as FFMPEG is already installed on the Docker image"
