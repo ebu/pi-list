@@ -34,7 +34,7 @@ const performCaptureAndIngest = async (globalConfig, workflowConfig) => {
         await uploadFile(
             captureFile,
             workflowConfig.ingestPutUrl,
-            workflowConfig.cookie,
+            workflowConfig.authorization,
             workflowConfig.filename
         );
     } finally {

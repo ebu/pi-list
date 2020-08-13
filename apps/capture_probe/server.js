@@ -107,7 +107,7 @@ const onWorkMessage = async (msgContext, sendStatus) => {
             if (
                 !workflowConfig.id ||
                 !workflowConfig.senders ||
-                !workflowConfig.cookie ||
+                !workflowConfig.authorization ||
                 !workflowConfig.ingestPutUrl ||
                 !workflowConfig.durationMs ||
                 !workflowConfig.filename
