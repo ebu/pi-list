@@ -150,7 +150,6 @@ int main(int argc, char* argv[])
 
                 ack();
             }
-
             exchange.send(ebu_list::definitions::exchanges::preprocessor_status::keys::announce, response.dump());
             timer.fire_async();
         };
