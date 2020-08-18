@@ -28,58 +28,6 @@ function getAPIPort() {
 const REST_URL = `${window.location.protocol}//${window.location.hostname}:${getAPIPort()}`;
 const API_URL = `${REST_URL}/api`;
 
-/* Session logic */
-
-let revalidateTokenTimer; // Timer ID
-let revalidateTokenTimerPeriodMs = 0; // Dynamic timer interval
-
-function revalidate() {
-    axios
-        .get(`${API_URL}/user/revalidate-token`)
-        .then(response => {
-            if (response && response.data.result <= 0) {
-                if (response.data.content.success) {
-                    setToken(response.data.content.token); // save the token on the localstorage
-                    console.log('Token revalidated');
-                }
-            }
-        })
-        .catch();
-}
-
-function calcRevalidationPeriod(token) {
-    const fiveSeconds = 5000; // used to revalidate 5s before the expiration time
-    revalidateTokenTimerPeriodMs = getTokenExpirationTime(token) * 1000 - Date.now() - fiveSeconds;
-}
-
-function setSession(token) {
-    console.log('Token session started');
-    setToken(token); // save the token on the localstorage
-
-    calcRevalidationPeriod(token);
-
-    revalidateTokenTimer = setInterval(revalidate, revalidateTokenTimerPeriodMs);
-}
-
-function getSessionToken() {
-    const token = getToken();
-
-    if (revalidateTokenTimer === undefined) {
-        calcRevalidationPeriod(token);
-        revalidateTokenTimer = setInterval(revalidate, revalidateTokenTimerPeriodMs);
-    }
-
-    return token;
-}
-
-function removeSession() {
-    console.log('Token session ended');
-    removeToken(); // remove the token on the localstorage
-    clearInterval(revalidateTokenTimer);
-}
-
-/* End Session logic */
-
 axios.interceptors.response.use(
     config => config,
     error => {
@@ -96,7 +44,7 @@ axios.interceptors.request.use(
         const newConfig = config;
 
         if (isAuthenticated()) {
-            const token = getSessionToken();
+            const token = getToken();
             newConfig.headers.Authorization = `Bearer ${token}`;
         }
 
@@ -106,6 +54,49 @@ axios.interceptors.request.use(
 );
 
 axios.defaults.withCredentials = true;
+
+/* Session logic */
+
+function setSession(token) {
+    setToken(token); // save the token on the localstorage
+}
+
+function removeSession() {
+    removeToken(); // remove the token on the localstorage
+}
+
+function revalidateToken() {
+    axios
+        .get(`${API_URL}/user/revalidate-token`)
+        .then(response => {
+            if (response && response.data.result <= 0) {
+                if (response.data.content.success) {
+                    setSession(response.data.content.token); // save the token on the localstorage
+                }
+            }
+        })
+        .catch(err => console.log(`Error revalidatig token: ${err}`));
+}
+
+const refreshTokenVerificationInterval = 60000;
+function checkRefreshToken() {
+    const token = getToken();
+
+    if (token === null) return;
+
+    const tokenTimeLeft = getTokenExpirationTime(token) * 1000 - Date.now();
+
+    if (tokenTimeLeft < 0) return; // Already expired
+
+    if (tokenTimeLeft < refreshTokenVerificationInterval * 2) {
+        revalidateToken();
+        return;
+    }
+}
+checkRefreshToken();
+const refreshTokenTimer = setInterval(checkRefreshToken, refreshTokenVerificationInterval);
+
+/* End Session logic */
 
 const getAuthUrl = path => {
     const url = new URL(path);
@@ -144,7 +135,6 @@ export default {
     deleteUser: data => request.post('user/delete', data).then(removeToken(), request.httpRedirect('/login')),
 
     register: loginData => axios.post(`${REST_URL}/user/register`, loginData).then(response => response.data),
-    getToken: () => axios.get(`${REST_URL}/auth/token`).then(response => response.data),
 
     login: data =>
         axios.post(`${REST_URL}/auth/login`, data).then(response => {
