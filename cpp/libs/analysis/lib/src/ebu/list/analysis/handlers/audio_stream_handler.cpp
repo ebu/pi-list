@@ -36,6 +36,8 @@ audio_stream_handler::audio_stream_handler(rtp::packet first_packet, serializabl
     info_.network.multicast_address_match = is_same_multicast_address(
         first_packet.info.ethernet_info.destination_address, first_packet.info.udp.destination_address);
 
+    info_.network.has_extended_header = first_packet.info.rtp.view().extension();
+
     audio_description_.first_packet_ts    = first_packet.info.udp.packet_time;
     using float_sec                       = std::chrono::duration<float, std::ratio<1, 1>>;
     audio_description_.samples_per_packet = static_cast<int>(to_int(audio_description_.audio.sampling) *
@@ -91,6 +93,11 @@ void audio_stream_handler::on_error(std::exception_ptr e)
 
 void audio_stream_handler::parse_packet(const rtp::packet& packet)
 {
+    if (packet.info.rtp.view().extension())
+    {
+        info_.network.has_extended_header = true;
+    }
+
     auto& sdu = packet.sdu;
 
     // check if number of samples is consistent

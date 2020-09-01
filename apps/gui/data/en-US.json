@@ -95,6 +95,7 @@
   "media_information.rtp.destination": "Destination",
   "media_information.rtp.destination_mac": "Destination MAC",
   "media_information.rtp.ssrc": "SSRC",
+  "media_information.rtp.has_extended_header": "Extended Header",
   "media_information.rtp.payload_type": "Payload Type",
   "media_information.rtp.packet_count": "Packets",
   "media_information.rtp.count": "Count",
@@ -323,5 +324,7 @@
   "gdpr.modal.title": "GPRD",
   "gdpr.modal.content": "GDPR",
   "settings.gdpr.collectmetrics": "Allow EBU to collect usage metrics",
-  "navigation.news": "News"
+  "navigation.news": "News",
+  "feedback.yes": "Yes",
+  "feedback.no": "No"
 }

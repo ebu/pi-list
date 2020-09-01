@@ -22,11 +22,17 @@ namespace ebu_list::st2110::d21
         int vrx_full_narrow;
     };
 
+    struct trs_analysis
+    {
+        double trs_ns;
+    };
+
     struct video_analysis_info
     {
         compliance_profile compliance;
         cinst_analysis cinst;
         vrx_analysis vrx;
+        trs_analysis trs;
     };
 
     compliance_analyzer build_compliance_analyzer(const st2110::d20::video_description& video, vrx_settings settings);
@@ -40,4 +46,6 @@ namespace ebu_list::st2110::d21
     void from_json(const nlohmann::json& j, cinst_analysis& v);
     void to_json(nlohmann::json& j, const vrx_analysis& v);
     void from_json(const nlohmann::json& j, vrx_analysis& v);
+    void to_json(nlohmann::json& j, const trs_analysis& v);
+    void from_json(const nlohmann::json& j, trs_analysis& v);
 } // namespace ebu_list::st2110::d21

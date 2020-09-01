@@ -37,6 +37,8 @@ anc_stream_handler::anc_stream_handler(rtp::packet first_packet, serializable_st
     info_.network.multicast_address_match = is_same_multicast_address(
         first_packet.info.ethernet_info.destination_address, first_packet.info.udp.destination_address);
 
+    info_.network.has_extended_header = first_packet.info.rtp.view().extension();
+
     info_.state      = stream_state::ON_GOING_ANALYSIS; // mark as analysis started
     const auto& anc  = this->info();
     nlohmann::json j = anc_stream_details::to_json(anc);
@@ -161,6 +163,11 @@ void anc_stream_handler::on_error(std::exception_ptr e)
 
 void anc_stream_handler::parse_packet(const rtp::packet& packet)
 {
+    if (packet.info.rtp.view().extension())
+    {
+        info_.network.has_extended_header = true;
+    }
+
     auto& sdu = packet.sdu;
 
     auto p                              = sdu.view().data();

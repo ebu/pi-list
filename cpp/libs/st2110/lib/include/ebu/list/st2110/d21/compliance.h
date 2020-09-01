@@ -54,6 +54,7 @@ namespace ebu_list::st2110::d21
 
         compliance_parameters get_narrow_parameters() const;
         compliance_parameters get_wide_parameters() const;
+        double get_trs() const;
 
       private:
         st2110::d21::c_calculator c_calculator_;

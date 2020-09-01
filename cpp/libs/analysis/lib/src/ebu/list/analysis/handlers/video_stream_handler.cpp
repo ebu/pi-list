@@ -79,6 +79,8 @@ video_stream_handler::video_stream_handler(decode_video should_decode_video, rtp
 
     update_net_info_with_address_validation(info_.network, first_packet.info);
 
+    info_.network.has_extended_header = first_packet.info.rtp.view().extension();
+
     info_.state = stream_state::ON_GOING_ANALYSIS; // mark as analysis started
 }
 
@@ -165,6 +167,11 @@ void video_stream_handler::on_error(std::exception_ptr)
 // #define LIST_TRACE
 void video_stream_handler::parse_packet(const rtp::packet& packet)
 {
+    if (packet.info.rtp.view().extension())
+    {
+        info_.network.has_extended_header = true;
+    }
+
     auto& sdu = packet.sdu;
 
     constexpr auto minimum_size = ssizeof<raw_extended_sequence_number>() + ssizeof<raw_line_header>();

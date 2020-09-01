@@ -40,6 +40,8 @@ struct ebu_list::analysis::ttml::stream_handler::impl
         info_.network.multicast_address_match = is_same_multicast_address(
             first_packet.info.ethernet_info.destination_address, first_packet.info.udp.destination_address);
 
+        info_.network.has_extended_header = first_packet.info.rtp.view().extension();
+
         nlohmann::json j = stream_details::to_json(ttml_description_);
         logger()->trace("Stream info:\n {}", j.dump(2, ' '));
     }
@@ -60,6 +62,11 @@ struct ebu_list::analysis::ttml::stream_handler::impl
 
     void parse_packet(const ebu_list::rtp::packet& packet)
     {
+        if (packet.info.rtp.view().extension())
+        {
+            info_.network.has_extended_header = true;
+        }
+
         auto& sdu                      = packet.sdu;
         auto ptr                       = sdu.view().data();
         const uint16_t sequence_number = packet.info.rtp.view().sequence_number();

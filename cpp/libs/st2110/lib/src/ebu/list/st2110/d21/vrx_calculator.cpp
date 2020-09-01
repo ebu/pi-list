@@ -12,7 +12,7 @@ using namespace ebu_list::st2110::d21;
 vrx_calculator::vrx_calculator(int npackets, media::video::info video_info, vrx_settings settings)
     : settings_(settings), tframe_(1 / video_info.rate),
       constants_(calculate_vrx_constants(npackets, tframe_, settings.schedule, video_info.scan, video_info.raster)),
-      trs_ns_(to_double(constants_.trs))
+      trs_sec_(to_double(constants_.trs))
 {
 }
 
@@ -70,11 +70,16 @@ packet_info vrx_calculator::on_packet(const clock::time_point& packet_timestamp,
     // TODO: should we disallow Vrx underflow?
 
     const auto packet_delta_ns = to_double(packet_time - tvd_);
-    const auto drained         = static_cast<int>((packet_delta_ns + trs_ns_) / trs_ns_);
+    const auto drained         = static_cast<int>((packet_delta_ns + trs_sec_) / trs_sec_);
 
     current.vrx   = vrx_prev_ + 1 - (drained - drained_prev_);
     vrx_prev_     = current.vrx;
     drained_prev_ = drained;
 
     return current;
+}
+
+double vrx_calculator::get_trs() const
+{
+    return trs_sec_ * std::giga::num;
 }
