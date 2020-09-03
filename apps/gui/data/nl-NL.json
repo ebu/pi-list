@@ -144,6 +144,8 @@
   "information.stream_analyzed_information": "Deze stroom is al geanalyseerd. Als de resultaten niet overeenkomen met uw verwachting, probeer dan de media instellingen te veranderen en probeer het opnieuw.",
   "information.media_type_unknown": "Door deze stroom als 'onbekend' aan te merken, zal hij niet geanalyseerd worden.",
   "date": "Datum",
+  "pcap.analysis_date": "Analysis date\n",
+  "pcap.capture_date": "Capture date",
   "name": "Naam",
   "notifications.success.file_upload": "Bestand geupload",
   "notifications.success.file_upload_message": "Bestand %{name} succesvol geupload",
