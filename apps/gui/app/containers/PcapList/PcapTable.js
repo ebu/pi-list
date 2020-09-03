@@ -51,6 +51,10 @@ function renderPcapDate({ original }) {
     return <div className="lst-text-center">{moment(original.date).format('YYYY-MM-DD HH:mm:ss')}</div>;
 }
 
+function renderPcapCaptureDate({ original }) {
+    return <div className="lst-text-center">{moment(original.capture_date).format('YYYY-MM-DD HH:mm:ss')}</div>;
+}
+
 function renderStatus({ value }) {
     if (value.state === pcapEnums.state.processing) {
         return (
@@ -254,10 +258,17 @@ const PcapTable = props => {
             maxWidth: 50,
         },
         {
-            Header: translateX('date'),
+            Header: translateX('pcap.analysis_date'),
             headerClassName: 'lst-text-center lst-table-header',
             accessor: 'date',
             Cell: renderPcapDate,
+            width: 180,
+        },
+        {
+            Header: translateX('pcap.capture_date'),
+            headerClassName: 'lst-text-center lst-table-header',
+            accessor: 'capture_date',
+            Cell: renderPcapCaptureDate,
             width: 180,
         },
     ];

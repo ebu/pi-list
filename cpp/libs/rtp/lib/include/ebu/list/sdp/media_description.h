@@ -36,6 +36,7 @@ namespace ebu_list::media
         bool valid_multicast_mac_address = true;
         bool valid_multicast_ip_address  = true;
         bool multicast_address_match     = true;
+        bool has_extended_header         = false;
         dscp_info dscp{};
     };
 

@@ -40,29 +40,27 @@ struct ebu_list::analysis::ttml::stream_handler::impl
         info_.network.multicast_address_match = is_same_multicast_address(
             first_packet.info.ethernet_info.destination_address, first_packet.info.udp.destination_address);
 
+        info_.network.has_extended_header = first_packet.info.rtp.view().extension();
+
         nlohmann::json j = stream_details::to_json(ttml_description_);
         logger()->trace("Stream info:\n {}", j.dump(2, ' '));
     }
 
     void on_complete()
     {
-        if(rtp_seqnum_analyzer_.num_dropped_packets() > 0)
-        {
-            ttml_description_.dropped_packet_count += rtp_seqnum_analyzer_.num_dropped_packets();
-            ttml_description_.dropped_packet_samples = rtp_seqnum_analyzer_.dropped_packets();
-            logger()->info("TTML RTP packet drop: {}", ttml_description_.dropped_packet_count);
-        }
-
         info_.network.dscp = dscp_.get_info();
-
         listener_->on_complete();
     }
 
     void parse_packet(const ebu_list::rtp::packet& packet)
     {
+        if (packet.info.rtp.view().extension())
+        {
+            info_.network.has_extended_header = true;
+        }
+
         auto& sdu                      = packet.sdu;
         auto ptr                       = sdu.view().data();
-        const uint16_t sequence_number = packet.info.rtp.view().sequence_number();
         const auto payload_header = ebu_list::ttml::header(*reinterpret_cast<const ebu_list::ttml::nbo_header*>(ptr));
         ptr += sizeof(ebu_list::ttml::nbo_header);
 
@@ -73,7 +71,6 @@ struct ebu_list::analysis::ttml::stream_handler::impl
 
         const auto end = ptr + payload_header.length;
 
-        rtp_seqnum_analyzer_.handle_packet(sequence_number, packet.info.udp.packet_time);
         dscp_.handle_packet(packet);
 
         current_doc_.insert(current_doc_.end(), ptr, end);
@@ -83,7 +80,6 @@ struct ebu_list::analysis::ttml::stream_handler::impl
     ebu_list::analysis::serializable_stream_info info_;
     stream_details ttml_description_;
     completion_handler completion_handler_;
-    ebu_list::rtp::sequence_number_analyzer<uint16_t> rtp_seqnum_analyzer_;
     dscp_analyzer dscp_;
     std::vector<std::byte> current_doc_;
 };
@@ -110,11 +106,8 @@ const ebu_list::analysis::serializable_stream_info& ebu_list::analysis::ttml::st
 
 void ebu_list::analysis::ttml::stream_handler::on_data(const ebu_list::rtp::packet& packet)
 {
-    ++impl_->ttml_description_.packet_count;
     impl_->ttml_description_.last_packet_ts = packet.info.udp.packet_time;
     const auto marked                       = packet.info.rtp().marker();
-
-    logger()->trace("TTML packet={}, marker={}", impl_->ttml_description_.packet_count, (marked) ? "1" : "0");
 
     impl_->parse_packet(packet);
 

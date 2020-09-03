@@ -79,6 +79,8 @@ video_stream_handler::video_stream_handler(decode_video should_decode_video, rtp
 
     update_net_info_with_address_validation(info_.network, first_packet.info);
 
+    info_.network.has_extended_header = first_packet.info.rtp.view().extension();
+
     info_.state = stream_state::ON_GOING_ANALYSIS; // mark as analysis started
 }
 
@@ -132,20 +134,12 @@ void video_stream_handler::on_data(const rtp::packet& packet)
 
     parse_packet(packet); // todo: allow moving out of a packet
 
-    ++video_description_.packet_count;
     rate_.on_packet(ts);
 }
 
 void video_stream_handler::on_complete()
 {
     if(!current_frame_) return;
-
-    if(rtp_seqnum_analyzer_.num_dropped_packets() > 0)
-    {
-        video_description_.dropped_packet_count += rtp_seqnum_analyzer_.num_dropped_packets();
-        video_description_.dropped_packet_samples = rtp_seqnum_analyzer_.dropped_packets();
-        logger()->info("video rtp packet drop: {}", video_description_.dropped_packet_count);
-    }
 
     info_.network.dscp = dscp_.get_info();
 
@@ -165,6 +159,11 @@ void video_stream_handler::on_error(std::exception_ptr)
 // #define LIST_TRACE
 void video_stream_handler::parse_packet(const rtp::packet& packet)
 {
+    if (packet.info.rtp.view().extension())
+    {
+        info_.network.has_extended_header = true;
+    }
+
     auto& sdu = packet.sdu;
 
     constexpr auto minimum_size = ssizeof<raw_extended_sequence_number>() + ssizeof<raw_line_header>();
@@ -266,7 +265,6 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
         }
     }
 
-    rtp_seqnum_analyzer_.handle_packet(info.full_sequence_number, packet.info.udp.packet_time);
     dscp_.handle_packet(packet);
 
     this->on_packet(info);

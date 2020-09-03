@@ -14,7 +14,7 @@ router.get('/', (req, res, next) => {
 router.post('/', (req, res, next) => {
     const { type, configuration } = req.body;
     logger('workflow-api').info(`Create workflow request for ${type}`);
-    configuration.cookie = req.headers.cookie;
+    configuration.authorization = req.headers.authorization;
 
     const userId = getUserId(req);
     const userFolder = getUserFolder(req);

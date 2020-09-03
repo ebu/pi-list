@@ -5,12 +5,12 @@ const requestPut = promisify(request.put);
 
 ///////////////////////////////////////////////////////////////////////////////
 
-const uploadFile = async (sourceFile, ingestPutUrl, cookie, filename) => {
+const uploadFile = async (sourceFile, ingestPutUrl, authorization, filename) => {
     const putResult = await requestPut({
         url: ingestPutUrl,
         headers: {
             'User-Agent': 'request',
-            'Cookie': cookie
+            'Authorization': authorization
         },
         formData: {
             pcap: fs.createReadStream(sourceFile),

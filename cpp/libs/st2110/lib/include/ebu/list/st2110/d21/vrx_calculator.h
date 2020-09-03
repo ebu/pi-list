@@ -3,6 +3,7 @@
 #include "ebu/list/core/media/video_description.h"
 #include "ebu/list/st2110/d21/settings.h"
 #include "ebu/list/st2110/frame_start_filter.h"
+#include <ratio>
 
 namespace ebu_list::st2110::d21
 {
@@ -19,6 +20,7 @@ namespace ebu_list::st2110::d21
         vrx_calculator(int npackets, media::video::info video_info, vrx_settings settings);
 
         packet_info on_packet(const clock::time_point& packet_timestamp, bool frame_start);
+        double get_trs() const;
 
       private:
         void on_frame_start(const fraction64& packet_time);
@@ -33,6 +35,6 @@ namespace ebu_list::st2110::d21
         std::optional<fraction64> start_draining_ts_;
         int drained_prev_ = 0;
         int vrx_prev_     = 0;
-        double trs_ns_    = 0;
+        double trs_sec_    = 0;
     };
 } // namespace ebu_list::st2110::d21

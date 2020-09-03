@@ -10,10 +10,19 @@ const getToken = () => {
     return localStorage.getItem(tokenKey);
 };
 
-const isTokenExpired = token => {
+const getTokenExpirationTime = token => {
     try {
         const decoded = decode(token);
-        return decoded.exp < Date.now() / 1000;
+        return decoded.exp;
+    } catch (err) {
+        return false;
+    }
+};
+
+const isTokenExpired = token => {
+    try {
+        const tokenExpiration = getTokenExpirationTime(token);
+        return tokenExpiration < Date.now() / 1000;
     } catch (err) {
         return false;
     }
@@ -37,4 +46,4 @@ const isAuthenticated = () => {
     return result;
 };
 
-export { getToken, setToken, removeToken, isAuthenticated };
+export { getToken, setToken, removeToken, isAuthenticated, getTokenExpirationTime };

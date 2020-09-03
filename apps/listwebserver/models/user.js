@@ -24,19 +24,18 @@ const UserSchema = new mongoose.Schema(
         id: {
             type: String,
             required: true,
-            index: { unique: true, sparse: true },
-            default: uuidv1()
+            default: uuidv1(),
         },
         username: {
             type: String,
             required: true,
-            index: { unique: true, sparse: true }
+            index: { unique: true, sparse: true },
         },
         salt: {
-            type: String
+            type: String,
         },
         password: {
-            type: String
+            type: String,
         },
         preferences: PreferencesSchema,
     },
@@ -48,7 +47,6 @@ const UserSchema = new mongoose.Schema(
 UserSchema.set('toJSON', {
     transform: (doc, user) => {
         user._id = undefined;
-        
     },
 });
 

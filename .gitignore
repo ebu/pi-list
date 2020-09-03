@@ -8,10 +8,10 @@ scripts/deploy/artifacts/data/log
 /.vs/*
 /.vscode
 .clangd
-compile_commands.json
 apps/listwebserver/version.yml
 apps/listwebserver/.vscode/launch.json
 apps/capture_probe/.vscode/launch.json
 apps/stream_pre_processor/.vscode/launch.json
 .cache/
 .config/
+.vim/
