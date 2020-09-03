@@ -38,11 +38,8 @@ namespace
 } // namespace
 
 stream_listener::stream_listener(rtp::packet first_packet, std::string_view pcap_id)
-    : detector_(first_packet), num_packets_(1)
+    : detector_(first_packet), num_packets_(0)
 {
-    seqnum_analyzer_.handle_packet(static_cast<uint16_t>(first_packet.info.rtp.view().sequence_number()),
-                                   first_packet.info.udp.packet_time);
-
     stream_id_.network.source_mac      = first_packet.info.ethernet_info.source_address;
     stream_id_.network.source          = source(first_packet.info.udp);
     stream_id_.network.destination_mac = first_packet.info.ethernet_info.destination_address;
@@ -71,7 +68,7 @@ void stream_listener::on_data(const rtp::packet& packet)
 
     dscp_.handle_packet(packet);
 
-    num_packets_++;
+    ++num_packets_;
 }
 
 void stream_listener::on_complete()

@@ -75,13 +75,12 @@ const serializable_stream_info& anc_stream_handler::network_info() const
 
 void anc_stream_handler::on_data(const rtp::packet& packet)
 {
-    ++anc_description_.packet_count;
     anc_description_.last_packet_ts = packet.info.udp.packet_time;
     const auto marked               = packet.info.rtp().marker();
 
     parse_packet(packet);
 
-    logger()->trace("Ancillary packet={}, frame={}, marker={}", anc_description_.packet_count,
+    logger()->trace("Ancillary frame={}, marker={}",
                     anc_description_.frame_count, (marked) ? "1" : "0");
     if(anc_description_.anc.scan_type == video::scan_type::INTERLACED)
     {
@@ -130,13 +129,6 @@ void anc_stream_handler::on_data(const rtp::packet& packet)
 
 void anc_stream_handler::on_complete()
 {
-    if(rtp_seqnum_analyzer_.num_dropped_packets() > 0)
-    {
-        anc_description_.dropped_packet_count += rtp_seqnum_analyzer_.num_dropped_packets();
-        anc_description_.dropped_packet_samples = rtp_seqnum_analyzer_.dropped_packets();
-        logger()->info("ancillary rtp packet drop: {}", anc_description_.dropped_packet_count);
-    }
-
     auto anc_sub_streams = anc_description_.anc.sub_streams;
     for(auto it = anc_sub_streams.begin(); it != anc_sub_streams.end(); it++)
     {
@@ -172,11 +164,10 @@ void anc_stream_handler::parse_packet(const rtp::packet& packet)
 
     auto p                              = sdu.view().data();
     const auto end                      = sdu.view().data() + sdu.view().size();
-    const auto extended_sequence_number = to_native(reinterpret_cast<const raw_extended_sequence_number*>(p)->esn);
-    const uint32_t full_sequence_number = (extended_sequence_number << 16) | packet.info.rtp.view().sequence_number();
+//    const auto extended_sequence_number = to_native(reinterpret_cast<const raw_extended_sequence_number*>(p)->esn);
+//    const uint32_t full_sequence_number = (extended_sequence_number << 16) | packet.info.rtp.view().sequence_number();
     p += sizeof(raw_extended_sequence_number);
 
-    rtp_seqnum_analyzer_.handle_packet(full_sequence_number, packet.info.udp.packet_time);
     dscp_.handle_packet(packet);
 
     const auto anc_header = anc_header_lens(*reinterpret_cast<const raw_anc_header*>(p));
