@@ -144,6 +144,8 @@
   "information.stream_analyzed_information": "Dieser Stream wurde bereits analysiert. Wenn das Ergebnis von den Erwartungen abweicht, ändern Sie die Medien-Einstellungen und versuchen Sie es erneut.",
   "information.media_type_unknown": "Durch das Markieren dieses Streams als unbekannt, wird dieser nicht analysiert",
   "date": "Datum",
+  "pcap.analysis_date": "Analysis date\n",
+  "pcap.capture_date": "Capture date",
   "name": "Name",
   "notifications.success.file_upload": "Datei hochgeladen",
   "notifications.success.file_upload_message": "Die Datei  %{name} wurde erfolgreich hochgeladen",

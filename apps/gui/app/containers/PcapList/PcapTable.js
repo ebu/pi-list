@@ -258,14 +258,14 @@ const PcapTable = props => {
             maxWidth: 50,
         },
         {
-            Header: translateX('date'),
+            Header: translateX('pcap.analysis_date'),
             headerClassName: 'lst-text-center lst-table-header',
             accessor: 'date',
             Cell: renderPcapDate,
             width: 180,
         },
         {
-            Header: translateX('capture_date'),
+            Header: translateX('pcap.capture_date'),
             headerClassName: 'lst-text-center lst-table-header',
             accessor: 'capture_date',
             Cell: renderPcapCaptureDate,
