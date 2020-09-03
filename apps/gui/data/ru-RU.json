@@ -95,6 +95,7 @@
   "media_information.rtp.destination": "Получатель",
   "media_information.rtp.destination_mac": "*** media_information.rtp.destination_mac_address",
   "media_information.rtp.ssrc": "SSRC",
+  "media_information.rtp.has_extended_header": "",
   "media_information.rtp.payload_type": "Тип данных",
   "media_information.rtp.packet_count": "Пакеты",
   "media_information.rtp.count": "*** media_information.rtp.count",
@@ -144,6 +145,7 @@
   "information.stream_analyzed_information": "Этот поток уже был проанализирован. Если результаты не соответствуют вашим ожиданиям, попробуйте изменить медиа настройки и повторите попытку.",
   "information.media_type_unknown": "Если отметить этот поток как неизвестный, он не будет проанализирован.",
   "date": "Дата",
+  "capture_date": "",
   "name": "имя",
   "notifications.success.file_upload": "Файл загружен",
   "notifications.success.file_upload_message": "Файл %{name} был успешно загружен",
@@ -318,5 +320,11 @@
   "dmngr.download": "",
   "ptp.average_offset": "Average offset",
   "ptp.clock_type": "Clock type",
-  "general.buffer_level": "Buffer level"
+  "general.buffer_level": "Buffer level",
+  "gdpr.modal.title": "",
+  "gdpr.modal.content": "",
+  "settings.gdpr.collectmetrics": "",
+  "navigation.news": "",
+  "feedback.yes": "",
+  "feedback.no": ""
 }

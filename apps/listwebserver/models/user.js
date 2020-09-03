@@ -24,7 +24,6 @@ const UserSchema = new mongoose.Schema(
         id: {
             type: String,
             required: true,
-            index: { unique: true, sparse: true },
             default: uuidv1(),
         },
         username: {

@@ -14,8 +14,8 @@ using nlohmann::json;
 
 namespace
 {
-    json make_pcap_info(const path& pcap_file, std::string_view pcap_uuid, bool has_truncated_packets,
-                        const std::optional<ptp_offset_calculator::info>& ptp_info)
+    json make_pcap_info(const path& pcap_file, std::string_view pcap_uuid, clock::time_point capture_timestamp,
+                        bool has_truncated_packets, const std::optional<ptp_offset_calculator::info>& ptp_info)
     {
         auto info                  = pcap_info{};
         info.id                    = pcap_uuid;
@@ -23,6 +23,7 @@ namespace
         info.analyzer_version      = ebu_list::version();
         info.truncated             = has_truncated_packets;
         info.offset_from_ptp_clock = ptp_info.has_value() ? ptp_info->average_offset : std::chrono::seconds{0};
+        info.capture_timestamp     = capture_timestamp;
 
         auto j_fi = pcap_info::to_json(info);
 
@@ -48,8 +49,10 @@ nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_f
     // They will, however, be owned by the udp_handler, so we cannot access these after the stream handler is
     // destroyed.
     std::vector<stream_listener*> streams;
+    clock::time_point capture_timestamp = {};
 
-    auto create_handler = [&streams, pcap_uuid](rtp::packet first_packet) {
+    auto create_handler = [&capture_timestamp, &streams, pcap_uuid](rtp::packet first_packet) {
+        capture_timestamp = first_packet.info.udp.packet_time;
         auto listener = std::make_unique<stream_listener>(first_packet, pcap_uuid);
         streams.push_back(listener.get());
         return listener;
@@ -72,7 +75,7 @@ nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_f
         static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(processing_time).count());
     logger()->info("Processing time: {:.3f} s", processing_time_ms / 1000.0);
 
-    auto j_pcap_info = make_pcap_info(pcap_file, pcap_uuid, launcher.target().pcap_has_truncated_packets(),
+    auto j_pcap_info = make_pcap_info(pcap_file, pcap_uuid, capture_timestamp, launcher.target().pcap_has_truncated_packets(),
                                       offset_calculator->get_info());
 
     json j_info;

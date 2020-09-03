@@ -95,6 +95,7 @@
   "media_information.rtp.destination": "Destination",
   "media_information.rtp.destination_mac": "MAC de destination",
   "media_information.rtp.ssrc": "SSRC",
+  "media_information.rtp.has_extended_header": "",
   "media_information.rtp.payload_type": "Type de contenu",
   "media_information.rtp.packet_count": "Nombre de paquets",
   "media_information.rtp.count": "*** media_information.rtp.count",
@@ -144,6 +145,7 @@
   "information.stream_analyzed_information": "Ce flux a déjà été analysé. Si les résultats ne correspondent pas à vos attentes, essayez de modifier les paramètres des Médias et réessayez.",
   "information.media_type_unknown": "En indiquant ce flux comme inconnu, il ne sera pas analysé.",
   "date": "Date",
+  "capture_date": "",
   "name": "Nom",
   "notifications.success.file_upload": "Fichier téléversé",
   "notifications.success.file_upload_message": "Le fichier %{name} a été téléversé correctement",
@@ -318,5 +320,11 @@
   "dmngr.download": "",
   "ptp.average_offset": "Average offset",
   "ptp.clock_type": "Clock type",
-  "general.buffer_level": "Buffer level"
+  "general.buffer_level": "Buffer level",
+  "gdpr.modal.title": "",
+  "gdpr.modal.content": "",
+  "settings.gdpr.collectmetrics": "",
+  "navigation.news": "",
+  "feedback.yes": "",
+  "feedback.no": ""
 }

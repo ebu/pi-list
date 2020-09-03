@@ -100,6 +100,7 @@ json media::to_json(const media::network_info& info)
     j["valid_multicast_mac_address"] = info.valid_multicast_mac_address;
     j["valid_multicast_ip_address"]  = info.valid_multicast_ip_address;
     j["multicast_address_match"]     = info.multicast_address_match;
+    j["has_extended_header"]         = info.has_extended_header;
 
     json dscp;
     to_json(dscp, info.dscp);
@@ -136,6 +137,9 @@ media::network_info media::from_json(const json& j)
 
     const auto mcast_addr_match_key = j.find("multicast_address_match");
     if(mcast_addr_match_key != j.end()) stream.multicast_address_match = mcast_addr_match_key->get<bool>();
+
+    const auto has_extended_header_key = j.find("has_extended_header");
+    if(has_extended_header_key != j.end()) stream.has_extended_header = has_extended_header_key->get<bool>();
 
     from_json(j, stream.dscp);
 

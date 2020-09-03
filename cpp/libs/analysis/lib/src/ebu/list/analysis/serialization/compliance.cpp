@@ -26,6 +26,8 @@ d21::video_analysis_info d21::get_video_analysis_info(const st2110::d21::complia
     va.vrx = d21::vrx_analysis{compliance.vrx, transform_histogram_samples_to_percentages(ca.get_vrx_histogram()),
                                ca.get_wide_parameters().vrx_full, ca.get_narrow_parameters().vrx_full};
 
+    va.trs = d21::trs_analysis{ca.get_trs()};
+
     return va;
 }
 
@@ -34,6 +36,7 @@ void d21::to_json(nlohmann::json& j, const video_analysis_info& v)
     j["compliance"] = v.compliance;
     j["cinst"]      = v.cinst;
     j["vrx"]        = v.vrx;
+    j["trs"]        = v.trs;
 }
 
 void d21::from_json(const nlohmann::json& j, video_analysis_info& v)
@@ -41,6 +44,7 @@ void d21::from_json(const nlohmann::json& j, video_analysis_info& v)
     v.compliance = j.at("compliance");
     v.cinst      = j.at("cinst");
     v.vrx        = j.at("vrx");
+    v.trs        = j.at("trs");
 }
 
 void d21::to_json(nlohmann::json& j, const cinst_analysis& v)
@@ -75,6 +79,16 @@ void d21::from_json(const nlohmann::json& j, vrx_analysis& v)
     // uncomment and make it compile
     v.vrx_full_wide   = j.at("vrx_full_wide");
     v.vrx_full_narrow = j.at("vrx_full_narrow");
+}
+
+void d21::to_json(nlohmann::json& j, const trs_analysis& t)
+{
+    j["trs_ns"] = t.trs_ns;
+}
+
+void d21::from_json(const nlohmann::json& j, trs_analysis& t)
+{
+    t.trs_ns = j.at("trs_ns");
 }
 
 void st2110::d21::to_json(nlohmann::json& j, const compliance_profile& v)

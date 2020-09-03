@@ -49,6 +49,11 @@ compliance_parameters compliance_analyzer::get_wide_parameters() const
     return checker_.get_wide_parameters();
 }
 
+double compliance_analyzer::get_trs() const
+{
+    return vrx_calculator_.get_trs();
+}
+
 compliance_analyzer::compliance_status compliance_analyzer::get_compliance() const noexcept
 {
     const auto current_vrx_min  = get_histogram_min(vrx_histogram_.values());

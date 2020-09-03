@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getToken, removeToken, isAuthenticated } from './authorization';
+import { setToken, getToken, removeToken, isAuthenticated, getTokenExpirationTime } from './authorization';
 
 function loadFile(filePath) {
     let result = null;
@@ -55,6 +55,49 @@ axios.interceptors.request.use(
 
 axios.defaults.withCredentials = true;
 
+/* Session logic */
+
+function setSession(token) {
+    setToken(token); // save the token on the localstorage
+}
+
+function removeSession() {
+    removeToken(); // remove the token on the localstorage
+}
+
+function revalidateToken() {
+    axios
+        .get(`${API_URL}/user/revalidate-token`)
+        .then(response => {
+            if (response && response.data.result <= 0) {
+                if (response.data.content.success) {
+                    setSession(response.data.content.token); // save the token on the localstorage
+                }
+            }
+        })
+        .catch(err => console.log(`Error revalidatig token: ${err}`));
+}
+
+const refreshTokenVerificationInterval = 60000;
+function checkRefreshToken() {
+    const token = getToken();
+
+    if (token === null) return;
+
+    const tokenTimeLeft = getTokenExpirationTime(token) * 1000 - Date.now();
+
+    if (tokenTimeLeft < 0) return; // Already expired
+
+    if (tokenTimeLeft < refreshTokenVerificationInterval * 2) {
+        revalidateToken();
+        return;
+    }
+}
+checkRefreshToken();
+const refreshTokenTimer = setInterval(checkRefreshToken, refreshTokenVerificationInterval);
+
+/* End Session logic */
+
 const getAuthUrl = path => {
     const url = new URL(path);
 
@@ -92,11 +135,16 @@ export default {
     deleteUser: data => request.post('user/delete', data).then(removeToken(), request.httpRedirect('/login')),
 
     register: loginData => axios.post(`${REST_URL}/user/register`, loginData).then(response => response.data),
-    getToken: () => axios.get(`${REST_URL}/auth/token`).then(response => response.data),
 
-    login: loginData => axios.post(`${REST_URL}/auth/login`, loginData).then(response => response.data),
+    login: data =>
+        axios.post(`${REST_URL}/auth/login`, data).then(response => {
+            if (response && response.data && response.data.result <= 0 && response.data.content.success) {
+                setSession(response.data.content.token);
+            }
+            return response.data;
+        }),
     logout: data => {
-        axios.post('auth/logout', data).then(removeToken(), request.httpRedirect('/login'));
+        axios.post('auth/logout', data).then(removeSession(), request.httpRedirect('/login'));
     },
 
     /* PCAP */

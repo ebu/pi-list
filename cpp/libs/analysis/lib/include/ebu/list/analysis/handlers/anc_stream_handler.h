@@ -6,7 +6,6 @@
 #include "ebu/list/analysis/utils/rtp_utils.h"
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/rtp/listener.h"
-#include "ebu/list/rtp/sequence_number_analyzer.h"
 #include "ebu/list/rtp/types.h"
 #include "ebu/list/st2110/d40/header.h"
 #include "ebu/list/st2110/packets_per_frame_calculator.h"
@@ -64,7 +63,6 @@ namespace ebu_list::analysis
         anc_stream_details anc_description_;
         completion_handler completion_handler_;
 
-        rtp::sequence_number_analyzer<uint32_t> rtp_seqnum_analyzer_;
         struct klvanc_context_s* klvanc_ctx;
         bool last_frame_was_marked_ = false;
         uint8_t field_              = static_cast<uint8_t>(ebu_list::st2110::d40::field_kind::undefined);

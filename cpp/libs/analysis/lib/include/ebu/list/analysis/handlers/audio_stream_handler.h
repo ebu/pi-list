@@ -5,7 +5,6 @@
 #include "ebu/list/analysis/serialization/serializable_stream_info.h"
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/rtp/listener.h"
-#include "ebu/list/rtp/sequence_number_analyzer.h"
 
 namespace ebu_list::analysis
 {
@@ -38,7 +37,6 @@ namespace ebu_list::analysis
         serializable_stream_info info_;
         audio_stream_details audio_description_;
         completion_handler completion_handler_;
-        rtp::sequence_number_analyzer<uint16_t> rtp_seqnum_analyzer_;
         dscp_analyzer dscp_;
     };
 

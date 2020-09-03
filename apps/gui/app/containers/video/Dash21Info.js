@@ -5,6 +5,7 @@ import MultiValueDisplay from '../streamPage/components/MultiValueDisplay';
 import NarrowWideDisplay from '../streamPage/components/NarrowWideDisplay';
 import MinAvgMaxDisplay from '../streamPage/components/MinAvgMaxDisplay';
 import { getAverageFromHistogram, getLowestFromHistogram, getHighestFromHistogram } from '../../utils/stats.js'
+import { translateX } from 'utils/translation';
 
 const getCompliance = value => {
     if (value == 'narrow') {
@@ -66,7 +67,13 @@ const Dash21Info = props => {
             value:
                 typeof props.info.media_specific.schedule !== 'undefined'
                     ? props.info.media_specific.schedule
-                    : 'unknown',
+                    : translateX('headings.unknown'),
+        },
+        {
+            labelTag: 'Trs',
+            value: globalVideoAnalysis.trs
+                ? (globalVideoAnalysis.trs.trs_ns / 1000).toFixed(3) + " µs"
+                : translateX('headings.unknown')
         },
     ];
 
