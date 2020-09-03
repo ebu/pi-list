@@ -8,7 +8,7 @@ const ingestFromFile = async (globalConfig, workflowConfig) => {
     uploadFile(
         sourceFile,
         workflowConfig.ingestPutUrl,
-        workflowConfig.cookie,
+        workflowConfig.authorization,
         workflowConfig.filename
     );
 };

@@ -144,6 +144,8 @@
   "information.stream_analyzed_information": "Αυτό το ρεύμα έχει ήδη αναλυθεί. Αν τα αποτελέσματα δεν ταιριάζουν με τα αναμενόμενα, δοκιμάστε να αλλάξετε τις ρυθμίσεις πολυμέσων και να προσπαθήσετε ξανά.",
   "information.media_type_unknown": "Με τη σήμανση αυτού της ροής ως άγνωστης, δεν θα αναλυθεί.",
   "date": "Ημερομηνία",
+  "pcap.analysis_date": "Analysis date\n",
+  "pcap.capture_date": "Capture date",
   "name": "Ονομα",
   "notifications.success.file_upload": "Το αρχείο μεταφορτώθηκε",
   "notifications.success.file_upload_message": "Το αρχείο %{name} μεταφορτώθηκε με επιτυχία",

@@ -95,6 +95,7 @@
   "media_information.rtp.destination": "Bestemming",
   "media_information.rtp.destination_mac": "*** media_information.rtp.destination_mac_address",
   "media_information.rtp.ssrc": "SSRC",
+  "media_information.rtp.has_extended_header": "",
   "media_information.rtp.payload_type": "Payload Type",
   "media_information.rtp.packet_count": "Paketten",
   "media_information.rtp.count": "*** media_information.rtp.count",
@@ -144,6 +145,8 @@
   "information.stream_analyzed_information": "This stream has already been analyzed. If the results didn't match your expectation, try to change the Media Settings and try again.",
   "information.media_type_unknown": "By marking this stream as unknown, it will not be analyzed.",
   "date": "Datum",
+  "pcap.analysis_date": "Analysis date",
+  "pcap.capture_date": "Capture date",
   "name": "Naam",
   "notifications.success.file_upload": "Bestand ingeladen",
   "notifications.success.file_upload_message": "Bestand %{name} succesvol ingeladen",
@@ -318,5 +321,11 @@
   "dmngr.download": "",
   "ptp.average_offset": "Average offset",
   "ptp.clock_type": "Clock type",
-  "general.buffer_level": "Buffer level"
+  "general.buffer_level": "Buffer level",
+  "gdpr.modal.title": "",
+  "gdpr.modal.content": "",
+  "settings.gdpr.collectmetrics": "",
+  "navigation.news": "",
+  "feedback.yes": "",
+  "feedback.no": ""
 }

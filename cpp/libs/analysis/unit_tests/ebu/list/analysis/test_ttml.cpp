@@ -88,7 +88,6 @@ SCENARIO("TTML stream analysis")
             REQUIRE(stream["state"] == to_string(stream_state::ANALYZED));
             REQUIRE(stream["statistics"]["first_packet_ts"] == "1576250230948449000");
             REQUIRE(stream["statistics"]["last_packet_ts"] == "1576250233955780000");
-            REQUIRE(stream["statistics"]["packet_count"] == 4);
 
             const auto ttml_data_items = load_ttml_data(storage_folder / stream_ids[0]);
 
@@ -179,7 +178,6 @@ SCENARIO("TTML stream analysis")
             REQUIRE(stream["state"] == to_string(stream_state::ANALYZED));
             REQUIRE(stream["statistics"]["first_packet_ts"] == "1576249998818743000");
             REQUIRE(stream["statistics"]["last_packet_ts"] == "1576250000824328000");
-            REQUIRE(stream["statistics"]["packet_count"] == 12);
 
             const auto ttml_data_items = load_ttml_data(storage_folder / stream_ids[0]);
             REQUIRE(ttml_data_items.size() == 3);
@@ -201,7 +199,6 @@ SCENARIO("TTML stream analysis")
             REQUIRE(stream["state"] == to_string(stream_state::ANALYZED));
             REQUIRE(stream["statistics"]["first_packet_ts"] == "1576249998818908000");
             REQUIRE(stream["statistics"]["last_packet_ts"] == "1576250000824328000");
-            REQUIRE(stream["statistics"]["packet_count"] == 10);
 
             const auto ttml_data_items = load_ttml_data(storage_folder / stream_ids[0]);
             REQUIRE(ttml_data_items.size() == 3);

@@ -6,9 +6,12 @@ const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const API_ERRORS = require('../enums/apiErrors');
 const collection = require('../models/user');
 const userController = require('../controllers/user');
-const { getUsername } = require('../auth/middleware');
-const { getUserId } = require('../auth/middleware');
+const { getUsername, getUserId, revalidateToken } = require('../auth/middleware');
 const websocket = require('../managers/websocket');
+
+router.get('/revalidate-token', (req, res) => {
+    revalidateToken(req, res);
+});
 
 /**
  * DELETE /api/user

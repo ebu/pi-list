@@ -36,6 +36,8 @@ audio_stream_handler::audio_stream_handler(rtp::packet first_packet, serializabl
     info_.network.multicast_address_match = is_same_multicast_address(
         first_packet.info.ethernet_info.destination_address, first_packet.info.udp.destination_address);
 
+    info_.network.has_extended_header = first_packet.info.rtp.view().extension();
+
     audio_description_.first_packet_ts    = first_packet.info.udp.packet_time;
     using float_sec                       = std::chrono::duration<float, std::ratio<1, 1>>;
     audio_description_.samples_per_packet = static_cast<int>(to_int(audio_description_.audio.sampling) *
@@ -55,21 +57,12 @@ const serializable_stream_info& audio_stream_handler::network_info() const
 
 void audio_stream_handler::on_data(const rtp::packet& packet)
 {
-    ++audio_description_.packet_count;
     audio_description_.last_packet_ts = packet.info.udp.packet_time;
-
     parse_packet(packet);
 }
 
 void audio_stream_handler::on_complete()
 {
-    if(rtp_seqnum_analyzer_.num_dropped_packets() > 0)
-    {
-        audio_description_.dropped_packet_count += rtp_seqnum_analyzer_.num_dropped_packets();
-        audio_description_.dropped_packet_samples = rtp_seqnum_analyzer_.dropped_packets();
-        logger()->info("audio rtp packet drop: {}", audio_description_.dropped_packet_count);
-    }
-
     info_.network.dscp = dscp_.get_info();
 
     this->on_stream_complete();
@@ -91,6 +84,11 @@ void audio_stream_handler::on_error(std::exception_ptr e)
 
 void audio_stream_handler::parse_packet(const rtp::packet& packet)
 {
+    if (packet.info.rtp.view().extension())
+    {
+        info_.network.has_extended_header = true;
+    }
+
     auto& sdu = packet.sdu;
 
     // check if number of samples is consistent
@@ -103,7 +101,6 @@ void audio_stream_handler::parse_packet(const rtp::packet& packet)
     auto p         = sdu.view().data();
     const auto end = sdu.view().data() + sdu.view().size();
     // no extended sequence number for audio
-    rtp_seqnum_analyzer_.handle_packet(packet.info.rtp.view().sequence_number(), packet.info.udp.packet_time);
     dscp_.handle_packet(packet);
 
     this->on_sample_data(cbyte_span(p, end));

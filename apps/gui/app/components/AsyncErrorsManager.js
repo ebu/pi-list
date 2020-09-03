@@ -10,7 +10,7 @@ const AsyncErrorsManager = props => (
                 key={`alert-${error.code}-${index}`}
                 showIcon
             >
-                {error.message}
+                {error}
             </Alert>
         ))}
     </Fragment>

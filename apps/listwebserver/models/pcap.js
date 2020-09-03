@@ -25,6 +25,10 @@ const PcapSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    capture_date: {
+      type: Number,
+      required: true
+    },
     date: {
       type: Number,
       required: true

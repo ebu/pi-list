@@ -98,6 +98,10 @@ const NetworkInfo = props => {
             value: props.stream.network_information.ssrc,
         },
         {
+            labelTag: 'media_information.rtp.has_extended_header',
+            value: props.stream.network_information.has_extended_header ? translateX('feedback.yes') : translateX('feedback.no'),
+        },
+        {
             labelTag: 'media_information.rtp.packet_count',
             value: (
                 <div style={{ display: 'flex', flexDirection: 'row' }}>

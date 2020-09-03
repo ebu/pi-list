@@ -5,6 +5,7 @@ const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const collection = require('../models/user');
 const websocket = require('../managers/websocket');
 const crypto = require('crypto');
+const uuidv1 = require('uuid/v1');
 
 const defaultPreferences = {
     gui: {
@@ -15,6 +16,8 @@ const defaultPreferences = {
         currentProfileId: null,
     },
 };
+
+const tokenExpiration = '10m';
 
 const getUsername = (req) => {
     const token = getToken(req);
@@ -87,10 +90,26 @@ const checkToken = (req, res, next) => {
 };
 
 function authenticate(plainPassword, salt, password, unsecure) {
-    if (unsecure)
-        return (plainPassword === password);
+    if (unsecure) return plainPassword === password;
 
     return crypto.createHmac('sha512', salt).update(plainPassword).digest('base64').toString() === password;
+}
+
+const revalidateToken = (req, res) => {
+    const username = getUsername(req);
+
+    const token = jwt.sign({ username: username }, config.secret, {
+        expiresIn: tokenExpiration, // expires in 24 hours
+    });
+
+    // return the JWT token for the future API calls
+    res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
+        result: 0,
+        desc: 'Revalidated successfully',
+        content: { success: true, token: token }
+    });
+
+    return;
 }
 
 const handleLogin = (req, res) => {
@@ -105,7 +124,7 @@ const handleLogin = (req, res) => {
             if (user) {
                 if (authenticate(password, user.salt, user.password, unsecure)) {
                     const token = jwt.sign({ username: username, id: user.id }, config.secret, {
-                        expiresIn: '24h', // expires in 24 hours
+                        expiresIn: tokenExpiration, // expires in 24 hours
                     });
 
                     // return the JWT token for the future API calls
@@ -168,8 +187,11 @@ const handleRegister = (req, res) => {
 
     user.salt = generateSalt();
     user.password = encodePassword(user.password, user.salt);
-
     user.preferences = defaultPreferences;
+
+    if (user.id === undefined) {
+        user.id = uuidv1();
+    }
 
     collection
         .create(user)
@@ -177,7 +199,7 @@ const handleRegister = (req, res) => {
             res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send(data);
         })
         .catch(function (err) {
-            res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send();
+            res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(err.message);
         });
 };
 
@@ -192,4 +214,5 @@ module.exports = {
     authenticate,
     generateSalt,
     encodePassword,
+    revalidateToken
 };

@@ -11,6 +11,7 @@ nlohmann::json pcap_info::to_json(const pcap_info& info)
     j["pcap_file_name"]   = info.pcap_file_name;
     j["analyzer_version"] = info.analyzer_version;
     j["date"]             = std::chrono::duration_cast<std::chrono::milliseconds>(info.date.time_since_epoch()).count();
+    j["capture_date"]     = std::chrono::duration_cast<std::chrono::milliseconds>(info.capture_timestamp.time_since_epoch()).count();
     j["analyzed"]         = info.analyzed;
     j["truncated"]        = info.truncated;
     j["offset_from_ptp_clock"] =
@@ -41,7 +42,9 @@ pcap_info pcap_info::from_json(const nlohmann::json& j)
         pcap.analyzer_version = "";
 
     const auto duration        = std::chrono::duration<clock::rep, std::milli>(j.at("date").get<clock::rep>());
+    const auto capture_date    = std::chrono::duration<clock::rep, std::milli>(j.at("capture_date").get<clock::rep>());
     pcap.date                  = std::chrono::system_clock::time_point(duration);
+    pcap.capture_timestamp     = clock::time_point(capture_date);
     pcap.analyzed              = j.at("analyzed").get<bool>();
     pcap.truncated             = j.at("truncated").get<bool>();
     const auto ptp_offset_ns   = j.at("offset_from_ptp_clock").get<uint64_t>();
