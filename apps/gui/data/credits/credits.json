@@ -137,12 +137,6 @@
         "licenseUrl": "https://github.com/helmetjs/helmet/raw/master/LICENSE",
         "parents": "listwebserver"
     },
-    "html-react-parser@0.13.0": {
-        "licenses": "MIT",
-        "repository": "https://github.com/remarkablemark/html-react-parser",
-        "licenseUrl": "https://github.com/remarkablemark/html-react-parser/raw/master/LICENSE",
-        "parents": "list-ebu-gui"
-    },
     "influx@5.6.2": {
         "licenses": "MIT",
         "repository": "https://github.com/node-influx/node-influx",
