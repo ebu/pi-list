@@ -31,7 +31,7 @@ const API_URL = `${REST_URL}/api`;
 axios.interceptors.response.use(
     config => config,
     error => {
-        if (error.response.status === 401 && window.location.pathname !== '/login') {
+        if (error.response.status > 400 && error.response.status < 500 && window.location.pathname !== '/login') {
             window.appHistory.push('/login');
         }
 
@@ -146,6 +146,16 @@ export default {
     logout: data => {
         axios.post('auth/logout', data).then(removeSession(), request.httpRedirect('/login'));
     },
+
+    /* EULA */
+    acceptGDPR: (data) => request.post('user/gdpr', data),
+    getGDPRStatus: () => request.get('user/gdpr'),
+
+
+    /* News feed */
+    getNews: () => request.get('news'),
+    getHTML: (urls) => request.post('news/html', urls),
+    setNewsRead: (timestamp) => request.post('news/markread', timestamp),
 
     /* PCAP */
     getPcaps: () => request.get('pcap'),

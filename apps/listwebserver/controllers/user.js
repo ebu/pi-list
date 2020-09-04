@@ -8,6 +8,13 @@ const { defaultPreferences } = require('../auth/middleware');
 const getPreferences = async userId => {
     const user = await collection.findOne({ id: userId }).exec();
     if (user === null) return null;
+
+    if (user.preferences === null)
+    {
+        user.preferences = defaultPreferences;
+        setPreferences(userId, defaultPreferences);
+    }
+
     return user.preferences;
 };
 
@@ -24,9 +31,13 @@ const setPreferences = async (userId, newPreferences) => {
 async function getUser(username) {
     const user = await collection.findOne({ username: username }).select(["-salt", "-password"]).exec();
     if (user === null) return null;
-    if (user.preferences === null) user.preferences = defaultPreferences;
 
-    setPreferences(user.id, defaultPreferences);
+    if (user.preferences === null)
+    {
+        user.preferences = defaultPreferences;
+        setPreferences(user.id, defaultPreferences);
+    }
+
 
     return user;
 }
@@ -55,9 +66,34 @@ function updatePreferences(req, res, next) {
         });
 }
 
+const getGDPRData = async (req) => {
+    const userId = getUserId(req);
+
+    const userPreferences = await getPreferences(userId);
+
+    if(_.isNil(userPreferences)) return null;
+
+    if (userPreferences.gdprData === null || userPreferences.gdprData === undefined)
+        userPreferences.gdprData = defaultPreferences.gdprData;
+
+    return userPreferences.gdprData;
+};
+
+const setGDPRData = async (req) => {
+    const userId = getUserId(req);
+    const gdprData = req.body;
+
+    const userPreferences = await getPreferences(userId);
+    userPreferences.gdprData = gdprData;
+
+    return setPreferences(userId, userPreferences);
+};
+
 module.exports = {
     getUser,
     updatePreferences,
     getPreferences,
     setPreferences,
+    getGDPRData,
+    setGDPRData
 };

@@ -1,0 +1,18 @@
+.badge-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  //min-height: 100vh;
+  padding: 0.1rem .6rem;
+}
+
+.badge-icon-wrapper .badge {
+    display: inline-block;
+    min-width: 1rem; /* em unit */
+    padding: .1rem; /* em unit */
+    border-radius: 50%;
+    //font-size: 75px;
+    text-align: center;
+    background: #1779ba;
+    color: #fefefe;
+}

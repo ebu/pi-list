@@ -12,6 +12,8 @@ import { StateProvider, Actions, useStateValue } from '../utils/AppContext';
 import NotificationsProvider from '../utils/notifications/NotificationsProvider';
 import PopUp from '../components/common/PopUp';
 import { T } from '../utils/translation';
+import GDPR from './GDPR';
+import { keys } from 'd3';
 
 const defaultTheme = 'dark';
 
@@ -41,6 +43,16 @@ const reducer = (state, action) => {
                 showModal: false,
             };
 
+        case Actions.acceptGDPR:
+            const gdprData = _.cloneDeep(state.gdprData);
+            gdprData.gdprAccepted = true;
+            gdprData.collectMetrics = action.value;
+
+            return {
+                ...state,
+                gdprData: gdprData,
+            };
+
         default:
             return state;
     }
@@ -60,6 +72,14 @@ const middleware = (state, action) => {
             api.deleteUser({ socketid: websocket.socketId() });
             break;
 
+        case Actions.acceptGDPR:
+            const gdprData = _.cloneDeep(state.gdprData);
+            gdprData.gdprAccepted = true;
+            gdprData.collectMetrics = action.value;
+
+            api.acceptGDPR(gdprData);
+            break;
+
         default:
             break;
     }
@@ -72,7 +92,7 @@ const actionsWorkflow = (state, action) => {
 
 const AppContainer = props => {
     const sideNav = useRef(null);
-    const [{ theme, showModal }, dispatch] = useStateValue();
+    const [{ theme, showModal, gdprData, news }, dispatch] = useStateValue();
 
     // Setting the class in body so that it also affects Noty or other top level elements
     useLayoutEffect(() => {
@@ -93,7 +113,7 @@ const AppContainer = props => {
 
     return (
         <div className={`lst-app-container ${theme}`}>
-            <SideNav ref={sideNav} isOpen={false} user={props.user} />
+            <SideNav ref={sideNav} isOpen={false} user={props.user} newsUnread={news.unread} />
             <div className="lst-main">
                 <nav className="lst-top-nav row lst-no-margin">
                     <button className="lst-top-nav__link" onClick={() => sideNav.current.toggleSideNav()}>
@@ -114,6 +134,7 @@ const AppContainer = props => {
                     onClose={() => dispatch({ type: Actions.deleteUserDismiss })}
                     onDoAction={() => dispatch({ type: Actions.deleteUserExecute })}
                 />
+                {/* <GDPR visible={!gdprData.gdprAccepted} dispatch={dispatch} /> */}
             </div>
         </div>
     );
@@ -134,6 +155,8 @@ const App = props => {
         showModal: false,
         version: props.version,
         live: props.features.liveFeatures,
+        gdprData: props.gdprData,
+        news: props.news,
     };
 
     return (
@@ -148,5 +171,7 @@ export default asyncLoader(App, {
         user: () => api.getUser(),
         features: () => api.getFeatures(),
         version: () => api.getVersion(),
+        gdprData: () => api.getGDPRStatus().then(data => data),
+        news: () => api.getNews(),
     },
 });
