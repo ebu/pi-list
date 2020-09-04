@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import Polyglot from 'node-polyglot';
 import { useStateValue } from './AppContext';
 
@@ -7,7 +8,12 @@ export const localeNames = require('../../data/locales.json');
 
 export const locales = Object.keys(localeNames);
 
-locales.forEach((lc) => {
+const getLanguage = () => {
+    const state = useStateValue();
+    return _.get(state, 'language', 'en-US');
+};
+
+locales.forEach(lc => {
     // eslint-disable-next-line
     const phrases = require(`../../data/${lc}.json`);
     translations[lc] = new Polyglot({ lc, phrases });
@@ -26,9 +32,8 @@ export function translateTo(phrase, lc, value) {
     return t.t(phrase, value) || phrase;
 }
 
-export const T = (props) => {
-    const [{ language }] = useStateValue();
-    return <span>{translateTo(props.t, language, props.v)}</span>;
+export const T = props => {
+    return <span>{translateTo(props.t, getLanguage(), props.v)}</span>;
 };
 
 export function translate(phrase, value) {
@@ -37,8 +42,7 @@ export function translate(phrase, value) {
 
 // / Returns a string. Can only be used in the context of a functional component
 export function translateX(phrase, value) {
-    const [{ language }] = useStateValue();
-    return translateTo(phrase, language, value);
+    return translateTo(phrase, getLanguage(), value);
 }
 
 // / Returns a component that renders to a span.

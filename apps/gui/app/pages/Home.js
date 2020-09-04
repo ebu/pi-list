@@ -12,10 +12,8 @@ const renderItems = (items, live) => {
     return (
         <div className="lst-home-nav__items row center-xs">
             {items
-                .filter(item => (item.liveOnly === undefined || item.liveOnly === false
-                    ? true
-                    : live))
-                .map((item) => {
+                .filter(item => (item.liveOnly === undefined || item.liveOnly === false ? true : live))
+                .map(item => {
                     const label = <T t={item.labelTag} />;
                     return (
                         <LargeItem
@@ -31,37 +29,36 @@ const renderItems = (items, live) => {
                 })}
         </div>
     );
-}
+};
 
-const HomePage = (props) => {
+const HomePage = props => {
     const live = props.features.liveFeatures;
     const version = props.version;
-    const primaryNavItems = navItems.top
-                .filter(item => (item.labelTag === 'navigation.pcaps' ||
-                                 item.labelTag === 'navigation.capture'));
-    const secondaryNavItems = navItems.top
-                .filter(item => (item.labelTag === 'navigation.stream_comparisons' ||
-                                 item.labelTag === 'navigation.download_manager' ||
-                                 item.labelTag === 'navigation.settings'));
+    const primaryNavItems = navItems.top.filter(
+        item => item.labelTag === 'navigation.pcaps' || item.labelTag === 'navigation.capture'
+    );
+    const secondaryNavItems = navItems.top.filter(
+        item =>
+            item.labelTag === 'navigation.stream_comparisons' ||
+            item.labelTag === 'navigation.download_manager' ||
+            item.labelTag === 'navigation.settings'
+    );
 
     return (
         <div className="col lst-full-height">
-            <nav
-                className={classNames('lst-home-nav')}
-            >
-                <div className="lst-home-nav__header center-xs middle-xs col">
-                    <img src="/static/ebu-white.png" alt="ebu logo" />
-                    <span><b>LIST</b> {' '} - LiveIP Software Toolkit</span>
-                    <span>{`v${version.major}.${version.minor}`}</span>
+            <nav className={classNames('lst-home-nav')}>
+                <div className="lst-home-nav__header">
+                    <img src="/static/ebu_list_266x64.png" alt="ebu list logo" />
+                    <span>{`v${version.major}.${version.minor}.${version.patch}`}</span>
                 </div>
 
-                <hr className="lst-home-nav__separator"/>
+                <hr className="lst-home-nav__separator" />
 
                 {renderItems(primaryNavItems, live)}
 
                 {renderItems(secondaryNavItems, live)}
 
-                <hr className="lst-home-nav__separator"/>
+                <hr className="lst-home-nav__separator" />
 
                 <div className="lst-home-nav__footer center-xs">
                     <a href="https://tech.ebu.ch/list" target="_blank">

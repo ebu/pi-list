@@ -19,6 +19,7 @@ router.use('/analysis_profile', require('./analysis_profile'));
 router.use('/workflow', require('./workflow'));
 router.use('/comparisons', require('./comparisons'));
 router.use('/downloadmngr', require('./downloadmngr'));
+router.use('/news', require('./news.js'));
 
 if (program.liveMode) {
     router.use('/live', require('./live'));

@@ -15,4 +15,5 @@ export default {
     STREAMS_PAGE: 'streams',
     STREAM_COMPARISONS: '/stream_comparisons',
     DOWNLOAD_MANAGER: '/download_manager',
+    NEWS: '/news',
 };

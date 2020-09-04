@@ -79,5 +79,32 @@ router.patch('/preferences',
     }
 );
 
+// GDPR
+
+const gdprstatus = {
+    gdprAccepted : false,
+    collectMetrics : true
+}
+
+router.get('/gdpr', (req, res) => {
+    userController.getGDPRData(req)
+        .then(data => { 
+            if (data) {
+                res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data)
+            }else {
+                res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send();
+            }
+        })
+        .catch((err) => 
+        {
+            res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send()
+        });
+});
+
+router.post('/gdpr', (req, res) => {
+    userController.setGDPRData(req)
+    .then(() => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send() )
+    .catch(() => res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send() );
+});
 
 module.exports = router;

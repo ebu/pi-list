@@ -23,12 +23,14 @@ import HomePage from './pages/Home';
 import Settings from './pages/Settings';
 import CreditsPage from './pages/CreditsPage';
 import { LiveRoute } from './utils/AppContext';
+import NewsPage from './pages/News';
 
 const HOME = () => (<Redirect to={routeNames.HOME}/>);
 
 export default (
     <Switch>
         <Route exact path={routeNames.DEFAULT} component={HOME} />
+        <Route exact path={routeNames.NEWS} component={NewsPage} />
         <Route exact path={routeNames.HOME} component={HomePage} />
         <Route exact path={routeNames.SETTINGS} component={Settings} />
         <Route exact path={routeNames.CREDITS} component={CreditsPage} />
