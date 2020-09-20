@@ -5,6 +5,7 @@
 #include "ebu/list/analysis/serialization/serializable_stream_info.h"
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/rtp/listener.h"
+#include "ebu/list/rtp/inter_packet_spacing_analyzer.h"
 
 namespace ebu_list::analysis
 {
@@ -38,6 +39,7 @@ namespace ebu_list::analysis
         audio_stream_details audio_description_;
         completion_handler completion_handler_;
         dscp_analyzer dscp_;
+        rtp::inter_packet_spacing_analyzer inter_packet_spacing_;
     };
 
     using audio_stream_handler_uptr = std::unique_ptr<audio_stream_handler>;

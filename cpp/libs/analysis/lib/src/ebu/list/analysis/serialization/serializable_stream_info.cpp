@@ -2,6 +2,7 @@
 
 using namespace ebu_list;
 using namespace ebu_list::analysis;
+using namespace ebu_list::media;
 using namespace std;
 using nlohmann::json;
 
@@ -86,6 +87,50 @@ void media::from_json(const json& j, dscp_info& dscp)
     }
 }
 
+void media::to_json(nlohmann::json& j, const inter_packet_spacing_info_t& info)
+{
+    j["regular"] = info.regular;
+    j["after_m_bit"] = info.after_m_bit;
+}
+
+void media::from_json(const nlohmann::json& j, inter_packet_spacing_info_t& info)
+{
+    if(const auto it = j.find("regular"); it != j.end())
+    {
+        from_json(*it, info.regular);
+    }
+
+    if(const auto it = j.find("after_m_bit"); it != j.end())
+    {
+        from_json(*it, info.after_m_bit);
+    }
+}
+
+void media::to_json(nlohmann::json& j, const inter_packet_spacing_t& info)
+{
+    j["max"] = std::chrono::duration_cast<std::chrono::nanoseconds>(info.max).count();
+    j["avg"] = std::chrono::duration_cast<std::chrono::nanoseconds>(info.avg).count();
+    j["min"] = std::chrono::duration_cast<std::chrono::nanoseconds>(info.min).count();
+}
+
+void media::from_json(const nlohmann::json& j, inter_packet_spacing_t& info)
+{
+    if(const auto it = j.find("max"); it != j.end())
+    {
+        info.max = std::chrono::nanoseconds(it->get<uint64_t>());
+    }
+
+    if(const auto it = j.find("avg"); it != j.end())
+    {
+        info.avg = std::chrono::nanoseconds(it->get<uint64_t>());
+    }
+
+    if(const auto it = j.find("min"); it != j.end())
+    {
+        info.min = std::chrono::nanoseconds(it->get<uint64_t>());
+    }
+}
+
 json media::to_json(const media::network_info& info)
 {
     json j;
@@ -101,6 +146,7 @@ json media::to_json(const media::network_info& info)
     j["valid_multicast_ip_address"]  = info.valid_multicast_ip_address;
     j["multicast_address_match"]     = info.multicast_address_match;
     j["has_extended_header"]         = info.has_extended_header;
+    j["inter_packet_spacing"]        = info.inter_packet_spacing_info;
 
     json dscp;
     to_json(dscp, info.dscp);
@@ -142,6 +188,12 @@ media::network_info media::from_json(const json& j)
     if(has_extended_header_key != j.end()) stream.has_extended_header = has_extended_header_key->get<bool>();
 
     from_json(j, stream.dscp);
+
+    const auto inter_packet_spacing_info = j.find("inter_packet_spacing");
+    if(inter_packet_spacing_info != j.end())
+    {
+        from_json(*inter_packet_spacing_info, stream.inter_packet_spacing_info);
+    }
 
     return stream;
 }
