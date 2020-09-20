@@ -44,7 +44,7 @@ detector::status_description packet_spacing_analyzer::handle_data(const rtp::pac
 
 st2110::d21::read_schedule packet_spacing_analyzer::get_schedule() const noexcept
 {
-    constexpr auto minimum_ratio = 10;
+    constexpr auto minimum_ratio = 50;
     const auto is_gapped = (average_frame_start_packet_spacing() > average_regular_packet_spacing() * minimum_ratio);
     return is_gapped ? st2110::d21::read_schedule::gapped : st2110::d21::read_schedule::linear;
 }

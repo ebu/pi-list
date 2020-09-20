@@ -9,6 +9,7 @@
 #include "ebu/list/rtp/types.h"
 #include "ebu/list/st2110/d40/header.h"
 #include "ebu/list/st2110/packets_per_frame_calculator.h"
+#include "ebu/list/rtp/inter_packet_spacing_analyzer.h"
 
 #pragma GCC diagnostic ignored "-Wpedantic"
 #include <libklvanc/vanc.h>
@@ -68,6 +69,7 @@ namespace ebu_list::analysis
         uint8_t field_              = static_cast<uint8_t>(ebu_list::st2110::d40::field_kind::undefined);
         uint8_t last_field_         = static_cast<uint8_t>(ebu_list::st2110::d40::field_kind::undefined);
         dscp_analyzer dscp_;
+        rtp::inter_packet_spacing_analyzer inter_packet_spacing_;
     };
 
     using anc_stream_handler_uptr = std::unique_ptr<anc_stream_handler>;
