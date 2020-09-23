@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { setToken, getToken, removeToken, isAuthenticated, getTokenExpirationTime } from './authorization';
+import { evaluate } from 'mathjs';
+import { setToken, getToken, getDiff, removeToken, isAuthenticated, getTokenExpirationTime } from './authorization';
 
 function loadFile(filePath) {
     let result = null;
@@ -84,13 +85,16 @@ function checkRefreshToken() {
 
     if (token === null) return;
 
-    const tokenTimeLeft = getTokenExpirationTime(token) * 1000 - Date.now();
+    const now = Date.now();
+    const diff = getDiff();
+    const tokenTimeLeft = evaluate(`${getTokenExpirationTime(token)} * ${1000} - ${now} + ${diff}`);
+
+    console.log(`Token time left: ${tokenTimeLeft}`);
 
     if (tokenTimeLeft < 0) return; // Already expired
 
     if (tokenTimeLeft < refreshTokenVerificationInterval * 2) {
         revalidateToken();
-        return;
     }
 }
 checkRefreshToken();
@@ -148,14 +152,13 @@ export default {
     },
 
     /* EULA */
-    acceptGDPR: (data) => request.post('user/gdpr', data),
+    acceptGDPR: data => request.post('user/gdpr', data),
     getGDPRStatus: () => request.get('user/gdpr'),
-
 
     /* News feed */
     getNews: () => request.get('news'),
-    getHTML: (urls) => request.post('news/html', urls),
-    setNewsRead: (timestamp) => request.post('news/markread', timestamp),
+    getHTML: urls => request.post('news/html', urls),
+    setNewsRead: timestamp => request.post('news/markread', timestamp),
 
     /* PCAP */
     getPcaps: () => request.get('pcap'),

@@ -1,6 +1,8 @@
 import decode from 'jwt-decode';
+import { evaluate } from 'mathjs';
 
 const tokenKey = 'ebu:bearer-token';
+const difftokenKey = 'ebu:bearer-token-diff';
 
 // //////////////////////////////////////////////////////////////////////////////
 //                      MANAGE TOKEN                                           //
@@ -8,6 +10,10 @@ const tokenKey = 'ebu:bearer-token';
 
 const getToken = () => {
     return localStorage.getItem(tokenKey);
+};
+
+const getDiff = () => {
+    return localStorage.getItem(difftokenKey);
 };
 
 const getTokenExpirationTime = token => {
@@ -19,10 +25,23 @@ const getTokenExpirationTime = token => {
     }
 };
 
+const getTokenIatTime = token => {
+    try {
+        const decoded = decode(token);
+        return decoded.iat;
+    } catch (err) {
+        return false;
+    }
+};
+
 const isTokenExpired = token => {
     try {
         const tokenExpiration = getTokenExpirationTime(token);
-        return tokenExpiration < Date.now() / 1000;
+
+        const tokenDiff = getDiff();
+        const estimatedTime = evaluate(`${Date.now()} - ${tokenDiff}`);
+
+        return tokenExpiration * 1000 < estimatedTime;
     } catch (err) {
         return false;
     }
@@ -31,10 +50,13 @@ const isTokenExpired = token => {
 // //////////////////////////////////////////////////////////////////////////////
 function setToken(token) {
     localStorage.setItem(tokenKey, token);
+    const diff = getTokenIatTime(token) * 1000 - Date.now();
+    localStorage.setItem(difftokenKey, diff);
 }
 
 function removeToken() {
     localStorage.removeItem(tokenKey);
+    localStorage.removeItem(difftokenKey);
 }
 
 // //////////////////////////////////////////////////////////////////////////////
@@ -46,4 +68,4 @@ const isAuthenticated = () => {
     return result;
 };
 
-export { getToken, setToken, removeToken, isAuthenticated, getTokenExpirationTime };
+export { getToken, getDiff, setToken, removeToken, isAuthenticated, getTokenExpirationTime, getTokenIatTime };
