@@ -9,7 +9,7 @@ export const localeNames = require('../../data/locales.json');
 export const locales = Object.keys(localeNames);
 
 const getLanguage = () => {
-    const state = useStateValue();
+    const [ state, dispatch] = useStateValue();
     return _.get(state, 'language', 'en-US');
 };
 

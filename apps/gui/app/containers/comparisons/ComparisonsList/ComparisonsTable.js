@@ -5,7 +5,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import Icon from '../../../components/common/Icon';
 import { translateX } from '../../../utils/translation';
-import { getGetTdProps, getGetTableProps, getCheckBoxColumn } from '../../../components/table/utils';
+import { getGetTdProps, getGetTableProps, getCheckBoxColumn, getTablePageSize, onTableSizeChange } from '../../../components/table/utils';
 
 const renderLabel = ({ value }) => {
     return <span>{value}</span>;
@@ -117,7 +117,8 @@ const ComparisonsTable = props => {
             nextText={translateX('table.next')}
             data={props.data}
             columns={columns}
-            defaultPageSize={10}
+            defaultPageSize={getTablePageSize('compare')}
+            onPageSizeChange={onTableSizeChange('compare')}
             className="-highlight lst-text-center"
             getTdProps={getGetTdProps(props)}
             getTableProps={getGetTableProps(props)}

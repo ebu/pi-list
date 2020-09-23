@@ -13,6 +13,8 @@ import {
     getGetTdProps,
     getGetTableProps,
     getCheckBoxColumn,
+    getTablePageSize,
+    onTableSizeChange,
 } from '../../../components/table/utils';
 
 function renderDate({ original }) {
@@ -144,7 +146,8 @@ const WorkflowsTable = props => {
             nextText={translateX('table.next')}
             data={props.data}
             columns={columns}
-            defaultPageSize={10}
+            defaultPageSize={getTablePageSize('workflow')}
+            onPageSizeChange={onTableSizeChange('workflow')}
             className="-highlight lst-text-center"
             getTdProps={getGetTdProps(props)}
             getTableProps={getGetTableProps(props)}

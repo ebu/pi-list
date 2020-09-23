@@ -6,6 +6,7 @@ import 'react-table/react-table.css';
 import sources from 'ebu_list_common/capture/sources';
 import { translateX } from '../../../utils/translation';
 import Icon from '../../../components/common/Icon';
+import { getTablePageSize, onTableSizeChange } from '../../../components/table/utils';
 
 import {
     getGetTdProps,
@@ -53,7 +54,8 @@ const SourcesTable = props => {
             nextText={translateX('table.next')}
             data={props.data}
             columns={columns}
-            defaultPageSize={10}
+            defaultPageSize={getTablePageSize('source')}
+            onPageSizeChange={onTableSizeChange('source')}
             className="-highlight lst-text-center"
             getTdProps={getGetTdProps(props)}
             getTableProps={getGetTableProps(props)}
