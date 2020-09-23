@@ -3,7 +3,7 @@ const logger = require('../util/logger');
 const config = require('./options');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const collection = require('../models/user');
-const websocket = require('../managers/websocket');
+//const websocket = require('../managers/websocket');
 const crypto = require('crypto');
 const uuidv1 = require('uuid/v1');
 
