@@ -87,7 +87,14 @@ function checkRefreshToken() {
 
     const now = Date.now();
     const diff = getDiff();
-    const tokenTimeLeft = evaluate(`${getTokenExpirationTime(token)} * ${1000} - ${now} + ${diff}`);
+
+    let tokenTimeLeft = 0;
+
+    try {
+        tokenTimeLeft = evaluate(`${getTokenExpirationTime(token)} * ${1000} - ${now} + ${diff}`);
+    } catch (e) {
+        console.error(e);
+    }
 
     console.log(`Token time left: ${tokenTimeLeft}`);
 
@@ -97,8 +104,9 @@ function checkRefreshToken() {
         revalidateToken();
     }
 }
+
 checkRefreshToken();
-const refreshTokenTimer = setInterval(checkRefreshToken, refreshTokenVerificationInterval);
+setInterval(checkRefreshToken, refreshTokenVerificationInterval);
 
 /* End Session logic */
 
