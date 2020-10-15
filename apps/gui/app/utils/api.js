@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { evaluate } from 'mathjs';
+import _ from 'lodash';
 import { setToken, getToken, getDiff, removeToken, isAuthenticated, getTokenExpirationTime } from './authorization';
 
 function loadFile(filePath) {
@@ -88,15 +88,12 @@ function checkRefreshToken() {
     const now = Date.now();
     const diff = getDiff();
 
-    let tokenTimeLeft = 0;
+    if (_.isNil(diff)) return;
 
-    try {
-        tokenTimeLeft = evaluate(`${getTokenExpirationTime(token)} * ${1000} - ${now} + ${diff}`);
-    } catch (e) {
-        console.error(e);
-    }
+    const tokenExpirationTime = getTokenExpirationTime(token);
+    if (_.isNil(tokenExpirationTime)) return;
 
-    console.log(`Token time left: ${tokenTimeLeft}`);
+    const tokenTimeLeft = tokenExpirationTime * 1000 - now + diff;
 
     if (tokenTimeLeft < 0) return; // Already expired
 
@@ -183,7 +180,7 @@ export default {
             onAnalysisProgress: progressEvent => {
                 const percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total);
 
-                onUploadProgress(percentCompleted);
+                onAnalysisProgress(percentCompleted);
             },
         };
         return request.patch(`pcap/${pcapId}`, null, config);

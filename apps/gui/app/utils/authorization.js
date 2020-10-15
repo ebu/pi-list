@@ -1,5 +1,5 @@
 import decode from 'jwt-decode';
-import { evaluate } from 'mathjs';
+import _ from 'lodash';
 
 const tokenKey = 'ebu:bearer-token';
 const difftokenKey = 'ebu:bearer-token-diff';
@@ -13,7 +13,15 @@ const getToken = () => {
 };
 
 const getDiff = () => {
-    return localStorage.getItem(difftokenKey);
+    const v = localStorage.getItem(difftokenKey);
+    if (typeof v === 'string') {
+        return parseInt(v, 10);
+    }
+    if (typeof v === 'number') {
+        return v;
+    }
+
+    return null;
 };
 
 const getTokenExpirationTime = token => {
@@ -21,7 +29,7 @@ const getTokenExpirationTime = token => {
         const decoded = decode(token);
         return decoded.exp;
     } catch (err) {
-        return false;
+        return null;
     }
 };
 
@@ -30,16 +38,19 @@ const getTokenIatTime = token => {
         const decoded = decode(token);
         return decoded.iat;
     } catch (err) {
-        return false;
+        return null;
     }
 };
 
 const isTokenExpired = token => {
     try {
         const tokenExpiration = getTokenExpirationTime(token);
+        if (_.isNil(tokenExpiration) || typeof tokenExpiration !== 'number') return true;
 
         const tokenDiff = getDiff();
-        const estimatedTime = evaluate(`${Date.now()} - ${tokenDiff}`);
+        if (_.isNil(tokenDiff) || typeof tokenDiff !== 'number') return true;
+
+        const estimatedTime = Date.now() - tokenDiff;
 
         return tokenExpiration * 1000 < estimatedTime;
     } catch (err) {
@@ -50,7 +61,10 @@ const isTokenExpired = token => {
 // //////////////////////////////////////////////////////////////////////////////
 function setToken(token) {
     localStorage.setItem(tokenKey, token);
-    const diff = getTokenIatTime(token) * 1000 - Date.now();
+    const t = getTokenIatTime(token);
+    if (_.isNil(t) || typeof t !== 'number') return;
+
+    const diff = t * 1000 - Date.now();
     localStorage.setItem(difftokenKey, diff);
 }
 

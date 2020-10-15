@@ -167,12 +167,6 @@
         "licenseUrl": "https://github.com/lodash/lodash/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
-    "mathjs@7.2.0": {
-        "licenses": "Apache-2.0",
-        "repository": "https://github.com/josdejong/mathjs",
-        "licenseUrl": "https://github.com/josdejong/mathjs/raw/master/LICENSE",
-        "parents": "list-ebu-gui"
-    },
     "mitt@1.2.0": {
         "licenses": "MIT",
         "repository": "https://github.com/developit/mitt",
