@@ -43,9 +43,14 @@ aforementioned _API_.
   * [`login`](#login)
   * [`logout`](#logout)
 - [Comparisons](#comparisons)
-- [Download](#download)
+- [Download Manager](#download-manager)
+  * [`List all`](#list-all)
+  * [`Download item`](#download-item)
 - [Meta Information](#meta-information)
 - [SDP](#sdp)
+  * [`Available Options`](#)
+  * [`Ingest SDP`](#)
+  * [`Convert SDP file to a sender`](#)
 - [Streams](#streams)
   * [`Get all streams`](#get-all-streams)
   * [`Get one stream`](#get-one-stream)
@@ -105,7 +110,7 @@ aforementioned _API_.
   * HTTP/401:
     ```json
       {
-        "sucess": false,
+        "sucess": false
       }
     ```
 #### Get all analysis
@@ -254,7 +259,34 @@ aforementioned _API_.
 
 ### Analysis Profile
 ### Comparisions
-### Download
+
+### Download Manager
+#### List all
+- Path: `/api/downloadmngr/`
+- Method: `GET`
+- Response:
+  * HTTP/200:
+    ```
+    { [{
+      "name": "<designation>",
+      "nameondisk": "<filename>",
+      "path": "<fspath>",
+      "type": "<orig|pcap|json|pdf|zip>",
+      "availableon": "<creation-date>",
+      "availableonfancy": "<creation-date-pretty>",
+      "availableuntil": "<expiry-date>",
+      "availableuntilfancy": "<expiry-date-pretty>"
+    }, ...]}
+    ```
+
+#### Download item
+- Path: `/api/downloadmngr/<id>`
+- Method: `GET`
+- Response:
+  * HTTP/200: `<file>`
+
+#### Get all streams
+
 ### Meta Information
 
 ### Streams
@@ -371,7 +403,44 @@ aforementioned _API_.
 
 ### SDP
 
-- Path: `/api/sdp/available-options`
+#### Available Options
+- Path: `/api/sdp/available-options[?media_type=<video|audio|ancillary>]`
+- Method: `GET`
+- Response:
+  * HTTP/200:
+    + Content-Type: `application/octet-stream`
+    + Body:
+      - W/out query string: ` [{"label": "<name>", "value": "<value>"}...]`
+      - W/ query string: `[ { "key": "", "value": [{ "label": "<name>", "value": "<value>" }...] }...]`
+
+#### Ingest SDP
+- Path: `/api/sdp/`
+- Method: `PUT`
+- Response: HTTP/201 (empty body)
+
+#### Convert to Sender
+- Path: `/api/sdp/to_source`
+- Method: `PUT`
+- Response:
+  * HTTP/201:
+    - Content-Type: `Content-Type: application/json; charset=utf-8`
+    ```
+    {
+      "result": "success",
+      "source": {
+        "id": "<uuid>",
+        "kind": "from_sdp",
+        "meta": {
+          "format": "",
+          "label": ""
+        }
+        "sdp": {
+          "errors": ["<error-description>",...],
+          "raw": "<sdp>"
+          "streams": [{ "dstAddr": "<dst-ip-addr>", "dstPort": <dest-port>, "srcAddr": "<src-ip-addr>" }...]
+        }
+      }
+    ```
 
 ### User
 
@@ -430,7 +499,7 @@ GET
     "warning_list": []
   },
   "total_streams": 1,
-  "truncated": false,
+  "truncated": false
 }
 ```
 
