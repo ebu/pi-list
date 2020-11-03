@@ -19,7 +19,7 @@ while getopts ":hirt" arg; do
         r) # Run all
             RUN_ALL=1
         ;;
-
+        
         t) # Run tests
             RUN_TESTS=1
         ;;
@@ -41,16 +41,39 @@ run () {
     cd "$SRC/$1" && $2
 }
 
-declare -a INSTALLS=("js/common_server" "apps/listwebserver" "apps/gui" "apps/capture_probe" "apps/live_generator")
-
 if [ $INSTALL -eq 1 ] ; then
     echo "INSTALL"
-    ## now loop through the above array
-    for d in "${INSTALLS[@]}"
-    do
-        echo "Installing in $d"
-        run "$d" "npm install"
-    done
+    if ! command -v lerna &> /dev/null
+    then
+        echo "Lerna is not installed. Run 'npm i -g lerna'"
+        exit 1
+    fi
+    
+    cd "$SRC"
+    
+    echo "lerna bootstrap..."
+    lerna bootstrap
+    if [ $? -ne 0 ]; then
+        echo "Failed"
+        exit 1
+    fi
+    echo "Done"
+    
+    echo "lerna build"
+    lerna run build
+    if [ $? -ne 0 ]; then
+        echo "Failed"
+        exit 1
+    fi
+    echo "Done"
+    
+    echo "lerna run production"
+    lerna run production
+    if [ $? -ne 0 ]; then
+        echo "Failed"
+        exit 1
+    fi
+    echo "Done"
 fi
 
 if [ $RUN_ALL -eq 1 ] ; then
@@ -62,23 +85,23 @@ fi
 
 if [ $RUN_TESTS -eq 1 ] ; then
     echo "RUN_TESTS"
-
+    
     ctest
     RET_CTEST=$?
-
+    
     cd "$SRC/apps/listwebserver" && ./node_modules/.bin/jest
     RET_WS_TESTS=$?
-
+    
     cd "$SRC/apps/gui" && ./node_modules/.bin/jest
     RET_GUI_TESTS=$?
-
+    
     echo RET_CTEST: $RET_CTEST
     echo RET_WS_TESTS: $RET_WS_TESTS
     echo RET_GUI_TESTS: $RET_GUI_TESTS
-
+    
     ALL=$((RET_CTEST + RET_WS_TESTS + RET_GUI_TESTS))
     echo ALL: $ALL
-
+    
     exit $ALL
 fi
 

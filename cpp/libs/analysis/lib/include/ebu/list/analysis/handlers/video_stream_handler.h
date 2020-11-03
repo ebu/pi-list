@@ -6,6 +6,7 @@
 #include "ebu/list/analysis/serialization/video_serialization.h"
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/rtp/listener.h"
+#include "ebu/list/rtp/inter_packet_spacing_analyzer.h"
 #include "ebu/list/st2110/d20/packing_mode_analyzer.h"
 #include "ebu/list/st2110/rate_calculator.h"
 
@@ -70,6 +71,7 @@ namespace ebu_list::analysis
 
         serializable_stream_info info_;
         mutable video_stream_details video_description_;
+        rtp::inter_packet_spacing_analyzer inter_packet_spacing_;
 
         completion_handler completion_handler_;
     };

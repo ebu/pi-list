@@ -5,7 +5,7 @@ import Alert from 'components/common/Alert';
 import AsyncErrorsManager from 'components/AsyncErrorsManager';
 import keyEnum from 'enums/keyEnum';
 import { translate } from 'utils/translation';
-import { setToken } from '../utils/authorization';
+import { client } from '../utils/api';
 
 class Login extends Component {
     constructor() {
@@ -33,13 +33,13 @@ class Login extends Component {
         const username = this.username.value;
         const password = this.password.value;
 
-        api.login({ username: username, password: password })
-            .then(response => {
-                setToken(response.content.token);
+        client
+            .login(username, password)
+            .then(() => {
                 this.props.history.push('/');
             })
-            .catch(error => {
-                this.setState({ errors: [error.response.data] });
+            .catch(() => {
+                this.setState({ errors: ['Login failed'] });
             });
     }
 
@@ -59,7 +59,7 @@ class Login extends Component {
             })
             .catch(error => {
                 this.setState({
-                    errors: [error.response.data],
+                    errors: [error],
                     userSuccessfullyRegistered: false,
                 });
             });

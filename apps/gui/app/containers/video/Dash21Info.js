@@ -1,22 +1,27 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import _ from 'lodash';
 import InfoPane from '../streamPage/components/InfoPane';
 import ResultPane from '../streamPage/components/ResultPane';
 import MultiValueDisplay from '../streamPage/components/MultiValueDisplay';
 import NarrowWideDisplay from '../streamPage/components/NarrowWideDisplay';
 import MinAvgMaxDisplay from '../streamPage/components/MinAvgMaxDisplay';
-import { getAverageFromHistogram, getLowestFromHistogram, getHighestFromHistogram } from '../../utils/stats.js'
+import { getAverageFromHistogram, getLowestFromHistogram, getHighestFromHistogram } from '../../utils/stats.js';
 import { translateX } from 'utils/translation';
 
 const getCompliance = value => {
-    if (value == 'narrow') {
+    if (value === 'narrow') {
         return { value: 'N', units: '(narrow)' };
-    } else if (value == 'narrow_linear') {
-        return { value: 'NL', units: '(narrow linear)' };
-    } else if (value == 'wide') {
-        return { value: 'W', units: '(Wide)' };
-    } else {
-        return { value: 'Not compliant', attention: false };
     }
+
+    if (value === 'narrow_linear') {
+        return { value: 'NL', units: '(narrow linear)' };
+    }
+
+    if (value === 'wide') {
+        return { value: 'W', units: '(Wide)' };
+    }
+
+    return { value: 'Not compliant', attention: false };
 };
 
 const nsAsMicroseconds = value => (value / 1000).toFixed(3);
@@ -28,6 +33,20 @@ const FpoDisplay = props => (
         min={nsAsMicroseconds(props.min_tro_ns)}
         avg={nsAsMicroseconds(props.avg_tro_ns)}
         max={nsAsMicroseconds(props.max_tro_ns)}
+    />
+);
+
+const RegularInterPacketTimeDisplay = ({ data }) => (
+    <MinAvgMaxDisplay label={<span>Inter-packet time</span>} units="ns" min={data.min} avg={data.avg} max={data.max} />
+);
+
+const GapInterPacketTimeDisplay = ({ data }) => (
+    <MinAvgMaxDisplay
+        label={<span>Gap</span>}
+        units="μs"
+        min={nsAsMicroseconds(data.min)}
+        avg={nsAsMicroseconds(data.avg)}
+        max={nsAsMicroseconds(data.max)}
     />
 );
 
@@ -59,6 +78,9 @@ const Dash21Info = props => {
     const vrxavg = getAverageFromHistogram(globalVideoAnalysis.vrx.histogram);
     const invalidCinst = props.info.analyses['2110_21_cinst'].result !== 'compliant';
     const invalidVrx = props.info.analyses['2110_21_vrx'].result !== 'compliant';
+    const interPacketSpacing = _.get(props.info, 'network_information.inter_packet_spacing');
+    const gapData = interPacketSpacing && interPacketSpacing.after_m_bit;
+    const interPacketData = interPacketSpacing && interPacketSpacing.regular;
 
     const summaryValues = [
         { labelTag: 'stream.compliance', ...getCompliance(globalVideoAnalysis.compliance) },
@@ -72,8 +94,8 @@ const Dash21Info = props => {
         {
             labelTag: 'Trs',
             value: globalVideoAnalysis.trs
-                ? (globalVideoAnalysis.trs.trs_ns / 1000).toFixed(3) + " µs"
-                : translateX('headings.unknown')
+                ? (globalVideoAnalysis.trs.trs_ns / 1000).toFixed(3) + ' µs'
+                : translateX('headings.unknown'),
         },
     ];
 
@@ -134,8 +156,15 @@ const Dash21Info = props => {
             measurement: <FpoDisplay {...props.info.media_specific} />,
             limit: <TroDefaultDisplay value={props.info.media_specific.tro_default_ns} />,
         },
+        {
+            measurement: <GapInterPacketTimeDisplay data={gapData} />,
+        },
+        {
+            measurement: <RegularInterPacketTimeDisplay data={interPacketData} />,
+        },
     ];
 
+    console.log(JSON.stringify(props.info));
     return (
         <div>
             <InfoPane icon="alarm_on" heading="ST2110-21" values={summaryValues} />

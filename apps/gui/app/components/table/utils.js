@@ -105,10 +105,25 @@ const getCheckBoxColumn = (props) => (
     }
 );
 
+const getTablePageSize = (key) => {
+    const size = localStorage.getItem('table-page-size-' + key);
+    return Number(size) == 0 ? 5 : Number(size);
+}
+
+const setTablePageSize = (key, value) => {
+    localStorage.setItem('table-page-size-' + key, value);
+}
+
+const onTableSizeChange = (type) => (pageSize, pageIndex) => {
+    setTablePageSize(type, pageSize)
+}
+
 export {
     isSelected,
     getGetTableProps,
     getGetTdProps,
     getKindColumn,
-    getCheckBoxColumn
+    getCheckBoxColumn,
+    getTablePageSize,
+    onTableSizeChange,
 }

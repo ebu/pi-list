@@ -29,6 +29,7 @@ We deployed an [online version](https://list.ebu.io/) that you can start using r
 
 * [How to compile LIST](./docs/compiling_list.md)
 * [How to further develop LIST](./docs/list_development.md)
+* [API documentation](./docs/api.md)
 
 ## Additional information
 

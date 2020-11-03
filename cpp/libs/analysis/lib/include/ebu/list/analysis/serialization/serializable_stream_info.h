@@ -12,6 +12,11 @@ namespace ebu_list
         void from_json(const nlohmann::json& j, dscp_info& p);
         nlohmann::json to_json(const network_info& info);
         network_info from_json(const nlohmann::json& j);
+
+        void to_json(nlohmann::json& j, const inter_packet_spacing_info_t& info);
+        void from_json(const nlohmann::json& j, inter_packet_spacing_info_t& info);
+        void to_json(nlohmann::json& j, const inter_packet_spacing_t& info);
+        void from_json(const nlohmann::json& j, inter_packet_spacing_t& info);
     } // namespace media
 } // namespace ebu_list
 

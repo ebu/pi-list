@@ -2,7 +2,6 @@ const child_process = require('child_process');
 const router = require('express').Router();
 const multer = require('multer');
 const util = require('util');
-const program = require('../util/programArguments');
 const influxDbManager = require('../managers/influx-db');
 const fs = require('../util/filesystem');
 const path = require('path');
@@ -414,9 +413,7 @@ router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
 });
 
 /* PUT new help information for stream */
-router.put(
-    '/:pcapID/stream/:streamID/help',
-    (req, res, next) => {
+router.put('/:pcapID/stream/:streamID/help', (req, res, next) => {
         const { pcapID, streamID } = req.params;
 
         Stream.findOneAndUpdate({ id: streamID }, req.body, {
