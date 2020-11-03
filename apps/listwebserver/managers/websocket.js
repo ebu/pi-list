@@ -38,6 +38,12 @@ class WebSocket {
     }
 
     sendEventToUser(userID, dataObject) {
+        if (userID === null || userID === undefined)
+        {
+            logger('websocket-manager').error(`Cannot send user event because there is no userID defined`);
+            
+            return;
+        }
         // logger('websocket-manager').info(`Message sent to ${userID} websocket channel`);
         const socketPool = this.connections.get(userID);
         socketPool.forEach( sID => {

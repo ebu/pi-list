@@ -9,7 +9,7 @@ import Button from '../components/common/Button';
 import { T } from '../utils/translation';
 import { StateContext } from '../utils/AppContext';
 import websocket from '../utils/websocket';
-
+import BadgeIcon from '../components/common/BadgeIcon';
 class SideNav extends Component {
     constructor(props) {
         super(props);
@@ -17,6 +17,7 @@ class SideNav extends Component {
         this.state = {
             isOpen: this.props.isOpen,
             showMenuItems: this.props.isOpen,
+            newsUnread: this.props.newsUnread,
         };
 
         this.toggleSideNav = this.toggleSideNav.bind(this);
@@ -36,10 +37,8 @@ class SideNav extends Component {
         return (
             <React.Fragment>
                 {items
-                    .filter(item => (item.liveOnly === undefined || item.liveOnly === false
-                        ? true
-                        : live))
-                    .map((item) => {
+                    .filter(item => (item.liveOnly === undefined || item.liveOnly === false ? true : live))
+                    .map(item => {
                         const label = <T t={item.labelTag} />;
                         return (
                             <MenuItem
@@ -63,28 +62,20 @@ class SideNav extends Component {
         });
 
         return (
-            <nav
-                className={sideNavClassNames}
-                ref={sideNav => (this.sideNav = sideNav)}
-            >
+            <nav className={sideNavClassNames} ref={sideNav => (this.sideNav = sideNav)}>
                 <div className="lst-side-nav-header center-xs middle-xs">
                     <img src="/static/ebu-white.png" alt="ebu logo" />
                 </div>
-                <ul className="lst-side-nav__items">
-                    {this.renderItems(navItems.top, live)}
-                </ul>
+                <ul className="lst-side-nav__items">{this.renderItems(navItems.top, live)}</ul>
                 {this.renderItems(navItems.bottom, live)}
                 <div className="lst-side-nav__options">
                     <Button noStyle onClick={() => this.toggleSideNav()}>
-                        <div className="center-xs">
-                            {`v${version.major}.${version.minor}`}
+                        <div className="center-xs app-version-number">
+                            {`v${version.major}.${version.minor}.${version.patch}`}
                             {this.state.showMenuItems && ` @ ${version.hash}`}
                         </div>
                     </Button>
-                    <a
-                        className="row middle-xs"
-                        href="https://github.com/ebu/pi-list/issues"
-                    >
+                    <a className="row middle-xs" href="https://github.com/ebu/pi-list/issues">
                         <Icon value="help" />
                         {this.state.showMenuItems && (
                             <div className="fade-in">
@@ -92,6 +83,14 @@ class SideNav extends Component {
                             </div>
                         )}
                     </a>
+                    {/* <a className="row middle-xs" href={'/news'}>
+                        <BadgeIcon value={this.state.newsUnread.toString()} />
+                        {this.state.showMenuItems && (
+                            <div className="fade-in">
+                                <T t="navigation.news" />
+                            </div>
+                        )}
+                    </a> */}
                     <a className="row middle-xs" href={'/logout'}>
                         <Icon value="power settings new" />
                         {this.state.showMenuItems && (

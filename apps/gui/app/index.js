@@ -1,5 +1,5 @@
-import "core-js/stable";
-import "regenerator-runtime/runtime";
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 
 import React from 'react';
 import { render } from 'react-dom';
@@ -8,28 +8,22 @@ import App from 'containers/App';
 import Login from 'pages/Login';
 
 import 'style/index.scss';
-import LogoutPage from "./pages/LogoutPage";
+import LogoutPage from './pages/LogoutPage';
 
 render(
     <BrowserRouter>
         <Switch>
-            <Route
-                path="/login"
-                component={Login}
-            />
-            <Route
-                path="/logout"
-                component={LogoutPage}
-            />
+            <Route path="/login" component={Login} />
+            <Route path="/logout" component={LogoutPage} />
             <Route
                 path="/"
-                component={(props) => {
+                component={props => {
                     window.appHistory = props.history;
 
-                    return (<App {...props} />);
+                    return <App {...props} />;
                 }}
             />
         </Switch>
     </BrowserRouter>,
-    document.getElementById('lst-app'),
+    document.getElementById('lst-app')
 );

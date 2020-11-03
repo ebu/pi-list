@@ -8,9 +8,12 @@ import { useStateValue, Actions } from '../utils/AppContext';
 import { localeNames, T } from '../utils/translation';
 
 const Settings = props => {
-    const [{ language, theme }, dispatch] = useStateValue();
+    const [{ language, theme, gdprData }, dispatch] = useStateValue();
 
-    const themes = [{ value: 'dark', label: 'Dark' }, { value: 'light', label: 'Light' }];
+    const themes = [
+        { value: 'dark', label: 'Dark' },
+        { value: 'light', label: 'Light' },
+    ];
 
     const languageKeys = Object.keys(localeNames).sort();
     const languages = languageKeys.map(key => ({
@@ -38,6 +41,13 @@ const Settings = props => {
         });
     };
 
+    const onChangeGDPR = e => {
+        dispatch({
+            type: Actions.acceptGDPR,
+            value: e.target.checked,
+        });
+    };
+
     return (
         <div className="lst-settings-page col-md-6">
             <div className="row lst-align-items-center">
@@ -56,6 +66,19 @@ const Settings = props => {
                     <Select options={languages} value={language} onChange={onChangeLanguage} />
                 </div>
             </div>
+            {/* <div className="row lst-align-items-center">
+                <div className="col-xs-4 lst-text-right lst-stream-info2-label">
+                    <T t="settings.gdpr.collectmetrics" />:
+                </div>
+                <div className="col-xs-8">
+                    <input
+                        type="checkbox"
+                        className="checkbox"
+                        checked={gdprData.collectMetrics}
+                        onChange={onChangeGDPR}
+                    />
+                </div>
+            </div> */}
             <hr />
             <Button onClick={onDeleteUser}>
                 <Icon value="delete" />

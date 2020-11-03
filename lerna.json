@@ -1,0 +1,10 @@
+{
+  "packages": [
+    "apps/listwebserver",
+    "apps/gui",
+    "apps/capture_probe",
+    "js/auth",
+    "js/common_server"
+  ],
+  "version": "0.0.0"
+}

@@ -6,17 +6,19 @@
 - **Conan** >= v1
 - **Docker** >= v15
 - **Docker-compose** >= v1.20
-- **NodeJS** >= v8
+- **NodeJS** >= v12
 - **C++17 compatible compiler**
+- [**Lerna**](https://github.com/lerna/lerna)
 
-We use cmake as the meta build system and require most of our third-party dependencies using conan.
-Our *rule of thumb* is to include dependencies using conan when possible. Conan is integrated with CMake,
-so it should be transparent within the building process.
+
+We use CMake as the meta build system and require most of our third-party dependencies using conan.
+Our *rule of thumb* is to include dependencies using conan when possible. Conan is integrated with CMake, so it should be transparent within the build process.
 
 In order to run and develop this application on your computer, you need this additional dependencies (you can do all this steps via `./scripts/setup-dev-env.sh` script):
 - **FFmpeg** (only if you're going to run LIST locally - ignore this if you're going to run it on Docker)
 - **uuid-dev** (only on linux - sudo apt-get install uuid-dev)
 - **libpcap-dev** (only on linux)
+
 
 ## Quick-start
 
@@ -48,7 +50,7 @@ And then open the solution file in the build folder.
 
 ## CMake usage and configuration
 
-We use Cmake as the build system for LIST. All the options bellow can be combined together
+All the options below can be combined together
 
 | Option | Description | Default |
 | --- | --- | --- |
@@ -88,6 +90,23 @@ CMakeLists.txt  --> definitions for both lib and unit_tests
 ### Use LIST SDK as an external Library
 
 Just use cmake's `add_subdirectory()` and it will work out-of-the-box.
+
+# Backend and GUI
+
+- Lerna must be installed gloabally with `npm i -g lerna`
+
+After cloning the repository:
+
+`> lerna bootstrap`
+
+To build the project
+
+`> lerna run build`
+
+To generate the production version:
+
+`> lerna run production`
+
 
 ## Contribute to translations
 

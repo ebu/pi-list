@@ -127,6 +127,7 @@ void video_stream_handler::on_data(const rtp::packet& packet)
     if(!current_frame_) new_frame();
 
     update_net_info_with_address_validation(info_.network, packet.info);
+    inter_packet_spacing_.handle_data(packet);
 
     video_description_.last_packet_ts = packet.info.udp.packet_time;
     const auto ts                     = packet.info.rtp.view().timestamp();
@@ -142,7 +143,7 @@ void video_stream_handler::on_complete()
     if(!current_frame_) return;
 
     info_.network.dscp = dscp_.get_info();
-
+    info_.network.inter_packet_spacing_info = inter_packet_spacing_.get_info();
     video_description_.video.packing_mode = pm_analyzer_.get_mode();
 
     ++video_description_.frame_count;

@@ -3,7 +3,7 @@ const logger = require('../util/logger');
 const config = require('./options');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const collection = require('../models/user');
-const websocket = require('../managers/websocket');
+//const websocket = require('../managers/websocket');
 const crypto = require('crypto');
 const uuidv1 = require('uuid/v1');
 
@@ -14,6 +14,13 @@ const defaultPreferences = {
     },
     analysis: {
         currentProfileId: null,
+    },
+    gdprData: {
+        gdprAccepted: false,
+        collectMetrics: false,
+    },
+    news: {
+        last_news_id: null,
     },
 };
 
@@ -95,22 +102,27 @@ function authenticate(plainPassword, salt, password, unsecure) {
     return crypto.createHmac('sha512', salt).update(plainPassword).digest('base64').toString() === password;
 }
 
+const generateNewToken = (username, userId) => {
+    return jwt.sign({ username: username, id: userId }, config.secret, {
+        expiresIn: tokenExpiration,
+    });
+};
+
 const revalidateToken = (req, res) => {
     const username = getUsername(req);
+    const userId = getUserId(req);
 
-    const token = jwt.sign({ username: username }, config.secret, {
-        expiresIn: tokenExpiration, // expires in 24 hours
-    });
+    const token = generateNewToken(username, userId);
 
     // return the JWT token for the future API calls
     res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
         result: 0,
         desc: 'Revalidated successfully',
-        content: { success: true, token: token }
+        content: { success: true, token: token },
     });
 
     return;
-}
+};
 
 const handleLogin = (req, res) => {
     const username = req.body.username;
@@ -123,9 +135,7 @@ const handleLogin = (req, res) => {
         .then((user) => {
             if (user) {
                 if (authenticate(password, user.salt, user.password, unsecure)) {
-                    const token = jwt.sign({ username: username, id: user.id }, config.secret, {
-                        expiresIn: tokenExpiration, // expires in 24 hours
-                    });
+                    const token = generateNewToken(username, user.id);
 
                     // return the JWT token for the future API calls
                     res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
@@ -134,17 +144,10 @@ const handleLogin = (req, res) => {
                         content: { success: true, token: token },
                     });
                     return;
-                } else {
-                    res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
-                        result: HTTP_STATUS_CODE.CLIENT_ERROR.UNAUTHORIZED,
-                        desc: 'Unauthorized Access',
-                        content: { success: false, token: null },
-                    });
-                    return;
                 }
             }
 
-            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
+            res.status(HTTP_STATUS_CODE.CLIENT_ERROR.UNAUTHORIZED).send({
                 result: HTTP_STATUS_CODE.CLIENT_ERROR.UNAUTHORIZED,
                 desc: 'Unauthorized Access',
                 content: { success: false, token: null },
@@ -214,5 +217,5 @@ module.exports = {
     authenticate,
     generateSalt,
     encodePassword,
-    revalidateToken
+    revalidateToken,
 };

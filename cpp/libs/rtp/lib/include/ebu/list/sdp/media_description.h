@@ -25,6 +25,19 @@ namespace ebu_list::media
         bool is_consistent = true;            // true if always the same
     };
 
+    struct inter_packet_spacing_t
+    {
+        clock::duration min{};
+        clock::duration avg{};
+        clock::duration max{};
+    };
+
+    struct inter_packet_spacing_info_t
+    {
+        inter_packet_spacing_t regular;
+        inter_packet_spacing_t after_m_bit;
+    };
+
     struct network_info
     {
         ethernet::mac_address source_mac      = to_byte_array(0, 0, 0, 0, 0, 0);
@@ -38,6 +51,7 @@ namespace ebu_list::media
         bool multicast_address_match     = true;
         bool has_extended_header         = false;
         dscp_info dscp{};
+        inter_packet_spacing_info_t inter_packet_spacing_info{};
     };
 
     struct network_media_description

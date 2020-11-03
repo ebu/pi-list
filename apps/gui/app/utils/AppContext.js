@@ -23,6 +23,7 @@ export const Actions = {
     deleteUserRequest: 'Actions.deleteUserRequest', // { }
     deleteUserExecute: 'Actions.deleteUserExecute', // { }
     deleteUserDismiss: 'Actions.deleteUserDismiss', // { }
+    acceptGDPR: 'Actions.acceptGDPR', // { }
 };
 
 export const LiveFeature = (props) => {

@@ -17,6 +17,7 @@ RUN apt-get install -y \
         nodejs
 
 RUN npm install -g serve
+RUN npm install -g lerna
 
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib/
 
@@ -28,12 +29,6 @@ ADD data/config/ /etc/nginx/
 # nginx certs
 ADD data/certs/ /etc/ssl/certs/
 
-WORKDIR /js/common_server
-RUN rm -rf node_modules
-RUN npm install
-
 WORKDIR /app/listwebserver/
-RUN rm -rf node_modules
-RUN npm install
 
 CMD bash /app/sedstaticconfig.sh & service nginx start & serve -s /app/gui -p 8080 & npm start -- config.yml --dev & ../bin/stream_pre_processor amqp://rabbitmq:5672

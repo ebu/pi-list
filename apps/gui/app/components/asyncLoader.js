@@ -132,7 +132,7 @@ export default function (AsyncComponent, options) {
                     : error.message,
                 message: isObject(options.errorPage)
                     ? options.errorPage.message
-                    : `Cannot connect to ${error.config.url}`,
+                    : `Cannot connect to server`,
                 icon: isObject(options.errorPage)
                     ? options.errorPage.icon
                     : null,

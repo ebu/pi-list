@@ -58,12 +58,14 @@ const serializable_stream_info& audio_stream_handler::network_info() const
 void audio_stream_handler::on_data(const rtp::packet& packet)
 {
     audio_description_.last_packet_ts = packet.info.udp.packet_time;
+    inter_packet_spacing_.handle_data(packet);
     parse_packet(packet);
 }
 
 void audio_stream_handler::on_complete()
 {
     info_.network.dscp = dscp_.get_info();
+    info_.network.inter_packet_spacing_info = inter_packet_spacing_.get_info();
 
     this->on_stream_complete();
     info_.state = stream_state::ANALYZED;
