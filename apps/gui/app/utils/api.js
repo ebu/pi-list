@@ -1,117 +1,42 @@
 import axios from 'axios';
-import _ from 'lodash';
-import { setToken, getToken, getDiff, removeToken, isAuthenticated, getTokenExpirationTime } from './authorization';
+import { Client } from '@ebulist/auth';
 
 function loadFile(filePath) {
     let result = null;
     const xmlhttp = new XMLHttpRequest();
     xmlhttp.open('GET', filePath, false);
     xmlhttp.send();
-    if (xmlhttp.status == 200) {
+    if (xmlhttp.status === 200) {
         result = xmlhttp.responseText;
     }
     return result;
 }
 
 function getAPIPort() {
-    let RestAPIPort;
+    let restAPIPort;
 
     try {
         const staticConfig = JSON.parse(loadFile('/static.config.json'));
-        RestAPIPort = staticConfig.publicApiPort;
+        restAPIPort = staticConfig.publicApiPort;
     } catch (err) {
-        RestAPIPort = '3030';
+        restAPIPort = '3030';
     }
 
-    return RestAPIPort;
+    return restAPIPort;
 }
 
 const REST_URL = `${window.location.protocol}//${window.location.hostname}:${getAPIPort()}`;
 const API_URL = `${REST_URL}/api`;
 
-axios.interceptors.response.use(
-    config => config,
-    error => {
-        if (error.response.status > 400 && error.response.status < 500 && window.location.pathname !== '/login') {
-            window.appHistory.push('/login');
-        }
-
-        return Promise.reject(error);
-    }
-);
-
-axios.interceptors.request.use(
-    config => {
-        const newConfig = config;
-
-        if (isAuthenticated()) {
-            const token = getToken();
-            newConfig.headers.Authorization = `Bearer ${token}`;
-        }
-
-        return newConfig;
-    },
-    err => Promise.reject(err)
-);
-
-axios.defaults.withCredentials = true;
-
-/* Session logic */
-
-function setSession(token) {
-    setToken(token); // save the token on the localstorage
-}
-
-function removeSession() {
-    removeToken(); // remove the token on the localstorage
-}
-
-function revalidateToken() {
-    axios
-        .get(`${API_URL}/user/revalidate-token`)
-        .then(response => {
-            if (response && response.data.result <= 0) {
-                if (response.data.content.success) {
-                    setSession(response.data.content.token); // save the token on the localstorage
-                }
-            }
-        })
-        .catch(err => console.log(`Error revalidatig token: ${err}`));
-}
-
-const refreshTokenVerificationInterval = 60000;
-function checkRefreshToken() {
-    const token = getToken();
-
-    if (token === null) return;
-
-    const now = Date.now();
-    const diff = getDiff();
-
-    if (_.isNil(diff)) return;
-
-    const tokenExpirationTime = getTokenExpirationTime(token);
-    if (_.isNil(tokenExpirationTime)) return;
-
-    const tokenTimeLeft = tokenExpirationTime * 1000 - now + diff;
-
-    if (tokenTimeLeft < 0) return; // Already expired
-
-    if (tokenTimeLeft < refreshTokenVerificationInterval * 2) {
-        revalidateToken();
-    }
-}
-
-checkRefreshToken();
-setInterval(checkRefreshToken, refreshTokenVerificationInterval);
-
 /* End Session logic */
+
+let client = null;
 
 const getAuthUrl = path => {
     const url = new URL(path);
 
-    if (isAuthenticated()) {
-        const token = getToken();
+    if (client.isAuthenticated()) {
+        const token = client.getToken();
         url.searchParams.append('token', `Bearer ${token}`);
     }
 
@@ -129,7 +54,7 @@ const request = {
 
 export const WS_SERVER_URL = REST_URL;
 
-export default {
+const api = {
     /* Options */
     getSDPAvailableOptions: () => request.get('sdp/available-options'),
     getAvailableVideoOptions: () => request.get('sdp/available-options?media_type=video'),
@@ -141,19 +66,17 @@ export default {
     /* Auth */
     getUser: () => request.get('user'),
     updateUserPreferences: value => request.patch('user/preferences', { value }),
-    deleteUser: data => request.post('user/delete', data).then(removeToken(), request.httpRedirect('/login')),
+    deleteUser: data => request.post('user/delete', data).then(client.logout(), request.httpRedirect('/login')),
 
     register: loginData => axios.post(`${REST_URL}/user/register`, loginData).then(response => response.data),
 
-    login: data =>
-        axios.post(`${REST_URL}/auth/login`, data).then(response => {
-            if (response && response.data && response.data.result <= 0 && response.data.content.success) {
-                setSession(response.data.content.token);
-            }
-            return response.data;
-        }),
+    login: data => axios.post(`${REST_URL}/auth/login`, data).then(response => response.data),
+    revalidateToken: () => {
+        return axios.get(`${API_URL}/user/revalidate-token`).then(response => response.data);
+    },
+
     logout: data => {
-        axios.post('auth/logout', data).then(removeSession(), request.httpRedirect('/login'));
+        axios.post('auth/logout', data).then(client.logout(), request.httpRedirect('/login'));
     },
 
     /* EULA */
@@ -332,3 +255,54 @@ export default {
             }`
         ),
 };
+
+const apiHandler = {
+    login: data => api.login(data),
+    revalidateToken: () => api.revalidateToken(),
+};
+
+const localStorageHandler = {
+    setItem: (key, value) => localStorage.setItem(key, value),
+    getItem: key => localStorage.getItem(key),
+    removeItem: key => localStorage.removeItem(key),
+};
+
+client = new Client(apiHandler, localStorageHandler);
+
+axios.interceptors.response.use(
+    config => config,
+    error => {
+        if (
+            !error.response ||
+            (error.response.status > 400 && error.response.status < 500 && window.location.pathname !== '/login')
+        ) {
+            if (window.appHistory) {
+                window.appHistory.push('/login');
+            }
+        }
+
+        return Promise.reject(error);
+    }
+);
+
+axios.interceptors.request.use(
+    config => {
+        const newConfig = config;
+
+        if (client.isAuthenticated()) {
+            const token = client.getToken();
+            newConfig.headers.Authorization = `Bearer ${token}`;
+        }
+
+        return newConfig;
+    },
+    err => Promise.reject(err)
+);
+
+axios.defaults.withCredentials = true;
+
+// Call revalidate so that, if we have a valid token in local storage, it can be used
+client.revalidate();
+
+export { client };
+export default api;

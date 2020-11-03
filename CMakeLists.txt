@@ -14,6 +14,9 @@ configure_file(
         "${PROJECT_SOURCE_DIR}/apps/listwebserver/version.yml"
 )
 
+execute_process(COMMAND bash "${PROJECT_SOURCE_DIR}/scripts/reset_libssl_permissions.sh"
+        WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}")
+
 # -------------------------------------------------------------------------
 # conan
 conan_check()

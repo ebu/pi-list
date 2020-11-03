@@ -16,12 +16,12 @@ const defaultPreferences = {
         currentProfileId: null,
     },
     gdprData: {
-        gdprAccepted : false,
-        collectMetrics : false
+        gdprAccepted: false,
+        collectMetrics: false,
     },
     news: {
         last_news_id: null,
-    }
+    },
 };
 
 const tokenExpiration = '10m';
@@ -104,9 +104,9 @@ function authenticate(plainPassword, salt, password, unsecure) {
 
 const generateNewToken = (username, userId) => {
     return jwt.sign({ username: username, id: userId }, config.secret, {
-        expiresIn: tokenExpiration, // expires in 24 hours
+        expiresIn: tokenExpiration,
     });
-}
+};
 
 const revalidateToken = (req, res) => {
     const username = getUsername(req);
@@ -118,11 +118,11 @@ const revalidateToken = (req, res) => {
     res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
         result: 0,
         desc: 'Revalidated successfully',
-        content: { success: true, token: token }
+        content: { success: true, token: token },
     });
 
     return;
-}
+};
 
 const handleLogin = (req, res) => {
     const username = req.body.username;
@@ -144,17 +144,10 @@ const handleLogin = (req, res) => {
                         content: { success: true, token: token },
                     });
                     return;
-                } else {
-                    res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
-                        result: HTTP_STATUS_CODE.CLIENT_ERROR.UNAUTHORIZED,
-                        desc: 'Unauthorized Access',
-                        content: { success: false, token: null },
-                    });
-                    return;
                 }
             }
 
-            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
+            res.status(HTTP_STATUS_CODE.CLIENT_ERROR.UNAUTHORIZED).send({
                 result: HTTP_STATUS_CODE.CLIENT_ERROR.UNAUTHORIZED,
                 desc: 'Unauthorized Access',
                 content: { success: false, token: null },
@@ -224,5 +217,5 @@ module.exports = {
     authenticate,
     generateSalt,
     encodePassword,
-    revalidateToken
+    revalidateToken,
 };
