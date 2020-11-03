@@ -25,7 +25,9 @@ pip install conan
 
 # custom node version
 curl -sL https://deb.nodesource.com/setup_12.x | bash -
-apt install -y nodejs
+apt-get install -y nodejs
+
+npm i -g lerna
 
 echo "Please install FFMPEG v2.8 or newer using your package manager or https://www.ffmpeg.org/download.html"
 echo "If you're going to run LIST via Docker, ignore the above message, as FFMPEG is already installed on the Docker image"

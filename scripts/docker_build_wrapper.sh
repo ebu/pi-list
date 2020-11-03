@@ -47,7 +47,7 @@ RUN ./scripts/setup_build_env.sh
 EOF
     else
         echo ""
-        echo "$DOCKERFILE already exits"
+        echo "$DOCKERFILE already exists"
     fi
 
     echo "Creating the Docker image"

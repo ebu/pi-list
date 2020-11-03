@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { translateX } from '../../utils/translation';
+import { getTablePageSize, onTableSizeChange } from '../../components/table/utils';
 
 import api from '../../utils/api';
 import notifications from '../../utils/notifications';
@@ -71,7 +72,8 @@ const DownloadMngrTable = props => {
             nextText={translateX('table.next')}
             data={props.data}
             columns={columns}
-            defaultPageSize={10}
+            defaultPageSize={getTablePageSize('download')}
+            onPageSizeChange={onTableSizeChange('download')}
             className="-highlight lst-text-center"
             defaultSorted={[
                 {

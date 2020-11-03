@@ -1,0 +1,37 @@
+{
+  "name": "@ebulist/auth",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "**/*"
+  ],
+  "scripts": {
+    "build": "npm run clean && npm run compile",
+    "clean": "rm -rf ./dist",
+    "compile": "tsc",
+    "lint": "tslint --config tslint.json --project .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Bisect Lda. <info@bisect.pt> (www.bisect.pt)",
+  "license": "GPLv3",
+  "devDependencies": {
+    "@types/jwt-decode": "^2.2.1",
+    "@types/lodash": "^4.14.161",
+    "@types/node": "^14.11.2",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-consistent-codestyle": "^1.16.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "tslint-microsoft-contrib": "^6.2.0",
+    "typescript": "^3.3.3"
+  },
+  "dependencies": {
+    "http": "0.0.1-security",
+    "https": "^1.0.0",
+    "jwt-decode": "^3.0.0",
+    "lodash": "^4.17.20"
+  }
+}

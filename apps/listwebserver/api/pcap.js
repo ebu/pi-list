@@ -413,9 +413,7 @@ router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
 });
 
 /* PUT new help information for stream */
-router.put(
-    '/:pcapID/stream/:streamID/help',
-    (req, res, next) => {
+router.put('/:pcapID/stream/:streamID/help', (req, res, next) => {
         const { pcapID, streamID } = req.params;
 
         Stream.findOneAndUpdate({ id: streamID }, req.body, {
