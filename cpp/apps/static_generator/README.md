@@ -5,7 +5,8 @@ This program generates static information that will be used by `/apps/listwebser
 It outputs json files to the given directory.
 
 ## Usage
+
 `static_generator <base dir>`
 
 where:
-    - base dir: the path to the directory where to write the information
+- base dir: the path to the directory where to write the information

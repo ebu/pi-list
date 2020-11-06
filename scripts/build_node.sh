@@ -8,12 +8,11 @@ source $this_dir/path.sh || { echo "path.sh is missing"; exit 1; }
 
 echo "Bootstrapping lerna..."
 cd $TOP_DIR
-lerna bootstrap
+npm i
+npx lerna bootstrap
+npx lerna run build
+npx lerna run production
 
-echo "Compiling..."
-lerna run build
-echo "Running production build..."
-lerna run production
 echo "Done"
 
 set +eu

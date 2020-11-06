@@ -64,7 +64,7 @@ void audio_stream_handler::on_data(const rtp::packet& packet)
 
 void audio_stream_handler::on_complete()
 {
-    info_.network.dscp = dscp_.get_info();
+    info_.network.dscp                      = dscp_.get_info();
     info_.network.inter_packet_spacing_info = inter_packet_spacing_.get_info();
 
     this->on_stream_complete();
@@ -86,7 +86,7 @@ void audio_stream_handler::on_error(std::exception_ptr e)
 
 void audio_stream_handler::parse_packet(const rtp::packet& packet)
 {
-    if (packet.info.rtp.view().extension())
+    if(packet.info.rtp.view().extension())
     {
         info_.network.has_extended_header = true;
     }

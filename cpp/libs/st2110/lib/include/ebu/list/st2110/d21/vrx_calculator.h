@@ -35,6 +35,6 @@ namespace ebu_list::st2110::d21
         std::optional<fraction64> start_draining_ts_;
         int drained_prev_ = 0;
         int vrx_prev_     = 0;
-        double trs_sec_    = 0;
+        double trs_sec_   = 0;
     };
 } // namespace ebu_list::st2110::d21

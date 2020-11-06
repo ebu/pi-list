@@ -142,9 +142,9 @@ void video_stream_handler::on_complete()
 {
     if(!current_frame_) return;
 
-    info_.network.dscp = dscp_.get_info();
+    info_.network.dscp                      = dscp_.get_info();
     info_.network.inter_packet_spacing_info = inter_packet_spacing_.get_info();
-    video_description_.video.packing_mode = pm_analyzer_.get_mode();
+    video_description_.video.packing_mode   = pm_analyzer_.get_mode();
 
     ++video_description_.frame_count;
     this->on_frame_complete(std::move(current_frame_));
@@ -160,7 +160,7 @@ void video_stream_handler::on_error(std::exception_ptr)
 // #define LIST_TRACE
 void video_stream_handler::parse_packet(const rtp::packet& packet)
 {
-    if (packet.info.rtp.view().extension())
+    if(packet.info.rtp.view().extension())
     {
         info_.network.has_extended_header = true;
     }

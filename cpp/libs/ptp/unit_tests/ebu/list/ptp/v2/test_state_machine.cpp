@@ -1,5 +1,3 @@
-#include "pch.h"
-
 #include "catch2/catch.hpp"
 #include "ebu/list/ptp/decoder.h"
 #include "ebu/list/ptp/state_machine.h"

@@ -1,5 +1,3 @@
-#include "pch.h"
-
 #include "catch2/catch.hpp"
 #include "ebu/list/st2110/d20/header.h"
 using namespace ebu_list;

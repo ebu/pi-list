@@ -227,12 +227,6 @@
         "licenseUrl": "https://github.com/needim/noty/raw/master/LICENSE.txt",
         "parents": "list-ebu-gui"
     },
-    "npm@6.14.8": {
-        "licenses": "Artistic-2.0",
-        "repository": "https://github.com/npm/cli",
-        "licenseUrl": "https://github.com/npm/cli/raw/master/.licensee.json",
-        "parents": "list-ebu-gui"
-    },
     "paho-mqtt@1.1.0": {
         "licenses": "EPL-1.0",
         "repository": "https://github.com/eclipse/paho.mqtt.javascript",
