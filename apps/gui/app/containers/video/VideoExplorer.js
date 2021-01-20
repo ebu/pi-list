@@ -3,7 +3,7 @@ import api from 'utils/api';
 import { isString } from 'lodash';
 import asyncLoader from 'components/asyncLoader';
 import Panel from 'components/common/Panel';
-import StreamTimeline from 'components/stream/StreamTimeline';
+import VideoTimeline from 'components/stream/VideoTimeline';
 import Badge from 'components/common/Badge';
 
 class VideoExplorer extends Component {
@@ -19,11 +19,12 @@ class VideoExplorer extends Component {
     render() {
         return (
             <div className="row">
-                <StreamTimeline
+                <VideoTimeline
                     pcapID={this.props.pcapID}
                     streamID={this.props.streamID}
                     frames={this.props.frames}
-                    onFrameChange={(frame) => {
+                    initFrameIndex={0}
+                    onFrameChange={(index, frame) => {
                         if (frame) {
                             api.getPacketsFromFrame(this.props.pcapID, this.props.streamID, frame.timestamp)
                                 .then((packets) => {

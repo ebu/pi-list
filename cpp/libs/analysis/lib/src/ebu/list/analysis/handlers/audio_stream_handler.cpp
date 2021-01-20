@@ -38,6 +38,8 @@ audio_stream_handler::audio_stream_handler(rtp::packet first_packet, serializabl
 
     info_.network.has_extended_header = first_packet.info.rtp.view().extension();
 
+    audio_description_.first_sample_ts    = first_packet.info.rtp.view().timestamp();
+    audio_description_.last_sample_ts     = audio_description_.first_sample_ts;
     audio_description_.first_packet_ts    = first_packet.info.udp.packet_time;
     using float_sec                       = std::chrono::duration<float, std::ratio<1, 1>>;
     audio_description_.samples_per_packet = static_cast<int>(to_int(audio_description_.audio.sampling) *
@@ -58,6 +60,7 @@ const serializable_stream_info& audio_stream_handler::network_info() const
 void audio_stream_handler::on_data(const rtp::packet& packet)
 {
     audio_description_.last_packet_ts = packet.info.udp.packet_time;
+    audio_description_.last_sample_ts = packet.info.rtp.view().timestamp();
     inter_packet_spacing_.handle_data(packet);
     parse_packet(packet);
 }

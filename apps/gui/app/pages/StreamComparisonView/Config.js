@@ -19,7 +19,7 @@ const renderCard = (stream, description, index) => {
 const ComparisonConfigPane = (props) => {
     var summary = [
         {
-            labelTag: translateX('comparison.type'),
+            labelTag: 'comparison.type',
             value: props.type,
         },
     ]
@@ -46,7 +46,7 @@ const ComparisonConfigPane = (props) => {
                 values={summary}
             />
             <InfoPane
-                headingTag={translateX('comparison.config.reference')}
+                headingTag='comparison.config.reference'
                 icon='note'
                 values={[
                     {
@@ -57,14 +57,14 @@ const ComparisonConfigPane = (props) => {
             />
             {
                 renderCard(
-                    props.mainStreamInfo,
+                    props.refStreamInfo,
                     props.comparison_type === 'crossCorrelation' ? `(channel ${props.reference.channel})` : '',
                     0
                 )
             }
             <InfoPane
                 icon='note'
-                headingTag={translateX('comparison.config.main')}
+                headingTag='comparison.config.main'
                 values={[
                     {
                         labelTag: 'workflow.import_networkcapture_btn',
@@ -74,7 +74,7 @@ const ComparisonConfigPane = (props) => {
             />
             {
                 renderCard(
-                    props.refStreamInfo,
+                    props.mainStreamInfo,
                     props.comparison_type === 'crossCorrelation' ? `(channel ${props.main.channel})` : '',
                     1
                 )

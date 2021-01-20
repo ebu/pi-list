@@ -1,5 +1,5 @@
 {
-    "@vitalets/google-translate-api@3.0.0": {
+    "@vitalets/google-translate-api@4.0.0": {
         "licenses": "MIT",
         "repository": "https://github.com/vitalets/google-translate-api",
         "licenseUrl": "https://github.com/vitalets/google-translate-api/raw/master/LICENSE",
@@ -395,7 +395,7 @@
         "licenseUrl": "https://github.com/chriso/validator.js/raw/master/LICENSE",
         "parents": "listwebserver"
     },
-    "wavesurfer.js@2.2.1": {
+    "wavesurfer.js@4.2.0": {
         "licenses": "BSD-3-Clause",
         "repository": "https://github.com/katspaugh/wavesurfer.js",
         "licenseUrl": "https://github.com/katspaugh/wavesurfer.js/raw/master/LICENSE",
