@@ -51,8 +51,8 @@ router.delete('/:comparisonID/', (req, res) => {
 
     StreamCompare.deleteOne({ id: comparisonID })
         .exec()
-        .then(() => {
-            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
+        .then(data => {
+            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data);
         })
         .then(() => {
             websocketManager.instance().sendEventToUser(userId, {
@@ -60,6 +60,18 @@ router.delete('/:comparisonID/', (req, res) => {
                 data: { id: comparisonID },
             });
         })
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+});
+
+/* update */
+router.post('/:comparisonID/', (req, res) => {
+    const { comparisonID } = req.params;
+    const userId = getUserId(req);
+    const comparison = req.body;
+    console.log(comparison)
+    StreamCompare.findOneAndUpdate({ id: comparisonID }, comparison, { new: true })
+        .exec()
+        .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 

@@ -1,5 +1,3 @@
-#include "pch.h"
-
 #include "catch2/catch.hpp"
 #include "ebu/list/core/media/video/sampling.h"
 

@@ -3,7 +3,6 @@
 #include "ebu/list/rtp/udp_handler.h"
 #include "ebu/list/st2110/d40/anc_format_detector.h"
 #include "ebu/list/test_lib/sample_files.h"
-#include "pch.h"
 #include "rtp_source.h"
 #include "utils.h"
 

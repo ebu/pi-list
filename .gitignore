@@ -15,3 +15,4 @@ apps/stream_pre_processor/.vscode/launch.json
 .cache/
 .config/
 .vim/
+/node_modules

@@ -1,5 +1,3 @@
-#include "pch.h"
-
 #include "test_sequences.h"
 using namespace ebu_list;
 using namespace ebu_list::ptp;

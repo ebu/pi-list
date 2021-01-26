@@ -8,6 +8,8 @@ nlohmann::json audio_stream_details::to_json(const audio_stream_details& details
 {
     nlohmann::json statistics;
     analysis::to_json(statistics, static_cast<const common_stream_details&>(details));
+    statistics["first_sample_ts"]    = details.first_sample_ts;
+    statistics["last_sample_ts"]     = details.last_sample_ts;
     statistics["packet_size"]        = details.packet_size;
     statistics["samples_per_packet"] = details.samples_per_packet;
     statistics["sample_count"]       = details.sample_count;
@@ -29,6 +31,8 @@ audio_stream_details audio_stream_details::from_json(const nlohmann::json& j)
     {
         logger()->info(statistics_json->dump());
         ::from_json(*statistics_json, static_cast<common_stream_details&>(desc));
+        desc.first_sample_ts    = statistics_json->at("first_sample_ts").get<uint32_t>();
+        desc.last_sample_ts     = statistics_json->at("last_sample_ts").get<uint32_t>();
         desc.packet_size        = statistics_json->at("packet_size").get<int>();
         desc.samples_per_packet = statistics_json->at("samples_per_packet").get<int>();
         desc.sample_count       = statistics_json->at("sample_count").get<uint32_t>();

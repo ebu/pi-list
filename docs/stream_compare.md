@@ -2,13 +2,17 @@
 
 ## Use cases
 
-* get a sense the evolution of a media across a production pipeline by comparing 2 streams, e.g. the input and the output of a processing unit
-* validate the network redundancy (ST 2022-7)
-* measure the inter-essence synchronicity for eventual re-alignment
+* A. get a sense the evolution of a media across a processing unit by comparing the input and the output
+* B. compare the output of 2 pipelines taking the same stream as input
+* C. validate the network redundancy (ST 2022-7)
+* D. measure the audio-video synchronicity for eventual re-alignment (ancillary is a todo)
 
 ![comp](./comparision_use_cases.png)
 
-## Media-based analysis
+## A) Delay and transparency
+## B) Network path comparison
+
+Those 2 usecases are actually similar, only the interpretation of the result differs.
 
 The idea consists in probing and comparing 2 streams reflecting the same content but at 2 different `logical points` of the network, i.e. multicast groups.
 This type of inter-stream analysis aims at measuring the *propagation delay through the network path* and determine the *transparency of a processing chain*.
@@ -19,10 +23,10 @@ Since RTP timestamp can be overwritten by any processing equipment, it doesn't p
 
 [Audio-to-audio: cross-correlation](./a2a_comparison.md)
 
-## Redundancy test
+## C) Redundancy test
 
 [SMPTE ST 2022-7](./ST_2022-7.md)
 
-## Media re-alignement
+## D) A/V synchronicity
 
-TODO
+[Audio-to-video: manual sync measurement](./a2v_sync.md)

@@ -13,13 +13,6 @@ macro(list_set_cpp_properties)
     endif ()
 endmacro(list_set_cpp_properties)
 
-macro(define_pch PROJECT_NAME INCLUDES)
-    if (USE_PCH)
-        set_target_properties(${PROJECT_NAME} PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT ${INCLUDES})
-        cotire(${PROJECT_NAME})
-    endif ()
-endmacro()
-
 ####
 macro(list_declare_library NAME)
     set(LIBRARY_NAME ${NAME})
@@ -95,7 +88,6 @@ macro(list_add_test NAME)
     set_target_properties(${NAME} PROPERTIES FOLDER "unit_tests")
 
     ParseAndAddCatchTests(${NAME})
-    define_pch(${NAME} ${PROJECT_SOURCE_DIR}/unit_tests/pch.h)
     message(STATUS "Found ${NAME}")
 endmacro()
 
@@ -113,7 +105,6 @@ macro(list_add_executable NAME)
     list_set_target_cpp_properties()
 
     set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "apps")
-    define_pch(${NAME} pch.h)
     message(STATUS "Found ${NAME}")
 
     if (ipo_supported)

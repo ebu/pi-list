@@ -14,7 +14,7 @@ const exec = util.promisify(child_process.exec);
 const Pcap = require('../../models/pcap');
 const Stream = require('../../models/stream');
 const WS_EVENTS = require('../../enums/wsEvents');
-const { doVideoAnalysis } = require('../../analyzers/video');
+const { doVideoAnalysis, generateThumbails } = require('../../analyzers/video');
 const { doAudioAnalysis } = require('../../analyzers/audio');
 const { doAncillaryAnalysis } = require('../../analyzers/ancillary');
 const { doTtmlAnalysis } = require('../../analyzers/ttml/ttml');
@@ -463,6 +463,8 @@ const videoConsolidation = async (req, res, next) => {
 
         await doVideoAnalysis(pcapId, streams);
         addStreamsToReq(streams, req);
+
+        await generateThumbails(`${getUserFolder(req)}/${pcapId}`, streams);
 
         next();
     } catch (err) {

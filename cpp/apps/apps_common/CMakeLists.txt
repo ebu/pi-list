@@ -13,5 +13,3 @@ target_link_libraries(apps_common
         CONAN_PKG::libpng
         CONAN_PKG::mongo-cxx-driver
         )
-
-define_pch(${PROJECT_NAME} lib/src/pch.h)

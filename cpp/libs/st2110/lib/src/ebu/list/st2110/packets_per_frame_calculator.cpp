@@ -1,5 +1,4 @@
 #include "ebu/list/st2110/packets_per_frame_calculator.h"
-#include "ebu/list/st2110/pch.h"
 
 using namespace ebu_list::st2110;
 using namespace ebu_list;

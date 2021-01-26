@@ -1,8 +1,8 @@
 #-------------------------------------------------------------------------------
 # The version number and commit hash
 set (EBU_LIST_VERSION_MAJOR 1)
-set (EBU_LIST_VERSION_MINOR 16)
-set (EBU_LIST_VERSION_PATCH 6)
+set (EBU_LIST_VERSION_MINOR 17)
+set (EBU_LIST_VERSION_PATCH 0)
 set (EBU_LIST_VERSION "${EBU_LIST_VERSION_MAJOR}.${EBU_LIST_VERSION_MINOR}.${EBU_LIST_VERSION_PATCH}")
 
 find_package(Git)

@@ -1,6 +1,5 @@
 #include "catch2/catch.hpp"
 #include "ebu/list/st2110/d30/audio_description.h"
-#include "pch.h"
 
 using namespace ebu_list;
 using namespace ebu_list::media::audio;

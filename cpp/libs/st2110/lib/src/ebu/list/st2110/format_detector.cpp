@@ -2,7 +2,6 @@
 #include "ebu/list/st2110/d20/video_format_detector.h"
 #include "ebu/list/st2110/d30/audio_format_detector.h"
 #include "ebu/list/st2110/d40/anc_format_detector.h"
-#include "ebu/list/st2110/pch.h"
 #include "ebu/list/ttml/ttml_format_detector.h"
 
 using namespace ebu_list;

@@ -1,6 +1,5 @@
 #include "catch2/catch.hpp"
 #include "ebu/list/st2110/d40/packet.h"
-#include "pch.h"
 #include "utils.h"
 
 using namespace ebu_list;
