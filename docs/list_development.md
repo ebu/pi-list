@@ -131,6 +131,8 @@ Translate help script:
 node apps/gui/data/googleTranslate.js "Any english text"
 ```
 
+Note: this is broken until [google-translate-api gets fixed](https://github.com/vitalets/google-translate-api/issues/60).
+
 ## Contribute
 
 1. Fork it

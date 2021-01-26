@@ -4,6 +4,7 @@ import WaveSurfer from 'wavesurfer.js';
 import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 import Button from '../common/Button';
 import Loader from '../common/Loader';
+import Slider from '../common/Slider';
 import { translateC } from '../../utils/translation';
 
 const createWaveSurfer = (waveform, timeline) => {
@@ -13,17 +14,20 @@ const createWaveSurfer = (waveform, timeline) => {
     }
 
     const wavesurfer = WaveSurfer.create({
-        container: waveform,
-        waveColor: '#5086d8',
-        progressColor: '#2347fc',
-        splitChannels: true,
         autoCenter: true,
+        backgroundColor: '#89B',
         barWidth: 1,
-        normalize: true,
-        hideScrollbar: false,
+        container: waveform,
+        cursorColor: '#800',
+        cursorWidth: 3,
         height: 80,
-        cursorWidth: 2,
+        hideScrollbar: false,
+        normalize: true,
         plugins,
+        progressColor: '#2347fc',
+        scrollParent: true,
+        splitChannels: true,
+        waveColor: '#5086d8',
         xhr: { withCredentials: true },
     });
 
@@ -31,15 +35,21 @@ const createWaveSurfer = (waveform, timeline) => {
 };
 
 const AudioPlayer = props => {
-    const [isLoading, setisLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [isPlaying, setIsPlaying] = useState(false);
     const [hasError, setHasError] = useState(false);
     const waveSurferRef = useRef(null);
     const waveformRef = useRef(null);
 
     const onPlayerReady = () => {
-        setisLoading(false);
+        setIsLoading(false);
         setHasError(false);
+        waveSurferRef.current.seekTo(props.cursorInitPos);
+        if (props.onCursorChanged) {
+            waveSurferRef.current.on('seek', onSeek);
+            waveSurferRef.current.on('pause', onSeek);
+            onSeek();
+        }
     };
 
     const onFinishPlay = () => {
@@ -48,6 +58,12 @@ const AudioPlayer = props => {
 
     const onPlayerError = () => {
         setHasError(true);
+    };
+
+    const onSeek = () => {
+        const duration = waveSurferRef.current.getDuration();
+        const currentTime = waveSurferRef.current.getCurrentTime();
+        props.onCursorChanged(duration, currentTime);
     };
 
     useEffect(() => {
@@ -71,6 +87,10 @@ const AudioPlayer = props => {
         setIsPlaying(prevIsPlaying => !prevIsPlaying);
     };
 
+    const onZoom = (v) => {
+        waveSurferRef.current.zoom(v);
+    };
+
     const buttonLabel = isPlaying ? translateC('audio_player.pause') : translateC('audio_player.play');
     const buttonType = isPlaying || hasError ? 'danger' : 'info';
     const buttonIcon = isPlaying ? 'pause' : 'play arrow';
@@ -82,26 +102,38 @@ const AudioPlayer = props => {
             <div className="wave" />
             <div className="wave-timeline" />
             {!isLoading && (
-                <Button
-                    type={buttonType}
-                    label={buttonLabel}
-                    icon={buttonIcon}
-                    disabled={buttonDisabled}
-                    outline
-                    onClick={play}
-                />
+                <div className="row center">
+                    <Button
+                        type={buttonType}
+                        label={buttonLabel}
+                        icon={buttonIcon}
+                        disabled={buttonDisabled}
+                        outline
+                        onClick={play}
+                    />
+                    <Slider
+                        min={0}
+                        max={10000}
+                        type="zoom"
+                        onChange={v => onZoom(parseInt(v))}
+                    />
+                </div>
             )}
         </div>
     );
 };
 
 AudioPlayer.propTypes = {
-    src: PropTypes.string.isRequired,
+    src: PropTypes.object.isRequired,
     timeline: PropTypes.bool,
+    onCursorChanged: PropTypes.func,
+    cursorInitPos: PropTypes.number,
 };
 
 AudioPlayer.defaultProps = {
     timeline: false,
+    onCursorChanged: null,
+    cursorInitPos: 0,
 };
 
 export default AudioPlayer;

@@ -36,5 +36,3 @@ endif ()
 if (CMAKE_COMPILER_IS_GNUCXX)
     target_link_libraries(ebu_list_core stdc++fs CONAN_PKG::libuuid)
 endif ()
-
-define_pch(ebu_list_core lib/src/ebu/list/core/pch.h)

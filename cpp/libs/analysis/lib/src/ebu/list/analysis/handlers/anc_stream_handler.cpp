@@ -81,8 +81,7 @@ void anc_stream_handler::on_data(const rtp::packet& packet)
 
     parse_packet(packet);
 
-    logger()->trace("Ancillary frame={}, marker={}",
-                    anc_description_.frame_count, (marked) ? "1" : "0");
+    logger()->trace("Ancillary frame={}, marker={}", anc_description_.frame_count, (marked) ? "1" : "0");
     if(anc_description_.anc.scan_type == video::scan_type::INTERLACED)
     {
         logger()->trace("Ancillary field: last={}, cur={}", last_field_, field_);
@@ -137,9 +136,9 @@ void anc_stream_handler::on_complete()
     }
 
     this->on_stream_complete();
-    info_.network.dscp = dscp_.get_info();
+    info_.network.dscp                      = dscp_.get_info();
     info_.network.inter_packet_spacing_info = inter_packet_spacing_.get_info();
-    info_.state        = stream_state::ANALYZED;
+    info_.state                             = stream_state::ANALYZED;
     completion_handler_(*this);
 }
 
@@ -157,17 +156,18 @@ void anc_stream_handler::on_error(std::exception_ptr e)
 
 void anc_stream_handler::parse_packet(const rtp::packet& packet)
 {
-    if (packet.info.rtp.view().extension())
+    if(packet.info.rtp.view().extension())
     {
         info_.network.has_extended_header = true;
     }
 
     auto& sdu = packet.sdu;
 
-    auto p                              = sdu.view().data();
-    const auto end                      = sdu.view().data() + sdu.view().size();
-//    const auto extended_sequence_number = to_native(reinterpret_cast<const raw_extended_sequence_number*>(p)->esn);
-//    const uint32_t full_sequence_number = (extended_sequence_number << 16) | packet.info.rtp.view().sequence_number();
+    auto p         = sdu.view().data();
+    const auto end = sdu.view().data() + sdu.view().size();
+    //    const auto extended_sequence_number = to_native(reinterpret_cast<const
+    //    raw_extended_sequence_number*>(p)->esn); const uint32_t full_sequence_number = (extended_sequence_number <<
+    //    16) | packet.info.rtp.view().sequence_number();
     p += sizeof(raw_extended_sequence_number);
 
     dscp_.handle_packet(packet);

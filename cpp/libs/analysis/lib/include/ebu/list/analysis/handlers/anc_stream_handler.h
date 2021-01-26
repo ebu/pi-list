@@ -5,11 +5,11 @@
 #include "ebu/list/analysis/serialization/serializable_stream_info.h"
 #include "ebu/list/analysis/utils/rtp_utils.h"
 #include "ebu/list/core/memory/bimo.h"
+#include "ebu/list/rtp/inter_packet_spacing_analyzer.h"
 #include "ebu/list/rtp/listener.h"
 #include "ebu/list/rtp/types.h"
 #include "ebu/list/st2110/d40/header.h"
 #include "ebu/list/st2110/packets_per_frame_calculator.h"
-#include "ebu/list/rtp/inter_packet_spacing_analyzer.h"
 
 #pragma GCC diagnostic ignored "-Wpedantic"
 #include <libklvanc/vanc.h>

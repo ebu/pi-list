@@ -21,7 +21,7 @@ const getPnsr = async (mainPath, refPath) => {
     const ffmpegCommand = `ffmpeg -hide_banner -i ${mainPath}/frame.png -i ${refPath}/frame.png -lavfi psnr=\"stats_file=${psnrFile}\" -f null -`;
 
     try {
-        output = await exec(ffmpegCommand);
+        await exec(ffmpegCommand);
     } catch (err) {
         logger('psnr-delay').error(err.stdout);
         logger('psnr-delay').error(err.stderr);

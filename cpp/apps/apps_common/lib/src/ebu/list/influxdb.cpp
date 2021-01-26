@@ -1,5 +1,4 @@
 #include "ebu/list/influxdb.h"
-#include "pch.h"
 
 using namespace influxdb::api;
 using namespace ebu_list;

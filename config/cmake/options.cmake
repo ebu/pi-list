@@ -1,4 +1,3 @@
-option(USE_PCH "Use Cotire for PCH" ON)
 option(BUILD_DEMOS "Build LIST SDK Demos" OFF)
 option(BUILD_TESTS "Build tests for LIST SDK" OFF)
 option(BUILD_APPS "Build LIST apps" OFF)
@@ -10,20 +9,9 @@ if(BUILD_ALL)
     set(BUILD_APPS ON)
 endif()
 
-message(STATUS "USE_PCH: " ${USE_PCH})
 message(STATUS "BUILD_DEMOS: " ${BUILD_DEMOS})
 message(STATUS "BUILD_TESTS: " ${BUILD_TESTS})
 message(STATUS "BUILD_APPS: " ${BUILD_APPS})
-
-if(USE_PCH AND UNIX)
-    message(WARNING "Pre-compiled headers via cotire can't be used on a UNIX platform. Use -DUSE_PCH=OFF to hide this message")
-    set(USE_PCH OFF)
-endif()
-
-if(USE_PCH)
-    include(cotire)
-    set(COTIRE_MINIMUM_NUMBER_OF_TARGET_SOURCES 1)
-endif()
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)

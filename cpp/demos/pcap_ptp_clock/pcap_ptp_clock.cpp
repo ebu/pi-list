@@ -11,7 +11,6 @@
 #include "ebu/list/ptp/state_machine.h"
 #include "ebu/list/ptp/udp_filter.h"
 #include "ebu/list/version.h"
-#include "pch.h"
 using namespace ebu_list;
 
 //------------------------------------------------------------------------------

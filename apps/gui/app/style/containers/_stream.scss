@@ -1,10 +1,30 @@
-.lst-stream-timeline-image {
+.lst-video-timeline {
+    display: flex;
+    max-width: 100%;
+    .prev, .next {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        height: 100%;
+        cursor: pointer;
+        color: black;
+        transition: 0.6s ease;
+    }
+    .wrapper {
+        overflow-x: auto;
+        overflow-y: hidden;
+        .row {
+            flex-wrap: nowrap;
+        }
+    }
+}
+
+.lst-video-timeline-image {
     padding: 0;
     img {
         width: 100%;
     }
     &.selected {
-        border-bottom: 4px solid $blue;
+        border: 2px solid $blue;
     }
 }
 
@@ -41,19 +61,6 @@
     .dark & {
         background: $nord1;
         color: $white-perl;
-    }
-}
-
-.lst-timeline-bar {
-    padding: 2px;
-    background: $grey;
-    .dark & {
-        background: $nord1;
-    }
-    .lst-timeline-progress {
-        height: 4px;
-        background-color: $blue;
-        transition: $fast-transition-time width;
     }
 }
 

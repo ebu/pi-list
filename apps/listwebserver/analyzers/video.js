@@ -1,7 +1,13 @@
 const _ = require('lodash');
+const util = require('util');
+const child_process = require('child_process');
+const exec = util.promisify(child_process.exec);
 const influxDbManager = require('../managers/influx-db');
 const Stream = require('../models/stream');
 const constants = require('../enums/analysis');
+const CONSTANTS = require('../enums/constants');
+const fs = require('../util/filesystem');
+const logger = require('../util/logger');
 const { appendError, validateMulticastAddresses } = require('./utils');
 const {
     doRtpTicksAnalysis,
@@ -92,6 +98,28 @@ function doVideoAnalysis(pcapId, streams) {
     return Promise.all(promises);
 }
 
+const generateThumbail = async (path, size) => {
+    if (! fs.folderExists(`${path}`)) {
+        return;
+    }
+
+    png = `${path}/${CONSTANTS.PNG_FILE}`;
+    jpg = `${path}/${CONSTANTS.JPG_FILE}`;
+    ffmpegCommand = `ffmpeg -hide_banner -f image2 -i ${png} -vf scale=${size} ${jpg}`;
+    logger('video').info(`Create thumbnails: ${ffmpegCommand}`);
+    return await exec(ffmpegCommand);
+}
+
+function generateThumbails(folder, streams){
+    /* downsize original png to 240-px-width jpg */
+    const promises = streams.map(async (stream) => {
+        fs.getAllFirstLevelFolders(`${folder}/${stream.id}`)
+            .map(async (frame) => generateThumbail(`${folder}/${stream.id}/${frame.id}`, '240:-1'));
+        });
+    return Promise.all(promises);
+}
+
 module.exports = {
     doVideoAnalysis,
+    generateThumbails,
 };

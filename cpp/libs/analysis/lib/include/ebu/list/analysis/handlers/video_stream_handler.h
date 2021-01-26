@@ -5,8 +5,8 @@
 #include "ebu/list/analysis/serialization/video/frame.h"
 #include "ebu/list/analysis/serialization/video_serialization.h"
 #include "ebu/list/core/memory/bimo.h"
-#include "ebu/list/rtp/listener.h"
 #include "ebu/list/rtp/inter_packet_spacing_analyzer.h"
+#include "ebu/list/rtp/listener.h"
 #include "ebu/list/st2110/d20/packing_mode_analyzer.h"
 #include "ebu/list/st2110/rate_calculator.h"
 

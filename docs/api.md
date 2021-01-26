@@ -43,6 +43,10 @@ aforementioned _API_.
   * [`login`](#login)
   * [`logout`](#logout)
 - [Comparisons](#comparisons)
+  * [`Get all comparisons`](#get-all-comparisons)
+  * [`Get one comparison`](#get-one-comparison)
+  * [`Delete one comparison`](#delete-one-comparison)
+  * [`Update one comparison`](#update-one-comparison)
 - [Download Manager](#download-manager)
   * [`List all`](#list-all)
   * [`Download item`](#download-item)
@@ -62,6 +66,7 @@ aforementioned _API_.
   * [`Get metadata of all frames`](#get-metadata-of-all-frames)
   * [`Get all packet metadata for a frame`](#get-packet-of-all-frames)
   * [`Get a PNG frame`](#get-a-png-frames)
+  * [`Get a JPG thumbnail`](#get-a-jpg-thumbnail)
   * [`Render mp3`](#render-mp3)
   * [`Get rendered mp3`](#get-rendered-mp3)
   * [`Get ancillary decoded payload`](#get-ancillary-decoded-payload)
@@ -258,7 +263,32 @@ aforementioned _API_.
     ```
 
 ### Analysis Profile
-### Comparisions
+
+### Comparisons
+
+#### Get all comparisons
+- Path: `/api/comparisons`
+- Method: `GET`
+- Response:
+  * HTTP/200: `[ <listOfComparisons> ]` ([comparison model](#comparison-model))
+
+#### Get one comparison
+- Path: `/api/comparisons/<comparisonId>`
+- Method: `GET`
+- Response:
+  * HTTP/200: `<Analysis>` ( [comparison model](#comparison-model) )
+
+#### Delete one comparison
+- Path: `/api/comparisons/<comparisonId>`
+- Method: `DELETE`
+- Response:
+  * HTTP/200: `<Analysis>` ( [comparison model](#comparison-model) )
+
+#### Update one comparison
+- Path: `/api/comparisons/<comparisonId>`
+- Method: `POST`
+- Response:
+  * HTTP/200: `<Analysis>` ( [comparison model](#comparison-model) )
 
 ### Download Manager
 #### List all
@@ -376,6 +406,14 @@ aforementioned _API_.
 - Response:
   * HTTP/200:
     + Content-Type: `image/png`
+    + Body: `<rawData>`
+
+##### Get a JPG thumbnail
+- Path: `/api/pcap/<pcapId>/stream/<streamId>/frame/<frameId>/jpg?token=Bearer+<token>`
+- Method: `GET`
+- Response:
+  * HTTP/200:
+    + Content-Type: `image/jpg`
     + Body: `<rawData>`
 
 ##### Render mp3
@@ -1126,5 +1164,58 @@ Not all the values are always required.
     "source_mac_address": "98:5d:82:97:3f:a3",
     "source_port": 10000,
     "ssrc": 0
+}
+```
+
+#### Comparison model
+
+This is an example of comparison. This "AVSync" analysis is the most
+complicated.
+
+```json
+{
+    "_id": "5ff7874ab3f86488bfee2c05",
+    "id": "6c9f5530-5135-11eb-9881-c1faf0fc39c3",
+    "name": "my AV delay measurmenet",
+    "owner_id": "266b1b60-35ad-11eb-bc0c-750ec19934e5",
+    "date": 1610057546243,
+    "type": "compareStreams",
+    "config": {
+        "comparison_type": "AVSync",
+        "user_folder": "/home/ebulist/Documents/list//266b1b60-35ad-11eb-bc0c-750ec19934e5",
+        "main": {
+            "pcap": "cd038f51-f2c3-4a13-abdd-daf8bbcf8c2b",
+            "stream": "c4d1d1c4-c7f3-4ebc-9bfe-b30ccc3a818f",
+            "media_type": "audio",
+            "first_packet_ts": "1606246989522313652",
+            "last_packet_ts": "1606246991340185504",
+            "packet_time": "0.125000"
+        },
+        "reference": {
+            "pcap": "cd038f51-f2c3-4a13-abdd-daf8bbcf8c2b",
+            "stream": "1bdacee5-baa2-46d9-822e-68a52c091996",
+            "media_type": "video",
+            "scan_type": "interlaced"
+        },
+        "media_type": "A/V"
+    },
+    "result": {
+        "delay": {
+            "pkt": 65881.25228881836,
+            "rtp": 66339.96963500977,
+            "actual": 65881.25228881836
+        },
+        "audioCursor": {
+            "pktTs": 1606246989.5922434,
+            "rtpTs": 1606246989.5920775,
+            "position": 0.03846921852166704
+        },
+        "videoCursor": {
+            "pktTs": 1606246989.5263622,
+            "rtpTs": 1606246989.5257375,
+            "position": 0
+        },
+        "transparency": false
+    }
 }
 ```

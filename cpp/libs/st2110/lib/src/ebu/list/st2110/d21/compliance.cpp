@@ -1,6 +1,5 @@
 #include "ebu/list/st2110/d21/compliance.h"
 #include "ebu/list/st2110/d21/settings.h"
-#include "ebu/list/st2110/pch.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110;

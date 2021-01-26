@@ -17,7 +17,7 @@ function getUserFolder(req) {
 
 const validation = {
     rtp: {
-        pktPerFrame: {
+        pktsPerFrame: {
             min: 1, // anc must have at least one (keep alive) or more pkt/frame-or-field
         },
         deltaPktTsVsRtpTsLimit: {
@@ -85,7 +85,7 @@ const ancillaryPktPerFrame = async (req, stream) => {
     const histogramFile = `${getUserFolder(req)}/${req.pcap.uuid}/${stream.id}/pkt_hist.json`;
     const histogram = (await fs.readFile(histogramFile))['histogram'];
 
-    const limit = validation.rtp.pktPerFrame;
+    const limit = validation.rtp.pktsPerFrame;
     const range = {
         min: getLowestFromHistogram(histogram),
         max: getHighestFromHistogram(histogram),
