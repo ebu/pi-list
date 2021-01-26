@@ -54,13 +54,13 @@ struct ebu_list::analysis::ttml::stream_handler::impl
 
     void parse_packet(const ebu_list::rtp::packet& packet)
     {
-        if (packet.info.rtp.view().extension())
+        if(packet.info.rtp.view().extension())
         {
             info_.network.has_extended_header = true;
         }
 
-        auto& sdu                      = packet.sdu;
-        auto ptr                       = sdu.view().data();
+        auto& sdu                 = packet.sdu;
+        auto ptr                  = sdu.view().data();
         const auto payload_header = ebu_list::ttml::header(*reinterpret_cast<const ebu_list::ttml::nbo_header*>(ptr));
         ptr += sizeof(ebu_list::ttml::nbo_header);
 

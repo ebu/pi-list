@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import api from 'utils/api';
 import asyncLoader from 'components/asyncLoader';
-import StreamTimeline from 'components/stream/StreamTimeline';
+import VideoTimeline from 'components/stream/VideoTimeline';
 import Graphs from '../../components/graphs';
 
 class PerFrameAnalysisViewer extends Component {
@@ -18,11 +18,11 @@ class PerFrameAnalysisViewer extends Component {
         return (
             <React.Fragment>
                 <div className="row">
-                    <StreamTimeline
+                    <VideoTimeline
                         pcapID={this.props.pcapID}
                         streamID={this.props.streamID}
                         frames={this.props.frames}
-                        onFrameChange={frame => {
+                        onFrameChange={(index, frame) => {
                             if (frame) {
                                 this.setState({
                                     first_packet_ts: frame.first_packet_ts,

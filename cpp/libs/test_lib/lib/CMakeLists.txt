@@ -36,5 +36,3 @@ target_link_libraries(${PROJECT_NAME}
 
 # Catch Test Library test discovery (using both "debug" and "normal" so that it works for normal and multi cmake)
 include(${CONAN_LIB_DIRS_CATCH2}/cmake/Catch2/ParseAndAddCatchTests.cmake)
-
-define_pch(${PROJECT_NAME} "src/ebu/list/test_lib/pch.h")

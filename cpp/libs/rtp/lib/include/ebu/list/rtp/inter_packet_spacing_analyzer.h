@@ -17,7 +17,7 @@ namespace ebu_list::rtp
         std::optional<clock::time_point> last_packet_timestamp_;
         bool last_packet_was_marked_   = false;
         uint64_t regular_packet_count_ = 0;
-        uint64_t marked_packet_count_ = 0;
+        uint64_t marked_packet_count_  = 0;
         media::inter_packet_spacing_info_t info_{};
     };
 } // namespace ebu_list::rtp

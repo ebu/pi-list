@@ -4,8 +4,8 @@
 #include "ebu/list/analysis/serialization/audio_serialization.h"
 #include "ebu/list/analysis/serialization/serializable_stream_info.h"
 #include "ebu/list/core/memory/bimo.h"
-#include "ebu/list/rtp/listener.h"
 #include "ebu/list/rtp/inter_packet_spacing_analyzer.h"
+#include "ebu/list/rtp/listener.h"
 
 namespace ebu_list::analysis
 {

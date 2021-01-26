@@ -1,6 +1,7 @@
 # ST2110-20 Analyzer
 
-Extracts all information from the streams contained in a .pcap file.
+Extracts all the information from the streams contained in a .pcap file. 
+
 The information is written to a directory (given as an argument) with the following structure:
 
 ```

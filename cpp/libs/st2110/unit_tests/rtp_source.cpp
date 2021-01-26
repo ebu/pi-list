@@ -2,7 +2,6 @@
 #include "ebu/list/core/idioms.h"
 #include "ebu/list/core/io/file_source.h"
 #include "ebu/list/net/ethernet/decoder.h"
-#include "pch.h"
 
 using namespace ebu_list;
 using namespace ebu_list::test;

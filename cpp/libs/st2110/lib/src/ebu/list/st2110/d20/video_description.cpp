@@ -1,5 +1,4 @@
 #include "ebu/list/st2110/d20/video_description.h"
-#include "ebu/list/st2110/pch.h"
 
 using namespace ebu_list;
 using namespace ebu_list::media;

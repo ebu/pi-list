@@ -11,9 +11,10 @@ nlohmann::json pcap_info::to_json(const pcap_info& info)
     j["pcap_file_name"]   = info.pcap_file_name;
     j["analyzer_version"] = info.analyzer_version;
     j["date"]             = std::chrono::duration_cast<std::chrono::milliseconds>(info.date.time_since_epoch()).count();
-    j["capture_date"]     = std::chrono::duration_cast<std::chrono::milliseconds>(info.capture_timestamp.time_since_epoch()).count();
-    j["analyzed"]         = info.analyzed;
-    j["truncated"]        = info.truncated;
+    j["capture_date"] =
+        std::chrono::duration_cast<std::chrono::milliseconds>(info.capture_timestamp.time_since_epoch()).count();
+    j["analyzed"]  = info.analyzed;
+    j["truncated"] = info.truncated;
     j["offset_from_ptp_clock"] =
         std::chrono::duration_cast<std::chrono::nanoseconds>(info.offset_from_ptp_clock).count();
     j["video_streams"]         = info.video_streams;

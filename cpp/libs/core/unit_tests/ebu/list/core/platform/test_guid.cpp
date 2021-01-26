@@ -25,7 +25,6 @@ THE SOFTWARE.
 /*
 Slightly adapted by Pedro Ferreira (pedro@bisect.pt)
 */
-#include "pch.h"
 
 #include "catch2/catch.hpp"
 #include "ebu/list/core/platform/guid.h"

@@ -1,7 +1,5 @@
-#include "pch.h"
-
-#include "ebu/list/test_config.h"
 #include "ebu/list/test_lib/sample_files.h"
+#include "ebu/list/test_config.h"
 using namespace ebu_list;
 
 //------------------------------------------------------------------------------

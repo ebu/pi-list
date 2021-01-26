@@ -1,7 +1,6 @@
 #include "catch2/catch.hpp"
 #include "ebu/list/st2110/d20/video_format_detector.h"
 #include "ebu/list/test_lib/sample_files.h"
-#include "pch.h"
 #include "rtp_source.h"
 #include "utils.h"
 

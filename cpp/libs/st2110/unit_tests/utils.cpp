@@ -1,5 +1,4 @@
 #include "utils.h"
-#include "pch.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110;
