@@ -89,7 +89,7 @@ void media::from_json(const json& j, dscp_info& dscp)
 
 void media::to_json(nlohmann::json& j, const inter_packet_spacing_info_t& info)
 {
-    j["regular"] = info.regular;
+    j["regular"]     = info.regular;
     j["after_m_bit"] = info.after_m_bit;
 }
 

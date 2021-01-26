@@ -22,7 +22,7 @@ const CheckboxList = (props) => {
 };
 
 CheckboxList.propTypes = {
-    values: PropTypes.object.isRequired,
+    values: PropTypes.array.isRequired,
     onChange: PropTypes.func.isRequired,
 };
 

@@ -1,5 +1,4 @@
 #include "ebu/list/st2110/frame_start_filter.h"
-#include "ebu/list/st2110/pch.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110;

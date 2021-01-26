@@ -5,6 +5,7 @@ import { types as workflowTypes } from 'ebu_list_common/workflows/types';
 import ComparisonConfigPane from './Config';
 import PsnrAndDelayPane from '../../containers/comparisons/PsnrAndDelay';
 import CrossCorrelationPane from '../../containers/comparisons/CrossCorrelation';
+import AVSync from '../../containers/comparisons/AVSync';
 import Button from '../../components/common/Button';
 import ST2022_7_View from './ST2022_7_View';
 
@@ -26,7 +27,9 @@ const StreamComparisonView = props => {
                                     comp.config.comparison_type === 'psnrAndDelay'?
                                     <PsnrAndDelayPane {...props.comparisonInfo} /> :
                                         comp.config.comparison_type === 'crossCorrelation'?
-                                        <CrossCorrelationPane {...props.comparisonInfo} /> : ''
+                                        <CrossCorrelationPane {...props.comparisonInfo} /> :
+                                            comp.config.comparison_type === 'AVSync'?
+                                                <AVSync {...props.comparisonInfo} /> : ''
                         }
                     </div>
                 </div>

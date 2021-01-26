@@ -4,7 +4,7 @@ import api from '../../utils/api';
 import Button from '../../components/common/Button';
 import SectionHeader from '../../components/common/SectionHeader';
 import AudioPlayer from '../../components/audio/AudioPlayer';
-import { translateC } from '../../utils/translation';
+import { translateX, translateC } from '../../utils/translation';
 import websocketEventsEnum from '../../enums/websocketEventsEnum';
 import websocket from '../../utils/websocket';
 import CheckboxList from './CheckboxList';
@@ -57,7 +57,7 @@ const AudioExplorer = (props) => {
 
     return (
         <Fragment>
-            <SectionHeader label={translateC('headings.audio_explorer')} icon='headset' />
+            <SectionHeader label={translateX('headings.audio_explorer')} icon='headset' />
             <div className='row'>
                 <div className='col-xs-12 col-md-1'>
                     <div className='lst-stream-info-label col-xs-1'>

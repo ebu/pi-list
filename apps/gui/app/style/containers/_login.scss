@@ -1,3 +1,13 @@
+.lst-login-info {
+    margin-bottom: 2rem;
+    font-size: 12px;
+    padding: 0 2rem 0 2rem;
+
+    & > p:not(:last-of-type) {
+        margin-bottom: 1rem;
+    }
+}
+
 .lst-login {
     &--container {
         @extend .lst-no-padding, .lst-no-margin;
@@ -14,7 +24,7 @@
     }
 
     &--logo {
-        margin-bottom: $margin;
+        margin-bottom: 3rem;
         font-family: 'Montserrat', sans-serif;
         font-weight: 400;
     }

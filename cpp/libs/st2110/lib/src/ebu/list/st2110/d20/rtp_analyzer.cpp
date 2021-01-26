@@ -16,16 +16,25 @@ using namespace ebu_list::st2110::d20;
 
 struct rtp_analyzer::impl
 {
-    impl(listener_uptr l, histogram_listener_uptr l_h) : listener_(std::move(l)), histogram_listener_(std::move(l_h)) {}
+    impl(listener_uptr l, histogram_listener_uptr l_h)
+        : first_frame_(true), listener_(std::move(l)), histogram_listener_(std::move(l_h)) {}
 
     void on_data(const frame_start_filter::packet_info& source_info)
     {
-        if(source_info.frame_start)
+        if(!source_info.frame_start)
         {
-            packet_info info{source_info.packet.info.udp.packet_time, source_info.packet_index};
-            listener_->on_data(info);
-            histogram_.add_value(source_info.packet_index);
+            return;
         }
+
+        if(first_frame_)
+        {
+            first_frame_ = false;
+            return;
+        }
+
+        packet_info info{source_info.packet.info.udp.packet_time, source_info.packet_index};
+        listener_->on_data(info);
+        histogram_.add_value(source_info.packet_index);
     }
 
     void on_complete()
@@ -35,6 +44,7 @@ struct rtp_analyzer::impl
         histogram_listener_->on_complete();
     }
 
+    bool first_frame_;
     const listener_uptr listener_;
     const histogram_listener_uptr histogram_listener_;
     histogram<int> histogram_;

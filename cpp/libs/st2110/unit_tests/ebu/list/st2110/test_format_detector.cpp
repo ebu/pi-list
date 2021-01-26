@@ -6,7 +6,6 @@
 #include "ebu/list/st2110/format_detector.h"
 #include "ebu/list/test_lib/sample_files.h"
 #include "ebu/list/ttml/ttml_format_detector.h"
-#include "pch.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110;

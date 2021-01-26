@@ -1,6 +1,5 @@
 #include "ebu/list/st2110/d20/video_format_detector.h"
 #include "ebu/list/st2110/d20/packet.h"
-#include "ebu/list/st2110/pch.h"
 
 using namespace ebu_list::st2110::d20;
 using namespace ebu_list::st2110;

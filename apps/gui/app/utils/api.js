@@ -224,6 +224,7 @@ const api = {
     addLiveSource: source => request.post('live/sources', { source }),
     deleteLiveSources: ids => request.put('live/sources/delete', { ids }),
 
+    /* Workflow */
     createWorkflow: info => request.post('workflow', info),
     cancelWorkflow: info => request.put('workflow', info),
     getWorkflows: () => request.get('workflow'),
@@ -232,6 +233,7 @@ const api = {
     getComparisons: () => request.get('comparisons'),
     getComparison: comparisonID => request.get(`comparisons/${comparisonID}`),
     deleteComparison: comparisonID => request.delete(`comparisons/${comparisonID}`),
+    postComparison: (comparisonID, data) => request.post(`comparisons/${comparisonID}`, data),
 
     /* Profiles */
     analysisProfile: {
@@ -247,6 +249,9 @@ const api = {
     // URLs
     getImageFromStream: (pcapID, streamID, timestamp) =>
         getAuthUrl(`${API_URL}/pcap/${pcapID}/stream/${streamID}/frame/${timestamp}/png`),
+
+    getThumbnailFromStream: (pcapID, streamID, timestamp) =>
+        getAuthUrl(`${API_URL}/pcap/${pcapID}/stream/${streamID}/frame/${timestamp}/jpg`),
 
     downloadMp3Url: (pcapID, streamID, channelsString) =>
         getAuthUrl(

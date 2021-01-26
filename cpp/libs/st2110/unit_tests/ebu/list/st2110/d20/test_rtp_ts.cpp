@@ -1,6 +1,5 @@
 #include "catch2/catch.hpp"
 #include "ebu/list/analysis/utils/rtp_utils.h"
-#include "pch.h"
 
 using namespace ebu_list;
 using namespace ebu_list::rtp;

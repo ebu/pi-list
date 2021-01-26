@@ -53,7 +53,7 @@ nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_f
 
     auto create_handler = [&capture_timestamp, &streams, pcap_uuid](rtp::packet first_packet) {
         capture_timestamp = first_packet.info.udp.packet_time;
-        auto listener = std::make_unique<stream_listener>(first_packet, pcap_uuid);
+        auto listener     = std::make_unique<stream_listener>(first_packet, pcap_uuid);
         streams.push_back(listener.get());
         return listener;
     };
@@ -75,8 +75,8 @@ nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_f
         static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(processing_time).count());
     logger()->info("Processing time: {:.3f} s", processing_time_ms / 1000.0);
 
-    auto j_pcap_info = make_pcap_info(pcap_file, pcap_uuid, capture_timestamp, launcher.target().pcap_has_truncated_packets(),
-                                      offset_calculator->get_info());
+    auto j_pcap_info = make_pcap_info(pcap_file, pcap_uuid, capture_timestamp,
+                                      launcher.target().pcap_has_truncated_packets(), offset_calculator->get_info());
 
     json j_info;
     j_info["pcap"] = j_pcap_info;

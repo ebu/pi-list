@@ -34,12 +34,10 @@ const getConfig = async (inputConfig, folder) => {
         config.comparison_type = COMPARISON_TYPES.PSNR_AND_DELAY;
         config.media_type = main.media_type;
         config.media_specific = main.media_specific;
-    }
-    else if ((main.media_type === 'audio') && (ref.media_type === 'audio')) {
+    } else if ((main.media_type === 'audio') && (ref.media_type === 'audio')) {
         if ((main.media_specific.sampling !== ref.media_specific.sampling) &&
                 (main.media_specific.encoding !== ref.media_specific.encoding) &&
-                (main.media_specific.packet_time !== ref.media_specific.packet_time))
-        {
+                (main.media_specific.packet_time !== ref.media_specific.packet_time)) {
             throw Error('different audio format: unsupported');
         }
         config.main.channel = inputConfig.mainChannel;
@@ -49,6 +47,20 @@ const getConfig = async (inputConfig, folder) => {
         config.comparison_type = COMPARISON_TYPES.CROSS_CORRELATION;
         config.media_type = main.media_type;
         config.media_specific = main.media_specific;
+    } else if (((main.media_type === 'audio') && (ref.media_type === 'video')) ||
+        ((main.media_type === 'video') && (ref.media_type === 'audio'))) {
+        config.comparison_type = COMPARISON_TYPES.AV_SYNC;
+        config.media_type = 'A/V';
+
+        const [audioConfig, audioInfo] = (main.media_type === 'audio')?
+            [config.main, main] : [config.reference, ref]
+        audioConfig.first_packet_ts = audioInfo.statistics.first_packet_ts;
+        audioConfig.last_packet_ts = audioInfo.statistics.last_packet_ts;
+        audioConfig.packet_time = audioInfo.media_specific.packet_time;
+
+        const [videoConfig, videoInfo] = (main.media_type === 'video')?
+            [config.main, main] : [config.reference, ref]
+        videoConfig.scan_type = videoInfo.media_specific.scan_type;
     } else {
         throw Error(`Unsupported media type: ${main.media_type} + ${ref.media_type}`);
     }
