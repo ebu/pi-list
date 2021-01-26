@@ -1,131 +1,114 @@
-import React, { Component } from 'react';
-import api from 'utils/api';
-import Button from 'components/common/Button';
-import Alert from 'components/common/Alert';
-import AsyncErrorsManager from 'components/AsyncErrorsManager';
-import keyEnum from 'enums/keyEnum';
-import { translate } from 'utils/translation';
-import { client } from '../utils/api';
+import React from 'react';
+import api, { client } from '../utils/api';
+import Button from '../components/common/Button';
+import Alert from '../components/common/Alert';
+import AsyncErrorsManager from '../components/AsyncErrorsManager';
+import { translate } from '../utils/translation';
+import { useOnEnter } from '../utils/useKeyboard';
 
-class Login extends Component {
-    constructor() {
-        super();
+const Login = ({ history }) => {
+    const [user, setUser] = React.useState('');
+    const [pass, setPass] = React.useState('');
+    const [errors, setErrors] = React.useState([]);
+    const [userSuccessfullyRegistered, setUserSuccessfullyRegistered] = React.useState(false);
 
-        this.onClickLogin = this.onClickLogin.bind(this);
-        this.onKeyUpEnter = this.onKeyUpEnter.bind(this);
-        this.onClickRegister = this.onClickRegister.bind(this);
-
-        this.state = {
-            errors: [],
-            userSuccessfullyRegistered: false,
-        };
-    }
-
-    componentDidMount() {
-        document.addEventListener(keyEnum.EVENTS.KEY_UP, this.onKeyUpEnter);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener(keyEnum.EVENTS.KEY_UP, this.onKeyUpEnter);
-    }
-
-    onClickLogin() {
-        const username = this.username.value;
-        const password = this.password.value;
-
+    const onClickLogin = () => {
         client
-            .login(username, password)
-            .then(() => {
-                this.props.history.push('/');
+            .login(user, pass)
+            .then(error => {
+                if (error) {
+                    console.error(JSON.stringify(error));
+                    setErrors(['Login failed']);
+                } else {
+                    history.push('/');
+                }
             })
             .catch(() => {
-                this.setState({ errors: ['Login failed'] });
+                setErrors(['Login failed']);
             });
-    }
+    };
 
-    onKeyUpEnter(event) {
-        if (event.code === keyEnum.ENTER) {
-            return this.onClickLogin();
-        }
-    }
+    useOnEnter(onClickLogin);
 
-    onClickRegister() {
-        const username = this.username.value;
-        const password = this.password.value;
-
-        api.register({ username: username, password: password })
+    const onClickRegister = () => {
+        api.register({ username: user, password: pass })
             .then(() => {
-                this.setState({ userSuccessfullyRegistered: true, errors: [] });
+                setUserSuccessfullyRegistered(true);
+                setErrors([]);
             })
             .catch(error => {
-                this.setState({
-                    errors: [error],
-                    userSuccessfullyRegistered: false,
-                });
+                console.error(JSON.stringify(error));
+                setUserSuccessfullyRegistered(false);
+                setErrors(['Failed to register a new user. Make sure you provide a unique user name and a password.']);
             });
-    }
+    };
 
-    render() {
-        return (
-            <div className="lst-login--container row center-xs middle-xs fade-in">
-                <div className="lst-login--logo lst-text-center">
-                    <img src="/static/ebu_logo.svg" alt="EBU List logo" height="45px" />
+    const enabled = user !== '';
+
+    return (
+        <div className="lst-login--container row center-xs middle-xs fade-in">
+            <div className="lst-login--logo lst-text-center">
+                <img src="/static/ebu_list_266x64.png" alt="EBU List logo" />
+            </div>
+            <div className="lst-login--form lst-text-center">
+                <h1 className="lst-login--header">{translate('user_account.sign_in')}</h1>
+                <div className="lst-login-info">
+                    <p>To register a new user, enter a user name and a password and press the register button.</p>
+                    <p>If you are already registered, enter your credentials and press the login button.</p>
                 </div>
-                <div className="lst-login--logo lst-text-center">
-                    <b>LIST</b> - LiveIP Software Toolkit
+                <div className="lst-login--group">
+                    <input
+                        className="lst-input"
+                        type="username"
+                        placeholder={translate('user_account.email')}
+                        value={user}
+                        onChange={e => setUser(e.target.value)}
+                    />
                 </div>
-                <div className="lst-login--form lst-text-center">
-                    <h1 className="lst-login--header">{translate('user_account.sign_in')}</h1>
-                    <div className="lst-login--group">
-                        <input
-                            className="lst-input"
-                            ref={ref => (this.username = ref)}
-                            type="username"
-                            placeholder={translate('user_account.email')}
+                <div className="lst-login--group">
+                    <input
+                        className="lst-input"
+                        type="password"
+                        placeholder={translate('user_account.password')}
+                        value={pass}
+                        onChange={e => setPass(e.target.value)}
+                    />
+                </div>
+
+                <div className="lst-login--group lst-no-margin">
+                    {userSuccessfullyRegistered && (
+                        <Alert type="success" showIcon>
+                            {translate('user_account.user_registered_message')}
+                        </Alert>
+                    )}
+                    <AsyncErrorsManager errors={errors} />
+                </div>
+
+                <div className="lst-login--group lst-margin--bottom-2">
+                    <div className="col-xs-6 lst-no-padding lst-padding--right-10">
+                        <Button
+                            className="lst-login-btn"
+                            outline
+                            label={translate('buttons.register')}
+                            onClick={onClickRegister}
+                            noMargin
+                            disabled={!enabled}
                         />
                     </div>
-                    <div className="lst-login--group">
-                        <input
-                            className="lst-input"
-                            ref={ref => (this.password = ref)}
-                            type="password"
-                            placeholder={translate('user_account.password')}
+                    <div className="col-xs-6 lst-no-padding lst-padding--left-10">
+                        <Button
+                            className="lst-login-btn"
+                            type="info"
+                            label={translate('buttons.login')}
+                            onClick={onClickLogin}
+                            noMargin
+                            disabled={!enabled}
                         />
-                    </div>
-
-                    <div className="lst-login--group lst-no-margin">
-                        {this.state.userSuccessfullyRegistered && (
-                            <Alert type="success" showIcon>
-                                {translate('user_account.user_registered_message')}
-                            </Alert>
-                        )}
-                        <AsyncErrorsManager errors={this.state.errors} />
-                    </div>
-
-                    <div className="lst-login--group lst-margin--bottom-2">
-                        <div className="col-xs-6 lst-no-padding lst-padding--right-10">
-                            <Button
-                                className="lst-login-btn"
-                                outline
-                                label={translate('buttons.register')}
-                                onClick={this.onClickRegister}
-                                noMargin
-                            />
-                        </div>
-                        <div className="col-xs-6 lst-no-padding lst-padding--left-10">
-                            <Button
-                                className="lst-login-btn"
-                                type="info"
-                                label={translate('buttons.login')}
-                                onClick={this.onClickLogin}
-                                noMargin
-                            />
-                        </div>
                     </div>
                 </div>
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 export default Login;
