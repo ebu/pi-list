@@ -28,7 +28,7 @@ It is mostly tested on North American streams.
 
 The delay between packet time and RTP timestamp should be moderate.
 Though no range has been defined anywhere, EBU-LIST applies the same
-constraints as for video, i.e. [JT-NM tested program](http://jt-nm.org/documents/JT-NM_Tested_Catalog_ST2110_Full-Online-2019-09-10.pdf)
+constraints as for video, i.e. [JT-NM tested program](https://static.jt-nm.org/documents/JT-NM_Tested_Catalog_ST2110_Full-Online-2020-05-12.pdf)
 proposes: "The instantaneous value of theRTP timestamp of the stream is
 not in the future, not more than 1 ms in the past (unless justified),
 and preserves a stable relation to the PTP (should not “drift”)"
