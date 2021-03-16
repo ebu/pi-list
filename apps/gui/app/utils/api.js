@@ -184,8 +184,10 @@ const api = {
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/DeltaRtpVsNt?from=${fromNs}&to=${toNs}`),
     getPacketsPerFrame: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/packetsPerFrame?from=${fromNs}&to=${toNs}`),
-    getAudioPktTsVsRtpTs: (pcapID, streamID, fromNs, toNs) =>
-        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/AudioPktTsVsRtpTs?from=${fromNs}&to=${toNs}`),
+    getAudioPktTsVsRtpTsRaw: (pcapID, streamID, fromNs, toNs) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/AudioPktTsVsRtpTsRaw?from=${fromNs}&to=${toNs}`),
+    getAudioPktTsVsRtpTsGrouped: (pcapID, streamID, fromNs, toNs, groupNs) =>
+        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/AudioPktTsVsRtpTsGrouped?from=${fromNs}&to=${toNs}&group=${groupNs}`),
     getAudioTimeStampedDelayFactor: (pcapID, streamID, fromNs, toNs, toleranceUs, tsdfmaxUs) =>
         request.get(
             `pcap/${pcapID}/stream/${streamID}/analytics/AudioTimeStampedDelayFactor?from=${fromNs}&to=${toNs}&tolerance=${toleranceUs}&tsdfmax=${tsdfmaxUs}`

@@ -22,7 +22,7 @@ export const getAudioCursor = (mp3Duration, mp3CurrentTime, audioInfo) => {
     /* compute RTP ts from pkt ts - deltaPktVsRtp */
     const margin_sec = audioInfo.packet_time / msPerSec / 2;
 
-    return api.getAudioPktTsVsRtpTs(
+    return api.getAudioPktTsVsRtpTsRaw(
         audioInfo.pcap,
         audioInfo.stream,
         (absTime - margin_sec) * nsPerSec,

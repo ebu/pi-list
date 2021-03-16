@@ -30,6 +30,10 @@ class InfluxDbManager {
         return `time >= ${startTime}ns and time <= ${endTime}ns`;
     }
 
+    timeGroupFilter(startTime, endTime, groupTime) {
+        return `time >= ${startTime}ns and time <= ${endTime}ns group by time(${groupTime}ns)`;
+    }
+
     sendQueryAndFormatResults(query) {
         return this.influx.query(query).then(data =>
             data.map(item => ({
@@ -128,7 +132,7 @@ class InfluxDbManager {
 
     getDeltaPacketTimeVsRtpTimeMinMax(pcapID, streamID) {
         const query = `
-            select MAX("delta_packet_time_vs_rtp_time_ns") as "max", MIN("delta_packet_time_vs_rtp_time_ns") as "min", MEAN("delta_packet_time_vs_rtp_time_ns") as "avg"
+            select MAX("delta_packet_time_vs_rtp_time_ns") as "max", MIN("delta_packet_time_vs_rtp_time_ns") as "min", MEAN("delta_packet_time_vs_rtp_time_ns") as "mean"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}`;
 
         log.info(
@@ -153,7 +157,7 @@ class InfluxDbManager {
 
     getDeltaRtpVsNtTicksMinMax(pcapID, streamID) {
         const query = `
-            select MAX("delta_rtp_vs_NTs") as "max", MIN("delta_rtp_vs_NTs") as "min", MEAN("delta_rtp_vs_NTs") as "avg"
+            select MAX("delta_rtp_vs_NTs") as "max", MIN("delta_rtp_vs_NTs") as "min", MEAN("delta_rtp_vs_NTs") as "mean"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}`;
 
         log.info(`Get DeltaRtpVsNtTicksMinMax for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
@@ -176,7 +180,7 @@ class InfluxDbManager {
 
     getDeltaToPreviousRtpTsMinMax(pcapID, streamID, startTime, endTime) {
         const query = `
-            select MAX("delta_previous_rtp_ts") as "max", MIN("delta_previous_rtp_ts") as "min", MEAN("delta_previous_rtp_ts") as "avg"
+            select MAX("delta_previous_rtp_ts") as "max", MIN("delta_previous_rtp_ts") as "min", MEAN("delta_previous_rtp_ts") as "mean"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}
         `;
 
@@ -197,11 +201,23 @@ class InfluxDbManager {
         return this.sendQueryAndFormatResults(query);
     }
 
-    getAudioPktTsVsRtpTs(pcapID, streamID, startTime, endTime) {
+    getAudioPktTsVsRtpTsRaw(pcapID, streamID, startTime, endTime) {
         const query = `
             select
             "audio-pkt-vs-rtp" as "value"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
+        `;
+
+        log.info(`Get RTP-TS vs PKT-TS for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+
+        return this.sendQueryAndFormatResults(query);
+    }
+
+    getAudioPktTsVsRtpTsGrouped(pcapID, streamID, startTime, endTime, groupTime) {
+        const query = `
+            select
+            max("audio-pkt-vs-rtp") as "max", mean("audio-pkt-vs-rtp") as "mean", min("audio-pkt-vs-rtp") as "min"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeGroupFilter(startTime, endTime, groupTime)}
         `;
 
         log.info(`Get RTP-TS vs PKT-TS for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
