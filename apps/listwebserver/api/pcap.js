@@ -328,11 +328,23 @@ router.get('/:pcapID/stream/:streamID/analytics/Vrx/histogram', (req, res) => {
 });
 
 /* Audio Delays */
-router.get('/:pcapID/stream/:streamID/analytics/AudioPktTsVsRtpTs', (req, res) => {
+router.get('/:pcapID/stream/:streamID/analytics/AudioPktTsVsRtpTsRaw', (req, res) => {
     const { pcapID, streamID } = req.params;
     const { from, to } = req.query;
 
-    chartData = influxDbManager.getAudioPktTsVsRtpTs(pcapID, streamID, from, to);
+    chartData = influxDbManager.getAudioPktTsVsRtpTsRaw(pcapID, streamID, from, to);
+    chartData
+        .then((data) => {
+            res.json(data);
+        })
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+});
+
+router.get('/:pcapID/stream/:streamID/analytics/AudioPktTsVsRtpTsGrouped', (req, res) => {
+    const { pcapID, streamID } = req.params;
+    const { from, to, group } = req.query;
+
+    chartData = influxDbManager.getAudioPktTsVsRtpTsGrouped(pcapID, streamID, from, to, group);
     chartData
         .then((data) => {
             res.json(data);

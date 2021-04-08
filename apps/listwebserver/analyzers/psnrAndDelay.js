@@ -159,8 +159,8 @@ const createComparator = async (config) => {
     const pixels = Math.floor(remainder / pixelDuration);
     var fields = 0;
     if (interlaced) {
-        frames = Math.floor(frames/2);
         fields = frames % 2;
+        frames = Math.floor(frames/2);
     }
     const media = {
         sign: Math.sign(delay.actual),

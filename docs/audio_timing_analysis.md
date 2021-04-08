@@ -4,12 +4,12 @@
 
 `Delta Packet vs RTP`:
 
-[JT-NM TESTED program - 5.3](https://jt-nm.org/documents/JT-NM_Tested_Catalog_ST2110_Full-Online-2020-05-12.pdf)
-recommends to compute the delta between the packet arrival time
-(corresponding to PTP time) and the RTP timestamp. The value must not
-be negative (RTP time in the future) and lower than 500ms (in the past).
-These permitted range is hardcoded in apps/listwebserver/analyzers/audio.js
-but would eventually be adjustable.
+[JT-NM TESTED program - 5.3](https://static.jt-nm.org/documents/JT-NM_Tested_Catalog_ST2110_Full-Online-2020-05-12.pdf)
+recommends to compute the delta between the packet arrival time and the
+RTP timestamp. The value must not be negative (RTP time in the future)
+and lower than 1ms (in the past). This acceptable range is hardcoded in
+'apps/listwebserver/analyzers/audio.js' but would eventually be
+adjustable.
 
 The precision of the arrival time relies on the
 accuracy of the packet timestamping of the capturing device which is

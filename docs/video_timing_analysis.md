@@ -51,7 +51,7 @@
 
 | Parameter | Explanation |
 | ------ | ------ |
-| Latency | = TP<i>A</i><sub>0</sub> - RTP<sub>Timestamp</sub> <p>Acceptable range is given by [JT-NM Tested Program - 4.4](https://jt-nm.org/documents/JT-NM_Tested_Catalog_ST2110_Full-Online-2020-05-12.pdf): "The instantaneous value of the RTP timestamp of the stream is not in the future, not more than 1 ms in the past (unless justified), and preserve a stable relation to the PTP" |
+| Latency | = TP<i>A</i><sub>0</sub> - RTP<sub>Timestamp</sub> <p>Acceptable range is given by [JT-NM Tested Program - 4.4](https://static.jt-nm.org/documents/JT-NM_Tested_Catalog_ST2110_Full-Online-2020-05-12.pdf): "The instantaneous value of the RTP timestamp of the stream is not in the future, not more than 1 ms in the past (unless justified), and preserve a stable relation to the PTP" |
 RTP<sub>OFFSET</sub>|This measurement is the difference between the time encoded in the RTP timestamp and the epoch-aligned start of the frame period. <p>RTP<sub>OFFSET</sub> = RTP<sub>Timestamp</sub> - N x T<sub>frame</sub>  <p>The RTP<sub>OFFSET</sub> measurement is affected by: PTP lock and Phase Offset and of the Sender and the Test Receiver Relationship of the underlying RTP Clock to PTP (is the signal locked to PTP) <p>The PTP time of the RTP is limited by the resolution of the 90 kHz RTP Clock, which has quantization of 11µs.  The true PTP time of when a packet is assembled in the sender output buffer will be somewhere within this 11µs RTP window. So even in a perfect system, the measurements will have a tolerance of 11 µs.
 | Inter-Frame RTP TS Delta | Delta between RTP timestamps of 2 consecutive frames/fields; determined by frame rate |
 

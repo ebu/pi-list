@@ -4,6 +4,6 @@ import { histogramAsPercentages } from './utils';
 
 import './index.scss';
 
-export default { Line: LineGraphHOC, Histogram: HistogramHOC };
+export default { Line: LineGraphHOC, Histogram: HistogramHOC, lineSize: 1000 };
 
 export { histogramAsPercentages };

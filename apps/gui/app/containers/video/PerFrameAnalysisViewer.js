@@ -22,6 +22,7 @@ class PerFrameAnalysisViewer extends Component {
                         pcapID={this.props.pcapID}
                         streamID={this.props.streamID}
                         frames={this.props.frames}
+                        initFrameIndex={0}
                         onFrameChange={(index, frame) => {
                             if (frame) {
                                 this.setState({

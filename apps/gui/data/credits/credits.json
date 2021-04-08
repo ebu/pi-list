@@ -35,7 +35,7 @@
         "licenseUrl": "https://github.com/victorfern91/base64",
         "parents": "listwebserver"
     },
-    "bcrypt@3.0.8": {
+    "bcrypt@5.0.0": {
         "licenses": "MIT",
         "repository": "https://github.com/kelektiv/node.bcrypt.js",
         "licenseUrl": "https://github.com/kelektiv/node.bcrypt.js/raw/master/LICENSE",

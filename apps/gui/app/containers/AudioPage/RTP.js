@@ -15,11 +15,12 @@ const RTP = props => {
                         xTitleTag="media_information.timeline"
                         yTitleTag="media_information.delay"
                         asyncGetter={() =>
-                            api.getAudioPktTsVsRtpTs(
+                            api.getAudioPktTsVsRtpTsGrouped(
                                 props.pcapID,
                                 props.streamID,
                                 first_packet_ts,
-                                last_packet_ts)
+                                last_packet_ts,
+                                Math.round((last_packet_ts - first_packet_ts) / Graphs.lineSize))
                         }
                     />
                 </div>

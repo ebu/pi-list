@@ -11,7 +11,7 @@ const PsnrAndDelayPane = props => {
     const summary = [
         {
             labelTag: 'comparison.result.max_psnr',
-            value: psnr.max.psnr,
+            value: psnr.max.psnr.toFixed(3),
             units: 'dB',
         },
         {
