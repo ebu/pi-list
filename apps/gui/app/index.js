@@ -5,7 +5,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import App from 'containers/App';
-import Login from 'pages/Login';
+import Login from './pages/Login';
 
 import 'style/index.scss';
 import LogoutPage from './pages/LogoutPage';

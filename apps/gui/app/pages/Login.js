@@ -1,4 +1,6 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
 import api, { client } from '../utils/api';
 import Button from '../components/common/Button';
 import Alert from '../components/common/Alert';
@@ -44,6 +46,18 @@ const Login = ({ history }) => {
     };
 
     const enabled = user !== '';
+
+    const location = useLocation();
+
+    if (location.search) {
+        const queryParams = queryString.parse(location.search);
+        console.log(JSON.stringify(queryParams));
+
+        if (queryParams.token) {
+            client.setToken(queryParams.token);
+            history.push(queryParams.location || '/');
+        }
+    }
 
     return (
         <div className="lst-login--container row center-xs middle-xs fade-in">

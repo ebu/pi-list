@@ -257,6 +257,12 @@
         "licenseUrl": "https://github.com/facebook/prop-types/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
+    "query-string@7.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/sindresorhus/query-string",
+        "licenseUrl": "https://github.com/sindresorhus/query-string/raw/master/license",
+        "parents": "list-ebu-gui"
+    },
     "react-custom-scrollbars@4.2.1": {
         "licenses": "MIT",
         "repository": "https://github.com/malte-wessel/react-custom-scrollbars",
