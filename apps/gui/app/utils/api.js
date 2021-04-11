@@ -66,7 +66,11 @@ const api = {
     /* Auth */
     getUser: () => request.get('user'),
     updateUserPreferences: value => request.patch('user/preferences', { value }),
-    deleteUser: data => request.post('user/delete', data).then(client.logout(), request.httpRedirect('/login')),
+    deleteUser: async data => {
+        await request.post('user/delete', data);
+        client.logout();
+        window.appHistory.push('/login');
+    },
 
     register: loginData => axios.post(`${REST_URL}/user/register`, loginData).then(response => response.data),
 
@@ -187,7 +191,9 @@ const api = {
     getAudioPktTsVsRtpTsRaw: (pcapID, streamID, fromNs, toNs) =>
         request.get(`pcap/${pcapID}/stream/${streamID}/analytics/AudioPktTsVsRtpTsRaw?from=${fromNs}&to=${toNs}`),
     getAudioPktTsVsRtpTsGrouped: (pcapID, streamID, fromNs, toNs, groupNs) =>
-        request.get(`pcap/${pcapID}/stream/${streamID}/analytics/AudioPktTsVsRtpTsGrouped?from=${fromNs}&to=${toNs}&group=${groupNs}`),
+        request.get(
+            `pcap/${pcapID}/stream/${streamID}/analytics/AudioPktTsVsRtpTsGrouped?from=${fromNs}&to=${toNs}&group=${groupNs}`
+        ),
     getAudioTimeStampedDelayFactor: (pcapID, streamID, fromNs, toNs, toleranceUs, tsdfmaxUs) =>
         request.get(
             `pcap/${pcapID}/stream/${streamID}/analytics/AudioTimeStampedDelayFactor?from=${fromNs}&to=${toNs}&tolerance=${toleranceUs}&tsdfmax=${tsdfmaxUs}`

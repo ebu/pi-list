@@ -78,8 +78,6 @@ export class Client {
             console.error(`Login error ${err}`);
             return err;
         }
-
-        this.invalidateToken();
     }
 
     public revalidate(): void {
@@ -105,10 +103,7 @@ export class Client {
         return token !== undefined;
     }
 
-    ////////////////////
-    // Private
-
-    private setToken(token: string): void {
+    public setToken(token: string): void {
         this.storageHandler.setItem(tokenLocalStorageKey, token);
 
         const decoded = decodeToken(token);
@@ -124,6 +119,9 @@ export class Client {
         console.log(`Token expires in ${expireInMs}ms. Setting the timer to fire in ${revalidateTime}ms`);
         this.resetTimer(revalidateTime);
     }
+
+    ////////////////////
+    // Private
 
     private invalidateToken(): void {
         this.storageHandler.removeItem(tokenLocalStorageKey);

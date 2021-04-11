@@ -73,11 +73,13 @@ const middleware = (state, action) => {
             break;
 
         case Actions.acceptGDPR:
-            const gdprData = _.cloneDeep(state.gdprData);
-            gdprData.gdprAccepted = true;
-            gdprData.collectMetrics = action.value;
+            {
+                const gdprData = _.cloneDeep(state.gdprData);
+                gdprData.gdprAccepted = true;
+                gdprData.collectMetrics = action.value;
 
-            api.acceptGDPR(gdprData);
+                api.acceptGDPR(gdprData);
+            }
             break;
 
         default:
@@ -108,8 +110,8 @@ const AppContainer = props => {
         }
     }, [theme]);
 
-    const account_delete_message = <T t="user_account.delete_confirmation" />;
-    const account_delete_label = <T t="user_account.delete_user_account" />;
+    const accountDeleteMessage = <T t="user_account.delete_confirmation" />;
+    const accountDeleteLabel = <T t="user_account.delete_user_account" />;
 
     return (
         <div className={`lst-app-container ${theme}`}>
@@ -129,8 +131,8 @@ const AppContainer = props => {
                 <PopUp
                     type="deletecancel"
                     visible={showModal}
-                    message={account_delete_message}
-                    label={account_delete_label}
+                    message={accountDeleteMessage}
+                    label={accountDeleteLabel}
                     onClose={() => dispatch({ type: Actions.deleteUserDismiss })}
                     onDoAction={() => dispatch({ type: Actions.deleteUserExecute })}
                 />
