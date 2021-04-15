@@ -132,7 +132,7 @@ class InfluxDbManager {
 
     getDeltaPacketTimeVsRtpTimeMinMax(pcapID, streamID) {
         const query = `
-            select MAX("delta_packet_time_vs_rtp_time_ns") as "max", MIN("delta_packet_time_vs_rtp_time_ns") as "min", MEAN("delta_packet_time_vs_rtp_time_ns") as "mean"
+            select max("delta_packet_time_vs_rtp_time_ns") as "max", min("delta_packet_time_vs_rtp_time_ns") as "min", mean("delta_packet_time_vs_rtp_time_ns") as "avg"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}`;
 
         log.info(
@@ -157,7 +157,7 @@ class InfluxDbManager {
 
     getDeltaRtpVsNtTicksMinMax(pcapID, streamID) {
         const query = `
-            select MAX("delta_rtp_vs_NTs") as "max", MIN("delta_rtp_vs_NTs") as "min", MEAN("delta_rtp_vs_NTs") as "mean"
+            select max("delta_rtp_vs_NTs") as "max", min("delta_rtp_vs_NTs") as "min", mean("delta_rtp_vs_NTs") as "avg"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}`;
 
         log.info(`Get DeltaRtpVsNtTicksMinMax for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
@@ -180,7 +180,7 @@ class InfluxDbManager {
 
     getDeltaToPreviousRtpTsMinMax(pcapID, streamID, startTime, endTime) {
         const query = `
-            select MAX("delta_previous_rtp_ts") as "max", MIN("delta_previous_rtp_ts") as "min", MEAN("delta_previous_rtp_ts") as "mean"
+            select max("delta_previous_rtp_ts") as "max", min("delta_previous_rtp_ts") as "min", mean("delta_previous_rtp_ts") as "avg"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}
         `;
 
@@ -216,7 +216,7 @@ class InfluxDbManager {
     getAudioPktTsVsRtpTsGrouped(pcapID, streamID, startTime, endTime, groupTime) {
         const query = `
             select
-            max("audio-pkt-vs-rtp") as "max", mean("audio-pkt-vs-rtp") as "mean", min("audio-pkt-vs-rtp") as "min"
+            max("audio-pkt-vs-rtp") as "max", min("audio-pkt-vs-rtp") as "min", mean("audio-pkt-vs-rtp") as "avg"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeGroupFilter(startTime, endTime, groupTime)}
         `;
 

@@ -51,7 +51,6 @@ const Login = ({ history }) => {
 
     if (location.search) {
         const queryParams = queryString.parse(location.search);
-        console.log(JSON.stringify(queryParams));
 
         if (queryParams.token) {
             client.setToken(queryParams.token);
