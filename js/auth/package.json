@@ -32,6 +32,6 @@
     "http": "0.0.1-security",
     "https": "^1.0.0",
     "jwt-decode": "^3.0.0",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.21"
   }
 }
