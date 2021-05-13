@@ -50,9 +50,9 @@ const createComparator = async (config) => {
     buffers[1] = buffers[1].slice(0, bufLength);
     var xcorrRaw = Xcorr(buffers[1], buffers[0]); // main as 1 param
 
-    // 2nd pass: keep overlapping samples and set everything to 0
+    // 2nd pass: keep overlapping samples and set everything else to 0
     const n = Math.abs(xcorrRaw.iMax) * 2;
-    if (xcorrRaw.iMax > 0)
+    if (xcorrRaw.iMax >= 0)
     {
         buffers[0] = Buffer.concat([buffers[0].slice(0, bufLength-n), Buffer(Array.from(Array(n), ()=>0))]);
         buffers[1] = Buffer.concat([Buffer(Array.from(Array(n), ()=>0)), buffers[1].slice(n, bufLength)]);
@@ -65,12 +65,18 @@ const createComparator = async (config) => {
         xcorrRaw = Xcorr(buffers[1], buffers[0]);
     }
 
+    if (isNaN(xcorrRaw.xcorrMax)) {
+        logger('audio-xcorr:').info(`too different signals, return 0s`)
+        xcorrRaw.xcorrMax = 0;
+        xcorrRaw.xcorr = [0];
+        xcorrRaw.index = 0;
+    }
 
     // because of padding, xcorrRaw.xcorr.length == 1.366 * bufLength!!!
     const l = xcorrRaw.xcorr.length; // even
-    // 1st mesasure corresponds to a 0-shift and last is -1, [0, ..., l/2, -l/2, ..., -1]
-    // so let's reorder to [-l/2, ..., 0, ..., l/2]
-    const xcorrIndex = Array.from(Array(l).keys()).map(v => v - l/2 + 1);
+    // 1st measurement corresponds to a 0-shift and last is -1, [0, ..., l/2, -l/2, ..., -1]
+    // so let's reorder to [-l/2, ..., -1, 0, ..., l/2]
+    const xcorrReorderIndex = Array.from(Array(l).keys()).map(v => v - l/2 + 1);
     const xcorrReorder = Array.from(xcorrRaw.xcorr).slice(l/2, l).concat(Array.from(xcorrRaw.xcorr).slice(0, l/2));
     // xcorrRaw.iMax == 0 should be in the middle
     const iMax = xcorrRaw.iMax + l/2;
@@ -83,13 +89,14 @@ const createComparator = async (config) => {
 
     // adjust timings
     const captureDelay = (config.main.first_packet_ts - config.reference.first_packet_ts) / 1000; //us
-    const timeDelay = xcorrRaw.iMax / parseInt(config.media_specific.sampling) * 1000000; // us
+    const mediaDelay = xcorrRaw.iMax / parseInt(config.media_specific.sampling) * 1000000; // us
 
     logger('audio-xcorr:').info(`len: buf=${bufLength}, xcorr=${l}`)
-    logger('audio-xcorr:').info(`len: reorder=${xcorrReorder.length}, index=${xcorrIndex.length}, win=${xcorrWindow.length}`)
+    logger('audio-xcorr:').info(`len: reorder=${xcorrReorder.length}, index=${xcorrReorderIndex.length}, win=${xcorrWindow.length}`)
     logger('audio-xcorr:').info(`max index: rel=${xcorrRaw.iMax}, abs=${iMax}`)
     logger('audio-xcorr:').info(`max value: given=${xcorrRaw.xcorrMax}, guessed=${xcorrReorder[iMax]}`)
-    logger('audio-xcorr:').info(`win: [${windowMin}, ${windowMax}]`)
+    logger('audio-xcorr:').info(`win index: [${windowMin}, ${windowMax}]`)
+    logger('audio-xcorr:').info(`delay: capture:${captureDelay} media:${mediaDelay}`)
 
     //TODO Get RTP TS delta
 
@@ -97,13 +104,13 @@ const createComparator = async (config) => {
         xcorr: {
             max: xcorrRaw.xcorrMax,
             raw: xcorrWindow,
-            index: xcorrIndex[windowMin],
+            index: xcorrReorderIndex[windowMin],
         },
         delay: {
             sample: xcorrRaw.iMax,
-            time: timeDelay,
+            time: mediaDelay,
             capture: captureDelay,
-            actual: (timeDelay + captureDelay),
+            actual: (mediaDelay + captureDelay),
         },
         transparency: xcorrRaw.xcorrMax > 0.99,
     };

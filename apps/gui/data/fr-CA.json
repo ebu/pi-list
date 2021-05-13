@@ -298,7 +298,7 @@
   "comparison.result.delay.media": "retard médias",
   "comparison.result.delay.actual": "Délai réel",
   "comparison.result.delay.rtp": "Retard RTP",
-  "comparison.result.delay.relative": "Retard relatif",
+  "comparison.result.delay.relative": "Retard relatif (echantillons)",
   "comparison.result.psnr_vs_time_shift": "PSNR vs décalage temporel",
   "comparison.result.transparency": "Transparence",
   "comparison.result.delay": "Retard",
