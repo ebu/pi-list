@@ -11,6 +11,7 @@ const CrossCorrelationPane = (props) => {
             labelTag: 'comparison.result.cross_correlation_max',
             value:  xcorr.max.toFixed(3),
             units: '/1',
+            attention: xcorr.max == 0,
         },
         /* Still unsure if intermediate results are relevant
         {
@@ -36,13 +37,16 @@ const CrossCorrelationPane = (props) => {
         },
     ]
 
-    const comment = `Main stream is ${
+    var comment = `Main stream is ${
                 delay.actual == 0? 'in sync with' :
                     delay.actual < 0? 'earlier' : 'later'
            } than Reference stream.
            And content is ${
                props.result.transparency? 'the same' : 'altered'
            }.`;
+
+    if (xcorr.max == 0)
+        comment = "!!! audio waveforms are too different !!!"
 
     return (
         <div>
@@ -59,11 +63,12 @@ const CrossCorrelationPane = (props) => {
                             titleTag="comparison.result.cross_correlation"
                             xTitleTag="comparison.result.delay.relative"
                             yTitle="X-corr"
+                            layoutProperties={{ xaxis: { tickformat: ',d'}}}
                             asyncGetter={async () => {
                                 return xcorr.raw.map((e, i) => {
                                     return {
                                         value: e,
-                                        index: xcorr.index + i,
+                                        index: xcorr.index + i, //xcorr.index is actually the index of 1st element of the window
                                     };
                                 });
                             }}

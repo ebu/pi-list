@@ -23,6 +23,10 @@ void ebu_list::on_error_exit(std::exception_ptr e)
     }
 }
 
+void ebu_list::on_error_ignore(std::exception_ptr /*e*/)
+{
+}
+
 //------------------------------------------------------------------------------
 
 pcap_player::pcap_player(path pcap_file, udp::listener_ptr listener, on_error_t on_error,

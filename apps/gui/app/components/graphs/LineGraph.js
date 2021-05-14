@@ -22,10 +22,10 @@ const Graph = ({
     yTitle,
     layoutProperties,
 }) => {
-    const layout = _.merge(getBaseLayout(), layoutProperties);
+    const baseLayout = _.merge(getBaseLayout(), { xaxis: { tickformat: '%H:%M:%S.%L'}});
+    const layout = _.merge(baseLayout, layoutProperties);
     layout.xaxis.title.text = xTitle;
     layout.yaxis.title.text = yTitle;
-    layout.xaxis.tickformat = '%H:%M:%S.%L';
     layout.legend = {
         font: {
             color: '#000',

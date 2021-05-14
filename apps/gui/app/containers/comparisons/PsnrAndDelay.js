@@ -11,7 +11,7 @@ const PsnrAndDelayPane = props => {
     const summary = [
         {
             labelTag: 'comparison.result.max_psnr',
-            value: psnr.max.psnr.toFixed(3),
+            value: (psnr.max.psnr === 'inf')? '∞': psnr.max.psnr.toFixed(3),
             units: 'dB',
         },
         {
@@ -53,11 +53,12 @@ const PsnrAndDelayPane = props => {
                             titleTag="comparison.result.psnr_vs_time_shift"
                             xTitle={`Time (${interlaced? 'Fields' : 'Frames'})`}
                             yTitle="PSNR (dB)"
+                            layoutProperties={{ xaxis: { tickformat: ',d'}}}
                             asyncGetter={async () => {
                                 return psnr.raw.map((e, i) => {
                                     return {
                                         value: e === 'inf' ? 100 : e,
-                                        index: i - psnr.raw.length/2 + 1,
+                                        index: i - psnr.raw.length/2,
                                     };
                                 });
                             }}

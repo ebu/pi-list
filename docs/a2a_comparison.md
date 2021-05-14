@@ -27,6 +27,7 @@ Displayed results:
 
 ## Limitation:
 
+* graph's x axis does's take the possible capture delay into account so the shown relative numbers of samples may not reflect the `actual delay`
 * the nodejs dependencies (abr-xcorr and dsp.js) require 16-bit samples as input.
 * in order to keep the measurement accurate, the user must use his judgment to adjust the capture setttings according to the expected result. For instance, the capture duration should be a few seconds if the expected delay is 500ms.
 
