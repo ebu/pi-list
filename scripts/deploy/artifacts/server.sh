@@ -66,7 +66,7 @@ remove()
 
 prune()
 {
-    echo -e "Prunning..." '\n'
+    echo -e "Pruning..." '\n'
     docker-compose rm -f -s -v
     echo -e "Pruned!" '\n'
     exit

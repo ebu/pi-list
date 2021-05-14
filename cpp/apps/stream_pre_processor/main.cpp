@@ -114,6 +114,8 @@ int main(int argc, char* argv[])
             const auto pcap_path   = message.find("pcap_path");
             json response{};
 
+            ack();
+
             if(!is_action_valid(message, action))
             {
                 response = compose_response("", "failed", 0, "Invalid \"action\" field.", "");
@@ -147,9 +149,8 @@ int main(int argc, char* argv[])
                     response = compose_response(workflow_id->get<std::string>(), "failed", 100, ex.what(), "");
                     console->info("Processing {} failed.", pcap_id->get<std::string>());
                 }
-
-                ack();
             }
+
             exchange.send(ebu_list::definitions::exchanges::preprocessor_status::keys::announce, response.dump());
             timer.fire_async();
         };
