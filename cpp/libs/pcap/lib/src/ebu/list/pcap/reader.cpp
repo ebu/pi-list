@@ -34,7 +34,7 @@ maybe_packet pcap::read_packet(const file_header_lens& header, chunked_data_sour
         const auto message = fmt::format("Request to read invalid packet size (0x{:x}) at position 0x{:x}",
                                          included_len, source.get_current_offset());
         logger()->error(message);
-        throw std::runtime_error(message);
+        return std::nullopt;
     }
 
     auto data = source.try_read_exactly(included_len);

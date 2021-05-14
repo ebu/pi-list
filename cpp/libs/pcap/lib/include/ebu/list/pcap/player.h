@@ -9,7 +9,8 @@ namespace ebu_list
 {
     // TODO: move this to a common place
     using on_error_t = std::function<void(std::exception_ptr)>;
-    void on_error_exit(std::exception_ptr e);
+    void on_error_exit(std::exception_ptr);
+    void on_error_ignore(std::exception_ptr);
 } // namespace ebu_list
 
 namespace ebu_list::pcap
