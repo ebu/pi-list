@@ -283,7 +283,6 @@ void analysis::run_full_analysis(processing_context& context)
     launcher.wait();
     main_executor->wait();
 
-    context.pcap.analyzed              = true;
     context.pcap.audio_streams         = nr_audio.load();
     context.pcap.video_streams         = nr_video.load();
     context.pcap.anc_streams           = nr_anc.load();

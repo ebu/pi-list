@@ -543,8 +543,8 @@ function pcapIngestEnd(req, res, next) {
     const userId = getUserId(req);
     const pcapId = req.pcap.uuid;
 
-    Pcap.findOne({ id: pcapId })
-        .exec() // it returns the mongo db record of the PCAP
+    Pcap.findOneAndUpdate( { id: pcapId }, { analyzed: true }, { new: true })
+        .exec()
         .then((pcapData) => {
             // Everything is done, we must notify the GUI
             websocketManager.instance().sendEventToUser(userId, {
