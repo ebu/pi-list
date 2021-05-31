@@ -41,10 +41,11 @@ function generateRandomPcapFilename(file) {
 }
 
 function generateRandomPcapDefinition(req, optionalPcapId) {
-    const pcapId = optionalPcapId || uuidv4();
+    const { pcapID } = req.query;
+    const id = pcapID || uuidv4();
     return {
-        uuid: pcapId,
-        folder: `${getUserFolder(req)}/${pcapId}`,
+        uuid: id,
+        folder: `${getUserFolder(req)}/${id}`,
     };
 }
 
