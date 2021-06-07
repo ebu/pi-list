@@ -40,8 +40,8 @@ export const getAudioCursor = (mp3Duration, mp3CurrentTime, audioInfo) => {
 
 export const getVideoCursor = (frame, index, videoInfo) => {
 
-    /* frame Ts is middle point between 1st and last pks ts */
-    const absTime = (frame.first_packet_ts + frame.last_packet_ts) / nsPerSec / 2;
+    /* frame Ts is the beginning of the frame */
+    const absTime = frame.first_packet_ts / nsPerSec;
 
     /* compute RTP ts from pkt ts - deltaPktVsRtp
        deltaPktVsRtp which is logged at the begining of next frame */
