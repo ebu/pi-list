@@ -22,18 +22,21 @@ domain (RTP timestamps).
     - press `Compare`
 * Select the new analysis in the list below
 * In `AV sync` page:
-    - select the frame in video timeline corresponding to event produce
-      by the pattern generator
+    - select the frame/field in video timeline corresponding to a noticeable event
     - select the matching audio event in the waveform
-* See Results detailed below
+
+![a2v](./a2v_delay_measurement.png)
+
+* See results description below
 
 ## Under the hood
 
+* On audio cursor moved, the *audio capture time marker* is computed from the
+  the new cursor position on the waveform (relative time) plus the
+  capture timestamps of the 1st packet of audio stream (offset).
 * On frame selection, the *video capture time marker* corresponds to the capture timestamp
-  of the packet in the middle of the frame.
-* On audo cursor moved, the *audio capture time marker* is interpolated from the
-  the click position on the waveform plus the capture timestamps of the
-  1st packet of audio stream.
+  of 1st the packet of the frame/field. This works perfectly for a
+  pattern generator, but not 100% accurate for natural feed.
 * For both audio and video, *RTP time marker* = *capture time marker* - *pkt_time_vs_rtp_time*
   (from influxDB).
 
