@@ -18,18 +18,18 @@ const PreferencesSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Mixed,
     },
     gdprData: {
-        gdprAccepted : {
+        gdprAccepted: {
             type: Boolean,
         },
-        collectMetrics : {
+        collectMetrics: {
             type: Boolean,
-        }
+        },
     },
     news: {
         last_consulted_ts: {
             type: Number,
         },
-    }
+    },
 });
 
 const UserSchema = new mongoose.Schema(
@@ -49,6 +49,10 @@ const UserSchema = new mongoose.Schema(
         },
         password: {
             type: String,
+        },
+        is_read_only: {
+            type: Boolean,
+            default: false,
         },
         preferences: PreferencesSchema,
     },

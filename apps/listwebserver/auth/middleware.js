@@ -96,6 +96,32 @@ const checkToken = (req, res, next) => {
     }
 };
 
+const getIsReadOnly = async (userId) => {
+    const user = await collection.findOne({ id: userId }).exec();
+    if (user === null) return null;
+
+    return !!user.is_read_only;
+};
+
+const checkIsReadOnly = (req, res, next) => {
+    const userId = getUserId(req);
+    getIsReadOnly(userId)
+        .then((isReadOnly) => {
+            if (isReadOnly) {
+                res.status(HTTP_STATUS_CODE.CLIENT_ERROR.UNAUTHORIZED).send({ success: false });
+            } else {
+                next();
+            }
+        })
+        .catch((err) => {
+            res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send({
+                result: HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR,
+                desc: `Failed to check user.`,
+                content: 0,
+            });
+        });
+};
+
 function authenticate(plainPassword, salt, password, unsecure) {
     if (unsecure) return plainPassword === password;
 
@@ -209,6 +235,7 @@ const handleRegister = (req, res) => {
 module.exports = {
     defaultPreferences,
     checkToken,
+    checkIsReadOnly,
     getUserId,
     getUsername,
     handleLogin,
