@@ -15,10 +15,6 @@ const defaultPreferences = {
     analysis: {
         currentProfileId: null,
     },
-    gdprData: {
-        gdprAccepted: false,
-        collectMetrics: false,
-    },
     news: {
         last_news_id: null,
     },

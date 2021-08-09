@@ -77,35 +77,10 @@ const setReadOnly = async (req) => {
     await user.save();
 };
 
-const getGDPRData = async (req) => {
-    const userId = getUserId(req);
-
-    const userPreferences = await getPreferences(userId);
-
-    if (_.isNil(userPreferences)) return null;
-
-    if (userPreferences.gdprData === null || userPreferences.gdprData === undefined)
-        userPreferences.gdprData = defaultPreferences.gdprData;
-
-    return userPreferences.gdprData;
-};
-
-const setGDPRData = async (req) => {
-    const userId = getUserId(req);
-    const gdprData = req.body;
-
-    const userPreferences = await getPreferences(userId);
-    userPreferences.gdprData = gdprData;
-
-    return setPreferences(userId, userPreferences);
-};
-
 module.exports = {
     getUser,
     setReadOnly,
     updatePreferences,
     getPreferences,
     setPreferences,
-    getGDPRData,
-    setGDPRData,
 };

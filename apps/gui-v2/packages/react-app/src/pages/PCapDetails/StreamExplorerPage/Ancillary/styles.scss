@@ -1,0 +1,158 @@
+@import '../../../../../../style/variables/colors.scss';
+
+.anc-stream-explorer-container {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    width: -webkit-fill-available;
+}
+
+.sub-streams-explorer-container {
+    margin: 1em 2em;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.sub-sub-streams-explorer {
+    display: flex;
+    margin: 1em 2em;
+    justify-content: center;
+    align-items: center;
+}
+
+.sub-sub-streams-explorer-container {
+    border-radius: 8px 8px 8px 8px;
+    background: $background-dark-blue;
+}
+
+.sub-sub-streams-explorer-container-title {
+    padding: 24px;
+}
+.sub-sub-streams-explorer-container-title > span {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 18px;
+    color: $font-light-grey;
+}
+
+.sub-sub-streams-explorer-text-area-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto 1em;
+    flex-wrap: wrap;
+    padding-right: 1em;
+    padding-left: 1em;
+}
+.sub-sub-streams-explorer-text-area-container > * {
+    margin-bottom: 2em;
+}
+.text-area {
+    display: flex;
+    flex-direction: column;
+    & > label {
+        padding-bottom: 0.5em;
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 14px;
+        color: $font-grey-blue;
+        font-weight: 600;
+    }
+
+    & > textarea {
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 22px;
+        width: 250px;
+        height: 250px;
+        cursor: pointer;
+        background: #091236;
+        color: $font-grey;
+        margin-right: 1.5em;
+        padding-left: 0.5em;
+    }
+}
+
+.text-area:last-child {
+    & > textarea {
+        margin-right: 0;
+    }
+}
+
+//Sub Header
+.sub-header-container {
+    margin-left: 3em;
+    display: flex;
+}
+@mixin categoriesFont {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+.sub-header-categories {
+    @include categoriesFont();
+    color: $black;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px;
+    margin: 0px;
+    & ul {
+        display: flex;
+        justify-content: space-evenly;
+        & li {
+            &:not(:first-child) {
+                padding-left: 2em;
+            }
+            color: $grey;
+            & > .sub-header-category {
+                &:hover {
+                    color: $font-dark-grey;
+                }
+                border-bottom: 2px transparent solid;
+            }
+            & > .sub-header-category-clicked {
+                border-bottom: 2px $vibrant-blue solid;
+                transition: ease-in-out 0.5s;
+                & .sub-header-category-label {
+                    color: $white;
+                }
+            }
+            & > a {
+                display: flex;
+                justify-content: space-between;
+                color: $grey;
+            }
+            & > a > span:not(:first-child) {
+                margin-left: 0.7em;
+            }
+        }
+    }
+}
+
+textarea {
+    scrollbar-width: thin;
+    scrollbar-color: gray;
+}
+
+textarea::-webkit-scrollbar {
+    width: 6px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: none;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 6px;
+}

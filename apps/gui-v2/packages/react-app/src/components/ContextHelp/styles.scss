@@ -1,0 +1,85 @@
+@import '../../../../style/variables/colors.scss';
+
+@mixin font-weight-normal {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+}
+
+.context-help-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.context-help-title {
+    @include font-weight-normal();
+    font-size: 18px;
+    line-height: 27px;
+    color: $white;
+    padding-bottom: 0.9em;
+}
+
+.context-help-shortcuts-icon {
+    display: flex;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $font-grey-blue;
+    padding-top: 2.7em;
+    & > span {
+        padding-left: 1em;
+    }
+}
+
+.context-help-description {
+    @include font-weight-normal();
+    font-size: 16px;
+    line-height: 26px;
+    color: $almost-grey;
+}
+
+.context-help-shortcuts {
+    display: flex;
+    flex-direction: column;
+    padding-top: 1.2em;
+
+    &:not(:last-child) {
+        padding-top: 1.5em;
+    }
+}
+
+.context-help-icons {
+    display: flex;
+    padding-top: 0.5em;
+}
+
+.context-help-shortcuts-icons-text {
+    @include font-weight-normal();
+    color: $font-dark-icon;
+    font-size: 13px;
+    padding: 4px 6px;
+    background: $vibrant-blue;
+    border-radius: 2px;
+    &:not(:last-child) {
+        margin-right: 1rem;
+    }
+}
+
+.context-help-shortcuts-key {
+    @include font-weight-normal();
+    font-size: 13px;
+    line-height: 20px;
+    color: $white;
+}
+
+.context-help-shortcuts-description {
+    @include font-weight-normal();
+    font-size: 13px;
+    line-height: 20px;
+    color: $almost-grey;
+}

@@ -21,7 +21,9 @@ services:
     listreverseproxy:
         image: nginx:1.19.0
         network_mode: host
-
+        ports:
+            - '80:80'
+            - '443:443'
         volumes:
             - ./data/config:/etc/nginx
             - ../../scripts/deploy/artifacts/data/certs:/etc/ssl/certs

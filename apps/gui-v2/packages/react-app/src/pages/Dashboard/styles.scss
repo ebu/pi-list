@@ -1,0 +1,72 @@
+@import '../../../../style/variables/colors.scss';
+
+.dashboard-page-container {
+    background: $background-color-blue;
+    // display: flex;
+    // align-items: center;
+    // justify-content: space-evenly;
+    // flex-wrap: wrap;
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(auto-fit, clamp(300px, 50%, 260px));
+    margin-bottom: auto;
+    justify-content: center;
+}
+
+.dashboard-page-tile {
+    padding: 7.75px;
+}
+
+.dashboard-details-table-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.details-table-container {
+    width: 100%;
+    padding: 50px;
+}
+
+.dashboard-page-container-drag-and-drop-tile {
+    display: flex;
+    padding: 7.75px;
+}
+
+//DashboardContent
+.dashboard-views-icons {
+    width: 10%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.dashboard-views-icons-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding-top: 0.5em;
+}
+
+button.dashboard-view {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.main-page-header {
+    background: $background-color-blue;
+    grid-column: 1 / 4;
+}
+
+.main-page-dashboard {
+    overflow-y: auto;
+    height: 85vh;
+}
+
+.currently-selected-pcaps {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 27px;
+    color: #ffffff;
+}

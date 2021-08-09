@@ -17,14 +17,7 @@ const PreferencesSchema = new mongoose.Schema({
     analysis: {
         type: mongoose.Schema.Types.Mixed,
     },
-    gdprData: {
-        gdprAccepted: {
-            type: Boolean,
-        },
-        collectMetrics: {
-            type: Boolean,
-        },
-    },
+
     news: {
         last_consulted_ts: {
             type: Number,

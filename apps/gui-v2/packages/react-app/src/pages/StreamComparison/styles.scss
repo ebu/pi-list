@@ -1,0 +1,164 @@
+.stream-comparison-panel-container {
+    height: fit-content;
+    border-radius: 8px 8px 8px 8px;
+    background: #0a153d;
+    padding: 2em;
+    margin: 2em;
+}
+
+.row-stream-selectors {
+    display: flex;
+}
+
+.stream-selectors-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 100%;
+}
+
+.stream-comparison-panel-h3 {
+    padding-bottom: 0.5em;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #e6e7ea;
+}
+
+.stream-comparison-compare-container {
+    display: flex;
+    align-items: center;
+}
+
+.stream-comparison-panel-type-selector-container {
+    padding-bottom: 2em;
+}
+
+.stream-selector-reference {
+    border: 3px solid #ff0000;
+    border-radius: 10px;
+    width: 40%;
+    padding: 2em;
+}
+
+.stream-selector-main {
+    border: 3px solid #0059fa;
+    border-radius: 10px;
+    width: 40%;
+    padding: 2em;
+}
+
+.stream-comparison-panel-input {
+    border-radius: 2px;
+}
+
+.stream-comparison-panel-input-container {
+    padding: 1em;
+}
+
+.stream-comparison-table-container {
+    width: 100%;
+}
+
+.stream-comparison-panel-compare-button {
+    cursor: pointer;
+    background: #0083ff;
+    border: 1px solid #0083ff;
+    box-sizing: border-box;
+    border-radius: 4px;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: #ffffff;
+}
+
+.stream-comparison-icons-container-title {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 27px;
+    color: #ffffff;
+}
+
+.stream-comparison-icons-title-container {
+    padding-bottom: 1em;
+}
+
+.button-padding {
+    margin-left: 32px;
+}
+
+.selected-stream-comparison-icon {
+    border: 3px solid #2b93f5 !important;
+    border-radius: 10px;
+}
+
+.stream-comparison-icon:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.stream-comparison-icon {
+    border: 3px solid #004f99;
+    display: flex;
+    border-radius: 10px;
+    padding: 1em;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.stream-comparison-icons-title {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 21px;
+    color: #ffffff;
+}
+
+.stream-comparison-icons {
+    width: 10em;
+}
+
+.stream-comparison-icons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    border-radius: 8px;
+}
+
+.comparison-types-description-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.comparison-types-description-title {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 27px;
+    color: #ffffff;
+    padding-bottom: 0.9em;
+}
+
+.comparison-types-description-text {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 26px;
+    color: #848898;
+    padding-bottom: 0.9em;
+}

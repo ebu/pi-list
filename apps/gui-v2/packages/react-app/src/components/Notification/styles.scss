@@ -1,0 +1,15 @@
+@import '../../../../style/variables/colors.scss';
+
+.Toastify__toast--success {
+    background: $background-bright-green !important;
+    color: $bright-green;
+    overflow-wrap: anywhere;
+    word-break: break-all;
+}
+
+.Toastify__toast--error {
+    background: $background-bright-red !important;
+    color: $bright-red;
+    overflow-wrap: anywhere;
+    word-break: break-all;
+}

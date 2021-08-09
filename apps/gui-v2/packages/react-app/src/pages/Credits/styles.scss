@@ -1,0 +1,26 @@
+@import '../../../../style/variables/colors.scss';
+
+.credits-table-centered-header-label {
+    text-align: center !important;
+    padding-left: 32px !important;
+}
+
+.credits-name-data-container {
+    padding-left: 32px;
+}
+
+.credits-centered-value {
+    text-align: center !important;
+}
+
+table.credits-table {
+    width: 100%;
+    border-radius: 8px 8px 8px 8px;
+    background: $background-dark-blue;
+}
+
+.credits-content {
+    overflow-y: auto;
+    height: 85vh;
+    padding: 0 75px 50px 75px;
+}

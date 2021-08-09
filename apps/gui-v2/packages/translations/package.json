@@ -1,0 +1,29 @@
+{
+    "name": "@ebu-list/translations",
+    "version": "0.1.0",
+    "private": true,
+    "main": "build/index.js",
+    "types": "build/index.d.ts",
+    "scripts": {
+        "build": "yarn run clean && yarn run compile",
+        "clean": "rm -rf ./dist",
+        "compile": "./node_modules/.bin/tsc",
+        "rollup": "npx rollup --config"
+    },
+    "dependencies": {
+        "@types/node": "12.11.1",
+        "@types/node-polyglot": "^2.4.1",
+        "node-polyglot": "^2.4.0",
+        "typescript": "^4.0.3"
+    },
+    "peerDependencies": {
+        "rollup": "^2.38.5",
+        "csv-parse": "^3.0.0"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^17.1.0",
+        "@rollup/plugin-json": "^4.1.0",
+        "@rollup/plugin-node-resolve": "^11.1.1",
+        "@wessberg/rollup-plugin-ts": "^1.3.8"
+    }
+}

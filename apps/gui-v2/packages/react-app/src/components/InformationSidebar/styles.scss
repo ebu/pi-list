@@ -1,0 +1,31 @@
+@import '../../../../style/variables/colors.scss';
+
+.information-sidebar {
+    width: 305px;
+    height: 100vh;
+    overflow: hidden;
+
+    & .login-information {
+        color: $white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid $border-blue;
+        padding: 2em;
+    }
+}
+
+.information-sidebar-dropdown {
+    padding-left: 0.5em;
+    color: $white;
+}
+
+.information-sidebar-user-mail {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 21px;
+
+    color: $font-almost-grey;
+}

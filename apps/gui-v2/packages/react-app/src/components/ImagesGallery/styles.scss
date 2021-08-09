@@ -1,0 +1,49 @@
+@import '../../../../style/variables/colors.scss';
+
+.image-gallery-container {
+    background: $background-color-blue;
+}
+
+.image-gallery-nav-icon-container {
+    border-radius: 48px;
+    background: $white-transparent-24;
+    background-blend-mode: overlay;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-gallery-div {
+    width: 850px;
+}
+
+.image-gallery-slides {
+    border-radius: 6px;
+}
+
+//Expanded image properties
+.image-gallery-content .image-gallery-slide .image-gallery-image {
+    border-radius: 6px;
+}
+
+//Thumbnail styles
+.image-gallery-thumbnail-image {
+    border-radius: 4px;
+    padding: 1px;
+}
+
+//Thumbnail styles when active, hover and focus
+.image-gallery-thumbnail.active,
+.image-gallery-thumbnail:hover,
+.image-gallery-thumbnail:focus {
+    border-radius: 4px;
+    border: 1px solid $vibrant-blue;
+}
+
+//Thumbnail styles to include a invisible border
+.image-gallery-thumbnail {
+    border-radius: 4px;
+    border: 1px solid transparent;
+}

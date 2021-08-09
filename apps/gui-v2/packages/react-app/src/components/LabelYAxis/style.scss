@@ -1,0 +1,17 @@
+@import '../../../../style/variables/colors.scss';
+
+.label-y-axis {
+    font-family: 'Prompt';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    color: $font-grey;
+}
+.label-y-axis-container {
+    padding-top: 15px;
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(-90deg);
+}

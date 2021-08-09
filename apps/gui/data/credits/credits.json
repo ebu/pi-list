@@ -35,7 +35,7 @@
         "licenseUrl": "https://github.com/victorfern91/base64",
         "parents": "listwebserver"
     },
-    "bcrypt@5.0.0": {
+    "bcrypt@5.0.1": {
         "licenses": "MIT",
         "repository": "https://github.com/kelektiv/node.bcrypt.js",
         "licenseUrl": "https://github.com/kelektiv/node.bcrypt.js/raw/master/LICENSE",
@@ -47,13 +47,13 @@
         "licenseUrl": "https://github.com/visionmedia/bytes.js/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
-    "chart.js@2.9.3": {
+    "chart.js@2.9.4": {
         "licenses": "MIT",
         "repository": "https://github.com/chartjs/Chart.js",
         "licenseUrl": "https://github.com/chartjs/Chart.js/raw/master/LICENSE.md",
         "parents": "list-ebu-gui"
     },
-    "classnames@2.2.6": {
+    "classnames@2.3.1": {
         "licenses": "MIT",
         "repository": "https://github.com/JedWatson/classnames",
         "licenseUrl": "https://github.com/JedWatson/classnames/raw/master/LICENSE",
@@ -95,7 +95,11 @@
         "licenseUrl": "https://github.com/substack/deep-freeze/raw/master/LICENSE",
         "parents": "listwebserver"
     },
-    "express-session@1.17.1": {
+    "ebu_list_common@1.0.0": {
+        "licenses": "GPL-3.0-or-later",
+        "parents": "list-ebu-gui"
+    },
+    "express-session@1.17.2": {
         "licenses": "MIT",
         "repository": "https://github.com/expressjs/session",
         "licenseUrl": "https://github.com/expressjs/session/raw/master/LICENSE",
@@ -107,7 +111,7 @@
         "licenseUrl": "https://github.com/expressjs/express/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
-    "fast-xml-parser@3.17.4": {
+    "fast-xml-parser@3.19.0": {
         "licenses": "MIT",
         "repository": "https://github.com/NaturalIntelligence/fast-xml-parser",
         "licenseUrl": "https://github.com/NaturalIntelligence/fast-xml-parser/raw/master/LICENSE",
@@ -137,7 +141,7 @@
         "licenseUrl": "https://github.com/helmetjs/helmet/raw/master/LICENSE",
         "parents": "listwebserver"
     },
-    "influx@5.6.2": {
+    "influx@5.9.2": {
         "licenses": "MIT",
         "repository": "https://github.com/node-influx/node-influx",
         "licenseUrl": "https://github.com/node-influx/node-influx/raw/master/LICENSE",
@@ -161,7 +165,7 @@
         "licenseUrl": "https://github.com/auth0/jwt-decode/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
-    "lodash@4.17.19": {
+    "lodash@4.17.21": {
         "licenses": "MIT",
         "repository": "https://github.com/lodash/lodash",
         "licenseUrl": "https://github.com/lodash/lodash/raw/master/LICENSE",
@@ -173,13 +177,13 @@
         "licenseUrl": "https://github.com/developit/mitt",
         "parents": "list-ebu-gui"
     },
-    "moment@2.27.0": {
+    "moment@2.29.1": {
         "licenses": "MIT",
         "repository": "https://github.com/moment/moment",
         "licenseUrl": "https://github.com/moment/moment/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
-    "mongoose@5.9.28": {
+    "mongoose@5.13.2": {
         "licenses": "MIT",
         "repository": "https://github.com/Automattic/mongoose",
         "licenseUrl": "https://github.com/Automattic/mongoose/raw/master/LICENSE.md",
@@ -221,7 +225,7 @@
         "licenseUrl": "https://github.com/necolas/normalize.css/raw/master/LICENSE.md",
         "parents": "list-ebu-gui"
     },
-    "noty@3.2.0-beta": {
+    "noty@3.2.0-beta-deprecated": {
         "licenses": "MIT",
         "repository": "https://github.com/needim/noty",
         "licenseUrl": "https://github.com/needim/noty/raw/master/LICENSE.txt",
@@ -245,7 +249,7 @@
         "licenseUrl": "https://github.com/amir20/phantomjs-node/raw/master/LICENSE.md",
         "parents": "listwebserver"
     },
-    "plotly.js@1.54.7": {
+    "plotly.js@1.58.4": {
         "licenses": "MIT",
         "repository": "https://github.com/plotly/plotly.js",
         "licenseUrl": "https://github.com/plotly/plotly.js/raw/master/LICENSE",
@@ -257,7 +261,7 @@
         "licenseUrl": "https://github.com/facebook/prop-types/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
-    "query-string@7.0.0": {
+    "query-string@7.0.1": {
         "licenses": "MIT",
         "repository": "https://github.com/sindresorhus/query-string",
         "licenseUrl": "https://github.com/sindresorhus/query-string/raw/master/license",
@@ -269,13 +273,13 @@
         "licenseUrl": "https://github.com/malte-wessel/react-custom-scrollbars/raw/master/LICENSE.md",
         "parents": "list-ebu-gui"
     },
-    "react-dom@16.13.1": {
+    "react-dom@16.14.0": {
         "licenses": "MIT",
         "repository": "https://github.com/facebook/react",
         "licenseUrl": "https://github.com/facebook/react/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
-    "react-dropzone@11.0.2": {
+    "react-dropzone@11.3.4": {
         "licenses": "MIT",
         "repository": "https://github.com/react-dropzone/react-dropzone",
         "licenseUrl": "https://github.com/react-dropzone/react-dropzone/raw/master/LICENSE",
@@ -293,7 +297,7 @@
         "licenseUrl": "https://github.com/wrakky/react-html-parser/raw/master/LICENSE.md",
         "parents": "list-ebu-gui"
     },
-    "react-plotly.js@2.4.0": {
+    "react-plotly.js@2.5.1": {
         "licenses": "MIT",
         "repository": "https://github.com/plotly/react-plotly.js",
         "licenseUrl": "https://github.com/plotly/react-plotly.js/raw/master/LICENSE",
@@ -323,19 +327,19 @@
         "licenseUrl": "https://github.com/tannerlinsley/react-table/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
-    "react-test-renderer@16.13.1": {
+    "react-test-renderer@16.14.0": {
         "licenses": "MIT",
         "repository": "https://github.com/facebook/react",
         "licenseUrl": "https://github.com/facebook/react/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
-    "react-toggle@4.1.1": {
+    "react-toggle@4.1.2": {
         "licenses": "MIT",
         "repository": "https://github.com/aaronshaf/react-toggle",
         "licenseUrl": "https://github.com/aaronshaf/react-toggle/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
-    "react@16.13.1": {
+    "react@16.14.0": {
         "licenses": "MIT",
         "repository": "https://github.com/facebook/react",
         "licenseUrl": "https://github.com/facebook/react/raw/master/LICENSE",
@@ -353,7 +357,7 @@
         "licenseUrl": "https://github.com/chenjiahan/rodal/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
-    "sdp-transform@2.14.0": {
+    "sdp-transform@2.14.1": {
         "licenses": "MIT",
         "repository": "https://github.com/clux/sdp-transform",
         "licenseUrl": "https://github.com/clux/sdp-transform/raw/master/LICENSE",
@@ -371,13 +375,13 @@
         "licenseUrl": "https://github.com/CrystalComputerCorp/smpte-timecode/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
-    "socket.io-client@2.3.0": {
+    "socket.io-client@2.4.0": {
         "licenses": "MIT",
         "repository": "https://github.com/Automattic/socket.io-client",
         "licenseUrl": "https://github.com/Automattic/socket.io-client/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
-    "socket.io@2.3.0": {
+    "socket.io@2.4.1": {
         "licenses": "MIT",
         "repository": "https://github.com/socketio/socket.io",
         "licenseUrl": "https://github.com/socketio/socket.io/raw/master/LICENSE",
@@ -401,7 +405,7 @@
         "licenseUrl": "https://github.com/chriso/validator.js/raw/master/LICENSE",
         "parents": "listwebserver"
     },
-    "wavesurfer.js@4.2.0": {
+    "wavesurfer.js@4.6.0": {
         "licenses": "BSD-3-Clause",
         "repository": "https://github.com/katspaugh/wavesurfer.js",
         "licenseUrl": "https://github.com/katspaugh/wavesurfer.js/raw/master/LICENSE",
@@ -413,7 +417,7 @@
         "licenseUrl": "https://github.com/1337programming/webpack-shell-plugin/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
-    "websocket@1.0.31": {
+    "websocket@1.0.34": {
         "licenses": "Apache-2.0",
         "repository": "https://github.com/theturtle32/WebSocket-Node",
         "licenseUrl": "https://github.com/theturtle32/WebSocket-Node/raw/master/LICENSE",

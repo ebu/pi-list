@@ -8,10 +8,11 @@ source $this_dir/path.sh || { echo "path.sh is missing"; exit 1; }
 
 echo "Bootstrapping lerna..."
 cd $TOP_DIR
-npm i
+yarn install
 npx lerna bootstrap
 npx lerna run build
-npx lerna run production
+cd $TOP_DIR/apps/gui-v2/
+yarn run build:production
 
 echo "Done"
 

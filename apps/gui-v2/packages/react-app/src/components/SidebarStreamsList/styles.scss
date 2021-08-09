@@ -1,0 +1,130 @@
+@import '../../../../style/variables/colors.scss';
+
+.sidebar-helper-index-type {
+    display: flex;
+
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+
+    color: $font-dark-blue;
+
+    & > span:first-child {
+        padding-right: 0.25em;
+    }
+}
+
+.sidebar-helper-index-type-active {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: ease-in-out 1s;
+    color: $font-light-blue;
+
+    & > span:first-child {
+        padding-right: 0.15em;
+    }
+}
+
+.sidebar-helper-protocol {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    text-transform: capitalize;
+
+    color: $font-dark-grey;
+}
+
+.sidebar-helper-protocol-active {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    text-transform: capitalize;
+    transition: ease-in-out 0.5s;
+
+    color: $white;
+}
+
+div.sidebar-helper-container {
+    padding-top: 5.7em;
+    padding-bottom: 5.7em;
+}
+
+.sidebar-helper-information {
+    &:last-child {
+        padding-bottom: 0;
+    }
+    cursor: pointer;
+    padding-bottom: 1em;
+
+    &:hover {
+        .sidebar-helper-protocol {
+            font-family: Prompt;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 12px;
+            line-height: 18px;
+            letter-spacing: 0.1em;
+            text-transform: capitalize;
+            transition: ease-in-out 0.5s;
+
+            color: $font-light-grey-hover;
+        }
+
+        .sidebar-helper-index-type {
+            font-family: Prompt;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 18px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: ease-in-out 0.5s;
+
+            color: $font-dark-grey;
+        }
+    }
+}
+
+.sidebar-helper-information-active {
+    &:last-child {
+        padding-bottom: 0;
+    }
+    cursor: pointer;
+    transition: ease-in-out 0.5s;
+    padding-bottom: 1em;
+    padding-right: 2em;
+    border-right: 2px solid $vibrant-blue;
+}
+
+.sidebar-helper-title {
+    padding-bottom: 1.4em;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    & > span {
+        padding-left: 0.5em;
+
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 21px;
+
+        color: $font-light-grey;
+    }
+}

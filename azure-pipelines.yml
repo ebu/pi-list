@@ -1,0 +1,42 @@
+parameters:
+    - name: clean
+      displayName: Checkout clean
+      type: boolean
+      default: false
+      values:
+          - false
+          - true
+
+name: $(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+
+variables:
+- name: docker_tag
+  value: $(Build.BuildNumber)
+
+trigger:
+    - integration
+
+pool:
+    name: Default
+
+stages:
+    - stage: Build
+      jobs:
+          - job: BuildJob
+            steps:
+                - checkout: self
+                  clean: ${{ parameters.clean }}
+                  submodules: recursive
+                - script: |
+                    echo "Build ID: $(Build.BuildNumber)"
+                    echo "Docker tag: $(docker_tag)"
+                - script: ./scripts/deploy/deploy.sh
+                  displayName: 'Run deploy script'
+                - task: Docker@2
+                  inputs:
+                      containerRegistry: 'ebu-docker-hub'
+                      repository: 'ebutech/pi-list'
+                      command: 'buildAndPush'
+                      Dockerfile: 'release/server/Dockerfile'
+                      buildContext: 'release/server'
+                      tags: $(docker_tag)
