@@ -1,0 +1,127 @@
+@import '../../../../style/variables/colors.scss';
+
+.drag-and-drop-tile {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 8px;
+    padding: 20px;
+    width: 282.5px;
+    height: 324px;
+    border: 1px dashed $dark-blue;
+    justify-content: center;
+
+    &:hover {
+        border: 1px dashed $darker-vibrant-blue;
+        & > .drag-and-drop-tile-content {
+            color: $vibrant-blue;
+        }
+    }
+
+    &.is-active {
+        border: 1px dashed $darker-vibrant-blue;
+        background-color: #0b153a;
+        & > .drag-and-drop-tile-content.active {
+            color: $vibrant-blue;
+        }
+    }
+    &.is-primary {
+        cursor: default;
+        & > .upload-success-container {
+            color: $bright-green;
+        }
+        &:hover {
+            border: 1px dashed $dark-blue;
+        }
+    }
+    &.is-danger {
+        cursor: default;
+        & > .upload-failed-container {
+            color: $bright-red;
+        }
+        &:hover {
+            border: 1px dashed $dark-blue;
+        }
+    }
+}
+
+.upload-success-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 3rem 0 3rem;
+    text-align: center;
+
+    & > span {
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 15px;
+        line-height: 21px;
+        text-align: center;
+        margin-bottom: 1.75rem;
+    }
+
+    & > img {
+        margin-bottom: 1.25rem;
+    }
+
+    & > a {
+        cursor: pointer;
+        box-sizing: border-box;
+        border-radius: 4px;
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        text-decoration: underline;
+        line-height: 24px;
+        color: $font-light-grey;
+
+        &:hover {
+            color: $font-light-grey;
+            font-weight: 650;
+        }
+    }
+}
+
+.upload-failed-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 3rem 0 3rem;
+    text-align: center;
+
+    & > span {
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 21px;
+        text-align: center;
+        margin-bottom: 1.75rem;
+    }
+
+    & > img {
+        margin-bottom: 1.25rem;
+    }
+
+    & > a {
+        cursor: pointer;
+        box-sizing: border-box;
+        border-radius: 4px;
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        text-decoration: underline;
+        font-size: 15px;
+        line-height: 24px;
+        color: $font-light-grey;
+
+        &:hover {
+            color: $font-light-grey;
+            font-weight: 650;
+        }
+    }
+}

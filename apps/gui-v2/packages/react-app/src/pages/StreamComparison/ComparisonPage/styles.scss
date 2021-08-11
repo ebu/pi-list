@@ -1,0 +1,104 @@
+.comparison-configuration-panel-title {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 18px;
+    color: #e6e7ea;
+}
+
+.configuration-title {
+    padding-left: 1em;
+}
+
+.comparison-configuration-panel-subtitle {
+    padding-bottom: 0.5em;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    color: #e6e7ea;
+    text-transform: uppercase;
+}
+
+.comparison-configuration-panel-data {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 27px;
+    color: #6b7083;
+}
+
+.comparison-configuration-panel-steam-data-container {
+    border: 1px solid transparent;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    padding: 1em;
+    position: relative;
+    cursor: default;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    cursor: pointer;
+}
+
+.comparison-configuration-panel-container {
+    width: 50%;
+    height: 100%;
+    padding: 1em;
+}
+
+.comparison-configuration-panel-comparsions-info {
+    padding-left: 1em;
+}
+
+.comparison-configuration-panel-tags {
+    background: #0083ff;
+    border: 1px solid #0083ff;
+    box-sizing: border-box;
+    border-radius: 4px;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: #ffffff;
+    padding: 0.2em;
+    margin-left: 0.5em;
+    &:first-child {
+        margin-left: 0;
+    }
+}
+
+.comparison-configuration-panel-tags-container {
+    display: flex;
+    align-items: center;
+    padding-top: 0.5em;
+}
+
+.comparison-page-content-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: baseline;
+}
+
+.st20227-data-container {
+    padding-left: 1em;
+    padding-bottom: 1em;
+}
+
+.padding-to-title {
+    padding-left: 1em;
+}
+
+.comparison-page-graphics-div {
+    width: 70%;
+    padding: 1em;
+}
+
+.audio-player-container {
+    width: 100%;
+}

@@ -1,0 +1,53 @@
+@charset "utf-8";
+@import '../../../../style/variables/colors.scss';
+
+div.laab-dropdown-menu,
+div.laab-dropdown-select {
+    // the items div
+    div.select-items {
+        overflow: auto;
+        position: absolute;
+        background-color: $background-color-midnight-blue;
+        z-index: 10;
+        box-shadow: 0 5px 20px 0 $black-transparent;
+    }
+
+    // the items
+    div.select-items > div {
+        padding: 0.5rem 1rem 0.5rem 1rem;
+    }
+
+    div.select-items > div:not(.is-label) {
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 21px;
+        color: $font-light-grey;
+        cursor: pointer;
+    }
+
+    // the selected item
+    div.select-items > div.is-active {
+        color: $dark-blue;
+    }
+
+    // the disabled items
+    div.select-items > div.is-disabled {
+        color: $bright-red;
+    }
+
+    div.select-items > div.is-label {
+        color: $font-light-grey;
+    }
+
+    // the hovered item
+    div.select-items > div:not(.is-disabled):not(.is-label):hover {
+        background-color: $dark-blue;
+    }
+
+    // Hide the items when the select box is closed
+    div.select-items.select-hide {
+        display: none;
+    }
+}

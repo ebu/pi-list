@@ -1,0 +1,73 @@
+@import '../../../../../style/variables/colors.scss';
+
+.drag-and-drop-tile {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 8px;
+    padding: 20px;
+    width: 282.5px;
+    height: 324px;
+    border: 1px dashed $dark-blue;
+    justify-content: center;
+
+    &:hover {
+        border: 1px dashed $darker-vibrant-blue;
+        & > .drag-and-drop-tile-content {
+            color: $vibrant-blue;
+        }
+    }
+
+    &.is-active {
+        border: 1px dashed $darker-vibrant-blue;
+        background-color: #0b153a;
+        & > .drag-and-drop-tile-content.active {
+            color: $vibrant-blue;
+        }
+    }
+    &.is-primary {
+        cursor: default;
+        & > .upload-success-container {
+            color: $bright-green;
+        }
+        &:hover {
+            border: 1px dashed $dark-blue;
+        }
+    }
+    &.is-danger {
+        cursor: default;
+        & > .upload-failed-container {
+            color: $bright-red;
+        }
+        &:hover {
+            border: 1px dashed $dark-blue;
+        }
+    }
+}
+
+.upload-pcap-tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-pcap-button-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.dashboard-table-view-upload-button {
+    cursor: pointer;
+    background: #0a153d;
+    border: 1px solid #0a153d;
+    box-sizing: border-box;
+    border-radius: 4px;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: #ffffff;
+}

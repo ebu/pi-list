@@ -2,8 +2,8 @@
 
 # Quick-start
 
-1. `npm install`
-2. `npm start -- config.yml`.
+1. `yarn install`
+2. `yarn start -- config.yml`.
 
 # Command-line Options (`--help`)
 

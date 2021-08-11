@@ -1,0 +1,177 @@
+@import '../../../../style/variables/colors.scss';
+
+@mixin Font {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+}
+.display-panel-container {
+    border: 1px solid transparent;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    padding: 1em;
+    position: relative;
+    cursor: default;
+    &.actions:hover {
+        border: 1px solid $darker-vibrant-blue;
+        cursor: pointer;
+    }
+    &.actions:hover > .blend-div {
+        background: $white-transparent-54;
+        mix-blend-mode: overlay;
+    }
+}
+.blend-div {
+    background-color: $white-transparent-24;
+    mix-blend-mode: overlay;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    pointer-events: none;
+    border-radius: 8px;
+}
+
+.display-panel-information {
+    display: flex;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    justify-content: center;
+}
+
+.display-panel-information-bar {
+    background: $vibrant-blue;
+    border-radius: 16px;
+    height: 0.5em;
+}
+
+.display-panel-information-item {
+    padding-right: 0.5em;
+    min-width: 6em;
+}
+
+.display-panel-information-data {
+    @include Font();
+    font-size: 18px;
+    line-height: 27px;
+    padding-bottom: 0.3em;
+
+    & > span:not(:first-child) {
+        padding-left: 0.25em;
+    }
+
+    &.attention {
+        color: red;
+    }
+
+    color: $font-dark-grey;
+}
+
+.display-panel-label {
+    display: flex;
+    justify-content: flex-end;
+
+    & > span {
+        @include Font();
+        font-size: 12px;
+        line-height: 18px;
+        padding-top: 0.25em;
+
+        color: $font-light-grey;
+    }
+}
+
+.display-panel-title-underline {
+    border: solid 1px $vibrant-blue;
+    border-radius: 50%;
+}
+
+.display-panel-title {
+    @include Font();
+    font-size: 16px;
+    line-height: 14px;
+    padding-bottom: 0.7em;
+
+    color: $font-light-grey;
+}
+
+//SUBSTREAMS ANALYSIS PANEL
+
+.sub-streams-display-panel-container {
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    padding: 1em;
+    position: relative;
+}
+
+.sub-streams-display-panel-information {
+    display: flex;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    flex-direction: column;
+}
+
+.sub-streams-display-panel-information-data {
+    @include Font();
+    font-size: 18px;
+    line-height: 27px;
+    padding-bottom: 0.3em;
+    display: flex;
+    flex-direction: column;
+
+    color: $font-dark-grey;
+}
+
+//SUBSTREAMS EXPLORER PANEL
+
+.sub-streams-explorer-display-panel-container {
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    padding: 1em;
+    position: relative;
+}
+
+.sub-streams-explorer-display-panel-information {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    padding-right: 2em;
+}
+
+.sub-streams-explorer-display-panel-information-data {
+    @include Font();
+    padding-bottom: 0.3em;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.sub-streams-explores-label {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 23px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $font-grey-blue;
+    padding-right: 0.5em;
+
+    display: flex;
+    justify-content: center;
+    flex-flow: column nowrap;
+    align-items: flex-end;
+}
+
+.sub-streams-explores-value {
+    @include Font();
+    font-size: 14px;
+    line-height: 24px;
+    color: $font-grey;
+
+    &.attention {
+        color: red;
+    }
+}

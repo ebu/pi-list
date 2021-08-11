@@ -1,0 +1,18 @@
+@import '../../../../style/variables/colors.scss';
+
+.slider-container {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: center;
+    margin: 1em;
+    fill: $vibrant-blue;
+
+    & > input {
+        margin: auto 0.5em;
+    }
+}
+
+.audio-player-icons-to-fit {
+    width: 1.5em;
+}

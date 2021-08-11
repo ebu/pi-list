@@ -1,0 +1,14 @@
+@import '../../../../style/variables/colors.scss';
+
+.tippy-content {
+    border-radius: 8px;
+    padding: 0px;
+}
+
+.tippy-box {
+    border-radius: 15px;
+}
+
+.tippy-arrow {
+    color: $font-light-grey;
+}

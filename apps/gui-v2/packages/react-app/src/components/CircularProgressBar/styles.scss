@@ -1,0 +1,37 @@
+@import '../../../../style/variables/colors.scss';
+
+div.upload-progress-container {
+    text-align: center;
+
+    svg.CircularProgressbar {
+        height: 125px;
+        margin-bottom: 0.5rem;
+    }
+
+    .CircularProgressbar-path {
+        stroke: $vibrant-blue;
+    }
+    .CircularProgressbar-trail {
+        stroke: $font-light-grey;
+    }
+    .CircularProgressbar-text {
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 21px;
+        fill: $font-light-grey;
+    }
+
+    span.upload-progress-filename {
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 15px;
+        line-height: 21px;
+        text-align: center;
+        color: $font-light-grey;
+
+        word-break: break-all;
+    }
+}

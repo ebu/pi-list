@@ -1,0 +1,84 @@
+@import '../../../../style/variables/colors.scss';
+
+.settings-page-container {
+    margin: 0 3em 1em 3em;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-container {
+    border-radius: 8px 8px 8px 8px;
+    background: $background-dark-blue;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+}
+
+.settings-title {
+    padding-bottom: 20px;
+}
+
+.settings-title > span {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 18px;
+    color: $font-light-grey;
+}
+
+.settings-page-select {
+    width: 40%;
+}
+
+.settings-content-column {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+    margin: auto 2em;
+}
+
+.settings-content-row {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 50px;
+    margin: auto 2em;
+    justify-content: space-between;
+}
+
+.settings-delete-user {
+    padding-bottom: 0.5em;
+    padding-top: 20px;
+}
+
+.settings-page-delete-user-button {
+    cursor: pointer;
+    background: $vibrant-blue;
+    border: 1px solid $vibrant-blue;
+    box-sizing: border-box;
+    border-radius: 4px;
+
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+
+    color: $white;
+}
+
+.settings-select-label-container {
+    padding-bottom: 0.5em;
+}
+
+.settings-select-label {
+    padding-bottom: 0.5em;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #e6e7ea;
+}

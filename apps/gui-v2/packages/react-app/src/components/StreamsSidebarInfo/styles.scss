@@ -1,0 +1,107 @@
+@import '../../../../style/variables/colors.scss';
+
+.stream-sidebar-info-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding-top: 1.6em;
+    & > div {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.stream-sidebar-info-title {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 27px;
+    color: $white;
+}
+
+.stream-sidebar-info-description {
+    padding-left: 3.5em;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    .stream-sidebar-info-description-text {
+        padding-left: 1em;
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 18px;
+        color: $font-dark-grey;
+    }
+
+    .stream-sidebar-info-description-number {
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 18px;
+        color: $font-grey;
+    }
+
+    & > div {
+        display: flex;
+        justify-content: space-between;
+        flex: 1;
+    }
+}
+
+.stream-sidebar-info-total-dot {
+    height: 6px;
+    width: 6px;
+    background-color: $dark-blue;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.stream-sidebar-info-compliant-dot {
+    height: 6px;
+    width: 6px;
+    background-color: $vibrant-blue;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.stream-sidebar-info-not-compliant-dot {
+    height: 6px;
+    width: 6px;
+    background-color: $light-blue;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+div.stream-sidebar-info-svg {
+    svg.CircularProgressbar {
+        width: 63px;
+        height: 63px;
+    }
+}
+
+.stream-sidebar-info-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 3em;
+
+    & > button {
+        cursor: pointer;
+        background: $vibrant-blue;
+        border: 1px solid $vibrant-blue;
+        box-sizing: border-box;
+        border-radius: 4px;
+
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 24px;
+
+        color: $white;
+    }
+}

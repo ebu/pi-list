@@ -16,3 +16,10 @@ apps/stream_pre_processor/.vscode/launch.json
 .config/
 .vim/
 /node_modules
+apps/listwebserver/yarn.lock
+js/auth/yarn.lock
+js/common_server/yarn.lock
+apps/capture_probe/yarn.lock
+apps/gui/yarn.lock
+apps/gui-v2/yarn.lock
+yarn.lock

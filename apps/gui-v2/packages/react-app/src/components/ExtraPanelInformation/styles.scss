@@ -1,0 +1,46 @@
+@import '../../../../style/variables/colors.scss';
+
+.extra-panel-information-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.extra-panel-information-title {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 27px;
+    color: $vibrant-blue;
+    padding-bottom: 0.9em;
+}
+
+.extra-panel-information-label {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $font-grey-blue;
+    padding-bottom: 0.7em;
+}
+
+.extra-panel-information-label-value-container {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 1em;
+    &:last-child {
+        padding-bottom: 0;
+    }
+}
+
+.extra-panel-information-value {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 22px;
+    color: $font-grey;
+}

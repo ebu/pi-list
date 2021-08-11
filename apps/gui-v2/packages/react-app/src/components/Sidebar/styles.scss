@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import '../../../../style/variables/colors.scss';
+
+@mixin mainTitle {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    color: $font-dark-grey;
+}
+
+.menu-list a:hover {
+    background-color: transparent !important;
+}
+
+//For the items inside the options (icon and label)
+.sidebar-items {
+    @include mainTitle();
+    font-family: Prompt;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-left: 2px solid transparent;
+    padding-left: 2em;
+
+    &:hover {
+        color: $font-grey-hover;
+    }
+    &.clicked {
+        color: $white;
+        border-color: $vibrant-blue;
+    }
+}
+
+.version-collapsed {
+    padding-right: 0.5em;
+    margin-left: 145px;
+}
+
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    transition: ease-in-out 0.75s;
+    flex-direction: column;
+    align-items: center;
+    &.sidebar-collapsed {
+        & .sidebar-logo {
+            margin-left: 165px;
+            transition: ease-in-out 0.75s;
+            padding-right: 0.5em;
+        }
+        padding-right: 0.5em;
+        transition: ease-in-out 0.75s;
+        margin-left: -169px;
+    }
+}
+
+.sidebar-menu {
+    padding-top: 2rem;
+    height: 50vh;
+}
+
+.sidebar-logo {
+    padding: 1.5em;
+    height: 23px;
+    transition: ease-in-out 0.75s;
+    cursor: pointer;
+}
+
+.menu-list {
+    & > li > a {
+        padding: 1em 0.75em;
+    }
+
+    &.top {
+        padding-top: 9.5em;
+    }
+
+    &.bottom {
+        padding-top: 20vh;
+    }
+}
+
+.sidebar-icons-to-center {
+    width: 1.5em;
+}

@@ -1,0 +1,41 @@
+@import '../../../../style/variables/colors.scss';
+
+.compliant-tag-container-expanded {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+
+    & > span {
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 27px;
+        color: $vibrant-blue;
+        padding-bottom: 0.9em;
+    }
+}
+
+.compliant-tag-container-collapsed {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+
+    & > span {
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 27px;
+        color: $white;
+        padding-bottom: 0.9em;
+    }
+}
+
+.compliance-tag-container-arrow-icon {
+    cursor: pointer;
+}

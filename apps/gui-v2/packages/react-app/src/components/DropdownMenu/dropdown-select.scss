@@ -1,0 +1,91 @@
+@charset "utf-8";
+
+@import '../constants/constants';
+@import './itemsList';
+
+div.laab-dropdown-select {
+    position: relative;
+    font-size: 0.75rem;
+
+    & > div.select-button {
+        @include default-transition;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 1em 1em;
+        background-color: $charcoal-grey-five;
+        border: 1px solid transparent;
+        border-radius: 0.5em;
+        white-space: nowrap;
+        height: 2.5rem;
+    }
+
+    &.is-right {
+        & > div.select-button {
+            justify-content: flex-end;
+            & > i {
+                margin-left: 0.5rem;
+            }
+        }
+    }
+
+    &.no-border {
+        & > div.select-button {
+            border: none;
+        }
+        & > div.select-items {
+            border: none;
+        }
+    }
+
+    &:not(.disabled) div.select-button:not(.select-open):hover {
+        background-color: $charcoal-grey;
+        border-color: $white;
+        cursor: pointer;
+    }
+
+    div.select-button > span {
+        font-weight: bold;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    div.select-button.select-open {
+        background-color: $charcoal-grey-four;
+        border-color: $gunmetal;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    & > div.select-items {
+        border: 1px solid $gunmetal;
+        border-radius: 0 0 0.5em 0.5em;
+        background-color: $charcoal-grey-four;
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+
+    // Style the arrow icon
+    div.select-button > i > svg {
+        transition: all 0.2s ease-out;
+    }
+
+    // Style the arrow icon
+    div.select-button.select-open > i > svg {
+        transform: rotate(180deg);
+    }
+
+    &.disabled div.select-button {
+        & > span {
+            border-color: $gunmetal;
+            color: $gunmetal;
+        }
+
+        & > i > svg {
+            display: none;
+        }
+    }
+}

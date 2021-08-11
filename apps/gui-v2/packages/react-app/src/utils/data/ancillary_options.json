@@ -1,0 +1,191 @@
+[
+    {
+        "key": "stream_type",
+        "value": [
+            {
+                "label": "MPEG recoding data, VANC space (S353)",
+                "value": "2056"
+            },
+            {
+                "label": "MPEG recoding data, HANC space (S353)",
+                "value": "2060"
+            },
+            {
+                "label": "SDTI transport in active frame space (S305)",
+                "value": "16385"
+            },
+            {
+                "label": "HD-SDTI transport in active frame space (S348)",
+                "value": "16386"
+            },
+            {
+                "label": "Link Encryption Message 1 (S427)",
+                "value": "16388"
+            },
+            {
+                "label": "Link Encryption Message 2 (S427)",
+                "value": "16389"
+            },
+            {
+                "label": "Link Encryption Metadata (S427)",
+                "value": "16390"
+            },
+            {
+                "label": "Payload Identification, HANC space (S352)",
+                "value": "16641"
+            },
+            {
+                "label": "AFD and Bar Data (S2016-3)",
+                "value": "16645"
+            },
+            {
+                "label": "Pan-Scan Data (S2016-4)",
+                "value": "16646"
+            },
+            {
+                "label": "ANSI/SCTE 104 messages (S2010)",
+                "value": "16647"
+            },
+            {
+                "label": "DVB/SCTE VBI data (S2031)",
+                "value": "16648"
+            },
+            {
+                "label": "MPEG TS packets in VANC (ST 2056)",
+                "value": "16649"
+            },
+            {
+                "label": "Stereoscopic 3D Frame Compatible Packing and Signaling (ST 2068)",
+                "value": "16650"
+            },
+            {
+                "label": "Lip Sync data (ST 2064)",
+                "value": "16651"
+            },
+            {
+                "label": "Structure of inter-station control data conveyed by ancillary data packets (ITU-R BT.1685)",
+                "value": "17153"
+            },
+            {
+                "label": "Subtitling Distribution packet (SDP) (RDD 8)",
+                "value": "17154"
+            },
+            {
+                "label": "Transport of ANC packet in an ANC Multipacket (RDD 8)",
+                "value": "17155"
+            },
+            {
+                "label": "Metadata to monitor errors of audio and video signals on a broadcasting chain ARIB",
+                "value": "17156"
+            },
+            {
+                "label": "Acquisition Metadata Sets for Video Camera Parameters (RDD18)",
+                "value": "17157"
+            },
+            {
+                "label": "KLV Metadata transport in VANC space (RP214)",
+                "value": "17412"
+            },
+            {
+                "label": "KLV Metadata transport in HANC space (RP214)",
+                "value": "17428"
+            },
+            {
+                "label": "Packing UMID and Program Identification Label Data into SMPTE 291M Ancillary Data Packets (RP223)",
+                "value": "17476"
+            },
+            {
+                "label": "Compressed Audio Metadata (S2020-1)",
+                "value": "17665"
+            },
+            {
+                "label": "Compressed Audio Metadata (S2020-1)",
+                "value": "17666"
+            },
+            {
+                "label": "Compressed Audio Metadata (S2020-1)",
+                "value": "17667"
+            },
+            {
+                "label": "Compressed Audio Metadata (S2020-1)",
+                "value": "17668"
+            },
+            {
+                "label": "Compressed Audio Metadata (S2020-1)",
+                "value": "17669"
+            },
+            {
+                "label": "Compressed Audio Metadata (S2020-1)",
+                "value": "17670"
+            },
+            {
+                "label": "Compressed Audio Metadata (S2020-1)",
+                "value": "17671"
+            },
+            {
+                "label": "Compressed Audio Metadata (S2020-1)",
+                "value": "17672"
+            },
+            {
+                "label": "Compressed Audio Metadata (S2020-1)",
+                "value": "17673"
+            },
+            {
+                "label": "Two Frame Marker in HANC (ST 2051)",
+                "value": "17921"
+            },
+            {
+                "label": "WSS data per RDD 8 (RDD 8)",
+                "value": "20481"
+            },
+            {
+                "label": "Film Codes in VANC space (RP215)",
+                "value": "20737"
+            },
+            {
+                "label": "Ancillary Time Code (S12M-2)",
+                "value": "24672"
+            },
+            {
+                "label": "Time Code for High Frame Rate Signals (ST 12-3)",
+                "value": "24673"
+            },
+            {
+                "label": "EIA 708B Data mapping into VANC space (S334-1)",
+                "value": "24833"
+            },
+            {
+                "label": "EIA 608 Data mapping into VANC space (S334-1)",
+                "value": "24834"
+            },
+            {
+                "label": "Program Description in VANC space (RP207)",
+                "value": "25089"
+            },
+            {
+                "label": "Data broadcast (DTV) in VANC space (S334-1)",
+                "value": "25090"
+            },
+            {
+                "label": "VBI Data in VANC space (RP208)",
+                "value": "25091"
+            },
+            {
+                "label": "Time Code in HANC space (Deprecated; for reference only) (RP196 (Withdrawn))",
+                "value": "25700"
+            },
+            {
+                "label": "VITC in HANC space (Deprecated; for reference only) (RP196 (Withdrawn))",
+                "value": "25727"
+            },
+            {
+                "label": "Generic Time Label (ST 2103 (in development))",
+                "value": "24674"
+            },
+            {
+                "label": "Unknown",
+                "value": "65535"
+            }
+        ]
+    }
+]

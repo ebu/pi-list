@@ -5,12 +5,11 @@ const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const { getUserId } = require('../auth/middleware');
 const { defaultPreferences } = require('../auth/middleware');
 
-const getPreferences = async userId => {
+const getPreferences = async (userId) => {
     const user = await collection.findOne({ id: userId }).exec();
     if (user === null) return null;
 
-    if (user.preferences === null)
-    {
+    if (user.preferences === null) {
         user.preferences = defaultPreferences;
         setPreferences(userId, defaultPreferences);
     }
@@ -29,15 +28,13 @@ const setPreferences = async (userId, newPreferences) => {
 };
 
 async function getUser(username) {
-    const user = await collection.findOne({ username: username }).select(["-salt", "-password"]).exec();
+    const user = await collection.findOne({ username: username }).select(['-salt', '-password']).exec();
     if (user === null) return null;
 
-    if (user.preferences === null)
-    {
+    if (user.preferences === null) {
         user.preferences = defaultPreferences;
         setPreferences(user.id, defaultPreferences);
     }
-
 
     return user;
 }
@@ -47,9 +44,10 @@ function updatePreferences(req, res, next) {
 
     const value = req.body.value;
 
-    collection.findOne({ id: userId })
+    collection
+        .findOne({ id: userId })
         .exec()
-        .then(user => {
+        .then((user) => {
             if (user === null) {
                 res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND);
                 return;
@@ -57,43 +55,32 @@ function updatePreferences(req, res, next) {
 
             const preferences = _.merge(user.preferences, value);
             user.preferences = preferences;
-            return user.save().then(d => {
+            return user.save().then((d) => {
                 res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ value: d });
             });
         })
-        .catch(e => {
+        .catch((e) => {
             res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send();
         });
 }
 
-const getGDPRData = async (req) => {
+const setReadOnly = async (req) => {
     const userId = getUserId(req);
+    const value = req.body.value;
 
-    const userPreferences = await getPreferences(userId);
+    const user = await collection.findOne({ id: userId }).exec();
+    if (user === null) {
+        throw new Error(`User ${userId} not found`);
+    }
 
-    if(_.isNil(userPreferences)) return null;
-
-    if (userPreferences.gdprData === null || userPreferences.gdprData === undefined)
-        userPreferences.gdprData = defaultPreferences.gdprData;
-
-    return userPreferences.gdprData;
-};
-
-const setGDPRData = async (req) => {
-    const userId = getUserId(req);
-    const gdprData = req.body;
-
-    const userPreferences = await getPreferences(userId);
-    userPreferences.gdprData = gdprData;
-
-    return setPreferences(userId, userPreferences);
+    user.is_read_only = value;
+    await user.save();
 };
 
 module.exports = {
     getUser,
+    setReadOnly,
     updatePreferences,
     getPreferences,
     setPreferences,
-    getGDPRData,
-    setGDPRData
 };
