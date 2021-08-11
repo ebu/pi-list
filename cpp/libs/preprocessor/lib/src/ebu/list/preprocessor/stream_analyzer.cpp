@@ -43,6 +43,14 @@ namespace
     }
 } // namespace
 
+bool should_ignore(const ipv4::address& a)
+{
+    static std::vector<ipv4::address> addresses_to_ignore({ipv4::from_dotted_string("224.0.0.252") /* LLMNR */});
+
+    const auto it = std::find(addresses_to_ignore.begin(), addresses_to_ignore.end(), a);
+    return it != addresses_to_ignore.end();
+}
+
 nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_file, const std::string_view& pcap_uuid)
 {
     // These will hold pointers to the stream handlers.
@@ -51,7 +59,12 @@ nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_f
     std::vector<stream_listener*> streams;
     clock::time_point capture_timestamp = {};
 
-    auto create_handler = [&capture_timestamp, &streams, pcap_uuid](rtp::packet first_packet) {
+    auto create_handler = [&capture_timestamp, &streams, pcap_uuid](rtp::packet first_packet) -> stream_listener_uptr {
+        if(should_ignore(first_packet.info.udp.destination_address))
+        {
+            return {};
+        }
+
         capture_timestamp = first_packet.info.udp.packet_time;
         auto listener     = std::make_unique<stream_listener>(first_packet, pcap_uuid);
         streams.push_back(listener.get());

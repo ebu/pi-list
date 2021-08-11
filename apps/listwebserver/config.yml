@@ -4,7 +4,7 @@ port: 3030
 
 # Filesystem related
 folder: /home/ebu/tmp/list/
-cpp: /home/ebu/list/live/cmake-build-debug/third_party/ebu_list/bin/
+cpp: /home/ebu/list/live/cmake-build-debug/bin/
 
 # HTTP-related
 cookieSecret: STRD4O

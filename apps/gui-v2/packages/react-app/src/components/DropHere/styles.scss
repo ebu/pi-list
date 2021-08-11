@@ -1,0 +1,16 @@
+@import '../../../../style/variables/colors.scss';
+.drag-and-drop-tile-content-upload.active {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 21px;
+    text-align: center;
+    color: $darker-vibrant-blue;
+    display: flex;
+    align-items: center;
+
+    & > span {
+        padding-left: 0.5em;
+    }
+}

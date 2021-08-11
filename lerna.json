@@ -4,7 +4,13 @@
     "apps/gui",
     "apps/capture_probe",
     "js/auth",
-    "js/common_server"
+    "js/common_server",
+    "third_party/bisect-core-ts",
+    "third_party/ebu-list-sdk/lib",
+    "apps/gui-v2/packages/*",
+    "apps/gui-v2"
   ],
+  "useWorkspaces": false,
+  "npmClient": "yarn",
   "version": "0.0.0"
 }

@@ -1,0 +1,9 @@
+{
+    "extends": "../../tsconfig.json",
+    "include": ["src", "../components/stories"],
+    "compilerOptions": {
+        "noFallthroughCasesInSwitch": true,
+        "jsx": "react-jsx",
+        "baseUrl": "src"
+    }
+}

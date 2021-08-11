@@ -1,0 +1,39 @@
+@import '../../../../style/variables/colors.scss';
+
+.drag-and-drop-tile {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 8px;
+    padding: 20px;
+    width: 100%;
+    border: 1px dashed $dark-blue;
+    justify-content: center;
+    &:hover {
+        border: 1px dashed $darker-vibrant-blue;
+        & > .drag-and-drop-tile-content {
+            color: $vibrant-blue;
+        }
+    }
+}
+
+.drag-and-drop-tile-content {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 21px;
+    text-align: center;
+    color: $darker-vibrant-blue;
+}
+
+.drag-and-drop-tile-content-upload {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 21px;
+    text-align: center;
+    color: $darker-vibrant-blue;
+}

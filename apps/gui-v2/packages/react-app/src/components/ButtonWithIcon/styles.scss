@@ -1,0 +1,26 @@
+@import '../../../../style/variables/colors.scss';
+
+.button-with-icon-text {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 26px;
+    color: $bright-blue;
+
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+
+    padding-left: 0.6em;
+    &:hover {
+        color: $font-light-blue;
+    }
+}
+
+.button-with-icon-container {
+    display: flex;
+    align-items: center;
+}

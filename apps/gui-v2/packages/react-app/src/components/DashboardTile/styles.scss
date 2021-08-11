@@ -1,0 +1,169 @@
+@import '../../../../style/variables/colors.scss';
+
+@mixin list-font-type() {
+    font-family: Prompt;
+    font-style: normal;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+}
+
+@mixin list-font-bold {
+    font-weight: 500;
+}
+
+@mixin list-font-normal {
+    font-weight: normal;
+}
+
+@mixin list-transform-uppercase {
+    text-transform: uppercase;
+}
+
+@mixin list-transform-capitalize {
+    text-transform: capitalize;
+}
+
+.dashboard-tile {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    position: relative;
+    border: 3px solid transparent;
+    &:hover {
+        border-color: $font-dark-blue;
+    }
+
+    &.active-tile {
+        border: 3px solid $darker-vibrant-blue;
+    }
+}
+
+.dashboard-blend-div {
+    position: absolute;
+    border-radius: 8px;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: $white-transparent-24;
+    mix-blend-mode: overlay;
+
+    &.active-tile {
+        background: $white-transparent-34;
+        mix-blend-mode: overlay;
+    }
+}
+
+.dashboard-tile:hover > .dashboard-blend-div {
+    background: $white-transparent-54;
+    mix-blend-mode: overlay;
+}
+
+.dashboard-title {
+    display: flex;
+    flex-direction: column;
+    align-self: end;
+    padding: 20px;
+    padding-bottom: 1.5em;
+    //To make the overflow work as intended, wraping the word to the next line instead of overflowing it out of the div
+    position: absolute;
+    top: 0;
+}
+
+.dashboard-title-number {
+    @include list-font-type();
+    @include list-font-bold();
+    @include list-transform-uppercase();
+    color: $font-grey-blue;
+}
+
+.dashboard-main-title {
+    @include list-font-type();
+    @include list-font-normal();
+    @include list-transform-capitalize();
+    color: $font-light-grey;
+    overflow-wrap: anywhere;
+    word-break: break-all;
+}
+
+.dashboard-information {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    padding-bottom: 1em;
+    color: $font-dark-blue;
+}
+
+.dashboard-information > div {
+    &:not(:last-child) {
+        border-right: 1px solid;
+    }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+.dashboard-not-information {
+    width: 100%;
+    height: 52px;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & > div {
+        max-width: 50%;
+        & {
+            @include list-font-type();
+            @include list-font-bold();
+            @include list-transform-uppercase();
+            color: $white;
+        }
+    }
+}
+
+.dashboard-information-label {
+    @include list-font-type();
+    @include list-font-bold();
+    @include list-transform-uppercase();
+    color: $font-light-grey-hover;
+}
+
+.dashboard-information-title {
+    @include list-font-type();
+    @include list-font-normal();
+    @include list-transform-capitalize();
+    color: $font-dark-grey;
+}
+
+.dashboard-information-number {
+    @include list-font-type();
+    @include list-font-normal();
+    @include list-transform-capitalize();
+}
+
+div.laab-upload-progress {
+    position: relative;
+    flex: 1;
+    text-align: center;
+    margin-top: 5em;
+    svg.CircularProgressbar {
+        height: 12em;
+    }
+    .CircularProgressbar-text {
+        @include list-font-type();
+        @include list-font-bold();
+        @include list-transform-uppercase();
+    }
+}

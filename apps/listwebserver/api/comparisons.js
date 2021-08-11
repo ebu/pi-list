@@ -6,7 +6,7 @@ const API_ERRORS = require('../enums/apiErrors');
 const StreamCompare = require('../models/streamCompare');
 const websocketManager = require('../managers/websocket');
 const WS_EVENTS = require('../enums/wsEvents');
-const { getUserId } = require('../auth/middleware');
+const { getUserId, checkIsReadOnly } = require('../auth/middleware');
 
 function isAuthorized(req, res, next) {
     const { comparisonID } = req.params;
@@ -16,7 +16,7 @@ function isAuthorized(req, res, next) {
 
         StreamCompare.findOne({ owner_id: userId, id: comparisonID })
             .exec()
-            .then(data => {
+            .then((data) => {
                 if (data) next();
                 else res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND);
             })
@@ -31,7 +31,7 @@ router.get('/', (req, res) => {
     const userId = getUserId(req);
     StreamCompare.find({ owner_id: userId })
         .exec()
-        .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
+        .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
@@ -40,18 +40,18 @@ router.get('/:comparisonID/', (req, res) => {
 
     StreamCompare.findOne({ id: comparisonID })
         .exec()
-        .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
+        .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
 /* Delete a StreamCompare */
-router.delete('/:comparisonID/', (req, res) => {
+router.delete('/:comparisonID/', checkIsReadOnly, (req, res) => {
     const { comparisonID } = req.params;
     const userId = getUserId(req);
 
     StreamCompare.deleteOne({ id: comparisonID })
         .exec()
-        .then(data => {
+        .then((data) => {
             res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data);
         })
         .then(() => {
@@ -64,14 +64,14 @@ router.delete('/:comparisonID/', (req, res) => {
 });
 
 /* update */
-router.post('/:comparisonID/', (req, res) => {
+router.post('/:comparisonID/', checkIsReadOnly, (req, res) => {
     const { comparisonID } = req.params;
     const userId = getUserId(req);
     const comparison = req.body;
-    console.log(comparison)
+    console.log(comparison);
     StreamCompare.findOneAndUpdate({ id: comparisonID }, comparison, { new: true })
         .exec()
-        .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
+        .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 

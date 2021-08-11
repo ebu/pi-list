@@ -30,4 +30,6 @@ namespace ebu_list::analysis
         dscp_analyzer dscp_;
         nlohmann::json info_;
     };
+
+    using stream_listener_uptr = std::unique_ptr<stream_listener>;
 } // namespace ebu_list::analysis

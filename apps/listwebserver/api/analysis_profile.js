@@ -3,7 +3,7 @@ const router = Router();
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const controller = require('../controllers/analysis_profile');
 const logger = require('../util/logger');
-const { getUserId } = require('../auth/middleware');
+const { getUserId, checkIsReadOnly } = require('../auth/middleware');
 
 router.get('/', async (req, res, next) => {
     try {
@@ -42,7 +42,7 @@ router.get('/default', async (req, res, next) => {
     }
 });
 
-router.put('/default', async (req, res, next) => {
+router.put('/default', checkIsReadOnly, async (req, res, next) => {
     try {
         const { id } = req.body;
         const userId = getUserId(req);

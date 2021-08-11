@@ -1,0 +1,236 @@
+{
+    "@tippyjs/react@4.2.5": {
+        "licenses": "MIT",
+        "repository": "https://github.com/atomiks/tippyjs-react",
+        "licenseUrl": "https://github.com/atomiks/tippyjs-react/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "@types/enzyme-adapter-react-16@1.0.6": {
+        "licenses": "MIT",
+        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+        "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "@types/jest@24.0.19": {
+        "licenses": "MIT",
+        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+        "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "@types/lodash@4.14.168": {
+        "licenses": "MIT",
+        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+        "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "@types/node-polyglot@2.4.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+        "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
+        "parents": "@ebu-list/translations"
+    },
+    "@types/node@12.11.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+        "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
+        "parents": "@ebu-list/translations"
+    },
+    "@types/react-dom@16.9.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+        "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "@types/react-router-dom@5.1.7": {
+        "licenses": "MIT",
+        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+        "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "@types/react@17.0.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+        "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "@types/smpte-timecode@1.2.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+        "licenseUrl": "https://github.com/DefinitelyTyped/DefinitelyTyped/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "amqplib@0.6.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/squaremo/amqp.node",
+        "licenseUrl": "https://github.com/squaremo/amqp.node/raw/master/LICENSE",
+        "parents": "@bisect/bisect-core-ts"
+    },
+    "axios@0.19.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/axios/axios",
+        "licenseUrl": "https://github.com/axios/axios/raw/master/LICENSE",
+        "parents": "@bisect/bisect-core-ts"
+    },
+    "bulma@0.9.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/jgthms/bulma",
+        "licenseUrl": "https://github.com/jgthms/bulma/raw/master/LICENSE",
+        "parents": "@ebu-list/gui-components"
+    },
+    "customize-cra@0.8.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/arackaf/customize-cra",
+        "licenseUrl": "https://github.com/arackaf/customize-cra/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "enzyme-adapter-react-16@1.15.6": {
+        "licenses": "MIT",
+        "repository": "https://github.com/enzymejs/enzyme",
+        "licenseUrl": "https://github.com/enzymejs/enzyme/raw/master/LICENSE.md",
+        "parents": "namespace"
+    },
+    "enzyme@3.11.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/airbnb/enzyme",
+        "licenseUrl": "https://github.com/airbnb/enzyme/raw/master/LICENSE.md",
+        "parents": "namespace"
+    },
+    "form-data@4.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/form-data/form-data",
+        "licenseUrl": "https://github.com/form-data/form-data/raw/master/License",
+        "parents": "@bisect/bisect-core-ts"
+    },
+    "history@5.0.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ReactTraining/history",
+        "licenseUrl": "https://github.com/ReactTraining/history/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "jwt-decode@3.1.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/auth0/jwt-decode",
+        "licenseUrl": "https://github.com/auth0/jwt-decode/raw/master/LICENSE",
+        "parents": "@bisect/ebu-list-sdk"
+    },
+    "node-polyglot@2.4.0": {
+        "licenses": "BSD-2-Clause",
+        "repository": "https://github.com/airbnb/polyglot.js",
+        "licenseUrl": "https://github.com/airbnb/polyglot.js/raw/master/LICENSE",
+        "parents": "@ebu-list/translations"
+    },
+    "npm-license-crawler@0.2.1": {
+        "licenses": "BSD-3-Clause",
+        "repository": "http://github.com/mwittig/npm-license-crawler",
+        "licenseUrl": "http://github.com/mwittig/npm-license-crawler/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "rc-scrollbars@1.1.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/sakhnyuk/rc-scrollbars",
+        "licenseUrl": "https://github.com/sakhnyuk/rc-scrollbars/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "react-circular-progressbar@2.0.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/kevinsqi/react-circular-progressbar",
+        "licenseUrl": "https://github.com/kevinsqi/react-circular-progressbar/raw/master/LICENSE",
+        "parents": "@ebu-list/gui-components"
+    },
+    "react-dom@16.14.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/facebook/react",
+        "licenseUrl": "https://github.com/facebook/react/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "react-dropzone@10.2.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/react-dropzone/react-dropzone",
+        "licenseUrl": "https://github.com/react-dropzone/react-dropzone/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "react-image-gallery@1.0.8": {
+        "licenses": "MIT",
+        "repository": "https://github.com/xiaolin/react-image-gallery",
+        "licenseUrl": "https://github.com/xiaolin/react-image-gallery/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "react-router-dom@5.2.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/ReactTraining/react-router",
+        "licenseUrl": "https://github.com/ReactTraining/react-router/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "react-scripts@4.0.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/facebook/create-react-app",
+        "licenseUrl": "https://github.com/facebook/create-react-app/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "react-select@4.3.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/JedWatson/react-select/tree/master/packages/react-select",
+        "licenseUrl": "https://github.com/JedWatson/react-select/tree/master/packages/react-select",
+        "parents": "namespace"
+    },
+    "react@16.14.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/facebook/react",
+        "licenseUrl": "https://github.com/facebook/react/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "recharts@2.0.6": {
+        "licenses": "MIT",
+        "repository": "https://github.com/recharts/recharts",
+        "licenseUrl": "https://github.com/recharts/recharts/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "recoil@0.1.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/facebookexperimental/recoil",
+        "licenseUrl": "https://github.com/facebookexperimental/recoil/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "rollup@2.38.5": {
+        "licenses": "MIT",
+        "repository": "https://github.com/rollup/rollup",
+        "licenseUrl": "https://github.com/rollup/rollup/raw/master/LICENSE.md",
+        "parents": "namespace"
+    },
+    "smpte-timecode@1.2.3": {
+        "licenses": "MIT",
+        "repository": "https://github.com/CrystalComputerCorp/smpte-timecode",
+        "licenseUrl": "https://github.com/CrystalComputerCorp/smpte-timecode/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "socket.io@2.4.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/socketio/socket.io",
+        "licenseUrl": "https://github.com/socketio/socket.io/raw/master/LICENSE",
+        "parents": "@bisect/bisect-core-ts"
+    },
+    "svg-url-loader@7.1.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/bhovhannes/svg-url-loader",
+        "licenseUrl": "https://github.com/bhovhannes/svg-url-loader/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "tippy.js@6.2.7": {
+        "licenses": "MIT",
+        "repository": "https://github.com/atomiks/tippyjs",
+        "licenseUrl": "https://github.com/atomiks/tippyjs/raw/master/LICENSE",
+        "parents": "namespace"
+    },
+    "typescript@4.1.4": {
+        "licenses": "Apache-2.0",
+        "repository": "https://github.com/Microsoft/TypeScript",
+        "licenseUrl": "https://github.com/Microsoft/TypeScript/raw/master/LICENSE.txt",
+        "parents": "@ebu-list/translations"
+    },
+    "wavesurfer.js@4.5.0": {
+        "licenses": "BSD-3-Clause",
+        "repository": "https://github.com/katspaugh/wavesurfer.js",
+        "licenseUrl": "https://github.com/katspaugh/wavesurfer.js/raw/master/LICENSE",
+        "parents": "namespace"
+    }
+}

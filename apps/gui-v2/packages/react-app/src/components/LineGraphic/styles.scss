@@ -1,0 +1,99 @@
+@import '../../../../style/variables/colors.scss';
+
+.line-graphic-container {
+    border-radius: 8px;
+    flex: 1;
+    position: relative;
+}
+
+.blend-div {
+    background-color: $white-transparent-24;
+    mix-blend-mode: overlay;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.line-graphic {
+    flex: 1;
+    width: 100%;
+    height: 200px;
+    padding-right: 24px;
+    padding-bottom: 34px;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    align-items: center;
+    grid-gap: 1rem;
+}
+
+.line-graphic-high-tolerance-dot {
+    height: 6px;
+    width: 6px;
+    background-color: $bright-red;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.line-graphic-value-dot {
+    height: 6px;
+    width: 6px;
+    background-color: $vibrant-blue;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.line-graphic-legend {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+
+    & > span {
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 18px;
+
+        color: $font-light-grey;
+    }
+}
+
+.line-graphic-high-tolerance-legend {
+    display: flex;
+    align-items: center;
+}
+
+.line-graphic-value-legend {
+    display: flex;
+    align-items: center;
+    padding-top: 8px;
+}
+
+.line-graphic-high-tolerance-label {
+    padding-left: 8px;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 10px;
+
+    color: $font-light-grey;
+}
+
+.line-graphic-value-label {
+    padding-left: 8px;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 10px;
+
+    color: $font-light-grey;
+}
+.recharts-surface {
+    overflow: visible;
+}

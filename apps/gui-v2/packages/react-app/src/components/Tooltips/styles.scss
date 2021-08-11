@@ -1,0 +1,129 @@
+@import '../../../../style/variables/colors.scss';
+
+@mixin font-normal {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 10px;
+}
+
+.simple-tooltip {
+    min-width: 100px;
+    & .simple-tooltip-text {
+        @include font-normal();
+        display: flex;
+        justify-content: center;
+        padding: 8px;
+        border-radius: 8px;
+        width: 100%;
+        background-color: $font-light-grey;
+        color: $border-blue;
+    }
+}
+
+.time-value-tooltip {
+    @include font-normal();
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    & .time-tooltip {
+        display: flex;
+        justify-content: space-between;
+        background-color: $vibrant-blue;
+        padding: 8px;
+        border-radius: 4px 4px 0px 0px;
+        width: 100%;
+
+        & .time-tooltip-label {
+            color: $font-light-blue;
+        }
+        & .time-tooltip-value {
+            color: $font-light-grey;
+        }
+    }
+
+    & .value-tooltip {
+        display: flex;
+        justify-content: space-between;
+        background-color: $font-light-grey;
+        padding: 8px;
+        width: 100%;
+        border-radius: 0px 0px 4px 4px;
+
+        & .value-tooltip-label {
+            color: $almost-grey;
+        }
+        & .value-tooltip-value {
+            color: $font-dark-blue;
+        }
+    }
+}
+
+.min-max-avg-tooltip {
+    @include font-normal();
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    & .time-tooltip {
+        display: flex;
+        justify-content: space-between;
+        background-color: $vibrant-blue;
+        padding: 8px;
+        border-radius: 4px 4px 0px 0px;
+        width: 100%;
+
+        & .time-tooltip-label {
+            color: $font-light-blue;
+        }
+        & .time-tooltip-value {
+            color: $font-light-grey;
+        }
+    }
+    & .min-tooltip {
+        display: flex;
+        justify-content: space-between;
+        background-color: $font-light-grey;
+        padding: 8px;
+        width: 100%;
+        & .value-tooltip-label {
+            color: $almost-grey;
+        }
+        & .value-tooltip-value {
+            color: $font-dark-blue;
+        }
+    }
+
+    & .avg-tooltip {
+        display: flex;
+        justify-content: space-between;
+        background-color: $font-light-grey;
+        padding: 8px;
+        width: 100%;
+
+        & .value-tooltip-label {
+            color: $almost-grey;
+        }
+        & .value-tooltip-value {
+            color: $font-dark-blue;
+        }
+    }
+
+    & .max-tooltip {
+        display: flex;
+        justify-content: space-between;
+        background-color: $font-light-grey;
+        padding: 8px;
+        width: 100%;
+        border-radius: 0px 0px 4px 4px;
+
+        & .value-tooltip-label {
+            color: $almost-grey;
+        }
+        & .value-tooltip-value {
+            color: $font-dark-blue;
+        }
+    }
+}

@@ -1,0 +1,74 @@
+@import '../../../../style/variables/colors.scss';
+
+.information-streams-content {
+    display: flex;
+    flex-direction: column;
+
+    & > div:not(:first-child) {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 1em;
+        &:last-child {
+            padding-bottom: 0;
+        }
+        & > .information-streams-description-title {
+            font-family: Prompt;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 18px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: $font-grey-blue;
+            padding-bottom: 0.7em;
+        }
+        & > .information-streams-description-value {
+            font-family: Prompt;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 13px;
+            line-height: 22px;
+            color: $font-grey;
+
+            &.attention {
+                color: $bright-red;
+            }
+        }
+    }
+}
+
+.information-streams-title-container-collapsed {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    cursor: pointer;
+
+    & > .information-streams-title {
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 27px;
+        color: $white;
+        padding-bottom: 0.9em;
+    }
+}
+
+.information-streams-title-container-expanded {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+
+    & > .information-streams-title {
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 27px;
+        color: $vibrant-blue;
+        padding-bottom: 0.9em;
+    }
+}

@@ -4,7 +4,7 @@ const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const logger = require('../util/logger');
 const controller = require('../controllers/workflow');
 const { getUserFolder } = require('../util/analysis');
-const { getUserId } = require('../auth/middleware');
+const { getUserId, checkIsReadOnly } = require('../auth/middleware');
 
 router.get('/', (req, res, next) => {
     const workflows = controller.getWorkflows();

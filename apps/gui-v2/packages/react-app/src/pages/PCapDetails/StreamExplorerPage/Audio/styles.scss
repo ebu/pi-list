@@ -1,0 +1,71 @@
+@import '../../../../../../style/variables/colors.scss';
+.waveform {
+    width: auto;
+    position: relative;
+}
+
+.wave {
+    background: $background-dark-blue;
+    position: relative;
+}
+
+.wave-timeline {
+    background: $background-dark-blue;
+    border: 0.5px solid $font-dark-blue;
+}
+
+.waveform-controls {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-start;
+}
+
+.audio-player-container {
+    border-radius: 8px 8px 8px 8px;
+    background: $background-dark-blue;
+    align-items: center;
+    justify-content: center;
+    width: 100vh;
+}
+.audio-player {
+    margin: auto 2em;
+}
+.audio-player-container-title {
+    padding: 24px;
+}
+.audio-player-container-title > span {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 18px;
+    color: $font-light-grey;
+}
+.checkbox-list-container {
+    margin: 24px auto;
+}
+
+.render-button {
+    padding-left: 0.5em;
+}
+
+//For the scrollbar
+wave {
+    scrollbar-width: thin;
+    scrollbar-color: $grey;
+}
+
+wave::-webkit-scrollbar {
+    width: 10px;
+    height: 7px;
+}
+
+wave::-webkit-scrollbar-track {
+    background: none;
+}
+
+wave::-webkit-scrollbar-thumb {
+    background-color: $grey;
+    border-radius: 6px;
+}

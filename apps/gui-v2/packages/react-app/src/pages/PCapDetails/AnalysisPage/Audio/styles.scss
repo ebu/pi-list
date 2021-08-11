@@ -1,0 +1,42 @@
+@import '../../../../../../style/variables/colors.scss';
+
+.audio-dashboard-rtp-info-summary-title {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 21px;
+    color: $white;
+}
+.audio-dashboard-rtp-info-summary-value-container {
+    padding: 3em 3em 0 3em;
+}
+.audio-dashboard-rtp-info-summary-value {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 21px;
+
+    &.attention {
+        color: $bright-red;
+    }
+    color: $white;
+}
+
+.audio-dashboard-summary-container {
+    display: flex;
+    flex-direction: column;
+    padding-left: 3em;
+    padding-bottom: 1em;
+}
+
+.audio-dashboard-title > span {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 18px;
+    color: #e6e7ea;
+    border-bottom: 2px #0083ff solid;
+}

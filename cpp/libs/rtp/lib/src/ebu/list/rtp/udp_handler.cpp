@@ -26,14 +26,21 @@ void udp_handler::on_data(udp::datagram&& datagram)
     //                to_string(destination(rtp_packet.info.udp)), rtp_packet.info.rtp.view().ssrc());
 
     auto handler = find_or_create(rtp_packet);
-    handler->on_data(std::move(rtp_packet));
+
+    if(handler)
+    {
+        handler->on_data(std::move(rtp_packet));
+    }
 }
 
 void udp_handler::on_complete()
 {
     for(auto& handler : handlers_)
     {
-        handler.second->on_complete();
+        if(handler.second)
+        {
+            handler.second->on_complete();
+        }
     }
 }
 

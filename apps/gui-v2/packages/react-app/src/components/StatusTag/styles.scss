@@ -1,0 +1,59 @@
+@import '../../../../style/variables/colors.scss';
+
+.status-tag-container {
+    display: flex;
+    align-items: center;
+    height: 1.5em;
+    width: fit-content;
+
+    &.compliant {
+        background: $background-bright-green;
+        border-radius: 4px;
+    }
+
+    &.not-compliant {
+        background: $background-bright-red;
+        border-radius: 4px;
+    }
+}
+
+.status-tag-information {
+    padding: 0.25em 0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.status-tag-dot {
+    border-radius: 50%;
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+
+    &.compliant {
+        background: $bright-green;
+        box-shadow: 0px 0px 7px $bright-green;
+    }
+
+    &.not-compliant {
+        background: $bright-red;
+        box-shadow: 0px 0px 7px $bright-red;
+    }
+}
+
+.status-tag-text {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 12px;
+    padding-left: 0.7em;
+
+    &.compliant {
+        color: $bright-green;
+    }
+
+    &.not-compliant {
+        color: $bright-red;
+    }
+}

@@ -25,7 +25,7 @@ const {
 const websocketManager = require('../managers/websocket');
 const WS_EVENTS = require('../enums/wsEvents');
 const exec = util.promisify(child_process.exec);
-const { getUserId } = require('../auth/middleware');
+const { getUserId, checkIsReadOnly } = require('../auth/middleware');
 
 function isAuthorized(req, res, next) {
     const { pcapID } = req.params;
@@ -66,6 +66,7 @@ router.use('/:pcapID', isAuthorized);
  */
 router.put(
     '/',
+    checkIsReadOnly,
     upload.single('pcap', 'originalFilename'),
     (req, res, next) => {
         res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send(req.pcap);
@@ -77,6 +78,7 @@ router.put(
 /* Reanalyze an existing PCAP file */
 router.patch(
     '/:pcapId',
+    checkIsReadOnly,
     (req, res, next) => {
         const { pcapId } = req.params;
         console.log(req.params);
@@ -133,7 +135,7 @@ router.get('/', (req, res) => {
 });
 
 /* Delete a PCAP */
-router.delete('/:pcapID/', (req, res) => {
+router.delete('/:pcapID/', checkIsReadOnly, (req, res) => {
     const { pcapID } = req.params;
     const path = `${getUserFolder(req)}/${pcapID}`;
 
@@ -302,7 +304,7 @@ router.get('/:pcapID/stream/:streamID/help', (req, res) => {
 });
 
 /* Patch the stream info with a new name */
-router.patch('/:pcapID/stream/:streamID', (req, res) => {
+router.patch('/:pcapID/stream/:streamID', checkIsReadOnly, (req, res) => {
     const { streamID } = req.params;
     const alias = req.body.name;
 
@@ -425,7 +427,10 @@ router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
 });
 
 /* PUT new help information for stream */
-router.put('/:pcapID/stream/:streamID/help', (req, res, next) => {
+router.put(
+    '/:pcapID/stream/:streamID/help',
+    checkIsReadOnly,
+    (req, res, next) => {
         const { pcapID, streamID } = req.params;
 
         Stream.findOneAndUpdate({ id: streamID }, req.body, {
