@@ -1,0 +1,95 @@
+@import '../../../../style/variables/colors.scss';
+
+//PcapDetailsContentHOC
+div.pcap-details-content-sidebar-streams-list {
+    display: flex;
+    justify-content: center;
+    background-color: $background-blue-sidebar-streams;
+    height: 100%;
+}
+
+.pcap-details-content-layout {
+    display: grid;
+    grid-template-columns: minmax(150px, 15%) 1fr;
+}
+
+//PcapDetailsContent
+.main-page-header {
+    background: $background-color-blue;
+    grid-column: 1 / 4;
+}
+
+.main-page-dashboard {
+    overflow-y: auto;
+    height: 85vh;
+}
+
+//Analysis and Stream Explorer Pages
+.pcap-details-page-container {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+//Analysis Page
+.pcap-details-page-panels-container {
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(auto-fit, clamp(260px, 50%, 500px));
+    padding: 1.5em;
+    justify-content: space-evenly;
+    margin: 1em;
+}
+
+.analysis-page-container {
+    margin: 1em 3em 1em 3em;
+    justify-content: center;
+    align-items: center;
+}
+
+.analysis-page-container:not(:last-child) {
+    border-bottom: 1px solid #212946;
+}
+
+.pcap-details-page-bar-graphic-container {
+    //Case being more than 1 graph displayed
+    // display: grid;
+    // grid-gap: 1rem;
+    // grid-template-columns: repeat(auto-fit, clamp(600px, 50%, 390px));
+    // margin-bottom: auto;
+    // justify-content: space-evenly;
+
+    // margin: 1em;
+
+    position: relative;
+    margin: 1em 2em;
+}
+
+.pcap-details-page-line-graphic-container {
+    position: relative;
+    margin: 1em 2em;
+}
+
+//Stream Explorer Page
+.pcap-details-page-image-gallery-container {
+    margin: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pcap-details-page-audio-player-container {
+    margin: 1em 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pcap-details-page-ancillary-data-container {
+    display: flex;
+}
+
+// Extra Panels in analysis page
+.sb-information-sidebar-content > .extra-information-sidebar-content {
+    border: 2.25px solid $darker-vibrant-blue;
+    border-radius: 8px;
+}

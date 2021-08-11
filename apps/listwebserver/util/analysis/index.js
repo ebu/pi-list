@@ -148,7 +148,7 @@ function handlePreprocessorResponse({ msg, ack }) {
             preprocessorRequest = outstandingPreprocessorRequests[message.data.pcap.id];
             delete outstandingPreprocessorRequests[message.data.pcap.id];
         } else {
-            logger('stream-pre-processor').info(`Pcap ID not found in outstand jobs: ${message.data.pcap.id}`);
+            // logger('stream-pre-processor').info(`Pcap ID not found in outstand jobs: ${message.data.pcap.id}`);
             ack();
             return;
         }
@@ -544,7 +544,7 @@ function pcapIngestEnd(req, res, next) {
     const userId = getUserId(req);
     const pcapId = req.pcap.uuid;
 
-    Pcap.findOneAndUpdate( { id: pcapId }, { analyzed: true }, { new: true })
+    Pcap.findOneAndUpdate({ id: pcapId }, { analyzed: true }, { new: true })
         .exec()
         .then((pcapData) => {
             // Everything is done, we must notify the GUI

@@ -1,0 +1,39 @@
+@import '../../../../style/variables/colors.scss';
+.checkbox-list-title {
+    color: $white;
+}
+.checkbox-list-title > span {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $font-light-grey;
+}
+
+.checkbox-list {
+    color: $white;
+    display: flex;
+    flex-direction: row;
+}
+
+.checkbox-container {
+    cursor: pointer;
+    padding-left: 0.5rem;
+}
+
+.checkbox-container > span {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 22px;
+    color: $font-grey;
+    padding: 0.5rem 0.25rem;
+}
+
+.checkbox-label {
+    fill: $vibrant-blue;
+}

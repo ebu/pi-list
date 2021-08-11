@@ -1,0 +1,93 @@
+@import '../../../../style/variables/colors.scss';
+
+@mixin display-table-normal-font {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+
+    color: $font-light-grey;
+}
+
+@mixin display-table-null-font {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+
+    color: $font-dark-blue;
+}
+
+.download-manager-table-container {
+    width: 100%;
+    padding: 0 50px 50px 50px;
+}
+
+.download-manager-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+table.download-manager-table {
+    width: 100%;
+    border-radius: 8px 8px 8px 8px;
+    background: $background-dark-blue;
+}
+
+thead {
+    & > tr {
+        border-bottom: 0.5px solid $black;
+    }
+}
+
+.download-manager-centered-value {
+    text-align: center !important;
+}
+
+.download-table-label {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+    text-transform: capitalize;
+    padding-left: 4px;
+    color: #e6e7ea;
+    word-break: break-all;
+    overflow-wrap: anywhere;
+}
+
+.download-manager-name-data-container {
+    padding-left: 32px;
+}
+
+.download-manager-table-centered-header-label {
+    text-align: center !important;
+    padding-left: 32px !important;
+}
+
+.download-manager-button {
+    cursor: pointer;
+    background: $vibrant-blue;
+    border: 1px solid $vibrant-blue;
+    box-sizing: border-box;
+    border-radius: 4px;
+
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+
+    color: $white;
+}
+
+table.stream-comparison-table {
+    border-radius: 8px 8px 8px 8px;
+    background: #0a153d;
+    margin: 2em;
+    padding: 2em;
+}

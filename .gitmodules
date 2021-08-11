@@ -14,3 +14,9 @@
 	path = third_party/libklvanc
 	url = https://github.com/stoth68000/libklvanc.git
 	branch = master
+[submodule "third_party/ebu-list-sdk"]
+	path = third_party/ebu-list-sdk
+	url = https://github.com/bisect-pt/ebu-list-sdk.git
+[submodule "third_party/bisect-core-ts"]
+	path = third_party/bisect-core-ts
+	url = https://github.com/bisect-pt/bisect-core-ts.git

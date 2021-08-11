@@ -1,0 +1,54 @@
+@import '../../../../style/variables/colors.scss';
+
+//MaiContentLayout and Main Page
+.blend-div {
+    background-color: $white-transparent-24;
+    mix-blend-mode: overlay;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+//MaiContentLayout
+.main-page-right-sidebar {
+    grid-column: 3 / 4;
+    position: relative;
+}
+//MaiContentLayout
+.main-page-main-content {
+    background: $background-color-blue;
+    grid-column: 2 / 3;
+}
+
+//MainPage
+.main-page-container {
+    display: grid;
+    height: 100vh;
+    grid-template: auto 1fr auto / auto 1fr auto;
+    background: $background-color-blue;
+}
+.main-page-left-sidebar {
+    grid-column: 1 / 2;
+    position: relative;
+}
+
+.toastBody {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px !important;
+    line-height: 14px !important;
+}
+.toastProgress {
+    background: #333f48 !important;
+}
+
+.iframe-news-all-pages {
+    visibility: hidden;
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 0;
+}

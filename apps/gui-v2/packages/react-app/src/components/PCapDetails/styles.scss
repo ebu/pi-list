@@ -1,0 +1,46 @@
+@import '../../../../style/variables/colors.scss';
+
+.pcap-details-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.pcap-details-title {
+    padding-bottom: 0.9em;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 27px;
+    color: $white;
+}
+
+.pcap-details-lists {
+    padding-bottom: 1em;
+    & .pcap-details-icon-text {
+        display: flex;
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 18px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: $font-grey-blue;
+        padding-bottom: 0.7em;
+
+        & > img {
+            padding-right: 0.7em;
+        }
+    }
+
+    & .pcap-details-description {
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 22px;
+        text-align: right;
+        color: $font-grey;
+    }
+}

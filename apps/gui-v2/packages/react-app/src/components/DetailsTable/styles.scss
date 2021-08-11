@@ -1,0 +1,193 @@
+@import '../../../../style/variables/colors.scss';
+
+@mixin display-table-normal-font {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+
+    color: $font-light-grey;
+}
+
+@mixin display-table-null-font {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+
+    color: $font-dark-blue;
+}
+
+table.details-table {
+    margin-top: 0.5em;
+    width: 100%;
+    border-radius: 8px 8px 8px 8px;
+    background: $background-dark-blue;
+}
+
+thead {
+    cursor: default;
+    & > tr {
+        border-bottom: 0.5px solid $black;
+    }
+}
+tbody {
+    & > tr {
+        cursor: pointer;
+        &:last-child {
+            border-bottom: none;
+        }
+        border-bottom: 0.5px solid $black;
+        &:hover {
+            background: $background-blue;
+            border-radius: 0px;
+        }
+        & > td {
+            padding-top: 16px;
+            padding-bottom: 16px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        & > th {
+            text-align: left;
+            vertical-align: middle;
+        }
+    }
+}
+
+th {
+    &:first-child {
+        padding-left: 32px !important;
+    }
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+
+    padding: 16px 32px !important;
+    padding-left: 0 !important;
+    color: $font-grey-blue !important;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    width: 25vw;
+    background: #0a153d;
+}
+
+.details-table-filename-index {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding-left: 32px !important;
+    text-align: right !important;
+
+    color: $font-grey-blue;
+}
+
+.details-table-filename-data {
+    text-align: left !important;
+    padding-right: 2.3em;
+}
+
+.details-table-filename-name {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+
+    text-transform: capitalize;
+    padding-left: 4px;
+
+    color: $font-light-grey;
+}
+.details-table-video-data {
+    @include display-table-normal-font();
+    text-align: center !important;
+
+    &.none {
+        @include display-table-null-font();
+    }
+}
+
+.details-table-audio-data {
+    @include display-table-normal-font();
+    text-align: center !important;
+    &.none {
+        @include display-table-null-font();
+    }
+}
+
+.details-table-ancialary-data {
+    @include display-table-normal-font();
+    text-align: center !important;
+    &.none {
+        @include display-table-null-font();
+    }
+}
+
+.details-table-unknown-data {
+    @include display-table-normal-font();
+    text-align: center !important;
+
+    &.none {
+        @include display-table-null-font();
+    }
+}
+
+.details-table-row {
+    &.active {
+        background: $background-blue-active;
+        border-left: 2px solid $vibrant-blue;
+    }
+}
+
+.details-table-centered-header-label {
+    text-align: center !important;
+    padding-left: 32px !important;
+}
+
+.details-table-analysing-data {
+    @include display-table-normal-font();
+    text-align: center !important;
+
+    &.none {
+        @include display-table-null-font();
+    }
+}
+
+.details-table-progress-bar {
+    background: $grey;
+    width: 100%;
+    border-radius: 10px;
+
+    .progress {
+        transition: width 0.3s;
+        background: yellow;
+        height: 5px;
+        border-radius: 10px;
+    }
+}
+
+.details-table-status-data {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 12px;
+    padding-left: 0.7em;
+    color: #ff4747;
+}

@@ -1,0 +1,45 @@
+@import '../../../../style/variables/colors.scss';
+
+.compliance-tag-compliant {
+    background: $background-bright-green;
+    border-radius: 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.25rem;
+
+    & > span {
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 18px;
+        color: $bright-green;
+        text-align: center;
+
+        padding: 0.4em 0.7em;
+    }
+}
+
+.compliance-tag-not-compliant {
+    background: $background-bright-red;
+    border-radius: 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.25rem;
+
+    & > span {
+        font-family: Prompt;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 18px;
+        color: $bright-red;
+        text-align: center;
+
+        padding: 0.4em 0.7em;
+    }
+}

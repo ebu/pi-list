@@ -10,6 +10,7 @@ const API_ERRORS = require('../enums/apiErrors');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const { sdpIngest } = require('../util/analysis');
 const { sdpFileToSource } = require('../controllers/sdp');
+const { checkIsReadOnly } = require('../auth/middleware');
 
 // Constants
 const availableOptionsFile = `${program.folder}/stream_types.json`;
@@ -20,7 +21,7 @@ router.get('/available-options', (req, res) => {
     if (isObject(query) && !isEmpty(query)) {
         if (query.media_type === 'video' || query.media_type === 'audio' || query.media_type === 'ancillary') {
             fs.readFile(`${program.folder}/${query.media_type}_options.json`)
-                .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
+                .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
                 .catch(() =>
                     res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.SDP_VIDEO_OPTIONS_NOT_FOUND)
                 );
@@ -29,7 +30,7 @@ router.get('/available-options', (req, res) => {
         }
     } else {
         fs.readFile(availableOptionsFile)
-            .then(data => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
+            .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
             .catch(() =>
                 res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.SDP_AVAILABLE_OPTIONS_NOT_FOUND)
             );
@@ -37,10 +38,10 @@ router.get('/available-options', (req, res) => {
 });
 
 const storageTmp = multer.diskStorage({
-    destination: function(req, file, cb) {
+    destination: function (req, file, cb) {
         cb(null, os.tmpdir());
     },
-    filename: function(req, file, cb) {
+    filename: function (req, file, cb) {
         cb(null, uuidv1());
     },
 });
@@ -50,6 +51,7 @@ const upload = multer({ storage: storageTmp });
 // save the doc in a tmp file, check it, parse it and delete it.
 router.put(
     '/',
+    checkIsReadOnly,
     upload.single('sdp'),
     (req, res, next) => {
         res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send();
@@ -59,15 +61,15 @@ router.put(
 );
 
 // parse the SDP and return it as a sender
-router.put('/to_source', upload.single('sdp'), (req, res, next) => {
+router.put('/to_source', checkIsReadOnly, upload.single('sdp'), (req, res, next) => {
     sdpFileToSource(req.file.path)
-        .then(source =>
+        .then((source) =>
             res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send({
                 result: 'success',
                 source,
             })
         )
-        .catch(err => res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(err));
+        .catch((err) => res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(err));
 });
 
 module.exports = router;

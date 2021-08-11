@@ -1,0 +1,93 @@
+@import '../../style/variables/colors.scss';
+
+body {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.sb-drag-and-drop-tile {
+    color: $white;
+    background: $background-color-blue;
+    min-width: 500px;
+    min-height: 1000px;
+    overflow-y: auto;
+}
+
+@media (min-width: 500px) {
+    .sb-drag-and-drop-tile {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(500px, max-content));
+        gap: 28px;
+    }
+}
+
+.sb-drag-and-drop-upload-container {
+    background: $background-color-blue;
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-columns: repeat(auto-fit, clamp(300px, 50%, 260px));
+    margin-bottom: auto;
+    justify-content: center;
+    height: 100%;
+}
+.sb-drag-and-drop-upload {
+    display: flex;
+    padding: 7.75px;
+}
+
+.sb-dashboard-tile {
+    background: $background-color-blue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sb-information-sidebar-content {
+    & > div {
+        padding: 1.5em;
+        &:not(:last-child) {
+            padding-bottom: 1.5em;
+        }
+        border-bottom: 1px solid $border-blue;
+    }
+    margin-bottom: 150px;
+}
+
+.sb-sidebar-helper {
+    width: 169px;
+    background: $background-color-blue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sb-dropdown-menu-button-container {
+    color: $font-light-grey;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 21px;
+
+    & > span {
+        padding-right: 8px;
+    }
+}
+
+.sb-measurement-display-container {
+    display: grid;
+    grid-gap: 1.5rem;
+    padding: 5rem;
+    grid-template-columns: repeat(auto-fit, clamp(260px, 50%, 500px));
+    border-radius: 8px;
+    background: linear-gradient(291.34deg, #080d21 0%, #081131 100%);
+}
+
+@import 'bulma/bulma.sass';
+
+html {
+    overflow-y: hidden;
+}

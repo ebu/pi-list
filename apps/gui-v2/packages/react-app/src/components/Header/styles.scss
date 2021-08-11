@@ -1,0 +1,88 @@
+@import '../../../../style/variables/colors.scss';
+
+@mixin categoriesFont {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    padding: 3em;
+    height: 15vh;
+}
+
+.header-subtitle {
+    font-family: Prompt;
+    font-style: normal;
+    font-size: 12px;
+    line-height: 24px;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    color: #ffffff;
+}
+.header-title {
+    color: $white;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 36px;
+    margin: 0px;
+    padding-bottom: 0.7em;
+    text-transform: capitalize;
+    overflow-wrap: anywhere;
+    white-space: nowrap;
+}
+
+.header-categories {
+    @include categoriesFont();
+    color: $black;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px;
+    margin: 0px;
+    & ul {
+        display: flex;
+        justify-content: space-evenly;
+        & li {
+            &:not(:first-child) {
+                padding-left: 2em;
+            }
+            color: $grey;
+            & > .header-category {
+                &:hover {
+                    color: $font-dark-grey;
+                }
+                border-bottom: 2px transparent solid;
+            }
+            & > .header-category-clicked {
+                border-bottom: 2px $vibrant-blue solid;
+                transition: ease-in-out 0.5s;
+                & .header-category-label {
+                    color: $white;
+                }
+                & .header-category-value {
+                    color: $bright-blue;
+                }
+            }
+            & > a {
+                display: flex;
+                justify-content: space-between;
+                color: $grey;
+            }
+            & > a > span:not(:first-child) {
+                margin-left: 0.7em;
+            }
+        }
+    }
+}
+
+.header-dropdown-menu {
+    text-transform: none;
+}

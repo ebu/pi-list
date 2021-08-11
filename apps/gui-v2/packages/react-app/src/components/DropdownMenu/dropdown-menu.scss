@@ -1,0 +1,45 @@
+@charset "utf-8";
+
+@import './itemsList';
+
+div.laab-dropdown-menu {
+    position: relative;
+
+    div.select-button {
+        cursor: pointer;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        // width: 2rem;
+        padding: 0;
+
+        background-color: transparent;
+        & > i {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    div.select-button.select-open {
+        z-index: 10;
+
+        & > * {
+            z-index: 10;
+        }
+    }
+}
+
+div.laab-dropdown-menu {
+    div.select-items {
+        border-radius: 0.5em;
+        top: calc(100% + 4px);
+    }
+}
+
+div.laab-dropdown-menu.is-right {
+    div.select-items {
+        right: 0;
+    }
+}
