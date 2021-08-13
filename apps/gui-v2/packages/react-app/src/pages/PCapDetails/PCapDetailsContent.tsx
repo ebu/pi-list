@@ -17,8 +17,6 @@ function PCapDetailsContent({
 }) {
     const [currentHeaderType, setcurrentHeaderType] = React.useState<number>(0);
 
-    console.log('current stream', currentStream?.id);
-
     const onHeaderTypeClick = (headerType: number): void => {
         setcurrentHeaderType(headerType);
     };

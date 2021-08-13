@@ -33,7 +33,9 @@
 
 .settings-content-column {
     display: flex;
-    flex-direction: column;
+    justify-content: space-evenly;
+    flex-direction: row;
+    align-items: baseline;
     padding-bottom: 20px;
     margin: auto 2em;
 }

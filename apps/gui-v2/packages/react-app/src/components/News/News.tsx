@@ -35,7 +35,7 @@ function News({ gdprConsent, onGdprConsentClick, onGDPRClick }: IComponentProps)
                         Accept
                     </a>
                 ) : null}
-                {gdprConsent || gdprConsent === null || typeof gdprConsent === 'undefined' ? (
+                {gdprConsent === null || typeof gdprConsent === 'undefined' ? (
                     <a className="news-privacy-notice-decline" onClick={() => onGDPRClick(false)}>
                         Decline
                     </a>
