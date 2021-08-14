@@ -3,14 +3,25 @@ import ComplianceTagContainerExpanded from './ComplianceTagContainerExpanded';
 import ComplianceTagContainerCollapsed from './ComplianceTagContainerCollapsed';
 import { IComponentProps as ComplianceTagInterface } from '../ComplianceTag/ComplianceTag';
 
-function index({ complianceTagList }: { complianceTagList: Array<ComplianceTagInterface> }) {
-    const [isExpanded, setIsExpanded] = React.useState(true);
+function index({
+    complianceTagList,
+    hasError,
+}: {
+    complianceTagList: Array<ComplianceTagInterface>;
+    hasError?: boolean;
+}) {
+    React.useEffect(() => {
+        hasError ? setIsExpanded(true) : setIsExpanded(false);
+    }, []);
+    const [isExpanded, setIsExpanded] = React.useState<boolean>(false);
 
     const onClick = () => setIsExpanded(!isExpanded);
-    
-    return isExpanded ?
+
+    return isExpanded ? (
         <ComplianceTagContainerExpanded onClick={onClick} complianceTagList={complianceTagList} />
-        : <ComplianceTagContainerCollapsed onClick={onClick}/>;
+    ) : (
+        <ComplianceTagContainerCollapsed onClick={onClick} />
+    );
 }
 
 export default index;

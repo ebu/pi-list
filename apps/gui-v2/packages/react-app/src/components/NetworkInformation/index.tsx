@@ -13,7 +13,7 @@ interface IComponentProps {
     title: string;
 }
 function index({ informationStreamsList, title }: IComponentProps) {
-    const [isExpanded, setIsExpanded] = React.useState(true);
+    const [isExpanded, setIsExpanded] = React.useState(false);
 
     const onClick = () => setIsExpanded(!isExpanded);
 
