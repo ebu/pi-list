@@ -5,13 +5,14 @@ import AudioPlayerDisplay from './AudioPlayerDisplay';
 function AudioStreamExplorerDisplay({
     currentStream,
     pcapID,
+
 }: {
     currentStream: SDK.types.IStreamInfo | undefined;
     pcapID: string;
 }) {
     return (
         <>
-            <AudioPlayerDisplay currentStream={currentStream} pcapID={pcapID} />
+            <AudioPlayerDisplay currentStream={currentStream} pcapID={pcapID} cursorInitPos={0} onChange={() => {}} />
         </>
     );
 }

@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import { CustomScrollbar } from '../../components';
+import { getMediaTypeIcon, getComparisonType } from '../../utils/titles';
 import './styles.scss';
 
 export const comparisonTypes = {
@@ -14,7 +15,7 @@ function StreamComparisonTable({
     onTableRowDoubleClick,
     selectedComparisonsIds,
 }: any) {
-    const renderDelay = (value: any) => {
+    const renderDelay = (value: number) => {
         return (value / 1000).toFixed(3);
     };
 
@@ -24,7 +25,6 @@ function StreamComparisonTable({
     };
 
     const getResultData = (item: any) => {
-        console.log(item.config.comparison_type);
         if (item.type === 'st2022_7_analysis') {
             return `The delay is ${
                 item.result?.delay ? renderDelay(item.result.delay.actual).toString() : '-'
@@ -34,11 +34,11 @@ function StreamComparisonTable({
             case comparisonTypes.crossCorrelation:
                 return `The delay is ${
                     item.result?.delay ? renderDelay(item.result.delay.actual).toString() : '-'
-                }ms and media is ${item.result?.transparency ? 'not altered' : 'altered'}`;
+                } ms and media is ${item.result?.transparency ? 'not altered' : 'altered'}`;
             case comparisonTypes.psnrAndDelay:
                 return `The delay is ${
                     item.result?.delay ? renderDelay(item.result.delay.actual).toString() : '-'
-                }ms and media is ${item.result?.transparency ? 'not altered' : 'altered'}`;
+                } ms and media is ${item.result?.transparency ? 'not altered' : 'altered'}`;
             case 'AVSync':
                 return `The delay is ${
                     item.result?.delay ? renderDelay(item.result.delay.actual).toString() : '-'
@@ -59,9 +59,7 @@ function StreamComparisonTable({
                                     <tr className="download-manager-table-header-table-row">
                                         <th>Name</th>
                                         <th className="download-manager-table-centered-header-label">Type</th>
-                                        <th className="download-manager-table-centered-header-label">
-                                            Reference Stream
-                                        </th>
+                                        <th className="download-manager-table-centered-header-label">Reference Stream</th>
                                         <th className="download-manager-table-centered-header-label">Main Stream</th>
                                         <th className="download-manager-table-centered-header-label">Result</th>
                                         <th className="download-manager-table-centered-header-label">Date</th>
@@ -70,7 +68,6 @@ function StreamComparisonTable({
                                 <tbody>
                                     {comparisonTableData.map((item: any) => {
                                         const isActive = selectedComparisonsIds.includes(item.id);
-                                        console.log('item', item);
                                         return (
                                             <tr
                                                 className={isActive ? 'details-table-row active' : 'details-table-row'}
@@ -82,16 +79,16 @@ function StreamComparisonTable({
                                                     <span className="download-table-label">{item.name}</span>
                                                 </td>
                                                 <td className="download-manager-centered-value">
-                                                    <span className="download-table-label">{item.type}</span>
+                                                    <span className="download-table-label">{getComparisonType(item.type)}</span>
                                                 </td>
                                                 <td className="download-manager-centered-value">
                                                     <span className="download-table-label">
-                                                        {item.config?.main?.media_type}
+                                                        {getMediaTypeIcon(item.config?.reference?.media_type)}
                                                     </span>
                                                 </td>
                                                 <td className="download-manager-centered-value">
                                                     <span className="download-table-label">
-                                                        {item.config?.reference?.media_type}
+                                                        {getMediaTypeIcon(item.config?.main?.media_type)}
                                                     </span>
                                                 </td>
                                                 <td className="download-manager-centered-value">

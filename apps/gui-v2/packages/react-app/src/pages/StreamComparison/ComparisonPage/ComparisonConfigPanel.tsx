@@ -1,4 +1,5 @@
 import { translate } from '@ebu-list/translations';
+import { getComparisonType } from '../../../utils/titles';
 import './styles.scss';
 
 function ComparisonConfigPanel({
@@ -83,7 +84,7 @@ function ComparisonConfigPanel({
             <div className="comparison-configuration-panel-comparsions-info">
                 <div>
                     <span className="comparison-configuration-panel-subtitle">Type: </span>
-                    <span className="comparison-configuration-panel-data">{comparisonInfo.type}</span>
+                    <span className="comparison-configuration-panel-data">{getComparisonType(comparisonInfo.type)}</span>
                 </div>
                 {comparisonInfo.config.media_type && (
                     <div>
