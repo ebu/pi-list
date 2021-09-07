@@ -38,8 +38,6 @@ function ImageGalleryStreamExplorer({
         };
         loadFrames();
 
-        console.log('useeffect', currentStream?.id);
-
         return () => {
             setFrames([]);
         };

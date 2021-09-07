@@ -25,8 +25,6 @@ function CbufferAnalysis({
 
     const [cinstData, setCinstData] = React.useState<IGraphicTimeMaxData[]>([]);
 
-    console.log('cinst current stream', currentStream?.id);
-
     React.useEffect(() => {
         const loadCinstData = async (): Promise<void> => {
             const all = await list.stream.getCInstForStream(pcapID, streamID, first_packet_ts, last_packet_ts);

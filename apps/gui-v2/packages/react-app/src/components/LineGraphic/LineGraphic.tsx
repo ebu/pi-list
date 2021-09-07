@@ -31,8 +31,6 @@ function LineGraphic({ data }: { data: IComponentProps | undefined }) {
         return null;
     }
 
-    // console.log('line graphic data', data);
-
     const initialZoomState = {
         dataZoom: data.graphicData,
         refAreaLeft: '',
