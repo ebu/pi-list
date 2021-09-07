@@ -18,7 +18,6 @@ function ComparisonPageContentHOC(props: any) {
 
     const history = useHistory();
     const userInfo = useRecoilValue(userAtom);
-    console.log(comparisonInfo);
     const getHelpMessage = () => {
         if (comparisonInfo.type === 'st2022_7_analysis') {
             return (

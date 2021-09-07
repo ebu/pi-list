@@ -97,8 +97,7 @@ function StreamComparisonContentHOC() {
                     <div className="comparison-types-description-container">
                         <span className="comparison-types-description-title">Stream comparison</span>
                         <span className="comparison-types-description-text">
-                            This allows to quatify the delay and the possible differences between 2 streams of same
-                            essence, captured simultaneously. The terminology is inspired by ffmpeg: reference vs main.
+                            These methods allow to quantify the possible differences and delay between 2 streams of same essence, captured simultaneously. Select 1 of the 4 types and select the red and blue streams.
                         </span>
                     </div>
                 );

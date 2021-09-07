@@ -26,23 +26,23 @@ function StreamComparisonTable({
 
     const getResultData = (item: any) => {
         if (item.type === 'st2022_7_analysis') {
-            return `The delay is ${
-                item.result?.delay ? renderDelay(item.result.delay.actual).toString() : '-'
-            }% the same`;
+            const intersection = item.result.analysis.intersectionSizeInPackets;
+            const numberOfEqualPackets =
+                intersection -
+                item.result.analysis.numberOfDifferentPackets -
+                item.result.analysis.numberOfMissingPackets;
+            const equalPercentage = intersection == 0 ? 100 : (numberOfEqualPackets / intersection) * 100;
+            return `packets: ${ equalPercentage }% the same
+            max delay: ${ item.result.analysis.maxDeltaNs.toFixed(0)/1000 } us`;
         }
         switch (item.config.comparison_type) {
             case comparisonTypes.crossCorrelation:
-                return `The delay is ${
-                    item.result?.delay ? renderDelay(item.result.delay.actual).toString() : '-'
-                } ms and media is ${item.result?.transparency ? 'not altered' : 'altered'}`;
             case comparisonTypes.psnrAndDelay:
-                return `The delay is ${
-                    item.result?.delay ? renderDelay(item.result.delay.actual).toString() : '-'
-                } ms and media is ${item.result?.transparency ? 'not altered' : 'altered'}`;
-            case 'AVSync':
-                return `The delay is ${
-                    item.result?.delay ? renderDelay(item.result.delay.actual).toString() : '-'
-                } ms and audio is ${item.result.delay.actual < 0 ? 'earlier' : 'later'} than video`;
+                return `delay: ${ item.result?.delay ? renderDelay(item.result.delay.actual).toString() : '-' } ms
+                media: ${item.result?.transparency ?  'preserved' : 'modified' }`;
+            case comparisonTypes.avSync:
+                return `delay: ${ item.result?.delay ? renderDelay(item.result.delay.pkt).toString() : '-' } ms
+                audio is ${item.result.delay.actual < 0 ? 'earlier' : 'later'} than video`;
             default:
                 return null;
         }
