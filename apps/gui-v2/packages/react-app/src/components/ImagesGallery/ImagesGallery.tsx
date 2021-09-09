@@ -8,7 +8,15 @@ interface IImage {
     thumbnail: string;
 }
 
-function ImagesGallery({ imagesData }: { imagesData: Array<IImage> }) {
+function ImagesGallery({
+    imagesData,
+    initFrameIndex,
+    onChange,
+}: {
+    imagesData: Array<IImage>;
+    initFrameIndex: number;
+    onChange: (index: number) => void;
+}) {
     const renderRightNav = (onClick: any, disabled: any) => {
         return (
             <button
@@ -48,8 +56,12 @@ function ImagesGallery({ imagesData }: { imagesData: Array<IImage> }) {
                     items={imagesData}
                     showPlayButton={false}
                     showFullscreenButton={false}
+                    startIndex={initFrameIndex}
                     renderRightNav={renderRightNav}
                     renderLeftNav={renderLeftNav}
+                    onSlide={onChange}
+                    lazyLoad={true}
+                    showIndex={true}
                 />
             </div>
         </div>

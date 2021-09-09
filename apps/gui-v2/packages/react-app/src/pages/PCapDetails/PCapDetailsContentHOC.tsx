@@ -90,13 +90,13 @@ const getDataToInformationSidebar = (
                                 <div className="extra-information-sidebar-content">{informationSidebarContent}</div>
                             ) : null}
                             <div>
+                                <ComplianceTagPanel stream={currentStream} />
+                            </div>
+                            <div>
                                 <MediaInformationPanel stream={currentStream} />
                             </div>
                             <div>
                                 <NetworkInformationPanel stream={currentStream} />
-                            </div>
-                            <div>
-                                <ComplianceTagPanel stream={currentStream} />
                             </div>
                         </div>
                     ) : (

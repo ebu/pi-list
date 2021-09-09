@@ -15,3 +15,11 @@ export function getTitleFor(stream: any, index: any) {
             return null;
     }
 }
+
+export function getMediaTypeIcon(type: string) {
+    return type === 'video' ? `🎞` : type === 'audio' ? `♫` : type === 'ancillary' ? `🖹` : '?';
+}
+
+export function getComparisonType(value: string) {
+    return value === 'compareStreams' ? 'Media' : value === 'st2022_7_analysis' ? 'ST 2022-7' : `?`;
+}

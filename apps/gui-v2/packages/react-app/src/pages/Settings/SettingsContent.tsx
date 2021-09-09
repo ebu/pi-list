@@ -68,6 +68,19 @@ function SettingsContent({
     onChangeAnalysisProfile,
 }: IComponentProps) {
     const currentLanguage = languages.find(item => item.value === userData?.preferences?.gui?.language);
+    const [gdprConsent, setGdprConsent] = React.useState<boolean>();
+
+    React.useEffect(() => {
+        const gdprConsentLocalStorage = localStorage.getItem('gdprConsent');
+        if (gdprConsentLocalStorage) {
+            setGdprConsent(gdprConsentLocalStorage === 'true' ? true : false);
+        }
+    }, []);
+
+    const onGDPRClick = (gdpr: boolean) => {
+        localStorage.setItem('gdprConsent', gdpr.toString());
+        setGdprConsent(gdpr);
+    };
 
     return (
         <>
@@ -117,6 +130,13 @@ function SettingsContent({
                                 <button className="settings-page-delete-user-button" onClick={onDeleteUser}>
                                     Delete User
                                 </button>
+                            </div>
+                            <div>
+                                {gdprConsent || typeof gdprConsent === 'undefined' ? (
+                                    <a className="news-privacy-notice-decline" onClick={() => onGDPRClick(false)}>
+                                        Decline
+                                    </a>
+                                ) : null}
                             </div>
                         </div>
                     </div>

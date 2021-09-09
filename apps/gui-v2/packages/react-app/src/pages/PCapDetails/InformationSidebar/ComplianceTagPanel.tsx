@@ -1,8 +1,9 @@
 import { api, types } from '@bisect/ebu-list-sdk';
 import { ComplianceTagContainer } from 'components/index';
 
-const ComplianceTagPanel = ({ stream }: { stream: types.IStreamInfo | undefined }) => {
+const ComplianceTagPanel = ({ stream }: { stream: types.IStreamInfo | any | undefined }) => {
     const analyses = stream?.analyses;
+    const hasError: boolean = stream?.error_list.length === 0 ? false : true;
     if (!analyses) return null;
     const dataArray: any = [];
     const badges = Object.keys(analyses)
@@ -18,7 +19,7 @@ const ComplianceTagPanel = ({ stream }: { stream: types.IStreamInfo | undefined 
             };
             dataArray.push(data);
         });
-    return <ComplianceTagContainer complianceTagList={dataArray} />;
+    return <ComplianceTagContainer complianceTagList={dataArray} hasError={hasError} />;
 };
 
 export default ComplianceTagPanel;
