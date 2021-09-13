@@ -176,6 +176,24 @@ const ancillaryInformationList = (
     ];
 };
 
+const ttmlInformationList = (currentStream: any, mediaInfo: any): Array<Information> => {
+    console.log('TTML', currentStream);
+    return [
+        {
+            titleTag: 'ttml.number_of_subtitles',
+            value: (currentStream?.media_specific?.data?.length || '').toString(),
+        },
+        {
+            titleTag: 'ttml.time_base',
+            value: (currentStream?.media_specific?.data[0]?.timeBase || 'null').toString(),
+        },
+        {
+            titleTag: 'ttml.sequence_identifier',
+            value: (currentStream?.media_specific?.data[0]?.sequenceIdentifier || 'null').toString(),
+        },
+    ];
+};
+
 const MediaInformationPanel = ({ stream }: { stream: SDK.types.IStreamInfo | undefined }) => {
     const headingsMediaInfo = translate('headings.media_information');
 
@@ -204,6 +222,14 @@ const MediaInformationPanel = ({ stream }: { stream: SDK.types.IStreamInfo | und
             return (
                 <MediaInformation
                     informationStreamsList={ancillaryInformationList(stream, ancillary_media_information)}
+                    title={headingsMediaInfo}
+                />
+            );
+        case 'ttml':
+            const ttml_media_information = stream.media_specific as SDK.api.pcap.IST2110AncInfo;
+            return (
+                <MediaInformation
+                    informationStreamsList={ttmlInformationList(stream, ttml_media_information)}
                     title={headingsMediaInfo}
                 />
             );

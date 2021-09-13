@@ -17,6 +17,18 @@ function PCapDetailsContent({
 }) {
     const [currentHeaderType, setcurrentHeaderType] = React.useState<number>(0);
 
+    const isTTML = currentStream?.media_type === 'ttml' ? true : false;
+
+    //If we support more media types that don't need graphs or analysis, this needs to be changed
+    const hasGraps = !isTTML;
+    const hasAnalysis = !isTTML;
+
+    React.useEffect(() => {
+        if (!hasAnalysis) {
+            setcurrentHeaderType(1);
+        }
+    }, [hasAnalysis]);
+
     const onHeaderTypeClick = (headerType: number): void => {
         setcurrentHeaderType(headerType);
     };
@@ -41,6 +53,8 @@ function PCapDetailsContent({
                     headerTitle={pcapFilename}
                     onHeaderTypeClick={onHeaderTypeClick}
                     currentHeaderType={currentHeaderType}
+                    hasGraphs={hasGraps}
+                    hasAnalysis={hasAnalysis}
                 />
             </div>
             <div className="main-page-dashboard">
