@@ -57,6 +57,9 @@
     font-size: 18px;
     line-height: 27px;
     padding-bottom: 0.3em;
+    justify-content: center;
+    align-items: center;
+    display: flex;
 
     & > span:not(:first-child) {
         padding-left: 0.25em;
@@ -174,4 +177,13 @@
     &.attention {
         color: red;
     }
+}
+
+.display-panel-information-units {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 23px;
+    color: #6b7083;
 }

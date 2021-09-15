@@ -54,7 +54,6 @@ function MeasurementPassCriteriaDisplay({
                             key={index}
                         >
                             <span>{item.value}</span>
-                            <span>{displayData.unit}</span>
                         </div>
                         <div className="display-panel-information-bar"></div>
                         <div className="display-panel-label">
@@ -62,6 +61,7 @@ function MeasurementPassCriteriaDisplay({
                         </div>
                     </div>
                 ))}
+                <span className="display-panel-information-units">{displayData.unit}</span>
             </div>
             {displayData.passCriteriaData ? (
                 <>
@@ -72,7 +72,6 @@ function MeasurementPassCriteriaDisplay({
                             <div className="display-panel-information-item" key={index}>
                                 <div className="display-panel-information-data">
                                     <span>{item.value}</span>
-                                    <span>{displayData.unit}</span>
                                 </div>
                                 <div className="display-panel-information-bar"></div>
                                 <div className="display-panel-label">
@@ -80,6 +79,7 @@ function MeasurementPassCriteriaDisplay({
                                 </div>
                             </div>
                         ))}
+                        <span className="display-panel-information-units">{displayData.unit}</span>
                     </div>
                 </>
             ) : null}
