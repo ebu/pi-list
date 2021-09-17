@@ -292,7 +292,7 @@ const postProcessSdpFiles = async (pcapId, folder) => {
     Pcap.findOne({ id: pcapId })
         .exec()
         .then(async (data) => {
-            const filename = data.file_name.replace(/\.[^\.]*$/, '-sdp.zip');
+            const filename = data.file_name.replace(/\.[^\.]*$/, '-sdp.zip').replace(RegExp('/', 'g'),'-');
             const files = await glob(`${folder}/**/*.sdp`);
             await zipFilesExt(files, `${folder}/${filename}`, 'sdp');
         });
