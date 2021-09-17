@@ -36,12 +36,12 @@ function Credits() {
                     <CustomScrollbar>
                         <table className="credits-table">
                             <thead>
-                                <tr>
+                                <tr className="credits-table-tr">
                                     <th className="">Package</th>
                                     <th className="credits-table-centered-header-label">License</th>
                                 </tr>
                             </thead>
-                            <tbody className="teste">
+                            <tbody className="credits-table-tbody">
                                 <ListItems title="" packages={{ ...CreditsList }} />
                                 {Object.keys(CreditsUnknownList).length > 0 ? (
                                     <ListItems title="Unknown Licenses" packages={{ ...CreditsUnknownList }} />
