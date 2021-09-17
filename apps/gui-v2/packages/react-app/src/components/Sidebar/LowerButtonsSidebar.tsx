@@ -24,6 +24,7 @@ function LowerButtonsSidebar({ lowerButtons, onClick, isCollapsed }: IComponentP
             {lowerButtons.map(button => {
                 const Icon = button.icon;
                 const icon = Icon ? <Icon className="sidebar-icons-to-center" /> : null;
+                const isClickedAndCollapsed = button.clicked && isCollapsed ? 'sidebar-item-collapsed-clicked' : '';
                 return (
                     <li key={button.key}>
                         <a onClick={() => onClick(button.key)}>
@@ -41,7 +42,7 @@ function LowerButtonsSidebar({ lowerButtons, onClick, isCollapsed }: IComponentP
                                         ) : (
                                             <div style={{ visibility: 'hidden' }}>{button.text}</div>
                                         )}
-                                        <div>{icon}</div>
+                                        <div className={isClickedAndCollapsed}>{icon}</div>
                                     </>
                                 ) : (
                                     <>
