@@ -98,7 +98,10 @@
 }
 
 .selected-stream-comparison-icon {
-    border: 3px solid #2b93f5 !important;
+    // border: 3px solid #2b93f5 !important;
+    box-shadow: 0 0 5px 5px #4b8cfbb5 !important;
+    background-color: #a9a9a936;
+    filter: contrast(1.75) !important;
     border-radius: 10px;
 }
 
@@ -108,7 +111,9 @@
 }
 
 .stream-comparison-icon {
-    border: 3px solid #004f99;
+    // border: 3px solid #004f99;
+    box-shadow: 0 0 5px 5px #0052ff38;
+    filter: contrast(50%);
     display: flex;
     border-radius: 10px;
     padding: 1em;
