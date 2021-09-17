@@ -39,14 +39,16 @@
 }
 
 .stream-selector-reference {
-    border: 3px solid #ff0000;
+    // border: 3px solid #ff0000;
+    box-shadow: 0 0 5px 5px #ff242485;
     border-radius: 10px;
     width: 40%;
     padding: 2em;
 }
 
 .stream-selector-main {
-    border: 3px solid #0059fa;
+    // border: 3px solid #0059fa;
+    box-shadow: 0 0 5px 5px #4060ff85;
     border-radius: 10px;
     width: 40%;
     padding: 2em;
