@@ -37,7 +37,7 @@ function LowerButtonsSidebar({ lowerButtons, onClick, isCollapsed }: IComponentP
                                                     button.key === sidebarButtonsKeys.version ? 'version-collapsed' : ''
                                                 }
                                             >
-                                                {button.text}
+                                                {button.text.split(':')[0]}
                                             </div>
                                         ) : (
                                             <div style={{ visibility: 'hidden' }}>{button.text}</div>
