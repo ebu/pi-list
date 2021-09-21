@@ -9,7 +9,7 @@ target_link_libraries(apps_common
         ebu_list_analysis
         influxdb-cpp-rest
         libklvanc
-        CONAN_PKG::jsonformoderncpp
+        CONAN_PKG::nlohmann_json
         CONAN_PKG::libpng
         CONAN_PKG::mongo-cxx-driver
         )

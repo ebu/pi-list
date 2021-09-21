@@ -30,7 +30,7 @@ configure_file(
 #-------------------------------------------------------------------------------
 target_link_libraries(${PROJECT_NAME}
         ebu_list_core
-        CONAN_PKG::Catch2
+        CONAN_PKG::catch2
         ${${PROJECT_NAME}_LINK_FLAGS}
         )
 

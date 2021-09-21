@@ -20,13 +20,15 @@ execute_process(COMMAND bash "${PROJECT_SOURCE_DIR}/scripts/reset_libssl_permiss
 # -------------------------------------------------------------------------
 # conan
 conan_check()
-conan_add_remote(NAME bincrafters URL https://api.bintray.com/conan/bincrafters/public-conan)
-conan_add_remote(NAME conan-center URL https://conan.bintray.com)
-conan_add_remote(NAME bisect URL https://api.bintray.com/conan/bisect/bisect)
+# conan_add_remote(NAME bincrafters URL https://api.bintray.com/conan/bincrafters/public-conan)
+# conan_add_remote(NAME conan-center URL https://conan.bintray.com)
+conan_add_remote(NAME conancenter URL https://center.conan.io)
+# conan_add_remote(NAME bisect URL https://api.bintray.com/conan/bisect/bisect)
 
 conan_cmake_run(CONANFILE conanfile.txt
         BASIC_SETUP CMAKE_TARGETS
         BUILD missing)
+
 # -------------------------------------------------------------------------
 
 if(${CMAKE_GENERATOR} MATCHES "Visual Studio.*")

@@ -8,6 +8,7 @@
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <unistd.h>
 #endif // defined(LIST_HAS_POSIX)
 
 using namespace ebu_list;

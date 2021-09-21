@@ -8,5 +8,5 @@ target_link_libraries(${PROJECT_NAME}
         ebu_list_rtp
         ebu_list_ptp
         libklvanc
-        CONAN_PKG::jsonformoderncpp
+        CONAN_PKG::nlohmann_json
         CONAN_PKG::libpng)
