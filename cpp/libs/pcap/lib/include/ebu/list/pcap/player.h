@@ -18,8 +18,8 @@ namespace ebu_list::pcap
     class pcap_player
     {
       public:
-        pcap_player(path pcap_file, udp::listener_ptr listener, on_error_t on_error);
-        pcap_player(path pcap_file, udp::listener_ptr listener, on_error_t on_error,
+        pcap_player(path pcap_file, std::function<void(float)> progress_callback, udp::listener_ptr listener, on_error_t on_error);
+        pcap_player(path pcap_file, std::function<void(float)> progress_callback, udp::listener_ptr listener, on_error_t on_error,
                     clock::duration packet_timestamp_correction);
 
         bool next();
@@ -31,8 +31,10 @@ namespace ebu_list::pcap
         void do_next();
 
         udp::listener_ptr listener_;
+        std::function<void(float)> progress_callback_;
         on_error_t on_error_;
         const clock::duration packet_timestamp_correction_;
+        const uint64_t file_size_;
         sbuffer_factory_ptr bf_;
         chunked_data_source source_;
         maybe_header file_header_;

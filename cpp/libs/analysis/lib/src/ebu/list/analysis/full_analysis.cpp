@@ -13,6 +13,8 @@
 #include "ebu/list/ptp/udp_filter.h"
 #include "ebu/list/rtp/udp_handler.h"
 #include "ebu/list/st2110/d21/settings.h"
+#include <iostream>
+
 
 using namespace ebu_list;
 using namespace ebu_list::analysis;
@@ -274,8 +276,11 @@ void analysis::run_full_analysis(processing_context& context)
     auto ptp_sm     = std::make_shared<ptp::state_machine>(ptp_logger);
     auto handler    = std::make_shared<rtp::udp_handler>(create_handler);
     auto filter     = std::make_shared<ptp::udp_filter>(ptp_sm, handler);
+    auto progress_callback = [](float percentage){
+        logger()->info("Progress: {} %", percentage);
+    };
 
-    auto player = std::make_unique<pcap::pcap_player>(context.pcap_file, filter, on_error_exit,
+    auto player = std::make_unique<pcap::pcap_player>(context.pcap_file, progress_callback, filter, on_error_exit,
                                                       -get_timestamp_offset(context.profile, context.pcap));
 
     auto launcher = launch(std::move(player));

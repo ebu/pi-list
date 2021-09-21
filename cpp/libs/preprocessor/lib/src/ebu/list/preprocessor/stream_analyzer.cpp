@@ -74,7 +74,8 @@ nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_f
     auto offset_calculator = std::make_shared<ptp::ptp_offset_calculator>();
     auto udp_handler       = std::make_shared<rtp::udp_handler>(create_handler);
     auto filter            = std::make_shared<ptp::udp_filter>(offset_calculator, udp_handler);
-    auto player            = std::make_unique<pcap::pcap_player>(path(pcap_file), filter, on_error_ignore);
+    auto progress_callback = [](float){};
+    auto player            = std::make_unique<pcap::pcap_player>(path(pcap_file), progress_callback, filter, on_error_ignore);
 
     const auto start_time = std::chrono::steady_clock::now();
 
