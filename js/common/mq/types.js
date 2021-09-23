@@ -1,4 +1,4 @@
-const anySubtopic = topic => topic + '.*';
+const anySubtopic = (topic) => topic + '.*';
 const makeSubtopic = (topic, subTopic) => topic + '.' + subTopic;
 
 const queues = {
@@ -105,6 +105,13 @@ const exchanges = {
         type: 'fanout',
         options: { durable: false },
         keys: { announce: 'announce' },
+    },
+
+    extractorStatus: {
+        name: 'ebu-list.extractor.status',
+        type: 'fanout',
+        options: { durable: false },
+        keys: { progress: 'progress' },
     },
 };
 

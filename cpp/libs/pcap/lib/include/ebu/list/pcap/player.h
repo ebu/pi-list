@@ -38,6 +38,7 @@ namespace ebu_list::pcap
         sbuffer_factory_ptr bf_;
         chunked_data_source source_;
         maybe_header file_header_;
+        u_int64_t current_packet_index_ = 0;
         std::atomic<bool> done_          = false;
         bool pcap_has_truncated_packets_ = false;
     };

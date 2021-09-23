@@ -26,6 +26,15 @@ const handlePcapsUpdate = (
                 return cloneCurrent;
             });
             break;
+        case 'PCAP_FILE_ANALYZING':
+            setPcapsAnalysingAtom(current => {
+                const cloneCurrent = _.cloneDeep(current);
+                const index = cloneCurrent.findIndex(element => element.id === data.data.id);
+                cloneCurrent[index].progress = data.data.progress;
+                console.log(data.data.progress);
+                return cloneCurrent;
+            });
+            break;
         case 'PCAP_FILE_PROCESSING_DONE':
             setPcapsAnalysingAtom(current => {
                 return current.filter((pcap: SDK.api.pcap.IPcapFileReceived) => pcap.id !== data.data.id);

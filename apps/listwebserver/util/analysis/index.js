@@ -84,7 +84,7 @@ function pcapFormatConversion(req, res, next) {
             file_name: originalFilename,
             pcap_file_name: req.file.filename,
             date: Date.now(),
-            progress: 33,
+            progress: 0,
         },
     });
 
@@ -210,7 +210,7 @@ function handlePreprocessorResponse({ msg, ack }) {
 
                         websocketManager.instance().sendEventToUser(userId, {
                             event: WS_EVENTS.PCAP_FILE_PROCESSED,
-                            data: Object.assign({}, pcapDbData._doc, { progress: 66 }),
+                            data: Object.assign({}, pcapDbData._doc),
                         });
 
                         ack();
@@ -292,7 +292,7 @@ const postProcessSdpFiles = async (pcapId, folder) => {
     Pcap.findOne({ id: pcapId })
         .exec()
         .then(async (data) => {
-            const filename = data.file_name.replace(/\.[^\.]*$/, '-sdp.zip').replace(RegExp('/', 'g'),'-');
+            const filename = data.file_name.replace(/\.[^\.]*$/, '-sdp.zip').replace(RegExp('/', 'g'), '-');
             const files = await glob(`${folder}/**/*.sdp`);
             await zipFilesExt(files, `${folder}/${filename}`, 'sdp');
         });

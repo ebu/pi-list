@@ -8,21 +8,35 @@
 
 #include "bisect/bimo/mq/common.h"
 
-namespace ebu_list::definitions::exchanges::preprocessor_status
+namespace ebu_list::definitions::exchanges
 {
-    constexpr auto info =
-        bisect::bimo::mq::exchange_info{"ebu-list.preprocessor.status", "fanout", false, false, false};
-
-    namespace keys
+    namespace preprocessor_status
     {
-        constexpr auto announce = "announce";
-    } // namespace keys
+        constexpr auto info =
+            bisect::bimo::mq::exchange_info{"ebu-list.preprocessor.status", "fanout", false, false, false};
 
-    namespace announce::stream_status
+        namespace keys
+        {
+            constexpr auto announce = "announce";
+        } // namespace keys
+
+        namespace announce::stream_status
+        {
+            constexpr auto started = "Started";
+            constexpr auto stopped = "Stopped";
+            constexpr auto failed  = "Failed";
+        } // namespace announce::stream_status
+
+    } // namespace ebu_list::definitions::exchanges::extractor_status
+    namespace extractor_status
     {
-        constexpr auto started = "Started";
-        constexpr auto stopped = "Stopped";
-        constexpr auto failed  = "Failed";
-    } // namespace announce::stream_status
+        constexpr auto info =
+            bisect::bimo::mq::exchange_info{"ebu-list.extractor.status", "fanout", false, false, false};
 
-} // namespace ebu_list::definitions::exchanges::preprocessor_status
+        namespace keys
+        {
+            constexpr auto progress = "progress";
+        } // namespace keys
+
+    }
+}

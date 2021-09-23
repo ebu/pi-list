@@ -113,7 +113,6 @@ const DashboardTilesView: React.FunctionComponent<IPropTypes> = ({
     React.useEffect(() => {
         setSidebarCollapsed(false);
     }, []);
-
     const pcapsAnalysing = useRecoilValue(pcapsAnalysingAtom);
     return (
         <div className="dashboard-page-container">
