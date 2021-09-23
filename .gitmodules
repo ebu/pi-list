@@ -20,3 +20,6 @@
 [submodule "third_party/bisect-core-ts"]
 	path = third_party/bisect-core-ts
 	url = https://github.com/bisect-pt/bisect-core-ts.git
+[submodule "third_party/bisect-core-ts-be"]
+	path = third_party/bisect-core-ts-be
+	url = https://github.com/bisect-pt/bisect-core-ts-be

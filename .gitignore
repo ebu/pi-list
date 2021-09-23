@@ -8,6 +8,7 @@ scripts/deploy/artifacts/data/log
 /.vs/*
 /.vscode
 .clangd
+.history
 apps/listwebserver/version.yml
 apps/listwebserver/.vscode/launch.json
 apps/capture_probe/.vscode/launch.json
