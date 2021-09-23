@@ -3,7 +3,13 @@ const fs = require('../util/filesystem');
 const constants = require('../enums/analysis');
 const Stream = require('../models/stream');
 const { appendError, validateMulticastAddresses } = require('./utils');
-const { doRtpTsAnalysis, validateRtpTs, doInterFrameRtpTsDeltaAnalysis, validateInterFrameRtpTsDelta, addRtpSequenceAnalysisToStream } = require('./rtp');
+const {
+    doRtpTsAnalysis,
+    validateRtpTs,
+    doInterFrameRtpTsDeltaAnalysis,
+    validateInterFrameRtpTsDelta,
+    addRtpSequenceAnalysisToStream,
+} = require('./rtp');
 const { getUserId } = require('../auth/middleware');
 
 // For some reason, getUserFolder can't be imported...
@@ -27,7 +33,7 @@ const validation = {
     },
 };
 
-const getAverageFromHistogram = hist => {
+const getAverageFromHistogram = (hist) => {
     if (!hist || hist.length === 0) return 0;
 
     const avg = hist.reduce((prev, curr) => {
@@ -48,37 +54,34 @@ const getHighestFromHistogram = (hist) => {
 };
 
 const ancillaryCheckMarkerBit = async (stream) => {
-    if (stream.statistics.wrong_marker_count > 0)
-    {
+    if (stream.statistics.wrong_marker_count > 0) {
         stream = _.set(stream, 'analyses.marker_bit.result', constants.outcome.not_compliant);
         stream = _.set(stream, 'analyses.marker_bit.detail.count', stream.statistics.wrong_marker_count);
         stream = appendError(stream, { id: constants.errors.invalid_marker_bit });
     } else {
         stream = _.set(stream, 'analyses.marker_bit.result', constants.outcome.compliant);
     }
-}
+};
 
 const ancillaryCheckFieldBits = async (stream) => {
-    if (stream.statistics.wrong_field_count > 0)
-    {
+    if (stream.statistics.wrong_field_count > 0) {
         stream = _.set(stream, 'analyses.field_bits.result', constants.outcome.not_compliant);
         stream = _.set(stream, 'analyses.field_bits.detail.count', stream.statistics.wrong_field_count);
         stream = appendError(stream, { id: constants.errors.invalid_field_bits });
     } else {
         stream = _.set(stream, 'analyses.field_bits.result', constants.outcome.compliant);
     }
-}
+};
 
 const ancillaryCheckPayloads = async (stream) => {
-    if (stream.statistics.payload_error_count > 0)
-    {
+    if (stream.statistics.payload_error_count > 0) {
         stream = _.set(stream, 'analyses.anc_payloads.result', constants.outcome.not_compliant);
         stream = _.set(stream, 'analyses.anc_payloads.detail.count', stream.statistics.payload_error_count);
         stream = appendError(stream, { id: constants.errors.ancillary_invalid_payload });
     } else {
         stream = _.set(stream, 'analyses.anc_payloads.result', constants.outcome.compliant);
     }
-}
+};
 
 const ancillaryPktPerFrame = async (req, stream) => {
     // Read from range histogram file and report everthing in stream data
@@ -103,7 +106,7 @@ const ancillaryPktPerFrame = async (req, stream) => {
     _.set(stream, 'analyses.pkts_per_frame.details.unit', 'packets');
 
     return stream;
-}
+};
 
 const doAncillaryStreamAnalysis = async (req, stream) => {
     const pcapId = req.pcap.uuid;
@@ -115,18 +118,16 @@ const doAncillaryStreamAnalysis = async (req, stream) => {
     await validateRtpTs(stream, validation);
     await doInterFrameRtpTsDeltaAnalysis(pcapId, stream);
     await validateInterFrameRtpTsDelta(stream);
-    await validateMulticastAddresses(stream);
     return await Stream.findOneAndUpdate({ id: stream.id }, stream, {
         new: true,
     });
-}
-
-const doAncillaryAnalysis = (req, streams) => {
-    const promises = streams.map(stream => doAncillaryStreamAnalysis(req, stream));
-    return Promise.all(promises);
-}
-
-module.exports = {
-    doAncillaryAnalysis
 };
 
+const doAncillaryAnalysis = (req, streams) => {
+    const promises = streams.map((stream) => doAncillaryStreamAnalysis(req, stream));
+    return Promise.all(promises);
+};
+
+module.exports = {
+    doAncillaryAnalysis,
+};

@@ -29,7 +29,6 @@ echo "Creating release folders... done"
 echo
 echo "Copying binaries..."
 install -D -m 755 $BUILD_DIR/bin/* $RELEASE_DIR/server/app/bin/
-install -D -m 755 $BUILD_DIR/lib/*.so.* $RELEASE_DIR/server/lib/
 echo "Copying binaries... done"
 
 echo

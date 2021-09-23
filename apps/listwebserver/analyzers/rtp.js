@@ -20,13 +20,13 @@ function addRtpSequenceAnalysisToStream(stream) {
         details: {
             dropped_packets_count,
             dropped_packets_samples,
-            packet_count
-        }
+            packet_count,
+        },
     };
 
     if (report.result === constants.outcome.not_compliant) {
         stream = appendError(stream, {
-            id: constants.errors.dropped_packets
+            id: constants.errors.dropped_packets,
         });
     }
 
@@ -38,11 +38,9 @@ function getInterFrameRtpTsDeltaLimit(stream) {
 
     if (_.get(stream, 'statistics.rate', null) !== null) {
         rate = _.get(stream, 'statistics.rate', null);
-    }
-    else if (_.get(stream, 'media_specific.rate', null) !== null) {
+    } else if (_.get(stream, 'media_specific.rate', null) !== null) {
         rate = _.get(stream, 'media_specific.rate', null);
-    }
-    else {
+    } else {
         return null;
     }
 
@@ -218,16 +216,10 @@ function validateRtpTicks(stream, validation) {
 }
 
 // Returns one promise, which result is undefined.
-function doRtpStreamAnalysis(pcapId, stream) {
-    stream = addRtpSequenceAnalysisToStream(stream);
+async function doRtpStreamAnalysis(stream) {
+    const s = addRtpSequenceAnalysisToStream(stream);
 
-    return Stream.findOneAndUpdate({ id: stream.id }, stream, { new: true });
-}
-
-// Returns one array with a promise for each stream. The result of the promise is undefined.
-function doRtpAnalysis(pcapId, streams) {
-    const promises = streams.map(stream => doRtpStreamAnalysis(pcapId, stream));
-    return Promise.all(promises);
+    await Stream.findOneAndUpdate({ id: stream.id }, s, { new: true });
 }
 
 module.exports = {
@@ -238,5 +230,5 @@ module.exports = {
     doRtpTsAnalysis,
     validateRtpTs,
     addRtpSequenceAnalysisToStream,
-    doRtpAnalysis
+    doRtpStreamAnalysis,
 };

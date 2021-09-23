@@ -2,6 +2,7 @@ const _ = require('lodash');
 const path = require('path');
 const Stream = require('../../models/stream');
 const { doLoadTtmlDocuments, doAnalyseTimeBase, doAnalyseSequenceIdentifier } = require('./util');
+const { validateMulticastAddresses } = require('../utils');
 const { getUserId } = require('../../auth/middleware');
 
 // stream structure:
@@ -31,6 +32,7 @@ const loadTtmlDocuments = (req, stream) => {
 };
 
 const doTtmlStreamAnalysis = async (req, stream) => {
+    await validateMulticastAddresses(stream);
     loadTtmlDocuments(req, stream);
     doAnalyseTimeBase(stream);
     doAnalyseSequenceIdentifier(stream);
@@ -40,7 +42,7 @@ const doTtmlStreamAnalysis = async (req, stream) => {
 };
 
 const doTtmlAnalysis = (req, streams) => {
-    const promises = streams.map(stream => doTtmlStreamAnalysis(req, stream));
+    const promises = streams.map((stream) => doTtmlStreamAnalysis(req, stream));
     return Promise.all(promises);
 };
 

@@ -18,8 +18,8 @@ const { doVideoAnalysis, generateThumbails } = require('../../analyzers/video');
 const { doAudioAnalysis } = require('../../analyzers/audio');
 const { doAncillaryAnalysis } = require('../../analyzers/ancillary');
 const { doTtmlAnalysis } = require('../../analyzers/ttml/ttml');
-const { doRtpAnalysis } = require('../../analyzers/rtp');
-const { doMulticastAddressAnalysis } = require('../../analyzers/multicast.js');
+const { doCommonConsolidation } = require('../../analyzers/common');
+const { doPcapConsolidation } = require('../../analyzers/pcap');
 const constants = require('../../enums/analysis');
 const glob = util.promisify(require('glob'));
 const { zipFilesExt } = require('../zip');
@@ -412,40 +412,13 @@ const singleStreamAnalysis = async (req, res, next) => {
     next(result);
 };
 
-function addStreamErrorsToSummary(stream, error_list) {
-    stream.error_list.forEach((error) =>
-        error_list.push({
-            stream_id: stream.id,
-            value: error,
-        })
-    );
-}
-
-function addWarningsToSummary(pcap, warning_list) {
-    if (pcap.truncated) {
-        warning_list.push({
-            stream_id: null,
-            value: { id: constants.warnings.pcap.truncated },
-        });
-    }
-}
-
 const pcapConsolidation = async (req, res, next) => {
     const pcapId = req.pcap.uuid;
-
-    const summary = {
-        error_list: [],
-        warning_list: [],
-    };
-
     const streams = _.get(req, 'streams', []);
-    streams.forEach((stream) => addStreamErrorsToSummary(stream, summary.error_list));
-
-    const pcapData = await Pcap.findOne({ id: pcapId }).exec();
-    addWarningsToSummary(pcapData, summary.warning_list);
     const analysis_profile = req.analysisProfile;
-    await Pcap.findOneAndUpdate({ id: pcapId }, { summary, analysis_profile }).exec();
-    next();
+    doPcapConsolidation(pcapId, streams, analysis_profile)
+        .then(() => next())
+        .catch((err) => next(err));
 };
 
 function addStreamsToReq(streams, req) {
@@ -464,7 +437,6 @@ const videoConsolidation = async (req, res, next) => {
 
         await doVideoAnalysis(pcapId, streams);
         addStreamsToReq(streams, req);
-
         await generateThumbails(`${getUserFolder(req)}/${pcapId}`, streams);
 
         next();
@@ -531,12 +503,11 @@ function unknownConsolidation(req, res, next) {
 function commonConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
     const streams = _.get(req, 'streams', []);
-
-    doRtpAnalysis(pcapId, streams)
-        .then(() => doMulticastAddressAnalysis(pcapId, streams))
+    doCommonConsolidation(pcapId, streams)
         .then(() => next())
         .catch((err) => {
             logger('common-consolidation').error(`exception: ${err}`);
+            next(err);
         });
 }
 
