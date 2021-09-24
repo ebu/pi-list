@@ -10,20 +10,22 @@ const { promisify } = require('util');
 const child_process = require('child_process');
 const api = require('./api');
 const { apiErrorHandler, resourceNotFoundHandler, isAuthenticated } = require('./util/express-middleware');
+const HTTP_STATUS_CODE = require('./enums/httpStatusCode');
 const programArguments = require('./util/programArguments');
 const logger = require('./util/logger');
 const authMiddleware = require('./auth/middleware');
+const program = require('./util/programArguments');
 
 const app = express();
 
 // Initialize the REST API logger
 app.use(morgan('short', { stream: logger('rest-api').restAPILogger }));
 
-logger('static-generator').info('CORS: ', "*");
+logger('static-generator').info('CORS: ', '*');
 
 app.use(
     cors({
-        origin: function(origin, callback) {
+        origin: function (origin, callback) {
             callback(null, true);
         },
         credentials: true,
@@ -53,6 +55,9 @@ app.use(
 app.post('/auth/login', authMiddleware.handleLogin);
 app.post('/auth/logout', authMiddleware.handleLogout);
 app.post('/user/register', authMiddleware.handleRegister);
+app.get('/api/meta/version', (req, res) => {
+    res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(program.version);
+});
 app.use('/api/', authMiddleware.checkToken, api);
 logger('app').info('API initialized');
 
@@ -71,10 +76,10 @@ logger('static-generator').profile('Static configurations generated');
 // Promisify execute command
 const exec = promisify(child_process.exec);
 exec(generateStaticConfigCommand)
-    .then(output => {
+    .then((output) => {
         logger('static-generator').info(`Generated static configurations: ${output.stdout}`);
     })
-    .catch(output => {
+    .catch((output) => {
         logger('static-generator').error(output.stderr);
     })
     .then(() => {

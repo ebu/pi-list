@@ -11,6 +11,7 @@ const Login = (): any => {
     const [loginError, setLoginError] = React.useState<boolean>(false);
     const [registerError, setRegisterError] = React.useState<boolean>(false);
     const [gdprConsent, setGdprConsent] = React.useState<boolean>();
+    const [version, setVersion] = React.useState<any>();
 
     React.useEffect(() => {
         const gdprConsentLocalStorage = localStorage.getItem('gdprConsent');
@@ -18,6 +19,16 @@ const Login = (): any => {
             setGdprConsent(gdprConsentLocalStorage === 'true' ? true : false);
         }
     }, []);
+
+    React.useEffect(() => {
+        const getVersion = async (): Promise<void> => {
+            const version = await list.info.getVersion();
+            setVersion(version);
+        };
+        getVersion();
+    }, []);
+
+    console.log(version);
 
     const onGdprConsentClick = (e: React.ChangeEvent<HTMLInputElement>) => {
         localStorage.setItem('gdprConsent', (!gdprConsent).toString());
@@ -76,6 +87,7 @@ const Login = (): any => {
     return (
         <div className="login-page">
             <EbuListLogoIcon className={'login-page-logo'} />
+            <span className="login-page-version">{`v${version?.major}.${version?.minor}.${version?.patch}:${version?.hash}`}</span>
             <div className="login-items-container">
                 {loginComponent}
                 <News gdprConsent={gdprConsent} onGdprConsentClick={onGdprConsentClick} onGDPRClick={onGDPRClick} />
