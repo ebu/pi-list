@@ -186,6 +186,8 @@ function PCapDetailsContentHOC(props: any) {
 
     const userInfo = useRecoilValue(userAtom);
 
+    console.log(pcap);
+
     if (!userInfo) {
         return null;
     }
@@ -202,7 +204,12 @@ function PCapDetailsContentHOC(props: any) {
                     />
                 </div>
                 <div>
-                    <PCapDetailsContent currentStream={currentStream} pcapFilename={pcapFilename} pcapID={pcapID} />
+                    <PCapDetailsContent
+                        currentStream={currentStream}
+                        pcapFilename={pcapFilename}
+                        pcapID={pcapID}
+                        pcap={pcap}
+                    />
                 </div>
             </div>
         );

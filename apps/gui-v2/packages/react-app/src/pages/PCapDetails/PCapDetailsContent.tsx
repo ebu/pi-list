@@ -10,10 +10,12 @@ function PCapDetailsContent({
     currentStream,
     pcapFilename,
     pcapID,
+    pcap,
 }: {
     currentStream: SDK.types.IStreamInfo | undefined;
     pcapFilename: string | undefined;
     pcapID: string;
+    pcap: SDK.types.IPcapInfo | undefined;
 }) {
     const [currentHeaderType, setcurrentHeaderType] = React.useState<number>(0);
 
@@ -38,7 +40,7 @@ function PCapDetailsContent({
             case 0:
                 return <PCapDetailsAnalysisPage currentStream={currentStream} pcapID={pcapID} />;
             case 1:
-                return <PcapDetailsStreamExplorerPage currentStream={currentStream} pcapID={pcapID} />;
+                return <PcapDetailsStreamExplorerPage currentStream={currentStream} pcapID={pcapID} pcap={pcap} />;
             case 2:
                 return <PcapDetailsGraphsPage currentStream={currentStream} pcapID={pcapID} />;
             default:

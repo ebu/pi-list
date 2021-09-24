@@ -98,3 +98,6 @@ export const DiffTransitDelayIcon = icon(diffTransitDelaySrc);
 
 const networkRedundancySrc = require('./networkRedundancy.svg');
 export const NetworkRedundancyIcon = icon(networkRedundancySrc);
+
+const alertSrc = require('./alert.svg');
+export const AlertIcon = icon(alertSrc);

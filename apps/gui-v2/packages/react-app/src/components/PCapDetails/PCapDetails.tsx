@@ -18,8 +18,10 @@ function PCapDetails({ detailsList }: { detailsList: IDetails[] | null }) {
                       return (
                           <div className="pcap-details-lists" key={index}>
                               <div className="pcap-details-icon-text">
-                                  <Icon />
-                                  <span>{detail.text}</span>
+                                  <Icon className={'pcap-details-icon'} />
+                                  <span className={`${detail.text === 'Truncated' ? 'details-text-warning' : ''}`}>
+                                      {detail.text}
+                                  </span>
                               </div>
                               <span className="pcap-details-description">{detail.description}</span>
                           </div>
