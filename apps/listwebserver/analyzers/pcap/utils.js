@@ -1,3 +1,5 @@
+const constants = require('../../enums/analysis');
+
 function addStreamErrorsToSummary(stream, error_list) {
     stream.error_list.forEach((error) =>
         error_list.push({

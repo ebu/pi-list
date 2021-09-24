@@ -4,13 +4,13 @@
     "description": "LIST validation tests.",
     "main": "dist/index.js",
     "bin": "dist/index.js",
-    "author": "MIPW Lda. <hello@mipw.pt> (www.mipw.pt)",
-    "license": "UNLICENSED",
+    "author": "BISECT Lda. <hello@bisect.pt> (www.bisect.pt)",
+    "license": "GPL-3.0-or-later",
     "scripts": {
-        "build": "npm run clean && npm run compile",
+        "build": "yarn run clean && yarn run compile",
         "clean": "rm -rf ./dist",
         "compile": "tsc",
-        "validation-tests": "npm run build && node dist/index.js test-basic"
+        "validation-tests": "yarn run build && node dist/index.js test-basic"
     },
     "dependencies": {
         "@bisect/bisect-core-ts": "0.1.0",
