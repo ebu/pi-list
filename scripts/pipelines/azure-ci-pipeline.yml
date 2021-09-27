@@ -1,0 +1,50 @@
+parameters:
+    - name: clean
+      displayName: Checkout clean
+      type: boolean
+      default: false
+      values:
+          - false
+          - true
+
+trigger:
+    - master
+
+pool:
+    name: Default
+    demands:
+        - Agent.OS -equals Linux
+        - cmake
+
+stages:
+    - stage: Checkout
+      jobs:
+          - job: CheckoutJob
+            steps:
+                - checkout: self
+                  clean: ${{ parameters.clean }}
+                  submodules: recursive
+    - stage: CI
+      jobs:
+          - job: CIJob
+            steps:
+                - task: CMake@1
+                  displayName: 'CMake  -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON -DBUILD_APPS=ON -DBUILD_DEMOS=ON'
+                  inputs:
+                      workingDirectory: 'build'
+                      cmakeArgs: ' -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON -DBUILD_APPS=ON -DBUILD_DEMOS=ON ..'
+
+                - script: 'make -j6'
+                  workingDirectory: 'build'
+                  displayName: Compile
+
+                - script: ctest
+                  displayName: CTest
+
+                - script: './scripts/run_all.sh -i'
+                  displayName: 'Run lerna'
+            # - script: ./scripts/deploy/deploy.sh
+            #   displayName: 'Make Release'
+            #   condition: eq(variables['build.docker'], 'true')
+
+

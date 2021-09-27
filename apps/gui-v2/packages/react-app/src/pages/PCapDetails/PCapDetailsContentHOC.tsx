@@ -156,7 +156,6 @@ function PCapDetailsContentHOC(props: any) {
     const initial: SDK.types.IStreamInfo[] = [];
 
     const [streams, setStreams] = React.useState(initial);
-
     React.useEffect(() => {
         const loadStreams = async (): Promise<void> => {
             const all = await list.pcap.getStreams(pcapID);

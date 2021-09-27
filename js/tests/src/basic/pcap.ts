@@ -98,7 +98,7 @@ const doUpload = async (
             }
 
             const pcapId = uuid();
-            const timeoutMs = 12000; // It may be necessary to increase timeout due to the size of the pcap file
+            const timeoutMs = 30000; // It may be necessary to increase timeout due to the size of the pcap file
 
             await list.pcap.upload(name, stream, callback, pcapId);
             const uploadAwaiter = list.pcap.makeUploadAwaiter(pcapId, timeoutMs);

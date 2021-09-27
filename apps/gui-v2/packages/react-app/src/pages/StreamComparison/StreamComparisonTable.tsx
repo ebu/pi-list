@@ -32,16 +32,16 @@ function StreamComparisonTable({
                 item.result.analysis.numberOfDifferentPackets -
                 item.result.analysis.numberOfMissingPackets;
             const equalPercentage = intersection == 0 ? 100 : (numberOfEqualPackets / intersection) * 100;
-            return `packets: ${ equalPercentage }% the same
-            max delay: ${ item.result.analysis.maxDeltaNs.toFixed(0)/1000 } us`;
+            return `packets: ${equalPercentage}% the same
+            max delay: ${item.result.analysis.maxDeltaNs.toFixed(0) / 1000} us`;
         }
         switch (item.config.comparison_type) {
             case comparisonTypes.crossCorrelation:
             case comparisonTypes.psnrAndDelay:
-                return `delay: ${ item.result?.delay ? renderDelay(item.result.delay.actual).toString() : '-' } ms
-                media: ${item.result?.transparency ?  'preserved' : 'modified' }`;
+                return `delay: ${item.result?.delay ? renderDelay(item.result.delay.actual).toString() : '-'} ms
+                media: ${item.result?.transparency ? 'preserved' : 'modified'}`;
             case comparisonTypes.avSync:
-                return `delay: ${ item.result?.delay ? renderDelay(item.result.delay.pkt).toString() : '-' } ms
+                return `delay: ${item.result?.delay ? renderDelay(item.result.delay.pkt).toString() : '-'} ms
                 audio is ${item.result.delay.actual < 0 ? 'earlier' : 'later'} than video`;
             default:
                 return null;
@@ -59,7 +59,9 @@ function StreamComparisonTable({
                                     <tr className="download-manager-table-header-table-row">
                                         <th>Name</th>
                                         <th className="download-manager-table-centered-header-label">Type</th>
-                                        <th className="download-manager-table-centered-header-label">Reference Stream</th>
+                                        <th className="download-manager-table-centered-header-label">
+                                            Reference Stream
+                                        </th>
                                         <th className="download-manager-table-centered-header-label">Main Stream</th>
                                         <th className="download-manager-table-centered-header-label">Result</th>
                                         <th className="download-manager-table-centered-header-label">Date</th>
@@ -79,7 +81,9 @@ function StreamComparisonTable({
                                                     <span className="download-table-label">{item.name}</span>
                                                 </td>
                                                 <td className="download-manager-centered-value">
-                                                    <span className="download-table-label">{getComparisonType(item.type)}</span>
+                                                    <span className="download-table-label">
+                                                        {getComparisonType(item.type)}
+                                                    </span>
                                                 </td>
                                                 <td className="download-manager-centered-value">
                                                     <span className="download-table-label">

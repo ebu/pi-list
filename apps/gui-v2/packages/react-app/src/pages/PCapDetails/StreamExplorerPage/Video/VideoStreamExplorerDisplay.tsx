@@ -11,7 +11,12 @@ function VideoStreamExplorerDisplay({
 }) {
     return (
         <>
-            <ImageGalleryStreamExplorer currentStream={currentStream} pcapID={pcapID} cursorInitPos={0} onChange={() => {}}/>
+            <ImageGalleryStreamExplorer
+                currentStream={currentStream}
+                pcapID={pcapID}
+                cursorInitPos={0}
+                onChange={() => {}}
+            />
         </>
     );
 }

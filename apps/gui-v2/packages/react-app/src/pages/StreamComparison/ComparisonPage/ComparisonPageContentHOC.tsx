@@ -53,16 +53,12 @@ function ComparisonPageContentHOC(props: any) {
                     <div className="comparison-types-description-container">
                         <span className="comparison-types-description-title">Help</span>
                         <span className="comparison-types-description-text">
-                            1) In the video explorer select a frame
-                            which can be associated to an audio event.
+                            1) In the video explorer select a frame which can be associated to an audio event.
                         </span>
                         <span className="comparison-types-description-text">
-                            2) In the audio waveform, find this event
-                            and click to place a cursor.
+                            2) In the audio waveform, find this event and click to place a cursor.
                         </span>
-                        <span className="comparison-types-description-text">
-                            3) Read the updated delay
-                        </span>
+                        <span className="comparison-types-description-text">3) Read the updated delay</span>
                         <span className="comparison-types-description-title">Documentation</span>
                         <a href="https://github.com/ebu/pi-list/blob/master/docs/a2v_sync.md" target="_blank">
                             <button className="stream-comparison-panel-compare-button">AVSync</button>

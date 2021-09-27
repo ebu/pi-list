@@ -11,12 +11,13 @@ addTest('download Manager: download given a wrong id', async (c: testUtils.ITest
 
     try {
         const download = await list.downloadManager.download('12345');
+        expect(download).not.toBeNull();
+        expect(download.status).toBe(404);
     } catch (err) {
-        return;
+        throw err;
     } finally {
         await list.close();
     }
-    throw new Error('Expected exception');
 });
 
 addTest('download Manager: get all', async (c: testUtils.ITestContext) => {

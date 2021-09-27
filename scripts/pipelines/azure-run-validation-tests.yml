@@ -1,0 +1,71 @@
+parameters:
+    - name: clean
+      displayName: Checkout clean
+      type: boolean
+      default: false
+      values:
+          - false
+          - true
+    - name: docker_image_tag
+      displayName: Docker image tag
+      type: string
+      default: $(Build.BuildNumber)
+
+name: $(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+    - integration
+
+pool:
+    name: Default
+
+stages:
+    - stage: Build
+      jobs:
+          - job: BuildJob
+            displayName: Build docker image
+            steps:
+                - checkout: self
+                  clean: ${{ parameters.clean }}
+                  submodules: recursive
+                - script: |
+                      echo "Build ID: $(Build.BuildNumber)"
+                      echo "Docker tag: ${{ parameters.docker_image_tag }}"
+                - script: ./scripts/deploy/deploy.sh
+                  displayName: 'Run deploy script'
+                - task: Docker@2
+                  inputs:
+                      containerRegistry: 'ebu-docker-hub'
+                      repository: 'ebutech/pi-list'
+                      command: 'build'
+                      Dockerfile: 'release/server/Dockerfile'
+                      buildContext: 'release/server'
+                      tags: ${{ parameters.docker_image_tag }}
+    - stage: Test
+      jobs:
+          - job: TestJob
+            displayName: Run validation tests against docker image
+            steps:
+                - script: |
+                      npx lerna bootstrap
+                      npx lerna run build
+                  displayName: bootstrap and build
+                  workingDirectory: $(Build.SourcesDirectory)
+                - task: DockerCompose@0
+                  displayName: Docker-compose up
+                  inputs:
+                      containerregistrytype: 'Azure Container Registry'
+                      dockerComposeFile: $(Build.SourcesDirectory)/scripts/validation_tests/docker-compose.yml
+                      action: 'Run a Docker Compose command'
+                      dockerComposeFileArgs: EBU_LIST_VERSION=${{ parameters.docker_image_tag }}
+                      dockerComposeCommand: 'up -d'
+                - script: |
+                      yarn run validation-tests -b http://listserver:80 -u user3 -p user3
+                  displayName: Run validation tests
+                  workingDirectory: $(Build.SourcesDirectory)/js/tests
+                - task: DockerCompose@0
+                  displayName: Docker-compose down
+                  condition: always()
+                  inputs:
+                      dockerComposeCommand: down
+                      dockerComposeFile: $(Build.SourcesDirectory)/scripts/validation_tests/docker-compose.yml

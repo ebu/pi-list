@@ -25,7 +25,7 @@ function ImageGalleryStreamExplorer({
 }: {
     currentStream: SDK.types.IStreamInfo | undefined;
     pcapID: string;
-    cursorInitPos: number,
+    cursorInitPos: number;
     onChange: (frame: any, index: number) => void | undefined;
 }) {
     const initial: SDK.types.IFrameInfo[] = [];
@@ -52,11 +52,9 @@ function ImageGalleryStreamExplorer({
             <ImagesGallery
                 imagesData={getImages(frames, pcapID, currentStream?.id)}
                 initFrameIndex={cursorInitPos}
-                onChange={
-                    (index: number) => {
-                        onChange(frames[index], index);
-                    }
-                }
+                onChange={(index: number) => {
+                    onChange(frames[index], index);
+                }}
             />
         </>
     );

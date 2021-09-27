@@ -14,7 +14,7 @@
             "outFiles": ["${workspaceFolder}/dist/**/*.js"],
             "console": "integratedTerminal",
             "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
-            "args": ["basic-test", "-b", "http://localhost", "-u", "demo3", "-p", "demo3"]
+            "args": ["test-basic", "-b", "http://localhost", "-u", "demo3", "-p", "demo3"]
         }
     ]
 }

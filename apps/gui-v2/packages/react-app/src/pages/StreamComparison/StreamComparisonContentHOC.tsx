@@ -97,7 +97,9 @@ function StreamComparisonContentHOC() {
                     <div className="comparison-types-description-container">
                         <span className="comparison-types-description-title">Stream comparison</span>
                         <span className="comparison-types-description-text">
-                            These methods allow to quantify the possible differences and delay between 2 streams of same essence, captured simultaneously. Select 1 of the 4 types and select the red and blue streams.
+                            These methods allow to quantify the possible differences and delay between 2 streams of same
+                            essence, captured simultaneously. Select 1 of the 4 types and select the red and blue
+                            streams.
                         </span>
                     </div>
                 );

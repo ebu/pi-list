@@ -474,7 +474,17 @@ macro(conan_add_remote)
         set(CONAN_INDEX_ARG "-i ${CONAN_INDEX}")
     endif()
 
-    message(STATUS "Conan: Adding ${CONAN_NAME} remote repositoy (${CONAN_URL})")
+    message(STATUS "Conan: Adding ${CONAN_NAME} remote repository (${CONAN_URL})")
     execute_process(COMMAND ${CONAN_CMD} remote add ${CONAN_NAME} ${CONAN_URL}
             ${CONAN_INDEX_ARG} -f)
+endmacro()
+
+macro(conan_remove_remote)
+    # Removes a remote
+    # Argument NAME is required
+    set(oneValueArgs NAME)
+    cmake_parse_arguments(CONAN "" "${oneValueArgs}" "" ${ARGN})
+
+    message(STATUS "Conan: Removing ${CONAN_NAME}")
+    execute_process(COMMAND ${CONAN_CMD} remote remove ${CONAN_NAME})
 endmacro()

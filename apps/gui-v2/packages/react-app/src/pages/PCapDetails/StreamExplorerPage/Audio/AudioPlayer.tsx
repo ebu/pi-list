@@ -81,7 +81,7 @@ function AudioPlayer({
     onCursorChanged,
 }: {
     mp3Url: string;
-    cursorInitPos: number,
+    cursorInitPos: number;
     onCursorChanged: ((d: number, c: number) => void) | undefined;
 }) {
     const [isLoading, setisLoading] = React.useState(true);

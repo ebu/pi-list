@@ -84,7 +84,9 @@ function ComparisonConfigPanel({
             <div className="comparison-configuration-panel-comparsions-info">
                 <div>
                     <span className="comparison-configuration-panel-subtitle">Type: </span>
-                    <span className="comparison-configuration-panel-data">{getComparisonType(comparisonInfo.type)}</span>
+                    <span className="comparison-configuration-panel-data">
+                        {getComparisonType(comparisonInfo.type)}
+                    </span>
                 </div>
                 {comparisonInfo.config.media_type && (
                     <div>

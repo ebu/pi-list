@@ -8,7 +8,7 @@
     "total_streams": 1,
     "narrow_linear_streams": 0,
     "narrow_streams": 0,
-    "not_compliant_streams": 0,
+    "not_compliant_streams": 1,
     "wide_streams": 0,
     "generated_from_network": false,
     "truncated": false,
@@ -30,17 +30,34 @@
     "summary": {
         "error_list": [
             {
-                "stream_id": "08e47264-3ebc-480c-adaf-96cade8c701f",
+                "stream_id": "f98fafb3-5ff6-4c54-8315-de82aacfcd1c",
                 "value": { "id": "errors.ttml_time_base_is_not_media" }
+            },
+            {
+                "stream_id": "f98fafb3-5ff6-4c54-8315-de82aacfcd1c",
+                "value": { "id": "errors.invalid_multicast_mac_address" }
+            },
+            {
+                "stream_id": "f98fafb3-5ff6-4c54-8315-de82aacfcd1c",
+                "value": { "id": "errors.invalid_multicast_ip_address" }
+            },
+            {
+                "stream_id": "f98fafb3-5ff6-4c54-8315-de82aacfcd1c",
+                "value": { "id": "errors.unrelated_multicast_addresses" }
             }
         ],
         "warning_list": []
     },
     "streams": [
         {
-            "error_list": [{ "id": "errors.ttml_time_base_is_not_media" }],
-            "_id": "6148a763fd51080038027168",
-            "id": "08e47264-3ebc-480c-adaf-96cade8c701f",
+            "_id": "614da88a2766649ba05a5be0",
+            "error_list": [
+                { "id": "errors.ttml_time_base_is_not_media" },
+                { "id": "errors.invalid_multicast_mac_address" },
+                { "id": "errors.invalid_multicast_ip_address" },
+                { "id": "errors.unrelated_multicast_addresses" }
+            ],
+            "id": "e4e220bc-7ef4-43eb-9e16-4229bd248fc8",
             "media_type": "ttml",
             "network_information": {
                 "destination_address": "127.0.0.1",
@@ -61,7 +78,7 @@
                 "valid_multicast_ip_address": false,
                 "valid_multicast_mac_address": false
             },
-            "pcap": "ad1867e0-1a26-11ec-bbd5-959191d55afe",
+            "pcap": "8842df2c-c0cd-4819-8da7-8f3a2f647103",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -72,13 +89,16 @@
             },
             "__v": 0,
             "analyses": {
+                "destination_multicast_mac_address": { "result": "not_compliant" },
+                "destination_multicast_ip_address": { "result": "not_compliant" },
+                "unrelated_multicast_addresses": { "result": "not_compliant" },
                 "ttml_time_base_is_media": { "result": "not_compliant" },
                 "ttml_consistent_sequence_identifier": { "result": "compliant" },
+                "unique_multicast_destination_ip_address": { "result": "compliant" },
                 "rtp_sequence": {
                     "result": "compliant",
                     "details": { "dropped_packets_count": 0, "dropped_packets_samples": [], "packet_count": 6 }
-                },
-                "unique_multicast_destination_ip_address": { "result": "compliant" }
+                }
             },
             "media_specific": {
                 "data": [

@@ -5,7 +5,6 @@ import AudioPlayerDisplay from './AudioPlayerDisplay';
 function AudioStreamExplorerDisplay({
     currentStream,
     pcapID,
-
 }: {
     currentStream: SDK.types.IStreamInfo | undefined;
     pcapID: string;

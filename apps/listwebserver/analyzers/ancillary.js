@@ -2,7 +2,7 @@ const _ = require('lodash');
 const fs = require('../util/filesystem');
 const constants = require('../enums/analysis');
 const Stream = require('../models/stream');
-const { appendError, validateMulticastAddresses } = require('./utils');
+const { appendError } = require('./utils');
 const {
     doRtpTsAnalysis,
     validateRtpTs,

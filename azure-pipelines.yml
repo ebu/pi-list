@@ -6,12 +6,12 @@ parameters:
       values:
           - false
           - true
+    - name: docker_image_tag
+      displayName: Docker image tag
+      type: string
+      default: $(Build.BuildNumber)
 
 name: $(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
-
-variables:
-- name: docker_tag
-  value: $(Build.BuildNumber)
 
 trigger:
     - integration
@@ -28,8 +28,8 @@ stages:
                   clean: ${{ parameters.clean }}
                   submodules: recursive
                 - script: |
-                    echo "Build ID: $(Build.BuildNumber)"
-                    echo "Docker tag: $(docker_tag)"
+                      echo "Build ID: $(Build.BuildNumber)"
+                      echo "Docker tag: ${{ parameters.docker_image_tag }}"
                 - script: ./scripts/deploy/deploy.sh
                   displayName: 'Run deploy script'
                 - task: Docker@2
@@ -39,4 +39,4 @@ stages:
                       command: 'buildAndPush'
                       Dockerfile: 'release/server/Dockerfile'
                       buildContext: 'release/server'
-                      tags: $(docker_tag)
+                      tags: ${{ parameters.docker_image_tag }}

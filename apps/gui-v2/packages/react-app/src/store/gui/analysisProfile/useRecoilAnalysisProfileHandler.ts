@@ -12,7 +12,7 @@ export default () => {
 
     React.useEffect(() => {
         const loadAnalysisProfile = async (): Promise<void> => {
-            const all: SDK.types.IAnalysisProfile = await list.pcap.analysisProfile.getInfo();
+            const all = await list.analysisProfile.getInfo();
             setAnalysisProfileAtom(all.all);
             setAnalysisProfileDefault(all.default);
         };

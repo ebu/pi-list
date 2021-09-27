@@ -2,7 +2,7 @@ const _ = require('lodash');
 const influxDbManager = require('../managers/influx-db');
 const Stream = require('../models/stream');
 const constants = require('../enums/analysis');
-const { appendError, validateMulticastAddresses } = require('./utils');
+const { appendError } = require('./utils');
 const logger = require('../util/logger');
 
 //
@@ -12,7 +12,7 @@ const validation = {
     rtp: {
         deltaPktTsVsRtpTsLimit: {
             min: 0,
-            max:1000 //us
+            max: 1000, //us
         },
     },
 };
@@ -68,10 +68,7 @@ function updateStreamWithTsdfMax(stream, tsdf_max) {
     tsdf['result'] = result;
 
     //TODO clean this: choose between 'analyses' and 'global_audio_analysis'
-    global_audio_analysis =
-        stream.global_audio_analysis === undefined
-            ? {}
-            : stream.global_audio_analysis;
+    global_audio_analysis = stream.global_audio_analysis === undefined ? {} : stream.global_audio_analysis;
     global_audio_analysis['tsdf'] = tsdf;
     stream = _.set(stream, 'global_audio_analysis', global_audio_analysis);
 
@@ -91,13 +88,7 @@ function updateStreamWithTsdfMax(stream, tsdf_max) {
 }
 
 function getPktTsVsRtpTsCompliance(range, limit) {
-    if (
-        _.isNil(range) ||
-        _.isNil(range.min) ||
-        _.isNil(range.max) ||
-        range.min < limit.min ||
-        range.max > limit.max
-    ) {
+    if (_.isNil(range) || _.isNil(range.min) || _.isNil(range.max) || range.min < limit.min || range.max > limit.max) {
         return {
             result: constants.outcome.not_compliant,
         };
@@ -111,10 +102,7 @@ function getPktTsVsRtpTsCompliance(range, limit) {
 function updateStreamWithPktTsVsRtpTs(stream, range) {
     const limit = validation.rtp.deltaPktTsVsRtpTsLimit;
 
-    global_audio_analysis =
-        stream.global_audio_analysis === undefined
-            ? {}
-            : stream.global_audio_analysis;
+    global_audio_analysis = stream.global_audio_analysis === undefined ? {} : stream.global_audio_analysis;
     const packet_ts_vs_rtp_ts = {
         range: range,
         limit: limit,
@@ -148,41 +136,28 @@ function calculateTsdfFromRange(stream, range) {
 
 // Returns one promise, which resolves to the stream.
 function doCalculateTsdf(pcapId, stream) {
-    return influxDbManager
-        .getAudioTimeStampedDelayFactorRange(pcapId, stream.id)
-        .then(range => {
-            delete range.time;
-            calculateTsdfFromRange(stream, range);
-        });
+    return influxDbManager.getAudioTimeStampedDelayFactorRange(pcapId, stream.id).then((range) => {
+        delete range.time;
+        calculateTsdfFromRange(stream, range);
+    });
 }
 
 function doCalculatePktTsVsRtpTsRange(pcapId, stream) {
     return influxDbManager
         .getAudioPktTsVsRtpTsRange(pcapId, stream.id)
-        .then(range => updateStreamWithPktTsVsRtpTs(stream, range[0]));
+        .then((range) => updateStreamWithPktTsVsRtpTs(stream, range[0]));
 }
 
 // Returns one promise, which result is undefined.
 function doAudioStreamAnalysis(pcapId, stream) {
     return doCalculateTsdf(pcapId, stream)
-        .then(info =>
-            Stream.findOneAndUpdate({ id: stream.id }, info, { new: true })
-        )
         .then(() => doCalculatePktTsVsRtpTsRange(pcapId, stream))
-        .then(info =>
-              Stream.findOneAndUpdate({ id: stream.id }, info, { new: true })
-        )
-        .then(validateMulticastAddresses(stream))
-        .then(info =>
-            Stream.findOneAndUpdate({ id: stream.id }, info, { new: true })
-        );
+        .then((info) => Stream.findOneAndUpdate({ id: stream.id }, info, { new: true }));
 }
 
 // Returns one array with a promise for each stream. The result of the promise is undefined.
 function doAudioAnalysis(pcapId, streams) {
-    const promises = streams.map(stream =>
-        doAudioStreamAnalysis(pcapId, stream)
-    );
+    const promises = streams.map((stream) => doAudioStreamAnalysis(pcapId, stream));
     return Promise.all(promises);
 }
 
