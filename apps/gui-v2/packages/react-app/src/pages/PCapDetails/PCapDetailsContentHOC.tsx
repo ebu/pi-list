@@ -185,8 +185,6 @@ function PCapDetailsContentHOC(props: any) {
 
     const userInfo = useRecoilValue(userAtom);
 
-    console.log(pcap);
-
     if (!userInfo) {
         return null;
     }

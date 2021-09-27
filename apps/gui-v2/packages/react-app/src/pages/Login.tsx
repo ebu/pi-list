@@ -28,8 +28,6 @@ const Login = (): any => {
         getVersion();
     }, []);
 
-    console.log(version);
-
     const onGdprConsentClick = (e: React.ChangeEvent<HTMLInputElement>) => {
         localStorage.setItem('gdprConsent', (!gdprConsent).toString());
         if (e.target.checked === false) {

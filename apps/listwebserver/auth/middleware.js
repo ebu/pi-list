@@ -20,7 +20,7 @@ const defaultPreferences = {
     },
 };
 
-const tokenExpiration = '10m';
+const tokenExpiration = '24h';
 
 const getUsername = (req) => {
     const token = getToken(req);
@@ -135,7 +135,6 @@ const revalidateToken = (req, res) => {
     const userId = getUserId(req);
 
     const token = generateNewToken(username, userId);
-
     // return the JWT token for the future API calls
     res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
         result: 0,

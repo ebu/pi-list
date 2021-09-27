@@ -177,7 +177,6 @@ const ancillaryInformationList = (
 };
 
 const ttmlInformationList = (currentStream: any, mediaInfo: any): Array<Information> => {
-    console.log('TTML', currentStream);
     return [
         {
             titleTag: 'ttml.number_of_subtitles',
