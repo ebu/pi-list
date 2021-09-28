@@ -31,7 +31,6 @@ const handlePcapsUpdate = (
                 const cloneCurrent = _.cloneDeep(current);
                 const index = cloneCurrent.findIndex(element => element.id === data.data.id);
                 cloneCurrent[index].progress = data.data.progress;
-                console.log(data.data.progress);
                 return cloneCurrent;
             });
             break;

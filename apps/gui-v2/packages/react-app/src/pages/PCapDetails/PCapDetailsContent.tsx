@@ -20,10 +20,12 @@ function PCapDetailsContent({
     const [currentHeaderType, setcurrentHeaderType] = React.useState<number>(0);
 
     const isTTML = currentStream?.media_type === 'ttml' ? true : false;
+    const isUnknown = currentStream?.media_type === 'unknown' ? true : false;
 
     //If we support more media types that don't need graphs or analysis, this needs to be changed
     const hasGraps = !isTTML;
     const hasAnalysis = !isTTML;
+    const hasStreamExplorer = !isUnknown;
 
     React.useEffect(() => {
         if (!hasAnalysis) {
@@ -57,6 +59,7 @@ function PCapDetailsContent({
                     currentHeaderType={currentHeaderType}
                     hasGraphs={hasGraps}
                     hasAnalysis={hasAnalysis}
+                    hasStreamExplorer={hasStreamExplorer}
                 />
             </div>
             <div className="main-page-dashboard">

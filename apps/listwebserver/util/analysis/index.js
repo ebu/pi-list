@@ -335,7 +335,6 @@ const runAnalysis = async (params) => {
             { new: true }
         ).exec();
 
-        const userId = userId;
         websocketManager.instance().sendEventToUser(userId, {
             event: WS_EVENTS.PCAP_FILE_FAILED,
             data: { id: pcapId, progress: 0, error: err.toString() },

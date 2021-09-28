@@ -38,10 +38,22 @@ const getInformation = (pCap: SDK.types.IPcapInfo): IInformation[] => {
     return activeValues.map(([title, count]) => ({ number: count.toString(), title: title }));
 };
 
-const getContent = (pCap: SDK.types.IPcapInfo): { label: string; percentage: number } => ({
-    label: pCap.summary === undefined ? 'ERROR' : pCap.summary.error_list.length === 0 ? 'Compliant' : 'Not Compliant',
-    percentage: 100,
-});
+const getContent = (pCap: SDK.types.IPcapInfo): { label: string; percentage: number } => {
+    const ancStreams = pCap.anc_streams;
+    const audioStreams = pCap.audio_streams;
+    const videoStreams = pCap.video_streams;
+    const totalStreams = pCap.total_streams;
+    const unkownStreams = totalStreams - (videoStreams + audioStreams + ancStreams);
+    let label =
+        pCap.summary === undefined ? 'ERROR' : pCap.summary.error_list.length === 0 ? 'Compliant' : 'Not Compliant';
+    if (unkownStreams > 0) {
+        label = 'Unknown';
+    }
+    return {
+        label: label,
+        percentage: 100,
+    };
+};
 
 const getTitle = (pCap: SDK.types.IPcapInfo, index: number): { mainTitle: string; titleNumber: string } => ({
     mainTitle: pCap.file_name,

@@ -8,12 +8,14 @@ function PCapDetailsHeaderHOC({
     currentHeaderType,
     hasAnalysis,
     hasGraphs,
+    hasStreamExplorer,
 }: {
     headerTitle: string | undefined;
     onHeaderTypeClick: (headerType: number) => void;
     currentHeaderType: number;
     hasAnalysis?: boolean;
     hasGraphs?: boolean;
+    hasStreamExplorer?: boolean;
 }) {
     let categoriesList: ICategory[] = [
         {
@@ -35,6 +37,12 @@ function PCapDetailsHeaderHOC({
     if (!hasGraphs) {
         categoriesList = categoriesList.filter(function(item) {
             return item.key !== 2;
+        });
+    }
+
+    if (!hasStreamExplorer) {
+        categoriesList = categoriesList.filter(function(item) {
+            return item.key !== 1;
         });
     }
 

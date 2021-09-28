@@ -11,16 +11,14 @@ function Content({ props }: ComponentProps) {
         switch (props.label) {
             case 'Compliant':
                 return '#50E29C';
-                break;
             case 'Not Compliant':
                 return '#D90000';
-                break;
             case 'Analysing':
                 return 'yellow';
-                break;
             case 'Failed':
                 return '#c22727';
-                break;
+            case 'Unknown':
+                return '#f28e30';
         }
     };
 
