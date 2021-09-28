@@ -12,16 +12,16 @@
     "wide_streams": 0,
     "generated_from_network": false,
     "truncated": false,
-    "_id": "6148a68efa0b4b2cd4e6246b",
-    "id": "2d3f8620-1a26-11ec-bbd5-959191d55afe",
+    "_id": "6152e43c86bd1cdf42039f3b",
+    "id": "d1bb46b0-2040-11ec-aafa-e310ae7a4d21",
     "__v": 0,
     "analyzer_version": "2.0.0",
     "capture_date": 1622750341522,
-    "capture_file_name": "1632151181788_d4aa176e-5041-4872-b289-d844a5847ac8.pcap",
-    "date": 1632151182321,
+    "capture_file_name": "1632822331519_8b827c79-ad8f-425b-8972-c84460a22b22.pcap",
+    "date": 1632822332390,
     "file_name": "2vid_2aud",
-    "owner_id": "47442ab0-1a23-11ec-afaa-49907a002b0c",
-    "pcap_file_name": "1632151181788_d4aa176e-5041-4872-b289-d844a5847ac8.pcap",
+    "owner_id": "c7025c40-1f78-11ec-93e1-35549f874ab5",
+    "pcap_file_name": "1632822331519_8b827c79-ad8f-425b-8972-c84460a22b22.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested",
@@ -29,15 +29,15 @@
     },
     "summary": {
         "error_list": [
-            { "stream_id": "9e5ff63f-bd95-413e-9c98-e5a4b500ad53", "value": { "id": "errors.vrx_above_maximum" } }
+            { "stream_id": "b6123315-3e97-4ff0-a05c-853a2ff58e7f", "value": { "id": "errors.vrx_above_maximum" } }
         ],
         "warning_list": []
     },
     "streams": [
         {
-            "_id": "614da97f2766649ba05a619e",
             "error_list": [],
-            "id": "9095d071-39f5-45fb-a2ee-bb30906aa88c",
+            "_id": "6152e43c178e6140aa895f6a",
+            "id": "59033d6e-ae5d-44ec-a1b5-36551f686595",
             "media_specific": {
                 "avg_tro_ns": 617007,
                 "color_depth": 10,
@@ -56,6 +56,11 @@
                 "width": 1920
             },
             "media_type": "video",
+            "media_type_validation": {
+                "anc": ["STATUS_CODE_ANC_WRONG_RESERVED_BIT"],
+                "audio": ["STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"],
+                "ttml": ["STATUS_CODE_TTML_INVALID_DOCUMENT"]
+            },
             "network_information": {
                 "destination_address": "225.164.5.30",
                 "destination_mac_address": "01:00:5e:24:05:1e",
@@ -75,7 +80,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "24832d7e-564f-4970-ad41-2983ef137b9a",
+            "pcap": "d1bb46b0-2040-11ec-aafa-e310ae7a4d21",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -143,10 +148,10 @@
                 },
                 "2110_21_cinst": { "result": "compliant" },
                 "2110_21_vrx": { "result": "compliant" },
+                "unique_multicast_destination_ip_address": { "result": "compliant" },
                 "destination_multicast_mac_address": { "result": "compliant" },
                 "destination_multicast_ip_address": { "result": "compliant" },
                 "unrelated_multicast_addresses": { "result": "compliant" },
-                "unique_multicast_destination_ip_address": { "result": "compliant" },
                 "rtp_sequence": {
                     "result": "compliant",
                     "details": { "dropped_packets_count": 0, "dropped_packets_samples": [], "packet_count": 51393 }
@@ -154,9 +159,9 @@
             }
         },
         {
-            "_id": "614da97f2766649ba05a619f",
             "error_list": [{ "id": "errors.vrx_above_maximum" }],
-            "id": "ac541481-6423-4188-bcca-7e3aab0e2133",
+            "_id": "6152e43c178e6140aa895f6b",
+            "id": "b6123315-3e97-4ff0-a05c-853a2ff58e7f",
             "media_specific": {
                 "avg_tro_ns": 673246,
                 "color_depth": 10,
@@ -175,6 +180,11 @@
                 "width": 1920
             },
             "media_type": "video",
+            "media_type_validation": {
+                "anc": ["STATUS_CODE_ANC_WRONG_RESERVED_BIT"],
+                "audio": ["STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"],
+                "ttml": ["STATUS_CODE_TTML_INVALID_DOCUMENT"]
+            },
             "network_information": {
                 "destination_address": "225.164.7.50",
                 "destination_mac_address": "01:00:5e:24:07:32",
@@ -194,7 +204,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "24832d7e-564f-4970-ad41-2983ef137b9a",
+            "pcap": "d1bb46b0-2040-11ec-aafa-e310ae7a4d21",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -265,10 +275,10 @@
                 },
                 "2110_21_cinst": { "result": "compliant" },
                 "2110_21_vrx": { "result": "not_compliant" },
+                "unique_multicast_destination_ip_address": { "result": "compliant" },
                 "destination_multicast_mac_address": { "result": "compliant" },
                 "destination_multicast_ip_address": { "result": "compliant" },
                 "unrelated_multicast_addresses": { "result": "compliant" },
-                "unique_multicast_destination_ip_address": { "result": "compliant" },
                 "rtp_sequence": {
                     "result": "compliant",
                     "details": { "dropped_packets_count": 0, "dropped_packets_samples": [], "packet_count": 45017 }
@@ -276,9 +286,9 @@
             }
         },
         {
-            "_id": "614da97f2766649ba05a61a0",
             "error_list": [],
-            "id": "10942906-23ad-4fac-bae9-0d5548741085",
+            "_id": "6152e43c178e6140aa895f6c",
+            "id": "207a11ed-77fd-4d92-930d-2649f5c81141",
             "media_specific": {
                 "encoding": "L24",
                 "number_channels": 2,
@@ -286,6 +296,10 @@
                 "sampling": "48000"
             },
             "media_type": "audio",
+            "media_type_validation": {
+                "anc": ["STATUS_CODE_ANC_PKT_TOO_LONG"],
+                "video": ["STATUS_CODE_VIDEO_NOT_EQUAL_RTP_TIMESTAMPS"]
+            },
             "network_information": {
                 "destination_address": "239.164.3.1",
                 "destination_mac_address": "01:00:5e:24:03:01",
@@ -305,7 +319,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "24832d7e-564f-4970-ad41-2983ef137b9a",
+            "pcap": "d1bb46b0-2040-11ec-aafa-e310ae7a4d21",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -321,9 +335,6 @@
             },
             "__v": 0,
             "analyses": {
-                "destination_multicast_mac_address": { "result": "compliant" },
-                "destination_multicast_ip_address": { "result": "compliant" },
-                "unrelated_multicast_addresses": { "result": "compliant" },
                 "tsdf": {
                     "result": "compliant",
                     "details": {
@@ -345,6 +356,9 @@
                     }
                 },
                 "unique_multicast_destination_ip_address": { "result": "compliant" },
+                "destination_multicast_mac_address": { "result": "compliant" },
+                "destination_multicast_ip_address": { "result": "compliant" },
+                "unrelated_multicast_addresses": { "result": "compliant" },
                 "rtp_sequence": {
                     "result": "compliant",
                     "details": { "dropped_packets_count": 0, "dropped_packets_samples": [], "packet_count": 3176 }
@@ -368,9 +382,9 @@
             }
         },
         {
-            "_id": "614da97f2766649ba05a61a1",
             "error_list": [],
-            "id": "049b4109-14d5-4244-ab47-252f5ca14cf1",
+            "_id": "6152e43c178e6140aa895f6d",
+            "id": "430ffad5-8c03-47fc-94b6-ff809a0da137",
             "media_specific": {
                 "encoding": "L24",
                 "number_channels": 2,
@@ -378,6 +392,10 @@
                 "sampling": "48000"
             },
             "media_type": "audio",
+            "media_type_validation": {
+                "anc": ["STATUS_CODE_ANC_PKT_TOO_LONG"],
+                "video": ["STATUS_CODE_VIDEO_NOT_EQUAL_RTP_TIMESTAMPS"]
+            },
             "network_information": {
                 "destination_address": "239.164.2.1",
                 "destination_mac_address": "01:00:5e:24:02:01",
@@ -397,7 +415,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "24832d7e-564f-4970-ad41-2983ef137b9a",
+            "pcap": "d1bb46b0-2040-11ec-aafa-e310ae7a4d21",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -413,9 +431,6 @@
             },
             "__v": 0,
             "analyses": {
-                "destination_multicast_mac_address": { "result": "compliant" },
-                "destination_multicast_ip_address": { "result": "compliant" },
-                "unrelated_multicast_addresses": { "result": "compliant" },
                 "tsdf": {
                     "result": "compliant",
                     "details": {
@@ -437,6 +452,9 @@
                     }
                 },
                 "unique_multicast_destination_ip_address": { "result": "compliant" },
+                "destination_multicast_mac_address": { "result": "compliant" },
+                "destination_multicast_ip_address": { "result": "compliant" },
+                "unrelated_multicast_addresses": { "result": "compliant" },
                 "rtp_sequence": {
                     "result": "compliant",
                     "details": { "dropped_packets_count": 0, "dropped_packets_samples": [], "packet_count": 397 }

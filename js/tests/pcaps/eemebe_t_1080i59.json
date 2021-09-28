@@ -12,16 +12,16 @@
     "wide_streams": 0,
     "generated_from_network": false,
     "truncated": true,
-    "_id": "6148a6d8fa0b4b2cd4e624dc",
-    "id": "5a5e1f40-1a26-11ec-bbd5-959191d55afe",
+    "_id": "6152e4cd86bd1cdf42039fde",
+    "id": "289e2a60-2041-11ec-aafa-e310ae7a4d21",
     "__v": 0,
     "analyzer_version": "2.0.0",
     "capture_date": 1516906244153,
-    "capture_file_name": "1632151256920_8f63e223-60a5-465a-ba0a-63886a4ce101.pcap",
-    "date": 1632151256980,
+    "capture_file_name": "1632822476831_1fa5c17b-aad7-4a27-b413-5af41ee299b4.pcap",
+    "date": 1632822477007,
     "file_name": "eemebe_t_1080i59",
-    "owner_id": "47442ab0-1a23-11ec-afaa-49907a002b0c",
-    "pcap_file_name": "1632151256920_8f63e223-60a5-465a-ba0a-63886a4ce101.pcap",
+    "owner_id": "c7025c40-1f78-11ec-93e1-35549f874ab5",
+    "pcap_file_name": "1632822476831_1fa5c17b-aad7-4a27-b413-5af41ee299b4.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested",
@@ -34,8 +34,8 @@
     "streams": [
         {
             "error_list": [],
-            "_id": "6148a6d8fd510800380270c0",
-            "id": "b112ae0a-49c6-4f9e-9030-95ac68889891",
+            "_id": "6152e4cd178e6140aa895fd8",
+            "id": "2822b245-4621-42ca-8cba-e4616d8075ec",
             "media_specific": {
                 "avg_tro_ns": 615145,
                 "color_depth": 10,
@@ -54,6 +54,11 @@
                 "width": 1920
             },
             "media_type": "video",
+            "media_type_validation": {
+                "anc": ["STATUS_CODE_ANC_WRONG_HEADER"],
+                "audio": ["STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"],
+                "ttml": ["STATUS_CODE_TTML_INVALID_DOCUMENT"]
+            },
             "network_information": {
                 "destination_address": "239.0.1.2",
                 "destination_mac_address": "01:00:5e:00:01:02",
@@ -73,7 +78,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "5a5e1f40-1a26-11ec-bbd5-959191d55afe",
+            "pcap": "289e2a60-2041-11ec-aafa-e310ae7a4d21",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -140,14 +145,14 @@
                 },
                 "2110_21_cinst": { "result": "compliant" },
                 "2110_21_vrx": { "result": "compliant" },
+                "unique_multicast_destination_ip_address": { "result": "compliant" },
                 "destination_multicast_mac_address": { "result": "compliant" },
                 "destination_multicast_ip_address": { "result": "compliant" },
                 "unrelated_multicast_addresses": { "result": "compliant" },
                 "rtp_sequence": {
                     "result": "compliant",
                     "details": { "dropped_packets_count": 0, "dropped_packets_samples": [], "packet_count": 21600 }
-                },
-                "unique_multicast_destination_ip_address": { "result": "compliant" }
+                }
             }
         }
     ]

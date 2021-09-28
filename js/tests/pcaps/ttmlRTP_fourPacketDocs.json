@@ -12,34 +12,33 @@
     "wide_streams": 0,
     "generated_from_network": false,
     "truncated": false,
-    "_id": "6148a72ffa0b4b2cd4e62569",
-    "id": "8e28ca00-1a26-11ec-bbd5-959191d55afe",
+    "_id": "6152e52d86bd1cdf4203a081",
+    "id": "6268c840-2041-11ec-aafa-e310ae7a4d21",
     "__v": 0,
     "analyzer_version": "2.0.0",
     "capture_date": 1576249998818,
-    "capture_file_name": "1632151343791_007f13a1-0bdf-4908-b330-ffeb05006c40.pcap",
-    "date": 1632151343799,
+    "capture_file_name": "1632822573773_6a3ca295-770e-422f-be99-03917e946a53.pcap",
+    "date": 1632822573780,
     "file_name": "ttmlRTP_fourPacketDocs",
-    "owner_id": "47442ab0-1a23-11ec-afaa-49907a002b0c",
-    "pcap_file_name": "1632151343791_007f13a1-0bdf-4908-b330-ffeb05006c40.pcap",
+    "owner_id": "c7025c40-1f78-11ec-93e1-35549f874ab5",
+    "pcap_file_name": "1632822573773_6a3ca295-770e-422f-be99-03917e946a53.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested",
         "timestamps": { "source": "pcap" }
     },
-
     "summary": {
         "error_list": [
             {
-                "stream_id": "7d85b127-24a1-4e8e-ad3c-35785ff0f21f",
+                "stream_id": "6e2dc6a2-94ea-42ad-b190-120862bfc1c8",
                 "value": { "id": "errors.invalid_multicast_mac_address" }
             },
             {
-                "stream_id": "7d85b127-24a1-4e8e-ad3c-35785ff0f21f",
+                "stream_id": "6e2dc6a2-94ea-42ad-b190-120862bfc1c8",
                 "value": { "id": "errors.invalid_multicast_ip_address" }
             },
             {
-                "stream_id": "7d85b127-24a1-4e8e-ad3c-35785ff0f21f",
+                "stream_id": "6e2dc6a2-94ea-42ad-b190-120862bfc1c8",
                 "value": { "id": "errors.unrelated_multicast_addresses" }
             }
         ],
@@ -47,14 +46,18 @@
     },
     "streams": [
         {
-            "_id": "614da8da2766649ba05a5d81",
             "error_list": [
                 { "id": "errors.invalid_multicast_mac_address" },
                 { "id": "errors.invalid_multicast_ip_address" },
                 { "id": "errors.unrelated_multicast_addresses" }
             ],
-            "id": "620210bc-9bb8-490d-9d7e-a68e4a93fbe2",
+            "_id": "6152e52d178e6140aa89605f",
+            "id": "6e2dc6a2-94ea-42ad-b190-120862bfc1c8",
             "media_type": "ttml",
+            "media_type_validation": {
+                "anc": ["STATUS_CODE_ANC_WRONG_FIELD_VALUE"],
+                "audio": ["STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"]
+            },
             "network_information": {
                 "destination_address": "127.0.0.1",
                 "destination_mac_address": "00:00:00:00:00:00",
@@ -74,7 +77,7 @@
                 "valid_multicast_ip_address": false,
                 "valid_multicast_mac_address": false
             },
-            "pcap": "e7db464d-7fbc-4593-b2d6-1adaa148ecaa",
+            "pcap": "6268c840-2041-11ec-aafa-e310ae7a4d21",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -85,12 +88,12 @@
             },
             "__v": 0,
             "analyses": {
-                "destination_multicast_mac_address": { "result": "not_compliant" },
-                "destination_multicast_ip_address": { "result": "not_compliant" },
-                "unrelated_multicast_addresses": { "result": "not_compliant" },
                 "ttml_time_base_is_media": { "result": "compliant" },
                 "ttml_consistent_sequence_identifier": { "result": "compliant" },
                 "unique_multicast_destination_ip_address": { "result": "compliant" },
+                "destination_multicast_mac_address": { "result": "not_compliant" },
+                "destination_multicast_ip_address": { "result": "not_compliant" },
+                "unrelated_multicast_addresses": { "result": "not_compliant" },
                 "rtp_sequence": {
                     "result": "compliant",
                     "details": { "dropped_packets_count": 0, "dropped_packets_samples": [], "packet_count": 12 }

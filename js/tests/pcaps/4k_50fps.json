@@ -12,16 +12,16 @@
     "wide_streams": 0,
     "generated_from_network": false,
     "truncated": false,
-    "_id": "6148a6b6fa0b4b2cd4e624ad",
-    "id": "45419c90-1a26-11ec-bbd5-959191d55afe",
+    "_id": "6152e4a386bd1cdf42039fa1",
+    "id": "0f89b990-2041-11ec-aafa-e310ae7a4d21",
     "__v": 0,
     "analyzer_version": "2.0.0",
     "capture_date": 1528353584317,
-    "capture_file_name": "1632151221902_2df1abef-47c7-443b-8980-942a8aee8aa8.pcap",
-    "date": 1632151222310,
+    "capture_file_name": "1632822435095_aea04757-1ed8-45d8-8e4a-9b5ea486e796.pcap",
+    "date": 1632822435835,
     "file_name": "4k_50fps",
-    "owner_id": "47442ab0-1a23-11ec-afaa-49907a002b0c",
-    "pcap_file_name": "1632151221902_2df1abef-47c7-443b-8980-942a8aee8aa8.pcap",
+    "owner_id": "c7025c40-1f78-11ec-93e1-35549f874ab5",
+    "pcap_file_name": "1632822435095_aea04757-1ed8-45d8-8e4a-9b5ea486e796.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested",
@@ -29,14 +29,14 @@
     },
     "summary": {
         "error_list": [
-            { "stream_id": "0118c2cd-b668-4e2c-8276-f2f03c9ddba7", "value": { "id": "errors.invalid_rtp_ts_vs_nt" } },
+            { "stream_id": "19f6f633-9ebe-40e6-9721-ee4fa53abc02", "value": { "id": "errors.invalid_rtp_ts_vs_nt" } },
             {
-                "stream_id": "0118c2cd-b668-4e2c-8276-f2f03c9ddba7",
+                "stream_id": "19f6f633-9ebe-40e6-9721-ee4fa53abc02",
                 "value": { "id": "errors.invalid_delta_packet_ts_vs_rtp_ts" }
             },
-            { "stream_id": "0118c2cd-b668-4e2c-8276-f2f03c9ddba7", "value": { "id": "errors.cinst_above_maximum" } },
-            { "stream_id": "0118c2cd-b668-4e2c-8276-f2f03c9ddba7", "value": { "id": "errors.vrx_above_maximum" } },
-            { "stream_id": "0118c2cd-b668-4e2c-8276-f2f03c9ddba7", "value": { "id": "errors.dropped_packets" } }
+            { "stream_id": "19f6f633-9ebe-40e6-9721-ee4fa53abc02", "value": { "id": "errors.cinst_above_maximum" } },
+            { "stream_id": "19f6f633-9ebe-40e6-9721-ee4fa53abc02", "value": { "id": "errors.vrx_above_maximum" } },
+            { "stream_id": "19f6f633-9ebe-40e6-9721-ee4fa53abc02", "value": { "id": "errors.dropped_packets" } }
         ],
         "warning_list": []
     },
@@ -49,8 +49,8 @@
                 { "id": "errors.vrx_above_maximum" },
                 { "id": "errors.dropped_packets" }
             ],
-            "_id": "6148a6b6fd510800380270a0",
-            "id": "0118c2cd-b668-4e2c-8276-f2f03c9ddba7",
+            "_id": "6152e4a3178e6140aa895fa8",
+            "id": "19f6f633-9ebe-40e6-9721-ee4fa53abc02",
             "media_specific": {
                 "avg_tro_ns": 10258400,
                 "color_depth": 10,
@@ -69,6 +69,11 @@
                 "width": 3840
             },
             "media_type": "video",
+            "media_type_validation": {
+                "anc": ["STATUS_CODE_ANC_WRONG_RESERVED_BIT"],
+                "audio": ["STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"],
+                "ttml": ["STATUS_CODE_TTML_INVALID_DOCUMENT"]
+            },
             "network_information": {
                 "destination_address": "224.1.1.1",
                 "destination_mac_address": "01:00:5e:01:01:01",
@@ -88,7 +93,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "45419c90-1a26-11ec-bbd5-959191d55afe",
+            "pcap": "0f89b990-2041-11ec-aafa-e310ae7a4d21",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 4,
@@ -433,6 +438,7 @@
                 },
                 "2110_21_cinst": { "result": "not_compliant" },
                 "2110_21_vrx": { "result": "not_compliant" },
+                "unique_multicast_destination_ip_address": { "result": "compliant" },
                 "destination_multicast_mac_address": { "result": "compliant" },
                 "destination_multicast_ip_address": { "result": "compliant" },
                 "unrelated_multicast_addresses": { "result": "compliant" },
@@ -449,8 +455,7 @@
                         ],
                         "packet_count": 80000
                     }
-                },
-                "unique_multicast_destination_ip_address": { "result": "compliant" }
+                }
             }
         }
     ]
