@@ -5,49 +5,52 @@ const StreamSchema = new mongoose.Schema({
     id: {
         type: String,
         unique: true,
-        required: true
+        required: true,
     },
     media_type: {
         type: String,
-        required: true
+        required: true,
     },
     pcap: {
         type: String,
-        required: true
+        required: true,
     },
     state: {
         type: String,
-        required: true
+        required: true,
     },
     alias: {
-        type: String
+        type: String,
     },
     media_specific: {
-        type: mongoose.Schema.Types.Mixed
+        type: mongoose.Schema.Types.Mixed,
     },
     network_information: {
-        type: Object
+        type: Object,
     },
     statistics: {
-        type: Object
+        type: Object,
+    },
+    media_type_validation: {
+        type: Object,
     },
     global_video_analysis: {
-        type: Object
+        type: Object,
     },
     global_audio_analysis: {
-        type: Object
+        type: Object,
     },
     analyses: {
-        type: Object
+        type: Object,
     },
     error_list: {
-        type: Array
-    }
+        type: Array,
+    },
 });
 
 StreamSchema.set('toJSON', {
     virtuals: true,
-    versionKey: false
+    versionKey: false,
 });
 
 module.exports = db.model('streams', StreamSchema);
