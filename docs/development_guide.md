@@ -1,15 +1,29 @@
 # Development
 
+## Sources structure
+
+```
+git clone https://github.com/ebu/pi-list
+cd pi-list/
+git submodule update --init --recursive
+```
+
+LIST is mostly composed of:
+
+- C++ core stream analyzer
+- nodejs backend
+- reactjs web UI
+- set of nodejs side apps
+
 ## Pre-requisites
 
 - **CMake** >= v3.9
-- **Conan** >= v1
+- **Conan** >= v1.33
+- **Ninja** >= v1.10
 - **Docker** >= v15
 - **Docker-compose** >= v1.20
-- **NodeJS** >= v12
+- **NodeJS** >= v12 + npm packages: lerna & yarn
 - **C++17 compatible compiler**
-- [**Lerna**](https://github.com/lerna/lerna)
-
 
 We use CMake as the meta build system and require most of our third-party dependencies using conan.
 Our *rule of thumb* is to include dependencies using conan when possible. Conan is integrated with CMake, so it should be transparent within the build process.
@@ -19,36 +33,22 @@ In order to run and develop this application on your computer, you need this add
 - **uuid-dev** (only on linux - sudo apt-get install uuid-dev)
 - **libpcap-dev** (only on linux)
 
-
-## Quick-start
-
-If you meet all the pre-requisites, a quick way to start right away is:
+If you run a Debian-based distribution, you can install everythin with:
 
 ```
-git clone
-git submodule update --init --recursive
+./scripts/setup-build-env.sh
 ```
 
-To run cmake, you can do:
+## Core stream analyzer (c++)
+
+When you meet all the pre-requisites, a quick way to start right away is:
 
 ```
-mkdir build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-cmake --build .
+./scripts/build_node.sh
+ls ./build/bin/
 ```
 
-Or with Visual Studio:
-
-```
-mkdir build
-cd build
-cmake .. -G "Visual Studio 15 Win64"
-```
-
-And then open the solution file in the build folder.
-
-## CMake usage and configuration
+### CMake usage and configuration
 
 All the options below can be combined together
 
@@ -63,9 +63,9 @@ All the options below can be combined together
 The folder `config/cmake` contains some cmake files that are used project-wide in order to simplify
 CMake usage and extra functionality.
 
-## SDK Structure
+### Library structure
 
-The LIST SDK is composed by a set of libraries which can be used separately:
+The stream analyzer uses a set of libraries which can be used separately:
 
 | Library Name | Contains | Link as |
 | --- | --- | --- |
@@ -87,51 +87,26 @@ unit_tests/     --> test files
 CMakeLists.txt  --> definitions for both lib and unit_tests
 ```
 
-### Use LIST SDK as an external Library
+To use as an external library, just use cmake's `add_subdirectory()` and it will work out-of-the-box.
 
-Just use cmake's `add_subdirectory()` and it will work out-of-the-box.
+## Build node packages:
 
-# Backend and GUI
+Packages are listed in `lerna.json` and mostly includes:
 
-- Lerna must be installed gloabally with `npm i -g lerna`
-
-After cloning the repository:
-
-`> lerna bootstrap`
-
-To build the project
-
-`> lerna run build`
-
-To generate the production version:
-
-`> lerna run production`
-
-
-## Contribute to translations
-
-All the labels of the UI are generated from [a Google Sheet](https://docs.google.com/spreadsheets/d/1yqL3CKmUu_M1AWCtHEzG5hp-8B1X-5_qxcgDn4AbFYo/edit) for every supported language.
-
-### Create authentication token to generate the translations
-
-The translations will be generated during the deploy process either Linux host
-or Docker builds, to achieve this a token must be generated first.
-This token can be kept locally and can be reused.
+- backend server
+- reacjs GUI
+- third-party dependencies
+- side apps
 
 ```
-node apps/gui/data/translationsGenerator.js -t
+./scripts/build_node.sh
 ```
 
-### Translation helper
-
-In order to help filling the Spreadsheet, one can use the Google
-Translate help script:
+You can still compile an individual package.
 
 ```
-node apps/gui/data/googleTranslate.js "Any english text"
+npx lerna run build --scope="@list/validation-tests"
 ```
-
-Note: this is broken until [google-translate-api gets fixed](https://github.com/vitalets/google-translate-api/issues/60).
 
 ## Contribute
 
@@ -143,3 +118,15 @@ Note: this is broken until [google-translate-api gets fixed](https://github.com/
 6. Push to the branch
 7. Create a new Pull Request
 8. Watch CI turn green and wait for review
+
+### Contribute to translations
+
+All the labels of the UI are generated from [a Google Sheet](https://docs.google.com/spreadsheets/d/1yqL3CKmUu_M1AWCtHEzG5hp-8B1X-5_qxcgDn4AbFYo/edit) for every supported language.
+
+The translations will be generated during the deploy process either Linux host
+or Docker builds, to achieve this a token must be generated first.
+This token can be kept locally and can be reused.
+
+```
+node apps/gui/data/translationsGenerator.js -t
+```

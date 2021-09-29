@@ -24,3 +24,4 @@ apps/capture_probe/yarn.lock
 apps/gui/yarn.lock
 apps/gui-v2/yarn.lock
 yarn.lock
+yarn-error.log

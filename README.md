@@ -25,8 +25,9 @@ We deployed an [online version](https://list.ebu.io/) that you can start using r
 
 ## For developers
 
-* [How to compile LIST](./docs/compiling_list.md)
-* [How to further develop LIST](./docs/list_development.md)
+* [How to compile LIST](./docs/compiling_guide.md)
+* [How to further develop LIST](./docs/development_guide.md)
+* [Perform validation tests](./docs/validation_tests.md)
 * [API documentation](./docs/api.md)
 
 ## Additional information
