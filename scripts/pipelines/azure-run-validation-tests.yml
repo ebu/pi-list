@@ -60,7 +60,8 @@ stages:
                       dockerComposeFileArgs: EBU_LIST_VERSION=${{ parameters.docker_image_tag }}
                       dockerComposeCommand: 'up -d'
                 - script: |
-                      yarn run validation-tests -b http://listserver:80 -u user3 -p user3
+                      yarn run validation-tests-basics -b http://listserver:80 -u user3 -p user3
+                      yarn run validation-tests-advanced -b http://listserver:80 -u user3 -p user3
                   displayName: Run validation tests
                   workingDirectory: $(Build.SourcesDirectory)/js/tests
                 - task: DockerCompose@0

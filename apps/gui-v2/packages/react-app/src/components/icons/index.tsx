@@ -81,6 +81,9 @@ export const PauseIcon = icon(pauseIconSrc);
 const settingsIconSrc = require('./settings.svg');
 export const SettingsIcon = icon(settingsIconSrc);
 
+const settingsMiniIconSrc = require('./settings-mini.svg');
+export const SettingsMiniIcon = icon(settingsMiniIconSrc);
+
 const collapseIconSrc = require('./collapse.svg');
 export const CollapseIcon = icon(collapseIconSrc);
 

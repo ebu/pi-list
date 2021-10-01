@@ -448,7 +448,7 @@ function audioConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
     Stream.find({ pcap: pcapId, media_type: 'audio' })
         .exec()
-        .then((streams) => doAudioAnalysis(pcapId, streams))
+        .then((streams) => doAudioAnalysis(pcapId, streams, req.analysisProfile.audio))
         .then((streams) => {
             addStreamsToReq(streams, req);
         })

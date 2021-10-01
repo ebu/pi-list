@@ -227,7 +227,7 @@ class InfluxDbManager {
 
     getAudioPktTsVsRtpTsRange(pcapID, streamID) {
         const query = `
-            select max("audio-pkt-vs-rtp") as "max", min("audio-pkt-vs-rtp") as "min"
+            select max("audio-pkt-vs-rtp") as "max", min("audio-pkt-vs-rtp") as "min", mean("audio-pkt-vs-rtp") as "avg"
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}
         `;
 

@@ -5,19 +5,6 @@ const constants = require('../enums/analysis');
 const { appendError } = require('./utils');
 const logger = require('../util/logger');
 
-//
-// Definitions
-// TODO get from a validation template
-const validation = {
-    rtp: {
-        deltaPktTsVsRtpTsLimit: {
-            min: 0,
-            max: 1000, //us
-        },
-    },
-};
-
-// determines compliance based on EBU's recommendation
 // returns
 // {
 //     result : as defined in constants.outcome
@@ -53,13 +40,13 @@ function getTsdfMax(range) {
     return range[0].max;
 }
 
-function updateStreamWithTsdfMax(stream, tsdf_max) {
+function updateStreamWithTsdfMax(stream, tsdfMax, tsdfProfile) {
     if (!stream.media_specific) return null; // can't do anything without associated stream
 
     var tsdf = {
-        max: tsdf_max,
-        tolerance: stream.media_specific.packet_time * 1000,
-        limit: stream.media_specific.packet_time * 1000 * 17, // https://tech.ebu.ch/docs/tech/tech3337.pdf
+        max: tsdfMax,
+        tolerance: stream.media_specific.packet_time * 1000 * tsdfProfile.tolerance,
+        limit: stream.media_specific.packet_time * 1000 * tsdfProfile.limit,
         unit: 'μs',
     };
     const { result, level } = getTsdfCompliance(tsdf);
@@ -88,7 +75,7 @@ function updateStreamWithTsdfMax(stream, tsdf_max) {
 }
 
 function getPktTsVsRtpTsCompliance(range, limit) {
-    if (_.isNil(range) || _.isNil(range.min) || _.isNil(range.max) || range.min < limit.min || range.max > limit.max) {
+    if (_.isNil(range) || _.isNil(range.min) || _.isNil(range.max) || range.min < limit.min || range.max > limit.max || range.avg > limit.maxAvg) {
         return {
             result: constants.outcome.not_compliant,
         };
@@ -99,10 +86,22 @@ function getPktTsVsRtpTsCompliance(range, limit) {
     };
 }
 
-function updateStreamWithPktTsVsRtpTs(stream, range) {
-    const limit = validation.rtp.deltaPktTsVsRtpTsLimit;
-
+function updateStreamWithPktTsVsRtpTs(stream, range, profile) {
     global_audio_analysis = stream.global_audio_analysis === undefined ? {} : stream.global_audio_analysis;
+
+    // convert to 'μs'
+    const packet_time_us = stream.media_specific.packet_time * 1000;
+    const limit = (profile.unit === 'packet_time')?
+        {
+            min: profile.min * packet_time_us,
+            maxAvg: profile.maxAvg * packet_time_us,
+            max: profile.max * packet_time_us,
+        } : {
+            min: profile.min,
+            maxAvg: profile.maxAvg,
+            max: profile.max,
+        };
+
     const packet_ts_vs_rtp_ts = {
         range: range,
         limit: limit,
@@ -129,35 +128,35 @@ function updateStreamWithPktTsVsRtpTs(stream, range) {
     return stream;
 }
 
-function calculateTsdfFromRange(stream, range) {
-    const tsdf_max = getTsdfMax(range);
-    return updateStreamWithTsdfMax(stream, tsdf_max);
+function calculateTsdfFromRange(stream, range, tsdfProfile) {
+    const tsdfMax = getTsdfMax(range);
+    return updateStreamWithTsdfMax(stream, tsdfMax, tsdfProfile);
 }
 
 // Returns one promise, which resolves to the stream.
-function doCalculateTsdf(pcapId, stream) {
+function doCalculateTsdf(pcapId, stream, tsdfProfile) {
     return influxDbManager.getAudioTimeStampedDelayFactorRange(pcapId, stream.id).then((range) => {
         delete range.time;
-        calculateTsdfFromRange(stream, range);
+        calculateTsdfFromRange(stream, range, tsdfProfile);
     });
 }
 
-function doCalculatePktTsVsRtpTsRange(pcapId, stream) {
+function doCalculatePktTsVsRtpTsRange(pcapId, stream, rtpProfile) {
     return influxDbManager
         .getAudioPktTsVsRtpTsRange(pcapId, stream.id)
-        .then((range) => updateStreamWithPktTsVsRtpTs(stream, range[0]));
+        .then((range) => updateStreamWithPktTsVsRtpTs(stream, range[0], rtpProfile));
 }
 
 // Returns one promise, which result is undefined.
-function doAudioStreamAnalysis(pcapId, stream) {
-    return doCalculateTsdf(pcapId, stream)
-        .then(() => doCalculatePktTsVsRtpTsRange(pcapId, stream))
+function doAudioStreamAnalysis(pcapId, stream, audioAnalysisProfile) {
+    return doCalculateTsdf(pcapId, stream, audioAnalysisProfile.tsdf)
+        .then(() => doCalculatePktTsVsRtpTsRange(pcapId, stream, audioAnalysisProfile.deltaPktTsVsRtpTsLimit))
         .then((info) => Stream.findOneAndUpdate({ id: stream.id }, info, { new: true }));
 }
 
 // Returns one array with a promise for each stream. The result of the promise is undefined.
-function doAudioAnalysis(pcapId, streams) {
-    const promises = streams.map((stream) => doAudioStreamAnalysis(pcapId, stream));
+function doAudioAnalysis(pcapId, streams, audioAnalysisProfile) {
+    const promises = streams.map((stream) => doAudioStreamAnalysis(pcapId, stream, audioAnalysisProfile));
     return Promise.all(promises);
 }
 

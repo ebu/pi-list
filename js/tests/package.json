@@ -10,7 +10,8 @@
         "build": "yarn run clean && yarn run compile",
         "clean": "rm -rf ./dist",
         "compile": "tsc",
-        "validation-tests": "yarn run build && node dist/index.js test-basic"
+        "validation-tests-basics": "npm run build && node dist/index.js test-basic",
+        "validation-tests-advanced": "npm run build && node dist/index.js test-advanced"
     },
     "dependencies": {
         "@bisect/bisect-core-ts": "0.1.0",

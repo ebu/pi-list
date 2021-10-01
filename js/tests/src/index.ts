@@ -2,21 +2,15 @@ import yargs from 'yargs';
 import { testUtils } from '@bisect/bisect-core-ts-be';
 import { requirements, run as runRepo } from './repo';
 import './basic';
-
-async function runAllTests(settings: testUtils.ITestSettings): Promise<number> {
-    return runRepo(settings)
-        .then((allTestsPassed: boolean) => (allTestsPassed ? 0 : 1))
-        .catch((err: Error) => {
-            console.error(err);
-            return -1;
-        });
-}
+import './advanced';
 
 const parser = yargs(process.argv.slice(2))
     .usage('Usage: $0 <command> [options]')
-    .command('test-basic', 'Run the basic tests.')
-    .demandCommand(1, 1)
+    .command('test-basic', 'Run the basic tests (autentication, simple analysis, users, download).')
     .example('$0 test-basic -b https://list.ebu.io', 'Run the basic tests in https://list.ebu.io.')
+    .command('test-advanced', 'Run the advanced tests (analysis profile, comparison soon).')
+    .example('$0 test-advanced -b https://list.ebu.io', 'Run the advanced tests in https://list.ebu.io.')
+    .demandCommand(1, 1)
     .alias('p', 'password')
     .nargs('p', 1)
     .describe('p', `The password`)
@@ -63,20 +57,32 @@ const address = `${argv.b}`;
 const user = argv.u as string;
 const password = argv.p as string;
 
-async function runBasicTests(): Promise<boolean> {
+async function runAllTests(settings: testUtils.ITestSettings): Promise<number> {
+    return runRepo(settings)
+        .then((allTestsPassed: boolean) => (allTestsPassed ? 0 : 1))
+        .catch((err: Error) => {
+            console.error(err);
+            return -1;
+        });
+}
+
+async function runTests(requirement: string): Promise<boolean> {
     console.log('Running the basic tests');
     return runAllTests({
         address: address,
         username: user,
         password: password,
-        enabledRequirements: [requirements.Basic],
+        enabledRequirements: [requirement],
     }).then((result: number) => result !== 0);
 }
 
 async function run(): Promise<boolean> {
     for (const arg of argv._) {
         if (arg === 'test-basic') {
-            return await runBasicTests();
+            return await runTests(requirements.Basic);
+        }
+        else if (arg === 'test-advanced') {
+            return await runTests(requirements.Advanced);
         }
     }
 

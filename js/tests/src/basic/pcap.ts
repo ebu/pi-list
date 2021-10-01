@@ -140,9 +140,7 @@ const runUploadTest = async (name: string, c: testUtils.ITestContext) => {
 
     const pcapDir = path.join(__dirname, '..', '..', 'pcaps');
     const pcapFile = path.join(pcapDir, `${name}.pcap`);
-    const pcapJsonFile = path.join(pcapDir, `${name}.json`);
-
-    const unwinder = new Unwinder();
+    const refAnalysisFile = path.join(pcapDir, `${name}.json`);
 
     try {
         await loginOrRegister(list, c);
@@ -150,30 +148,27 @@ const runUploadTest = async (name: string, c: testUtils.ITestContext) => {
         const stream = fs.createReadStream(pcapFile);
 
         const callback = (info: types.IUploadProgressInfo) => console.log(`percentage: ${info.percentage}`);
-        const tmpFile = new tmp.File();
         const pcapId = await doUpload(list, name, stream, callback);
 
-        const downloadedPcapJson = await list.pcap.downloadJson(pcapId);
-        fs.writeFileSync(tmpFile.path, JSON.stringify(downloadedPcapJson.data));
-        console.log(`PCAP ID: ${pcapId}`);
+        const refAnalysis = fs.readFileSync(refAnalysisFile);
+        const testAnalysis = await list.pcap.downloadJson(pcapId);
 
-        const TestRawdata = fs.readFileSync(pcapJsonFile);
-        const Filerawdata = fs.readFileSync(tmpFile.path);
-        const jsonTest = deleteJsonProperties(JSON.parse(TestRawdata.toString()));
-        const jsonFile = deleteJsonProperties(JSON.parse(Filerawdata.toString()));
+        /* Update refAnalysisFile if necessary */
+        // fs.writeFileSync(refAnalysisFile, JSON.stringify(testAnalysis.data, null, 4));
 
-        unwinder.add(() => fs.unlink(tmpFile.path, resultHandler));
-        if (!_.isEqual(jsonTest, jsonFile)) {
-            console.log(`Diff:  ${JSON.stringify(diff(jsonTest, jsonFile))}`);
+        const filteredRefAnalysis = deleteJsonProperties(JSON.parse(refAnalysis.toString()));
+        const filteredTestAnalysis = deleteJsonProperties(JSON.parse(JSON.stringify(testAnalysis.data)));
+
+        if (!_.isEqual(filteredRefAnalysis, filteredTestAnalysis)) {
+            console.log(`Diff:  ${JSON.stringify(diff(filteredRefAnalysis, filteredTestAnalysis))}`);
         }
-        expect(_.isEqual(jsonTest, jsonFile)).toBe(true);
+        expect(_.isEqual(filteredRefAnalysis, filteredTestAnalysis)).toBe(true);
         await list.pcap.delete(pcapId);
     } catch (err: unknown) {
         const { message } = err as Error;
         console.error(`Error uploading file: ${message}`);
         throw err;
     } finally {
-        unwinder.unwind();
         await list.close();
     }
 };

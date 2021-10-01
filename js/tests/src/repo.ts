@@ -12,4 +12,5 @@ export const run = (settings: testUtils.ITestSettings) => repo.run(settings);
 
 export enum requirements {
   Basic = "Basic",
+  Advanced = "Advanced",
 }

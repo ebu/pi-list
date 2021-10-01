@@ -11,7 +11,7 @@ import {
     ButtonWithIconSidebarContainer,
     Notification,
 } from 'components/index';
-import { CalendarIcon, BinIcon, DownloadIcon, AlertIcon } from 'components/icons';
+import { SettingsMiniIcon, CalendarIcon, BinIcon, DownloadIcon, AlertIcon } from 'components/icons';
 import { translate } from '../../utils/translation';
 import DashboardContent from './DashboardContent';
 import MainContentLayout from '../Common/MainContentLayout';
@@ -79,9 +79,12 @@ const getPCapDetail = (currentPCap: SDK.types.IPcapInfo | null | undefined): IPc
     // const captureText = translate('navigation.capture.backup');
     const analysisText = 'Analysis';
     const captureText = 'Capture';
+    const profileText = 'Profile';
+
     if (currentPCap) {
         const analysisDate = new Date(currentPCap.date).toLocaleString();
         const captureDate = new Date(currentPCap.capture_date).toLocaleString();
+        const profile = currentPCap.analysis_profile.label;
         const isTruncated = currentPCap.truncated;
 
         const PCapDetailData = [
@@ -93,7 +96,12 @@ const getPCapDetail = (currentPCap: SDK.types.IPcapInfo | null | undefined): IPc
             {
                 icon: CalendarIcon,
                 text: captureText,
-                description: captureDate.toString(),
+                description: captureDate,
+            },
+            {
+                icon: SettingsMiniIcon,
+                text: profileText,
+                description: profile,
             },
         ];
 
