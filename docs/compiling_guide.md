@@ -41,3 +41,62 @@ If necessary, [make you server visible from another host.](./how-to-install-on-l
 cd release
 ./start.sh
 ```
+
+## Manual build for development
+
+Create branches from the "integration" branch
+
+The string \<project root\> is the location of the EBU-LIST directory.
+
+```
+> git clone ...
+> git submodule update --init --recursive
+
+> mkdir cmake-build-release
+> cd cmake-build-release
+> cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_ALL=1 -G Ninja
+> cmake --build . -- -j 8
+
+> cd <project root>
+> cd apps/listwebserver
+> mkdir ~/.list
+> cp config.yml ~/.list
+> edit ~/.list/config.yml and change the following lines:
+
+folder: /home/<your user name>/.list/data
+cpp: <project root>/cmake-build-debug/bin
+```
+
+-   Open 4 terminals
+
+1:
+
+```
+> cd <project root>
+> cd apps/external
+> docker-compose up
+```
+
+2:
+
+```
+> cd <project root>
+> cd apps/gui-v2
+> yarn run start
+```
+
+3:
+
+```
+> cd <project root>
+> cd apps/listwebserver
+> npm run dev -- ~/.list/config.yml
+```
+
+4:
+
+```
+> cd <project root>
+> cd cmake-build-release
+> ./bin/stream_pre_processor
+```
