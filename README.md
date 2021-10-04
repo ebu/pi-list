@@ -13,7 +13,6 @@ LIST is composed by:
 | :----------------------------------------------------- | :----------------------------: |
 | Quickly see if your streams are compliant with ST2110. |  ![](docs/pcap_overview.png)   |
 | See each individual stream                             | ![](docs/stream_overview.png)  |
-| <!-- Analyse PTP                                       | ![](docs/ptp_analysis.png) --> |
 | Drill drown on each stream and understand the details  | ![](docs/stream_drilldown.png) |
 
 ## Dematerialized version
@@ -29,6 +28,7 @@ We deployed an [online version](https://list.ebu.io/) that you can start using r
 -   [How to compile LIST](./docs/compiling_guide.md)
 -   [How to further develop LIST](./docs/development_guide.md)
 -   [Perform validation tests](./docs/validation_tests.md)
+-   [Create Read only user](./docs/read_only_user.md)
 -   [API documentation](./docs/api.md)
 
 ## Additional information
