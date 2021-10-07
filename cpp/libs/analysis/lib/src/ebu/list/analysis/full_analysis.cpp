@@ -1,6 +1,4 @@
 #include "ebu/list/analysis/full_analysis.h"
-#include "../../../../../../definitions/lib/include/ebu/list/definitions/exchanges.h"
-#include "bisect/bimo/mq/sender.h"
 #include "ebu/list/analysis/handlers/anc_stream_handler.h"
 #include "ebu/list/analysis/handlers/audio_stream_handler.h"
 #include "ebu/list/analysis/handlers/video_stream_handler.h"
@@ -279,19 +277,9 @@ void analysis::run_full_analysis(processing_context& context)
     auto handler    = std::make_shared<rtp::udp_handler>(create_handler);
     auto filter     = std::make_shared<ptp::udp_filter>(ptp_sm, handler);
 
-    auto progress_callback = [context](float percentage) {
-        logger()->info("Progress: {} %", percentage);
-        std::string broker_url = "amqp://localhost:5672";
-        bisect::bimo::mq::exchange_sender exchange_sender(broker_url,
-                                                          ebu_list::definitions::exchanges::extractor_status::info);
-        json response;
-        response["id"]    = context.pcap.id;
-        response["percentage"] = percentage;
-        exchange_sender.send(ebu_list::definitions::exchanges::extractor_status::keys::progress, response.dump());
-    };
-
-    auto player = std::make_unique<pcap::pcap_player>(context.pcap_file, progress_callback, filter, on_error_exit,
-                                                      -get_timestamp_offset(context.profile, context.pcap));
+    auto player =
+        std::make_unique<pcap::pcap_player>(context.pcap_file, context.progress_callback, filter, on_error_exit,
+                                            -get_timestamp_offset(context.profile, context.pcap));
 
     auto launcher = launch(std::move(player));
 

@@ -1,6 +1,8 @@
 #include "bisect/bicla.h"
+#include "bisect/bimo/mq/sender.h"
 #include "db_handler_factory.h"
 #include "ebu/list/analysis/full_analysis.h"
+#include "ebu/list/definitions/exchanges.h"
 #include "ebu/list/version.h"
 #include <fstream>
 
@@ -45,10 +47,14 @@ namespace
                   option(&config::influxdb_url, "influx_url", "influxDB url",
                          "url to influxDB. Usually http://localhost:8086"),
                   option(&config::mongo_db_url, "mongo_url", "mongo url",
-                         "url to mongoDB. Usually mongodb://localhost:27017."));
+                         "url to mongoDB. Usually mongodb://localhost:27017."),
+                  option(&config::rabbit_mq_url, "rabbit_mq_url", "RabbitMQ URL",
+                         "url to mongoDB. Usually amqp://localhost:5672."));
 
         config.profile = load_profile(config.analysis_profile_file);
         logger()->info("Using analysis profile with id {}", config.profile.id);
+
+        LIST_ENFORCE(config.rabbit_mq_url.has_value(), std::runtime_error, "No Rabbit MQ URL on command line");
 
         if(parse_result) return config;
 
@@ -130,10 +136,22 @@ namespace
             return stream_info_it->second;
         };
 
+        bisect::bimo::mq::exchange_sender exchange_sender(config.rabbit_mq_url.value(),
+                                                          ebu_list::definitions::exchanges::extractor_status::info);
+
+        auto progress_callback = [&exchange_sender, &pcap](float percentage) {
+            logger()->info("Progress: {} %", percentage);
+            json response;
+            response["id"]         = pcap.id;
+            response["percentage"] = percentage;
+            exchange_sender.send(ebu_list::definitions::exchanges::extractor_status::keys::progress, response.dump());
+        };
+
         pcap_reader factory(config);
         db_updater updater(db, config.storage_folder);
-        auto context = processing_context{
-            config.pcap_file, config.profile, config.storage_folder, pcap, get_stream_info, &factory, &updater};
+        auto context =
+            processing_context{config.pcap_file, config.profile, config.storage_folder, pcap, get_stream_info,
+                               &factory,         &updater,       progress_callback};
 
         run_full_analysis(context);
     }

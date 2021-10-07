@@ -1,4 +1,4 @@
-import { LIST, types, api } from '@bisect/ebu-list-sdk';
+import { LIST, types } from '@bisect/ebu-list-sdk';
 import { Unwinder } from '@bisect/bisect-core-ts';
 import _ from 'lodash';
 import { promises as fs1 } from 'fs';
@@ -142,6 +142,8 @@ const runUploadTest = async (name: string, c: testUtils.ITestContext) => {
     const pcapFile = path.join(pcapDir, `${name}.pcap`);
     const refAnalysisFile = path.join(pcapDir, `${name}.json`);
 
+    // if (!_.isEqual(filteredRefAnalysis, filteredTestAnalysis)) {
+    //     console.log(`Diff:  ${JSON.stringify(diff(filteredRefAnalysis, filteredTestAnalysis))}`);
     try {
         await loginOrRegister(list, c);
 
@@ -150,19 +152,27 @@ const runUploadTest = async (name: string, c: testUtils.ITestContext) => {
         const callback = (info: types.IUploadProgressInfo) => console.log(`percentage: ${info.percentage}`);
         const pcapId = await doUpload(list, name, stream, callback);
 
-        const refAnalysis = fs.readFileSync(refAnalysisFile);
         const testAnalysis = await list.pcap.downloadJson(pcapId);
+
+        const actualPath = await c.writeToFile('actual.json', JSON.stringify(testAnalysis.data));
 
         /* Update refAnalysisFile if necessary */
         // fs.writeFileSync(refAnalysisFile, JSON.stringify(testAnalysis.data, null, 4));
 
+        const refAnalysis = fs.readFileSync(refAnalysisFile);
         const filteredRefAnalysis = deleteJsonProperties(JSON.parse(refAnalysis.toString()));
-        const filteredTestAnalysis = deleteJsonProperties(JSON.parse(JSON.stringify(testAnalysis.data)));
+        const filteredTestAnalysis = deleteJsonProperties(_.cloneDeep(testAnalysis.data));
 
-        if (!_.isEqual(filteredRefAnalysis, filteredTestAnalysis)) {
-            console.log(`Diff:  ${JSON.stringify(diff(filteredRefAnalysis, filteredTestAnalysis))}`);
+        const isEqual = _.isEqual(filteredRefAnalysis, filteredTestAnalysis);
+        if (!isEqual) {
+            const difference = JSON.stringify(diff(filteredRefAnalysis, filteredTestAnalysis));
+            const differencePath = await c.writeToFile('difference.json', difference);
+
+            console.log(
+                `Different contents. Actual file: file:///${actualPath}. Difference: file:///${differencePath}`
+            );
         }
-        expect(_.isEqual(filteredRefAnalysis, filteredTestAnalysis)).toBe(true);
+        expect(isEqual).toBe(true);
         await list.pcap.delete(pcapId);
     } catch (err: unknown) {
         const { message } = err as Error;

@@ -18,9 +18,10 @@ namespace
         fs_updater updater(storage_folder);
         analysis_profile profile;
         profile.timestamps.source = timestamps_source::pcap;
+        auto callback             = [](float) {};
 
-        auto context =
-            processing_context{pcap_file, profile, storage_folder, pcap, get_stream_info, &handler_factory, &updater};
+        auto context = processing_context{pcap_file,       profile,          storage_folder, pcap,
+                                          get_stream_info, &handler_factory, &updater,       callback};
 
         run_full_analysis(context);
     }
@@ -28,7 +29,7 @@ namespace
     json load_json(path full_path)
     {
         std::ifstream ifs(full_path);
-        LIST_ENFORCE(ifs.is_open() && !ifs.fail(), std::runtime_error, "{] not found", full_path.string());
+        LIST_ENFORCE(ifs.is_open() && !ifs.fail(), std::runtime_error, "{} not found", full_path.string());
         return json::parse(ifs);
     }
 

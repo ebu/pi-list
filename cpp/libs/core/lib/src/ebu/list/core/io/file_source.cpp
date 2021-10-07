@@ -21,7 +21,7 @@ oview file_source::read_next()
 
 #if defined(_WIN32)
     const auto read_result = fread_s(block->begin(), block->size(), 1, block->size(), handle_.handle());
-#else // defined(_WIN32)
+#else  // defined(_WIN32)
     const auto read_result = fread(block->begin(), 1, block->size(), handle_.handle());
 #endif // defined(_WIN32)
 

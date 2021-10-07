@@ -21,9 +21,9 @@ namespace ebu_list::analysis
 
         uint32_t first_sample_ts = 0;
         uint32_t last_sample_ts  = 0;
-        int packet_size        = 0;
-        int samples_per_packet = 0;
-        uint32_t sample_count  = 0;
+        int packet_size          = 0;
+        int samples_per_packet   = 0;
+        uint32_t sample_count    = 0;
 
         /** serialization details **/
         static audio_stream_details from_json(const nlohmann::json& j);

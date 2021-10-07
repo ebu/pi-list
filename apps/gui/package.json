@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "description": "EBU LIST UI",
     "main": "index.js",
+    "license": "GPL-3.0-or-later",
     "scripts": {
         "start": "webpack-dev-server --config webpack.dev.js --hot --colors --progress",
         "clear": "rm -rf dist",

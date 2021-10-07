@@ -9,4 +9,5 @@ It outputs json files to the given directory.
 `static_generator <base dir>`
 
 where:
+
 - base dir: the path to the directory where to write the information

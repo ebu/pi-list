@@ -22,7 +22,9 @@ const handlePcapsUpdate = (
             setPcapsAnalysingAtom(current => {
                 const cloneCurrent = _.cloneDeep(current);
                 const index = cloneCurrent.findIndex(element => element.id === data.data.id);
-                cloneCurrent[index].progress = data.data.progress;
+                if (index !== -1) {
+                    cloneCurrent[index].progress = data.data.progress;
+                }
                 return cloneCurrent;
             });
             break;
@@ -30,7 +32,9 @@ const handlePcapsUpdate = (
             setPcapsAnalysingAtom(current => {
                 const cloneCurrent = _.cloneDeep(current);
                 const index = cloneCurrent.findIndex(element => element.id === data.data.id);
-                cloneCurrent[index].progress = data.data.progress;
+                if (index !== -1) {
+                    cloneCurrent[index].progress = data.data.progress;
+                }
                 return cloneCurrent;
             });
             break;

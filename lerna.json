@@ -1,10 +1,7 @@
 {
     "packages": [
         "apps/listwebserver",
-        "apps/gui",
         "apps/capture_probe",
-        "js/auth",
-        "js/common_server",
         "js/tests",
         "js/user-read-only",
         "third_party/bisect-core-ts",

@@ -80,9 +80,10 @@ namespace
             return new_handler;
         };
 
-        auto handler = std::make_shared<rtp::udp_handler>(create_handler);
-        auto progress_callback = [](float){};
-        auto player  = std::make_unique<pcap::pcap_player>(path(config.pcap_file), progress_callback, handler, on_error_exit);
+        auto handler           = std::make_shared<rtp::udp_handler>(create_handler);
+        auto progress_callback = [](float) {};
+        auto player =
+            std::make_unique<pcap::pcap_player>(path(config.pcap_file), progress_callback, handler, on_error_exit);
 
         auto launcher = launch(std::move(player));
 

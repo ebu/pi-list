@@ -13,7 +13,11 @@
             "preLaunchTask": "Build all",
             "outFiles": ["${workspaceFolder}/dist/**/*.js"],
             "console": "integratedTerminal",
-            "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/../../**",
+                "!**/node_modules/**"
+            ],
             "args": ["test-basic", "-b", "http://localhost", "-u", "demo3", "-p", "demo3"]
         }
     ]

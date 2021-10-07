@@ -27,7 +27,7 @@ namespace ebu_list::definitions::exchanges
             constexpr auto failed  = "Failed";
         } // namespace announce::stream_status
 
-    } // namespace ebu_list::definitions::exchanges::extractor_status
+    } // namespace preprocessor_status
     namespace extractor_status
     {
         constexpr auto info =
@@ -38,5 +38,5 @@ namespace ebu_list::definitions::exchanges
             constexpr auto progress = "progress";
         } // namespace keys
 
-    }
-}
+    } // namespace extractor_status
+} // namespace ebu_list::definitions::exchanges
