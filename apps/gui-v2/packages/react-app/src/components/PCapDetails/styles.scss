@@ -15,6 +15,14 @@
     color: $white;
 }
 
+.details-text-warning {
+    color: red;
+}
+
+.pcap-details-icon {
+    width: 2em;
+}
+
 .pcap-details-lists {
     padding-bottom: 1em;
     & .pcap-details-icon-text {
@@ -31,6 +39,7 @@
 
         & > img {
             padding-right: 0.7em;
+            max-height: 20px;
         }
     }
 

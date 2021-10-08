@@ -2,7 +2,7 @@ import { translate } from '../../../../utils/translation';
 import { MeasurementPassCriteriaDisplay } from '../../../../components';
 
 function ST2022_7_View({ comparisonInfo }: any) {
-    const mediaInfoRtpInterframeTsDelta = translate('media_information.rtp.inter_frame_rtp_ts_delta');
+    const deltaBetweenPackets = translate('workflow.st2022_7_analysis.deltaBetweenPackets');
     const workflowNamesSt2022 = translate('workflow.names.st2022_7_analysis');
     const workflowNamesSt2022TotalNumberPackets = translate('workflow.st2022_7_analysis.totalNumberOfPackets');
     const workflowNamesSt2022IntersectionSizeInPackets = translate(
@@ -34,7 +34,7 @@ function ST2022_7_View({ comparisonInfo }: any) {
     const DeltaBetweenPacketsDisplay = () => {
         const deltaBetweenPacketsData = {
             measurementData: {
-                title: mediaInfoRtpInterframeTsDelta,
+                title: deltaBetweenPackets,
                 data: [
                     {
                         labelTag: 'Min',

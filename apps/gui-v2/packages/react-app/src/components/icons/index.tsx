@@ -81,6 +81,9 @@ export const PauseIcon = icon(pauseIconSrc);
 const settingsIconSrc = require('./settings.svg');
 export const SettingsIcon = icon(settingsIconSrc);
 
+const settingsMiniIconSrc = require('./settings-mini.svg');
+export const SettingsMiniIcon = icon(settingsMiniIconSrc);
+
 const collapseIconSrc = require('./collapse.svg');
 export const CollapseIcon = icon(collapseIconSrc);
 
@@ -98,3 +101,6 @@ export const DiffTransitDelayIcon = icon(diffTransitDelaySrc);
 
 const networkRedundancySrc = require('./networkRedundancy.svg');
 export const NetworkRedundancyIcon = icon(networkRedundancySrc);
+
+const alertSrc = require('./alert.svg');
+export const AlertIcon = icon(alertSrc);

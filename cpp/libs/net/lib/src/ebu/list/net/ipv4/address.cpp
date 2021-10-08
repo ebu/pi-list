@@ -53,7 +53,7 @@ address ipv4::from_dotted_string(std::string_view s)
     address a;
 #if defined(LIST_HAS_POSIX)
     const auto result = inet_pton(AF_INET, s.data(), &a);
-#else // defined(LIST_HAS_POSIX)
+#else  // defined(LIST_HAS_POSIX)
     const auto result = InetPton(AF_INET, s.data(), &a);
 #endif // defined(LIST_HAS_POSIX)
     if(result == 1) return a;

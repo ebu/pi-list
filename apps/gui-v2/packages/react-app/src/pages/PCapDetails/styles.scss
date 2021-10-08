@@ -84,6 +84,13 @@ div.pcap-details-content-sidebar-streams-list {
     align-items: center;
 }
 
+.pcap-details-page-ttml {
+    margin: 1em 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .pcap-details-page-ancillary-data-container {
     display: flex;
 }
@@ -92,4 +99,18 @@ div.pcap-details-content-sidebar-streams-list {
 .sb-information-sidebar-content > .extra-information-sidebar-content {
     border: 2.25px solid $darker-vibrant-blue;
     border-radius: 8px;
+}
+.truncated-stream-explorer-div {
+    padding: 1rem;
+    background-color: #0e1841;
+    border-left: solid 3px #0083ff;
+    margin-top: 2em;
+    font-family: Prompt;
+    color: white;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px !important;
+    line-height: 18px;
+    border-radius: 5px;
+    margin-left: 0.5em;
 }

@@ -46,7 +46,7 @@ function CrossCorrelationView({ comparisonInfo }: any) {
                 </div>
                 <div>
                     <span className="comparison-configuration-panel-subtitle">
-                        {`${translate('comparison.result.delay.actual')}: `}
+                        {`${translate('comparison.result.delay')}: `}
                     </span>
                     <span className="comparison-configuration-panel-data">{`${(delay.actual / 1000).toFixed(3)}`}</span>
                     <span className="comparison-configuration-panel-data"> ms</span>

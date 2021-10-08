@@ -3,6 +3,7 @@ import StreamComparisonHeaderHOC from './Header/StreamComparisonHeaderHOC';
 import StreamComparisonPanel from './StreamComparisonPanel';
 import './styles.scss';
 import { streamComparisonAtom } from '../../store/gui/streamComparison/streamComparison';
+import useRecoilStreamComparisonHandler from '../../store/gui/streamComparison/useRecoilStreamComparisonHandler';
 import StreamComparisonTable from './StreamComparisonTable';
 import { CustomScrollbar } from '../../components';
 import { useRecoilValue } from 'recoil';
@@ -17,6 +18,9 @@ function StreamComparisonContent({
     selectedComparison,
 }: any) {
     const history = useHistory();
+
+    useRecoilStreamComparisonHandler();
+
     const comparisonTableData = useRecoilValue(streamComparisonAtom);
 
     const [currentComparisonsIds, setCurrentComparisonsIds] = React.useState<string[]>([]);

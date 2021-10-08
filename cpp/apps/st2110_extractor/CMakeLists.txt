@@ -6,6 +6,7 @@ target_link_libraries(${PROJECT_NAME}
         apps_common
         ebu_list_analysis
         ebu_list_ptp
+        ebu_list_definitions
         bicla
         ${${PROJECT_NAME}_LINK_FLAGS}
         )

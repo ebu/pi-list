@@ -75,11 +75,15 @@ const createWaveSurfer = (waveform: any) => {
     return wavesurfer;
 };
 
-interface IComponentPops {
+function AudioPlayer({
+    mp3Url,
+    cursorInitPos,
+    onCursorChanged,
+}: {
     mp3Url: string;
-}
-
-function AudioPlayer({ mp3Url }: IComponentPops) {
+    cursorInitPos: number;
+    onCursorChanged: ((d: number, c: number) => void) | undefined;
+}) {
     const [isLoading, setisLoading] = React.useState(true);
     const [isPlaying, setIsPlaying] = React.useState(false);
     const [hasError, setHasError] = React.useState(false);
@@ -89,6 +93,13 @@ function AudioPlayer({ mp3Url }: IComponentPops) {
     const onPlayerReady = () => {
         setisLoading(false);
         setHasError(false);
+        waveSurferRef.current.seekTo(cursorInitPos);
+
+        if (onCursorChanged) {
+            waveSurferRef.current.on('seek', onSeek);
+            waveSurferRef.current.on('pause', onSeek);
+            onSeek();
+        }
     };
 
     const onFinishPlay = () => {
@@ -97,6 +108,14 @@ function AudioPlayer({ mp3Url }: IComponentPops) {
 
     const onPlayerError = () => {
         setHasError(true);
+    };
+
+    const onSeek = () => {
+        if (onCursorChanged) {
+            const duration = waveSurferRef.current.getDuration();
+            const currenttime = waveSurferRef.current.getCurrentTime();
+            onCursorChanged(duration, currenttime);
+        }
     };
 
     React.useEffect(() => {
@@ -111,11 +130,6 @@ function AudioPlayer({ mp3Url }: IComponentPops) {
         wavesurfer.on('ready', onPlayerReady);
         wavesurfer.on('finish', onFinishPlay);
         wavesurfer.on('error', onPlayerError);
-
-        waveSurferRef.current.on('seek', (e: number) => {
-            waveSurferRef?.current?.playPause(e);
-            setIsPlaying(prevIsPlaying => !prevIsPlaying);
-        });
 
         return () => {
             wavesurfer.unAll();

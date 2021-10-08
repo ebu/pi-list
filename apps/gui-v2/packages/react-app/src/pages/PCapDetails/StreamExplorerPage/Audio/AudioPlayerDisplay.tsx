@@ -22,9 +22,13 @@ const getChannelsState = (channelsString: string, channelNum: number) => {
 function AudioPlayerDisplay({
     currentStream,
     pcapID,
+    cursorInitPos,
+    onChange,
 }: {
     currentStream: SDK.types.IStreamInfo | undefined;
     pcapID: string;
+    cursorInitPos: number;
+    onChange: (c: number, d: number) => void | undefined;
 }) {
     const audio_media_information = currentStream?.media_specific as SDK.api.pcap.IST2110AudioInfo;
     const channelsNum = audio_media_information.number_channels;
@@ -88,7 +92,7 @@ function AudioPlayerDisplay({
             <div className="audio-player">
                 <div>
                     {mp3Url !== '' ? (
-                        <AudioPlayer mp3Url={mp3Url} />
+                        <AudioPlayer mp3Url={mp3Url} cursorInitPos={cursorInitPos} onCursorChanged={onChange} />
                     ) : (
                         <div style={{ color: 'red' }}>ERROR: MP3_FILE_FAILED</div>
                     )}

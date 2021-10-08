@@ -11,7 +11,7 @@ function AudioStreamExplorerDisplay({
 }) {
     return (
         <>
-            <AudioPlayerDisplay currentStream={currentStream} pcapID={pcapID} />
+            <AudioPlayerDisplay currentStream={currentStream} pcapID={pcapID} cursorInitPos={0} onChange={() => {}} />
         </>
     );
 }

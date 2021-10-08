@@ -39,14 +39,14 @@
 }
 
 .stream-selector-reference {
-    border: 3px solid #ff0000;
+    box-shadow: 0 0 5px 5px #ff242485;
     border-radius: 10px;
     width: 40%;
     padding: 2em;
 }
 
 .stream-selector-main {
-    border: 3px solid #0059fa;
+    box-shadow: 0 0 5px 5px #4060ff85;
     border-radius: 10px;
     width: 40%;
     padding: 2em;
@@ -96,7 +96,9 @@
 }
 
 .selected-stream-comparison-icon {
-    border: 3px solid #2b93f5 !important;
+    box-shadow: 0 0 5px 5px #4b8cfbb5 !important;
+    background-color: #a9a9a936;
+    filter: contrast(1.75) !important;
     border-radius: 10px;
 }
 
@@ -106,7 +108,8 @@
 }
 
 .stream-comparison-icon {
-    border: 3px solid #004f99;
+    box-shadow: 0 0 5px 5px #0052ff38;
+    filter: contrast(50%);
     display: flex;
     border-radius: 10px;
     padding: 1em;

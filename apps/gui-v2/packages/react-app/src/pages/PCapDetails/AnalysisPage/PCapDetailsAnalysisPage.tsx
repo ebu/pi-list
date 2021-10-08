@@ -4,6 +4,7 @@ import VideoAnalysisDisplay from './Video/VideoAnalysisDisplay';
 import SDK from '@bisect/ebu-list-sdk';
 import AudioAnalysisDisplay from './Audio/AudioAnalysisDisplay';
 import AncillaryAnalysisDisplay from './Ancillary/AncillaryAnalysisDisplay';
+import UnknownAnalysisDisplay from './Unknown/UnknownAnalysisDisplay';
 
 const getPcapType = (currentStream: SDK.types.IStreamInfo | undefined, pcapID: string) => {
     switch (currentStream?.media_type) {
@@ -13,6 +14,8 @@ const getPcapType = (currentStream: SDK.types.IStreamInfo | undefined, pcapID: s
             return <AudioAnalysisDisplay currentStream={currentStream} />;
         case 'ancillary_data':
             return <AncillaryAnalysisDisplay currentStream={currentStream} />;
+        case 'unknown':
+            return <UnknownAnalysisDisplay currentStream={currentStream} />;
     }
 };
 

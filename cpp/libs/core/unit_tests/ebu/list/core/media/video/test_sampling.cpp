@@ -12,7 +12,7 @@ SCENARIO("Samples per pixel for video sampling")
         {
             THEN("we get the right value")
             {
-                REQUIRE(samples_per_pixel(video_sampling::YCbCr_4_2_0) == 1.5);
+                REQUIRE(samples_per_pixel(video_sampling::YCbCr_4_2_0) == 1.5f);
                 REQUIRE(samples_per_pixel(video_sampling::YCbCr_4_2_2) == 2);
                 REQUIRE(samples_per_pixel(video_sampling::YCbCr_4_4_4) == 3);
                 REQUIRE(samples_per_pixel(video_sampling::RGB_4_4_4) == 3);

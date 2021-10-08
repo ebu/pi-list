@@ -29,13 +29,16 @@ echo "Creating release folders... done"
 echo
 echo "Copying binaries..."
 install -D -m 755 $BUILD_DIR/bin/* $RELEASE_DIR/server/app/bin/
-install -D -m 755 $BUILD_DIR/lib/*.so.* $RELEASE_DIR/server/lib/
 echo "Copying binaries... done"
 
 echo
 echo "Copying apps..."
-cp -R $TOP_DIR/apps/listwebserver/* $RELEASE_DIR/server/app/listwebserver
-cp -R $TOP_DIR/js $RELEASE_DIR/server/js
+mkdir -p $RELEASE_DIR/server/app/listwebserver
+cp -R $TOP_DIR/apps/listwebserver/dist $RELEASE_DIR/server/app/listwebserver/
+cp -R $TOP_DIR/apps/listwebserver/version.yml $RELEASE_DIR/server/app/listwebserver
+cp -R $TOP_DIR/apps/listwebserver/static.config.json $RELEASE_DIR/server/app/listwebserver
+cp -R $TOP_DIR/apps/listwebserver/package.json $RELEASE_DIR/server/app/listwebserver
+cp -L -R $TOP_DIR/apps/listwebserver/node_modules $RELEASE_DIR/server/app/listwebserver
 cp -R $TOP_DIR/apps/gui-v2/packages/react-app/build/* $RELEASE_DIR/server/app/gui
 cp -R $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/sedstaticconfig.sh $RELEASE_DIR/server/app/
 cp -R $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/static.config.json $RELEASE_DIR/server/app/gui

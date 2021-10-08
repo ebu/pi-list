@@ -20,9 +20,13 @@ const getImages = (frames: any, pcapID: string, streamID: string | undefined) =>
 function ImageGalleryStreamExplorer({
     currentStream,
     pcapID,
+    cursorInitPos,
+    onChange,
 }: {
     currentStream: SDK.types.IStreamInfo | undefined;
     pcapID: string;
+    cursorInitPos: number;
+    onChange: (frame: any, index: number) => void | undefined;
 }) {
     const initial: SDK.types.IFrameInfo[] = [];
 
@@ -33,8 +37,6 @@ function ImageGalleryStreamExplorer({
             setFrames(frames);
         };
         loadFrames();
-
-        console.log('useeffect', currentStream?.id);
 
         return () => {
             setFrames([]);
@@ -47,7 +49,13 @@ function ImageGalleryStreamExplorer({
 
     return (
         <>
-            <ImagesGallery imagesData={getImages(frames, pcapID, currentStream?.id)} />
+            <ImagesGallery
+                imagesData={getImages(frames, pcapID, currentStream?.id)}
+                initFrameIndex={cursorInitPos}
+                onChange={(index: number) => {
+                    onChange(frames[index], index);
+                }}
+            />
         </>
     );
 }

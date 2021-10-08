@@ -21,14 +21,16 @@
     align-items: center;
     justify-content: space-between;
     border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
     padding-left: 2em;
 
     &:hover {
         color: $font-grey-hover;
     }
     &.clicked {
+        display: flex;
         color: $white;
-        border-color: $vibrant-blue;
+        border-left-color: $vibrant-blue;
     }
 }
 
@@ -53,6 +55,15 @@
         transition: ease-in-out 0.75s;
         margin-left: -169px;
     }
+}
+
+.sidebar-item-collapsed-clicked {
+    border-left: 2px solid #0083ff;
+    padding-left: 1em;
+}
+
+.sidebar-item-not-collapsed {
+    border-left: 2px solid transparent;
 }
 
 .sidebar-menu {

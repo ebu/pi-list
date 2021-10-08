@@ -7,7 +7,6 @@ import routes from '../../routes';
 import list from '../../utils/api';
 import useRecoilPcapsHandler from '../../store/gui/pcaps/useRecoilPcapsHandler';
 import useRecoilUserHandler from '../../store/gui/user/useRecoilUserHandler';
-import useRecoilStreamComparisonHandler from '../../store/gui/streamComparison/useRecoilStreamComparisonHandler';
 import useRecoilAnalysisProfileHandler from '../../store/gui/analysisProfile/useRecoilAnalysisProfileHandler';
 import { ToastContainer } from 'react-toastify';
 
@@ -17,8 +16,6 @@ const MainPage: React.FunctionComponent<{}> = () => {
     useRecoilPcapsHandler();
 
     useRecoilAnalysisProfileHandler();
-
-    useRecoilStreamComparisonHandler();
 
     const history = useHistory();
     const [gdprConsent, setGdprConsent] = React.useState<boolean>();

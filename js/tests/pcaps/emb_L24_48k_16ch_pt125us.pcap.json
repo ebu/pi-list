@@ -1,0 +1,189 @@
+{
+    "analyzed": true,
+    "error": "",
+    "offset_from_ptp_clock": -398,
+    "anc_streams": 0,
+    "audio_streams": 1,
+    "video_streams": 0,
+    "total_streams": 1,
+    "narrow_linear_streams": 0,
+    "narrow_streams": 0,
+    "not_compliant_streams": 0,
+    "wide_streams": 0,
+    "generated_from_network": false,
+    "truncated": false,
+    "_id": "615f77dece0d3b1e0f30feaf",
+    "id": "df2da4b0-27bf-11ec-81bc-6fd0e9a08850",
+    "__v": 0,
+    "analyzer_version": "2.0.2",
+    "capture_date": 1548356088263,
+    "capture_file_name": "1633646557856_b50cfe09-3e53-40a3-9042-0608887e3f82.pcap",
+    "date": 1633646558085,
+    "file_name": "emb_L24_48k_16ch_pt125us.pcap",
+    "owner_id": "f100e6f0-269a-11ec-b18e-3941cfad2fa6",
+    "pcap_file_name": "1633646557856_b50cfe09-3e53-40a3-9042-0608887e3f82.pcap",
+    "analysis_profile": {
+        "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
+        "label": "JT-NM Tested 2020",
+        "timestamps": {
+            "source": "pcap"
+        },
+        "audio": {
+            "deltaPktTsVsRtpTsLimit": {
+                "unit": "μs",
+                "min": 0,
+                "maxAvg": 1000,
+                "max": 1000
+            },
+            "tsdf": {
+                "tolerance": 1,
+                "limit": 17,
+                "unit": "packet_time"
+            }
+        }
+    },
+    "summary": {
+        "error_list": [],
+        "warning_list": []
+    },
+    "streams": [
+        {
+            "error_list": [],
+            "_id": "615f77deb5c3e25cd49b381d",
+            "id": "d6c568da-6e7e-4c45-8baa-c398626f3379",
+            "media_specific": {
+                "encoding": "L24",
+                "number_channels": 16,
+                "packet_time": "0.125000",
+                "sampling": "48000"
+            },
+            "media_type": "audio",
+            "media_type_validation": {
+                "anc": ["STATUS_CODE_ANC_WRONG_RESERVED_BIT"],
+                "ttml": ["STATUS_CODE_TTML_INVALID_LENGTH"],
+                "video": ["STATUS_CODE_VIDEO_NOT_EQUAL_RTP_TIMESTAMPS"]
+            },
+            "network_information": {
+                "destination_address": "239.0.1.13",
+                "destination_mac_address": "01:00:5e:00:01:0d",
+                "destination_port": "20000",
+                "dscp": {
+                    "consistent": true,
+                    "value": 0
+                },
+                "has_extended_header": false,
+                "inter_packet_spacing": {
+                    "after_m_bit": {
+                        "avg": 0,
+                        "max": 0,
+                        "min": 0
+                    },
+                    "regular": {
+                        "avg": 117974,
+                        "max": 176000,
+                        "min": 88000
+                    }
+                },
+                "multicast_address_match": true,
+                "payload_type": 97,
+                "source_address": "192.168.39.1",
+                "source_mac_address": "40:a3:6b:a0:3c:14",
+                "source_port": "10000",
+                "ssrc": 0,
+                "valid_multicast_ip_address": true,
+                "valid_multicast_mac_address": true
+            },
+            "pcap": "df2da4b0-27bf-11ec-81bc-6fd0e9a08850",
+            "state": "analyzed",
+            "statistics": {
+                "dropped_packet_count": 0,
+                "dropped_packet_samples": [],
+                "first_packet_ts": "1548356088263705000",
+                "first_sample_ts": 978146671,
+                "last_packet_ts": "1548356093176583000",
+                "last_sample_ts": 978382489,
+                "packet_count": 39304,
+                "packet_size": 288,
+                "sample_count": 235824,
+                "samples_per_packet": 6
+            },
+            "__v": 0,
+            "analyses": {
+                "tsdf": {
+                    "result": "compliant",
+                    "details": {
+                        "max": 42,
+                        "tolerance": 125,
+                        "limit": 2125,
+                        "unit": "μs",
+                        "compliance": "narrow",
+                        "level": "narrow",
+                        "result": "compliant"
+                    }
+                },
+                "packet_ts_vs_rtp_ts": {
+                    "result": "compliant",
+                    "details": {
+                        "range": {
+                            "time": "1970-01-01T00:00:00Z",
+                            "max": 104,
+                            "min": 62,
+                            "avg": 69.76600346020761
+                        },
+                        "limit": {
+                            "min": 0,
+                            "maxAvg": 1000,
+                            "max": 1000
+                        },
+                        "unit": "μs"
+                    }
+                },
+                "unique_multicast_destination_ip_address": {
+                    "result": "compliant"
+                },
+                "destination_multicast_mac_address": {
+                    "result": "compliant"
+                },
+                "destination_multicast_ip_address": {
+                    "result": "compliant"
+                },
+                "unrelated_multicast_addresses": {
+                    "result": "compliant"
+                },
+                "rtp_sequence": {
+                    "result": "compliant",
+                    "details": {
+                        "dropped_packets_count": 0,
+                        "dropped_packets_samples": [],
+                        "packet_count": 39304
+                    }
+                }
+            },
+            "global_audio_analysis": {
+                "tsdf": {
+                    "max": 42,
+                    "tolerance": 125,
+                    "limit": 2125,
+                    "unit": "μs",
+                    "compliance": "narrow",
+                    "level": "narrow",
+                    "result": "compliant"
+                },
+                "packet_ts_vs_rtp_ts": {
+                    "range": {
+                        "time": "1970-01-01T00:00:00Z",
+                        "max": 104,
+                        "min": 62,
+                        "avg": 69.76600346020761
+                    },
+                    "limit": {
+                        "min": 0,
+                        "maxAvg": 1000,
+                        "max": 1000
+                    },
+                    "unit": "μs"
+                }
+            }
+        }
+    ]
+}

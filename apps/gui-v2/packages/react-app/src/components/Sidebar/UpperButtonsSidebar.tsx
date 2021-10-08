@@ -23,6 +23,8 @@ function UpperButtonsSidebar({ upperButtons, onClick, isCollapsed }: IComponentP
             {upperButtons.map(button => {
                 const Icon = button.icon;
                 const icon = Icon ? <Icon className="sidebar-icons-to-center" /> : null;
+                const isClickedAndCollapsed =
+                    button.clicked && isCollapsed ? 'sidebar-item-collapsed-clicked' : 'sidebar-item-not-collapsed';
                 return (
                     <li key={button.key}>
                         <a onClick={() => onClick(button.key)}>
@@ -30,7 +32,7 @@ function UpperButtonsSidebar({ upperButtons, onClick, isCollapsed }: IComponentP
                                 {isCollapsed ? (
                                     <>
                                         <div style={{ visibility: 'hidden' }}>{button.text}</div>
-                                        <div>{icon}</div>
+                                        <div className={isClickedAndCollapsed}>{icon}</div>
                                     </>
                                 ) : (
                                     <>

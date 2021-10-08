@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import { CustomScrollbar } from '../../components';
+import { getMediaTypeIcon, getComparisonType } from '../../utils/titles';
 import './styles.scss';
 
 export const comparisonTypes = {
@@ -14,7 +15,7 @@ function StreamComparisonTable({
     onTableRowDoubleClick,
     selectedComparisonsIds,
 }: any) {
-    const renderDelay = (value: any) => {
+    const renderDelay = (value: number) => {
         return (value / 1000).toFixed(3);
     };
 
@@ -24,25 +25,24 @@ function StreamComparisonTable({
     };
 
     const getResultData = (item: any) => {
-        console.log(item.config.comparison_type);
         if (item.type === 'st2022_7_analysis') {
-            return `The delay is ${
-                item.result?.delay ? renderDelay(item.result.delay.actual).toString() : '-'
-            }% the same`;
+            const intersection = item.result.analysis.intersectionSizeInPackets;
+            const numberOfEqualPackets =
+                intersection -
+                item.result.analysis.numberOfDifferentPackets -
+                item.result.analysis.numberOfMissingPackets;
+            const equalPercentage = intersection == 0 ? 100 : (numberOfEqualPackets / intersection) * 100;
+            return `packets: ${equalPercentage}% the same
+            max delay: ${item.result.analysis.maxDeltaNs.toFixed(0) / 1000} us`;
         }
         switch (item.config.comparison_type) {
             case comparisonTypes.crossCorrelation:
-                return `The delay is ${
-                    item.result?.delay ? renderDelay(item.result.delay.actual).toString() : '-'
-                }ms and media is ${item.result?.transparency ? 'not altered' : 'altered'}`;
             case comparisonTypes.psnrAndDelay:
-                return `The delay is ${
-                    item.result?.delay ? renderDelay(item.result.delay.actual).toString() : '-'
-                }ms and media is ${item.result?.transparency ? 'not altered' : 'altered'}`;
-            case 'AVSync':
-                return `The delay is ${
-                    item.result?.delay ? renderDelay(item.result.delay.actual).toString() : '-'
-                } ms and audio is ${item.result.delay.actual < 0 ? 'earlier' : 'later'} than video`;
+                return `delay: ${item.result?.delay ? renderDelay(item.result.delay.actual).toString() : '-'} ms
+                media: ${item.result?.transparency ? 'preserved' : 'modified'}`;
+            case comparisonTypes.avSync:
+                return `delay: ${item.result?.delay ? renderDelay(item.result.delay.pkt).toString() : '-'} ms
+                audio is ${item.result.delay.actual < 0 ? 'earlier' : 'later'} than video`;
             default:
                 return null;
         }
@@ -70,7 +70,6 @@ function StreamComparisonTable({
                                 <tbody>
                                     {comparisonTableData.map((item: any) => {
                                         const isActive = selectedComparisonsIds.includes(item.id);
-                                        console.log('item', item);
                                         return (
                                             <tr
                                                 className={isActive ? 'details-table-row active' : 'details-table-row'}
@@ -82,16 +81,18 @@ function StreamComparisonTable({
                                                     <span className="download-table-label">{item.name}</span>
                                                 </td>
                                                 <td className="download-manager-centered-value">
-                                                    <span className="download-table-label">{item.type}</span>
-                                                </td>
-                                                <td className="download-manager-centered-value">
                                                     <span className="download-table-label">
-                                                        {item.config?.main?.media_type}
+                                                        {getComparisonType(item.type)}
                                                     </span>
                                                 </td>
                                                 <td className="download-manager-centered-value">
                                                     <span className="download-table-label">
-                                                        {item.config?.reference?.media_type}
+                                                        {getMediaTypeIcon(item.config?.reference?.media_type)}
+                                                    </span>
+                                                </td>
+                                                <td className="download-manager-centered-value">
+                                                    <span className="download-table-label">
+                                                        {getMediaTypeIcon(item.config?.main?.media_type)}
                                                     </span>
                                                 </td>
                                                 <td className="download-manager-centered-value">

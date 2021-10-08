@@ -1,0 +1,43 @@
+.unknown-analysis-display-tag-container {
+    border: 1px solid #f28e30;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    padding: 1em;
+    margin-bottom: 1em;
+    background-color: #0a122d;
+    position: relative;
+    cursor: default;
+}
+
+.unknown-analysis-display-tag-name {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 18px;
+    color: #e6e7ea;
+    text-transform: uppercase;
+    padding-bottom: 1em;
+    padding-left: 0.5em;
+}
+
+.unknown-analysis-display-title {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+    color: #e6e7ea;
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+}
+
+.unknown-analysis-display-alert-icon {
+    width: 1em;
+}
+
+.unknown-analysis-display-name-icon-container {
+    display: flex;
+    align-items: baseline;
+}
