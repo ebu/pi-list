@@ -46,6 +46,12 @@ stages:
           - job: TestJob
             displayName: Run validation tests against docker image
             steps:
+                - checkout: self
+                  clean: ${{ parameters.clean }}
+                  submodules: recursive
+                - script: |
+                      echo "Build ID: $(Build.BuildNumber)"
+                      echo "Docker tag: ${{ parameters.docker_image_tag }}"
                 - script: |
                       npx lerna bootstrap
                       npx lerna run build
@@ -61,8 +67,11 @@ stages:
                       dockerComposeCommand: 'up -d'
                 - script: |
                       yarn run validation-tests-basics -b http://listserver:80 -u user3 -p user3
+                  displayName: Run validation tests Basics
+                  workingDirectory: $(Build.SourcesDirectory)/js/tests
+                - script: |
                       yarn run validation-tests-advanced -b http://listserver:80 -u user3 -p user3
-                  displayName: Run validation tests
+                  displayName: Run validation tests Advanced
                   workingDirectory: $(Build.SourcesDirectory)/js/tests
                 - task: DockerCompose@0
                   displayName: Docker-compose down
@@ -70,3 +79,4 @@ stages:
                   inputs:
                       dockerComposeCommand: down
                       dockerComposeFile: $(Build.SourcesDirectory)/scripts/validation_tests/docker-compose.yml
+                      dockerComposeFileArgs: EBU_LIST_VERSION=${{ parameters.docker_image_tag }}
