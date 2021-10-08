@@ -33,11 +33,15 @@ function AudioDashboardRtpInfo({ currentStream }: { currentStream: SDK.types.ISt
                 data: [
                     {
                         labelTag: 'Min',
-                        value: deltaPktTsVsRtpTs?.details.range.min,
+                        value: deltaPktTsVsRtpTs?.details.range.min.toFixed(1),
+                    },
+                    {
+                        labelTag: 'Avg',
+                        value: deltaPktTsVsRtpTs?.details.range.avg.toFixed(1),
                     },
                     {
                         labelTag: 'Max',
-                        value: deltaPktTsVsRtpTs?.details.range.max,
+                        value: deltaPktTsVsRtpTs?.details.range.max.toFixed(1),
                     },
                 ],
             },
@@ -51,6 +55,10 @@ function AudioDashboardRtpInfo({ currentStream }: { currentStream: SDK.types.ISt
                 {
                     label: 'Min',
                     value: deltaPktTsVsRtpTs?.details.limit.min,
+                },
+                {
+                    label: 'Max Avg',
+                    value: deltaPktTsVsRtpTs?.details.limit.maxAvg,
                 },
                 {
                     label: 'Max',

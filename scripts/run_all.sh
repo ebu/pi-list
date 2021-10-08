@@ -92,9 +92,6 @@ if [ $RUN_TESTS -eq 1 ] ; then
     cd "$SRC/apps/listwebserver" && ./node_modules/.bin/jest
     RET_WS_TESTS=$?
     
-    cd "$SRC/apps/gui" && ./node_modules/.bin/jest
-    RET_GUI_TESTS=$?
-    
     echo RET_CTEST: $RET_CTEST
     echo RET_WS_TESTS: $RET_WS_TESTS
     echo RET_GUI_TESTS: $RET_GUI_TESTS

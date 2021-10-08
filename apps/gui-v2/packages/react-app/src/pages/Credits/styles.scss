@@ -24,3 +24,9 @@ table.credits-table {
     height: 85vh;
     padding: 0 75px 50px 75px;
 }
+
+.credits-table-tbody {
+    & > tr {
+        cursor: auto;
+    }
+}

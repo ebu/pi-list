@@ -1,0 +1,73 @@
+.ttml-passive-badge {
+    padding-left: 0.5em;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 21px;
+    color: #e6e7ea;
+}
+
+.ttml-container {
+    border: 1px solid transparent;
+    border-radius: 8px;
+    padding: 1em;
+    cursor: default;
+}
+
+.ttml-item {
+    border: 1px solid #0083ff;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    padding: 1em;
+    margin-bottom: 1em;
+    background-color: #0a122d;
+    position: relative;
+    cursor: default;
+}
+
+.ttml-heading-badge {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    color: #121520;
+    font-size: 13px;
+    padding: 4px 6px;
+    background: #0083ff;
+    border-radius: 2px;
+    display: inline-block;
+    white-space: nowrap;
+    margin: 0 0.5rem;
+    vertical-align: middle;
+}
+
+.ttml-text {
+    font-size: 1.1rem !important;
+    padding: 1rem;
+    background-color: #0e1841;
+    border-left: solid 3px #0083ff;
+    margin-top: 2em;
+    font-family: Prompt;
+    color: white;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px !important;
+    line-height: 18px;
+    border-radius: 5px;
+    margin-left: 0.5em;
+}
+
+.ttml-rtpts-badge {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 18px;
+    color: #e6e7ea;
+    border-bottom: 2px #0083ff solid;
+}
+
+.ttml-containers {
+    width: 120vh;
+}

@@ -10,12 +10,28 @@ function PCapDetailsContent({
     currentStream,
     pcapFilename,
     pcapID,
+    pcap,
 }: {
     currentStream: SDK.types.IStreamInfo | undefined;
     pcapFilename: string | undefined;
     pcapID: string;
+    pcap: SDK.types.IPcapInfo | undefined;
 }) {
     const [currentHeaderType, setcurrentHeaderType] = React.useState<number>(0);
+
+    const isTTML = currentStream?.media_type === 'ttml' ? true : false;
+    const isUnknown = currentStream?.media_type === 'unknown' ? true : false;
+
+    //If we support more media types that don't need graphs or analysis, this needs to be changed
+    const hasGraps = !isTTML;
+    const hasAnalysis = !isTTML;
+    const hasStreamExplorer = !isUnknown;
+
+    React.useEffect(() => {
+        if (!hasAnalysis) {
+            setcurrentHeaderType(1);
+        }
+    }, [hasAnalysis]);
 
     const onHeaderTypeClick = (headerType: number): void => {
         setcurrentHeaderType(headerType);
@@ -26,7 +42,7 @@ function PCapDetailsContent({
             case 0:
                 return <PCapDetailsAnalysisPage currentStream={currentStream} pcapID={pcapID} />;
             case 1:
-                return <PcapDetailsStreamExplorerPage currentStream={currentStream} pcapID={pcapID} />;
+                return <PcapDetailsStreamExplorerPage currentStream={currentStream} pcapID={pcapID} pcap={pcap} />;
             case 2:
                 return <PcapDetailsGraphsPage currentStream={currentStream} pcapID={pcapID} />;
             default:
@@ -41,6 +57,9 @@ function PCapDetailsContent({
                     headerTitle={pcapFilename}
                     onHeaderTypeClick={onHeaderTypeClick}
                     currentHeaderType={currentHeaderType}
+                    hasGraphs={hasGraps}
+                    hasAnalysis={hasAnalysis}
+                    hasStreamExplorer={hasStreamExplorer}
                 />
             </div>
             <div className="main-page-dashboard">

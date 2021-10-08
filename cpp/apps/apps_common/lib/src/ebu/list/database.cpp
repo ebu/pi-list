@@ -31,7 +31,7 @@ struct db_serializer::impl
     {
         static const mongocxx::instance instance; // This should be done only once.
 
-        client_ = mongocxx::client{mongocxx::uri{url}};
+        client_ = mongocxx::client{mongocxx::uri{url.data()}};
         LIST_ENFORCE(client_, std::runtime_error, "mongoDB client is not valid");
     }
 
@@ -40,8 +40,8 @@ struct db_serializer::impl
     {
         using namespace bsoncxx::builder;
 
-        mongocxx::database db     = client_[database];
-        mongocxx::collection coll = db[collection];
+        mongocxx::database db     = client_[database.data()];
+        mongocxx::collection coll = db[collection.data()];
 
         auto to_be_updated = from_json_to_bson(update_info);
         auto doc = stream::document{} << "$set" << bsoncxx::types::b_document{to_be_updated.view()} << stream::finalize;
@@ -60,8 +60,8 @@ db_serializer::db_serializer(std::string_view url) : impl_(std::make_unique<impl
 std::optional<nlohmann::json> ebu_list::db_serializer::find_one(std::string_view database, std::string_view collection,
                                                                 const json& look_alike) const
 {
-    mongocxx::database db     = impl_->client_[database];
-    mongocxx::collection coll = db[collection];
+    mongocxx::database db     = impl_->client_[database.data()];
+    mongocxx::collection coll = db[collection.data()];
 
     auto filter     = from_json_to_bson(look_alike);
     auto maybe_bson = coll.find_one(std::move(filter));
@@ -78,8 +78,8 @@ ebu_list::db_serializer::~db_serializer()
 
 bool ebu_list::db_serializer::insert(std::string_view database, std::string_view collection, const json& j) const
 {
-    mongocxx::database db     = impl_->client_[database];
-    mongocxx::collection coll = db[collection];
+    mongocxx::database db     = impl_->client_[database.data()];
+    mongocxx::collection coll = db[collection.data()];
 
     auto doc = from_json_to_bson(j);
     coll.insert_one(std::move(doc)); // todo: double-check result
@@ -98,8 +98,8 @@ std::vector<json> ebu_list::db_serializer::find_many(std::string_view database, 
 {
     std::vector<json> jsons{};
 
-    mongocxx::database db     = impl_->client_[database];
-    mongocxx::collection coll = db[collection];
+    mongocxx::database db     = impl_->client_[database.data()];
+    mongocxx::collection coll = db[collection.data()];
 
     auto filter  = from_json_to_bson(look_alike);
     auto results = coll.find(std::move(filter));

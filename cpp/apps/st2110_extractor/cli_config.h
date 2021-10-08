@@ -15,6 +15,7 @@ namespace ebu_list::st2110_extractor
         path storage_folder;
         std::optional<std::string> influxdb_url;
         std::optional<std::string> mongo_db_url;
+        std::optional<std::string> rabbit_mq_url;
         path analysis_profile_file;
         analysis::analysis_profile profile;
         std::optional<std::string> id_to_process;

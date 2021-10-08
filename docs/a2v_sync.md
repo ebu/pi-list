@@ -30,7 +30,7 @@ domain (RTP timestamps).
 | _AV Delay (capture time)_ | This is diff between _audio time marker_ and _video time marker_. Precision of +/-0.5 field/frame is due the unability to accuratly date natural a event captured by a camera sensor. |
 | _AV Delay (RTP time)_     | Same but calculated from _RTP time markers_                                                                                                                                           |
 
-## Under the hood
+![a2v](./a2v_helper.png)
 
 -   On frame selection, the _video capture time marker_ corresponds to the capture timestamp
     of 1st the packet of the frame/field. This works perfectly for a

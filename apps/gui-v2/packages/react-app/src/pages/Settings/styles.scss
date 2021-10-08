@@ -34,7 +34,7 @@
 .settings-content-column {
     display: flex;
     justify-content: space-evenly;
-    flex-direction: row;
+    flex-direction: column;
     align-items: baseline;
     padding-bottom: 20px;
     margin: auto 2em;
@@ -49,7 +49,9 @@
 }
 
 .settings-delete-user {
-    padding-bottom: 0.5em;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 1em;
     padding-top: 20px;
 }
 
@@ -59,7 +61,7 @@
     border: 1px solid $vibrant-blue;
     box-sizing: border-box;
     border-radius: 4px;
-
+    width: 10em;
     font-family: Prompt;
     font-style: normal;
     font-weight: normal;
@@ -83,4 +85,18 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: #e6e7ea;
+}
+
+.settings-decline-gdpr {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-settings-description {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    color: white;
+    font-family: Prompt;
 }

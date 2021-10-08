@@ -28,9 +28,9 @@ SCENARIO("format detector")
 
     GIVEN("a video stream")
     {
-        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-20/2110-20_1080i5994.pcap");
-
-        pcap::pcap_player player(pcap_file, udp_handler, on_error_exit);
+        const auto pcap_file   = test_lib::sample_file("pcap/st2110/2110-20/2110-20_1080i5994.pcap");
+        auto progress_callback = [](float) {};
+        pcap::pcap_player player(pcap_file, progress_callback, udp_handler, on_error_exit);
         while(player.next())
         {
         }
@@ -56,7 +56,8 @@ SCENARIO("format detector")
     {
         const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-30/l16_48000_2ch_1ms.pcap");
 
-        pcap::pcap_player player(pcap_file, udp_handler, on_error_exit);
+        auto progress_callback = [](float) {};
+        pcap::pcap_player player(pcap_file, progress_callback, udp_handler, on_error_exit);
         while(player.next())
         {
         }
@@ -84,7 +85,8 @@ SCENARIO("format detector")
     {
         const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-30/l24_48000_8ch_0125.pcap");
 
-        pcap::pcap_player player(pcap_file, udp_handler, on_error_exit);
+        auto progress_callback = [](float) {};
+        pcap::pcap_player player(pcap_file, progress_callback, udp_handler, on_error_exit);
         while(player.next())
         {
         }
@@ -112,7 +114,8 @@ SCENARIO("format detector")
     {
         const auto pcap_file = test_lib::sample_file("pcap/ttml/ttmlRTP_singlePacketDocs.pcap");
 
-        pcap::pcap_player player(pcap_file, udp_handler, on_error_exit);
+        auto progress_callback = [](float) {};
+        pcap::pcap_player player(pcap_file, progress_callback, udp_handler, on_error_exit);
         while(player.next())
         {
         }
@@ -135,7 +138,8 @@ SCENARIO("format detector")
     {
         const auto pcap_file = test_lib::sample_file("pcap/ttml/ttmlRTP_fourPacketDocs.pcap");
 
-        pcap::pcap_player player(pcap_file, udp_handler, on_error_exit);
+        auto progress_callback = [](float) {};
+        pcap::pcap_player player(pcap_file, progress_callback, udp_handler, on_error_exit);
         while(player.next())
         {
         }
@@ -158,7 +162,8 @@ SCENARIO("format detector")
     {
         const auto pcap_file = test_lib::sample_file("pcap/ttml/ttmlRTP_truncated_start.pcap");
 
-        pcap::pcap_player player(pcap_file, udp_handler, on_error_exit);
+        auto progress_callback = [](float) {};
+        pcap::pcap_player player(pcap_file, progress_callback, udp_handler, on_error_exit);
         while(player.next())
         {
         }

@@ -1,0 +1,30 @@
+# ~/.tmuxinator/LaaB.yml
+
+name: EBU LIST
+root: ~/repos/EBU-LIST
+on_project_start:
+    - mkdir -p cmake-build-debug
+    - cd cmake-build-debug
+    - cmake .. -DBUILD_ALL=1 -DCMAKE_BUILD_TYPE=Debug
+    - cmake --build . -- -j 8
+    - cd ..
+    - npx lerna bootstrap
+    - npx lerna run build
+    - cd ..
+
+windows:
+    - services:
+          layout: even-vertical
+          panes:
+              - infrastructure:
+                    - cd apps/external
+                    - docker-compose up
+              - pre-processor:
+                    - cd cmake-build-debug
+                    - ./bin/stream_pre_processor
+              - backend:
+                    - cd apps/listwebserver
+                    - yarn run dev -- ~/.list/config.yml
+              - gui:
+                    - cd apps/gui-v2
+                    - yarn run start

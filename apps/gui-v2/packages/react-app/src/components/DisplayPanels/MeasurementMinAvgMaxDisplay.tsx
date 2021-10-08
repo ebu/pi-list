@@ -20,7 +20,6 @@ function MeasurementMinAvgMaxDisplay({ displayData }: { displayData: IComponentP
                 <div className="display-panel-information-item">
                     <div className="display-panel-information-data">
                         <span>{displayData.min}</span>
-                        <span>{displayData.unit}</span>
                     </div>
                     <div className="display-panel-information-bar"></div>
                     <div className="display-panel-label">
@@ -31,7 +30,6 @@ function MeasurementMinAvgMaxDisplay({ displayData }: { displayData: IComponentP
                 <div className="display-panel-information-item">
                     <div className="display-panel-information-data">
                         <span>{displayData.avg}</span>
-                        <span>{displayData.unit}</span>
                     </div>
                     <div className="display-panel-information-bar"></div>
                     <div className="display-panel-label">
@@ -42,13 +40,13 @@ function MeasurementMinAvgMaxDisplay({ displayData }: { displayData: IComponentP
                 <div className="display-panel-information-item">
                     <div className="display-panel-information-data">
                         <span>{displayData.max}</span>
-                        <span>{displayData.unit}</span>
                     </div>
                     <div className="display-panel-information-bar"></div>
                     <div className="display-panel-label">
                         <span>Max</span>
                     </div>
                 </div>
+                <span className="display-panel-information-units">{displayData.unit}</span>
             </div>
         </div>
     );
