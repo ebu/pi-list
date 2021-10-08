@@ -1,0 +1,68 @@
+{
+    "name": "@list/validation-tests",
+    "version": "0.0.0",
+    "description": "LIST validation tests.",
+    "main": "dist/index.js",
+    "bin": "dist/index.js",
+    "author": "BISECT Lda. <hello@bisect.pt> (www.bisect.pt)",
+    "license": "GPL-3.0-or-later",
+    "scripts": {
+        "build": "yarn run clean && yarn run compile",
+        "clean": "rm -rf ./dist",
+        "compile": "tsc",
+        "validation-tests-basics": "npm run build && node dist/index.js test-basic",
+        "validation-tests-advanced": "npm run build && node dist/index.js test-advanced"
+    },
+    "dependencies": {
+        "@bisect/bisect-core-ts": "0.1.0",
+        "@bisect/bisect-core-ts-be": "0.1.0",
+        "@bisect/ebu-list-sdk": "0.1.0",
+        "cli-progress": "^3.8.2",
+        "colors": "^1.4.0",
+        "deep-diff": "^1.0.2",
+        "temporary": "^1.1.0",
+        "uuid": "^8.3.1",
+        "yargs": "^16.1.0"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.12.10",
+        "@types/cli-progress": "^3.8.0",
+        "@types/colors": "^1.2.1",
+        "@types/jest": "^26.0.15",
+        "@types/node": "^14.14.5",
+        "@types/uuid": "^8.3.0",
+        "@types/lodash": "^4.14.168",
+        "jest": "^26.6.1",
+        "pkg": "^4.4.9",
+        "typescript": "^4.0.5"
+    },
+    "eslintConfig": {
+        "extends": [
+            "airbnb",
+            "plugin:react/recommended",
+            "plugin:@typescript-eslint/recommended",
+            "prettier/@typescript-eslint",
+            "plugin:prettier/recommended"
+        ],
+        "rules": {
+            "@typescript-eslint/no-explicit-any": [
+                "error"
+            ],
+            "rules": {
+                "@typescript-eslint/no-explicit-any": [
+                    "error"
+                ],
+                "@typescript-eslint/explicit-function-return-type": [
+                    "error"
+                ]
+            }
+        }
+    },
+    "prettier": {
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "semi": true,
+        "singleQuote": true,
+        "printWidth": 120
+    }
+}

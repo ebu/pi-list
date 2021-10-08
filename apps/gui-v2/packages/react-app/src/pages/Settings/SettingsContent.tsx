@@ -68,6 +68,19 @@ function SettingsContent({
     onChangeAnalysisProfile,
 }: IComponentProps) {
     const currentLanguage = languages.find(item => item.value === userData?.preferences?.gui?.language);
+    const [gdprConsent, setGdprConsent] = React.useState<boolean>();
+
+    React.useEffect(() => {
+        const gdprConsentLocalStorage = localStorage.getItem('gdprConsent');
+        if (gdprConsentLocalStorage) {
+            setGdprConsent(gdprConsentLocalStorage === 'true' ? true : false);
+        }
+    }, []);
+
+    const onGDPRClick = (gdpr: boolean) => {
+        localStorage.setItem('gdprConsent', gdpr.toString());
+        setGdprConsent(gdpr);
+    };
 
     return (
         <>
@@ -114,9 +127,27 @@ function SettingsContent({
                         </div>
                         <div className="settings-content-column">
                             <div className="settings-delete-user">
+                                <span className="user-settings-description">
+                                    This will delete the user and all the data from the database.
+                                </span>
                                 <button className="settings-page-delete-user-button" onClick={onDeleteUser}>
                                     Delete User
                                 </button>
+                            </div>
+                            <div className="settings-decline-gdpr">
+                                {gdprConsent || typeof gdprConsent === 'undefined' ? (
+                                    <>
+                                        <span className="user-settings-description">
+                                            This will decline the GDPR that was previously accepted on the login page.
+                                        </span>
+                                        <button
+                                            className="settings-page-delete-user-button"
+                                            onClick={() => onGDPRClick(false)}
+                                        >
+                                            Decline GDPR
+                                        </button>
+                                    </>
+                                ) : null}
                             </div>
                         </div>
                     </div>

@@ -13,11 +13,6 @@ if [ -z "$1" ]; then
 fi
 
 echo
-echo "Setup conan config..."
-conan config install https://github.com/bisect-pt/conan_config.git
-echo "Setup conan config... Done"
-
-echo
 echo "Compiling C++ Code..."
 mkdir -p $BUILD_DIR
 cd $BUILD_DIR
@@ -27,7 +22,7 @@ if [ "$1" = release ]; then
     elif [ "$1" = dev ]; then
     CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=Debug -DUSE_PCH=OFF -DBUILD_ALL=ON"
 else
-    CMAKE_FLAGS=""
+    CMAKE_FLAGS="" # can be "-G 'Visual Studio 15 Win64'"
 fi
 echo "Using cmake flags: $CMAKE_FLAGS"
 

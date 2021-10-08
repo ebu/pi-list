@@ -203,7 +203,7 @@ aforementioned _API_.
       "password": "<pwd>",
       "salt": "",
       "preferences": {
-        "analysys": {
+        "analysis": {
           "currentprofileid": null
         },
         "gui": {
@@ -760,10 +760,12 @@ GET
         "details": {
           "limit": {
             "max": 1000,
+            "maxAvg": 1000,
             "min": 0
           },
           "range": {
             "max": -3727263604,
+            "avg": -3727263780,
             "min": -3727263875,
             "time": "1970-01-01T00:00:00Z"
           },

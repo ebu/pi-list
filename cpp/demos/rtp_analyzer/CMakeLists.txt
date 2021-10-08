@@ -7,6 +7,6 @@ target_link_libraries(${PROJECT_NAME}
         ebu_list_st2110
         ebu_list_pcap
         bicla
-        CONAN_PKG::jsonformoderncpp
+        CONAN_PKG::nlohmann_json
         ${${PROJECT_NAME}_LINK_FLAGS}
         )

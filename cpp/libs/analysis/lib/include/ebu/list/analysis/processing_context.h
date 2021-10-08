@@ -66,5 +66,6 @@ namespace ebu_list::analysis
         std::function<std::optional<stream_with_details>(const rtp::packet& first_packet)> get_stream_info;
         abstract_handler_factory const* const handler_factory;
         abstract_updater* const updater;
+        std::function<void(float percentage)> progress_callback;
     };
 } // namespace ebu_list::analysis

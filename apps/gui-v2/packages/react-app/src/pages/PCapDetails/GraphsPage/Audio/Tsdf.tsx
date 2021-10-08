@@ -35,7 +35,7 @@ function Tsdf({ currentStream, pcapID }: { currentStream: SDK.types.IStreamInfo 
     const first_packet_ts = currentStream?.statistics.first_packet_ts;
     const last_packet_ts = currentStream?.statistics.last_packet_ts;
     const tsdfTolerance = currentStream?.global_audio_analysis.tsdf.tolerance.toString();
-    const tsdfMax = currentStream?.global_audio_analysis.tsdf.max.toString();
+    const tsdfMax = currentStream?.global_audio_analysis.tsdf.max?.toString();
 
     const [tsdfData, setTsdfData] = React.useState<IGraphicInitialData[]>([]);
 

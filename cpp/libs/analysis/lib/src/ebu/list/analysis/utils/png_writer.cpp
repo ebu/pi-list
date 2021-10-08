@@ -64,7 +64,7 @@ void analysis::write_png(oview data, media::video::video_dimensions dimensions, 
 
     void* user_error_ptr = nullptr; // TODO: fix error handling
     png_structp p        = png_create_write_struct(PNG_LIBPNG_VER_STRING, static_cast<png_voidp>(user_error_ptr),
-                                            user_error_fn, user_warning_fn);
+                                                   user_error_fn, user_warning_fn);
     ASSERT_EX(p, "png_create_write_struct() failed");
     TPngDestructor destroyPng(p);
     png_infop info_ptr = png_create_info_struct(p);
@@ -88,7 +88,7 @@ void analysis::write_png(oview data, media::video::video_dimensions dimensions, 
     LIST_ENFORCE(count == out.size(), std::runtime_error, "Did not write the full PNG buffer");
 }
 
-#else // defined(EBU_LIST_USE_LIBPNG)
+#else  // defined(EBU_LIST_USE_LIBPNG)
 
 void ebu_list::write_png(oview data, media::video::video_dimensions dimensions, path target)
 {

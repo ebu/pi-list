@@ -5,9 +5,11 @@
 #include "ebu/list/net/ipv4/decoder.h"
 #include "ebu/list/net/udp/decoder.h"
 #include "ebu/list/pcap/reader.h"
+#include <experimental/filesystem>
 
 using namespace ebu_list::pcap;
 using namespace ebu_list;
+using std::experimental::filesystem::file_size;
 
 //------------------------------------------------------------------------------
 void ebu_list::on_error_exit(std::exception_ptr e)
@@ -29,11 +31,12 @@ void ebu_list::on_error_ignore(std::exception_ptr /*e*/)
 
 //------------------------------------------------------------------------------
 
-pcap_player::pcap_player(path pcap_file, udp::listener_ptr listener, on_error_t on_error,
-                         clock::duration packet_timestamp_correction)
-    : listener_(std::move(listener)), on_error_(std::move(on_error)),
-      packet_timestamp_correction_(packet_timestamp_correction), bf_(std::make_shared<malloc_sbuffer_factory>()),
-      source_(bf_, std::make_unique<file_source>(bf_, pcap_file)), file_header_(pcap::read_header(source_))
+pcap_player::pcap_player(path pcap_file, std::function<void(float)> progress_callback, udp::listener_ptr listener,
+                         on_error_t on_error, clock::duration packet_timestamp_correction)
+    : listener_(std::move(listener)), progress_callback_(progress_callback), on_error_(std::move(on_error)),
+      packet_timestamp_correction_(packet_timestamp_correction), file_size_(file_size(pcap_file)),
+      bf_(std::make_shared<malloc_sbuffer_factory>()), source_(bf_, std::make_unique<file_source>(bf_, pcap_file)),
+      file_header_(pcap::read_header(source_))
 {
     if(!file_header_)
     {
@@ -43,8 +46,9 @@ pcap_player::pcap_player(path pcap_file, udp::listener_ptr listener, on_error_t 
     }
 }
 
-pcap_player::pcap_player(path pcap_file, udp::listener_ptr listener, on_error_t on_error)
-    : pcap_player(std::move(pcap_file), std::move(listener), on_error, clock::duration{})
+pcap_player::pcap_player(path pcap_file, std::function<void(float)> progress_callback, udp::listener_ptr listener,
+                         on_error_t on_error)
+    : pcap_player(std::move(pcap_file), std::move(progress_callback), std::move(listener), on_error, clock::duration{})
 {
 }
 
@@ -67,6 +71,14 @@ bool pcap_player::next()
     try
     {
         do_next();
+        ++current_packet_index_;
+        constexpr auto callback_period = 10000;
+        if(current_packet_index_ % callback_period == 0)
+        {
+            const auto current_position = source_.get_current_offset();
+            const auto percentage       = (current_position * 100.0) / file_size_;
+            this->progress_callback_(percentage);
+        }
     }
     catch(...)
     {

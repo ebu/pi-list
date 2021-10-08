@@ -6,12 +6,18 @@ function PCapDetailsHeaderHOC({
     headerTitle,
     onHeaderTypeClick,
     currentHeaderType,
+    hasAnalysis,
+    hasGraphs,
+    hasStreamExplorer,
 }: {
     headerTitle: string | undefined;
     onHeaderTypeClick: (headerType: number) => void;
     currentHeaderType: number;
+    hasAnalysis?: boolean;
+    hasGraphs?: boolean;
+    hasStreamExplorer?: boolean;
 }) {
-    const categoriesList: ICategory[] = [
+    let categoriesList: ICategory[] = [
         {
             name: translate('media_information.analysis'),
             key: 0,
@@ -28,6 +34,23 @@ function PCapDetailsHeaderHOC({
             clicked: false,
         },
     ];
+    if (!hasGraphs) {
+        categoriesList = categoriesList.filter(function(item) {
+            return item.key !== 2;
+        });
+    }
+
+    if (!hasStreamExplorer) {
+        categoriesList = categoriesList.filter(function(item) {
+            return item.key !== 1;
+        });
+    }
+
+    if (!hasAnalysis) {
+        categoriesList = categoriesList.filter(function(item) {
+            return item.key !== 0;
+        });
+    }
 
     const categories = categoriesList.map(item => ({
         name: item.name,

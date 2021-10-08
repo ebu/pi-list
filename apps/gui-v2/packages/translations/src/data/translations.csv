@@ -315,8 +315,8 @@ comparison.result.psnr_vs_time_shift,PSNR vs décalage temporel,PSNR проти�
 comparison.result.transparency,Transparence,прозрачность,прозорість,Transparantie,Transparency,Transparência,Transparenz,Διαφάνεια,Transparantie
 comparison.result.delay,Retard,задержка,затримка,Vertraging,Delay,Demora,Verzögern,Καθυστέρηση,Vertraging
 comparison.result.AVDelay,Délai audio-vidéo,Задержка аудио-видео,Затримка аудіо-відео,Audio-video-vertraging,audio-video delay,Atraso de áudio-video,Audio-Video-Verzögerung,καθυστέρηση ήχου-βίντεο,Audio-video-vertraging
-comparison.result.AVDelayPkt,Delai A/V (temps de capture),A/V delay (Pkt time),A/V delay (Pkt time),A/V delay (Pkt time),A/V delay (Pkt time),A/V delay (Pkt time),A/V delay (Pkt time),A/V delay (Pkt time),A/V delay (Pkt time)
-comparison.result.AVDelayRtp,Delai A/V (temps RTP),A/V delay (RTP time),A/V delay (RTP time),A/V delay (RTP time),A/V delay (RTP time),A/V delay (RTP time),A/V delay (RTP time),A/V delay (RTP time),A/V delay (RTP time)
+comparison.result.AVDelayPkt,A/V packet delay ,A/V packet delay ,A/V packet delay ,A/V packet delay ,A/V packet delay ,A/V packet delay ,A/V packet delay ,A/V packet delay ,A/V packet delay 
+comparison.result.AVDelayRtp,A/V RTP delay,A/V RTP delay,A/V RTP delay,A/V RTP delay,A/V RTP delay,A/V RTP delay,A/V RTP delay,A/V RTP delay,A/V RTP delay
 comparison.config.media_type,Type de support,Тип носителя,Тип носія,Mediatype,Media Type,Tipo de mídia,Medientyp,Τύπος πολυμέσων,Mediatype
 comparison.config.comparison_type,Méthode de comparaison,Метод сравнения,метод порівняння,vergelijking Methode,Comparison Method,Método de comparação,Vergleichsmethode,Μέθοδος σύγκριση,vergelijking Methode
 comparison.config.main,Principale,Основной,головний,Hoofd,Main stream,Stream principal,Main,Κύριος,Hoofd

@@ -22,7 +22,6 @@ RUN npm install -g lerna
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib/
 
 ADD app/ /app
-ADD js/ /js
 ADD lib/ /usr/local/lib
 # nginx Configuration
 ADD data/config/ /etc/nginx/

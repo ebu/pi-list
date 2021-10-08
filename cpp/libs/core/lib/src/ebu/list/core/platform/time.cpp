@@ -1,7 +1,7 @@
 #include "ebu/list/core/platform/time.h"
 #include "ebu/list/core/idioms.h"
 #include "ebu/list/core/platform/config.h"
-#include "fmt/time.h"
+#include "fmt/chrono.h"
 using namespace ebu_list;
 
 //------------------------------------------------------------------------------

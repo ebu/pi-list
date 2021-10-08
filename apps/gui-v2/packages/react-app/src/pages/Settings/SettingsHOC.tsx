@@ -41,7 +41,7 @@ function SettingsHOC() {
     }
 
     const onChangeAnalysisProfile = async (e: IProfileAnalysisData) => {
-        await list.pcap.analysisProfile.setDefaultProfile(e.id);
+        await list.analysisProfile.setDefault(e.id);
         setAnalysisProfileDefault(e.id);
     };
 

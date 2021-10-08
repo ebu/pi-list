@@ -1,0 +1,24 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Launch Program",
+            "skipFiles": ["<node_internals>/**"],
+            "program": "${workspaceFolder}/dist/index.js",
+            "preLaunchTask": "Build all",
+            "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+            "console": "integratedTerminal",
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/../../**",
+                "!**/node_modules/**"
+            ],
+            "args": ["test-basic", "-b", "http://localhost", "-u", "demo3", "-p", "demo3"]
+        }
+    ]
+}

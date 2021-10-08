@@ -16,7 +16,7 @@ namespace ebu_list
 #if defined(LIST_HAS_POSIX)
         using socket_t                       = int;
         constexpr static auto INVALID_SOCKET = -1;
-#else // defined(LIST_HAS_POSIX)
+#else  // defined(LIST_HAS_POSIX)
         using socket_t = SOCKET;
 #endif // defined(LIST_HAS_POSIX)
 

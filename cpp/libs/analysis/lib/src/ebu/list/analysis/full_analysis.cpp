@@ -13,6 +13,7 @@
 #include "ebu/list/ptp/udp_filter.h"
 #include "ebu/list/rtp/udp_handler.h"
 #include "ebu/list/st2110/d21/settings.h"
+#include <iostream>
 
 using namespace ebu_list;
 using namespace ebu_list::analysis;
@@ -20,6 +21,7 @@ using namespace ebu_list::st2110;
 using namespace ebu_list::st2110::d20;
 using namespace ebu_list::st2110::d21;
 using namespace ebu_list::analysis;
+using nlohmann::json;
 
 namespace
 {
@@ -180,7 +182,7 @@ void analysis::run_full_analysis(processing_context& context)
 
                 {
                     auto db_logger  = context.handler_factory->create_vrx_data_logger(context.pcap.id, stream_info.id,
-                                                                                     "gapped-ideal");
+                                                                                      "gapped-ideal");
                     auto vrx_writer = context.handler_factory->create_vrx_histogram_logger(stream_info.id);
                     const auto settings = vrx_settings{in_video_info.video.schedule, tvd_kind::ideal, std::nullopt};
                     auto analyzer =
@@ -275,8 +277,9 @@ void analysis::run_full_analysis(processing_context& context)
     auto handler    = std::make_shared<rtp::udp_handler>(create_handler);
     auto filter     = std::make_shared<ptp::udp_filter>(ptp_sm, handler);
 
-    auto player = std::make_unique<pcap::pcap_player>(context.pcap_file, filter, on_error_exit,
-                                                      -get_timestamp_offset(context.profile, context.pcap));
+    auto player =
+        std::make_unique<pcap::pcap_player>(context.pcap_file, context.progress_callback, filter, on_error_exit,
+                                            -get_timestamp_offset(context.profile, context.pcap));
 
     auto launcher = launch(std::move(player));
 

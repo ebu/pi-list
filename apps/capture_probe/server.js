@@ -9,11 +9,7 @@ const logger = require('./logger');
 const workflowTypes = require('../../js/common/workflows/types');
 const workflowsSchema = require('../../js/common/workflows/schema');
 const mq = require('../../js/common/mq/types');
-const {
-    createQueueSender,
-    createExchangeSender,
-    persistent,
-} = require('../../js/common_server/mq/send');
+const { createQueueSender, createExchangeSender, persistent } = require('../../js/common_server/mq/send');
 const mqReceive = require('../../js/common_server/mq/receive');
 const { ingestFromFile } = require('./fromFile');
 const { performCaptureAndIngest } = require('./capture');
@@ -25,20 +21,15 @@ const yamlParser = require('read-yaml');
 
 commander
     .arguments('<configFile>')
-    .action(configFile => {
+    .action((configFile) => {
         globalConfig = yamlParser.sync(configFile);
 
-        if (
-            globalConfig.rabbitmq.hostname === undefined ||
-            globalConfig.rabbitmq.port === undefined
-        ) {
+        if (globalConfig.rabbitmq.hostname === undefined || globalConfig.rabbitmq.port === undefined) {
             console.error('RabbitMQ is not configured in config file');
             process.exit(-1);
         }
 
-        globalConfig.rabbitmqUrl = `amqp://${globalConfig.rabbitmq.hostname}:${
-            globalConfig.rabbitmq.port
-        }`;
+        globalConfig.rabbitmqUrl = `amqp://${globalConfig.rabbitmq.hostname}:${globalConfig.rabbitmq.port}`;
     })
     .parse(process.argv);
 
@@ -54,25 +45,22 @@ logger('server').info(`Connecting to ${globalConfig.rabbitmqUrl}`);
 
 ///////////////////////////////////////////////////////////////////////////////
 
-const sleep = milliseconds => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds));
+const sleep = (milliseconds) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
-const onCancelMessage = async (msgContext, sendStatus) => {
-    const { msg, ack } = msgContext;
-
+const onCancelMessage = async (msg, sendStatus) => {
     try {
         const message = JSON.parse(msg.content.toString());
         const { canceled } = message;
-        
 
         /*
-        * The flow for cancelation was mounted.
-        * At this point, for each flow to be canceled there must
-        * be a action that really cancells the workflow.
-        * For now, a fake update are being sent through the GUI
-        */
-        canceled.forEach(function(item) {
+         * The flow for cancelation was mounted.
+         * At this point, for each flow to be canceled there must
+         * be a action that really cancells the workflow.
+         * For now, a fake update are being sent through the GUI
+         */
+        canceled.forEach(function (item) {
             // TODO: CANCEL THE WORKFLOW AND SEND STATUS
 
             sendStatus({
@@ -82,20 +70,13 @@ const onCancelMessage = async (msgContext, sendStatus) => {
                 },
                 persistent,
             });
-          });
-
+        });
     } catch (err) {
         logger('server').error(`Error cancelling workflows: ${err.message}`);
-    } finally {
-        ack();
     }
 };
 
-
-
-const onWorkMessage = async (msgContext, sendStatus) => {
-    const { msg, ack } = msgContext;
-    
+const onWorkMessage = async (msg, sendStatus) => {
     try {
         logger('server').info(`Received message`);
         const message = JSON.parse(msg.content.toString());
@@ -117,9 +98,7 @@ const onWorkMessage = async (msgContext, sendStatus) => {
                     status: workflowsSchema.status.failed,
                     payload: {
                         // TODO: error code ased on HTTP error codes
-                        message: `invalid configuration: ${JSON.stringify(
-                            workflowConfig
-                        )}`,
+                        message: `invalid configuration: ${JSON.stringify(workflowConfig)}`,
                     },
                 };
 
@@ -162,9 +141,7 @@ const onWorkMessage = async (msgContext, sendStatus) => {
 
                 logger('server').info(' [x] Done');
             } catch (err) {
-                logger('server').error(
-                    `Error processing message: ${err.message}`
-                );
+                logger('server').error(`Error processing message: ${err.message}`);
                 sendStatus({
                     msg: {
                         id: workflowConfig.id,
@@ -179,38 +156,23 @@ const onWorkMessage = async (msgContext, sendStatus) => {
         }
     } catch (err) {
         logger('server').error(`Error processing message: ${err.message}`);
-    } finally {
-        ack();
     }
 };
 
 const run = async () => {
-    const cancelReceiver = mqReceive.createExchangeReceiver(
-        globalConfig.rabbitmqUrl,
-        mq.exchanges.mqtt,
-        [mq.exchanges.mqtt.topics.workflows.cancel]
-    );
-    const handleCancelMessage = msgContext =>
-        onCancelMessage(msgContext, statusSender.send);
+    const cancelReceiver = mqReceive.createExchangeReceiver(globalConfig.rabbitmqUrl, mq.exchanges.mqtt, [
+        mq.exchanges.mqtt.topics.workflows.cancel,
+    ]);
+    const handleCancelMessage = (msgContext) => onCancelMessage(msgContext, statusSender.send);
 
     cancelReceiver.emitter.on(mqReceive.onMessageKey, handleCancelMessage);
 
-    const heartBeatSender = createExchangeSender(
-        globalConfig.rabbitmqUrl,
-        mq.exchanges.probeStatus
-    );
+    const heartBeatSender = createExchangeSender(globalConfig.rabbitmqUrl, mq.exchanges.probeStatus);
 
-    const statusSender = createQueueSender(
-        globalConfig.rabbitmqUrl,
-        mq.queues.workflowStatus
-    );
+    const statusSender = createQueueSender(globalConfig.rabbitmqUrl, mq.queues.workflowStatus);
 
-    const workReceiver = mqReceive.createQueueReceiver(
-        globalConfig.rabbitmqUrl,
-        mq.queues.workflowRequest
-    );
-    const handleMessage = msgContext =>
-        onWorkMessage(msgContext, statusSender.send);
+    const workReceiver = mqReceive.createQueueReceiver(globalConfig.rabbitmqUrl, mq.queues.workflowRequest);
+    const handleMessage = (msgContext) => onWorkMessage(msgContext, statusSender.send);
 
     workReceiver.emitter.on(mqReceive.onMessageKey, handleMessage);
 
@@ -241,7 +203,7 @@ const run = async () => {
     }, 1000);
 };
 
-run().catch(err => {
+run().catch((err) => {
     logger('server').error(`Error: ${err}`);
     process.exit(-1);
 });

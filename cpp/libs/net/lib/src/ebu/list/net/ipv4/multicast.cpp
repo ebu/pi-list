@@ -39,7 +39,7 @@ void ipv4::join_multicast_group(socket_handle& sock, ipv4::address listen_addres
     group.imr_multiaddr.s_addr = static_cast<uint32_t>(multicast_endpoint.addr);
     group.imr_interface.s_addr = static_cast<uint32_t>(listen_address);
     const auto add_mc_result   = setsockopt(sock.get_handle(), IPPROTO_IP, IP_ADD_MEMBERSHIP,
-                                          reinterpret_cast<const char*>(&group), sizeof(group));
+                                            reinterpret_cast<const char*>(&group), sizeof(group));
     LIST_ENFORCE(add_mc_result >= 0, std::runtime_error, "Error adding multicast group");
     logger()->info("Reporting to multicast group {}.\n", to_string(multicast_endpoint.addr));
 }

@@ -17,6 +17,7 @@ apt install -y \
 curl \
 libpcap-dev \
 libssl-dev \
+ninja-build \
 python-pip \
 uuid-dev
 

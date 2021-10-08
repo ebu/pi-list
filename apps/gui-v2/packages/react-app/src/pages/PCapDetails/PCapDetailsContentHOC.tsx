@@ -90,13 +90,13 @@ const getDataToInformationSidebar = (
                                 <div className="extra-information-sidebar-content">{informationSidebarContent}</div>
                             ) : null}
                             <div>
+                                <ComplianceTagPanel stream={currentStream} />
+                            </div>
+                            <div>
                                 <MediaInformationPanel stream={currentStream} />
                             </div>
                             <div>
                                 <NetworkInformationPanel stream={currentStream} />
-                            </div>
-                            <div>
-                                <ComplianceTagPanel stream={currentStream} />
                             </div>
                         </div>
                     ) : (
@@ -156,7 +156,6 @@ function PCapDetailsContentHOC(props: any) {
     const initial: SDK.types.IStreamInfo[] = [];
 
     const [streams, setStreams] = React.useState(initial);
-
     React.useEffect(() => {
         const loadStreams = async (): Promise<void> => {
             const all = await list.pcap.getStreams(pcapID);
@@ -177,7 +176,7 @@ function PCapDetailsContentHOC(props: any) {
     }, [streams]);
 
     const currentStream: SDK.types.IStreamInfo | undefined =
-        activeStreamId === undefined ? undefined : streams.find(v => v.id === activeStreamId);
+        activeStreamId === undefined ? undefined : streams.find((v: any) => v.id === activeStreamId);
 
     const onBackButtonClick = () => {
         history.push('/');
@@ -202,7 +201,12 @@ function PCapDetailsContentHOC(props: any) {
                     />
                 </div>
                 <div>
-                    <PCapDetailsContent currentStream={currentStream} pcapFilename={pcapFilename} pcapID={pcapID} />
+                    <PCapDetailsContent
+                        currentStream={currentStream}
+                        pcapFilename={pcapFilename}
+                        pcapID={pcapID}
+                        pcap={pcap}
+                    />
                 </div>
             </div>
         );
