@@ -85,7 +85,7 @@ const Login = (): any => {
     return (
         <div className="login-page">
             <EbuListLogoIcon className={'login-page-logo'} />
-            <span className="login-page-version">{`v${version?.major}.${version?.minor}.${version?.patch}:${version?.hash}`}</span>
+            <span className="login-page-version">{`v${version?.major}.${version?.minor}.${version?.patch} @ ${version?.hash}`}</span>
             <div className="login-items-container">
                 {loginComponent}
                 <News gdprConsent={gdprConsent} onGdprConsentClick={onGdprConsentClick} onGDPRClick={onGDPRClick} />

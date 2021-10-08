@@ -122,24 +122,11 @@ const doUpload = async (
         }
     });
 
-[
-    '2vid_2aud',
-    '4k_50fps',
-    'eemebe_t_1080i59',
-    'emb_L24_48k_16ch_pt125us',
-    'Newcapture-20210419-154617',
-    'ttmlRTP_fourPacketDocs',
-    'ttmlRTP_singlePacketDocs',
-    'ttmlRTP-invalid-clock-timing',
-].forEach((name) => {
-    addTest(`Pcap: upload pcap "${name}"`, async (c: testUtils.ITestContext) => runUploadTest(name, c));
-});
-
 const runUploadTest = async (name: string, c: testUtils.ITestContext) => {
     const list = new LIST(c.settings.address);
 
     const pcapDir = path.join(__dirname, '..', '..', 'pcaps');
-    const pcapFile = path.join(pcapDir, `${name}.pcap`);
+    const pcapFile = path.join(pcapDir, name);
     const refAnalysisFile = path.join(pcapDir, `${name}.json`);
 
     // if (!_.isEqual(filteredRefAnalysis, filteredTestAnalysis)) {
@@ -182,6 +169,19 @@ const runUploadTest = async (name: string, c: testUtils.ITestContext) => {
         await list.close();
     }
 };
+
+[
+    '2vid_2aud.pcap.gz',
+    '4k_50fps.pcap',
+    'eemebe_t_1080i59.pcap',
+    'emb_L24_48k_16ch_pt125us.pcap',
+    'Newcapture-20210419-154617.pcap',
+    'ttmlRTP_fourPacketDocs.pcap',
+    'ttmlRTP_singlePacketDocs.pcap',
+    'ttmlRTP-invalid-clock-timing.pcap',
+].forEach((name) => {
+    addTest(`Pcap: upload pcap "${name}"`, async (c: testUtils.ITestContext) => runUploadTest(name, c));
+});
 
 addTest('Pcap: get all', async (c: testUtils.ITestContext) => {
     const list = new LIST(c.settings.address);

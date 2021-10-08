@@ -91,7 +91,7 @@ async function createReadOnlyUser(username: string, password: string, address: s
     const pcapDir = path.join(__dirname, '..', '..', 'tests', 'pcaps');
     const emb_L24_48k_16ch_pt125us = path.join(pcapDir, 'emb_L24_48k_16ch_pt125us.pcap');
 
-    const twovid_2aud = path.join(pcapDir, '2vid_2aud.pcap');
+    const twovid_2aud = path.join(pcapDir, '2vid_2aud.pcap.gz');
     const ttmlRTP_fourPacketDocs = path.join(pcapDir, 'ttmlRTP_fourPacketDocs.pcap');
     const ttmlRTP_singlePacketDocs = path.join(pcapDir, 'ttmlRTP_singlePacketDocs.pcap');
     const ttmlRTP_invalid_clock_timing = path.join(pcapDir, 'ttmlRTP-invalid-clock-timing.pcap');

@@ -1,0 +1,231 @@
+{
+    "analyzed": true,
+    "error": "",
+    "offset_from_ptp_clock": 0,
+    "anc_streams": 0,
+    "audio_streams": 0,
+    "video_streams": 1,
+    "total_streams": 1,
+    "narrow_linear_streams": 0,
+    "narrow_streams": 1,
+    "not_compliant_streams": 0,
+    "wide_streams": 0,
+    "generated_from_network": false,
+    "truncated": true,
+    "_id": "615f77dbce0d3b1e0f30fe81",
+    "id": "dd7657c0-27bf-11ec-81bc-6fd0e9a08850",
+    "__v": 0,
+    "analyzer_version": "2.0.2",
+    "capture_date": 1516906244153,
+    "capture_file_name": "1633646554958_258e97e4-24aa-4b25-b273-222e5218f6ba.pcap",
+    "date": 1633646555167,
+    "file_name": "eemebe_t_1080i59.pcap",
+    "owner_id": "f100e6f0-269a-11ec-b18e-3941cfad2fa6",
+    "pcap_file_name": "1633646554958_258e97e4-24aa-4b25-b273-222e5218f6ba.pcap",
+    "analysis_profile": {
+        "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
+        "label": "JT-NM Tested 2020",
+        "timestamps": {
+            "source": "pcap"
+        },
+        "audio": {
+            "deltaPktTsVsRtpTsLimit": {
+                "unit": "μs",
+                "min": 0,
+                "maxAvg": 1000,
+                "max": 1000
+            },
+            "tsdf": {
+                "tolerance": 1,
+                "limit": 17,
+                "unit": "packet_time"
+            }
+        }
+    },
+    "summary": {
+        "error_list": [],
+        "warning_list": [
+            {
+                "stream_id": null,
+                "value": {
+                    "id": "warnings.pcap.truncated"
+                }
+            }
+        ]
+    },
+    "streams": [
+        {
+            "error_list": [],
+            "_id": "615f77dbb5c3e25cd49b37df",
+            "id": "cd87a64a-1f97-40e1-b55c-d7af5852c98c",
+            "media_specific": {
+                "avg_tro_ns": 615145,
+                "color_depth": 10,
+                "colorimetry": "BT709",
+                "has_continuation_bit_set": false,
+                "height": 1080,
+                "max_tro_ns": 621984,
+                "min_tro_ns": 606720,
+                "packets_per_frame": 2160,
+                "packing_mode": 1,
+                "rate": "60000/1001",
+                "sampling": "YCbCr-4:2:2",
+                "scan_type": "interlaced",
+                "schedule": "gapped",
+                "tro_default_ns": 652504,
+                "width": 1920
+            },
+            "media_type": "video",
+            "media_type_validation": {
+                "anc": ["STATUS_CODE_ANC_WRONG_HEADER"],
+                "audio": ["STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"],
+                "ttml": ["STATUS_CODE_TTML_INVALID_DOCUMENT"]
+            },
+            "network_information": {
+                "destination_address": "239.0.1.2",
+                "destination_mac_address": "01:00:5e:00:01:02",
+                "destination_port": "50000",
+                "dscp": {
+                    "consistent": true,
+                    "value": 0
+                },
+                "has_extended_header": false,
+                "inter_packet_spacing": {
+                    "after_m_bit": {
+                        "avg": 679220,
+                        "max": 693000,
+                        "min": 662000
+                    },
+                    "regular": {
+                        "avg": 6000,
+                        "max": 11000,
+                        "min": 6000
+                    }
+                },
+                "multicast_address_match": true,
+                "payload_type": 96,
+                "source_address": "192.168.1.212",
+                "source_mac_address": "40:a3:6b:a0:2c:26",
+                "source_port": "50000",
+                "ssrc": 0,
+                "valid_multicast_ip_address": true,
+                "valid_multicast_mac_address": true
+            },
+            "pcap": "dd7657c0-27bf-11ec-81bc-6fd0e9a08850",
+            "state": "analyzed",
+            "statistics": {
+                "dropped_packet_count": 0,
+                "dropped_packet_samples": [],
+                "first_frame_ts": 1731503140,
+                "first_packet_ts": "1516906244153907000",
+                "frame_count": 10,
+                "is_interlaced": true,
+                "last_frame_ts": 1731516654,
+                "last_packet_ts": "1516906244320078000",
+                "max_line_number": 539,
+                "packet_count": 21600,
+                "rate": 59.94005994005994
+            },
+            "__v": 0,
+            "global_video_analysis": {
+                "cinst": {
+                    "cmax_narrow": 4,
+                    "cmax_wide": 16,
+                    "compliance": "narrow",
+                    "histogram": [
+                        [0, 88.22222137451172],
+                        [1, 11.777777671813965]
+                    ]
+                },
+                "compliance": "narrow",
+                "trs": {
+                    "trs_ns": 7414.814814814815
+                },
+                "vrx": {
+                    "compliance": "narrow",
+                    "histogram": [
+                        [4, 0.10288065671920776],
+                        [5, 55.452674865722656],
+                        [6, 0.12345679104328156],
+                        [7, 44.320987701416016]
+                    ],
+                    "vrx_full_narrow": 8,
+                    "vrx_full_wide": 720
+                }
+            },
+            "analyses": {
+                "rtp_ts_vs_nt": {
+                    "details": {
+                        "range": {
+                            "min": -1,
+                            "max": -1,
+                            "avg": -1
+                        },
+                        "limit": {
+                            "min": -1,
+                            "max": 60
+                        },
+                        "unit": "ticks"
+                    },
+                    "result": "compliant"
+                },
+                "packet_ts_vs_rtp_ts": {
+                    "details": {
+                        "range": {
+                            "min": 617743,
+                            "max": 633240,
+                            "avg": 626246.1111111111
+                        },
+                        "limit": {
+                            "min": 0,
+                            "max": 1000000
+                        },
+                        "unit": "ns"
+                    },
+                    "result": "compliant"
+                },
+                "inter_frame_rtp_ts_delta": {
+                    "details": {
+                        "range": {
+                            "min": 1501,
+                            "max": 1502,
+                            "avg": 1501.5
+                        },
+                        "limit": {
+                            "min": 1501,
+                            "max": 1502
+                        },
+                        "unit": "ticks"
+                    },
+                    "result": "compliant"
+                },
+                "2110_21_cinst": {
+                    "result": "compliant"
+                },
+                "2110_21_vrx": {
+                    "result": "compliant"
+                },
+                "unique_multicast_destination_ip_address": {
+                    "result": "compliant"
+                },
+                "destination_multicast_mac_address": {
+                    "result": "compliant"
+                },
+                "destination_multicast_ip_address": {
+                    "result": "compliant"
+                },
+                "unrelated_multicast_addresses": {
+                    "result": "compliant"
+                },
+                "rtp_sequence": {
+                    "result": "compliant",
+                    "details": {
+                        "dropped_packets_count": 0,
+                        "dropped_packets_samples": [],
+                        "packet_count": 21600
+                    }
+                }
+            }
+        }
+    ]
+}
