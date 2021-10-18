@@ -22,7 +22,7 @@ get detailed dependencies and build tools.
 Install build env:
 
 ```
-./scripts/setup-build-env.sh
+./scripts/setup_build_env.sh
 ```
 
 Build the dependencies and the project:
