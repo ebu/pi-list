@@ -61,8 +61,7 @@ const deleteTestPcap = async (list: LIST, c: testUtils.ITestContext) => {
     });
 };
 
-const deleteJsonProperties = (json: any) => {
-    const jsonToParse = _.cloneDeep(json);
+const deleteJsonProperties = (jsonToParse: any) => {
     delete jsonToParse._id;
     delete jsonToParse.id;
     delete jsonToParse.owner_id;
@@ -278,7 +277,7 @@ addTest('Pcap: download Sdp', async (c: testUtils.ITestContext) => {
         const downloadPcap = await list.pcap.downloadSdp(pcapId);
         fs.writeFileSync(tmpFile.path, downloadPcap.data);
         const fileInfo = await fs1.stat(tmpFile.path);
-        const minimumFileSize = 500;
+        const minimumFileSize = 20;
         unwinder.add(() => fs.unlink(tmpFile.path, resultHandler));
 
         expect(fileInfo.size).toBeGreaterThan(minimumFileSize);
