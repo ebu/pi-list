@@ -2,7 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const controller = require('../controllers/analysis_profile');
-const logger = require('../util/logger');
+import logger from '../util/logger';
 const { getUserId, checkIsReadOnly } = require('../auth/middleware');
 
 router.get('/', async (req, res, next) => {

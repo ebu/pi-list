@@ -8,23 +8,25 @@ const { zipFiles } = require('../../util/zip');
 const pcapController = require('../../controllers/pcap');
 const fs = require('../../util/filesystem');
 const Pcap = require('../../models/pcap');
-const logger = require('../../util/logger');
+import logger from '../../util/logger';
+import { api } from '@bisect/ebu-list-sdk';
 
 const dmngrCtrl = require('../downloadmngr');
 const { unixTimeShort } = require('../../util/unixTime');
 
 // TODO: some files may end in, say .pcap.gz but we don't deal with that
-const removeExtension = orig => path.parse(orig).name;
+const removeExtension = (orig) => path.parse(orig).name;
 
 const getFiles = async (wf, inputConfig) => {
     const type = inputConfig.type;
-    const ext = (type === 'sdp')? 'zip' : type; // sdp files are already bundled in pcap zipFolder
+    const ext = type === 'sdp' ? 'zip' : type; // sdp files are already bundled in pcap zipFolder
     const userID = wf.meta.createdBy;
     const zipFolder = wf.meta.folder;
 
     switch (type) {
-        case 'orig': { // get original filenames
-            const getOrigPromise = inputConfig.ids.map(async pcapID => {
+        case 'orig': {
+            // get original filenames
+            const getOrigPromise = inputConfig.ids.map(async (pcapID) => {
                 const data = await Pcap.findOne({ id: pcapID }).exec();
                 console.log(data);
                 return { path: `${zipFolder}/${pcapID}/${data.capture_file_name}`, name: data.file_name };
@@ -33,7 +35,7 @@ const getFiles = async (wf, inputConfig) => {
         }
 
         case 'pcap': {
-            const getOrigPromise = inputConfig.ids.map(async pcapID => {
+            const getOrigPromise = inputConfig.ids.map(async (pcapID) => {
                 const data = await Pcap.findOne({ id: pcapID }).exec();
                 console.log(data);
                 const destName = removeExtension(data.file_name) + '.pcap';
@@ -45,30 +47,29 @@ const getFiles = async (wf, inputConfig) => {
         case 'sdp': // these files can be found by extension only
             const pattern = `${zipFolder}/+(${inputConfig.ids.join('|')})/**/*.${ext}`;
             const files = await glob(pattern);
-            return files.map(file => ({ path: file, name: path.basename(file) }));
+            return files.map((file) => ({ path: file, name: path.basename(file) }));
 
         case 'json': // reports needs to be generated in a temp directory
         case 'pdf':
             const dir = path.join(os.tmpdir(), wf.id);
             fs.createIfNotExists(dir);
             try {
-                const getReportPromises = inputConfig.ids.map(async pcapID => {
+                const getReportPromises = inputConfig.ids.map(async (pcapID) => {
                     const report = await pcapController.getReport(pcapID, ext);
                     const data = await Pcap.findOne({ id: pcapID }).exec();
                     const filename = data.file_name.replace(/\.[^\.]*$/, `.${ext}`);
                     fs.writeFile(`${dir}/${filename}`, report);
-                    return { path: `${dir}/${filename}`, name: filename};
+                    return { path: `${dir}/${filename}`, name: filename };
                 });
                 return await Promise.all(getReportPromises);
-
-            } catch(err) {
+            } catch (err) {
                 logger('download-multiple').error(`Could not find report for id: ${pcapID} err:${err.code}`);
                 return [];
             }
 
         default:
             websocketManager.instance().sendEventToUser(userID, {
-                event: WS_EVENTS.ZIP_FILE_FAILED,
+                event: api.wsEvents.Zip.failed,
                 data: {
                     id: wf.id,
                     date: Date.now(),
@@ -82,7 +83,7 @@ const getFiles = async (wf, inputConfig) => {
 
 const createWorkflow = async (wf, inputConfig, workSender) => {
     const type = inputConfig.type;
-    const ext = (type === 'sdp')? 'zip' : type; // sdp files are already bundled in pcap zipFolder
+    const ext = type === 'sdp' ? 'zip' : type; // sdp files are already bundled in pcap zipFolder
     const userID = wf.meta.createdBy;
     const zipFolder = wf.meta.folder;
     const zipFile = `${zipFolder}/${wf.id}_${type}.zip`;
@@ -92,12 +93,12 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
 
     if (files.length === 0) {
         websocketManager.instance().sendEventToUser(userID, {
-            event: WS_EVENTS.ZIP_FILE_FAILED,
+            event: api.wsEvents.Zip.failed,
             data: {
-                id  : wf.id,
+                id: wf.id,
                 date: Date.now(),
                 type: type,
-                msg : 'no file found'
+                msg: 'no file found',
             },
         });
         return;
@@ -107,8 +108,8 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
         .then(() => {
             //Add info to downloadmanager
             const availableon = Date.now();
-            const availableuntil = availableon + (24 * 60 * 60 * 1000);
-        
+            const availableuntil = availableon + 24 * 60 * 60 * 1000;
+
             const fileItem = {
                 name: `${wf.id}_${type}.zip`,
                 nameondisk: `${wf.id}_${type}.zip`,
@@ -117,24 +118,24 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
                 availableon: availableon,
                 availableonfancy: unixTimeShort(availableon),
                 availableuntil: availableuntil,
-                availableuntilfancy: unixTimeShort(availableuntil)
+                availableuntilfancy: unixTimeShort(availableuntil),
             };
             dmngrCtrl.add(fileItem);
 
             // Notify by ws that the download are ready
             websocketManager.instance().sendEventToUser(userID, {
-                event: WS_EVENTS.ZIP_FILE_COMPLETE,
+                event: api.wsEvents.Zip.complete,
                 data: {
                     id: wf.id,
                     type: type,
                     date: Date.now(),
-                    msg: files.map(f => f.name).join(','),
+                    msg: files.map((f) => f.name).join(','),
                 },
             });
         })
         .catch(() => {
             websocketManager.instance().sendEventToUser(userID, {
-                event: WS_EVENTS.ZIP_FILE_FAILED,
+                event: api.wsEvents.Zip.failed,
                 data: {
                     id: wf.id,
                     type: type,

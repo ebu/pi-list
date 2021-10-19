@@ -4,6 +4,7 @@
 #include "ebu/list/analysis/full_analysis.h"
 #include "ebu/list/definitions/exchanges.h"
 #include "ebu/list/version.h"
+#include "null_handler_factory.h"
 #include <fstream>
 
 using namespace ebu_list;
@@ -49,7 +50,8 @@ namespace
                   option(&config::mongo_db_url, "mongo_url", "mongo url",
                          "url to mongoDB. Usually mongodb://localhost:27017."),
                   option(&config::rabbit_mq_url, "rabbit_mq_url", "RabbitMQ URL",
-                         "url to mongoDB. Usually amqp://localhost:5672."));
+                         "url to mongoDB. Usually amqp://localhost:5672."),
+                  option(&config::extract_frames, "e", "extract frames", "Set this to extract frames."));
 
         config.profile = load_profile(config.analysis_profile_file);
         logger()->info("Using analysis profile with id {}", config.profile.id);
@@ -147,11 +149,13 @@ namespace
             exchange_sender.send(ebu_list::definitions::exchanges::extractor_status::keys::progress, response.dump());
         };
 
-        pcap_reader factory(config);
+        db_handler_factory factory(config);
+        //        null_handler_factory factory(config);
+
         db_updater updater(db, config.storage_folder);
-        auto context =
-            processing_context{config.pcap_file, config.profile, config.storage_folder, pcap, get_stream_info,
-                               &factory,         &updater,       progress_callback};
+        auto context = processing_context{
+            config.pcap_file, config.profile,    config.storage_folder, pcap, get_stream_info, &factory,
+            &updater,         progress_callback, config.extract_frames};
 
         run_full_analysis(context);
     }

@@ -158,7 +158,7 @@ void analysis::run_full_analysis(processing_context& context)
 
             auto new_handler = std::make_unique<video_stream_serializer>(first_packet, stream_info, in_video_info,
                                                                          context.storage_folder, main_executor,
-                                                                         video_finalizer_callback);
+                                                                         video_finalizer_callback, context.extract_frames);
             auto ml          = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
             ml->add(std::move(new_handler));
 
@@ -286,14 +286,18 @@ void analysis::run_full_analysis(processing_context& context)
     launcher.wait();
     main_executor->wait();
 
-    context.pcap.audio_streams         = nr_audio.load();
-    context.pcap.video_streams         = nr_video.load();
-    context.pcap.anc_streams           = nr_anc.load();
-    context.pcap.total_streams         = nr_total.load();
-    context.pcap.wide_streams          = nr_wide.load();
-    context.pcap.narrow_streams        = nr_narrow.load();
-    context.pcap.narrow_linear_streams = nr_narrow_linear.load();
-    context.pcap.not_compliant_streams = nr_not_compliant.load();
+    if(context.extract_frames == false){
+        context.pcap.audio_streams         = nr_audio.load();
+        context.pcap.video_streams         = nr_video.load();
+        context.pcap.anc_streams           = nr_anc.load();
+        context.pcap.total_streams         = nr_total.load();
+        context.pcap.wide_streams          = nr_wide.load();
+        context.pcap.narrow_streams        = nr_narrow.load();
+        context.pcap.narrow_linear_streams = nr_narrow_linear.load();
+        context.pcap.not_compliant_streams = nr_not_compliant.load();
 
-    context.updater->update_pcap_info(context.pcap.id, pcap_info::to_json(context.pcap));
+
+
+        context.updater->update_pcap_info(context.pcap.id, pcap_info::to_json(context.pcap));
+    };
 }

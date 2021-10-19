@@ -1,7 +1,7 @@
 const EventEmitter = require('events');
 const axios = require('axios');
 const _ = require('lodash');
-const logger = require('../util/logger');
+import logger from '../util/logger';
 const websocketManager = require('../managers/websocket');
 const program = require('../util/programArguments');
 const WebSocketClient = require('websocket').client;
@@ -10,18 +10,10 @@ const webSocketMonitor = require('./webSocketMonitor');
 
 const updateEvent = 'updateEvent';
 
-const is04_query_static_url = _.get(program, [
-    'nmos',
-    'is04',
-    'query',
-    'static',
-    'rootUrl',
-]);
+const is04_query_static_url = _.get(program, ['nmos', 'is04', 'query', 'static', 'rootUrl']);
 const version = '1.2';
 
-const query_url = is04_query_static_url
-    ? `${is04_query_static_url}/x-nmos/query/v${version}`
-    : null;
+const query_url = is04_query_static_url ? `${is04_query_static_url}/x-nmos/query/v${version}` : null;
 
 const getAdditionalSenderData = async (sender) => {
     return new Promise((resolve, reject) => {
@@ -38,8 +30,8 @@ const getAdditionalSenderData = async (sender) => {
                     resolve(sender);
                 })
             )
-            .catch(error => {
-                logger("nmos-crawler").error(`Error getting flow or device information for ${sender.id}`);
+            .catch((error) => {
+                logger('nmos-crawler').error(`Error getting flow or device information for ${sender.id}`);
                 reject(error);
             });
     });
@@ -47,9 +39,7 @@ const getAdditionalSenderData = async (sender) => {
 
 const makeIs04Manager = () => {
     if (query_url === null) {
-        logger('nmos-crawler').info(
-            'No static configuration defined. No IS-04 registry.'
-        );
+        logger('nmos-crawler').info('No static configuration defined. No IS-04 registry.');
 
         return {
             getSenders: () => [],
@@ -71,11 +61,11 @@ const makeIs04Manager = () => {
         onUpdate.emit(updateEvent, data);
     };
 
-    const removeSender = senderId => {
+    const removeSender = (senderId) => {
         logger('nmos-crawler').info(`Removing sender ${senderId}.`);
 
-        senders = senders.filter(s => s.id !== senderId);
-        
+        senders = senders.filter((s) => s.id !== senderId);
+
         const data = { added: [], removedIds: [senderId] };
         onUpdate.emit(updateEvent, data);
     };

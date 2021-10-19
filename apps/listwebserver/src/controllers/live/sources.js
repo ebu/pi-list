@@ -3,7 +3,7 @@ const _ = require('lodash');
 const uuidv1 = require('uuid/v1');
 import { api } from '@bisect/ebu-list-sdk';
 import { mq } from '@bisect/bisect-core-ts-be';
-const logger = require('../../util/logger');
+import logger from '../../util/logger';
 const { getIpInfoFromSdp, getMediaSpecificMeta } = require('../../util/sdp');
 const sdpParser = require('sdp-transform');
 const LiveSource = require('../../models/liveSource');

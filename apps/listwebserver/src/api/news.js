@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
-const logger = require('../util/logger');
+import logger from '../util/logger';
 const { getPreferences, setPreferences } = require('../controllers/user');
 const { getUserId, checkIsReadOnly } = require('../auth/middleware');
 

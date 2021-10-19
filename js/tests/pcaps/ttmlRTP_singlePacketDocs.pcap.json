@@ -82,9 +82,7 @@
             "id": "0c6a5c44-cb73-47a0-a7b6-4903ff328979",
             "media_type": "ttml",
             "media_type_validation": {
-                "anc": [
-                    "STATUS_CODE_ANC_WRONG_FIELD_VALUE"
-                ]
+                "anc": ["STATUS_CODE_ANC_WRONG_FIELD_VALUE"]
             },
             "network_information": {
                 "destination_address": "127.0.0.1",
@@ -277,6 +275,9 @@
                         ]
                     }
                 ]
+            },
+            "processing": {
+                "extractedFrames": "IDLE"
             }
         }
     ]

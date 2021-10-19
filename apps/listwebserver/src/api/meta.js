@@ -1,4 +1,4 @@
-const logger = require('../util/logger');
+import logger from '../util/logger';
 const router = require('express').Router();
 const program = require('../util/programArguments');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');

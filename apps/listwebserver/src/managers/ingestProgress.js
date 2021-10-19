@@ -1,7 +1,7 @@
 import { mq } from '@bisect/bisect-core-ts-be';
 import { api } from '@bisect/ebu-list-sdk';
 const program = require('../util/programArguments');
-const logger = require('../util/logger');
+import logger from '../util/logger';
 const Pcap = require('../models/pcap');
 const websocketManager = require('../managers/websocket');
 const WS_EVENTS = require('../enums/wsEvents');
@@ -20,7 +20,7 @@ function handleProgressMessage(msg) {
             .then((pcapData) => {
                 // Everything is done, we must notify the GUI
                 websocketManager.instance().sendEventToAllUsers({
-                    event: WS_EVENTS.PCAP_FILE_ANALYZING,
+                    event: api.wsEvents.Pcap.analyzing,
                     data: Object.assign({}, pcapData._doc, { progress: message.percentage }),
                 });
             });

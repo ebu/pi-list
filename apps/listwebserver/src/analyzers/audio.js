@@ -3,7 +3,7 @@ const influxDbManager = require('../managers/influx-db');
 const Stream = require('../models/stream');
 const constants = require('../enums/analysis');
 const { appendError } = require('./utils');
-const logger = require('../util/logger');
+import logger from '../util/logger';
 
 // returns
 // {

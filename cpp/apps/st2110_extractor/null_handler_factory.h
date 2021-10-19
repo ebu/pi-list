@@ -6,10 +6,10 @@
 
 namespace ebu_list::st2110_extractor
 {
-    class db_handler_factory : public analysis::abstract_handler_factory
+    class null_handler_factory : public analysis::abstract_handler_factory
     {
       public:
-        db_handler_factory(const config& c);
+        null_handler_factory(const config& c);
         st2110::d21::c_analyzer::listener_uptr create_c_inst_data_logger(const std::string& pcap_id,
                                                                          const std::string& stream_id) const override;
         histogram_listener_uptr create_c_inst_histogram_logger(const std::string& stream_id) const override;
@@ -34,20 +34,6 @@ namespace ebu_list::st2110_extractor
 
       private:
         const config& config_;
-    };
-
-    class db_updater : public analysis::abstract_updater
-    {
-      public:
-        db_updater(db_serializer& db, const path& storage_folder);
-        void update_pcap_info(const std::string& pcap_id, const nlohmann::json& data) override;
-        void update_stream_info(const std::string& id, const nlohmann::json& data) override;
-        void update_sdp(const std::string& stream_id, const sdp::sdp_builder& sdp,
-                        media::media_type media_type) override;
-
-      private:
-        db_serializer& db_;
-        const path storage_folder_;
     };
 
 } // namespace ebu_list::st2110_extractor

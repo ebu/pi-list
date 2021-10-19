@@ -1,15 +1,16 @@
 const path = require('path');
 const fs = require('fs');
 const util = require('util');
-const { Xcorr } = require('abr-xcorr')
+const { Xcorr } = require('abr-xcorr');
 const child_process = require('child_process');
 const exec = util.promisify(child_process.exec);
 const readFile = util.promisify(fs.readFile);
-const logger = require('../util/logger');
+import logger from '../util/logger';
+
 const CONSTANTS = require('../enums/constants');
 
 const getAudioBuffer = async (folder, channel, media_specific) => {
-    const outputFormat = 's16le'
+    const outputFormat = 's16le';
     const inputFile = `${folder}/raw`;
     const outputFile = `${folder}/${outputFormat}_${channel}ch.raw`;
     const encodingBits = media_specific.encoding == 'L24' ? 24 : 16;
@@ -17,7 +18,9 @@ const getAudioBuffer = async (folder, channel, media_specific) => {
     const channelNumber = media_specific.number_channels;
     const readFileAsync = util.promisify(fs.readFile);
 
-    const ffmpegCommand = `ffmpeg -hide_banner -y -f s${encodingBits}be -ar ${sampling}k -ac ${channelNumber} -i "${inputFile}" -map_channel 0.0.${parseInt(channel)-1} -f ${outputFormat} -acodec pcm_${outputFormat} "${outputFile}"`;
+    const ffmpegCommand = `ffmpeg -hide_banner -y -f s${encodingBits}be -ar ${sampling}k -ac ${channelNumber} -i "${inputFile}" -map_channel 0.0.${
+        parseInt(channel) - 1
+    } -f ${outputFormat} -acodec pcm_${outputFormat} "${outputFile}"`;
 
     try {
         const output = await exec(ffmpegCommand);
@@ -27,8 +30,8 @@ const getAudioBuffer = async (folder, channel, media_specific) => {
     } catch (err) {
         logger('cross-correlation').error(err.stdout);
         logger('cross-correlation').error(err.stderr);
-    };
-}
+    }
+};
 
 const getAudioBuffers = async (config) => {
     var promises = [];
@@ -39,7 +42,7 @@ const getAudioBuffers = async (config) => {
     promises.push(getAudioBuffer(mainDir, config.main.channel, config.media_specific));
 
     return await Promise.all(promises);
-}
+};
 
 const createComparator = async (config) => {
     var buffers = await getAudioBuffers(config);
@@ -52,21 +55,18 @@ const createComparator = async (config) => {
 
     // 2nd pass: keep overlapping samples and set everything else to 0
     const n = Math.abs(xcorrRaw.iMax) * 2;
-    if (xcorrRaw.iMax >= 0)
-    {
-        buffers[0] = Buffer.concat([buffers[0].slice(0, bufLength-n), Buffer(Array.from(Array(n), ()=>0))]);
-        buffers[1] = Buffer.concat([Buffer(Array.from(Array(n), ()=>0)), buffers[1].slice(n, bufLength)]);
+    if (xcorrRaw.iMax >= 0) {
+        buffers[0] = Buffer.concat([buffers[0].slice(0, bufLength - n), Buffer(Array.from(Array(n), () => 0))]);
+        buffers[1] = Buffer.concat([Buffer(Array.from(Array(n), () => 0)), buffers[1].slice(n, bufLength)]);
         xcorrRaw = Xcorr(buffers[1], buffers[0]);
-    }
-    else if (xcorrRaw.iMax < 0)
-    {
-        buffers[0] = Buffer.concat([Buffer(Array.from(Array(n), ()=>0)), buffers[0].slice(n, bufLength)]);
-        buffers[1] = Buffer.concat([buffers[1].slice(0, bufLength-n), Buffer(Array.from(Array(n), ()=>0))]);
+    } else if (xcorrRaw.iMax < 0) {
+        buffers[0] = Buffer.concat([Buffer(Array.from(Array(n), () => 0)), buffers[0].slice(n, bufLength)]);
+        buffers[1] = Buffer.concat([buffers[1].slice(0, bufLength - n), Buffer(Array.from(Array(n), () => 0))]);
         xcorrRaw = Xcorr(buffers[1], buffers[0]);
     }
 
     if (isNaN(xcorrRaw.xcorrMax)) {
-        logger('audio-xcorr:').info(`too different signals, return 0s`)
+        logger('audio-xcorr:').info(`too different signals, return 0s`);
         xcorrRaw.xcorrMax = 0;
         xcorrRaw.xcorr = [0];
         xcorrRaw.index = 0;
@@ -76,27 +76,31 @@ const createComparator = async (config) => {
     const l = xcorrRaw.xcorr.length; // even
     // 1st measurement corresponds to a 0-shift and last is -1, [0, ..., l/2, -l/2, ..., -1]
     // so let's reorder to [-l/2, ..., -1, 0, ..., l/2]
-    const xcorrReorderIndex = Array.from(Array(l).keys()).map(v => v - l/2 + 1);
-    const xcorrReorder = Array.from(xcorrRaw.xcorr).slice(l/2, l).concat(Array.from(xcorrRaw.xcorr).slice(0, l/2));
+    const xcorrReorderIndex = Array.from(Array(l).keys()).map((v) => v - l / 2 + 1);
+    const xcorrReorder = Array.from(xcorrRaw.xcorr)
+        .slice(l / 2, l)
+        .concat(Array.from(xcorrRaw.xcorr).slice(0, l / 2));
     // xcorrRaw.iMax == 0 should be in the middle
-    const iMax = xcorrRaw.iMax + l/2;
+    const iMax = xcorrRaw.iMax + l / 2;
 
     // define and clip a window for graph
     const windowHalfWidth = 200;
-    const windowMin = (iMax - windowHalfWidth) > 0? iMax - windowHalfWidth : 0;
-    const windowMax = (iMax + windowHalfWidth) < l? iMax + windowHalfWidth : l;
+    const windowMin = iMax - windowHalfWidth > 0 ? iMax - windowHalfWidth : 0;
+    const windowMax = iMax + windowHalfWidth < l ? iMax + windowHalfWidth : l;
     const xcorrWindow = Array.from(xcorrReorder).slice(windowMin, windowMax);
 
     // adjust timings
     const captureDelay = (config.main.first_packet_ts - config.reference.first_packet_ts) / 1000; //us
-    const mediaDelay = xcorrRaw.iMax / parseInt(config.media_specific.sampling) * 1000000; // us
+    const mediaDelay = (xcorrRaw.iMax / parseInt(config.media_specific.sampling)) * 1000000; // us
 
-    logger('audio-xcorr:').info(`len: buf=${bufLength}, xcorr=${l}`)
-    logger('audio-xcorr:').info(`len: reorder=${xcorrReorder.length}, index=${xcorrReorderIndex.length}, win=${xcorrWindow.length}`)
-    logger('audio-xcorr:').info(`max index: rel=${xcorrRaw.iMax}, abs=${iMax}`)
-    logger('audio-xcorr:').info(`max value: given=${xcorrRaw.xcorrMax}, guessed=${xcorrReorder[iMax]}`)
-    logger('audio-xcorr:').info(`win index: [${windowMin}, ${windowMax}]`)
-    logger('audio-xcorr:').info(`delay: capture:${captureDelay} media:${mediaDelay}`)
+    logger('audio-xcorr:').info(`len: buf=${bufLength}, xcorr=${l}`);
+    logger('audio-xcorr:').info(
+        `len: reorder=${xcorrReorder.length}, index=${xcorrReorderIndex.length}, win=${xcorrWindow.length}`
+    );
+    logger('audio-xcorr:').info(`max index: rel=${xcorrRaw.iMax}, abs=${iMax}`);
+    logger('audio-xcorr:').info(`max value: given=${xcorrRaw.xcorrMax}, guessed=${xcorrReorder[iMax]}`);
+    logger('audio-xcorr:').info(`win index: [${windowMin}, ${windowMax}]`);
+    logger('audio-xcorr:').info(`delay: capture:${captureDelay} media:${mediaDelay}`);
 
     //TODO Get RTP TS delta
 
@@ -110,7 +114,7 @@ const createComparator = async (config) => {
             sample: xcorrRaw.iMax,
             time: mediaDelay,
             capture: captureDelay,
-            actual: (mediaDelay + captureDelay),
+            actual: mediaDelay + captureDelay,
         },
         transparency: xcorrRaw.xcorrMax > 0.99,
     };

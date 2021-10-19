@@ -7,7 +7,8 @@ const Stream = require('../models/stream');
 const constants = require('../enums/analysis');
 const CONSTANTS = require('../enums/constants');
 const fs = require('../util/filesystem');
-const logger = require('../util/logger');
+import logger from '../util/logger';
+
 const { appendError } = require('./utils');
 const {
     doRtpTicksAnalysis,

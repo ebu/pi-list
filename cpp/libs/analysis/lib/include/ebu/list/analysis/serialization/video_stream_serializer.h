@@ -20,7 +20,8 @@ namespace ebu_list::analysis
         using completion_callback = std::function<void(const video_stream_serializer& vsh)>;
 
         video_stream_serializer(rtp::packet first_packet, serializable_stream_info info, video_stream_details details,
-                                path base_dir, executor_ptr main_executor, completion_callback on_complete_callback);
+                                path base_dir, executor_ptr main_executor, completion_callback on_complete_callback,
+                                bool extract_frames);
 
         st2110::d21::video_analysis_info get_video_analysis_info() const;
 
@@ -39,5 +40,6 @@ namespace ebu_list::analysis
         completion_callback on_complete_callback_;
         packets current_frame_packets_;
         st2110::d21::compliance_analyzer compliance_;
+        const bool extract_frames_;
     };
 } // namespace ebu_list::analysis

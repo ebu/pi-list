@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const logger = require('../util/logger');
+import logger from '../util/logger';
 const config = require('./options');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const collection = require('../models/user');

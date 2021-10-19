@@ -1,6 +1,6 @@
 const uuidv1 = require('uuid/v1');
 import { api } from '@bisect/ebu-list-sdk';
-const logger = require('../../util/logger');
+import logger from '../../util/logger';
 import { mq } from '@bisect/bisect-core-ts-be';
 const moment = require('moment');
 const programArguments = require('../../util/programArguments');

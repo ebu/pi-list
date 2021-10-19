@@ -5,7 +5,7 @@ const fs = require('fs');
 const { promisify } = require('util');
 const websocketManager = require('../../managers/websocket');
 const WS_EVENTS = require('../../enums/wsEvents');
-const logger = require('../../util/logger');
+import logger from '../../util/logger';
 const Stream = require('../../models/stream');
 const Pcap = require('../../models/pcap');
 const StreamCompare = require('../../models/streamCompare');
@@ -14,6 +14,7 @@ const readFile = promisify(fs.readFile);
 const child_process = require('child_process');
 const exec = promisify(child_process.exec);
 const program = require('../../util/programArguments');
+import { api } from '@bisect/ebu-list-sdk';
 
 // async
 const tmpFile = () => {
@@ -56,7 +57,7 @@ const getConfig = async (inputConfig, folder) => {
 };
 
 // Returns a promise that resolves when the comparison finishes, either with success or failure.
-const runComparison = async config => {
+const runComparison = async (config) => {
     const requestFile = await tmpFile();
     const responseFile = await tmpFile();
 
@@ -95,16 +96,16 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
         logger('st2022-7-analysis').info(`unsupported config ${err}`);
         workflowResponse.msg = `${name}: ${err.message}`;
         websocketManager.instance().sendEventToUser(userID, {
-            event: WS_EVENTS.STREAM_COMPARE_FAILED,
+            event: api.wsEvents.Stream.compare_failed,
             data: workflowResponse,
         });
         return;
     }
 
-    const handleError = err => {
+    const handleError = (err) => {
         workflowResponse.msg = `Could not run the analysis ${name}`;
         websocketManager.instance().sendEventToUser(userID, {
-            event: WS_EVENTS.STREAM_COMPARE_FAILED,
+            event: api.wsEvents.Stream.compare_failed,
             data: workflowResponse,
         });
     };
@@ -113,12 +114,12 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
         workflowResponse.compareId = wf.id;
         workflowResponse.msg = `${name}: success`;
         websocketManager.instance().sendEventToUser(userID, {
-            event: WS_EVENTS.STREAM_COMPARE_COMPLETE,
+            event: api.wsEvents.Stream.compare_complete,
             data: workflowResponse,
         });
     };
 
-    const completeAnalysis = result => {
+    const completeAnalysis = (result) => {
         const id = uuidv1();
         StreamCompare.create(
             {
@@ -142,10 +143,10 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
     logger('st2022-7-analysis').info(`Config: ${JSON.stringify(compareConfig)}`);
 
     runComparison(compareConfig)
-        .then(result => {
+        .then((result) => {
             completeAnalysis(result);
         })
-        .catch(err => handleError(err));
+        .catch((err) => handleError(err));
 };
 
 module.exports = {

@@ -50,13 +50,15 @@ void analysis::write_packets(const path& packets_path, const packets& packets_in
 
 video_stream_serializer::video_stream_serializer(rtp::packet first_packet, serializable_stream_info info,
                                                  video_stream_details details, path base_dir,
-                                                 executor_ptr main_executor, completion_callback on_complete_callback)
+                                                 executor_ptr main_executor, completion_callback on_complete_callback,
+                                                 bool extract_frames)
     : video_stream_handler(decode_video::yes, std::move(first_packet), std::move(info), details,
                            std::bind(&video_stream_serializer::on_complete, this, std::placeholders::_1)),
       base_dir_(std::move(base_dir)), main_executor_(std::move(main_executor)), frame_size_(get_frame_size(details)),
       on_complete_callback_(on_complete_callback),
       compliance_(
-          d21::build_compliance_analyzer(details.video, {details.video.schedule, d21::tvd_kind::ideal, std::nullopt}))
+          d21::build_compliance_analyzer(details.video, {details.video.schedule, d21::tvd_kind::ideal, std::nullopt})),
+      extract_frames_(extract_frames)
 {
 }
 
@@ -72,12 +74,6 @@ struct png_write_info
     media::video::video_dimensions frame_size;
     oview data;
     path png_path;
-};
-
-struct packets_write_info
-{
-    path packets_path;
-    packets frame_packets;
 };
 
 int64_t get_first_packet_timestamp(const packets& ps)
@@ -102,35 +98,37 @@ void video_stream_serializer::on_packet(const packet_info& p)
 
 void video_stream_serializer::on_frame_complete(frame_uptr&& f)
 {
+
     const auto stream_id = this->network_info().id;
     const auto frame_id  = std::to_string(f->timestamp);
 
     const auto info_base = base_dir_ / stream_id / frame_id;
-    const auto png_path  = info_base / "frame.png";
+
+    const auto png_path = info_base / "frame.png";
 
     std::experimental::filesystem::create_directories(info_base);
 
-    frame_info fi{
-        f->timestamp,
-        current_frame_packets_.size(),
-        get_first_packet_timestamp(current_frame_packets_),
-        get_last_packet_timestamp(current_frame_packets_),
-    };
-    write_frame_info(base_dir_, stream_id, fi);
+    if(this->extract_frames_)
+    {
+        png_write_info wfi{frame_size_, oview(f->buffer), png_path};
 
-    packets_write_info pwi{info_base, std::move(current_frame_packets_)};
+        auto png_writer = [wfi]() mutable {
+            auto rgba = from_ycbcr422_to_rgba(wfi.data, wfi.frame_size);
+            write_png(rgba, wfi.frame_size, wfi.png_path);
+        };
 
-    auto packets_writer = [pwi]() mutable { write_packets(pwi.packets_path, pwi.frame_packets); };
-    main_executor_->execute(std::move(packets_writer));
-
-    png_write_info wfi{frame_size_, oview(f->buffer), png_path};
-
-    auto png_writer = [wfi]() mutable {
-        auto rgba = from_ycbcr422_to_rgba(wfi.data, wfi.frame_size);
-        write_png(rgba, wfi.frame_size, wfi.png_path);
-    };
-
-    main_executor_->execute(std::move(png_writer));
+        main_executor_->execute(std::move(png_writer));
+    }
+    else
+    {
+        frame_info fi{
+            f->timestamp,
+            current_frame_packets_.size(),
+            get_first_packet_timestamp(current_frame_packets_),
+            get_last_packet_timestamp(current_frame_packets_),
+        };
+        write_frame_info(base_dir_, stream_id, fi);
+    }
 }
 
 void video_stream_serializer::on_complete(const video_stream_handler&)

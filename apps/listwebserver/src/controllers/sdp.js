@@ -1,6 +1,6 @@
 const util = require('util');
 const fs = require('fs');
-const logger = require('../util/logger');
+import logger from '../util/logger';
 const sdpParser = require('sdp-transform');
 const sdpoker = require('sdpoker');
 const uuidv1 = require('uuid/v1');

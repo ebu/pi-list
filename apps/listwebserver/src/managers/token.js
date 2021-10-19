@@ -1,9 +1,9 @@
-const logger = require('../util/logger');
+import logger from '../util/logger';
 
 let sessionTokens = [];
 
 module.exports = {
-    storeToken: (tokenID) =>  {
+    storeToken: (tokenID) => {
         sessionTokens.push(tokenID);
         logger('token-manager').info(`New token stored ${tokenID} | Available tokens: ${sessionTokens.toString()}`);
     },
@@ -13,7 +13,7 @@ module.exports = {
     },
 
     setTokenAsInvalid: (tokenID) => {
-        sessionTokens = sessionTokens.filter(token => token !== tokenID);
+        sessionTokens = sessionTokens.filter((token) => token !== tokenID);
         logger('token-manager').info(`Removed token ${tokenID} | Available tokens: ${sessionTokens.toString()}`);
-    }
+    },
 };

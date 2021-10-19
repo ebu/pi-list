@@ -1,12 +1,13 @@
 const router = require('express').Router();
 const util = require('util');
-const logger = require('../util/logger');
+import logger from '../util/logger';
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const API_ERRORS = require('../enums/apiErrors');
 const StreamCompare = require('../models/streamCompare');
 const websocketManager = require('../managers/websocket');
 const WS_EVENTS = require('../enums/wsEvents');
 const { getUserId, checkIsReadOnly } = require('../auth/middleware');
+import { api } from '@bisect/ebu-list-sdk';
 
 function isAuthorized(req, res, next) {
     const { comparisonID } = req.params;
@@ -56,7 +57,7 @@ router.delete('/:comparisonID/', checkIsReadOnly, (req, res) => {
         })
         .then(() => {
             websocketManager.instance().sendEventToUser(userId, {
-                event: WS_EVENTS.STREAM_COMPARE_DELETED,
+                event: api.wsEvents.Stream.compare_deleted,
                 data: { id: comparisonID },
             });
         })

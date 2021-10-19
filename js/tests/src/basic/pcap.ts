@@ -277,7 +277,7 @@ addTest('Pcap: download Sdp', async (c: testUtils.ITestContext) => {
         const downloadPcap = await list.pcap.downloadSdp(pcapId);
         fs.writeFileSync(tmpFile.path, downloadPcap.data);
         const fileInfo = await fs1.stat(tmpFile.path);
-        const minimumFileSize = 20;
+        const minimumFileSize = 10;
         unwinder.add(() => fs.unlink(tmpFile.path, resultHandler));
 
         expect(fileInfo.size).toBeGreaterThan(minimumFileSize);

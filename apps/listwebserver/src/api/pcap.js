@@ -5,7 +5,7 @@ const util = require('util');
 const influxDbManager = require('../managers/influx-db');
 const fs = require('../util/filesystem');
 const path = require('path');
-const logger = require('../util/logger');
+import logger from '../util/logger';
 const API_ERRORS = require('../enums/apiErrors');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const CONSTANTS = require('../enums/constants');
@@ -26,6 +26,8 @@ const websocketManager = require('../managers/websocket');
 const WS_EVENTS = require('../enums/wsEvents');
 const exec = util.promisify(child_process.exec);
 const { getUserId, checkIsReadOnly } = require('../auth/middleware');
+import { verifyIfFramesAreExtractedOrExtract } from '../controllers/streams2';
+import { api } from '@bisect/ebu-list-sdk';
 
 function isAuthorized(req, res, next) {
     const { pcapID } = req.params;
@@ -159,7 +161,7 @@ router.delete('/:pcapID/', checkIsReadOnly, (req, res) => {
         .then(() => {
             const userId = getUserId(req);
             websocketManager.instance().sendEventToUser(userId, {
-                event: WS_EVENTS.PCAP_FILE_DELETED,
+                event: api.wsEvents.Pcap.deleted,
                 data: { id: pcapID },
             });
         })
@@ -210,7 +212,7 @@ router.get('/:pcapID/download_original', (req, res, next) => {
 });
 
 /* Download a PCAP File */
-router.get('/:pcapID/download', (req, res) => {
+router.get('/:pcapID/download', (req, res, next) => {
     const { pcapID } = req.params;
 
     logger('pcap-get').info(`Getting PCAP for ${pcapID}`);
@@ -232,7 +234,7 @@ router.get('/:pcapID/download', (req, res) => {
 });
 
 /* Get sdp.sdp file for a pcap */
-router.get('/:pcapID/sdp', (req, res) => {
+router.get('/:pcapID/sdp', (req, res, next) => {
     const { pcapID } = req.params;
 
     logger('sdp-get').info(`Getting SDP for ${pcapID}`);
@@ -492,28 +494,30 @@ router.get('/:pcapID/stream/:streamID/frames', (req, res) => {
 
 /*** FRAME ***/
 
-/* Get packets.json file for a frame */
-router.get('/:pcapID/stream/:streamID/frame/:frameID/packets', (req, res) => {
-    const { pcapID, streamID, frameID } = req.params;
-    const filePath = `${getUserFolder(req)}/${pcapID}/${streamID}/${frameID}/${CONSTANTS.PACKET_FILE}`;
-
-    fs.sendFileAsResponse(filePath, res);
+router.get('/:pcapID/stream/:streamID/requestFrames', (req, res) => {
+    verifyIfFramesAreExtractedOrExtract(req).then(() => {
+        res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
+    });
 });
 
 /* Get png file for a frame */
 router.get('/:pcapID/stream/:streamID/frame/:frameID/png', (req, res) => {
-    const { pcapID, streamID, frameID } = req.params;
-    const filePath = `${getUserFolder(req)}/${pcapID}/${streamID}/${frameID}/${CONSTANTS.PNG_FILE}`;
+    verifyIfFramesAreExtractedOrExtract(req).then(() => {
+        const { pcapID, streamID, frameID } = req.params;
+        const filePath = `${getUserFolder(req)}/${pcapID}/${streamID}/${frameID}/${CONSTANTS.PNG_FILE}`;
 
-    fs.sendFileAsResponse(filePath, res);
+        fs.sendFileAsResponse(filePath, res);
+    });
 });
 
 /* Get jpg thumbnail for a frame */
 router.get('/:pcapID/stream/:streamID/frame/:frameID/jpg', (req, res) => {
-    const { pcapID, streamID, frameID } = req.params;
-    const filePath = `${getUserFolder(req)}/${pcapID}/${streamID}/${frameID}/${CONSTANTS.JPG_FILE}`;
+    verifyIfFramesAreExtractedOrExtract(req).then(() => {
+        const { pcapID, streamID, frameID } = req.params;
+        const filePath = `${getUserFolder(req)}/${pcapID}/${streamID}/${frameID}/${CONSTANTS.JPG_FILE}`;
 
-    fs.sendFileAsResponse(filePath, res);
+        fs.sendFileAsResponse(filePath, res);
+    });
 });
 
 /*** Audio ***/
@@ -553,7 +557,7 @@ function renderMp3(req, res) {
                     logger('render-mp3').info(output.stderr);
                     const userId = getUserId(req);
                     websocketManager.instance().sendEventToUser(userId, {
-                        event: WS_EVENTS.MP3_FILE_RENDERED,
+                        event: api.wsEvents.Mp3.rendered,
                         data: { channels: channels },
                     });
                 })
@@ -562,7 +566,7 @@ function renderMp3(req, res) {
                     logger('render-mp3').error(output.stderr);
                     const userId = getUserId(req);
                     websocketManager.instance().sendEventToUser(userId, {
-                        event: WS_EVENTS.MP3_FILE_FAILED,
+                        event: api.wsEvents.Mp3.failed,
                     });
                 });
             res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();

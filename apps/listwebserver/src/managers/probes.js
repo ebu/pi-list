@@ -1,4 +1,4 @@
-const logger = require('../util/logger');
+import logger from '../util/logger';
 import { mq } from '@bisect/bisect-core-ts-be';
 import { api } from '@bisect/ebu-list-sdk';
 const programArguments = require('../util/programArguments');

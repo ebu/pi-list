@@ -59,15 +59,9 @@
             },
             "media_type": "audio",
             "media_type_validation": {
-                "anc": [
-                    "STATUS_CODE_ANC_WRONG_RESERVED_BIT"
-                ],
-                "ttml": [
-                    "STATUS_CODE_TTML_INVALID_LENGTH"
-                ],
-                "video": [
-                    "STATUS_CODE_VIDEO_NOT_EQUAL_RTP_TIMESTAMPS"
-                ]
+                "anc": ["STATUS_CODE_ANC_WRONG_RESERVED_BIT"],
+                "ttml": ["STATUS_CODE_TTML_INVALID_LENGTH"],
+                "video": ["STATUS_CODE_VIDEO_NOT_EQUAL_RTP_TIMESTAMPS"]
             },
             "network_information": {
                 "destination_address": "239.0.1.13",
@@ -189,6 +183,9 @@
                     },
                     "unit": "μs"
                 }
+            },
+            "processing": {
+                "extractedFrames": "IDLE"
             }
         }
     ]

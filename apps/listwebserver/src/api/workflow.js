@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const router = Router();
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
-const logger = require('../util/logger');
+import logger from '../util/logger';
 const controller = require('../controllers/workflow');
 const { getUserFolder } = require('../util/analysis');
 const { getUserId, checkIsReadOnly } = require('../auth/middleware');

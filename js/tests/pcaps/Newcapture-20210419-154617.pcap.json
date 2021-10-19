@@ -70,15 +70,9 @@
             },
             "media_type": "video",
             "media_type_validation": {
-                "anc": [
-                    "STATUS_CODE_ANC_WRONG_HEADER"
-                ],
-                "audio": [
-                    "STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"
-                ],
-                "ttml": [
-                    "STATUS_CODE_TTML_INVALID_DOCUMENT"
-                ]
+                "anc": ["STATUS_CODE_ANC_WRONG_HEADER"],
+                "audio": ["STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"],
+                "ttml": ["STATUS_CODE_TTML_INVALID_DOCUMENT"]
             },
             "network_information": {
                 "destination_address": "239.0.1.2",
@@ -132,14 +126,8 @@
                     "cmax_wide": 16,
                     "compliance": "narrow",
                     "histogram": [
-                        [
-                            0,
-                            88.22222137451172
-                        ],
-                        [
-                            1,
-                            11.777777671813965
-                        ]
+                        [0, 88.22222137451172],
+                        [1, 11.777777671813965]
                     ]
                 },
                 "compliance": "narrow",
@@ -149,22 +137,10 @@
                 "vrx": {
                     "compliance": "narrow",
                     "histogram": [
-                        [
-                            4,
-                            0.10288065671920776
-                        ],
-                        [
-                            5,
-                            55.452674865722656
-                        ],
-                        [
-                            6,
-                            0.12345679104328156
-                        ],
-                        [
-                            7,
-                            44.320987701416016
-                        ]
+                        [4, 0.10288065671920776],
+                        [5, 55.452674865722656],
+                        [6, 0.12345679104328156],
+                        [7, 44.320987701416016]
                     ],
                     "vrx_full_narrow": 8,
                     "vrx_full_wide": 720
@@ -242,6 +218,9 @@
                         "packet_count": 21600
                     }
                 }
+            },
+            "processing": {
+                "extractedFrames": "IDLE"
             }
         },
         {
@@ -256,15 +235,9 @@
             },
             "media_type": "audio",
             "media_type_validation": {
-                "anc": [
-                    "STATUS_CODE_ANC_WRONG_RESERVED_BIT"
-                ],
-                "ttml": [
-                    "STATUS_CODE_TTML_INVALID_LENGTH"
-                ],
-                "video": [
-                    "STATUS_CODE_VIDEO_NOT_EQUAL_RTP_TIMESTAMPS"
-                ]
+                "anc": ["STATUS_CODE_ANC_WRONG_RESERVED_BIT"],
+                "ttml": ["STATUS_CODE_TTML_INVALID_LENGTH"],
+                "video": ["STATUS_CODE_VIDEO_NOT_EQUAL_RTP_TIMESTAMPS"]
             },
             "network_information": {
                 "destination_address": "239.0.1.13",
@@ -386,6 +359,9 @@
                     },
                     "unit": "μs"
                 }
+            },
+            "processing": {
+                "extractedFrames": "IDLE"
             }
         }
     ]

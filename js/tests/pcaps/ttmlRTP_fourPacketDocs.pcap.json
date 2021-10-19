@@ -82,12 +82,8 @@
             "id": "c697c9ef-8093-4e27-a7b2-ee961b55629a",
             "media_type": "ttml",
             "media_type_validation": {
-                "anc": [
-                    "STATUS_CODE_ANC_WRONG_FIELD_VALUE"
-                ],
-                "audio": [
-                    "STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"
-                ]
+                "anc": ["STATUS_CODE_ANC_WRONG_FIELD_VALUE"],
+                "audio": ["STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"]
             },
             "network_information": {
                 "destination_address": "127.0.0.1",
@@ -247,6 +243,9 @@
                         ]
                     }
                 ]
+            },
+            "processing": {
+                "extractedFrames": "IDLE"
             }
         }
     ]

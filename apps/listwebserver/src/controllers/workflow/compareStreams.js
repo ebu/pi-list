@@ -3,9 +3,10 @@ const uuidv1 = require('uuid/v1');
 const websocketManager = require('../../managers/websocket');
 const WS_EVENTS = require('../../enums/wsEvents');
 const COMPARISON_TYPES = require('../../enums/comparison');
-const logger = require('../../util/logger');
+import logger from '../../util/logger';
 const Stream = require('../../models/stream');
 const StreamCompare = require('../../models/streamCompare');
+import { api } from '@bisect/ebu-list-sdk';
 
 const getConfig = async (inputConfig, folder) => {
     const main = await Stream.findOne({ id: inputConfig.mainStreamID }).exec();
@@ -34,10 +35,12 @@ const getConfig = async (inputConfig, folder) => {
         config.comparison_type = COMPARISON_TYPES.PSNR_AND_DELAY;
         config.media_type = main.media_type;
         config.media_specific = main.media_specific;
-    } else if ((main.media_type === 'audio') && (ref.media_type === 'audio')) {
-        if ((main.media_specific.sampling !== ref.media_specific.sampling) &&
-                (main.media_specific.encoding !== ref.media_specific.encoding) &&
-                (main.media_specific.packet_time !== ref.media_specific.packet_time)) {
+    } else if (main.media_type === 'audio' && ref.media_type === 'audio') {
+        if (
+            main.media_specific.sampling !== ref.media_specific.sampling &&
+            main.media_specific.encoding !== ref.media_specific.encoding &&
+            main.media_specific.packet_time !== ref.media_specific.packet_time
+        ) {
             throw Error('different audio format: unsupported');
         }
         config.main.channel = inputConfig.mainChannel;
@@ -47,19 +50,19 @@ const getConfig = async (inputConfig, folder) => {
         config.comparison_type = COMPARISON_TYPES.CROSS_CORRELATION;
         config.media_type = main.media_type;
         config.media_specific = main.media_specific;
-    } else if (((main.media_type === 'audio') && (ref.media_type === 'video')) ||
-        ((main.media_type === 'video') && (ref.media_type === 'audio'))) {
+    } else if (
+        (main.media_type === 'audio' && ref.media_type === 'video') ||
+        (main.media_type === 'video' && ref.media_type === 'audio')
+    ) {
         config.comparison_type = COMPARISON_TYPES.AV_SYNC;
         config.media_type = 'A/V';
 
-        const [audioConfig, audioInfo] = (main.media_type === 'audio')?
-            [config.main, main] : [config.reference, ref]
+        const [audioConfig, audioInfo] = main.media_type === 'audio' ? [config.main, main] : [config.reference, ref];
         audioConfig.first_packet_ts = audioInfo.statistics.first_packet_ts;
         audioConfig.last_packet_ts = audioInfo.statistics.last_packet_ts;
         audioConfig.packet_time = audioInfo.media_specific.packet_time;
 
-        const [videoConfig, videoInfo] = (main.media_type === 'video')?
-            [config.main, main] : [config.reference, ref]
+        const [videoConfig, videoInfo] = main.media_type === 'video' ? [config.main, main] : [config.reference, ref];
         videoConfig.scan_type = videoInfo.media_specific.scan_type;
     } else {
         throw Error(`Unsupported media type: ${main.media_type} + ${ref.media_type}`);
@@ -68,7 +71,7 @@ const getConfig = async (inputConfig, folder) => {
     return config;
 };
 
-const doCreateComparator = config => {
+const doCreateComparator = (config) => {
     /* Comparator modules must export the following functions:
     createComparator(config)
     */
@@ -96,11 +99,11 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
         msg: '',
     };
 
-    const handleError = err => {
+    const handleError = (err) => {
         logger('compare-streams').error(err);
         workflowResponse.msg = `Could not compare ${name}: ${err.message}`;
         websocketManager.instance().sendEventToUser(userID, {
-            event: WS_EVENTS.STREAM_COMPARE_FAILED,
+            event: api.wsEvents.Stream.compare_failed,
             data: workflowResponse,
         });
     };
@@ -114,7 +117,7 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
 
     logger('compare-streams').info(`Config: ${JSON.stringify(compareConfig)}`);
     doCreateComparator(compareConfig)
-        .then(data => {
+        .then((data) => {
             // insert in DB
             const id = uuidv1();
             StreamCompare.create(
@@ -135,7 +138,7 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
                     workflowResponse.compareId = id;
                     workflowResponse.msg = `${name}: success`;
                     websocketManager.instance().sendEventToUser(userID, {
-                        event: WS_EVENTS.STREAM_COMPARE_COMPLETE,
+                        event: api.wsEvents.Stream.compare_complete,
                         data: workflowResponse,
                     });
                 }
