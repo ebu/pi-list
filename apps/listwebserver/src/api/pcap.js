@@ -510,16 +510,6 @@ router.get('/:pcapID/stream/:streamID/frame/:frameID/png', (req, res) => {
     });
 });
 
-/* Get jpg thumbnail for a frame */
-router.get('/:pcapID/stream/:streamID/frame/:frameID/jpg', (req, res) => {
-    verifyIfFramesAreExtractedOrExtract(req).then(() => {
-        const { pcapID, streamID, frameID } = req.params;
-        const filePath = `${getUserFolder(req)}/${pcapID}/${streamID}/${frameID}/${CONSTANTS.JPG_FILE}`;
-
-        fs.sendFileAsResponse(filePath, res);
-    });
-});
-
 /*** Audio ***/
 /* Get mp3 file for an audio stream */
 

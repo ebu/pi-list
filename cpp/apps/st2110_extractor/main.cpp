@@ -108,10 +108,17 @@ namespace
 
         auto streams_to_process = get_ids_to_process(db, config);
 
-        // TODO: we no longer need to calculate this up front. This should be done on the fly, with the other
-        // measurements.
-        const auto tro_info = calculate_average_troffset(config.pcap_file, streams_to_process);
-        update_tr_info(tro_info, streams_to_process);
+        if(!config.extract_frames)
+        {
+            // TODO: we no longer need to calculate this up front. This should be done on the fly, with the other
+            // measurements.
+            const auto start_time = std::chrono::steady_clock::now();
+            const auto tro_info   = calculate_average_troffset(config.pcap_file, streams_to_process);
+            update_tr_info(tro_info, streams_to_process);
+            const auto delta = std::chrono::steady_clock::now() - start_time;
+            logger()->info("TR info calculation: {}ms",
+                           std::chrono::duration_cast<std::chrono::milliseconds>(delta).count());
+        }
 
         ///
         const auto look_for = nlohmann::json{{"id", config.pcap_id}};
@@ -142,7 +149,7 @@ namespace
                                                           ebu_list::definitions::exchanges::extractor_status::info);
 
         auto progress_callback = [&exchange_sender, &pcap](float percentage) {
-            logger()->info("Progress: {} %", percentage);
+            // logger()->info("Progress: {} %", percentage);
             json response;
             response["id"]         = pcap.id;
             response["percentage"] = percentage;

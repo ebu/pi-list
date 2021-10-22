@@ -13,7 +13,7 @@ const extractorProgressReceiver = mq.createExchangeReceiver(program.rabbitmqUrl,
 function handleProgressMessage(msg) {
     try {
         const message = JSON.parse(msg.toString());
-        logger('ingest-progress').info(JSON.stringify(message));
+        // logger('ingest-progress').info(JSON.stringify(message));
 
         Pcap.findOne({ id: message.id })
             .exec()

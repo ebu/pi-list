@@ -98,29 +98,6 @@ function doVideoAnalysis(pcapId, streams) {
     return Promise.all(promises);
 }
 
-const generateThumbail = async (path, size) => {
-    if (!fs.folderExists(`${path}`)) {
-        return;
-    }
-
-    const png = `${path}/${CONSTANTS.PNG_FILE}`;
-    const jpg = `${path}/${CONSTANTS.JPG_FILE}`;
-    const ffmpegCommand = `ffmpeg -hide_banner -f image2 -i ${png} -vf scale=${size} ${jpg}`;
-    logger('video').info(`Create thumbnails: ${ffmpegCommand}`);
-    return await exec(ffmpegCommand);
-};
-
-function generateThumbails(folder, streams) {
-    /* downsize original png to 240-px-width jpg */
-    const promises = streams.map(async (stream) => {
-        fs.getAllFirstLevelFolders(`${folder}/${stream.id}`).map(async (frame) =>
-            generateThumbail(`${folder}/${stream.id}/${frame.id}`, '240:-1')
-        );
-    });
-    return Promise.all(promises);
-}
-
 module.exports = {
     doVideoAnalysis,
-    generateThumbails,
 };

@@ -1,10 +1,8 @@
 #include "ebu/list/analysis/full_analysis.h"
-#include "ebu/list/analysis/handlers/anc_stream_handler.h"
-#include "ebu/list/analysis/handlers/audio_stream_handler.h"
-#include "ebu/list/analysis/handlers/video_stream_handler.h"
 #include "ebu/list/analysis/serialization/anc_stream_serializer.h"
 #include "ebu/list/analysis/serialization/audio_stream_serializer.h"
 #include "ebu/list/analysis/serialization/ttml_stream_serializer.h"
+#include "ebu/list/analysis/serialization/video_stream_extractor.h"
 #include "ebu/list/analysis/serialization/video_stream_serializer.h"
 #include "ebu/list/analysis/utils/multi_listener.h"
 #include "ebu/list/core/platform/executor.h"
@@ -13,7 +11,7 @@
 #include "ebu/list/ptp/udp_filter.h"
 #include "ebu/list/rtp/udp_handler.h"
 #include "ebu/list/st2110/d21/settings.h"
-#include <iostream>
+#include "stream_counter.h"
 
 using namespace ebu_list;
 using namespace ebu_list::analysis;
@@ -103,38 +101,28 @@ namespace
 
 void analysis::run_full_analysis(processing_context& context)
 {
-    std::atomic_int nr_audio = 0;
-    std::atomic_int nr_video = 0;
-    std::atomic_int nr_anc   = 0;
-    std::atomic_int nr_total = 0;
-
-    std::atomic_int nr_wide          = 0;
-    std::atomic_int nr_narrow        = 0;
-    std::atomic_int nr_narrow_linear = 0;
-    std::atomic_int nr_not_compliant = 0;
+    stream_counter counter;
 
     auto main_executor = std::make_shared<executor>();
 
     auto video_finalizer_callback = [&](const video_stream_serializer& handler) {
-        const auto analysis_info = handler.get_video_analysis_info();
-        switch(analysis_info.compliance)
-        {
-        case compliance_profile::narrow: ++nr_narrow; break;
-        case compliance_profile::narrow_linear: ++nr_narrow_linear; break;
-        case compliance_profile::wide: ++nr_wide; break;
-        case compliance_profile::not_compliant: ++nr_not_compliant; break;
-        }
-
+        counter.handle_video_completed(handler.get_video_analysis_info());
         video_finalizer(context, handler);
     };
-
-    auto audio_finalizer_callback = [&context](const audio_stream_handler& ash) { audio_finalizer(context, ash); };
-    auto anc_finalizer_callback   = [&context](const anc_stream_handler& ash) { anc_finalizer(context, ash); };
-    auto ttml_finalizer_callback  = [&context](const ttml::stream_handler& tsh) { ttml_finalizer(context, tsh); };
+    auto audio_finalizer_callback = [&context, &counter](const audio_stream_handler& ash) {
+        counter.handle_audio_completed();
+        audio_finalizer(context, ash);
+    };
+    auto anc_finalizer_callback = [&context, &counter](const anc_stream_handler& ash) {
+        counter.handle_anc_completed();
+        anc_finalizer(context, ash);
+    };
+    auto ttml_finalizer_callback = [&context, &counter](const ttml::stream_handler& tsh) {
+        counter.handle_ttml_completed();
+        ttml_finalizer(context, tsh);
+    };
 
     auto create_handler = [&](const rtp::packet& first_packet) -> rtp::listener_uptr {
-        ++nr_total;
-
         const auto maybe_stream_info = context.get_stream_info(first_packet);
 
         if(!maybe_stream_info)
@@ -151,56 +139,63 @@ void analysis::run_full_analysis(processing_context& context)
 
         if(stream_info.type == media::media_type::VIDEO)
         {
-            ++nr_video;
             const auto& in_video_info = std::get<video_stream_details>(media_info);
             const auto video_info     = media::video::info{in_video_info.video.rate, in_video_info.video.scan_type,
                                                        in_video_info.video.dimensions};
 
-            auto new_handler = std::make_unique<video_stream_serializer>(first_packet, stream_info, in_video_info,
-                                                                         context.storage_folder, main_executor,
-                                                                         video_finalizer_callback, context.extract_frames);
-            auto ml          = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
-            ml->add(std::move(new_handler));
+            auto ml = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
 
+            if(context.extract_frames)
             {
-                auto db_logger    = context.handler_factory->create_c_inst_data_logger(context.pcap.id, stream_info.id);
-                auto cinst_writer = context.handler_factory->create_c_inst_histogram_logger(stream_info.id);
-                auto analyzer     = std::make_unique<c_analyzer>(std::move(db_logger), std::move(cinst_writer),
-                                                             in_video_info.video.packets_per_frame, video_info.rate);
-                ml->add(std::move(analyzer));
+                auto new_handler = std::make_unique<video_stream_extractor>(first_packet, stream_info, in_video_info,
+                                                                            context.storage_folder, main_executor);
+                ml->add(std::move(new_handler));
             }
-
+            else
             {
-                auto framer_ml =
-                    std::make_unique<multi_listener_t<frame_start_filter::listener, frame_start_filter::packet_info>>();
-
+                auto new_handler = std::make_unique<video_stream_serializer>(
+                    first_packet, stream_info, in_video_info, context.storage_folder, video_finalizer_callback);
+                ml->add(std::move(new_handler));
                 {
-                    auto db_logger = context.handler_factory->create_rtp_ts_logger(context.pcap.id, stream_info.id);
-                    auto analyzer  = std::make_unique<rtp_ts_analyzer>(std::move(db_logger), video_info.rate);
-                    framer_ml->add(std::move(analyzer));
-                }
-
-                {
-                    auto db_logger  = context.handler_factory->create_vrx_data_logger(context.pcap.id, stream_info.id,
-                                                                                      "gapped-ideal");
-                    auto vrx_writer = context.handler_factory->create_vrx_histogram_logger(stream_info.id);
-                    const auto settings = vrx_settings{in_video_info.video.schedule, tvd_kind::ideal, std::nullopt};
+                    auto db_logger =
+                        context.handler_factory->create_c_inst_data_logger(context.pcap.id, stream_info.id);
+                    auto cinst_writer = context.handler_factory->create_c_inst_histogram_logger(stream_info.id);
                     auto analyzer =
-                        std::make_unique<vrx_analyzer>(std::move(db_logger), std::move(vrx_writer),
-                                                       in_video_info.video.packets_per_frame, video_info, settings);
-                    framer_ml->add(std::move(analyzer));
+                        std::make_unique<c_analyzer>(std::move(db_logger), std::move(cinst_writer),
+                                                     in_video_info.video.packets_per_frame, video_info.rate);
+                    ml->add(std::move(analyzer));
                 }
 
-                auto framer =
-                    std::make_unique<frame_start_filter>(frame_start_filter::listener_uptr(std::move(framer_ml)));
-                ml->add(std::move(framer));
-            }
+                {
+                    auto framer_ml = std::make_unique<
+                        multi_listener_t<frame_start_filter::listener, frame_start_filter::packet_info>>();
 
+                    {
+                        auto db_logger = context.handler_factory->create_rtp_ts_logger(context.pcap.id, stream_info.id);
+                        auto analyzer  = std::make_unique<rtp_ts_analyzer>(std::move(db_logger), video_info.rate);
+                        framer_ml->add(std::move(analyzer));
+                    }
+
+                    {
+                        auto db_logger = context.handler_factory->create_vrx_data_logger(
+                            context.pcap.id, stream_info.id, "gapped-ideal");
+                        auto vrx_writer     = context.handler_factory->create_vrx_histogram_logger(stream_info.id);
+                        const auto settings = vrx_settings{in_video_info.video.schedule, tvd_kind::ideal, std::nullopt};
+                        auto analyzer =
+                            std::make_unique<vrx_analyzer>(std::move(db_logger), std::move(vrx_writer),
+                                                           in_video_info.video.packets_per_frame, video_info, settings);
+                        framer_ml->add(std::move(analyzer));
+                    }
+
+                    auto framer =
+                        std::make_unique<frame_start_filter>(frame_start_filter::listener_uptr(std::move(framer_ml)));
+                    ml->add(std::move(framer));
+                }
+            }
             return ml;
         }
         else if(stream_info.type == media::media_type::AUDIO)
         {
-            ++nr_audio;
             const auto& audio_info = std::get<audio_stream_details>(media_info);
             auto new_handler       = std::make_unique<audio_stream_serializer>(
                 first_packet, stream_info, audio_info, audio_finalizer_callback, context.storage_folder);
@@ -221,7 +216,6 @@ void analysis::run_full_analysis(processing_context& context)
         }
         else if(stream_info.type == media::media_type::ANCILLARY_DATA)
         {
-            ++nr_anc;
             const auto& anc_info = std::get<anc_stream_details>(media_info);
             auto new_handler     = std::make_unique<anc_stream_serializer>(first_packet, stream_info, anc_info,
                                                                        anc_finalizer_callback, context.storage_folder);
@@ -254,7 +248,6 @@ void analysis::run_full_analysis(processing_context& context)
         }
         else if(stream_info.type == media::media_type::TTML)
         {
-            ++nr_anc;
             const auto& ttml_info = std::get<ttml::stream_details>(media_info);
             auto doc_logger       = context.handler_factory->create_ttml_document_logger(stream_info.id);
 
@@ -264,6 +257,7 @@ void analysis::run_full_analysis(processing_context& context)
         }
         else
         {
+            counter.handle_unknown();
             logger()->warn(
                 "Bypassing stream with destination: {}. Reason: Unknown media type",
                 ipv4::endpoint{first_packet.info.udp.destination_address, first_packet.info.udp.destination_port});
@@ -286,18 +280,9 @@ void analysis::run_full_analysis(processing_context& context)
     launcher.wait();
     main_executor->wait();
 
-    if(context.extract_frames == false){
-        context.pcap.audio_streams         = nr_audio.load();
-        context.pcap.video_streams         = nr_video.load();
-        context.pcap.anc_streams           = nr_anc.load();
-        context.pcap.total_streams         = nr_total.load();
-        context.pcap.wide_streams          = nr_wide.load();
-        context.pcap.narrow_streams        = nr_narrow.load();
-        context.pcap.narrow_linear_streams = nr_narrow_linear.load();
-        context.pcap.not_compliant_streams = nr_not_compliant.load();
-
-
-
+    if(context.extract_frames == false)
+    {
+        counter.fill_streams_summary(context.pcap);
         context.updater->update_pcap_info(context.pcap.id, pcap_info::to_json(context.pcap));
     };
 }

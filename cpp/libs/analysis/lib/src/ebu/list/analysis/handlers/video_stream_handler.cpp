@@ -242,6 +242,7 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
 
             if(p + line.length > end)
             {
+                // TODO: report this
                 logger()->error("buffer out of bounds. Line no: {} Offset: {} Length: {}", line.line_number,
                                 line.offset, line.length);
                 break;
@@ -253,6 +254,7 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
                                 get_line_size_bytes(video_description_.video) * line.line_number + byte_offset;
             if(target + line.length > current_frame_->buffer->end())
             {
+                // TODO: report this
                 logger()->error("buffer out of bounds. Line no: {} Offset: {} Length: {}", line.line_number,
                                 line.offset, line.length);
                 break;
