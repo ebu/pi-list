@@ -41,6 +41,7 @@ stages:
                       Dockerfile: 'release/server/Dockerfile'
                       buildContext: 'release/server'
                       tags: ${{ parameters.docker_image_tag }}
+      
     - stage: Test
       jobs:
           - job: TestJob
@@ -50,6 +51,7 @@ stages:
                   clean: ${{ parameters.clean }}
                   submodules: recursive
                 - script: |
+                      date
                       echo "Build ID: $(Build.BuildNumber)"
                       echo "Docker tag: ${{ parameters.docker_image_tag }}"
                 - script: |
@@ -73,6 +75,16 @@ stages:
                       yarn run validation-tests-advanced -b http://listserver:80 -u user3 -p user3
                   displayName: Run validation tests Advanced
                   workingDirectory: $(Build.SourcesDirectory)/js/tests
+
+                - task: DockerCompose@0
+                  displayName: Docker-compose logs
+                  inputs:
+                      containerregistrytype: 'Azure Container Registry'
+                      dockerComposeFile: $(Build.SourcesDirectory)/scripts/validation_tests/docker-compose.yml
+                      action: 'Run a Docker Compose command'
+                      dockerComposeFileArgs: EBU_LIST_VERSION=${{ parameters.docker_image_tag }}
+                      dockerComposeCommand: 'logs'
+
                 - task: DockerCompose@0
                   displayName: Docker-compose down
                   condition: always()
