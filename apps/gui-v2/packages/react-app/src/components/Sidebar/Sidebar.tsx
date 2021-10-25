@@ -1,5 +1,4 @@
 import React from 'react';
-import 'tippy.js/dist/tippy.css';
 import './styles.scss';
 import { LogoIcon } from '../icons/index';
 import { useHistory } from 'react-router-dom';
