@@ -54,6 +54,13 @@ function SidebarHOC() {
                 route: routeNames.PCAPS,
             },
             {
+                text: translate('navigation.capture'),
+                clicked: false,
+                key: sidebarButtonsKeys.capture,
+                icon: ComparisonIcon,
+                route: routeNames.CAPTURE,
+            },
+            {
                 text: translate('navigation.stream_comparisons'),
                 clicked: false,
                 key: sidebarButtonsKeys.streamComparison,
@@ -112,6 +119,9 @@ function SidebarHOC() {
         switch (buttonKey) {
             case sidebarButtonsKeys.analysis:
                 path = routeNames.PCAPS;
+                break;
+            case sidebarButtonsKeys.capture:
+                path = routeNames.CAPTURE;
                 break;
             case sidebarButtonsKeys.streamComparison:
                 path = routeNames.STREAM_COMPARISON;

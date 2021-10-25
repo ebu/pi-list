@@ -21,6 +21,7 @@ export const sidebarButtonsKeys = {
     settings: 5,
     collapse: 6,
     version: 7,
+    capture: 8,
 };
 
 export type Button = {

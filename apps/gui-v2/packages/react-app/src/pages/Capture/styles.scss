@@ -1,0 +1,95 @@
+@import '../../../../style/variables/colors.scss';
+
+.capture-page-container {
+    margin: 0 3em 1em 3em;
+    justify-content: center;
+    align-items: center;
+}
+
+.capture-container {
+    border-radius: 8px 8px 8px 8px;
+    background: $background-dark-blue;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+}
+
+.capture-title {
+    padding-bottom: 20px;
+}
+
+.capture-title > span {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 18px;
+    color: $font-light-grey;
+}
+
+.capture-page-select {
+    width: 40%;
+}
+
+.capture-content-column {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: baseline;
+    padding-bottom: 20px;
+    margin: auto 2em;
+}
+
+.capture-content-row {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 50px;
+    margin: auto 2em;
+    justify-content: space-between;
+}
+
+.capture-page-capture-button {
+    cursor: pointer;
+    background: $vibrant-blue;
+    border: 1px solid $vibrant-blue;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: 10em;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+
+    color: $white;
+}
+
+.capture-settings-label-container {
+    padding-bottom: 0.5em;
+}
+
+.capture-settings-label {
+    padding-bottom: 0.5em;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #e6e7ea;
+}
+
+.capture-decline-gdpr {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-capture-description {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    color: white;
+    font-family: Prompt;
+}
