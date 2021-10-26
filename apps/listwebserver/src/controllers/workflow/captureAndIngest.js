@@ -1,7 +1,7 @@
 import { api } from '@bisect/ebu-list-sdk';
+import { mq } from '@bisect/bisect-core-ts-be';
 const programArguments = require('../../util/programArguments');
 const liveSources = require('../live/sources');
-const { persistent } = require('../../util/mq/send');
 
 const createWorkflow = async (wf, inputConfig, workSender) => {
     const wantedSenderIds = inputConfig.ids;
@@ -18,7 +18,7 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
 
     wf.configuration = outputConfiguration;
 
-    await workSender.send({ msg: wf, persistent });
+    await workSender.send({ msg: wf, persistent: mq.persistent });
 };
 
 const cancelWorkflow = async (payload, mqttSender) => {
