@@ -149,7 +149,6 @@ function handlePreprocessorResponse(msg) {
             delete outstandingPreprocessorRequests[message.data.pcap.id];
         } else {
             // logger('stream-pre-processor').info(`Pcap ID not found in outstand jobs: ${message.data.pcap.id}`);
-
             return;
         }
 

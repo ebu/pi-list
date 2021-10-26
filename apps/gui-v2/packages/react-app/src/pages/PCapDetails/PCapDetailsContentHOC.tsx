@@ -176,7 +176,7 @@ function PCapDetailsContentHOC(props: any) {
     }, [streams]);
 
     const currentStream: SDK.types.IStreamInfo | undefined =
-        activeStreamId === undefined ? undefined : streams.find(v => v.id === activeStreamId);
+        activeStreamId === undefined ? undefined : streams.find((v: any) => v.id === activeStreamId);
 
     const onBackButtonClick = () => {
         history.push('/');
