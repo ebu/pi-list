@@ -1,12 +1,17 @@
 {
   "name": "capture_probe",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "nodemon server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "compile": "npm install",
+    "start": "node server.js config.yml",
+    "test": "jest"
   },
   "dependencies": {
+    "@bisect/ebu-list-sdk": "^0.1.0",
+    "@bisect/bisect-core-ts-be": "^0.1.0",
     "amqplib": "^0.5.5",
     "commander": "^4.0.1",
     "lodash": "^4.17.19",

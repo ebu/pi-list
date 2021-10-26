@@ -6,15 +6,18 @@ For information about the configuration file, see config.yml
 
 const amqp = require('amqplib');
 const logger = require('./logger');
-const workflowTypes = require('../../js/common/workflows/types');
-const workflowsSchema = require('../../js/common/workflows/schema');
-const mq = require('../../js/common/mq/types');
-const { createQueueSender, createExchangeSender, persistent } = require('../../js/common_server/mq/send');
-const mqReceive = require('../../js/common_server/mq/receive');
+const SDK = require('@bisect/ebu-list-sdk')
+const { mq } = require('@bisect/bisect-core-ts-be');
 const { ingestFromFile } = require('./fromFile');
 const { performCaptureAndIngest } = require('./capture');
 
 ///////////////////////////////////////////////////////////////////////////////
+
+const workflowTypes = SDK.api.workflows.types;
+const workflowStatus = SDK.api.workflows.status;
+
+const mqExchanges = SDK.api.mq.exchanges;
+const mqQueues = SDK.api.mq.queues;
 
 const commander = require('commander');
 const yamlParser = require('read-yaml');
@@ -40,8 +43,8 @@ if (typeof globalConfig === 'undefined') {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-logger('server').info(`Starting server`);
-logger('server').info(`Connecting to ${globalConfig.rabbitmqUrl}`);
+logger('probe').info(`Starting probe`);
+logger('probe').info(`Connecting to ${globalConfig.rabbitmqUrl}`);
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -51,7 +54,7 @@ const sleep = (milliseconds) => {
 
 const onCancelMessage = async (msg, sendStatus) => {
     try {
-        const message = JSON.parse(msg.content.toString());
+        const message = JSON.parse(msg);
         const { canceled } = message;
 
         /*
@@ -66,25 +69,25 @@ const onCancelMessage = async (msg, sendStatus) => {
             sendStatus({
                 msg: {
                     id: item,
-                    status: workflowsSchema.status.canceled,
+                    status: workflowStatus.canceled,
                 },
-                persistent,
+                persistent: mq.persistent,
             });
         });
     } catch (err) {
-        logger('server').error(`Error cancelling workflows: ${err.message}`);
+        logger('probe').error(`Error cancelling workflows: ${err.message}`);
     }
 };
 
 const onWorkMessage = async (msg, sendStatus) => {
     try {
-        logger('server').info(`Received message`);
-        const message = JSON.parse(msg.content.toString());
-
+        logger('probe').info(`Received message`);
+        const message = JSON.parse(msg);
+        logger('probe').info(JSON.stringify(message));
         const { type, configuration } = message;
         const workflowConfig = configuration;
 
-        if (type === workflowTypes.types.captureAndIngest) {
+        if (type === workflowTypes.captureAndIngest) {
             if (
                 !workflowConfig.id ||
                 !workflowConfig.senders ||
@@ -95,34 +98,29 @@ const onWorkMessage = async (msg, sendStatus) => {
             ) {
                 const event = {
                     id: workflowConfig.id,
-                    status: workflowsSchema.status.failed,
+                    status: workflowStatus.failed,
                     payload: {
                         // TODO: error code ased on HTTP error codes
                         message: `invalid configuration: ${JSON.stringify(workflowConfig)}`,
                     },
                 };
 
-                sendStatus({ msg: event, persistent });
+                sendStatus({
+                    msg: event,
+                    persistent: mq.persistent
+                });
                 throw new Error(JSON.stringify(event));
             }
 
             try {
-                // await sleep(1000);
-
                 sendStatus({
                     msg: {
                         id: workflowConfig.id,
-                        status: workflowsSchema.status.started,
+                        status: workflowStatus.started,
                         percentage: 0,
                     },
-                    persistent,
+                    persistent: mq.persistent,
                 });
-
-                // await sleep(1000);
-
-                // if(Math.random() > 0.6) {
-                //     throw new Error("Boom!");
-                // }
 
                 if (globalConfig.dummy_pcap) {
                     await ingestFromFile(globalConfig, workflowConfig);
@@ -133,54 +131,55 @@ const onWorkMessage = async (msg, sendStatus) => {
                 sendStatus({
                     msg: {
                         id: workflowConfig.id,
-                        status: workflowsSchema.status.completed,
+                        status: workflowStatus.completed,
                         percentage: 100,
                     },
-                    persistent,
+                    persistent: mq.persistent,
                 });
 
-                logger('server').info(' [x] Done');
+                logger('probe').info(' [x] Done');
             } catch (err) {
-                logger('server').error(`Error processing message: ${err.message}`);
+                logger('probe').error(`Error processing message: ${err.message}`);
                 sendStatus({
                     msg: {
                         id: workflowConfig.id,
-                        status: workflowsSchema.status.failed,
+                        status: workflowStatus.failed,
                         payload: {
                             message: err.message,
                         },
                     },
-                    persistent,
+                    persistent: mq.persistent,
                 });
             }
         }
     } catch (err) {
-        logger('server').error(`Error processing message: ${err.message}`);
+        logger('probe').error(`Error processing message: ${err.message}`);
     }
 };
 
 const run = async () => {
-    const cancelReceiver = mqReceive.createExchangeReceiver(globalConfig.rabbitmqUrl, mq.exchanges.mqtt, [
-        mq.exchanges.mqtt.topics.workflows.cancel,
+    const cancelReceiver = mq.createExchangeReceiver(globalConfig.rabbitmqUrl, mqExchanges.mqtt, [
+        mqExchanges.mqtt.topics.workflows.cancel,
     ]);
+
     const handleCancelMessage = (msgContext) => onCancelMessage(msgContext, statusSender.send);
 
-    cancelReceiver.emitter.on(mqReceive.onMessageKey, handleCancelMessage);
+    cancelReceiver.emitter.on(mq.onMessageKey, handleCancelMessage);
 
-    const heartBeatSender = createExchangeSender(globalConfig.rabbitmqUrl, mq.exchanges.probeStatus);
+    const heartBeatSender = mq.createExchangeSender(globalConfig.rabbitmqUrl, mqExchanges.probeStatus);
 
-    const statusSender = createQueueSender(globalConfig.rabbitmqUrl, mq.queues.workflowStatus);
+    const statusSender = mq.createQueueSender(globalConfig.rabbitmqUrl, mqQueues.workflowStatus);
 
-    const workReceiver = mqReceive.createQueueReceiver(globalConfig.rabbitmqUrl, mq.queues.workflowRequest);
+    const workReceiver = mq.createQueueReceiver(globalConfig.rabbitmqUrl, mqQueues.workflowRequest);
     const handleMessage = (msgContext) => onWorkMessage(msgContext, statusSender.send);
 
-    workReceiver.emitter.on(mqReceive.onMessageKey, handleMessage);
+    workReceiver.emitter.on(mq.onMessageKey, handleMessage);
 
     const onProcessClosed = () => {
-        logger('server').info(`Closing server`);
+        logger('probe').info(`Closing probe`);
         clearInterval(timer);
         heartBeatSender.close();
-        workReceiver.emitter.off(mqReceive.onMessageKey, handleMessage);
+        workReceiver.emitter.off(mq.onMessageKey, handleMessage);
         workReceiver.close();
         statusSender.close();
     };
@@ -194,16 +193,16 @@ const run = async () => {
             };
 
             await heartBeatSender.send({
-                key: mq.exchanges.probeStatus.keys.announce,
+                key: mqExchanges.probeStatus.keys.announce,
                 msg: data,
             });
         } catch (err) {
-            logger('server').error(`Error sending announce message: ${err}`);
+            logger('probe').error(`Error sending announce message: ${err}`);
         }
     }, 1000);
 };
 
 run().catch((err) => {
-    logger('server').error(`Error: ${err}`);
+    logger('probe').error(`Error: ${err}`);
     process.exit(-1);
 });
