@@ -499,6 +499,27 @@ GET
 
 ###  Workflow
 
+- Path: `/api/workflow`
+- Method: `POST`
+- Request Body: `{ "type": "<type>", "configuration": {} }`
+- Response:
+  * HTTP/200:
+    ```json
+    {}
+    ```
+
+Body example:
+```json
+{
+    "type":"captureAndIngest",
+    "configuration": {
+        "durationMs":2000,
+        "filename":"26-10-2021,09:51:29-stream-from-famous-device",
+        "ids":["ffa493c0-de5e-11eb-be31-0f13514287c1"]
+    }
+}
+```
+
 ## [Models](#models)
 
 ### Analysis Model
