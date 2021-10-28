@@ -41,7 +41,7 @@ stages:
                       Dockerfile: 'release/server/Dockerfile'
                       buildContext: 'release/server'
                       tags: ${{ parameters.docker_image_tag }}
-      
+
     - stage: Test
       jobs:
           - job: TestJob
@@ -78,6 +78,7 @@ stages:
 
                 - task: DockerCompose@0
                   displayName: Docker-compose logs
+                  condition: always()
                   inputs:
                       containerregistrytype: 'Azure Container Registry'
                       dockerComposeFile: $(Build.SourcesDirectory)/scripts/validation_tests/docker-compose.yml
