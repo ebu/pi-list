@@ -69,7 +69,6 @@ router.post('/:comparisonID/', checkIsReadOnly, (req, res) => {
     const { comparisonID } = req.params;
     const userId = getUserId(req);
     const comparison = req.body;
-    console.log(comparison);
     StreamCompare.findOneAndUpdate({ id: comparisonID }, comparison, { new: true })
         .exec()
         .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))

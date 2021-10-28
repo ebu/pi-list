@@ -1,6 +1,7 @@
 import React from 'react';
 import list from '../../../utils/api';
 import SDK from '@bisect/ebu-list-sdk';
+import { api } from '@bisect/ebu-list-sdk';
 import { SetterOrUpdater, useSetRecoilState } from 'recoil';
 import { streamComparisonAtom } from './streamComparison';
 import _ from 'lodash';
@@ -8,7 +9,7 @@ import { Notification } from 'components/index';
 
 const handleStreamComparisonUpdate = async (data: any, setStreamComparisonAtom: SetterOrUpdater<any[]>) => {
     switch (data.event) {
-        case 'STREAM_COMPARE_COMPLETE':
+        case api.wsEvents.Stream.compare_complete:
             await list.streamComparison.getAll().then((comparisonData: any) => {
                 Notification({
                     typeMessage: 'success',
@@ -29,7 +30,7 @@ const handleStreamComparisonUpdate = async (data: any, setStreamComparisonAtom: 
             });
 
             break;
-        case 'STREAM_COMPARE_FAILED':
+        case api.wsEvents.Stream.compare_failed:
             Notification({
                 typeMessage: 'error',
                 message: (
@@ -40,7 +41,7 @@ const handleStreamComparisonUpdate = async (data: any, setStreamComparisonAtom: 
                 ),
             });
             break;
-        case 'STREAM_COMPARE_DELETED':
+        case api.wsEvents.Stream.compare_deleted:
             setStreamComparisonAtom(current => {
                 return current.filter((stream: any) => stream.id !== data.data.id);
             });

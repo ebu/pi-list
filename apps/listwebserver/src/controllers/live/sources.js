@@ -61,14 +61,10 @@ function addLiveSource(_source) {
     const filter = { id: source.id };
     let upsertedSource = LiveSource.findOneAndUpdate(filter, source, { new: true, upsert: true }).exec();
     upsertedSource.then(function (doc) {
-        console.log(doc);
-
         const changeSet = {
             added: [doc],
             removedIds: [],
         };
-
-        sendMqttUpdate(changeSet);
     });
 
     return Promise.resolve(upsertedSource);
@@ -81,8 +77,6 @@ function deleteLiveSource(sourceId) {
         added: [],
         removedIds: [ sourceId ],
     };
-
-    sendMqttUpdate(changeSet);
 
     return Promise.resolve({ id: sourceId });
 }

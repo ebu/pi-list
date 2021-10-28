@@ -5,7 +5,7 @@ const API_ERRORS = require('../enums/apiErrors');
 const LiveStream = require('../models/liveStream');
 const fs = require('../util/filesystem');
 const liveSources = require('../controllers/live/sources');
-const { checkIsReadOnly } = require('../auth/middleware');
+const { getUserId, checkIsReadOnly } = require('../auth/middleware');
 const websocketManager = require('../managers/websocket');
 import { api } from '@bisect/ebu-list-sdk';
 
@@ -70,15 +70,23 @@ router.get('/sources', (req, res) => {
 
 // add a live source. body : { source: <source to add> }
 router.post('/sources', checkIsReadOnly, (req, res) => {
+    const userId = getUserId(req);
     liveSources
         .addLiveSource(req.body)
-        .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send(data))
+        .then((data) => {
+            websocketManager.instance().sendEventToUser(userId, {
+                event: api.wsEvents.LiveSource.list_update,
+                data: data,
+            });
+            res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send(data)
+        })
         .catch(() => res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(API_ERRORS.UNEXPECTED_ERROR));
 });
 
 // delete live source
 router.delete('/sources/:sourceID', checkIsReadOnly, (req, res) => {
     const { sourceID } = req.params;
+    const userId = getUserId(req);
     if (sourceID === null || sourceID === undefined) {
         res.status(HTTP_STATUS_CODE.SERVER_ERROR.BAD_REQUEST).send(API_ERRORS.RESOURCE_NOT_FOUND);
         return;
@@ -87,13 +95,11 @@ router.delete('/sources/:sourceID', checkIsReadOnly, (req, res) => {
     liveSources
         .deleteLiveSource(sourceID)
         .then((data) => {
-            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data);
-        })
-        .then(() => {
             websocketManager.instance().sendEventToUser(userId, {
                 event: api.wsEvents.LiveSource.list_update,
                 data: data,
             });
+            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data);
         })
         .catch(() => res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(API_ERRORS.UNEXPECTED_ERROR));
 });
