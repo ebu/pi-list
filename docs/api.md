@@ -72,6 +72,10 @@ aforementioned _API_.
   * [`Get ancillary decoded payload`](#get-ancillary-decoded-payload)
 - [User](#user)
 - [Workflow](#workflow)
+- [Live Sources](#live-sources)
+  * [`Get all live source`](#get-all-sources)
+  * [`Add a new live source`](#add-a-new-live-source)
+  * [`Delete one live source`](#delete-one-live-source)
 
 ---
 
@@ -85,6 +89,7 @@ aforementioned _API_.
 - [Timestamped measurement](#timestamped-measurement)
 - [Frame metadata](#frame-metadata)
 - [Video packet metadata](#video-packet-metadata)
+- [Live Source Model](#live-source-model)
 
 ---
 
@@ -519,6 +524,47 @@ Body example:
     }
 }
 ```
+
+### Live Sources
+
+#### Get all live sources
+- Path: `/api/live/sources`
+- Method: `GET`
+- Response:
+  * HTTP/200: `[ <listOfLiveSources> ]` ([live source model](#live-source-model))
+
+#### Add a new live source
+- Path: `/api/live/sources`
+- Method: `POST`
+- Request Body: `<liveSources>`
+- Response:
+  * HTTP/201: `<liveSources>` ([live source model](#live-source-model))
+
+Body example:
+```json
+{
+    "id": "b7be7e80-37f6-11ec-ad5e-1f43ee5e607b",
+        "meta": {
+            "label": "My live source"
+        },
+        "kind": "user_defined",
+        "sdp": {
+            "streams": [
+                {
+                    "dstAddr": "225.5.5.5",
+                    "dstPort": 2000
+                }
+            ]
+        }
+
+}
+```
+
+#### Delete one live source
+- Path: `/api/live/sources/<source_id>`
+- Method: `DELETE`
+- Response:
+  * HTTP/200: `{"ids": "<source_id>"]}`
 
 ## [Models](#models)
 
@@ -1240,5 +1286,26 @@ complicated.
         },
         "transparency": false
     }
+}
+```
+
+#### Live Source Model
+
+```json
+{
+    "id": "b7be7e80-37f6-11ec-ad5e-1f43ee5e607b",
+        "meta": {
+            "label": "My live source"
+        },
+        "kind": "user_defined",
+        "sdp": {
+            "streams": [
+                {
+                    "dstAddr": "225.5.5.5",
+                    "dstPort": 2000
+                }
+            ]
+        }
+
 }
 ```

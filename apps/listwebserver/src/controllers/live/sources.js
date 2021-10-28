@@ -41,7 +41,7 @@ const getMetaForUserDefinedSource = (source) => {
     return meta;
 };
 
-const getLiveSources = async () => {
+const getAllLiveSources = async () => {
     const localP = await LiveSource.find().exec();
     const local = localP.map((s) => s.toJSON());
     return [...local, ...nmosSources];
@@ -72,6 +72,19 @@ function addLiveSource(_source) {
     });
 
     return Promise.resolve(upsertedSource);
+}
+
+function deleteLiveSource(sourceId) {
+    LiveSource.deleteOne({ id: sourceId }).exec();
+
+    const changeSet = {
+        added: [],
+        removedIds: [ sourceId ],
+    };
+
+    sendMqttUpdate(changeSet);
+
+    return Promise.resolve({ id: sourceId });
 }
 
 function deleteLiveSources(ids) {
@@ -169,13 +182,14 @@ const onChanged = async ({ added, removedIds }) => {
 onUpdate.on(events.updateEvent, onChanged);
 
 const findLiveSources = async (wantedIds) => {
-    const sources = await getLiveSources();
+    const sources = await getAllLiveSources();
     return sources.filter((source) => wantedIds.includes(source.id));
 };
 
 module.exports = {
-    getLiveSources,
+    getAllLiveSources,
     findLiveSources,
     addLiveSource,
+    deleteLiveSource,
     deleteLiveSources,
 };
