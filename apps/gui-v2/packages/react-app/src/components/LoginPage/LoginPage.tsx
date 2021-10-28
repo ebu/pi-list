@@ -61,8 +61,6 @@ function LoginPage({
         }
     };
 
-    useOnEnter(handleClickLogin);
-
     const handleClickRegister = () => {
         resetState();
         if (!isRegister) {
@@ -79,6 +77,12 @@ function LoginPage({
             }
         }
     };
+
+    if (isRegister) {
+        useOnEnter(handleClickRegister);
+    } else {
+        useOnEnter(handleClickLogin);
+    }
 
     const onUsernameChange = (e: any) => {
         setUsername(e.target.value);
