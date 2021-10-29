@@ -1,9 +1,8 @@
-const jwt = require('jsonwebtoken');
 import logger from '../util/logger';
+const jwt = require('jsonwebtoken');
 const config = require('./options');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const collection = require('../models/user');
-//const websocket = require('../managers/websocket');
 const crypto = require('crypto');
 const { v1: uuid } = require('uuid');
 

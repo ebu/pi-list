@@ -35,3 +35,7 @@ export function generateRandomPcapDefinition(
     const userId = getUserId(req);
     return generatePcapDefinitionFromId(userId, pcapId);
 }
+
+export function getPcapFolder(userId: string, pcapId: string): string {
+    return `${getUserFolderFromUserId(userId)}/${pcapId}`;
+}
