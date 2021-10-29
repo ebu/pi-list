@@ -1,6 +1,6 @@
 const axios = require('axios');
 const _ = require('lodash');
-const uuidv1 = require('uuid/v1');
+const { v1: uuid } = require('uuid');
 import { api } from '@bisect/ebu-list-sdk';
 import { mq } from '@bisect/bisect-core-ts-be';
 import logger from '../../util/logger';
@@ -51,7 +51,7 @@ function addLiveSource(_source) {
     logger('live-sources').info(`Adding source - id: ${_source.id}, kind: ${_source.kind}`);
     const source = _.cloneDeep(_source);
     if (source.id === undefined) {
-        source.id = uuidv1();
+        source.id = uuid();
     }
 
     source.meta = getMetaForUserDefinedSource(source);

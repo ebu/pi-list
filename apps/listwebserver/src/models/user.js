@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const db = require('../managers/database')('list');
-const uuidv1 = require('uuid/v1');
+const { v1: uuid } = require('uuid');
 
 const GuiPreferencesSchema = new mongoose.Schema({
     language: {
@@ -30,7 +30,7 @@ const UserSchema = new mongoose.Schema(
         id: {
             type: String,
             required: true,
-            default: uuidv1(),
+            default: uuid(),
         },
         username: {
             type: String,

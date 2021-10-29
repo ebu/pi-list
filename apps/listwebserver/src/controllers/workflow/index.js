@@ -1,4 +1,4 @@
-const uuidv1 = require('uuid/v1');
+const { v1: uuid } = require('uuid');
 import { api } from '@bisect/ebu-list-sdk';
 import logger from '../../util/logger';
 import { mq } from '@bisect/bisect-core-ts-be';
@@ -148,7 +148,7 @@ const doCancelWorkflow = async (type, inputConfig) => {
 };
 
 const createBareWorkflowDescriptor = (type, userId, userFolder) => ({
-    id: uuidv1(),
+    id: uuid(),
     type: type,
     count: 0,
     state: {

@@ -3,8 +3,8 @@ const router = Router();
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 import logger from '../util/logger';
 const controller = require('../controllers/workflow');
-const { getUserFolder } = require('../util/analysis');
 const { getUserId, checkIsReadOnly } = require('../auth/middleware');
+import { getUserFolder } from '../util/analysis/utils';
 
 router.get('/', (req, res, next) => {
     const workflows = controller.getWorkflows();

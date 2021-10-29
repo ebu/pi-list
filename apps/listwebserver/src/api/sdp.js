@@ -1,5 +1,5 @@
 const os = require('os');
-const uuidv1 = require('uuid/v1');
+const { v1: uuid } = require('uuid');
 const { isObject, isEmpty } = require('lodash');
 const { Router } = require('express');
 const router = Router();
@@ -42,7 +42,7 @@ const storageTmp = multer.diskStorage({
         cb(null, os.tmpdir());
     },
     filename: function (req, file, cb) {
-        cb(null, uuidv1());
+        cb(null, uuid());
     },
 });
 

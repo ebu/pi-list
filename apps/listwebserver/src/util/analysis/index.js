@@ -4,7 +4,7 @@ const _ = require('lodash');
 const child_process = require('child_process');
 const sdp_parser = require('sdp-transform');
 const sdpoker = require('sdpoker');
-const uuidv4 = require('uuid/v4');
+const { v4: uuid } = require('uuid');
 const program = require('../programArguments');
 const websocketManager = require('../../managers/websocket');
 import logger from '../logger';
@@ -13,7 +13,6 @@ const HTTP_STATUS_CODE = require('../../enums/httpStatusCode');
 const exec = util.promisify(child_process.exec);
 const Pcap = require('../../models/pcap');
 const Stream = require('../../models/stream');
-const WS_EVENTS = require('../../enums/wsEvents');
 const { doVideoAnalysis } = require('../../analyzers/video');
 const { doAudioAnalysis } = require('../../analyzers/audio');
 const { doAncillaryAnalysis } = require('../../analyzers/ancillary');
@@ -25,27 +24,7 @@ const { zipFilesExt } = require('../zip');
 import { mq } from '@bisect/bisect-core-ts-be';
 import { api } from '@bisect/ebu-list-sdk';
 const { getUserId } = require('../../auth/middleware');
-
-export function getUserFolder(req) {
-    const userId = getUserId(req);
-    return `${program.folder}/${userId}`;
-}
-
-function generateRandomPcapFilename(file) {
-    const extensionCharIdx = file.originalname.lastIndexOf('.');
-    const fileExtension = extensionCharIdx > -1 ? '.' + file.originalname.substring(extensionCharIdx + 1) : '';
-
-    return `${Date.now()}_${uuidv4()}${fileExtension}`;
-}
-
-function generateRandomPcapDefinition(req, optionalPcapId) {
-    const { pcapID } = req.query;
-    const id = pcapID || uuidv4();
-    return {
-        uuid: id,
-        folder: `${getUserFolder(req)}/${id}`,
-    };
-}
+import { getUserFolder } from '../../util/analysis/utils';
 
 /**
  * Provides a command-line string to be appended
@@ -274,7 +253,7 @@ function pcapPreProcessing(req, res, next) {
     preprocessorRequestSender.send({
         msg: {
             action: 'preprocessing.request',
-            workflow_id: uuidv4(),
+            workflow_id: uuid(),
             pcap_id: req.pcap.uuid,
             pcap_path: res.locals.pcapFilePath,
         },
@@ -291,55 +270,6 @@ const postProcessSdpFiles = async (pcapId, folder) => {
             await zipFilesExt(files, `${folder}/${filename}`, 'sdp');
         });
 };
-
-// Returns undefined on success; otherwise, the error.
-// const runAnalysis = async (params) => {
-//     const { pcapId, pcapFolder, streamID, pcapFile, userId, analysisProfileFile } = params;
-//     const { withMongo, withInflux, withRabbitMq } = argumentsToCmd();
-
-//     const streamOption = streamID ? `-s ${streamID}` : '';
-//     const profileFile = `-p ${analysisProfileFile}`;
-//     const st2110ExtractorCommand = `"${program.cpp}/st2110_extractor" ${pcapId} "${pcapFile}" "${pcapFolder}" ${withInflux} ${withMongo} ${withRabbitMq} ${streamOption} ${profileFile}`;
-
-//     logger('st2110_extractor').info(`Command: ${st2110ExtractorCommand}`);
-
-//     try {
-//         const output = await exec(st2110ExtractorCommand);
-
-//         Pcap.findOne({ id: pcapId })
-//             .exec()
-//             .then((pcap) => {
-//                 if (pcap.error) {
-//                     Pcap.findOneAndUpdate({ id: pcapId }, { error: '' }, { new: true }).exec();
-//                 }
-//             });
-
-//         logger('st2110_extractor').info(output.stdout);
-//         logger('st2110_extractor').info(output.stderr);
-//         // await postProcessSdpFiles(pcapId, pcapFolder);
-//         return;
-//     } catch (err) {
-//         logger('pcap-full-analysis').error(`exception: ${err}`);
-
-//         Pcap.findOneAndUpdate(
-//             { id: pcapId },
-//             {
-//                 error: err.toString(),
-//             },
-//             { new: true }
-//         ).exec();
-
-//         websocketManager.instance().sendEventToUser(userId, {
-//             event: api.wsEvents.Pcap.failed,
-//             data: { id: pcapId, progress: 0, error: err.toString() },
-//         });
-
-//         return err;
-//     } finally {
-//         params.extractFrames = true;
-//         runAnalysis2(params);
-//     }
-// };
 
 export const runAnalysis = async (params) => {
     const { pcapId, pcapFolder, streamID, pcapFile, userId, analysisProfileFile, extractFrames } = params;
@@ -649,39 +579,26 @@ function sdpDelete(req, res, next) {
 
 const { getAnalysisProfile } = require('./getProfile');
 
+const analysisFromFile = [
+    getAnalysisProfile,
+    pcapPreProcessing,
+    pcapFullAnalysis,
+    videoConsolidation,
+    audioConsolidation,
+    ancillaryConsolidation,
+    ttmlConsolidation,
+    unknownConsolidation,
+    commonConsolidation,
+    pcapConsolidation,
+    pcapIngestEnd,
+];
+
 module.exports = {
     getUserFolder,
-    generateRandomPcapFilename,
-    generateRandomPcapDefinition,
     runAnalysis,
-    pcapIngest: [
-        pcapFileAvailableFromReq,
-        pcapFormatConversion,
-        getAnalysisProfile,
-        pcapPreProcessing,
-        pcapFullAnalysis,
-        videoConsolidation,
-        audioConsolidation,
-        ancillaryConsolidation,
-        ttmlConsolidation,
-        unknownConsolidation,
-        commonConsolidation,
-        pcapConsolidation,
-        pcapIngestEnd,
-    ],
-    pcapReanalyze: [
-        getAnalysisProfile,
-        pcapPreProcessing,
-        pcapFullAnalysis,
-        videoConsolidation,
-        audioConsolidation,
-        ancillaryConsolidation,
-        ttmlConsolidation,
-        unknownConsolidation,
-        commonConsolidation,
-        pcapConsolidation,
-        pcapIngestEnd,
-    ],
+    pcapFromLocalFile: [pcapFormatConversion, ...analysisFromFile],
+    pcapIngest: [pcapFileAvailableFromReq, pcapFormatConversion, ...analysisFromFile],
+    pcapReanalyze: analysisFromFile,
     pcapSingleStreamIngest: [
         pcapFileAvailableFromReq,
         resetStreamCountersAndErrors,

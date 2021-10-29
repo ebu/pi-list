@@ -5,7 +5,7 @@ const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const collection = require('../models/user');
 //const websocket = require('../managers/websocket');
 const crypto = require('crypto');
-const uuidv1 = require('uuid/v1');
+const { v1: uuid } = require('uuid');
 
 const defaultPreferences = {
     gui: {
@@ -45,12 +45,12 @@ const getUserId = (req) => {
             if (err === null) {
                 return decoded.id;
             } else {
-                return undefined;
+                throw new Error('Token is invalid');
             }
         });
         return id;
     } else {
-        return undefined;
+        throw new Error('No token');
     }
 };
 
@@ -214,7 +214,7 @@ const handleRegister = (req, res) => {
     user.preferences = defaultPreferences;
 
     if (user.id === undefined) {
-        user.id = uuidv1();
+        user.id = uuid();
     }
 
     collection

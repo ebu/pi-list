@@ -1,5 +1,5 @@
-const child_process = require('child_process');
 const router = require('express').Router();
+const child_process = require('child_process');
 const multer = require('multer');
 const util = require('util');
 const influxDbManager = require('../managers/influx-db');
@@ -14,20 +14,49 @@ const pcapController = require('../controllers/pcap');
 const Stream = require('../models/stream');
 const StreamCompare = require('../models/streamCompare');
 const streamsController = require('../controllers/streams');
-const {
-    pcapSingleStreamIngest,
-    pcapIngest,
-    pcapReanalyze,
-    generateRandomPcapDefinition,
-    generateRandomPcapFilename,
-    getUserFolder,
-} = require('../util/analysis');
+const { pcapSingleStreamIngest, pcapIngest, pcapReanalyze, pcapFromLocalFile } = require('../util/analysis');
 const websocketManager = require('../managers/websocket');
-const WS_EVENTS = require('../enums/wsEvents');
 const exec = util.promisify(child_process.exec);
 const { getUserId, checkIsReadOnly } = require('../auth/middleware');
 import { verifyIfFramesAreExtractedOrExtract } from '../controllers/streams2';
 import { api } from '@bisect/ebu-list-sdk';
+const pcap2 = require('../controllers/pcap2');
+import { getUserFolder, generateRandomPcapFilename, generateRandomPcapDefinition } from '../util/analysis/utils';
+
+/**
+ *  Analyze local PCAP file
+ *  URL: /api/pcap/local
+ *  Method: POST
+ *  Request:
+ *  {
+ *      path: path to file on a filesystem accessible by LIST
+ *      name: the name that will be assigned by LIST
+ *      pcapId: the ID to assign to the pcap
+ *  }
+ */
+router.post(
+    '/:pcapID/local',
+    checkIsReadOnly,
+    async (req, res, next) => {
+        // router.post(
+        //     '/local',
+        //     (req, res, next) => {
+        const { pcapID } = req.params;
+        if (!api.pcap.isLocalPcapAnalysisParams(req.body)) {
+            res.status(HTTP_STATUS_CODE.CLIENT_ERROR.BAD_REQUEST).send();
+            return;
+        }
+
+        const userId = getUserId(req);
+        const upload = await pcap2.localUpload(userId, pcapID, req.body);
+        req.pcap = upload.pcap;
+        req.file = upload.file;
+        res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send(req.pcap);
+
+        next();
+    },
+    pcapFromLocalFile
+);
 
 function isAuthorized(req, res, next) {
     const { pcapID } = req.params;

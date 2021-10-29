@@ -1,5 +1,3 @@
-const uuidv1 = require('uuid/v1');
-import logger from '../util/logger';
 const _ = require('lodash');
 const userController = require('./user');
 const constants = require('../enums/analysis');

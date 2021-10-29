@@ -16,13 +16,7 @@ const { getUserId } = require('../../auth/middleware');
 //      },
 //]
 
-// For some reason, getUserFolder can't be imported...
-//const { getUserFolder, } = require('../util/analysis');
-function getUserFolder(req) {
-    const program = require('../../util/programArguments');
-    const userId = getUserId(req);
-    return `${program.folder}/${userId}`;
-}
+import { getUserFolder } from '../../util/analysis/utils';
 
 // sync
 const loadTtmlDocuments = (req, stream) => {

@@ -1,5 +1,5 @@
 const path = require('path');
-const uuidv1 = require('uuid/v1');
+const { v1: uuid } = require('uuid');
 const websocketManager = require('../../managers/websocket');
 const WS_EVENTS = require('../../enums/wsEvents');
 const COMPARISON_TYPES = require('../../enums/comparison');
@@ -119,7 +119,7 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
     doCreateComparator(compareConfig)
         .then((data) => {
             // insert in DB
-            const id = uuidv1();
+            const id = uuid();
             StreamCompare.create(
                 {
                     id: id,

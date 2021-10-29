@@ -93,3 +93,9 @@ stages:
                       dockerComposeCommand: down
                       dockerComposeFile: $(Build.SourcesDirectory)/scripts/validation_tests/docker-compose.yml
                       dockerComposeFileArgs: EBU_LIST_VERSION=${{ parameters.docker_image_tag }}
+
+                - script: |
+                      docker rmi ebutech/pi-list:${{ parameters.docker_image_tag }}
+                  displayName: Remove Docker image
+                  workingDirectory: $(Build.SourcesDirectory)/js/tests
+                  condition: always()

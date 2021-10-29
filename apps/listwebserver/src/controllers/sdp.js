@@ -3,7 +3,7 @@ const fs = require('fs');
 import logger from '../util/logger';
 const sdpParser = require('sdp-transform');
 const sdpoker = require('sdpoker');
-const uuidv1 = require('uuid/v1');
+const { v1: uuid } = require('uuid');
 import { api } from '@bisect/ebu-list-sdk';
 const { getMediaSpecificMeta, getIpInfoFromSdp } = require('../util/sdp');
 
@@ -28,7 +28,7 @@ const sdpToSource = (sdpText) => {
     const streams = getIpInfoFromSdp(parsed);
 
     const source = {
-        id: uuidv1(),
+        id: uuid(),
         meta: {
             label: parsed.name || 'Sender from SDP',
         },

@@ -4,11 +4,12 @@ const websocketManager = require('../managers/websocket');
 // import websocketManager from '../managers/websocket';
 const middleware = require('../auth/middleware');
 // import middleware from '../auth/middleware';
-import { getUserFolder, runAnalysis } from '../util/analysis';
+import { runAnalysis } from '../util/analysis';
 import Pcap from '../models/pcap';
 import path from 'path';
 import { IStreamInfo } from '@bisect/ebu-list-sdk/dist/types';
 import loggerFactory from '../util/logger';
+import { getUserFolder } from '../util/analysis/utils';
 
 const logger = loggerFactory('streams');
 
