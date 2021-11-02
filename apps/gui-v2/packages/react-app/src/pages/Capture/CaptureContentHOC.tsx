@@ -14,13 +14,12 @@ function CaptureContentHOC() {
         return null;
     }
 
-    const onCapture = async (name: string, duration: number, source: string) => {
+    const onCapture = async (name: string, duration: number, sources: string[]) => {
         const datetime: string = new Date().toLocaleString().split(" ").join("-").split("/").join("-");
-        //const filename = `${datetime}-${sources[0].meta.label}`;
-        const filename: string = `${datetime}-${source}`;
+        const filename = `${name}-${datetime}`;
         console.log(`Capturing ${filename}`)
 
-        await list.live.startCapture(filename, duration, [source]);
+        await list.live.startCapture(filename, duration, sources);
         const captureResult = await list.live.makeCaptureAwaiter(filename, duration);
         if (!captureResult) {
             console.error('Pcap capture and processing failed');

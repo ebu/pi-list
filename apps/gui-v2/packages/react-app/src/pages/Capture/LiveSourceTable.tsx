@@ -3,10 +3,17 @@ import { getMediaTypeIcon, getComparisonType } from '../../utils/titles';
 import list from '../../utils/api';
 import './styles.scss';
 
+interface IComponentProps {
+    liveSourceTableData: Array<IRowItem>;
+    onRowClick: (id: string, e: React.MouseEvent<HTMLElement>) => void;
+    selectedLiveSourceIds: string[];
+}
+
 function LiveSourceTable({
     liveSourceTableData,
-    selectedLiveSourcesIds,
-}: any) {
+    onRowClick,
+    selectedLiveSourceIds,
+}: IComponentProps) {
     const sources =  [
         { "id": "33368c40-37f9-11ec-82a7-5970cb0925f1", "kind": "user_defined", "meta": { "label": "source 1" }, "sdp": { "streams": [ { "dstAddr": "225.5.5.1", "dstPort": 1000 } ] } },
         { "id": "33368c40-37f9-11ec-82a7-5970cb0925f2", "kind": "user_defined", "meta": { "label": "source 2" }, "sdp": { "streams": [ { "dstAddr": "225.5.5.2", "dstPort": 1000 } ] } }
@@ -38,12 +45,13 @@ function LiveSourceTable({
                                 </thead>
                                 <tbody>
                                     {liveSourceTableData.map((item: any) => {
-                                        const isActive = selectedLiveSourcesIds.includes(item.id);
+                                        const isActive = selectedLiveSourceIds.includes(item.id);
                                         return (
                                             <tr
                                                 className={isActive ?
                                                     'live-source-table-row active' : 'live-source-table-row'}
                                                 key={item.id}
+                                                onClick={(e: any) => onRowClick(item, e)}
                                             >
                                                 <td className="live-source-name-data-container">
                                                     <span className="live-source-table-label">
@@ -65,6 +73,11 @@ function LiveSourceTable({
             </div>
         </>
     );
+}
+
+export interface IRowItem {
+    label: string;
+    mcast: string;
 }
 
 export default LiveSourceTable;

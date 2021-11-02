@@ -7,7 +7,7 @@ import { TransitDelayIcon, AvSyncIcon, DiffTransitDelayIcon, NetworkRedundancyIc
 import ItemsList from 'components/DropdownMenu/ItemsList';
 
 interface IComponentProps {
-    onCapture: (name: string, duration: number, source: string) => void;
+    onCapture: (name: string, duration: number) => void;
 }
 
 function CapturePanel({
@@ -23,18 +23,16 @@ function CapturePanel({
             label: 'Sequential',
         },
     ];
-    const [multicast, setMulticast] = React.useState('');
     const [name, setName] = React.useState('');
     const [duration, setDuration] = React.useState('2000');
     const [mode, setMode] = React.useState(modes[0]);
 
-    const onChangeMulticast = (value: any) => { setMulticast(value); };
     const onChangeName = (value: any) => { setName(value); };
     const onChangeDuration = (value: any) => { setDuration(value); };
     const onChangeMode = (value: any) => { setMode(value); };
 
     const onPressCapture = () => {
-        onCapture(name, parseInt(duration), multicast);
+        onCapture(name, parseInt(duration));
     };
 
     return (
@@ -44,19 +42,6 @@ function CapturePanel({
                     <span>Capture</span>
                 </div>
                 <div className="capture-content-row">
-                    <div className="capture-page-select">
-                        <div className="capture-settings-container">
-                            <div className="capture-settings-label-container">
-                                <span className="capture-settings-label">Multicast</span>
-                            </div>
-                            <input
-                                type="text"
-                                className="capture-panel-input"
-                                value={multicast}
-                                onChange={evt => onChangeMulticast(evt.target.value)}
-                            />
-                        </div>
-                    </div>
                     <div className="capture-page-select">
                         <div className="capture-settings-container">
                             <div className="capture-settings-label-container">

@@ -9,7 +9,7 @@ import { liveSourceAtom } from '../../store/gui/liveSource/liveSource';
 import './styles.scss';
 
 interface IComponentProps {
-    onCapture: (name: string, duration: number, source: string) => void;
+    onCapture: (name: string, duration: number, sources: string[]) => void;
 }
 
 function CaptureContent({
@@ -18,7 +18,23 @@ function CaptureContent({
 
     useRecoilLiveSourceHandler();
     const liveSourceTableData = useRecoilValue(liveSourceAtom);
-    const [selectedLiveSourcesIds, setSelectedLiveSourcesIds] = React.useState<string[]>([]);
+    const [selectedLiveSourceIds, setSelectedLiveSourceIds] = React.useState<string[]>([]);
+
+    const onRowClick = (item: any, e: React.MouseEvent<HTMLElement>) => {
+        if (e.ctrlKey) {
+            if (selectedLiveSourceIds.includes(item.id)) {
+                setSelectedLiveSourceIds(selectedLiveSourceIds.filter(i => i !== item.id));
+            } else {
+                setSelectedLiveSourceIds([...selectedLiveSourceIds, item.id]);
+            }
+        } else {
+            setSelectedLiveSourceIds([item.id]);
+        }
+    };
+
+    const onLocalCapture = (name: string, duration: number) => {
+        onCapture(name, duration, selectedLiveSourceIds);
+    }
 
     return (
         <>
@@ -28,11 +44,12 @@ function CaptureContent({
             <div className="main-page-dashboard">
                 <CustomScrollbar>
                     <CapturePanel
-                        onCapture={onCapture}
+                        onCapture={onLocalCapture}
                     />
                     <LiveSourceTable
                         liveSourceTableData={liveSourceTableData}
-                        selectedLiveSourcesIds={selectedLiveSourcesIds}
+                        onRowClick={onRowClick}
+                        selectedLiveSourceIds={selectedLiveSourceIds}
                     />
                 </CustomScrollbar>
             </div>
