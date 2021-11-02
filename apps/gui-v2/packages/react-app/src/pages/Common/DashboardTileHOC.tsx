@@ -61,6 +61,20 @@ const getTileInformation = (pcap: SDK.types.IPcapInfo, index: number): ITileInfo
     id: pcap.id,
 });
 
+export const pcapCapturingToTile = (file_name: string, progress: number) => {
+    const content = { label: 'Capturing', percentage: progress };
+    const title = { mainTitle: file_name };
+    return (
+        <div className="dashboard-page-tile" key="0">
+            <DashboardTile
+                id={'0'}
+                title={title}
+                content={content}
+            />
+        </div>
+    );
+};
+
 export const pcapAnalysingToTile = (pcap: SDK.types.IPcapFileReceived) => {
     const content = { label: 'Analysing', percentage: pcap.progress };
     const title = { mainTitle: pcap.file_name };
