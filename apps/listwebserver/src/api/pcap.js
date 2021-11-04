@@ -23,7 +23,6 @@ const {
     getUserFolder,
 } = require('../util/analysis');
 const websocketManager = require('../managers/websocket');
-const WS_EVENTS = require('../enums/wsEvents');
 const exec = util.promisify(child_process.exec);
 const { getUserId, checkIsReadOnly } = require('../auth/middleware');
 import { verifyIfFramesAreExtractedOrExtract } from '../controllers/streams2';

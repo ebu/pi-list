@@ -5,7 +5,6 @@ const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const API_ERRORS = require('../enums/apiErrors');
 const StreamCompare = require('../models/streamCompare');
 const websocketManager = require('../managers/websocket');
-const WS_EVENTS = require('../enums/wsEvents');
 const { getUserId, checkIsReadOnly } = require('../auth/middleware');
 import { api } from '@bisect/ebu-list-sdk';
 

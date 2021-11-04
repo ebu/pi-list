@@ -4,7 +4,6 @@ const tmp = require('tmp');
 const fs = require('fs');
 const { promisify } = require('util');
 const websocketManager = require('../../managers/websocket');
-const WS_EVENTS = require('../../enums/wsEvents');
 import logger from '../../util/logger';
 const Stream = require('../../models/stream');
 const Pcap = require('../../models/pcap');

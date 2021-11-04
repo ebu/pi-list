@@ -4,7 +4,6 @@ const program = require('../util/programArguments');
 import logger from '../util/logger';
 const Pcap = require('../models/pcap');
 const websocketManager = require('../managers/websocket');
-const WS_EVENTS = require('../enums/wsEvents');
 
 const extractorProgressReceiver = mq.createExchangeReceiver(program.rabbitmqUrl, api.mq.exchanges.extractorStatus, [
     api.mq.exchanges.extractorStatus.keys.progress,

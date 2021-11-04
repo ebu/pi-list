@@ -13,7 +13,6 @@ const HTTP_STATUS_CODE = require('../../enums/httpStatusCode');
 const exec = util.promisify(child_process.exec);
 const Pcap = require('../../models/pcap');
 const Stream = require('../../models/stream');
-const WS_EVENTS = require('../../enums/wsEvents');
 const { doVideoAnalysis, generateThumbails } = require('../../analyzers/video');
 const { doAudioAnalysis } = require('../../analyzers/audio');
 const { doAncillaryAnalysis } = require('../../analyzers/ancillary');

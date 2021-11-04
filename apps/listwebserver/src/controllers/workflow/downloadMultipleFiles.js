@@ -1,5 +1,4 @@
 const websocketManager = require('../../managers/websocket');
-const WS_EVENTS = require('../../enums/wsEvents');
 const util = require('util');
 const path = require('path');
 const os = require('os');

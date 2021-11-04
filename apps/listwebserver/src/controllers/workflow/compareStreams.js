@@ -1,7 +1,6 @@
 const path = require('path');
 const uuidv1 = require('uuid/v1');
 const websocketManager = require('../../managers/websocket');
-const WS_EVENTS = require('../../enums/wsEvents');
 const COMPARISON_TYPES = require('../../enums/comparison');
 import logger from '../../util/logger';
 const Stream = require('../../models/stream');
