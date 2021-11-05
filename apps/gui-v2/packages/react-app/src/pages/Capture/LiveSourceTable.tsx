@@ -1,4 +1,6 @@
+import React from 'react';
 import { CustomScrollbar } from '../../components';
+import AddSourceModal from './AddSourceModal';
 import { EditIcon, PlusIcon, MinusIcon } from '../../components/icons/index';
 import list from '../../utils/api';
 import './styles.scss';
@@ -18,7 +20,12 @@ function LiveSourceTable({
         { "id": "33368c40-37f9-11ec-82a7-5970cb0925f1", "kind": "user_defined", "meta": { "label": "source 1" }, "sdp": { "streams": [ { "dstAddr": "225.5.5.1", "dstPort": 1000 } ] } },
         { "id": "33368c40-37f9-11ec-82a7-5970cb0925f2", "kind": "user_defined", "meta": { "label": "source 2" }, "sdp": { "streams": [ { "dstAddr": "225.5.5.2", "dstPort": 1000 } ] } }
     ]
-    const onPressAdd = () => { sources.map((s) => { list.live.addSource(s); }) };
+    const [modalIsOpen, setIsOpen] = React.useState<boolean>(false);
+
+    const onPressAdd = () => {
+        //sources.map((s) => { list.live.addSource(s); })
+        setIsOpen(true);
+    };
     const onPressDelete = () => {
         console.log('DELETE')
         console.log(selectedLiveSourceIds)
@@ -27,6 +34,11 @@ function LiveSourceTable({
 
     return (
         <div className="capture-page-container">
+            <AddSourceModal
+                isOpen={modalIsOpen}
+                onAdd={() => {console.log('onAdd')}}
+                onClose={() => {console.log('onClose')}}
+            />
             <div className="capture-container">
                 <div className="capture-title">
                     <span>Live source</span>
