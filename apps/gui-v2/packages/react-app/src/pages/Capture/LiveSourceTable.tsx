@@ -1,5 +1,5 @@
 import { CustomScrollbar } from '../../components';
-import { getMediaTypeIcon, getComparisonType } from '../../utils/titles';
+import { EditIcon, PlusIcon, MinusIcon } from '../../components/icons/index';
 import list from '../../utils/api';
 import './styles.scss';
 
@@ -19,59 +19,65 @@ function LiveSourceTable({
         { "id": "33368c40-37f9-11ec-82a7-5970cb0925f2", "kind": "user_defined", "meta": { "label": "source 2" }, "sdp": { "streams": [ { "dstAddr": "225.5.5.2", "dstPort": 1000 } ] } }
     ]
     const onPressAdd = () => { sources.map((s) => { list.live.addSource(s); }) };
-    const onPressDelete = () => { sources.map((s) => { list.live.deleteSource(s.id); }) };
+    const onPressDelete = () => {
+        console.log('DELETE')
+        console.log(selectedLiveSourceIds)
+        sources.map((s) => { list.live.deleteSource(s.id); })
+    };
 
     return (
-        <>
-            <div className="main-page-dashboard">
-                    <div className="capture-page-container">
-                        <div className="capture-container">
-                            <div className="capture-content-row">
-                                <div className="capture-page-select">
-                                    <button className="capture-page-capture-button" onClick={onPressAdd}> Add source </button>
-                                </div>
-                                <div className="capture-page-select">
-                                    <button className="capture-page-capture-button" onClick={onPressDelete}> del Source </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="live-stream-table-container">
-                            <table className="live-stream-table">
-                                <thead>
-                                    <tr className="live-source-table-header-table-row">
-                                        <th>Name</th>
-                                        <th>Mcast</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {liveSourceTableData.map((item: any) => {
-                                        const isActive = selectedLiveSourceIds.includes(item.id);
-                                        return (
-                                            <tr
-                                                className={isActive ?
-                                                    'live-source-table-row active' : 'live-source-table-row'}
-                                                key={item.id}
-                                                onClick={(e: any) => onRowClick(item, e)}
-                                            >
-                                                <td className="live-source-name-data-container">
-                                                    <span className="live-source-table-label">
-                                                        {item.meta.label}
-                                                    </span>
-                                                </td>
-                                                <td className="live-source-name-data-container">
-                                                    <span className="live-source-table-label">
-                                                        {item.sdp.streams[0].dstAddr}:{item.sdp.streams[0].dstPort}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}
-                                </tbody>
-                            </table>
-                        </div>
+        <div className="capture-page-container">
+            <div className="capture-container">
+                <div className="capture-title">
+                    <span>Live source</span>
+                </div>
+                <div className="capture-container">
+                    <div className="live-source-table-tool-row">
+                        <button className="live-source-button" onClick={onPressAdd}>
+                            <PlusIcon />
+                        </button>
+                        <button className="live-source-button" onClick={onPressDelete}>
+                            <MinusIcon />
+                        </button>
+                        <button className="live-source-button">
+                            <EditIcon />
+                        </button>
                     </div>
+                    <table className="live-source-table">
+                        <thead>
+                            <tr className="live-source-table-header-table-row">
+                                <th>Name</th>
+                                <th>Mcast</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {liveSourceTableData.map((item: any) => {
+                                const isActive = selectedLiveSourceIds.includes(item.id);
+                                return (
+                                    <tr
+                                        className={isActive ?
+                                            'live-source-table-row active' : 'live-source-table-row'}
+                                        key={item.id}
+                                        onClick={(e: any) => onRowClick(item, e)}
+                                    >
+                                        <td className="live-source-name-data-container">
+                                            <span className="live-source-table-label">
+                                                {item.meta.label}
+                                            </span>
+                                        </td>
+                                        <td className="live-source-name-data-container">
+                                            <span className="live-source-table-label">
+                                                {item.sdp.streams[0].dstAddr}:{item.sdp.streams[0].dstPort}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </>
+        </div>
     );
 }
 

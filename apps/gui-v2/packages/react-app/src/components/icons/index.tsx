@@ -104,3 +104,12 @@ export const NetworkRedundancyIcon = icon(networkRedundancySrc);
 
 const alertSrc = require('./alert.svg');
 export const AlertIcon = icon(alertSrc);
+
+const plusSrc = require('./plus.svg');
+export const PlusIcon = icon(plusSrc);
+
+const minusSrc = require('./minus.svg');
+export const MinusIcon = icon(minusSrc);
+
+const editSrc = require('./pencil.svg');
+export const EditIcon = icon(editSrc);
