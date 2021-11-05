@@ -1,4 +1,5 @@
 import React from 'react';
+import list from '../../utils/api';
 import SDK from '@bisect/ebu-list-sdk';
 import { CustomScrollbar } from '../../components';
 import CapturePanel from './CapturePanel';
@@ -13,12 +14,10 @@ import { pcapCapturingToTile, pcapAnalysingToTile, pcapToTile } from 'pages/Comm
 import './styles.scss';
 
 interface IComponentProps {
-    onCapture: (name: string, duration: number, sources: string[]) => void;
     onTileDoubleClick: (id: string) => void;
 }
 
 function CaptureContent({
-    onCapture,
     onTileDoubleClick,
 }: IComponentProps) {
 
@@ -52,15 +51,21 @@ function CaptureContent({
         }
     }
 
-    const onLocalCapture = (name: string, duration: number) => {
+    const onCapture = async (name: string, duration: number) => {
         const datetime: string = new Date().toLocaleString().split(" ").join("-").split("/").join("-");
         const newFilename: string = `${name}-${datetime}`;
         setFilename(newFilename);
         setCaptureProgress(0);
-        if (onCapture(newFilename, duration, selectedLiveSourceIds)) {
-            setTimeout(tick, msPeriod, 0, duration);
+        console.log(`Capturing ${newFilename}`)
+        await list.live.startCapture(newFilename, duration, selectedLiveSourceIds);
+        const captureResult = await list.live.makeCaptureAwaiter(newFilename, duration);
+        if (!captureResult) {
+            console.error('Pcap capture and processing failed');
+            // todo show notif
+            return;
         }
-    }
+        setTimeout(tick, msPeriod, 0, duration);
+    };
 
     const pcapsFinished = useRecoilValue(pcapsAtom);
     const pcapsAnalysing = useRecoilValue(pcapsAnalysingAtom);
@@ -73,7 +78,7 @@ function CaptureContent({
                 <CustomScrollbar>
                     <div className="capture-content-row">
                         <CapturePanel
-                            onCapture={onLocalCapture}
+                            onCapture={onCapture}
                         />
                         {
                             (captureProgress > 0) ?
