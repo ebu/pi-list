@@ -164,3 +164,22 @@ thead {
     line-height: 24px;
     color: $white;
 }
+
+.live-source-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $white-transparent-54
+}
+
+.live-source-modal-content {
+    position: inherit;
+    top: 51%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    background-color: $dark-blue;
+    transform: translate(-50%, -50%);
+}

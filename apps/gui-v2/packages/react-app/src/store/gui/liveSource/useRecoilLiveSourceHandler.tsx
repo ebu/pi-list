@@ -14,7 +14,7 @@ const handleLiveSourceUpdate = async (data: any, setLiveSourceAtom: SetterOrUpda
                     typeMessage: 'Live sources updated',
                     message: (
                         <div>
-                            <p>Stream Comparison Completed</p>
+                            <p>Live Source updated</p>
                             <p> {data.data.msg} </p>
                         </div>
                     ),

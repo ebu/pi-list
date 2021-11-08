@@ -1,12 +1,16 @@
 import React from 'react';
 import { CustomScrollbar } from '../../components';
+import ConfirmModal from './ConfirmModal';
 import AddSourceModal from './AddSourceModal';
+import EditSourceModal from './EditSourceModal';
 import { EditIcon, PlusIcon, MinusIcon } from '../../components/icons/index';
 import list from '../../utils/api';
+import SDK from '@bisect/ebu-list-sdk';
+import { v1 as uuidv1 } from 'uuid';
 import './styles.scss';
 
 interface IComponentProps {
-    liveSourceTableData: Array<IRowItem>;
+    liveSourceTableData: Array<SDK.types.ILiveSource>;
     onRowClick: (id: string, e: React.MouseEvent<HTMLElement>) => void;
     selectedLiveSourceIds: string[];
 }
@@ -16,29 +20,86 @@ function LiveSourceTable({
     onRowClick,
     selectedLiveSourceIds,
 }: IComponentProps) {
-    const sources =  [
-        { "id": "33368c40-37f9-11ec-82a7-5970cb0925f1", "kind": "user_defined", "meta": { "label": "source 1" }, "sdp": { "streams": [ { "dstAddr": "225.5.5.1", "dstPort": 1000 } ] } },
-        { "id": "33368c40-37f9-11ec-82a7-5970cb0925f2", "kind": "user_defined", "meta": { "label": "source 2" }, "sdp": { "streams": [ { "dstAddr": "225.5.5.2", "dstPort": 1000 } ] } }
-    ]
-    const [modalIsOpen, setIsOpen] = React.useState<boolean>(false);
+    const [addModalIsOpen, setAddModalIsOpen] = React.useState<boolean>(false);
+    const [editModalIsOpen, setEditModalIsOpen] = React.useState<boolean>(false);
+    const [deleteModalIsOpen, setDeleteModalIsOpen] = React.useState<boolean>(false);
 
     const onPressAdd = () => {
-        //sources.map((s) => { list.live.addSource(s); })
-        setIsOpen(true);
-    };
-    const onPressDelete = () => {
-        console.log('DELETE')
-        console.log(selectedLiveSourceIds)
-        sources.map((s) => { list.live.deleteSource(s.id); })
+        setAddModalIsOpen(true);
     };
 
+    const onPressEdit = () => {
+        console.log('EditSource')
+        if (selectedLiveSourceIds.length > 0) {
+            setEditModalIsOpen(true);
+        }
+    };
+
+    const onPressDelete = () => {
+        if (selectedLiveSourceIds.length > 0) {
+            setDeleteModalIsOpen(true);
+        }
+    };
+
+    const onAdd = (s: {label: string, multicast: string, port: string}) => {
+        const source = {
+            "id": uuidv1(),
+            "kind": "user_defined",
+            "meta": {
+                "label": s.label
+            },
+            "sdp": {
+                "streams": [ {
+                    "dstAddr": s.multicast,
+                    "dstPort": parseInt(s.port)
+                } ]
+            }
+        };
+        list.live.addSource(source);
+    };
+
+    const onEdit = (s: {id: string, label: string, multicast: string, port: string}) => {
+        let cloned: SDK.types.ILiveSource = Object.assign(
+            {}, liveSourceTableData.filter(e => e.id === s.id)[0]
+        );
+        cloned = Object.assign(cloned, {
+            "meta": {
+                "label": s.label,
+            },
+            "sdp": {
+                "streams": [ {
+                    "dstAddr": s.multicast,
+                    "dstPort": parseInt(s.port)
+                } ]
+            }
+        });
+
+        list.live.updateSource(cloned);
+    }
+
+    const onDelete = () => {
+        selectedLiveSourceIds.map((s) => { list.live.deleteSource(s); })
+    }
+
     return (
-        <div className="capture-page-container">
+        <div>
             <AddSourceModal
-                isOpen={modalIsOpen}
-                onAdd={() => {console.log('onAdd')}}
-                onClose={() => {console.log('onClose')}}
+                isOpen={addModalIsOpen}
+                onAdd={onAdd}
             />
+            <ConfirmModal
+                message={`delete ${JSON.stringify(selectedLiveSourceIds)}`}
+                isOpen={deleteModalIsOpen}
+                onConfirm={onDelete}
+            />
+            { editModalIsOpen? // wait for non-empty selection
+                <EditSourceModal
+                    source={liveSourceTableData.filter(e => e.id === selectedLiveSourceIds[0])[0]}
+                    isOpen={editModalIsOpen}
+                    onEdit={onEdit}
+                /> : <></>
+            }
+        <div className="capture-page-container">
             <div className="capture-container">
                 <div className="capture-title">
                     <span>Live source</span>
@@ -51,7 +112,7 @@ function LiveSourceTable({
                         <button className="live-source-button" onClick={onPressDelete}>
                             <MinusIcon />
                         </button>
-                        <button className="live-source-button">
+                        <button className="live-source-button" onClick={onPressEdit}>
                             <EditIcon />
                         </button>
                     </div>
@@ -90,12 +151,8 @@ function LiveSourceTable({
                 </div>
             </div>
         </div>
+        </div>
     );
-}
-
-export interface IRowItem {
-    label: string;
-    mcast: string;
 }
 
 export default LiveSourceTable;
