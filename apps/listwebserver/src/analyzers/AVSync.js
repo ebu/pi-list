@@ -1,4 +1,3 @@
-const Stream = require('../models/stream');
 
 const createComparator = async (config) => {
     return {

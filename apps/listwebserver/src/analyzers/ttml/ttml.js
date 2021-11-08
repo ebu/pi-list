@@ -2,7 +2,6 @@ const _ = require('lodash');
 const path = require('path');
 const Stream = require('../../models/stream');
 const { doLoadTtmlDocuments, doAnalyseTimeBase, doAnalyseSequenceIdentifier } = require('./util');
-const { getUserId } = require('../../auth/middleware');
 
 // stream structure:
 //  media_specific:

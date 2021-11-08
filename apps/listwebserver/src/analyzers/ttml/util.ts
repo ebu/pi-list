@@ -1,7 +1,7 @@
+const path = require('node:path');
+const fs = require('node:fs');
 const _ = require('lodash');
 const glob = require('glob');
-const path = require('path');
-const fs = require('fs');
 const fastXmlParser = require('fast-xml-parser');
 import logger from '../../util/logger';
 

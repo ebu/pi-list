@@ -3,7 +3,6 @@ import logger from '../util/logger';
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const API_ERRORS = require('../enums/apiErrors');
 const LiveStream = require('../models/liveStream');
-const fs = require('../util/filesystem');
 const liveSources = require('../controllers/live/sources');
 const { checkIsReadOnly } = require('../auth/middleware');
 

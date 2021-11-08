@@ -1,13 +1,6 @@
 const _ = require('lodash');
-const util = require('util');
-const child_process = require('child_process');
-const exec = util.promisify(child_process.exec);
-const influxDbManager = require('../managers/influx-db');
 const Stream = require('../models/stream');
 const constants = require('../enums/analysis');
-const CONSTANTS = require('../enums/constants');
-const fs = require('../util/filesystem');
-import logger from '../util/logger';
 
 const {
     appendError

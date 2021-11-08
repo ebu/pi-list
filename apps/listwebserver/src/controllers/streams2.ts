@@ -1,11 +1,11 @@
+import path from 'node:path';
 import { api } from '@bisect/ebu-list-sdk';
+import { IStreamInfo } from '@bisect/ebu-list-sdk/dist/types';
 import Stream from '../models/stream';
 const websocketManager = require('../managers/websocket');
 const { getUserId } = require('../auth/middleware');
 import { runAnalysis } from '../util/analysis';
 import Pcap from '../models/pcap';
-import path from 'path';
-import { IStreamInfo } from '@bisect/ebu-list-sdk/dist/types';
 import loggerFactory from '../util/logger';
 import { getPcapFolder } from '../util/analysis/utils';
 

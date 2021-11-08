@@ -8,9 +8,7 @@ const {
     validateRtpTs,
     doInterFrameRtpTsDeltaAnalysis,
     validateInterFrameRtpTsDelta,
-    addRtpSequenceAnalysisToStream,
 } = require('./rtp');
-const { getUserId } = require('../auth/middleware');
 
 import { getUserFolder } from '../util/analysis/utils';
 
