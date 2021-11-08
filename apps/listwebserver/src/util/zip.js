@@ -1,11 +1,11 @@
-const logger = require('./logger');
+import logger from './logger';
 const archiver = require('archiver');
 const path = require('path');
 const util = require('util');
 const fs = require('fs');
 
 // async
-// Zips an array of files and gives them names based on the 
+// Zips an array of files and gives them names based on the
 // basename of each file and a fixed extension
 function zipFilesExt(files, outputPath, ext) {
     logger('zip-files').info(`zipping ${files.length} ${ext} files.`);
@@ -15,12 +15,12 @@ function zipFilesExt(files, outputPath, ext) {
             zlib: { level: 9 }, // Sets the compression level.
         });
 
-        output.on('close', function() {
+        output.on('close', function () {
             logger('zip-files').info(`zipped ${files.length} ${ext} files. Total size: ${archive.pointer()} bytes`);
             resolve();
         });
 
-        archive.on('warning', function(err) {
+        archive.on('warning', function (err) {
             if (err.code === 'ENOENT') {
                 logger('zip-files').info(`warning: ${err.message}`);
             } else {
@@ -29,7 +29,7 @@ function zipFilesExt(files, outputPath, ext) {
             }
         });
 
-        archive.on('error', function(err) {
+        archive.on('error', function (err) {
             logger('zip-files').error(`warning: ${err.message}`);
             reject(err);
         });
@@ -54,12 +54,12 @@ async function zipFiles(files, outputPath) {
             zlib: { level: 9 }, // Sets the compression level.
         });
 
-        output.on('close', function() {
+        output.on('close', function () {
             logger('zip-files').info(`zipped ${files.length} files. Total size: ${archive.pointer()} bytes`);
             resolve();
         });
 
-        archive.on('warning', function(err) {
+        archive.on('warning', function (err) {
             if (err.code === 'ENOENT') {
                 logger('zip-files').info(`warning: ${err.message}`);
             } else {
@@ -68,7 +68,7 @@ async function zipFiles(files, outputPath) {
             }
         });
 
-        archive.on('error', function(err) {
+        archive.on('error', function (err) {
             logger('zip-files').error(`warning: ${err.message}`);
             reject(err);
         });

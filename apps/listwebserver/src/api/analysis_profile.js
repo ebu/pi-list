@@ -1,9 +1,14 @@
-const { Router } = require('express');
+const {
+    Router
+} = require('express');
 const router = Router();
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const controller = require('../controllers/analysis_profile');
-const logger = require('../util/logger');
-const { getUserId, checkIsReadOnly } = require('../auth/middleware');
+import logger from '../util/logger';
+const {
+    getUserId,
+    checkIsReadOnly
+} = require('../auth/middleware');
 
 router.get('/', async (req, res, next) => {
     try {
@@ -44,7 +49,9 @@ router.get('/default', async (req, res, next) => {
 
 router.put('/default', checkIsReadOnly, async (req, res, next) => {
     try {
-        const { id } = req.body;
+        const {
+            id
+        } = req.body;
         const userId = getUserId(req);
 
         logger('analysis-profile-api').info(`Setting default profile to ${id} for user ${userId}`);

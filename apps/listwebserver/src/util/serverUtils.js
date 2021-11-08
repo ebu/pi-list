@@ -1,5 +1,5 @@
 const programArguments = require('./programArguments');
-const logger = require('./logger');
+import logger from './logger';
 const mongoose = require('mongoose');
 
 /**
@@ -45,5 +45,5 @@ function onProcessClosed() {
 module.exports = {
     onError,
     onListening,
-    onProcessClosed
+    onProcessClosed,
 };

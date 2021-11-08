@@ -1,6 +1,6 @@
 const _ = require('lodash');
 const collection = require('../models/user');
-const logger = require('../util/logger');
+import logger from '../util/logger';
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const { getUserId } = require('../auth/middleware');
 const { defaultPreferences } = require('../auth/middleware');

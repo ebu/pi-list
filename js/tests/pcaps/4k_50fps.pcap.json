@@ -12,16 +12,16 @@
     "wide_streams": 0,
     "generated_from_network": false,
     "truncated": false,
-    "_id": "615f77d0ce0d3b1e0f30fe48",
-    "id": "d6e0b450-27bf-11ec-81bc-6fd0e9a08850",
+    "_id": "616d57cbcc898540dc569f06",
+    "id": "fbd0a480-3004-11ec-9ba4-bbd607c5d02d",
     "__v": 0,
     "analyzer_version": "2.0.2",
     "capture_date": 1528353584317,
-    "capture_file_name": "1633646544162_83daac20-ce72-4bf9-a2dc-c1648c0ff4c6.pcap",
-    "date": 1633646544909,
+    "capture_file_name": "1634555850725_e172f4ce-a673-45a2-89b7-fe0ca40f4096.pcap",
+    "date": 1634555851133,
     "file_name": "4k_50fps.pcap",
-    "owner_id": "f100e6f0-269a-11ec-b18e-3941cfad2fa6",
-    "pcap_file_name": "1633646544162_83daac20-ce72-4bf9-a2dc-c1648c0ff4c6.pcap",
+    "owner_id": "c9513e70-3004-11ec-85d6-d526ea87570e",
+    "pcap_file_name": "1634555850725_e172f4ce-a673-45a2-89b7-fe0ca40f4096.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -45,31 +45,31 @@
     "summary": {
         "error_list": [
             {
-                "stream_id": "74e6b673-ab9e-434d-8bf9-9a29c4c7a7ff",
+                "stream_id": "68d0c445-1c1d-492f-9eef-64ae2a099fb7",
                 "value": {
                     "id": "errors.invalid_rtp_ts_vs_nt"
                 }
             },
             {
-                "stream_id": "74e6b673-ab9e-434d-8bf9-9a29c4c7a7ff",
+                "stream_id": "68d0c445-1c1d-492f-9eef-64ae2a099fb7",
                 "value": {
                     "id": "errors.invalid_delta_packet_ts_vs_rtp_ts"
                 }
             },
             {
-                "stream_id": "74e6b673-ab9e-434d-8bf9-9a29c4c7a7ff",
+                "stream_id": "68d0c445-1c1d-492f-9eef-64ae2a099fb7",
                 "value": {
                     "id": "errors.cinst_above_maximum"
                 }
             },
             {
-                "stream_id": "74e6b673-ab9e-434d-8bf9-9a29c4c7a7ff",
+                "stream_id": "68d0c445-1c1d-492f-9eef-64ae2a099fb7",
                 "value": {
                     "id": "errors.vrx_above_maximum"
                 }
             },
             {
-                "stream_id": "74e6b673-ab9e-434d-8bf9-9a29c4c7a7ff",
+                "stream_id": "68d0c445-1c1d-492f-9eef-64ae2a099fb7",
                 "value": {
                     "id": "errors.dropped_packets"
                 }
@@ -96,8 +96,8 @@
                     "id": "errors.dropped_packets"
                 }
             ],
-            "_id": "615f77d0b5c3e25cd49b379b",
-            "id": "74e6b673-ab9e-434d-8bf9-9a29c4c7a7ff",
+            "_id": "616d57cb8d63c1cefe200e9b",
+            "id": "68d0c445-1c1d-492f-9eef-64ae2a099fb7",
             "media_specific": {
                 "avg_tro_ns": 10258400,
                 "color_depth": 10,
@@ -151,7 +151,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "d6e0b450-27bf-11ec-81bc-6fd0e9a08850",
+            "pcap": "fbd0a480-3004-11ec-9ba4-bbd607c5d02d",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 4,
@@ -549,6 +549,9 @@
                         "packet_count": 80000
                     }
                 }
+            },
+            "processing": {
+                "extractedFrames": "IDLE"
             }
         }
     ]

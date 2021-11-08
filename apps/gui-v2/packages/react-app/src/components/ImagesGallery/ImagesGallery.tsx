@@ -54,6 +54,7 @@ function ImagesGallery({
             <div className="image-gallery-div">
                 <ImageGallery
                     items={imagesData}
+                    showBullets={true}
                     showPlayButton={false}
                     showFullscreenButton={false}
                     startIndex={initFrameIndex}

@@ -18,9 +18,13 @@ function CircularProgressBar({ filename, percentage, numberFiles, uploadedFiles 
         uploading = uploadedFiles.toString() + '/' + numberFiles.toString();
     }
 
+    const p = percentage || 0;
+
+    const percentageString = p.toFixed(0);
+
     return (
         <div className="upload-progress-container">
-            <CircularProgressbar value={percentage} text={`${percentage}%`} />
+            <CircularProgressbar value={percentage} text={`${percentageString}%`} />
             <span className="upload-progress-filename">Uploading {uploading}</span>
         </div>
     );

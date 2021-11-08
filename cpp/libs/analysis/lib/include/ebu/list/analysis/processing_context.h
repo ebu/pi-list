@@ -67,5 +67,6 @@ namespace ebu_list::analysis
         abstract_handler_factory const* const handler_factory;
         abstract_updater* const updater;
         std::function<void(float percentage)> progress_callback;
+        bool extract_frames;
     };
 } // namespace ebu_list::analysis

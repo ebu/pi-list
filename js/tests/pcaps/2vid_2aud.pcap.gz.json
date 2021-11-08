@@ -226,6 +226,9 @@
                         "packet_count": 51393
                     }
                 }
+            },
+            "processing": {
+                "extractedFrames": "IDLE"
             }
         },
         {
@@ -407,6 +410,9 @@
                         "packet_count": 45017
                     }
                 }
+            },
+            "processing": {
+                "extractedFrames": "IDLE"
             }
         },
         {
@@ -544,6 +550,9 @@
                     },
                     "unit": "μs"
                 }
+            },
+            "processing": {
+                "extractedFrames": "IDLE"
             }
         },
         {
@@ -681,6 +690,9 @@
                     },
                     "unit": "μs"
                 }
+            },
+            "processing": {
+                "extractedFrames": "IDLE"
             }
         }
     ]
