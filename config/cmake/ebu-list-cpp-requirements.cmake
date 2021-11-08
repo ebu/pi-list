@@ -87,7 +87,10 @@ macro(list_add_test NAME)
     target_link_libraries(${NAME} ebu_list_test_lib)
     set_target_properties(${NAME} PROPERTIES FOLDER "unit_tests")
 
-    ParseAndAddCatchTests(${NAME})
+    # add_test can have arbitrary names
+    cmake_policy(SET CMP0110 NEW)
+
+    catch_discover_tests(${NAME})
     message(STATUS "Found ${NAME}")
 endmacro()
 

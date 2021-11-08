@@ -76,7 +76,11 @@ function DetailsTable({
                                     <span className="details-table-filename-name">{item.filename}</span>
                                 </td>
                                 <td className="details-table-status-data">
-                                    {item.compliant !== undefined ? <StatusTag status={status} /> : 'ERROR'}
+                                    {item.compliant !== undefined ? (
+                                        <StatusTag status={status} unknown={item.unknown} />
+                                    ) : (
+                                        'ERROR'
+                                    )}
                                 </td>
                                 <td
                                     className={

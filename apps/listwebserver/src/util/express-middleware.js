@@ -1,13 +1,14 @@
 const programArguments = require('./programArguments');
 const API_ERRORS = require('../enums/apiErrors');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
-const logger = require('./logger');
+import logger from './logger';
 
 /**
  * Handles the unexpected API errors
  */
 function apiErrorHandler(err, req, res, next) {
-    let errorObject, statusCode = null;
+    let errorObject,
+        statusCode = null;
 
     logger('express-middleware').error(err.stack);
 
@@ -25,7 +26,7 @@ function apiErrorHandler(err, req, res, next) {
     // included the error stack in the error response.
     if (programArguments.developmentMode) {
         errorObject = Object.assign({}, errorObject, {
-            stack: err.stack
+            stack: err.stack,
         });
     }
 
@@ -35,7 +36,7 @@ function apiErrorHandler(err, req, res, next) {
 /**
  * Handles the Resource Not Found errors
  */
-function resourceNotFoundHandler (req, res, next) {
+function resourceNotFoundHandler(req, res, next) {
     const err = new Error('Not Found');
     err.status = HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND;
 
@@ -49,7 +50,7 @@ function resourceNotFoundHandler (req, res, next) {
  * If the user is authenticated the response from API should proceed. Otherwise the API should return an response
  * with the unauthorized status code.
  */
-function isAuthenticated (req, res, next) {
+function isAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         next();
     } else {
@@ -63,5 +64,5 @@ function isAuthenticated (req, res, next) {
 module.exports = {
     apiErrorHandler,
     resourceNotFoundHandler,
-    isAuthenticated
+    isAuthenticated,
 };

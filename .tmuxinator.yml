@@ -1,11 +1,11 @@
 # ~/.tmuxinator/LaaB.yml
 
 name: EBU LIST
-root: ~/repos/EBU-LIST
+root: .
 on_project_start:
-    - mkdir -p cmake-build-debug
-    - cd cmake-build-debug
-    - cmake .. -DBUILD_ALL=1 -DCMAKE_BUILD_TYPE=Debug
+    - mkdir -p cmake-build-release
+    - cd cmake-build-release
+    - cmake .. -DBUILD_ALL=1 -DCMAKE_BUILD_TYPE=Release
     - cmake --build . -- -j 8
     - cd ..
     - npx lerna bootstrap
@@ -20,7 +20,7 @@ windows:
                     - cd apps/external
                     - docker-compose up
               - pre-processor:
-                    - cd cmake-build-debug
+                    - cd cmake-build-release
                     - ./bin/stream_pre_processor
               - backend:
                     - cd apps/listwebserver

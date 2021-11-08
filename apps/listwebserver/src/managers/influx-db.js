@@ -1,5 +1,5 @@
 const Influx = require('influx');
-const logger = require('../util/logger');
+import logger from '../util/logger';
 const program = require('../util/programArguments');
 
 const log = logger('influx-db-manager');
@@ -35,8 +35,8 @@ class InfluxDbManager {
     }
 
     sendQueryAndFormatResults(query) {
-        return this.influx.query(query).then(data =>
-            data.map(item => ({
+        return this.influx.query(query).then((data) =>
+            data.map((item) => ({
                 ...item,
                 time: item.time._nanoISO,
             }))
@@ -74,7 +74,7 @@ class InfluxDbManager {
     }
 
     getVrxIdeal(pcapID, streamID, startTime, endTime, groupByNanoseconds) {
-        const groupBy = groupByNanoseconds ? `group by time(${groupByNanoseconds}ns)`: 'group by time(2ms)';
+        const groupBy = groupByNanoseconds ? `group by time(${groupByNanoseconds}ns)` : 'group by time(2ms)';
         const query = `
             select max("gapped-ideal-vrx")
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
@@ -125,7 +125,9 @@ class InfluxDbManager {
             ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeFilter(startTime, endTime)}
         `;
 
-        log.info(`Get DeltaPacketTimeVsRtpTimeRaw for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+        log.info(
+            `Get DeltaPacketTimeVsRtpTimeRaw for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`
+        );
 
         return this.sendQueryAndFormatResults(query);
     }

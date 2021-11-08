@@ -46,6 +46,9 @@ const StreamSchema = new mongoose.Schema({
     error_list: {
         type: Array,
     },
+    processing: {
+        type: Object,
+    },
 });
 
 StreamSchema.set('toJSON', {

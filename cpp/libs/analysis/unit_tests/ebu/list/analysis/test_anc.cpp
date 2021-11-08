@@ -22,7 +22,7 @@ namespace
         auto callback             = [](float) {};
 
         auto context = processing_context{pcap_file,       profile,          storage_folder, pcap,
-                                          get_stream_info, &handler_factory, &updater,       callback};
+                                          get_stream_info, &handler_factory, &updater,       callback, false};
 
         run_full_analysis(context);
     }

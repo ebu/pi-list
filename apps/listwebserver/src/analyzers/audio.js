@@ -2,8 +2,10 @@ const _ = require('lodash');
 const influxDbManager = require('../managers/influx-db');
 const Stream = require('../models/stream');
 const constants = require('../enums/analysis');
-const { appendError } = require('./utils');
-const logger = require('../util/logger');
+const {
+    appendError
+} = require('./utils');
+import logger from '../util/logger';
 
 // returns
 // {
@@ -49,7 +51,10 @@ function updateStreamWithTsdfMax(stream, tsdfMax, tsdfProfile) {
         limit: stream.media_specific.packet_time * 1000 * tsdfProfile.limit,
         unit: 'μs',
     };
-    const { result, level } = getTsdfCompliance(tsdf);
+    const {
+        result,
+        level
+    } = getTsdfCompliance(tsdf);
     tsdf['compliance'] = level;
     tsdf['level'] = level;
     tsdf['result'] = result;
@@ -99,17 +104,17 @@ function updateStreamWithPktTsVsRtpTs(stream, range, profile) {
     // convert to 'μs'
     const packet_time_us = stream.media_specific.packet_time * 1000;
     const limit =
-        profile.unit === 'packet_time'
-            ? {
-                  min: profile.min * packet_time_us,
-                  maxAvg: profile.maxAvg * packet_time_us,
-                  max: profile.max * packet_time_us,
-              }
-            : {
-                  min: profile.min,
-                  maxAvg: profile.maxAvg,
-                  max: profile.max,
-              };
+        profile.unit === 'packet_time' ?
+        {
+            min: profile.min * packet_time_us,
+            maxAvg: profile.maxAvg * packet_time_us,
+            max: profile.max * packet_time_us,
+        } :
+        {
+            min: profile.min,
+            maxAvg: profile.maxAvg,
+            max: profile.max,
+        };
 
     const packet_ts_vs_rtp_ts = {
         range: range,
@@ -121,7 +126,9 @@ function updateStreamWithPktTsVsRtpTs(stream, range, profile) {
     // TODO: maybe remove global_audio_analysis
     stream = _.set(stream, 'global_audio_analysis', global_audio_analysis);
 
-    const { result } = getPktTsVsRtpTsCompliance(range, limit);
+    const {
+        result
+    } = getPktTsVsRtpTsCompliance(range, limit);
     const report = {
         result,
         details: packet_ts_vs_rtp_ts,
@@ -160,7 +167,11 @@ function doCalculatePktTsVsRtpTsRange(pcapId, stream, rtpProfile) {
 function doAudioStreamAnalysis(pcapId, stream, audioAnalysisProfile) {
     return doCalculateTsdf(pcapId, stream, audioAnalysisProfile.tsdf)
         .then(() => doCalculatePktTsVsRtpTsRange(pcapId, stream, audioAnalysisProfile.deltaPktTsVsRtpTsLimit))
-        .then((info) => Stream.findOneAndUpdate({ id: stream.id }, info, { new: true }));
+        .then((info) => Stream.findOneAndUpdate({
+            id: stream.id
+        }, info, {
+            new: true
+        }));
 }
 
 // Returns one array with a promise for each stream. The result of the promise is undefined.

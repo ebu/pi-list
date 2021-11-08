@@ -3,7 +3,7 @@
 const http = require('http');
 const app = require('./app');
 const programArguments = require('./util/programArguments');
-const logger = require('./util/logger');
+import logger from './util/logger';
 const websocketManager = require('./managers/websocket');
 const ingestProgress = require('./managers/ingestProgress');
 const { onError, onListening, onProcessClosed } = require('./util/serverUtils');

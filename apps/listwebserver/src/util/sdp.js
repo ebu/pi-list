@@ -12,8 +12,8 @@ function getDestAddress(media) {
     if (!inConnection) {
         return undefined;
     }
-    
-    if(!inConnection.ip) {
+
+    if (!inConnection.ip) {
         return undefined;
     }
 
@@ -22,7 +22,7 @@ function getDestAddress(media) {
 
 function getIpInfoFromSdp(sdp) {
     // grab src and dst IPs for each stream
-    const streams = sdp.media.map(function(media) {
+    const streams = sdp.media.map(function (media) {
         const dstAddr = getDestAddress(media);
         const dstPort = _.get(media, 'port');
         const srcAddr = _.get(media, 'sourceFilter.srcList');
@@ -35,7 +35,7 @@ function getIpInfoFromSdp(sdp) {
 const withEqualRe = /\s*(.*)=(.*)\s*/;
 const standAloneRe = /\s*(.*)\s*/;
 
-const mapConfigToObject = config => {
+const mapConfigToObject = (config) => {
     if (!config) return {};
     const items = config.split(';');
     return items.reduce((acc, cur) => {
@@ -53,25 +53,19 @@ const mapConfigToObject = config => {
     }, {});
 };
 
-const getResolutionFromProperties = properties => {
+const getResolutionFromProperties = (properties) => {
     if (!properties) return undefined;
 
-    if (
-        properties.width === undefined ||
-        properties.height === undefined ||
-        properties.exactframerate === undefined
-    ) {
+    if (properties.width === undefined || properties.height === undefined || properties.exactframerate === undefined) {
         return undefined;
     }
 
     const structureTag = properties.progressive ? 'p' : 'i';
 
-    return `${properties.width}x${properties.height}${structureTag}${
-        properties.exactframerate
-    }`;
+    return `${properties.width}x${properties.height}${structureTag}${properties.exactframerate}`;
 };
 
-const getVideoMeta = media => {
+const getVideoMeta = (media) => {
     const config = _.get(media, 'fmtp[0].config');
     const properties = mapConfigToObject(config);
     const resolution = getResolutionFromProperties(properties);
@@ -82,7 +76,7 @@ const getVideoMeta = media => {
     return properties;
 };
 
-const getAudioMeta = media => {
+const getAudioMeta = (media) => {
     const rtp0 = _.get(media, 'rtp[0]');
     if (!rtp0) {
         return {};
@@ -93,19 +87,17 @@ const getAudioMeta = media => {
     };
 
     if (rtp0.encoding !== undefined && rtp0.rate !== undefined) {
-        properties.resolution = `${rtp0.codec} / ${rtp0.encoding} ch / ${
-            rtp0.rate
-        } Hz`;
+        properties.resolution = `${rtp0.codec} / ${rtp0.encoding} ch / ${rtp0.rate} Hz`;
     }
 
     return properties;
 };
 
-const getDataMeta = media => {
+const getDataMeta = (media) => {
     return {};
 };
 
-const getMediaSpecificMeta = media => {
+const getMediaSpecificMeta = (media) => {
     if (!media.rtp || media.rtp.length === 0) {
         logger('sdp-controller').error('SDP has no media.rtp entries');
         return undefined;
@@ -129,9 +121,7 @@ const getMediaSpecificMeta = media => {
                     };
 
                 default:
-                    logger('sdp-controller').error(
-                        `Unknown codec for media type video in SDP: ${codec}`
-                    );
+                    logger('sdp-controller').error(`Unknown codec for media type video in SDP: ${codec}`);
                     return undefined;
             }
             break;
@@ -143,9 +133,7 @@ const getMediaSpecificMeta = media => {
             };
 
         default:
-            logger('sdp-controller').error(
-                'Unknown media.type in SDP: ${media.type}'
-            );
+            logger('sdp-controller').error('Unknown media.type in SDP: ${media.type}');
             return undefined;
     }
 };

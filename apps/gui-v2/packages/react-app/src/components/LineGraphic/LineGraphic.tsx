@@ -190,7 +190,7 @@ function LineGraphic({ data }: { data: IComponentProps | undefined }) {
                                 fill: '#39415A',
                                 dy: 10,
                             }}
-                            strokeWidth="0px"
+                            width={0}
                             label={{
                                 value: data.xAxisTitle,
                                 position: 'insideBottom',
@@ -204,7 +204,6 @@ function LineGraphic({ data }: { data: IComponentProps | undefined }) {
                                 },
                             }}
                             onClick={handleZoomOut}
-                            cursor={'col-resize'}
                         />
 
                         <YAxis
@@ -220,7 +219,7 @@ function LineGraphic({ data }: { data: IComponentProps | undefined }) {
                                 width: 'fit-content',
                                 dx: -10,
                             }}
-                            strokeWidth="0px"
+                            width={0}
                         />
 
                         <Tooltip cursor={false} content={<CustomTooltip />} />

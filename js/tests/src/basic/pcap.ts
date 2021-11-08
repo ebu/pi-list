@@ -61,8 +61,7 @@ const deleteTestPcap = async (list: LIST, c: testUtils.ITestContext) => {
     });
 };
 
-const deleteJsonProperties = (json: any) => {
-    const jsonToParse = _.cloneDeep(json);
+const deleteJsonProperties = (jsonToParse: any) => {
     delete jsonToParse._id;
     delete jsonToParse.id;
     delete jsonToParse.owner_id;
@@ -100,8 +99,8 @@ const doUpload = async (
             const pcapId = uuid();
             const timeoutMs = 30000; // It may be necessary to increase timeout due to the size of the pcap file
 
-            await list.pcap.upload(name, stream, callback, pcapId);
             const uploadAwaiter = list.pcap.makeUploadAwaiter(pcapId, timeoutMs);
+            await list.pcap.upload(name, stream, callback, pcapId);
             const uploadResult = await uploadAwaiter;
 
             if (!uploadResult) {
@@ -278,7 +277,7 @@ addTest('Pcap: download Sdp', async (c: testUtils.ITestContext) => {
         const downloadPcap = await list.pcap.downloadSdp(pcapId);
         fs.writeFileSync(tmpFile.path, downloadPcap.data);
         const fileInfo = await fs1.stat(tmpFile.path);
-        const minimumFileSize = 500;
+        const minimumFileSize = 10;
         unwinder.add(() => fs.unlink(tmpFile.path, resultHandler));
 
         expect(fileInfo.size).toBeGreaterThan(minimumFileSize);
