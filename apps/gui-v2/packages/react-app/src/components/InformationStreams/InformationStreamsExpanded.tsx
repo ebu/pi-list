@@ -22,7 +22,7 @@ function InformationStreamExpanded({ item }: { item: Information }) {
         <div>
             <span className="information-streams-description-title">{itemTitle}</span>
             <span className={`information-streams-description-value ${item.attention === true ? 'attention' : ''}`}>
-                {itemValue}
+                {itemValue} {item.units}
             </span>
         </div>
     );
