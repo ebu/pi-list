@@ -41,7 +41,6 @@ stages:
                       Dockerfile: 'release/server/Dockerfile'
                       buildContext: 'release/server'
                       tags: ${{ parameters.docker_image_tag }}
-
     - stage: Test
       jobs:
           - job: TestJob

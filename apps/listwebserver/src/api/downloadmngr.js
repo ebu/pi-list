@@ -9,7 +9,9 @@ router.get('/', (req, res) => {
     controller
         .getAll()
         .then((data) => {
-            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ data });
+            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
+                data
+            });
         })
         .catch((err) => res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(err.message));
 });

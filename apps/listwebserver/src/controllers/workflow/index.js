@@ -1,7 +1,13 @@
-const { v1: uuid } = require('uuid');
-import { api } from '@bisect/ebu-list-sdk';
+const {
+    v1: uuid
+} = require('uuid');
+import {
+    api
+} from '@bisect/ebu-list-sdk';
 import logger from '../../util/logger';
-import { mq } from '@bisect/bisect-core-ts-be';
+import {
+    mq
+} from '@bisect/bisect-core-ts-be';
 const moment = require('moment');
 const programArguments = require('../../util/programArguments');
 
@@ -17,7 +23,9 @@ const activeWorkflowsTimeoutControl = () => {
     wfs.forEach((wf) => {
         var maxValidWfDate = moment(wf.meta.times.lastUpdated).add(3, 'm').toDate();
         if (maxValidWfDate < moment(Date.now())) {
-            let inputConfig = { ids: [wf.id] };
+            let inputConfig = {
+                ids: [wf.id]
+            };
             doCancelWorkflow(wf.type, inputConfig);
         }
     });
@@ -41,7 +49,12 @@ const addWorkflow = (wf) => {
     });
 };
 
-const updateWorkflow = ({ id, status, percentage, payload }) => {
+const updateWorkflow = ({
+    id,
+    status,
+    percentage,
+    payload
+}) => {
     const wf = activeWorkflows[id];
     if (!wf) {
         logger('workflow-controller').error(`Unknown workflow with id ${id}`);
@@ -56,7 +69,9 @@ const updateWorkflow = ({ id, status, percentage, payload }) => {
     if (status == api.workflows.status.started) {
         wf.count += 1;
         if (wf.count > 2) {
-            let inputConfig = { ids: [id] };
+            let inputConfig = {
+                ids: [id]
+            };
             // Instead of cancel Workflow, abort Workflow is more appropriate
             // Pass a status trought the doCancelWorkflow, so that status will
             //  be used instead the actual 'canceled'
@@ -91,7 +106,11 @@ const statusReceiver = mq.createQueueReceiver(programArguments.rabbitmqUrl, api.
 const handleStatusMessage = (msg) => {
     try {
         const message = JSON.parse(msg.toString());
-        const { id, status, payload } = message;
+        const {
+            id,
+            status,
+            payload
+        } = message;
         const error_message = status !== api.workflows.status.failed ? '' : `; message: ${payload}`;
 
         logger('workflow-controller').info(`Status update - id: ${id}; status: ${status}${error_message}`);
@@ -99,8 +118,7 @@ const handleStatusMessage = (msg) => {
     } catch (err) {
         const message = `Error processing workflow update: ${err.message}`;
         logger('workflow-controller').error(message);
-    } finally {
-    }
+    } finally {}
 };
 statusReceiver.emitter.on(mq.onMessageKey, handleStatusMessage);
 
@@ -141,7 +159,9 @@ const doCancelWorkflow = async (type, inputConfig) => {
         throw Error(`Cancel function not exported for workflow`);
     }
 
-    let payload = { canceled: inputConfig.ids };
+    let payload = {
+        canceled: inputConfig.ids
+    };
 
     await cancelFunction(payload, mqttSender);
     return;

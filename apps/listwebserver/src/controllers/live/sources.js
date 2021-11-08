@@ -1,10 +1,19 @@
 const axios = require('axios');
 const _ = require('lodash');
-const { v1: uuid } = require('uuid');
-import { api } from '@bisect/ebu-list-sdk';
-import { mq } from '@bisect/bisect-core-ts-be';
+const {
+    v1: uuid
+} = require('uuid');
+import {
+    api
+} from '@bisect/ebu-list-sdk';
+import {
+    mq
+} from '@bisect/bisect-core-ts-be';
 import logger from '../../util/logger';
-const { getIpInfoFromSdp, getMediaSpecificMeta } = require('../../util/sdp');
+const {
+    getIpInfoFromSdp,
+    getMediaSpecificMeta
+} = require('../../util/sdp');
 const sdpParser = require('sdp-transform');
 const LiveSource = require('../../models/liveSource');
 const programArguments = require('../../util/programArguments');
@@ -58,8 +67,13 @@ function addLiveSource(_source) {
 
     // race-condition problem ?!
     // https://mongoosejs.com/docs/tutorials/findoneandupdate.html
-    const filter = { id: source.id };
-    let upsertedSource = LiveSource.findOneAndUpdate(filter, source, { new: true, upsert: true }).exec();
+    const filter = {
+        id: source.id
+    };
+    let upsertedSource = LiveSource.findOneAndUpdate(filter, source, {
+        new: true,
+        upsert: true
+    }).exec();
     upsertedSource.then(function (doc) {
         console.log(doc);
 
@@ -76,7 +90,9 @@ function addLiveSource(_source) {
 
 function deleteLiveSources(ids) {
     ids.forEach(async (id) => {
-        await LiveSource.deleteOne({ id: id }).exec();
+        await LiveSource.deleteOne({
+            id: id
+        }).exec();
     });
 
     const changeSet = {
@@ -86,7 +102,9 @@ function deleteLiveSources(ids) {
 
     sendMqttUpdate(changeSet);
 
-    return Promise.resolve({ ids });
+    return Promise.resolve({
+        ids
+    });
 }
 
 // returns a promise that resolves to a source
@@ -112,9 +130,13 @@ async function mapAddedNmosToSource(sender) {
             return source;
         }
 
-        const getConfig = { timeout: 1000 };
+        const getConfig = {
+            timeout: 1000
+        };
         const response = await axios.get(url, getConfig);
-        source.sdp = { raw: response.data.toString() };
+        source.sdp = {
+            raw: response.data.toString()
+        };
         logger('live-sources').info(`Getting SDP for ${sender.id}:\n${source.sdp.raw}`);
         const parsed = sdpParser.parse(source.sdp.raw);
         source.sdp.parsed = parsed;
@@ -141,13 +163,19 @@ async function mapAddedNmosToSource(sender) {
     return source;
 }
 
-const { events, onUpdate } = require('../../worker/nmosRegistryProxy');
+const {
+    events,
+    onUpdate
+} = require('../../worker/nmosRegistryProxy');
 if (!onUpdate) {
     logger('live-sources').info('No NMOS querier');
     return;
 }
 
-const onChanged = async ({ added, removedIds }) => {
+const onChanged = async ({
+    added,
+    removedIds
+}) => {
     const removedIdsSet = new Set(removedIds);
 
     const notRemoved = nmosSources.filter((s) => !removedIdsSet.has(s.id));

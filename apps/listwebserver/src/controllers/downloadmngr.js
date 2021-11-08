@@ -18,7 +18,9 @@ let tasks = {};
 function erase(id) {
     return new Promise(function (resolve, reject) {
         collection
-            .findOneAndDelete({ _id: id })
+            .findOneAndDelete({
+                _id: id
+            })
             .then((data) => {
                 resolve(data);
             })
@@ -129,7 +131,9 @@ function getAll() {
 function download(fileId) {
     return new Promise(function (resolve, reject) {
         collection
-            .findOne({ _id: fileId })
+            .findOne({
+                _id: fileId
+            })
             .exec()
             .then(function (data) {
                 resolve(data);

@@ -3,9 +3,16 @@ const fs = require('fs');
 import logger from '../util/logger';
 const sdpParser = require('sdp-transform');
 const sdpoker = require('sdpoker');
-const { v1: uuid } = require('uuid');
-import { api } from '@bisect/ebu-list-sdk';
-const { getMediaSpecificMeta, getIpInfoFromSdp } = require('../util/sdp');
+const {
+    v1: uuid
+} = require('uuid');
+import {
+    api
+} from '@bisect/ebu-list-sdk';
+const {
+    getMediaSpecificMeta,
+    getIpInfoFromSdp
+} = require('../util/sdp');
 
 const readFileAsync = util.promisify(fs.readFile);
 
@@ -47,7 +54,10 @@ const sdpToSource = (sdpText) => {
 
     const media = parsed.media[0];
     const meta = getMediaSpecificMeta(media);
-    source.meta = { ...source.meta, ...meta };
+    source.meta = {
+        ...source.meta,
+        ...meta
+    };
 
     return source;
 };

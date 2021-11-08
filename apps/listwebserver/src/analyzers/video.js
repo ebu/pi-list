@@ -9,7 +9,9 @@ const CONSTANTS = require('../enums/constants');
 const fs = require('../util/filesystem');
 import logger from '../util/logger';
 
-const { appendError } = require('./utils');
+const {
+    appendError
+} = require('./utils');
 const {
     doRtpTicksAnalysis,
     validateRtpTicks,
@@ -87,7 +89,9 @@ const doVideoStreamAnalysis = async (pcapId, stream) => {
     await validateInterFrameRtpTsDelta(stream);
     await map2110d21Cinst(stream);
     await map2110d21Vrx(stream);
-    return await Stream.findOneAndUpdate({ id: stream.id }, stream, {
+    return await Stream.findOneAndUpdate({
+        id: stream.id
+    }, stream, {
         new: true,
     });
 };

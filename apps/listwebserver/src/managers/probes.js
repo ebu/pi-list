@@ -1,6 +1,10 @@
 import logger from '../util/logger';
-import { mq } from '@bisect/bisect-core-ts-be';
-import { api } from '@bisect/ebu-list-sdk';
+import {
+    mq
+} from '@bisect/bisect-core-ts-be';
+import {
+    api
+} from '@bisect/ebu-list-sdk';
 const programArguments = require('../util/programArguments');
 
 logger('probes-manager').info('Monitoring probes');
@@ -12,7 +16,10 @@ const announceReceiver = mq.createExchangeReceiver(programArguments.rabbitmqUrl,
 const handleAnnounceMessage = (msg) => {
     try {
         const message = JSON.parse(msg.toString());
-        const { id, status } = message;
+        const {
+            id,
+            status
+        } = message;
         // logger('probes-manager').info(
         //     `Status update - ${msg.toString()}`
         // );

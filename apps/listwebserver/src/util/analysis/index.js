@@ -4,7 +4,9 @@ const _ = require('lodash');
 const child_process = require('child_process');
 const sdp_parser = require('sdp-transform');
 const sdpoker = require('sdpoker');
-const { v4: uuid } = require('uuid');
+const {
+    v4: uuid
+} = require('uuid');
 const program = require('../programArguments');
 const websocketManager = require('../../managers/websocket');
 import logger from '../logger';
@@ -13,18 +15,40 @@ const HTTP_STATUS_CODE = require('../../enums/httpStatusCode');
 const exec = util.promisify(child_process.exec);
 const Pcap = require('../../models/pcap');
 const Stream = require('../../models/stream');
-const { doVideoAnalysis } = require('../../analyzers/video');
-const { doAudioAnalysis } = require('../../analyzers/audio');
-const { doAncillaryAnalysis } = require('../../analyzers/ancillary');
-const { doTtmlAnalysis } = require('../../analyzers/ttml/ttml');
-const { doCommonConsolidation } = require('../../analyzers/common');
-const { doPcapConsolidation } = require('../../analyzers/pcap');
+const {
+    doVideoAnalysis
+} = require('../../analyzers/video');
+const {
+    doAudioAnalysis
+} = require('../../analyzers/audio');
+const {
+    doAncillaryAnalysis
+} = require('../../analyzers/ancillary');
+const {
+    doTtmlAnalysis
+} = require('../../analyzers/ttml/ttml');
+const {
+    doCommonConsolidation
+} = require('../../analyzers/common');
+const {
+    doPcapConsolidation
+} = require('../../analyzers/pcap');
 const glob = util.promisify(require('glob'));
-const { zipFilesExt } = require('../zip');
-import { mq } from '@bisect/bisect-core-ts-be';
-import { api } from '@bisect/ebu-list-sdk';
-const { getUserId } = require('../../auth/middleware');
-import { getUserFolder } from '../../util/analysis/utils';
+const {
+    zipFilesExt
+} = require('../zip');
+import {
+    mq
+} from '@bisect/bisect-core-ts-be';
+import {
+    api
+} from '@bisect/ebu-list-sdk';
+const {
+    getUserId
+} = require('../../auth/middleware');
+import {
+    getUserFolder
+} from '../../util/analysis/utils';
 
 /**
  * Provides a command-line string to be appended
@@ -87,9 +111,9 @@ function pcapFormatConversion(req, res, next) {
                 if (output.stderr.length > 0) logger('pcap-conversion-process').info(output.stderr);
 
                 res.locals.pcapFileName =
-                    uploadedFileExtension !== ''
-                        ? req.file.filename.replace(fileExtensionRegex, 'pcap')
-                        : req.file.filename + '.pcap';
+                    uploadedFileExtension !== '' ?
+                    req.file.filename.replace(fileExtensionRegex, 'pcap') :
+                    req.file.filename + '.pcap';
                 res.locals.pcapFilePath = convertedFilePath;
                 next();
             })
@@ -99,7 +123,11 @@ function pcapFormatConversion(req, res, next) {
 
                 websocketManager.instance().sendEventToUser(userId, {
                     event: api.wsEvents.Pcap.failed,
-                    data: { id: pcapId, progress: 0, error: err.toString() },
+                    data: {
+                        id: pcapId,
+                        progress: 0,
+                        error: err.toString()
+                    },
                 });
             });
     } else {
@@ -131,7 +159,11 @@ function handlePreprocessorResponse(msg) {
             return;
         }
 
-        const { req, res, next } = preprocessorRequest;
+        const {
+            req,
+            res,
+            next
+        } = preprocessorRequest;
 
         const userId = getUserId(req);
         const pcapId = req.pcap.uuid;
@@ -144,22 +176,26 @@ function handlePreprocessorResponse(msg) {
         if (message.error) {
             logger('stream-pre-processor').error(`Failed process the Pcap file: ${message.error}`);
 
-            Pcap.findOneAndUpdate(
-                { id: pcapId },
-                {
-                    file_name: originalFilename,
-                    capture_file_name: req.file.filename,
-                    pcap_file_name: res.locals.pcapFileName,
-                    owner_id: userId,
-                    generated_from_network: req.pcap.from_network ? true : false,
-                    error: message.error,
-                },
-                { upsert: true }
-            ).exec();
+            Pcap.findOneAndUpdate({
+                id: pcapId
+            }, {
+                file_name: originalFilename,
+                capture_file_name: req.file.filename,
+                pcap_file_name: res.locals.pcapFileName,
+                owner_id: userId,
+                generated_from_network: req.pcap.from_network ? true : false,
+                error: message.error,
+            }, {
+                upsert: true
+            }).exec();
 
             websocketManager.instance().sendEventToUser(userId, {
                 event: api.wsEvents.Pcap.failed,
-                data: { id: pcapId, progress: 0, error: message.error },
+                data: {
+                    id: pcapId,
+                    progress: 0,
+                    error: message.error
+                },
             });
 
             return;
@@ -174,7 +210,12 @@ function handlePreprocessorResponse(msg) {
             generated_from_network: req.pcap.from_network ? true : false,
         };
 
-        Pcap.findOneAndUpdate({ id: pcapId }, _.merge(pcapData, pcapAdditionalData), { upsert: true, new: true })
+        Pcap.findOneAndUpdate({
+                id: pcapId
+            }, _.merge(pcapData, pcapAdditionalData), {
+                upsert: true,
+                new: true
+            })
             .exec()
             .then(function (pcapDbData) {
                 logger('stream-pre-processor').info(`Added new Pcap file to the database: ${pcapId}`);
@@ -198,7 +239,11 @@ function handlePreprocessorResponse(msg) {
 
                         websocketManager.instance().sendEventToUser(userId, {
                             event: api.wsEvents.Pcap.failed,
-                            data: { id: pcapId, progress: 0, error: err.toString() },
+                            data: {
+                                id: pcapId,
+                                progress: 0,
+                                error: err.toString()
+                            },
                         });
 
                         return;
@@ -207,22 +252,26 @@ function handlePreprocessorResponse(msg) {
             .catch(function (err) {
                 logger('stream-pre-processor').error(`Failed to add Pcap analysis to the database: ${err}`);
 
-                Pcap.findOneAndUpdate(
-                    { id: pcapId },
-                    {
-                        file_name: originalFilename,
-                        capture_file_name: req.file.filename,
-                        pcap_file_name: res.locals.pcapFileName,
-                        owner_id: userId,
-                        generated_from_network: req.pcap.from_network ? true : false,
-                        error: err.toString(),
-                    },
-                    { upsert: true }
-                ).exec();
+                Pcap.findOneAndUpdate({
+                    id: pcapId
+                }, {
+                    file_name: originalFilename,
+                    capture_file_name: req.file.filename,
+                    pcap_file_name: res.locals.pcapFileName,
+                    owner_id: userId,
+                    generated_from_network: req.pcap.from_network ? true : false,
+                    error: err.toString(),
+                }, {
+                    upsert: true
+                }).exec();
 
                 websocketManager.instance().sendEventToUser(userId, {
                     event: api.wsEvents.Pcap.failed,
-                    data: { id: pcapId, progress: 0, error: err.toString() },
+                    data: {
+                        id: pcapId,
+                        progress: 0,
+                        error: err.toString()
+                    },
                 });
 
                 return;
@@ -232,7 +281,11 @@ function handlePreprocessorResponse(msg) {
 
         websocketManager.instance().sendEventToUser(userId, {
             event: api.wsEvents.Pcap.failed,
-            data: { id: pcapId, progress: 0, error: err.toString() },
+            data: {
+                id: pcapId,
+                progress: 0,
+                error: err.toString()
+            },
         });
 
         return;
@@ -248,7 +301,11 @@ function pcapPreProcessing(req, res, next) {
     logger('stream-pre-processor').info(`Pcap ID: ${req.pcap.uuid}`);
 
     const key = req.pcap.uuid;
-    outstandingPreprocessorRequests[key] = { req, res, next };
+    outstandingPreprocessorRequests[key] = {
+        req,
+        res,
+        next
+    };
 
     preprocessorRequestSender.send({
         msg: {
@@ -262,7 +319,9 @@ function pcapPreProcessing(req, res, next) {
 }
 
 const postProcessSdpFiles = async (pcapId, folder) => {
-    Pcap.findOne({ id: pcapId })
+    Pcap.findOne({
+            id: pcapId
+        })
         .exec()
         .then(async (data) => {
             const filename = data.file_name.replace(/\.[^\.]*$/, '-sdp.zip').replace(RegExp('/', 'g'), '-');
@@ -272,8 +331,21 @@ const postProcessSdpFiles = async (pcapId, folder) => {
 };
 
 export const runAnalysis = async (params) => {
-    const { pcapId, pcapFolder, streamID, pcapFile, userId, analysisProfileFile, extractFrames } = params;
-    const { withMongo, withInflux, withRabbitMq, withExtractFrames } = argumentsToExtractor(extractFrames);
+    const {
+        pcapId,
+        pcapFolder,
+        streamID,
+        pcapFile,
+        userId,
+        analysisProfileFile,
+        extractFrames
+    } = params;
+    const {
+        withMongo,
+        withInflux,
+        withRabbitMq,
+        withExtractFrames
+    } = argumentsToExtractor(extractFrames);
 
     const streamOption = streamID ? `-s ${streamID}` : '';
     const profileFile = `-p ${analysisProfileFile}`;
@@ -285,11 +357,19 @@ export const runAnalysis = async (params) => {
         const output = await exec(st2110ExtractorCommand);
 
         if (extractFrames === false) {
-            Pcap.findOne({ id: pcapId })
+            Pcap.findOne({
+                    id: pcapId
+                })
                 .exec()
                 .then((pcap) => {
                     if (pcap.error) {
-                        Pcap.findOneAndUpdate({ id: pcapId }, { error: '' }, { new: true }).exec();
+                        Pcap.findOneAndUpdate({
+                            id: pcapId
+                        }, {
+                            error: ''
+                        }, {
+                            new: true
+                        }).exec();
                     }
                 });
         }
@@ -305,17 +385,21 @@ export const runAnalysis = async (params) => {
     } catch (err) {
         logger('pcap-full-analysis').error(`exception: ${err}`);
 
-        Pcap.findOneAndUpdate(
-            { id: pcapId },
-            {
-                error: err.toString(),
-            },
-            { new: true }
-        ).exec();
+        Pcap.findOneAndUpdate({
+            id: pcapId
+        }, {
+            error: err.toString(),
+        }, {
+            new: true
+        }).exec();
 
         websocketManager.instance().sendEventToUser(userId, {
             event: api.wsEvents.Pcap.failed,
-            data: { id: pcapId, progress: 0, error: err.toString() },
+            data: {
+                id: pcapId,
+                progress: 0,
+                error: err.toString()
+            },
         });
 
         return err;
@@ -323,9 +407,13 @@ export const runAnalysis = async (params) => {
 };
 
 function resetStreamCountersAndErrors(req, res, next) {
-    const { streamID } = req.params;
+    const {
+        streamID
+    } = req.params;
 
-    Stream.findOne({ id: streamID })
+    Stream.findOne({
+            id: streamID
+        })
         .exec()
         .then((data) => {
             if (typeof data.statistics !== 'undefined') {
@@ -347,7 +435,9 @@ function resetStreamCountersAndErrors(req, res, next) {
                 data.error_list = [];
             }
 
-            Stream.findOneAndUpdate({ id: streamID }, data)
+            Stream.findOneAndUpdate({
+                    id: streamID
+                }, data)
                 .exec()
                 .then((data) => {
                     next();
@@ -422,7 +512,10 @@ const videoConsolidation = async (req, res, next) => {
 
 function audioConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
-    Stream.find({ pcap: pcapId, media_type: 'audio' })
+    Stream.find({
+            pcap: pcapId,
+            media_type: 'audio'
+        })
         .exec()
         .then((streams) => doAudioAnalysis(pcapId, streams, req.analysisProfile.audio))
         .then((streams) => {
@@ -436,7 +529,10 @@ function audioConsolidation(req, res, next) {
 
 function ancillaryConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
-    Stream.find({ pcap: pcapId, media_type: 'ancillary_data' })
+    Stream.find({
+            pcap: pcapId,
+            media_type: 'ancillary_data'
+        })
         .exec()
         .then((streams) => doAncillaryAnalysis(req, streams))
         .then((streams) => {
@@ -450,7 +546,10 @@ function ancillaryConsolidation(req, res, next) {
 
 function ttmlConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
-    Stream.find({ pcap: pcapId, media_type: 'ttml' })
+    Stream.find({
+            pcap: pcapId,
+            media_type: 'ttml'
+        })
         .exec()
         .then((streams) => doTtmlAnalysis(req, streams))
         .then((streams) => {
@@ -464,7 +563,10 @@ function ttmlConsolidation(req, res, next) {
 
 function unknownConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
-    Stream.find({ pcap: pcapId, media_type: 'unknown' })
+    Stream.find({
+            pcap: pcapId,
+            media_type: 'unknown'
+        })
         .exec()
         .then((streams) => {
             addStreamsToReq(streams, req);
@@ -490,13 +592,21 @@ function pcapIngestEnd(req, res, next) {
     const userId = getUserId(req);
     const pcapId = req.pcap.uuid;
 
-    Pcap.findOneAndUpdate({ id: pcapId }, { analyzed: true }, { new: true })
+    Pcap.findOneAndUpdate({
+            id: pcapId
+        }, {
+            analyzed: true
+        }, {
+            new: true
+        })
         .exec()
         .then((pcapData) => {
             // Everything is done, we must notify the GUI
             websocketManager.instance().sendEventToUser(userId, {
                 event: api.wsEvents.Pcap.processingDone,
-                data: Object.assign({}, pcapData._doc, { progress: 100 }),
+                data: Object.assign({}, pcapData._doc, {
+                    progress: 100
+                }),
             });
         });
 }
@@ -544,7 +654,11 @@ function sdpParseIp(req, res, next) {
                 const dstAddr = _.get(media, 'sourceFilter.destAddress');
                 const dstPort = _.get(media, 'port');
                 const src = _.get(media, 'sourceFilter.srcList');
-                return { dstAddr, dstPort, src };
+                return {
+                    dstAddr,
+                    dstPort,
+                    src
+                };
             });
 
             // notify the live subscription panel
@@ -577,7 +691,10 @@ function sdpDelete(req, res, next) {
     fs.unlinkSync(req.file.path);
 }
 
-const { getAnalysisProfile } = require('./getProfile');
+const {
+    getAnalysisProfile
+} = require('./getProfile');
+
 
 const analysisFromFile = [
     getAnalysisProfile,

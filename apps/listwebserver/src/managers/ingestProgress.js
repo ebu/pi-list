@@ -1,5 +1,9 @@
-import { mq } from '@bisect/bisect-core-ts-be';
-import { api } from '@bisect/ebu-list-sdk';
+import {
+    mq
+} from '@bisect/bisect-core-ts-be';
+import {
+    api
+} from '@bisect/ebu-list-sdk';
 const program = require('../util/programArguments');
 import logger from '../util/logger';
 const Pcap = require('../models/pcap');
@@ -15,13 +19,17 @@ function handleProgressMessage(msg) {
         const message = JSON.parse(msg.toString());
         // logger('ingest-progress').info(JSON.stringify(message));
 
-        Pcap.findOne({ id: message.id })
+        Pcap.findOne({
+                id: message.id
+            })
             .exec()
             .then((pcapData) => {
                 // Everything is done, we must notify the GUI
                 websocketManager.instance().sendEventToAllUsers({
                     event: api.wsEvents.Pcap.analyzing,
-                    data: Object.assign({}, pcapData._doc, { progress: message.percentage }),
+                    data: Object.assign({}, pcapData._doc, {
+                        progress: message.percentage
+                    }),
                 });
             });
     } catch (err) {
