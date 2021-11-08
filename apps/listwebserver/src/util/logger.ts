@@ -6,10 +6,18 @@ const CONSTANTS = {
     MAX_LOG_SIZE_10_MB: 10000000,
 };
 
+interface ILogInfo {
+    timestamp: Date;
+    label: string;
+    level: string;
+    message: string;
+    durationMs: number;
+}
+
 const logToConsole = true;
 
-function removeLastLineBreak(string) {
-    return isString(string) ? string.replace(/\n$/, '') : '';
+function removeLastLineBreak(s: string) {
+    return isString(s) ? s.replace(/\n$/, '') : '';
 }
 
 /**
@@ -22,15 +30,8 @@ function removeLastLineBreak(string) {
  * @param {object} info
  * @returns {string}
  */
-function formatLoggerOutput(info) {
+function formatLoggerOutput(info: ILogInfo) {
     let { timestamp, label, level, message, durationMs } = info;
-
-    // This verifies if the message is an object. Normally the message is an object
-    // when the it's used the profile command.
-    if (isObject(info.message)) {
-        label = message.label;
-        message = message.message;
-    }
 
     return `${timestamp} [${label}] ${level}: ${removeLastLineBreak(message)} ${
         isNumber(durationMs) ? `| ${durationMs} ms` : ''
@@ -83,10 +84,10 @@ if (logToConsole) {
  * @returns {object}
  */
 
-module.exports = (label) => ({
-    info: (msg) => logger.log({ label: label, level: 'info', message: msg }),
-    warn: (msg) => logger.log({ label: label, level: 'warn', message: msg }),
-    error: (msg) => logger.log({ label: label, level: 'error', message: msg }),
-    profile: (msg) => logger.profile({ label: label, message: msg }),
-    restAPILogger: { write: (msg) => logger.log({ label: label, level: 'info', message: msg }) },
+export default (label: string) => ({
+    info: (msg: unknown) => logger.log({ label: label, level: 'info', message: msg }),
+    warn: (msg: unknown) => logger.log({ label: label, level: 'warn', message: msg }),
+    error: (msg: unknown) => logger.log({ label: label, level: 'error', message: msg }),
+    profile: (msg: unknown) => logger.profile({ label: label, message: msg }),
+    restAPILogger: { write: (msg: unknown) => logger.log({ label: label, level: 'info', message: msg }) },
 });

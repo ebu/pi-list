@@ -19,5 +19,6 @@ namespace ebu_list::st2110_extractor
         path analysis_profile_file;
         analysis::analysis_profile profile;
         std::optional<std::string> id_to_process;
+        bool extract_frames;
     };
 } // namespace ebu_list::st2110_extractor

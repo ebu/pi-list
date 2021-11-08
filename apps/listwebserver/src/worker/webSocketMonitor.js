@@ -1,7 +1,7 @@
 const EventEmitter = require('events');
 const axios = require('axios');
 const _ = require('lodash');
-const logger = require('../util/logger');
+import logger from '../util/logger';
 const W3CWebSocket = require('websocket').w3cwebsocket;
 
 const events = {
@@ -10,14 +10,14 @@ const events = {
     update: 'updateEvent',
 };
 
-const createMonitor = query_url => {
+const createMonitor = (query_url) => {
     const eventEmitter = new EventEmitter();
 
-    const handle_updates = updates => {
-        updates.forEach(update => handle_update(update));
+    const handle_updates = (updates) => {
+        updates.forEach((update) => handle_update(update));
     };
 
-    const handle_update = update => {
+    const handle_update = (update) => {
         const pre = update.pre;
         const post = update.post;
 
@@ -43,7 +43,7 @@ const createMonitor = query_url => {
 
     axios
         .post(subscriptions_url, subscription_body)
-        .then(response => {
+        .then((response) => {
             const ws_href = _.get(response, ['data', 'ws_href']);
 
             if (_.isNil(ws_href)) {
@@ -58,29 +58,21 @@ const createMonitor = query_url => {
 
             const client = new W3CWebSocket(ws_href, null);
 
-            client.onerror = err => {
-                logger('nmos-crawler').error(
-                    `Error connecting to Websocket: ${err}`
-                );
+            client.onerror = (err) => {
+                logger('nmos-crawler').error(`Error connecting to Websocket: ${err}`);
             };
 
             client.onopen = () => {
                 logger('nmos-crawler').info('Connected to Websocket');
             };
 
-            client.onclose = e => {
+            client.onclose = (e) => {
                 logger('nmos-crawler').info('Connection to Websocket closed.');
             };
 
-            client.onmessage = e => {
-                if (
-                    _.isNil(e) ||
-                    _.isNil(e.data) ||
-                    typeof e.data !== 'string'
-                ) {
-                    logger('nmos-crawler').error(
-                        `Websocket received an Invalid message: ${e}`
-                    );
+            client.onmessage = (e) => {
+                if (_.isNil(e) || _.isNil(e.data) || typeof e.data !== 'string') {
+                    logger('nmos-crawler').error(`Websocket received an Invalid message: ${e}`);
                     return;
                 }
 
@@ -88,32 +80,22 @@ const createMonitor = query_url => {
                 // logger("nmos-ws").info(e.data);
                 const event = JSON.parse(e.data);
 
-                if (
-                    _.isNil(event) ||
-                    _.isNil(event.grain) ||
-                    typeof event.grain !== 'object'
-                ) {
-                    logger('nmos-crawler').error(
-                        `Websocket received an invalid event: ${event}`
-                    );
+                if (_.isNil(event) || _.isNil(event.grain) || typeof event.grain !== 'object') {
+                    logger('nmos-crawler').error(`Websocket received an invalid event: ${event}`);
                     return;
                 }
 
                 const updates = _.get(event, ['grain', 'data']);
                 if (_.isNil(updates) || typeof updates !== 'object') {
-                    logger('nmos-crawler').error(
-                        `Websocket received an event with an invalid grain: ${event}`
-                    );
+                    logger('nmos-crawler').error(`Websocket received an event with an invalid grain: ${event}`);
                     return;
                 }
 
                 handle_updates(updates);
             };
         })
-        .catch(err => {
-            logger('nmos-crawler').error(
-                `Could not contact the NMOS registry for subscribing to websockets: ${err}`
-            );
+        .catch((err) => {
+            logger('nmos-crawler').error(`Could not contact the NMOS registry for subscribing to websockets: ${err}`);
         });
 
     ///////////////////////////////////////////////////
@@ -125,5 +107,5 @@ const createMonitor = query_url => {
 
 module.exports = {
     createMonitor,
-    events
+    events,
 };

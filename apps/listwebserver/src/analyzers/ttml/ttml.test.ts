@@ -1,5 +1,5 @@
-const _ = require('lodash');
-const fs = require('fs');
+import _ from 'lodash';
+import fs from 'fs';
 const path = require('path');
 const tmp = require('tmp');
 const { doLoadTtmlDocuments, doAnalyseTimeBase, doAnalyseSequenceIdentifier } = require('./util');
@@ -117,9 +117,9 @@ const expectedItems1 = {
     ],
 };
 
-function prepareFiles(contents) {
+function prepareFiles(contents: any) {
     const tmpDir = tmp.dirSync().name;
-    contents.forEach((data, index) => {
+    contents.forEach((data: any, index: any) => {
         const tmpFile = path.join(tmpDir, index.toFixed(0));
         fs.writeFileSync(tmpFile, JSON.stringify(data));
     });
@@ -166,7 +166,7 @@ test('doLoadTtmlDocuments: single document', () => {
 
 test('doLoadTtmlDocuments: two documents', () => {
     const ja = _.cloneDeep(j1);
-    const jb = _.cloneDeep(j1);
+    const jb: any = _.cloneDeep(j1);
     jb.rtp_timestamp = 123;
 
     const ttmlDir = prepareFiles([ja, jb]);
@@ -224,8 +224,7 @@ test('doLoadTtmlDocuments: invalid document', () => {
     const expectedStream = {
         id: '1',
         media_specific: {
-            data: [
-            ],
+            data: [],
         },
     };
 

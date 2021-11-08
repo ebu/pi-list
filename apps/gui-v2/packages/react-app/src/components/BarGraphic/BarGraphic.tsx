@@ -112,7 +112,7 @@ function BarGraphic({ barGraphicData }: { barGraphicData: IComponentProps }) {
                                 fill: '#39415A',
                                 dy: 10,
                             }}
-                            strokeWidth="0px"
+                            width={0}
                             label={{
                                 value: barGraphicData.xAxisTitle,
                                 position: 'insideBottom',
@@ -138,7 +138,7 @@ function BarGraphic({ barGraphicData }: { barGraphicData: IComponentProps }) {
                                 dx: -10,
                             }}
                             interval="preserveStart"
-                            strokeWidth="0px"
+                            width={0}
                         />
                         )
                         <Tooltip cursor={{ fill: 'transparent' }} content={<CustomTooltip />} />

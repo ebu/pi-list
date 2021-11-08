@@ -12,7 +12,7 @@ const api = require('./api');
 const { apiErrorHandler, resourceNotFoundHandler, isAuthenticated } = require('./util/express-middleware');
 const HTTP_STATUS_CODE = require('./enums/httpStatusCode');
 const programArguments = require('./util/programArguments');
-const logger = require('./util/logger');
+import logger from './util/logger';
 const authMiddleware = require('./auth/middleware');
 const program = require('./util/programArguments');
 

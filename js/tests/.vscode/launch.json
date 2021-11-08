@@ -7,7 +7,7 @@
         {
             "type": "pwa-node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Test basic",
             "skipFiles": ["<node_internals>/**"],
             "program": "${workspaceFolder}/dist/index.js",
             "preLaunchTask": "Build all",
@@ -18,7 +18,7 @@
                 "${workspaceFolder}/../../**",
                 "!**/node_modules/**"
             ],
-            "args": ["test-basic", "-b", "http://localhost", "-u", "demo3", "-p", "demo3"]
+            "args": ["test-basic", "-b", "http://localhost", "-u", "demo3", "-p", "demo"]
         }
     ]
 }

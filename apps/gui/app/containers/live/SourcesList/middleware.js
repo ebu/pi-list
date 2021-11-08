@@ -1,6 +1,6 @@
 import { types as workflowTypes } from 'ebu_list_common/workflows/types';
 import sources from 'ebu_list_common/capture/sources';
-import uuidv1 from 'uuid/v1';
+import uuid from 'uuid';
 import Actions from './Actions';
 import api from '../../../utils/api';
 import notifications from '../../../utils/notifications';
@@ -61,7 +61,7 @@ const middleware = (state, action) => {
 
                 s.forEach(source => {
                     const descriptor = {
-                        id: !source.id ? uuidv1() : source.id,
+                        id: !source.id ? uuid.v1() : source.id,
                         meta: {
                             label: source.description || 'User defined',
                         },

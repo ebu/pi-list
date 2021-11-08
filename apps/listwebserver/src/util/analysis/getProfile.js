@@ -1,7 +1,7 @@
 const util = require('util');
 const fs = require('fs');
 const _ = require('lodash');
-const logger = require('../logger');
+import logger from '../logger';
 const controller = require('../../controllers/analysis_profile');
 const path = require('path');
 const { promisify } = require('util');

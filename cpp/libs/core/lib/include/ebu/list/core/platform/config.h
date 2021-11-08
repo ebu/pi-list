@@ -24,6 +24,8 @@ namespace ebu_list::platform::config
     constexpr auto little_endian = true;
 #elif defined(__clang__) && defined(__x86_64__)
     constexpr auto little_endian = true;
+#elif defined(__aarch64__)
+    constexpr auto little_endian = true;
 #elif defined(__x86_64__)
     constexpr auto little_endian = true;
 #else

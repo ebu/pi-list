@@ -5,7 +5,7 @@ For information about the configuration file, see config.yml
 */
 
 const _ = require('lodash');
-const uuidv1 = require('uuid/v1');
+const uuid = require('uuid');
 const logger = require('../../js/common_server/logging/logger');
 const mq = require('../../js/common/mq/types');
 const { createExchangeSender } = require('../../js/common_server/mq/send');
@@ -17,13 +17,10 @@ const yamlParser = require('read-yaml');
 
 commander
     .arguments('<configFile>')
-    .action(configFile => {
+    .action((configFile) => {
         globalConfig = yamlParser.sync(configFile);
 
-        if (
-            globalConfig.rabbitmq.hostname === undefined ||
-            globalConfig.rabbitmq.port === undefined
-        ) {
+        if (globalConfig.rabbitmq.hostname === undefined || globalConfig.rabbitmq.port === undefined) {
             console.error('RabbitMQ is not configured in config file');
             process.exit(-1);
         }
@@ -97,12 +94,9 @@ const initialContext = {
     lastCleared: undefined,
 };
 
-const getHistogram = samples => {
+const getHistogram = (samples) => {
     const total = Object.values(samples).reduce((t, value) => t + value, 0);
-    const histogram = Object.keys(samples).map(key => [
-        parseInt(key),
-        (100 * samples[key]) / total,
-    ]);
+    const histogram = Object.keys(samples).map((key) => [parseInt(key), (100 * samples[key]) / total]);
     return histogram;
 };
 
@@ -120,9 +114,7 @@ const updateCinst = (context, settings) => {
     incrementValue(context.current.cInst.samples, cInst);
     incrementValue(context.global.cInst.samples, cInst);
 
-    context.current.cInst.histogram = getHistogram(
-        context.current.cInst.samples
-    );
+    context.current.cInst.histogram = getHistogram(context.current.cInst.samples);
     context.global.cInst.histogram = getHistogram(context.global.cInst.samples);
 };
 
@@ -136,11 +128,8 @@ const updateVrx = (context, settings) => {
     context.global.vrx.histogram = getHistogram(context.global.vrx.samples);
 };
 
-const clearCurrentValues = context => {
-    if (
-        _.isNil(context.lastCleared) ||
-        context.lastCleared + 1000 < Date.now()
-    ) {
+const clearCurrentValues = (context) => {
+    if (_.isNil(context.lastCleared) || context.lastCleared + 1000 < Date.now()) {
         context.current = _.cloneDeep(initialContext.current);
     }
 
@@ -148,10 +137,7 @@ const clearCurrentValues = context => {
 };
 
 const run = async () => {
-    const heartBeatSender = createExchangeSender(
-        globalConfig.rabbitmqUrl,
-        mq.exchanges.liveStreamUpdates
-    );
+    const heartBeatSender = createExchangeSender(globalConfig.rabbitmqUrl, mq.exchanges.liveStreamUpdates);
 
     const onProcessClosed = () => {
         logger('server').info(`Closing server`);
@@ -161,7 +147,7 @@ const run = async () => {
 
     process.on('SIGINT', onProcessClosed);
 
-    const streamId = uuidv1();
+    const streamId = uuid.v1();
 
     logger('live-generator').info(`Generating stream ${streamId}`);
 
@@ -245,12 +231,9 @@ const run = async () => {
     };
 
     const updateData = (data, context) => {
-        data.current_video_analysis.cinst.histogram =
-            context.current.cInst.histogram;
-        data.global_video_analysis.cinst.histogram =
-            context.global.cInst.histogram;
-        data.current_video_analysis.vrx.histogram =
-            context.current.vrx.histogram;
+        data.current_video_analysis.cinst.histogram = context.current.cInst.histogram;
+        data.global_video_analysis.cinst.histogram = context.global.cInst.histogram;
+        data.current_video_analysis.vrx.histogram = context.current.vrx.histogram;
         data.global_video_analysis.vrx.histogram = context.global.vrx.histogram;
     };
 
@@ -264,9 +247,7 @@ const run = async () => {
             });
 
             await heartBeatSender.send({
-                key:
-                    mq.exchanges.liveStreamUpdates.topics.stream_update +
-                    `.${streamId}`,
+                key: mq.exchanges.liveStreamUpdates.topics.stream_update + `.${streamId}`,
                 msg: data,
             });
         } catch (err) {
@@ -275,7 +256,7 @@ const run = async () => {
     }, 200);
 };
 
-run().catch(err => {
+run().catch((err) => {
     logger('server').error(`Error: ${err}`);
     process.exit(-1);
 });
