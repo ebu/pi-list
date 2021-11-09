@@ -75,6 +75,7 @@ aforementioned _API_.
 - [Live Sources](#live-sources)
   * [`Get all live source`](#get-all-sources)
   * [`Add a new live source`](#add-a-new-live-source)
+  * [`Update one live source`](#update-one-live-source)
   * [`Delete one live source`](#delete-one-live-source)
 
 ---
@@ -559,6 +560,13 @@ Body example:
 
 }
 ```
+
+#### Update one live source
+- Path: `/api/live/sources/<source_id>`
+- Method: `PUT`
+- Request Body: `<liveSources>`
+- Response:
+  * HTTP/200: `{"ids": "<source_id>"]}`
 
 #### Delete one live source
 - Path: `/api/live/sources/<source_id>`

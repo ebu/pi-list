@@ -83,6 +83,21 @@ router.post('/sources', checkIsReadOnly, (req, res) => {
         .catch(() => res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(API_ERRORS.UNEXPECTED_ERROR));
 });
 
+// update a live source. body : { source: <source to update> }
+router.put('/sources/:sourceID', checkIsReadOnly, (req, res) => {
+    const userId = getUserId(req);
+    liveSources
+        .updateLiveSource(req.body)
+        .then((data) => {
+            websocketManager.instance().sendEventToUser(userId, {
+                event: api.wsEvents.LiveSource.list_update,
+                data: data,
+            });
+            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data)
+        })
+        .catch(() => res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(API_ERRORS.UNEXPECTED_ERROR));
+});
+
 // delete live source
 router.delete('/sources/:sourceID', checkIsReadOnly, (req, res) => {
     const { sourceID } = req.params;

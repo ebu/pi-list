@@ -53,30 +53,28 @@ function addLiveSource(_source) {
     if (source.id === undefined) {
         source.id = uuidv1();
     }
-
     source.meta = getMetaForUserDefinedSource(source);
 
     // race-condition problem ?!
     // https://mongoosejs.com/docs/tutorials/findoneandupdate.html
     const filter = { id: source.id };
-    let upsertedSource = LiveSource.findOneAndUpdate(filter, source, { new: true, upsert: true }).exec();
-    upsertedSource.then(function (doc) {
-        const changeSet = {
-            added: [doc],
-            removedIds: [],
-        };
-    });
+    const upsertedSource = LiveSource.findOneAndUpdate(filter, source, { new: true, upsert: true }).exec();
+
+    return Promise.resolve(upsertedSource);
+}
+
+function updateLiveSource(_source) {
+    logger('live-sources').info(`Updating source - id: ${_source.id}`);
+    const source = _.cloneDeep(_source);
+    const filter = { id: source.id };
+    const upsertedSource = LiveSource.findOneAndUpdate(filter, source, { new: false, overwrite: true }).exec();
 
     return Promise.resolve(upsertedSource);
 }
 
 function deleteLiveSource(sourceId) {
+    logger('live-sources').info(`Deleting source - id: ${sourceId}`);
     LiveSource.deleteOne({ id: sourceId }).exec();
-
-    const changeSet = {
-        added: [],
-        removedIds: [ sourceId ],
-    };
 
     return Promise.resolve({ id: sourceId });
 }
@@ -184,6 +182,7 @@ module.exports = {
     getAllLiveSources,
     findLiveSources,
     addLiveSource,
+    updateLiveSource,
     deleteLiveSource,
     deleteLiveSources,
 };
