@@ -6,8 +6,7 @@ const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 import logger from '../util/logger';
 const controller = require('../controllers/workflow');
 const {
-    getUserId,
-    checkIsReadOnly
+    getUserId
 } = require('../auth/middleware');
 import {
     getUserFolder

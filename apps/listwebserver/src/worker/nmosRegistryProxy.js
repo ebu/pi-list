@@ -2,10 +2,7 @@ const EventEmitter = require('events');
 const axios = require('axios');
 const _ = require('lodash');
 import logger from '../util/logger';
-const websocketManager = require('../managers/websocket');
 const program = require('../util/programArguments');
-const WebSocketClient = require('websocket').client;
-const W3CWebSocket = require('websocket').w3cwebsocket;
 const webSocketMonitor = require('./webSocketMonitor');
 
 const updateEvent = 'updateEvent';

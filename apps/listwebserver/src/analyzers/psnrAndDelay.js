@@ -1,14 +1,15 @@
 const path = require('path');
 const fs = require('fs');
 const util = require('util');
-const glob = util.promisify(require('glob'));
 const child_process = require('child_process');
 const { waitForFramesExtraction } = require('../controllers/streams2');
-
-const exec = util.promisify(child_process.exec);
-const readFile = util.promisify(fs.readFile);
+const _glob = require('glob');
 import logger from '../util/logger';
 const CONSTANTS = require('../enums/constants');
+
+const glob = util.promisify(_glob);
+const exec = util.promisify(child_process.exec);
+const readFile = util.promisify(fs.readFile);
 
 const getTsFromMetaFile = async (path) => {
     return JSON.parse(await readFile(`${path}/${CONSTANTS.META_FILE}`, 'utf8'));
