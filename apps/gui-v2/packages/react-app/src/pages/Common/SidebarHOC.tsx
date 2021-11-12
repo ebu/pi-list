@@ -44,7 +44,7 @@ function SidebarHOC() {
         getVersion();
     }, []);
 
-    const buttonsList: IButtonWithRoutes = {
+    let buttonsList: IButtonWithRoutes = {
         upperButtons: [
             {
                 text: translate('media_information.analysis'),
@@ -52,13 +52,6 @@ function SidebarHOC() {
                 key: sidebarButtonsKeys.analysis,
                 icon: AnalysisIcon,
                 route: routeNames.PCAPS,
-            },
-            {
-                text: translate('navigation.capture'),
-                clicked: false,
-                key: sidebarButtonsKeys.capture,
-                icon: ComparisonIcon,
-                route: routeNames.CAPTURE,
             },
             {
                 text: translate('navigation.stream_comparisons'),
@@ -112,6 +105,17 @@ function SidebarHOC() {
             },
         ],
     };
+
+    if ( (typeof(process.env.REACT_APP_LIVE) !== 'undefined') &&
+         (process.env.REACT_APP_LIVE)) {
+        buttonsList.upperButtons.splice(1, 0, {
+            text: translate('navigation.capture'),
+            clicked: false,
+            key: sidebarButtonsKeys.capture,
+            icon: ComparisonIcon,
+            route: routeNames.CAPTURE,
+        });
+    }
 
     const helpString = translate('navigation.help');
     const onSidebarClick = (buttonKey: number): void => {

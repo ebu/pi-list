@@ -3,6 +3,7 @@
     "private": true,
     "scripts": {
         "start": "lerna run start --stream --scope '@ebu-list/gui-v2'",
+        "live": "lerna run live --stream --scope '@ebu-list/gui-v2'",
         "build:production": "lerna run build:production --stream --scope '@ebu-list/gui-v2'"
     },
     "devDependencies": {

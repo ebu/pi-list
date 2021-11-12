@@ -10,6 +10,7 @@
     },
     "scripts": {
         "start": "react-app-rewired start",
+        "live": "REACT_APP_LIVE=true react-app-rewired start",
         "build:production": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
