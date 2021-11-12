@@ -1,6 +1,7 @@
 import React from 'react';
 import list from '../../../utils/api';
 import SDK from '@bisect/ebu-list-sdk';
+import api from '@bisect/ebu-list-sdk';
 import { SetterOrUpdater, useSetRecoilState } from 'recoil';
 import { pcapsAtom } from './pcaps';
 import { pcapsAnalysingAtom } from './pcapsAnalysing';
@@ -13,6 +14,9 @@ const handlePcapsUpdate = (
     setPcapsAnalysingAtom: SetterOrUpdater<SDK.types.IPcapFileReceived[]>
 ) => {
     switch (data.event) {
+        case 'PCAP_FILE_CAPTURING':
+            console.log('CAPTURING')
+            break;
         case 'PCAP_FILE_RECEIVED':
             setPcapsAnalysingAtom(current => {
                 return [...current, data.data];
