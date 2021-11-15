@@ -1,4 +1,6 @@
-const { isString, isObject } = require('lodash');
+const {
+    isObject
+} = require('lodash');
 import logger from '../util/logger';
 
 let instance = null;
@@ -7,7 +9,9 @@ class WebSocket {
     constructor(app) {
         this.connections = new Map(); //<userID, [socketID]>
 
-        this.websocket = require('socket.io')(app, { path: '/socket' });
+        this.websocket = require('socket.io')(app, {
+            path: '/socket'
+        });
 
         logger('websocket-manager').info('WebSocket server listen at :3030/socket');
 
@@ -22,7 +26,7 @@ class WebSocket {
 
                 logger('websocket-manager').info(
                     `User ${userID} successfully registered in the websocket server` +
-                        ` using the socket session ${socket.id}. Active Sessions: ${sessionCount}`
+                    ` using the socket session ${socket.id}. Active Sessions: ${sessionCount}`
                 );
             });
 
@@ -47,9 +51,11 @@ class WebSocket {
         }
         // logger('websocket-manager').info(`Message sent to ${userID} websocket channel`);
         const socketPool = this.connections.get(userID);
-        socketPool.forEach((sID) => {
-            this.websocket.to(sID).emit('message', dataObject);
-        });
+        if (socketPool !== undefined) {
+            socketPool.forEach((sID) => {
+                this.websocket.to(sID).emit('message', dataObject);
+            });
+        }
     }
 
     sendEventToAllUsers(dataObject) {

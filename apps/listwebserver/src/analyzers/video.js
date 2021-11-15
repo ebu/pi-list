@@ -9,7 +9,9 @@ const CONSTANTS = require('../enums/constants');
 const fs = require('../util/filesystem');
 import logger from '../util/logger';
 
-const { appendError } = require('./utils');
+const {
+    appendError
+} = require('./utils');
 const {
     doRtpTicksAnalysis,
     validateRtpTicks,
@@ -87,7 +89,9 @@ const doVideoStreamAnalysis = async (pcapId, stream) => {
     await validateInterFrameRtpTsDelta(stream);
     await map2110d21Cinst(stream);
     await map2110d21Vrx(stream);
-    return await Stream.findOneAndUpdate({ id: stream.id }, stream, {
+    return await Stream.findOneAndUpdate({
+        id: stream.id
+    }, stream, {
         new: true,
     });
 };
@@ -98,29 +102,6 @@ function doVideoAnalysis(pcapId, streams) {
     return Promise.all(promises);
 }
 
-const generateThumbail = async (path, size) => {
-    if (!fs.folderExists(`${path}`)) {
-        return;
-    }
-
-    const png = `${path}/${CONSTANTS.PNG_FILE}`;
-    const jpg = `${path}/${CONSTANTS.JPG_FILE}`;
-    const ffmpegCommand = `ffmpeg -hide_banner -f image2 -i ${png} -vf scale=${size} ${jpg}`;
-    logger('video').info(`Create thumbnails: ${ffmpegCommand}`);
-    return await exec(ffmpegCommand);
-};
-
-function generateThumbails(folder, streams) {
-    /* downsize original png to 240-px-width jpg */
-    const promises = streams.map(async (stream) => {
-        fs.getAllFirstLevelFolders(`${folder}/${stream.id}`).map(async (frame) =>
-            generateThumbail(`${folder}/${stream.id}/${frame.id}`, '240:-1')
-        );
-    });
-    return Promise.all(promises);
-}
-
 module.exports = {
     doVideoAnalysis,
-    generateThumbails,
 };

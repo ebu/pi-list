@@ -1,7 +1,9 @@
 const path = require('path');
 const fs = require('fs');
 const util = require('util');
-const { Xcorr } = require('abr-xcorr');
+const {
+    Xcorr
+} = require('abr-xcorr');
 const child_process = require('child_process');
 const exec = util.promisify(child_process.exec);
 const readFile = util.promisify(fs.readFile);

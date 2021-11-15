@@ -5,6 +5,16 @@ import Timecode from 'smpte-timecode';
 import { translate } from '../../../utils/translation';
 import { Information } from 'types/information';
 
+const getAudioMediaDuration = (sample_count?: number, sampling?: string) => {
+    if (!sampling || !sample_count) return null;
+
+    try {
+        return (sample_count / parseInt(sampling)).toFixed(3);
+    } catch (e) {
+        return 0;
+    }
+};
+
 const audioInformationList = (
     currentStream: SDK.types.IStreamInfo,
     mediaInfo: SDK.api.pcap.IST2110AudioInfo
@@ -12,6 +22,7 @@ const audioInformationList = (
     {
         titleTag: 'media_information.audio.sampling',
         value: mediaInfo.sampling,
+        units: 'Hz',
     },
     {
         titleTag: 'media_information.audio.encoding',
@@ -24,6 +35,7 @@ const audioInformationList = (
     {
         titleTag: 'media_information.audio.packet_time',
         value: parseFloat(mediaInfo.packet_time).toFixed(3),
+        units: 'ms',
     },
     {
         titleTag: 'media_information.audio.number_samples',
@@ -36,6 +48,12 @@ const audioInformationList = (
     {
         titleTag: 'media_information.audio.packet_size',
         value: (currentStream?.statistics?.packet_size || 0).toString(),
+        units: 'byte',
+    },
+    {
+        titleTag: 'media_information.media_duration',
+        value: getAudioMediaDuration(currentStream?.statistics?.sample_count, mediaInfo?.sampling),
+        units: 's',
     },
 ];
 
@@ -70,6 +88,7 @@ const videoInformationList = (
         {
             titleTag: 'media_information.video.dimensions',
             value: `${mediaInfo.width}x${mediaInfo.height}`,
+            units: 'px',
         },
         {
             titleTag: 'media_information.video.sampling',
@@ -78,6 +97,7 @@ const videoInformationList = (
         {
             titleTag: 'media_information.video.color_depth',
             value: mediaInfo.color_depth.toString(),
+            units: 'bit',
         },
         {
             titleTag: isInterlaced
@@ -104,6 +124,7 @@ const videoInformationList = (
                 ? 'media_information.video.field_rate'
                 : 'media_information.video.frame_rate',
             value: mediaInfo.rate,
+            units: 'Hz',
         },
         {
             titleTag: 'media_information.media_duration',

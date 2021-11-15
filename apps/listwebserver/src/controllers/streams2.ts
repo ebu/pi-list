@@ -1,26 +1,21 @@
 import { api } from '@bisect/ebu-list-sdk';
 import Stream from '../models/stream';
 const websocketManager = require('../managers/websocket');
-// import websocketManager from '../managers/websocket';
-const middleware = require('../auth/middleware');
-// import middleware from '../auth/middleware';
-import { getUserFolder, runAnalysis } from '../util/analysis';
+const { getUserId } = require('../auth/middleware');
+import { runAnalysis } from '../util/analysis';
 import Pcap from '../models/pcap';
 import path from 'path';
 import { IStreamInfo } from '@bisect/ebu-list-sdk/dist/types';
 import loggerFactory from '../util/logger';
+import { getPcapFolder } from '../util/analysis/utils';
 
 const logger = loggerFactory('streams');
 
 const activeExtractions = new Set();
 
-export async function verifyIfFramesAreExtractedOrExtract(req: any) {
-    const pcapId = req.params.pcapID;
+export async function waitForFramesExtraction(userId: string, pcapId: string, streamId: string) {
     const pcap = await Pcap.findOne({ id: pcapId }).exec();
-
-    const userId = middleware.getUserId(req);
-    const streamID = req.params.streamID;
-    const pcapFolder: string = `${getUserFolder(req)}/${pcapId}`;
+    const pcapFolder = getPcapFolder(userId, pcapId);
     const analysisProfile = path.join(pcapFolder, 'profile.json');
     const pcapFile = `${pcapFolder}/${pcap.pcap_file_name}`;
     const extractFrames = true;
@@ -29,19 +24,19 @@ export async function verifyIfFramesAreExtractedOrExtract(req: any) {
         pcapId: pcapId,
         pcapFolder: pcapFolder,
         pcapFile: pcapFile,
-        streamID: streamID,
+        streamID: streamId,
         userId: userId,
         analysisProfileFile: analysisProfile,
         extractFrames: extractFrames,
     };
 
-    const stream = (await Stream.findOne({ id: streamID })) as IStreamInfo | null;
+    const stream = (await Stream.findOne({ id: streamId })) as IStreamInfo | null;
 
     if (stream === null) {
-        logger.error(`${streamID} not found`);
+        logger.error(`${streamId} not found`);
         websocketManager.instance().sendEventToUser(userId, {
             event: 'EXTRACT_FRAMES_FAILED',
-            data: streamID,
+            data: streamId,
         });
         return;
     }
@@ -49,20 +44,20 @@ export async function verifyIfFramesAreExtractedOrExtract(req: any) {
     if (stream.processing?.extractedFrames === api.pcap.ProcessingState.completed) {
         websocketManager.instance().sendEventToUser(userId, {
             event: 'EXTRACT_FRAMES_COMPLETED',
-            data: streamID,
+            data: streamId,
         });
         return;
     }
 
-    if (activeExtractions.has(streamID)) {
+    if (activeExtractions.has(streamId)) {
         websocketManager.instance().sendEventToUser(userId, {
             event: 'EXTRACT_FRAMES_ACTIVE',
-            data: streamID,
+            data: streamId,
         });
         return;
     }
 
-    activeExtractions.add(streamID);
+    activeExtractions.add(streamId);
 
     await runAnalysis(params);
 
@@ -74,7 +69,7 @@ export async function verifyIfFramesAreExtractedOrExtract(req: any) {
 
     websocketManager.instance().sendEventToUser(userId, {
         event: 'EXTRACT_FRAMES_COMPLETED',
-        data: streamID,
+        data: streamId,
     });
 
     await Stream.findOneAndUpdate({ id: stream.id }, stream, {
@@ -82,5 +77,12 @@ export async function verifyIfFramesAreExtractedOrExtract(req: any) {
         overwrite: true,
     }).exec();
 
-    activeExtractions.delete(streamID);
+    activeExtractions.delete(streamId);
+}
+
+export async function verifyIfFramesAreExtractedOrExtract(req: any) {
+    const userId = getUserId(req);
+    const pcapId = req.params.pcapID;
+    const streamId = req.params.streamID;
+    return waitForFramesExtraction(userId, pcapId, streamId);
 }

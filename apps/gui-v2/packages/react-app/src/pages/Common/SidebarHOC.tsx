@@ -98,7 +98,7 @@ function SidebarHOC() {
                 route: 'ola',
             },
             {
-                text: `v${version?.major}.${version?.minor}.${version?.patch} @ ${version?.hash}`,
+                text: `v${version?.major}.${version?.minor}.${version?.patch} @${version?.hash}`,
                 clicked: false,
                 key: sidebarButtonsKeys.version,
                 route: 'ola',

@@ -1,22 +1,37 @@
 const os = require('os');
-const uuidv1 = require('uuid/v1');
-const { isObject, isEmpty } = require('lodash');
-const { Router } = require('express');
+const {
+    v1: uuid
+} = require('uuid');
+const {
+    isObject,
+    isEmpty
+} = require('lodash');
+const {
+    Router
+} = require('express');
 const router = Router();
 const multer = require('multer');
 const fs = require('../util/filesystem');
 const program = require('../util/programArguments');
 const API_ERRORS = require('../enums/apiErrors');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
-const { sdpIngest } = require('../util/analysis');
-const { sdpFileToSource } = require('../controllers/sdp');
-const { checkIsReadOnly } = require('../auth/middleware');
+const {
+    sdpIngest
+} = require('../util/analysis');
+const {
+    sdpFileToSource
+} = require('../controllers/sdp');
+const {
+    checkIsReadOnly
+} = require('../auth/middleware');
 
 // Constants
 const availableOptionsFile = `${program.folder}/stream_types.json`;
 
 router.get('/available-options', (req, res) => {
-    const { query } = req;
+    const {
+        query
+    } = req;
 
     if (isObject(query) && !isEmpty(query)) {
         if (query.media_type === 'video' || query.media_type === 'audio' || query.media_type === 'ancillary') {
@@ -42,11 +57,13 @@ const storageTmp = multer.diskStorage({
         cb(null, os.tmpdir());
     },
     filename: function (req, file, cb) {
-        cb(null, uuidv1());
+        cb(null, uuid());
     },
 });
 
-const upload = multer({ storage: storageTmp });
+const upload = multer({
+    storage: storageTmp
+});
 
 // save the doc in a tmp file, check it, parse it and delete it.
 router.put(

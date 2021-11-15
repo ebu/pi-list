@@ -1,4 +1,4 @@
-const uuidv1 = require('uuid/v1');
+const { v1: uuid } = require('uuid');
 const path = require('path');
 const tmp = require('tmp');
 const fs = require('fs');
@@ -119,7 +119,7 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
     };
 
     const completeAnalysis = (result) => {
-        const id = uuidv1();
+        const id = uuid();
         StreamCompare.create(
             {
                 id: id,

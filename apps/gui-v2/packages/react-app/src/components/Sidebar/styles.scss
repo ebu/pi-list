@@ -43,8 +43,9 @@
     width: 240px;
     height: 100vh;
     transition: ease-in-out 0.75s;
+    display: flex;
     flex-direction: column;
-    align-items: center;
+    justify-content: space-between;
     &.sidebar-collapsed {
         & .sidebar-logo {
             margin-left: 165px;
@@ -68,7 +69,7 @@
 
 .sidebar-menu {
     padding-top: 2rem;
-    height: 50vh;
+    // height: 50vh;
 }
 
 .sidebar-logo {
@@ -87,9 +88,9 @@
         padding-top: 9.5em;
     }
 
-    &.bottom {
-        padding-top: 20vh;
-    }
+    // &.bottom {
+    //     // padding-top: 20vh;
+    // }
 }
 
 .sidebar-icons-to-center {

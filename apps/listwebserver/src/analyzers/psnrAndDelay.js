@@ -3,6 +3,8 @@ const fs = require('fs');
 const util = require('util');
 const glob = util.promisify(require('glob'));
 const child_process = require('child_process');
+const { waitForFramesExtraction } = require('../controllers/streams2');
+
 const exec = util.promisify(child_process.exec);
 const readFile = util.promisify(fs.readFile);
 import logger from '../util/logger';
@@ -10,10 +12,6 @@ const CONSTANTS = require('../enums/constants');
 
 const getTsFromMetaFile = async (path) => {
     return JSON.parse(await readFile(`${path}/${CONSTANTS.META_FILE}`, 'utf8'));
-};
-
-const getTsFromPacketFile = async (path) => {
-    return JSON.parse(await readFile(`${path}/${CONSTANTS.PACKET_FILE}`, 'utf8'));
 };
 
 const getPnsr = async (mainPath, refPath) => {
@@ -42,7 +40,7 @@ const getPnsr = async (mainPath, refPath) => {
 
 // collect all the dirs with frame.png inside
 const getFrameDirList = async (dir) => {
-    const pattern = `${dir}/**/*.png`;
+    const pattern = `${dir}/**/frame.png`;
     const files = await glob(pattern);
     return await files.map((file) => path.dirname(file));
 };
@@ -84,6 +82,11 @@ const getPsnrInfCounter = async (psnrList) => {
 };
 
 const createComparator = async (config) => {
+    await Promise.all([
+        waitForFramesExtraction(config.userId, config.reference.pcap, config.reference.stream),
+        waitForFramesExtraction(config.userId, config.main.pcap, config.main.stream),
+    ]);
+
     var refDirList = await getFrameDirList(`${config.user_folder}/${config.reference.pcap}/${config.reference.stream}`);
     var mainDirList = await getFrameDirList(`${config.user_folder}/${config.main.pcap}/${config.main.stream}`);
 

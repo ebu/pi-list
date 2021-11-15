@@ -1,5 +1,4 @@
-const path = require('path');
-const uuidv1 = require('uuid/v1');
+const { v1: uuid } = require('uuid');
 const websocketManager = require('../../managers/websocket');
 const COMPARISON_TYPES = require('../../enums/comparison');
 import logger from '../../util/logger';
@@ -7,10 +6,11 @@ const Stream = require('../../models/stream');
 const StreamCompare = require('../../models/streamCompare');
 import { api } from '@bisect/ebu-list-sdk';
 
-const getConfig = async (inputConfig, folder) => {
+const getConfig = async (userId, inputConfig, folder) => {
     const main = await Stream.findOne({ id: inputConfig.mainStreamID }).exec();
     const ref = await Stream.findOne({ id: inputConfig.refStreamID }).exec();
     var config = {
+        userId: userId,
         comparison_type: '',
         user_folder: folder,
         main: {
@@ -89,7 +89,7 @@ const doCreateComparator = (config) => {
 };
 
 const createWorkflow = async (wf, inputConfig, workSender) => {
-    const userID = wf.meta.createdBy;
+    const userId = wf.meta.createdBy;
     const name = inputConfig.name;
     var compareConfig;
     var workflowResponse = {
@@ -101,14 +101,14 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
     const handleError = (err) => {
         logger('compare-streams').error(err);
         workflowResponse.msg = `Could not compare ${name}: ${err.message}`;
-        websocketManager.instance().sendEventToUser(userID, {
+        websocketManager.instance().sendEventToUser(userId, {
             event: api.wsEvents.Stream.compare_failed,
             data: workflowResponse,
         });
     };
 
     try {
-        compareConfig = await getConfig(inputConfig, wf.meta.folder);
+        compareConfig = await getConfig(userId, inputConfig, wf.meta.folder);
     } catch (err) {
         handleError(err);
         throw err;
@@ -118,12 +118,12 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
     doCreateComparator(compareConfig)
         .then((data) => {
             // insert in DB
-            const id = uuidv1();
+            const id = uuid();
             StreamCompare.create(
                 {
                     id: id,
                     name: name,
-                    owner_id: userID,
+                    owner_id: userId,
                     date: Date.now(),
                     type: wf.type,
                     config: compareConfig,
@@ -136,7 +136,7 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
                     //logger('compare-streams').info(`To mongo: ${JSON.stringify(instance)}`);
                     workflowResponse.compareId = id;
                     workflowResponse.msg = `${name}: success`;
-                    websocketManager.instance().sendEventToUser(userID, {
+                    websocketManager.instance().sendEventToUser(userId, {
                         event: api.wsEvents.Stream.compare_complete,
                         data: workflowResponse,
                     });
