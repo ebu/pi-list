@@ -9,7 +9,7 @@ using namespace ebu_list;
 namespace
 {
     constexpr auto maximum_packets_per_frame = 30000; // TODO: this is enough for UHD
-    constexpr auto minimum_packets_per_frame = 100;
+    constexpr auto minimum_packets_per_frame = 1000;
 
     std::tuple<int, int> get_dimensions_from_max_line(int max_line, bool is_field_based)
     {
