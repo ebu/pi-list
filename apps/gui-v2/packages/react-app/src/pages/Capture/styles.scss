@@ -80,9 +80,31 @@
     color: #e6e7ea;
 }
 
-.capture-decline-gdpr {
+.capture-description-container {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.capture-description-title {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 27px;
+    color: #ffffff;
+    padding-bottom: 0.9em;
+}
+
+.capture-description-text {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 26px;
+    color: #848898;
+    padding-bottom: 0.9em;
 }
 
 .user-capture-description {

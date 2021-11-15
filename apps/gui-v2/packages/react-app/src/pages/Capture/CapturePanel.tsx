@@ -8,10 +8,12 @@ import ItemsList from 'components/DropdownMenu/ItemsList';
 
 interface IComponentProps {
     onCapture: (name: string, duration: number) => void;
+    multipleSources: boolean;
 }
 
 function CapturePanel({
-    onCapture
+    onCapture,
+    multipleSources,
 }: IComponentProps) {
     const modes = [
         {
@@ -39,7 +41,7 @@ function CapturePanel({
         <div className="capture-page-container">
             <div className="capture-container">
                 <div className="capture-title">
-                    <span>Capture</span>
+                    <span>Capture Settings</span>
                 </div>
                 <div className="capture-content-row">
                     <div className="capture-page-select">
@@ -80,6 +82,7 @@ function CapturePanel({
                                 options={modes}
                                 onChange={onChangeMode}
                                 value={mode}
+                                isDisabled={!multipleSources}
                             ></Select>
                         </div>
                     </div>
