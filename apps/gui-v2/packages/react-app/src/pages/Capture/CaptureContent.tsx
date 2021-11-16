@@ -79,7 +79,7 @@ function CaptureContent({
                     <div className="capture-content-row">
                         <CapturePanel
                             onCapture={onCapture}
-                            multipleSources={selectedLiveSourceIds.length > 1}
+                            sourceNum={selectedLiveSourceIds.length}
                         />
                         {
                             (captureProgress > 0) ?
