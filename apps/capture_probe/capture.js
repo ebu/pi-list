@@ -5,10 +5,17 @@ const fs = require('fs');
 const util = require('util');
 const recorder = require('./recorder');
 const tcpdump = require('./tcpdump');
+const dpdk = require('./dpdk');
 const { uploadFile } = require('./upload');
 const unlink = util.promisify(fs.unlink);
 
 ///////////////////////////////////////////////////////////////////////////////
+
+const sleep = async (ms) => {
+    return new Promise(resolve => {
+        setTimeout(resolve, ms);
+    });
+};
 
 const performCaptureAndIngest = async (globalConfig, workflowConfig) => {
     const endpoints = workflowConfig.senders
@@ -24,10 +31,16 @@ const performCaptureAndIngest = async (globalConfig, workflowConfig) => {
         file: captureFile,
     };
 
-    if (globalConfig.recorder) {
+    if (globalConfig.engine === 'recorder') {
         await recorder.runRecorder(globalConfig, captureConfig);
-    } else if (globalConfig.tcpdump) {
-        await tcpdump.runTcpdump(globalConfig, captureConfig);
+    } else if (globalConfig.engine === 'tcpdump') {
+        while (await tcpdump.runTcpdump(globalConfig, captureConfig) == 2) {
+            await sleep(1000);
+        }
+    } else if (globalConfig.engine === 'dpdk') {
+        while (await dpdk.runDpdkCapture(globalConfig, captureConfig) == 2) {
+            await sleep(1000);
+        }
     }
 
     try {

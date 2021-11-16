@@ -122,7 +122,7 @@ const onWorkMessage = async (msg, sendStatus) => {
                     persistent: mq.persistent,
                 });
 
-                if (globalConfig.dummy_pcap) {
+                if (globalConfig.engine === 'fromFile') {
                     await ingestFromFile(globalConfig, workflowConfig);
                 } else {
                     await performCaptureAndIngest(globalConfig, workflowConfig);
