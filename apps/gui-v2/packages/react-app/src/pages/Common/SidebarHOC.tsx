@@ -6,6 +6,7 @@ import {
     DownloadManagerIcon,
     CreditsIcon,
     HelpIcon,
+    RecordIcon,
     SettingsIcon,
     CollapseIcon,
 } from 'components/icons/index';
@@ -112,7 +113,7 @@ function SidebarHOC() {
             text: translate('navigation.capture'),
             clicked: false,
             key: sidebarButtonsKeys.capture,
-            icon: ComparisonIcon,
+            icon: RecordIcon,
             route: routeNames.CAPTURE,
         });
     }

@@ -18,6 +18,9 @@ export const ArrowExpandedIcon = icon(arrowExpandedSrc);
 const comparisonIconSrc = require('./comparison.svg');
 export const ComparisonIcon = icon(comparisonIconSrc);
 
+const recordIconSrc = require('./record-rec.svg');
+export const RecordIcon = icon(recordIconSrc);
+
 const downloadManagerIconSrc = require('./downloadManager.svg');
 export const DownloadManagerIcon = icon(downloadManagerIconSrc);
 

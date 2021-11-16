@@ -14,5 +14,6 @@ node_modules/
 .clangd
 .history
 yarn.lock
+package-lock.json
 *.log
 apps/listwebserver/version.yml
