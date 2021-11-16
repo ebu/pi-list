@@ -18,7 +18,7 @@ uint16_t header::get_p_counter()
 {
     uint16_t v = 0;
     v += static_cast<uint8_t>(payload_header_[3]);
-    v += static_cast<uint8_t>(payload_header_[2]) & 0x7;
+    v += (static_cast<uint8_t>(payload_header_[2]) & 0x7) << 8;
     return v;
 }
 
@@ -26,7 +26,7 @@ uint16_t header::get_sep_counter()
 {
     uint16_t v = 0;
     v += (static_cast<uint8_t>(payload_header_[2]) >> 3) & 0x1F;
-    v += static_cast<uint8_t>(payload_header_[1]) & 0x3F;
+    v += (static_cast<uint8_t>(payload_header_[1]) & 0x3F) << 5;
     return v;
 }
 

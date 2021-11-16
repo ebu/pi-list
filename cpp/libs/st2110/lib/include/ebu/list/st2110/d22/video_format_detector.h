@@ -15,6 +15,7 @@ namespace ebu_list::st2110::d22
 
       private:
         common_video_detector detector_;
+        std::optional<uint8_t> packetization_mode;
         // packet_spacing_analyzer spacing_analyzer_;
         // video_description description_{};
     };
