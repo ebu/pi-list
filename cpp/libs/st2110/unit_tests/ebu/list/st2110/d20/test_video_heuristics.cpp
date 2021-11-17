@@ -67,7 +67,7 @@ SCENARIO("ST2110-20 heuristics")
         }
     }
 
-    GIVEN("a 625i50 video stream")
+/*    GIVEN("a 625i50 video stream")
     {
         const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-20/2110-20_625i50.pcap");
         rtp_source source(pcap_file);
@@ -92,7 +92,7 @@ SCENARIO("ST2110-20 heuristics")
                 REQUIRE(video_details.sampling == video::video_sampling::YCbCr_4_2_2);
             }
         }
-    }
+    }*/
 
     GIVEN("an audio stream")
     {
