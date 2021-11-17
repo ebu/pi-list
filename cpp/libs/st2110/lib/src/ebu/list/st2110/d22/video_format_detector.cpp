@@ -19,8 +19,9 @@ detector::status_description video_format_detector::handle_data(const rtp::packe
 {
     auto& sdu = packet.sdu;
     // Verify packet payload header to see if matches payload header of jpeg xs
-    if(static_cast<size_t>(sdu.view().size()) >= sizeof(uint32_t))
+    if(static_cast<size_t>(sdu.view().size()) < sizeof(uint32_t))
     {
+        // logger()->error("Packet size smaller than minimum: {}", sdu.view().size());
         return detector::status_description{/*.state*/ detector::state::invalid,
                                             /*.error_code*/ "STATUS_CODE_VIDEO_INVALID_PAYLOAD_SIZE"};
     }
@@ -44,14 +45,22 @@ detector::status_description video_format_detector::handle_data(const rtp::packe
     }
 
     // Verify if last packet is marked when it is marked the end of the frame
-    if(packet.info.rtp().marker() && packetization_mode.value() == 0){
+    if(packet.info.rtp().marker() && packetization_mode.value() == 0)
+    {
         auto last_packet = payload_header.get_last();
-        if(last_packet != 1){
+        if(last_packet != 1)
+        {
             return detector::status_description{/*.state*/ detector::state::invalid,
-                                                           /*.error_code*/ "STATUS_CODE_VIDEO_INVALID_LAST_PACKET"};
+                                                /*.error_code*/ "STATUS_CODE_VIDEO_INVALID_LAST_PACKET"};
         }
     }
 
     // Check packets rtp timestamps
     return detector_.handle_data(packet);
+}
+
+detector::details video_format_detector::get_details() const
+{
+    auto result = std::nullopt;
+    return result;
 }
