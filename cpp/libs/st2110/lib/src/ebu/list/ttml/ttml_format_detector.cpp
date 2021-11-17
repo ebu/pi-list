@@ -73,3 +73,8 @@ detector::details ttml::format_detector::get_details() const
 {
     return description_;
 }
+
+std::string ttml::format_detector::get_full_media_type() const
+{
+    return "application/ttml+xml";
+}

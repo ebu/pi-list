@@ -64,3 +64,7 @@ detector::details video_format_detector::get_details() const
     auto result = std::nullopt;
     return result;
 }
+
+std::string video_format_detector::get_full_media_type() const {
+    return "video/jxsv";
+}
