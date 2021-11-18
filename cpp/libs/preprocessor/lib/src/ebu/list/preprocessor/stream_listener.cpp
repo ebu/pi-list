@@ -24,14 +24,20 @@ namespace
             serialized_streams_details["statistics"]["dropped_packet_samples"] = dropped_packet_samples;
         }
 
-        if(detectors_error_codes["video"].size() > 0)
-            serialized_streams_details["media_type_validation"]["video"] = detectors_error_codes["video"];
-        if(detectors_error_codes["audio"].size() > 0)
-            serialized_streams_details["media_type_validation"]["audio"] = detectors_error_codes["audio"];
-        if(detectors_error_codes["anc"].size() > 0)
-            serialized_streams_details["media_type_validation"]["anc"] = detectors_error_codes["anc"];
-        if(detectors_error_codes["ttml"].size() > 0)
-            serialized_streams_details["media_type_validation"]["ttml"] = detectors_error_codes["ttml"];
+        if(detectors_error_codes["video/raw"].size() > 0)
+            serialized_streams_details["media_type_validation"]["video/raw"] = detectors_error_codes["video/raw"];
+        if(detectors_error_codes["video/jxsv"].size() > 0)
+            serialized_streams_details["media_type_validation"]["video/jxsv"] = detectors_error_codes["video/jxsv"];
+        if(detectors_error_codes["audio/L16"].size() > 0)
+            serialized_streams_details["media_type_validation"]["audio/L16"] = detectors_error_codes["audio/L16"];
+        if(detectors_error_codes["audio/L24"].size() > 0)
+            serialized_streams_details["media_type_validation"]["audio/L24"] = detectors_error_codes["audio/L24"];
+        if(detectors_error_codes["video/smpte291"].size() > 0)
+            serialized_streams_details["media_type_validation"]["video/smpte291"] =
+                detectors_error_codes["video/smpte291"];
+        if(detectors_error_codes["application/ttml+xml"].size() > 0)
+            serialized_streams_details["media_type_validation"]["application/ttml+xml"] =
+                detectors_error_codes["application/ttml+xml"];
 
         return serialized_streams_details;
     }
