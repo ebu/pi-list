@@ -12,16 +12,16 @@
     "wide_streams": 0,
     "generated_from_network": false,
     "truncated": false,
-    "_id": "616d57cecc898540dc569f68",
-    "id": "fde04aa0-3004-11ec-9ba4-bbd607c5d02d",
+    "_id": "6196386da276bc457039c857",
+    "id": "64bb63c0-4862-11ec-8fe6-392b34c6d0fb",
     "__v": 0,
-    "analyzer_version": "2.0.2",
+    "analyzer_version": "2.0.3",
     "capture_date": 1548356088263,
-    "capture_file_name": "1634555853943_896704a5-003b-4af5-87c7-bff2ebe7f1a3.pcap",
-    "date": 1634555854047,
+    "capture_file_name": "1637234797594_618a1a23-52d9-47bd-8b96-c7b6ff21d462.pcap",
+    "date": 1637234797818,
     "file_name": "emb_L24_48k_16ch_pt125us.pcap",
-    "owner_id": "c9513e70-3004-11ec-85d6-d526ea87570e",
-    "pcap_file_name": "1634555853943_896704a5-003b-4af5-87c7-bff2ebe7f1a3.pcap",
+    "owner_id": "5b0e9130-30e8-11ec-9c13-a3b275678f9a",
+    "pcap_file_name": "1637234797594_618a1a23-52d9-47bd-8b96-c7b6ff21d462.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -49,8 +49,8 @@
     "streams": [
         {
             "error_list": [],
-            "_id": "616d57ce8d63c1cefe200f1d",
-            "id": "bf9b0708-c08b-4d7d-9d9d-994e8d32ee96",
+            "_id": "6196386daafbb38eea5dfbc0",
+            "id": "2d71f2f2-8352-463f-80f0-a47a25e0ee60",
             "media_specific": {
                 "encoding": "L24",
                 "number_channels": 16,
@@ -59,9 +59,18 @@
             },
             "media_type": "audio",
             "media_type_validation": {
-                "anc": ["STATUS_CODE_ANC_WRONG_RESERVED_BIT"],
-                "ttml": ["STATUS_CODE_TTML_INVALID_LENGTH"],
-                "video": ["STATUS_CODE_VIDEO_NOT_EQUAL_RTP_TIMESTAMPS"]
+                "application/ttml+xml": [
+                    "STATUS_CODE_TTML_INVALID_LENGTH"
+                ],
+                "video/jxsv": [
+                    "STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"
+                ],
+                "video/raw": [
+                    "STATUS_CODE_VIDEO_NOT_EQUAL_RTP_TIMESTAMPS"
+                ],
+                "video/smpte291": [
+                    "STATUS_CODE_ANC_WRONG_RESERVED_BIT"
+                ]
             },
             "network_information": {
                 "destination_address": "239.0.1.13",
@@ -93,7 +102,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "fde04aa0-3004-11ec-9ba4-bbd607c5d02d",
+            "pcap": "64bb63c0-4862-11ec-8fe6-392b34c6d0fb",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,

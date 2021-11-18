@@ -12,16 +12,16 @@
     "wide_streams": 0,
     "generated_from_network": false,
     "truncated": false,
-    "_id": "616d57d0cc898540dc56a028",
-    "id": "ff642b80-3004-11ec-9ba4-bbd607c5d02d",
+    "_id": "61963870a276bc457039c90e",
+    "id": "6630ecc0-4862-11ec-8fe6-392b34c6d0fb",
     "__v": 0,
-    "analyzer_version": "2.0.2",
+    "analyzer_version": "2.0.3",
     "capture_date": 1576234242263,
-    "capture_file_name": "1634555856447_015c4cdc-fd24-498c-bcab-fc067a90deb7.pcap",
-    "date": 1634555856455,
+    "capture_file_name": "1637234800016_2805e56d-ec6f-4930-8e51-140819b098c2.pcap",
+    "date": 1637234800021,
     "file_name": "ttmlRTP-invalid-clock-timing.pcap",
-    "owner_id": "c9513e70-3004-11ec-85d6-d526ea87570e",
-    "pcap_file_name": "1634555856447_015c4cdc-fd24-498c-bcab-fc067a90deb7.pcap",
+    "owner_id": "5b0e9130-30e8-11ec-9c13-a3b275678f9a",
+    "pcap_file_name": "1637234800016_2805e56d-ec6f-4930-8e51-140819b098c2.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -45,25 +45,25 @@
     "summary": {
         "error_list": [
             {
-                "stream_id": "b2c94a2c-fe94-4348-bfbc-c9dc2db5ebb1",
+                "stream_id": "265f3e8f-58f2-419e-8f1d-695b8b5a99e6",
                 "value": {
                     "id": "errors.ttml_time_base_is_not_media"
                 }
             },
             {
-                "stream_id": "b2c94a2c-fe94-4348-bfbc-c9dc2db5ebb1",
+                "stream_id": "265f3e8f-58f2-419e-8f1d-695b8b5a99e6",
                 "value": {
                     "id": "errors.invalid_multicast_mac_address"
                 }
             },
             {
-                "stream_id": "b2c94a2c-fe94-4348-bfbc-c9dc2db5ebb1",
+                "stream_id": "265f3e8f-58f2-419e-8f1d-695b8b5a99e6",
                 "value": {
                     "id": "errors.invalid_multicast_ip_address"
                 }
             },
             {
-                "stream_id": "b2c94a2c-fe94-4348-bfbc-c9dc2db5ebb1",
+                "stream_id": "265f3e8f-58f2-419e-8f1d-695b8b5a99e6",
                 "value": {
                     "id": "errors.unrelated_multicast_addresses"
                 }
@@ -87,12 +87,19 @@
                     "id": "errors.unrelated_multicast_addresses"
                 }
             ],
-            "_id": "616d57d08d63c1cefe20101a",
-            "id": "b2c94a2c-fe94-4348-bfbc-c9dc2db5ebb1",
+            "_id": "61963870aafbb38eea5dfcb5",
+            "id": "265f3e8f-58f2-419e-8f1d-695b8b5a99e6",
             "media_type": "ttml",
             "media_type_validation": {
-                "anc": ["STATUS_CODE_ANC_WRONG_FIELD_VALUE"],
-                "audio": ["STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"]
+                "audio/L16": [
+                    "STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"
+                ],
+                "video/jxsv": [
+                    "STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"
+                ],
+                "video/smpte291": [
+                    "STATUS_CODE_ANC_WRONG_FIELD_VALUE"
+                ]
             },
             "network_information": {
                 "destination_address": "127.0.0.1",
@@ -124,7 +131,7 @@
                 "valid_multicast_ip_address": false,
                 "valid_multicast_mac_address": false
             },
-            "pcap": "ff642b80-3004-11ec-9ba4-bbd607c5d02d",
+            "pcap": "6630ecc0-4862-11ec-8fe6-392b34c6d0fb",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,

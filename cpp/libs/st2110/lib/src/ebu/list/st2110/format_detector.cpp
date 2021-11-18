@@ -1,5 +1,6 @@
 #include "ebu/list/st2110/format_detector.h"
 #include "ebu/list/st2110/d20/video_format_detector.h"
+#include "ebu/list/st2110/d22/video_format_detector.h"
 #include "ebu/list/st2110/d30/audio_format_detector.h"
 #include "ebu/list/st2110/d40/anc_format_detector.h"
 #include "ebu/list/ttml/ttml_format_detector.h"
@@ -11,6 +12,7 @@ using namespace ebu_list::st2110;
 format_detector::format_detector(rtp::packet /*first_packet*/)
 {
     detectors_.push_back(std::make_unique<d20::video_format_detector>());
+    detectors_.push_back(std::make_unique<d22::video_format_detector>());
     detectors_.push_back(std::make_unique<d30::audio_format_detector>());
     detectors_.push_back(std::make_unique<d40::anc_format_detector>());
     detectors_.push_back(std::make_unique<ttml::format_detector>());
@@ -28,9 +30,10 @@ void format_detector::on_data(const rtp::packet& packet)
         const auto result = d->handle_data(packet);
         if(result.state == detector::state::invalid)
         {
-            const auto kind = d->get_kind();
-            logger()->debug("This stream has not {} valid format ({})", kind, result.error_code);
-            error_codes_list_[kind].push_back(result.error_code);
+            const auto full_media_type = d->get_full_media_type();
+            //const auto kind = d->get_kind();
+            logger()->debug("This stream has not {} valid format ({})", full_media_type, result.error_code);
+            error_codes_list_[full_media_type].push_back(result.error_code);
             to_remove.push_back(d.get());
         }
         else if(result.state == detector::state::valid)
@@ -80,6 +83,15 @@ detector::details format_detector::get_details() const
 
     assert(detectors_.size() == 1);
     return detectors_[0]->get_details();
+}
+
+
+std::string format_detector::get_full_media_type() const
+{
+    if(status_description_.state != detector::state::valid) return nullptr;
+
+    assert(detectors_.size() == 1);
+    return detectors_[0]->get_full_media_type();
 }
 
 const std::map<std::string, std::vector<std::string>>& format_detector::get_error_codes() const
