@@ -28,10 +28,10 @@ namespace
             serialized_streams_details["media_type_validation"]["video/raw"] = detectors_error_codes["video/raw"];
         if(detectors_error_codes["video/jxsv"].size() > 0)
             serialized_streams_details["media_type_validation"]["video/jxsv"] = detectors_error_codes["video/jxsv"];
-        if(detectors_error_codes["audio/L16"].size() > 0)
-            serialized_streams_details["media_type_validation"]["audio/L16"] = detectors_error_codes["audio/L16"];
-        if(detectors_error_codes["audio/L24"].size() > 0)
-            serialized_streams_details["media_type_validation"]["audio/L24"] = detectors_error_codes["audio/L24"];
+        if(detectors_error_codes["audio/0"].size() > 0)
+            serialized_streams_details["media_type_validation"]["audio/L16"] = detectors_error_codes["audio/0"];
+        if(detectors_error_codes["audio/1"].size() > 0)
+            serialized_streams_details["media_type_validation"]["audio/L24"] = detectors_error_codes["audio/1"];
         if(detectors_error_codes["video/smpte291"].size() > 0)
             serialized_streams_details["media_type_validation"]["video/smpte291"] =
                 detectors_error_codes["video/smpte291"];
