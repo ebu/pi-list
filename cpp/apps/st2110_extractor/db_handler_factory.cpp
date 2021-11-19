@@ -14,6 +14,7 @@ namespace
     constexpr auto cinst_file_name = "cinst.json";
     constexpr auto vrx_file_name   = "vrx.json";
     constexpr auto pkt_file_name   = "pkt_hist.json";
+    constexpr auto pit_file_name = "pit.json";
 } // namespace
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -33,6 +34,12 @@ histogram_listener_uptr db_handler_factory::create_c_inst_histogram_logger(const
 {
     const auto info_path = config_.storage_folder / stream_id;
     return std::make_unique<histogram_writer>(info_path, cinst_file_name);
+}
+//Add pit histogram logger
+histogram_listener_uptr db_handler_factory::create_pit_histogram_logger(const std::string& stream_id) const
+{
+    const auto info_path = config_.storage_folder / stream_id;
+    return std::make_unique<histogram_writer>(info_path, pit_file_name);
 }
 
 st2110::d20::rtp_ts_analyzer::listener_uptr db_handler_factory::create_rtp_ts_logger(const std::string& pcap_id,

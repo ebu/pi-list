@@ -2,8 +2,11 @@
 
 #include "ebu/list/rtp/listener.h"
 #include "ebu/list/rtp/types.h"
+#include "ebu/list/analysis/utils/histogram_listener.h"
 #include <ebu/list/core/media/video_description.h>
 #include <vector>
+
+using namespace ebu_list::analysis;
 
 namespace ebu_list::st2110::d22
 {
@@ -18,19 +21,7 @@ namespace ebu_list::st2110::d22
             int packets_count = 0;
         };
 
-        class listener
-        {
-          public:
-            virtual ~listener() = default;
-
-            virtual void on_data(const packet_interval_time_info&) = 0;
-            virtual void on_complete()                             = 0;
-            virtual void on_error(std::exception_ptr e)            = 0;
-        };
-
-        using listener_uptr = std::unique_ptr<listener>;
-
-        packet_interval_time_analyzer(listener_uptr listener, media::video::Rate rate);
+        packet_interval_time_analyzer(histogram_listener_uptr histogram_listener, media::video::Rate rate);
         ~packet_interval_time_analyzer();
 
         void on_data(const rtp::packet&) override;

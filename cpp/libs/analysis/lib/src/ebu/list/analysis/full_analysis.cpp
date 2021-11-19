@@ -18,6 +18,7 @@ using namespace ebu_list::analysis;
 using namespace ebu_list::st2110;
 using namespace ebu_list::st2110::d20;
 using namespace ebu_list::st2110::d21;
+using namespace ebu_list::st2110::d22;
 using namespace ebu_list::analysis;
 using nlohmann::json;
 
@@ -163,6 +164,14 @@ void analysis::run_full_analysis(processing_context& context)
                     auto analyzer =
                         std::make_unique<c_analyzer>(std::move(db_logger), std::move(cinst_writer),
                                                      in_video_info.video.packets_per_frame, video_info.rate);
+                    ml->add(std::move(analyzer));
+                }
+
+                // Add to ml packet-interval-time
+                {
+                    auto pit_writer = context.handler_factory->create_pit_histogram_logger(stream_info.id);
+                    auto analyzer =
+                        std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer), video_info.rate);
                     ml->add(std::move(analyzer));
                 }
 
