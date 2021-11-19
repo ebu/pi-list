@@ -12,9 +12,11 @@ struct packet_interval_time_analyzer::impl
 {
     impl(listener_uptr hl, media::video::Rate rate) : listener_(std::move(hl)), tframe_(1 / rate) {}
 
+    packet_interval_time_info info{};
+
     void on_data(const rtp::packet& p)
     {
-        packet_interval_time_info info{};
+
         info.packets_count++;
         const auto packet_ts = p.info.udp.packet_time;
 
