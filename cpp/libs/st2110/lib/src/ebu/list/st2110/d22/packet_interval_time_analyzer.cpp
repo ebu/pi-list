@@ -1,16 +1,16 @@
 #include "ebu/list/st2110/d22/packet_interval_time_analyzer.h"
-#include "ebu/list/core/math/histogram.h"
 #include "ebu/list/st2110/d21/settings.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110::d21;
 using namespace ebu_list::st2110::d22;
+using nlohmann::json;
 
 //------------------------------------------------------------------------------
 
 struct packet_interval_time_analyzer::impl
 {
-    impl(histogram_listener_uptr hl, media::video::Rate rate) : histogram_listener_(std::move(hl)), tframe_(1 / rate) {}
+    impl(listener_uptr hl, media::video::Rate rate) : listener_(std::move(hl)), tframe_(1 / rate) {}
 
     void on_data(const rtp::packet& p)
     {
@@ -37,23 +37,26 @@ struct packet_interval_time_analyzer::impl
 
         info.avg = (info.avg + diff_packet_time_ns) / info.packets_count;
 
-        //What to do with min, max, avg?
-        //How to do the buckets
-        histogram_.add_value(diff_packet_time_ns);
+        info.histogram_.add_value(diff_packet_time_ns);
+        // What to do with min, max, avg?
+        // How to do the buckets
+        //histogram_.add_value(diff_packet_time_ns);
+
+      listener_->on_data({info});
+
     }
 
-    const histogram_listener_uptr histogram_listener_;
+
+
+    const listener_uptr listener_;
     const fraction64 tframe_; // Period of a frame, in seconds
     std::optional<clock::time_point> previous_timestamp_;
-    histogram<int> histogram_;
 };
 
 //------------------------------------------------------------------------------
 
-packet_interval_time_analyzer::packet_interval_time_analyzer(histogram_listener_uptr histogram_listener,
-                                                             media::video::Rate rate)
-    : impl_(std::make_unique<impl>(
-          histogram_listener ? std::move(histogram_listener) : std::make_unique<null_histogram_listener>(), rate))
+packet_interval_time_analyzer::packet_interval_time_analyzer(listener_uptr listener_, media::video::Rate rate)
+    : impl_(std::make_unique<impl>(std::move(listener_), rate))
 {
 }
 
@@ -66,11 +69,10 @@ void packet_interval_time_analyzer::on_data(const rtp::packet& p)
 
 void packet_interval_time_analyzer::on_complete()
 {
-    impl_->histogram_listener_->on_data(impl_->histogram_.values());
-    impl_->histogram_listener_->on_complete();
+    impl_->listener_->on_complete();
 }
 
 void packet_interval_time_analyzer::on_error(std::exception_ptr e)
 {
-    impl_->histogram_listener_->on_error(e);
+    impl_->listener_->on_error(e);
 }
