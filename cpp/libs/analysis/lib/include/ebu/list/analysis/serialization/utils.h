@@ -26,7 +26,7 @@ namespace ebu_list::analysis
         virtual void on_error(std::exception_ptr e) override;
     };
 
-    class pit_writer : st2110::d22::packet_interval_time_analyzer::listener
+    class pit_writer : public st2110::d22::packet_interval_time_analyzer::listener
     {
       public:
         explicit pit_writer(path info_path, std::string_view filename);

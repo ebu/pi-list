@@ -169,7 +169,7 @@ void analysis::run_full_analysis(processing_context& context)
 
                 // Add to ml packet-interval-time
                 {
-                    auto pit_writer = context.handler_factory->create_pit_histogram_logger(stream_info.id);
+                    auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
                     auto analyzer =
                         std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer), video_info.rate);
                     ml->add(std::move(analyzer));

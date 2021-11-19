@@ -42,7 +42,7 @@ struct packet_interval_time_analyzer::impl
         // How to do the buckets
         //histogram_.add_value(diff_packet_time_ns);
 
-      listener_->on_data({info});
+      listener_->on_data(info);
 
     }
 
