@@ -36,7 +36,7 @@ namespace ebu_list::st2110::d22
 
         using listener_uptr = std::unique_ptr<listener>;
 
-        packet_interval_time_analyzer(listener_uptr listener, media::video::Rate rate);
+        packet_interval_time_analyzer(listener_uptr listener);
         ~packet_interval_time_analyzer();
 
         void on_data(const rtp::packet&) override;

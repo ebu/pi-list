@@ -24,6 +24,19 @@ namespace ebu_list
             }
         }
 
+        void add_values_to_buckets(std::vector<double> data)
+        {
+            std::sort(data.begin(), data.end());
+
+            double bin             = 0;
+            const double bin_width = 100000;
+            for(const auto& e : data)
+            {
+                e >= bin + bin_width ? bin += bin_width : false;
+                ++values_[bin];
+            }
+        }
+
         const value_type& values() const noexcept { return values_; }
 
       private:

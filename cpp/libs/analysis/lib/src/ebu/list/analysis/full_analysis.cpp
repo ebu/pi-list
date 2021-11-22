@@ -167,11 +167,10 @@ void analysis::run_full_analysis(processing_context& context)
                     ml->add(std::move(analyzer));
                 }
 
-                // Add to ml packet-interval-time
                 {
                     auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
                     auto analyzer =
-                        std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer), video_info.rate);
+                        std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
                     ml->add(std::move(analyzer));
                 }
 
@@ -221,6 +220,11 @@ void analysis::run_full_analysis(processing_context& context)
                     ebu_list::media::audio::to_int(audio_info.audio.sampling));
                 ml->add(std::move(analyzer));
             }
+            {
+                auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+                auto analyzer = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                ml->add(std::move(analyzer));
+            }
             return ml;
         }
         else if(stream_info.type == media::media_type::ANCILLARY_DATA)
@@ -230,6 +234,11 @@ void analysis::run_full_analysis(processing_context& context)
                                                                        anc_finalizer_callback, context.storage_folder);
             auto ml              = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
             ml->add(std::move(new_handler));
+            {
+                auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+                auto analyzer = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                ml->add(std::move(analyzer));
+            }
 
             {
                 auto framer_ml =

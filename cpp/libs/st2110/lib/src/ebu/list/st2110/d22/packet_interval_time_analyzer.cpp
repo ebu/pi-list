@@ -1,5 +1,6 @@
 #include "ebu/list/st2110/d22/packet_interval_time_analyzer.h"
 #include "ebu/list/st2110/d21/settings.h"
+#include <vector>
 
 using namespace ebu_list;
 using namespace ebu_list::st2110::d21;
@@ -10,7 +11,7 @@ using nlohmann::json;
 
 struct packet_interval_time_analyzer::impl
 {
-    impl(listener_uptr hl, media::video::Rate rate) : listener_(std::move(hl)), tframe_(1 / rate) {}
+    impl(listener_uptr hl) : listener_(std::move(hl)) {}
 
     packet_interval_time_info info{};
 
@@ -39,19 +40,19 @@ struct packet_interval_time_analyzer::impl
 
         info.avg = (info.avg + diff_packet_time_ns) / info.packets_count;
 
-        histogram_.add_value(diff_packet_time_ns);
-
+        histogram_data_.push_back(diff_packet_time_ns);
+        // histogram_.add_value(diff_packet_time_ns);
     }
     const listener_uptr listener_;
     histogram<int> histogram_;
-    const fraction64 tframe_; // Period of a frame, in seconds
     std::optional<clock::time_point> previous_timestamp_;
+    std::vector<double> histogram_data_;
 };
 
 //------------------------------------------------------------------------------
 
-packet_interval_time_analyzer::packet_interval_time_analyzer(listener_uptr listener_, media::video::Rate rate)
-    : impl_(std::make_unique<impl>(std::move(listener_), rate))
+packet_interval_time_analyzer::packet_interval_time_analyzer(listener_uptr listener_)
+    : impl_(std::make_unique<impl>(std::move(listener_)))
 {
 }
 
@@ -64,7 +65,9 @@ void packet_interval_time_analyzer::on_data(const rtp::packet& p)
 
 void packet_interval_time_analyzer::on_complete()
 {
-    impl_->listener_->on_data({impl_->info.max, impl_->info.min,impl_->info.avg, impl_->histogram_.values(), impl_->info.packets_count});
+    impl_->histogram_.add_values_to_buckets(impl_->histogram_data_);
+    impl_->listener_->on_data(
+        {impl_->info.max, impl_->info.min, impl_->info.avg, impl_->histogram_.values(), impl_->info.packets_count});
     impl_->listener_->on_complete();
 }
 
