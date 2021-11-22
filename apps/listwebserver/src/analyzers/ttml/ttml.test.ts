@@ -1,6 +1,6 @@
-import _ from 'lodash';
 import fs from 'fs';
 const path = require('path');
+import _ from 'lodash';
 const tmp = require('tmp');
 const { doLoadTtmlDocuments, doAnalyseTimeBase, doAnalyseSequenceIdentifier } = require('./util');
 const constants = require('../../enums/analysis');

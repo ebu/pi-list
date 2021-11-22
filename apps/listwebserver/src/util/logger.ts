@@ -1,4 +1,4 @@
-const { isObject, isNumber, isString } = require('lodash');
+const { isNumber, isString } = require('lodash');
 const winston = require('winston');
 
 const CONSTANTS = {

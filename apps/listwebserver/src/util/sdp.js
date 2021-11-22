@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const sdpParser = require('sdp-transform');
 const logger = require('../util/logger');
 
 function getDestAddress(media) {

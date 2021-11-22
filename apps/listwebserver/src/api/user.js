@@ -1,13 +1,10 @@
 const { Router } = require('express');
 const router = Router();
-const fs = require('../util/filesystem');
-const program = require('../util/programArguments');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const API_ERRORS = require('../enums/apiErrors');
 const collection = require('../models/user');
 const userController = require('../controllers/user');
 const { getUsername, getUserId, revalidateToken, checkIsReadOnly } = require('../auth/middleware');
-const websocket = require('../managers/websocket');
 
 router.get('/revalidate-token', (req, res) => {
     revalidateToken(req, res);

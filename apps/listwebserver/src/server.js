@@ -5,7 +5,6 @@ const app = require('./app');
 const programArguments = require('./util/programArguments');
 import logger from './util/logger';
 const websocketManager = require('./managers/websocket');
-const ingestProgress = require('./managers/ingestProgress');
 const { onError, onListening, onProcessClosed } = require('./util/serverUtils');
 
 logger('server').info(`LIST web server root folder: ${programArguments.folder}`);

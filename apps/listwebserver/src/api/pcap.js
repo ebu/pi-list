@@ -1,10 +1,10 @@
-const router = require('express').Router();
 const child_process = require('child_process');
+const path = require('path');
+const router = require('express').Router();
 const multer = require('multer');
 const util = require('util');
 const influxDbManager = require('../managers/influx-db');
 const fs = require('../util/filesystem');
-const path = require('path');
 import logger from '../util/logger';
 const API_ERRORS = require('../enums/apiErrors');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
@@ -21,7 +21,6 @@ const {
     pcapFromLocalFile
 } = require('../util/analysis');
 const websocketManager = require('../managers/websocket');
-const exec = util.promisify(child_process.exec);
 const {
     getUserId,
     checkIsReadOnly
@@ -38,6 +37,8 @@ import {
     generateRandomPcapFilename,
     generateRandomPcapDefinition
 } from '../util/analysis/utils';
+
+const exec = util.promisify(child_process.exec);
 
 /**
  *  Analyze local PCAP file
