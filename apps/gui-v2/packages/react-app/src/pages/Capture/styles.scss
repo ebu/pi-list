@@ -1,6 +1,6 @@
 @import '../../../../style/variables/colors.scss';
 
-.capture-page-container {
+.capture-panel-container {
     margin: 0 3em 1em 3em;
     justify-content: center;
     align-items: center;
@@ -27,8 +27,38 @@
     color: $font-light-grey;
 }
 
-.capture-page-select {
+.capture-panel-select {
     width: 40%;
+}
+
+.capture-panel-row {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 50px;
+    margin: auto 2em;
+    justify-content: space-between;
+}
+
+.capture-panel-capture-button {
+    cursor: pointer;
+    background: $vibrant-blue;
+    border: 1px solid $vibrant-blue;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: 10em;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+
+    color: $white;
+}
+
+.capture-panel-capture-button:disabled {
+    cursor: default;
+    background: $bright-blue;
+    color: $grey;
 }
 
 .capture-content-column {
@@ -45,23 +75,6 @@
     flex-direction: row;
     padding-bottom: 50px;
     margin: auto 2em;
-    justify-content: space-between;
-}
-
-.capture-page-capture-button {
-    cursor: pointer;
-    background: $vibrant-blue;
-    border: 1px solid $vibrant-blue;
-    box-sizing: border-box;
-    border-radius: 4px;
-    width: 10em;
-    font-family: Prompt;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 24px;
-
-    color: $white;
 }
 
 .capture-settings-label-container {

@@ -38,13 +38,13 @@ function CapturePanel({
     };
 
     return (
-        <div className="capture-page-container">
+        <div className="capture-panel-container">
             <div className="capture-container">
                 <div className="capture-title">
                     <span>Capture Settings</span>
                 </div>
-                <div className="capture-content-row">
-                    <div className="capture-page-select">
+                <div className="capture-panel-row">
+                    <div className="capture-panel-select">
                         <div className="capture-settings-container">
                             <div className="capture-settings-label-container">
                                 <span className="capture-settings-label">Name</span>
@@ -57,7 +57,7 @@ function CapturePanel({
                             />
                         </div>
                     </div>
-                    <div className="capture-page-select">
+                    <div className="capture-panel-select">
                         <div className="capture-settings-container">
                             <div className="capture-settings-label-container">
                                 <span
@@ -72,8 +72,8 @@ function CapturePanel({
                         </div>
                     </div>
                 </div>
-                <div className="capture-content-row">
-                    <div className="capture-page-select">
+                <div className="capture-panel-row">
+                    <div className="capture-panel-select">
                         <div className="capture-settings-container">
                             <div className="capture-settings-label-container">
                                 <span className="capture-settings-label">Mode</span>
@@ -86,8 +86,8 @@ function CapturePanel({
                             ></Select>
                         </div>
                     </div>
-                    <div className="capture-page-select">
-                        <button className="capture-page-capture-button"
+                    <div className="capture-panel-select">
+                        <button className="capture-panel-capture-button"
                             onClick={onPressCapture}
                             disabled={sourceNum<1}
                         >
