@@ -39,18 +39,11 @@ struct packet_interval_time_analyzer::impl
 
         info.avg = (info.avg + diff_packet_time_ns) / info.packets_count;
 
-        info.histogram_.add_value(diff_packet_time_ns);
-        // What to do with min, max, avg?
-        // How to do the buckets
-        //histogram_.add_value(diff_packet_time_ns);
-
-      listener_->on_data(info);
+        histogram_.add_value(diff_packet_time_ns);
 
     }
-
-
-
     const listener_uptr listener_;
+    histogram<int> histogram_;
     const fraction64 tframe_; // Period of a frame, in seconds
     std::optional<clock::time_point> previous_timestamp_;
 };
@@ -71,6 +64,7 @@ void packet_interval_time_analyzer::on_data(const rtp::packet& p)
 
 void packet_interval_time_analyzer::on_complete()
 {
+    impl_->listener_->on_data({impl_->info.max, impl_->info.min,impl_->info.avg, impl_->histogram_.values(), impl_->info.packets_count});
     impl_->listener_->on_complete();
 }
 

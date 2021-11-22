@@ -35,7 +35,6 @@ namespace ebu_list::analysis
         const path info_path_;
         const std::string filename_;
 
-
         virtual void on_data(const st2110::d22::packet_interval_time_analyzer::packet_interval_time_info&) override;
         virtual void on_complete() override;
         virtual void on_error(std::exception_ptr e) override;

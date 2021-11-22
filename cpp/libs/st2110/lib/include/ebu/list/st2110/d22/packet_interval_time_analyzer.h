@@ -20,7 +20,7 @@ namespace ebu_list::st2110::d22
             int64_t max = 0;
             int64_t min = 0;
             int64_t avg = 0;
-            histogram<int> histogram_;
+            histogram_t histogram;
             int packets_count = 0;
         };
 
