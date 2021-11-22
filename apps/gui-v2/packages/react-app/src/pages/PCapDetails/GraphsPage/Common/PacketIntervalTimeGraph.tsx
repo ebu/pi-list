@@ -31,21 +31,18 @@ function PacketIntervalTimeGraph({
         loadPitHistData();
     }, [currentStream?.id]);
 
-    const mediaInfoHistogram = translate('media_information.histogram');
+    const mediaInfoHistogram = 'Packet Interval Time Histogram';
     const generalBufferLevel = translate('general.buffer_level');
 
     if (pitHistData === undefined) {
         return null;
     }
-    console.log('pit hist', pitHistData);
     const pitHistPercData: number[][] = getPercHistData(pitHistData);
     const pitHistFinalData = getFinalHistData(pitHistPercData);
     const leftMarginPitHist = getLeftMarginBarGraphic(pitHistFinalData);
-    const compliancePitHist = getCompliance(currentStream?.global_video_analysis['vrx'].compliance);
-    const vrxHistGraphData = {
+    const pitHistGraphData = {
         barGraphic: pitHistFinalData,
         title: mediaInfoHistogram,
-        complianceInfo: compliancePitHist,
         xAxisTitle: generalBufferLevel,
         yAxisTitle: '%',
         datakeyY: 'value',
@@ -56,7 +53,7 @@ function PacketIntervalTimeGraph({
     return (
         <>
             <div className="pcap-details-page-bar-graphic-container ">
-                <BarGraphic key={currentStream?.id} barGraphicData={vrxHistGraphData} />
+                <BarGraphic key={currentStream?.id} barGraphicData={pitHistGraphData} />
             </div>
         </>
     );

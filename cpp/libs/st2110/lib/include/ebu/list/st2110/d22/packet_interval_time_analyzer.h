@@ -18,7 +18,7 @@ namespace ebu_list::st2110::d22
         struct packet_interval_time_info
         {
             int64_t max = 0;
-            int64_t min = 0;
+            std::optional<int64_t> min;
             int64_t avg = 0;
             histogram_t histogram;
             int bucket_width;

@@ -20,9 +20,7 @@ function AudioGraphsDisplay({
             <div className="pcap-details-page-line-graphic-container ">
                 <Tsdf currentStream={currentStream} pcapID={pcapID} />
             </div>
-            <div className="pcap-details-page-line-graphic-container ">
-                <PacketIntervalTimeGraph currentStream={currentStream} pcapID={pcapID} />
-            </div>
+            <PacketIntervalTimeGraph currentStream={currentStream} pcapID={pcapID} />
         </>
     );
 }
