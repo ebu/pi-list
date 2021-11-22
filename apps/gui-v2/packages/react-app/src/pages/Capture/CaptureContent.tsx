@@ -1,7 +1,8 @@
 import React from 'react';
 import list from '../../utils/api';
 import SDK from '@bisect/ebu-list-sdk';
-import { CustomScrollbar } from '../../components';
+import { CustomScrollbar } from 'components';
+import { Notification } from 'components/index';
 import CapturePanel from './CapturePanel';
 import LiveSourceTable from './LiveSourceTable';
 import CaptureHeaderHOC from './Header/CaptureHeaderHOC';
@@ -56,15 +57,40 @@ function CaptureContent({
         const newFilename: string = `${name}-${datetime}`;
         setFilename(newFilename);
         setCaptureProgress(0);
+
         console.log(`Capturing ${newFilename}`)
-        await list.live.startCapture(newFilename, duration, selectedLiveSourceIds);
-        const captureResult = await list.live.makeCaptureAwaiter(newFilename, duration);
+        const captureResult = await list.live.startCapture(newFilename, duration, selectedLiveSourceIds);
         if (!captureResult) {
-            console.error('Pcap capture and processing failed');
-            // todo show notif
+            console.error('Pcap capture failed');
+            Notification({
+                typeMessage: 'error',
+                message: (
+                    <div>
+                        <p>Could not capture pcap {name}</p>
+                        <p> {captureResult} </p>
+                    </div>
+                ),
+            });
             return;
         }
-        setTimeout(tick, msPeriod, 0, duration);
+        console.log(`Set Timer`)
+        setTimeout(tick, msPeriod, 0, duration + 3000); // 3sec of workflow overhead
+
+        console.log(`And wait`)
+        const awaiterResult = await list.live.makeCaptureAwaiter(newFilename, 10*duration);
+        if (!awaiterResult) {
+            console.error('Pcap analysis failed');
+            Notification({
+                typeMessage: 'error',
+                message: (
+                    <div>
+                        <p>Could not analyze pcap {name}</p>
+                        <p> {awaiterResult} </p>
+                    </div>
+                ),
+            });
+            return;
+        }
     };
 
     const pcapsFinished = useRecoilValue(pcapsAtom);
