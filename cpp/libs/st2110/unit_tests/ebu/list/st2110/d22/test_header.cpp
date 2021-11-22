@@ -17,8 +17,8 @@ SCENARIO("st2110-22 payload header")
         {
             auto payload_header = header(buffer);
 
-            auto p_counter         = payload_header.get_p_counter();
-            auto sep_counter       = payload_header.get_sep_counter();
+            auto p_counter          = payload_header.get_p_counter();
+            auto sep_counter        = payload_header.get_sep_counter();
             auto f_counter          = payload_header.get_f_counter();
             auto interlaced         = payload_header.get_interlaced();
             auto last               = payload_header.get_last();
@@ -43,8 +43,8 @@ SCENARIO("st2110-22 payload header")
         {
             auto payload_header = header(buffer);
 
-            auto p_counter         = payload_header.get_p_counter();
-            auto sep_counter       = payload_header.get_sep_counter();
+            auto p_counter          = payload_header.get_p_counter();
+            auto sep_counter        = payload_header.get_sep_counter();
             auto f_counter          = payload_header.get_f_counter();
             auto interlaced         = payload_header.get_interlaced();
             auto last               = payload_header.get_last();
@@ -69,8 +69,8 @@ SCENARIO("st2110-22 payload header")
         {
             auto payload_header = header(buffer);
 
-            auto p_counter         = payload_header.get_p_counter();
-            auto sep_counter       = payload_header.get_sep_counter();
+            auto p_counter          = payload_header.get_p_counter();
+            auto sep_counter        = payload_header.get_sep_counter();
             auto f_counter          = payload_header.get_f_counter();
             auto interlaced         = payload_header.get_interlaced();
             auto last               = payload_header.get_last();

@@ -22,8 +22,8 @@ null_handler_factory::null_handler_factory(const config& c) : config_(c)
 {
 }
 
-st2110::d21::c_analyzer::listener_uptr
-null_handler_factory::create_c_inst_data_logger(const std::string&, const std::string&) const
+st2110::d21::c_analyzer::listener_uptr null_handler_factory::create_c_inst_data_logger(const std::string&,
+                                                                                       const std::string&) const
 {
     return std::make_unique<influx::null_c_inst_logger>();
 }
@@ -34,8 +34,8 @@ histogram_listener_uptr null_handler_factory::create_c_inst_histogram_logger(con
     return std::make_unique<histogram_writer>(info_path, cinst_file_name);
 }
 
-st2110::d20::rtp_ts_analyzer::listener_uptr
-null_handler_factory::create_rtp_ts_logger(const std::string&, const std::string&) const
+st2110::d20::rtp_ts_analyzer::listener_uptr null_handler_factory::create_rtp_ts_logger(const std::string&,
+                                                                                       const std::string&) const
 {
     return std::make_unique<influx::null_rtp_ts_logger>();
 }
@@ -46,9 +46,8 @@ st2110::d20::rtp_analyzer::listener_uptr null_handler_factory::create_rtp_logger
     return std::make_unique<influx::null_rtp_logger>();
 }
 
-st2110::d21::vrx_analyzer::listener_uptr null_handler_factory::create_vrx_data_logger(const std::string&,
-                                                                                      const std::string&,
-                                                                                      const std::string&) const
+st2110::d21::vrx_analyzer::listener_uptr
+null_handler_factory::create_vrx_data_logger(const std::string&, const std::string&, const std::string&) const
 {
     return std::make_unique<influx::null_vrx_logger>();
 }

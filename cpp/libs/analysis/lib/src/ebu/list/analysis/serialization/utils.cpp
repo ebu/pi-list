@@ -40,15 +40,16 @@ pit_writer::pit_writer::pit_writer(path info_path, std::string_view filename)
 {
 }
 
-void pit_writer::pit_writer::on_data(const st2110::d22::packet_interval_time_analyzer::packet_interval_time_info& pit_info)
+void pit_writer::pit_writer::on_data(
+    const st2110::d22::packet_interval_time_analyzer::packet_interval_time_info& pit_info)
 {
     nlohmann::json j;
-    j["avg"] = pit_info.avg;
-    j["min"] = pit_info.min;
-    j["max"] = pit_info.max;
+    j["avg"]           = pit_info.avg;
+    j["min"]           = pit_info.min;
+    j["max"]           = pit_info.max;
     j["total_packets"] = pit_info.packets_count;
-    j["histogram"] = pit_info.histogram;
-    j["bucket_width"] = pit_info.bucket_width;
+    j["histogram"]     = pit_info.histogram;
+    j["bucket_width"]  = pit_info.bucket_width;
 
     write_json_to(info_path_, filename_, j);
 }

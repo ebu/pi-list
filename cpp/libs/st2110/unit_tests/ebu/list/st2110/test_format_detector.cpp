@@ -156,7 +156,6 @@ SCENARIO("format detector")
             {
                 const auto details = fd->get_details();
                 REQUIRE(std::holds_alternative<anc_description>(details));
-
             }
         }
     }

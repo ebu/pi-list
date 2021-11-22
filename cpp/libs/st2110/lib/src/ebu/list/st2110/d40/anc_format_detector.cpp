@@ -178,6 +178,7 @@ detector::details anc_format_detector::get_details() const
     return result;
 }
 
-std::string anc_format_detector::get_full_media_type() const {
+std::string anc_format_detector::get_full_media_type() const
+{
     return "video/smpte291";
 }

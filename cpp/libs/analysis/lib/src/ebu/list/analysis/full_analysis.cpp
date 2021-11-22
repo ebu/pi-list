@@ -169,8 +169,7 @@ void analysis::run_full_analysis(processing_context& context)
 
                 {
                     auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
-                    auto analyzer =
-                        std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                    auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
                     ml->add(std::move(analyzer));
                 }
 
@@ -222,7 +221,7 @@ void analysis::run_full_analysis(processing_context& context)
             }
             {
                 auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
-                auto analyzer = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
                 ml->add(std::move(analyzer));
             }
             return ml;
@@ -236,7 +235,7 @@ void analysis::run_full_analysis(processing_context& context)
             ml->add(std::move(new_handler));
             {
                 auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
-                auto analyzer = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
                 ml->add(std::move(analyzer));
             }
 

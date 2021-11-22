@@ -1,11 +1,11 @@
 #pragma once
 
+#include "ebu/list/analysis/utils/histogram_listener.h"
+#include "ebu/list/core/math/histogram_bucket.h"
 #include "ebu/list/rtp/listener.h"
 #include "ebu/list/rtp/types.h"
-#include "ebu/list/analysis/utils/histogram_listener.h"
-#include <ebu/list/core/media/video_description.h>
-#include "ebu/list/core/math/histogram_bucket.h"
 #include "nlohmann/json.hpp"
+#include <ebu/list/core/media/video_description.h>
 #include <vector>
 
 using namespace ebu_list::analysis;
@@ -30,9 +30,9 @@ namespace ebu_list::st2110::d22
           public:
             virtual ~listener() = default;
 
-            virtual void on_data(const packet_interval_time_info&)    = 0;
-            virtual void on_complete()                  = 0;
-            virtual void on_error(std::exception_ptr e) = 0;
+            virtual void on_data(const packet_interval_time_info&) = 0;
+            virtual void on_complete()                             = 0;
+            virtual void on_error(std::exception_ptr e)            = 0;
         };
 
         using listener_uptr = std::unique_ptr<listener>;

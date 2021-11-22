@@ -192,7 +192,8 @@ detector::details audio_format_detector::get_details() const
     return description_;
 }
 
-std::string audio_format_detector::get_full_media_type() const {
+std::string audio_format_detector::get_full_media_type() const
+{
 
     return fmt::format("audio/{}", description_.encoding);
 }

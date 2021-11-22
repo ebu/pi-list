@@ -31,7 +31,7 @@ void format_detector::on_data(const rtp::packet& packet)
         if(result.state == detector::state::invalid)
         {
             const auto full_media_type = d->get_full_media_type();
-            //const auto kind = d->get_kind();
+            // const auto kind = d->get_kind();
             logger()->debug("This stream has not {} valid format ({})", full_media_type, result.error_code);
             error_codes_list_[full_media_type].push_back(result.error_code);
             to_remove.push_back(d.get());
@@ -84,7 +84,6 @@ detector::details format_detector::get_details() const
     assert(detectors_.size() == 1);
     return detectors_[0]->get_details();
 }
-
 
 std::string format_detector::get_full_media_type() const
 {

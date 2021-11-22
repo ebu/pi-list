@@ -1,11 +1,9 @@
 #pragma once
 
 #include "ebu/list/analysis/utils/histogram_listener.h"
-#include "ebu/list/st2110/d22/packet_interval_time_analyzer.h"
 #include "ebu/list/core/types.h"
+#include "ebu/list/st2110/d22/packet_interval_time_analyzer.h"
 #include "nlohmann/json.hpp"
-
-
 
 namespace ebu_list::analysis
 {

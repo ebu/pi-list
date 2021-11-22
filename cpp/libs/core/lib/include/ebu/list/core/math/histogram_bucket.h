@@ -14,10 +14,10 @@ namespace ebu_list
         void add_value(T value, T bucket_width)
         {
             const int result = value / bucket_width;
-            auto it = values_.find(result*bucket_width);
+            auto it          = values_.find(result * bucket_width);
             if(it == values_.end())
             {
-                values_.insert({result*bucket_width, 1});
+                values_.insert({result * bucket_width, 1});
             }
             else
             {
