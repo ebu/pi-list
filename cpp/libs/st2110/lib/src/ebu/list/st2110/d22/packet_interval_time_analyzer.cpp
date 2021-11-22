@@ -51,7 +51,7 @@ struct packet_interval_time_analyzer::impl
     const listener_uptr listener_;
     histogram_bucket<int> histogram_;
     std::optional<clock::time_point> previous_timestamp_;
-    const int bucket_width = 100;
+    const int bucket_width = 10;
 };
 
 //------------------------------------------------------------------------------
