@@ -4,7 +4,7 @@
 #include "ebu/list/rtp/types.h"
 #include "ebu/list/analysis/utils/histogram_listener.h"
 #include <ebu/list/core/media/video_description.h>
-#include "ebu/list/core/math/histogram.h"
+#include "ebu/list/core/math/histogram_bucket.h"
 #include "nlohmann/json.hpp"
 #include <vector>
 
@@ -21,6 +21,7 @@ namespace ebu_list::st2110::d22
             int64_t min = 0;
             int64_t avg = 0;
             histogram_t histogram;
+            int bucket_width;
             int packets_count = 0;
         };
 

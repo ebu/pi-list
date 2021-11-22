@@ -46,8 +46,9 @@ void pit_writer::pit_writer::on_data(const st2110::d22::packet_interval_time_ana
     j["avg"] = pit_info.avg;
     j["min"] = pit_info.min;
     j["max"] = pit_info.max;
-    j["histogram"] = pit_info.histogram;
     j["total_packets"] = pit_info.packets_count;
+    j["histogram"] = pit_info.histogram;
+    j["bucket_width"] = pit_info.bucket_width;
 
     write_json_to(info_path_, filename_, j);
 }

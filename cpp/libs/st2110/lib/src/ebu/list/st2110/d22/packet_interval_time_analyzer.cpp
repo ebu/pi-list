@@ -1,6 +1,5 @@
 #include "ebu/list/st2110/d22/packet_interval_time_analyzer.h"
 #include "ebu/list/st2110/d21/settings.h"
-#include <vector>
 
 using namespace ebu_list;
 using namespace ebu_list::st2110::d21;
@@ -40,13 +39,13 @@ struct packet_interval_time_analyzer::impl
 
         info.avg = (info.avg + diff_packet_time_ns) / info.packets_count;
 
-        histogram_data_.push_back(diff_packet_time_ns);
-        // histogram_.add_value(diff_packet_time_ns);
+        histogram_.add_value(diff_packet_time_ns, bucket_width);
     }
+
     const listener_uptr listener_;
-    histogram<int> histogram_;
+    histogram_bucket<int> histogram_;
     std::optional<clock::time_point> previous_timestamp_;
-    std::vector<double> histogram_data_;
+    const int bucket_width = 100000;
 };
 
 //------------------------------------------------------------------------------
@@ -65,9 +64,8 @@ void packet_interval_time_analyzer::on_data(const rtp::packet& p)
 
 void packet_interval_time_analyzer::on_complete()
 {
-    impl_->histogram_.add_values_to_buckets(impl_->histogram_data_);
-    impl_->listener_->on_data(
-        {impl_->info.max, impl_->info.min, impl_->info.avg, impl_->histogram_.values(), impl_->info.packets_count});
+    impl_->listener_->on_data({impl_->info.max, impl_->info.min, impl_->info.avg, impl_->histogram_.values(),
+                               impl_->bucket_width, impl_->info.packets_count});
     impl_->listener_->on_complete();
 }
 
