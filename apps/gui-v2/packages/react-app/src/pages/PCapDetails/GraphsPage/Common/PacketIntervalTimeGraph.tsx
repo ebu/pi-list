@@ -1,8 +1,11 @@
 import React from 'react';
-import { BarGraphic } from 'components/index';
+import { BarGraphic, IScatterGraphicElement, ScatterGraphic } from 'components/index';
 import SDK from '@bisect/ebu-list-sdk';
 import list from '../../../../utils/api';
-import { getLeftMarginBarGraphic, getFinalHistBucketData } from '../../../../utils/graphs/dataTransformationBarGraphs';
+import {
+    getFinalScatterBucketData,
+    getScatterBucketData,
+} from '../../../../utils/graphs/dataTransformationScatterGraphs';
 import { translate } from '../../../../utils/translation';
 
 function PacketIntervalTimeGraph({
@@ -14,13 +17,14 @@ function PacketIntervalTimeGraph({
 }) {
     const streamID = currentStream?.id;
 
-    const initialHist: number[][] = [];
-    const [pitHistData, setPitHistData] = React.useState(initialHist);
+    const initialScatter: number[][] = [];
+    const [pitScatterData, setPitScatterData] = React.useState(initialScatter);
 
     React.useEffect(() => {
         const loadPitHistData = async (): Promise<void> => {
             const all = await list.stream.getPitHistogramForStream(pcapID, streamID);
-            setPitHistData(all.histogram);
+            console.log(all.histogram);
+            setPitScatterData(all.histogram);
         };
         loadPitHistData();
     }, [currentStream?.id]);
@@ -28,26 +32,26 @@ function PacketIntervalTimeGraph({
     const mediaInfoHistogram = 'Packet Interval Time Histogram';
     const generalBufferLevel = translate('general.buffer_level');
 
-    if (pitHistData === undefined) {
+    if (pitScatterData === undefined) {
         return null;
     }
-    const pitHistFinalData = getFinalHistBucketData(pitHistData);
-    const leftMarginPitHist = getLeftMarginBarGraphic(pitHistFinalData);
-    const pitHistGraphData = {
-        barGraphic: pitHistFinalData,
+    const initialPitScatterData = getScatterBucketData(pitScatterData);
+    const pitScatterFinalData = getFinalScatterBucketData(initialPitScatterData);
+    // const leftMarginPitHist = getLeftMarginBarGraphic(pitHistFinalData);
+    const pitScatterGraphData = {
+        graphicData: pitScatterFinalData,
         title: mediaInfoHistogram,
         xAxisTitle: generalBufferLevel,
         yAxisTitle: '%',
         datakeyY: 'value',
         datakeyX: 'label',
-        leftMargin: leftMarginPitHist,
+        // leftMargin: leftMarginPitHist,
     };
 
-    console.log(pitHistFinalData);
     return (
         <>
             <div className="pcap-details-page-bar-graphic-container ">
-                <BarGraphic key={currentStream?.id} barGraphicData={pitHistGraphData} />
+                <ScatterGraphic key={currentStream?.id} data={pitScatterGraphData} />
             </div>
         </>
     );

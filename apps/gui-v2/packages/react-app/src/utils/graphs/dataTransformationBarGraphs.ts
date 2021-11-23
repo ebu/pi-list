@@ -19,17 +19,6 @@ export const getFinalHistData = (dataPercentage: number[][]) => {
     return result;
 };
 
-export const getFinalHistBucketData = (data: number[][]) => {
-    const result = data.reduce((acc, curr) => {
-        const index = curr[0];
-        const value = curr[1];
-        acc.push({ label: index, value: value });
-        return acc;
-    }, [] as IBarGraphic[]);
-
-    return result;
-};
-
 export const getPercHistData = (data: IHistogram) => {
     const total = data.histogram.reduce((acc, curr) => acc + curr[1], 0);
     const percentages = data.histogram.map(v => [v[0], (v[1] / total) * 100]);
