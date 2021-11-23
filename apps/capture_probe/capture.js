@@ -19,7 +19,6 @@ const sleep = async (ms) => {
 
 const performCaptureAndIngest = async (globalConfig, workflowConfig) => {
     const endpoints = workflowConfig.senders
-        // .map(sender => _.get(sender, ['sdp', 'streams[0]'], null)) // lodash is not doing this
         .map(sender => sender.sdp)
         .map(sdp => sdp.streams[0]);
 
@@ -46,7 +45,7 @@ const performCaptureAndIngest = async (globalConfig, workflowConfig) => {
     try {
         await uploadFile(
             captureFile,
-            workflowConfig.ingestPutUrl,
+            workflowConfig.url,
             workflowConfig.authorization,
             workflowConfig.filename
         );

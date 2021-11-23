@@ -19,7 +19,7 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
 
     const outputConfiguration = {
         id: wf.id,
-        ingestPutUrl: `${programArguments.apiUrl}/pcap`,
+        url: programArguments.webappDomain,
         authorization: inputConfig.authorization,
         senders: wantedSenders,
         filename: inputConfig.filename,

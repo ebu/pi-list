@@ -1,29 +1,31 @@
 const fs = require('fs');
-const request = require('request');
-const { promisify } = require('util');
-const requestPut = promisify(request.put);
+const logger = require('./logger');
+const { v1 : uuid  } = require('uuid');
+const { LIST, types } = require('@bisect/ebu-list-sdk')
 
-///////////////////////////////////////////////////////////////////////////////
+const uploadFile = async (pcapFile, url, authorization, filename) => {
+    const list = new LIST(url);
+    try {
+        await list.setToken(authorization);
+    } catch (err) {
+        logger('probe').error(`probe ${err.message}`)
+        return;
+    }
+    const version = await list.info.getVersion();
+    if (version.major === undefined) {
+        logger('probe').error(`Couldn't get version from ${url}`);
+        return;
+    }
+    const pcapId = uuid();
 
-const uploadFile = async (sourceFile, ingestPutUrl, authorization, filename) => {
-    const putResult = await requestPut({
-        url: ingestPutUrl,
-        headers: {
-            'User-Agent': 'request',
-            'Authorization': authorization
-        },
-        formData: {
-            pcap: fs.createReadStream(sourceFile),
-            originalFilename: filename,
-        },
-    });
-
-    if (putResult.statusCode !== 201) {
-        throw new Error(
-            `Error uploading file: ${putResult.statusMessage}\n${
-                putResult.body
-            }`
-        );
+    if (! url.includes('localhost')) {
+        logger('probe').info('Upload pcap');
+        const callback = (info) => console.log(`percentage: ${info.percentage}`);
+        const stream = fs.createReadStream(pcapFile);
+        await list.pcap.upload(filename, stream, callback, pcapId);
+    } else {
+        logger('probe').info('Upload local pcap');
+        await list.pcap.uploadLocal(filename, pcapFile, pcapId);
     }
 };
 

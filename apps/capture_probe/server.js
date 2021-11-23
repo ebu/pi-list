@@ -92,7 +92,7 @@ const onWorkMessage = async (msg, sendStatus) => {
                 !workflowConfig.id ||
                 !workflowConfig.senders ||
                 !workflowConfig.authorization ||
-                !workflowConfig.ingestPutUrl ||
+                !workflowConfig.url ||
                 !workflowConfig.durationMs ||
                 !workflowConfig.filename
             ) {

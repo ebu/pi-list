@@ -73,11 +73,9 @@ function CaptureContent({
             });
             return;
         }
-        console.log(`Set Timer`)
         setTimeout(tick, msPeriod, 0, duration + 3000); // 3sec of workflow overhead
 
-        console.log(`And wait`)
-        const awaiterResult = await list.live.makeCaptureAwaiter(newFilename, 10*duration);
+        const awaiterResult = await list.live.makeCaptureAwaiter(newFilename, 10 * duration);
         if (!awaiterResult) {
             console.error('Pcap analysis failed');
             Notification({
