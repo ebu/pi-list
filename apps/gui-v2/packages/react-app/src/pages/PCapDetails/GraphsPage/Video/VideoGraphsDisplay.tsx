@@ -16,13 +16,13 @@ function VideoGraphsDisplay({
 }) {
     return (
         <>
-            {/* <CbufferAnalysis currentStream={currentStream} pcapID={pcapID} />
+            <CbufferAnalysis currentStream={currentStream} pcapID={pcapID} />
             <VrxAnalysis currentStream={currentStream} pcapID={pcapID} />
             <div className="pcap-details-page-line-graphic-container ">
                 <FtpAnalysis currentStream={currentStream} pcapID={pcapID} />
             </div>
 
-            <RtpAnalysis currentStream={currentStream} pcapID={pcapID} /> */}
+            <RtpAnalysis currentStream={currentStream} pcapID={pcapID} />
             <PacketIntervalTimeGraph currentStream={currentStream} pcapID={pcapID} />
         </>
     );
