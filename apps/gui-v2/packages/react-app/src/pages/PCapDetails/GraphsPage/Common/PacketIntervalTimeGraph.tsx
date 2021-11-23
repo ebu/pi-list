@@ -2,13 +2,7 @@ import React from 'react';
 import { BarGraphic } from 'components/index';
 import SDK from '@bisect/ebu-list-sdk';
 import list from '../../../../utils/api';
-import {
-    IHistogram,
-    getFinalHistData,
-    getLeftMarginBarGraphic,
-    getPercHistData,
-    getCompliance,
-} from '../../../../utils/graphs/dataTransformationBarGraphs';
+import { getLeftMarginBarGraphic, getFinalHistBucketData } from '../../../../utils/graphs/dataTransformationBarGraphs';
 import { translate } from '../../../../utils/translation';
 
 function PacketIntervalTimeGraph({
@@ -20,13 +14,13 @@ function PacketIntervalTimeGraph({
 }) {
     const streamID = currentStream?.id;
 
-    const initialHist: IHistogram = { histogram: [] };
+    const initialHist: number[][] = [];
     const [pitHistData, setPitHistData] = React.useState(initialHist);
 
     React.useEffect(() => {
         const loadPitHistData = async (): Promise<void> => {
             const all = await list.stream.getPitHistogramForStream(pcapID, streamID);
-            setPitHistData(all);
+            setPitHistData(all.histogram);
         };
         loadPitHistData();
     }, [currentStream?.id]);
@@ -37,8 +31,7 @@ function PacketIntervalTimeGraph({
     if (pitHistData === undefined) {
         return null;
     }
-    const pitHistPercData: number[][] = getPercHistData(pitHistData);
-    const pitHistFinalData = getFinalHistData(pitHistPercData);
+    const pitHistFinalData = getFinalHistBucketData(pitHistData);
     const leftMarginPitHist = getLeftMarginBarGraphic(pitHistFinalData);
     const pitHistGraphData = {
         barGraphic: pitHistFinalData,
@@ -50,6 +43,7 @@ function PacketIntervalTimeGraph({
         leftMargin: leftMarginPitHist,
     };
 
+    console.log(pitHistFinalData);
     return (
         <>
             <div className="pcap-details-page-bar-graphic-container ">

@@ -125,6 +125,9 @@ function BarGraphic({ barGraphicData }: { barGraphicData: IComponentProps }) {
                                     fill: '#b5b8c1',
                                 },
                             }}
+                            type="number"
+                            interval={0}
+                            domain={['dataMin', 'dataMax']}
                         />
                         <YAxis
                             dataKey={barGraphicData.datakeyY}
@@ -195,7 +198,7 @@ function BarGraphic({ barGraphicData }: { barGraphicData: IComponentProps }) {
 
 export interface IBarGraphic {
     value: number;
-    label: string;
+    label: number;
 }
 
 export default BarGraphic;
