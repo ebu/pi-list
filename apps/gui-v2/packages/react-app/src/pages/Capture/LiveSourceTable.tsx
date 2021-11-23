@@ -102,7 +102,7 @@ function LiveSourceTable({
         <div className="capture-page-container">
             <div className="capture-container">
                 <div className="capture-title">
-                    <span>Live source</span>
+                    <span>Live sources</span>
                 </div>
                 <div className="capture-container">
                     <div className="live-source-table-tool-row">

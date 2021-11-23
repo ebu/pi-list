@@ -17,8 +17,8 @@ function CapturePanel({
 }: IComponentProps) {
     const modes = [
         {
-            value: 'parallel',
-            label: 'Parallel',
+            value: 'simultaneous',
+            label: 'Simultaneous',
         },
         {
             value: 'sequential',

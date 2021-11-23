@@ -35,10 +35,11 @@ function CaptureContentHOC() {
                                         <span
                                         className="capture-description-title">Pcap Capture Help</span>
                                         <span className="capture-description-text">
-- Select one or more <i>Live Sources</i> (streams) from the table. <br/>
-- Set the capture <i>Name</i> param and file <i>Duration</i>. <br/>
-- If multiple sources are selected, choose <i>Mode</i> between <i>Parallel</i> (simultaenous) or <i>Sequential</i>. <br/>
-- Press <i>Capture</i> to perform PCAP capture and analysis.
+- Select a <i><b>Live Sources</b></i> or more (with <i>ctrl</i>) from the table. <br/>
+- Set the capture <i><b>Name</b></i> param and file <i><b>Duration</b></i>. <br/>
+- If multiple sources are selected, choose <i><b>Mode</b></i> between <i><b>Simultaneous</b></i> and <i><b>Sequential</b></i>. <br/>
+- Press <i><b>Capture</b></i> to perform PCAP capture and analysis. <br/>
+- Double-click on card when the analysis is complete. <br/>
                                         </span>
                                     </div>
                                 </div>
