@@ -8,9 +8,11 @@ import {
     YAxis,
     Tooltip,
     ResponsiveContainer,
+    Brush,
     ReferenceArea,
 } from 'recharts';
 import { TimeValueTooltip } from '../index';
+import _ from 'lodash';
 import LabelYAxis from '../LabelYAxis/LabelYAxis';
 
 interface IComponentProps {
@@ -23,21 +25,19 @@ interface IComponentProps {
     leftMargin?: number;
 }
 
-function ScatterGraphic({ data }: { data: IComponentProps | undefined }) {
-    if (data === undefined) {
-        return null;
-    }
-
-    const initialZoomState = {
-        dataZoom: data.graphicData,
+function ScatterGraphic({ data }: { data: IComponentProps }) {
+    const [zoomState, setZoomState] = React.useState({
+        dataZoom: data?.graphicData,
         refAreaLeft: '',
         refAreaRight: '',
         activeLabelLeft: '',
         activeLabelRight: '',
         animation: true,
-    };
+    });
 
-    const [zoomState, setZoomState] = React.useState(initialZoomState);
+    if (data === undefined) {
+        return null;
+    }
 
     const CustomTooltip = (props: any) => {
         if (props.active) {
@@ -63,6 +63,9 @@ function ScatterGraphic({ data }: { data: IComponentProps | undefined }) {
         let { refAreaLeft, refAreaRight } = zoomState;
         const { dataZoom } = zoomState;
 
+        console.log('Left', refAreaLeft);
+        console.log('Right', refAreaRight);
+
         if (refAreaLeft === refAreaRight || refAreaRight === '') {
             setZoomState({
                 ...zoomState,
@@ -75,7 +78,17 @@ function ScatterGraphic({ data }: { data: IComponentProps | undefined }) {
         }
 
         if (parseInt(refAreaLeft) > parseInt(refAreaRight)) [refAreaLeft, refAreaRight] = [refAreaRight, refAreaLeft];
-        const dataNewZoom = dataZoom.map((item: any) => item.slice(parseInt(refAreaLeft), parseInt(refAreaRight) + 1));
+        const dataNewZoom: any[] = [];
+        dataZoom?.map((bucket: any) =>
+            bucket.reduce((acc: any, curr: any) => {
+                if (acc.label >= parseInt(refAreaLeft) && acc.label <= parseInt(refAreaRight))
+                    dataNewZoom.push([
+                        { label: acc.label, value: acc.value },
+                        { label: acc.label, value: 0 },
+                    ]);
+            })
+        );
+
         console.log('dataNewZoom', dataNewZoom);
         setZoomState({
             animation: true,
@@ -118,32 +131,25 @@ function ScatterGraphic({ data }: { data: IComponentProps | undefined }) {
                     <ScatterChart
                         margin={{ top: 35, right: 25, left: data?.leftMargin }}
                         onMouseDown={(e: any) => {
-                            console.log('OnMouseDown');
                             e !== null
                                 ? setZoomState({
                                       ...zoomState,
-                                      refAreaLeft:
-                                          e.activeTooltipIndex !== undefined ? e.activeTooltipIndex.toString() : '',
+                                      refAreaLeft: e.xValue !== undefined ? parseInt(e.xValue).toString() : '',
                                       activeLabelLeft: e.activeLabel !== undefined ? e.activeLabel : '',
                                   })
                                 : null;
                         }}
                         onMouseMove={(e: any) => {
-                            console.log('OnMouseMove');
-                            zoomState.refAreaLeft && zoomState.activeLabelLeft && e !== null
+                            zoomState.refAreaLeft && e !== null
                                 ? setZoomState({
                                       ...zoomState,
-                                      refAreaRight:
-                                          e.activeTooltipIndex !== undefined ? e.activeTooltipIndex.toString() : '',
+                                      refAreaRight: e.xValue !== undefined ? parseInt(e.xValue).toString() : '',
                                       activeLabelRight: e.activeLabel !== undefined ? e.activeLabel : '',
                                   })
                                 : null;
                         }}
                         // eslint-disable-next-line react/jsx-no-bind
-                        onMouseUp={() => {
-                            console.log('OnMouseUp');
-                            handleZoom;
-                        }}
+                        onMouseUp={handleZoom}
                     >
                         <CartesianGrid strokeDasharray="5 10" vertical={false} stroke="#39415A" />
                         <XAxis
@@ -171,9 +177,9 @@ function ScatterGraphic({ data }: { data: IComponentProps | undefined }) {
                                     fill: '#b5b8c1',
                                 },
                             }}
+                            onClick={handleZoomOut}
                             domain={['dataMin - 1', 'dataMax + 1']}
                             type="number"
-                            onClick={handleZoomOut}
                         />
                         <YAxis
                             dataKey={data.datakeyY}
@@ -188,21 +194,15 @@ function ScatterGraphic({ data }: { data: IComponentProps | undefined }) {
                                 dx: -10,
                             }}
                             domain={['dataMin - 1', 'dataMax + 1']}
-                            type="number"
                             interval="preserveStart"
                             width={0}
                         />
-
                         <Tooltip cursor={false} content={<CustomTooltip />} />
-                        {data.graphicData.map((data: any, index: number) => {
+                        {zoomState.dataZoom?.map((data: any, index: number) => {
                             return <Scatter key={index} data={data} fill="#0083FF" line shape="circle" />;
                         })}
-                        {zoomState.activeLabelLeft && zoomState.activeLabelRight ? (
-                            <ReferenceArea
-                                x1={zoomState.activeLabelLeft}
-                                x2={zoomState.activeLabelRight}
-                                strokeOpacity={0.3}
-                            />
+                        {zoomState.refAreaLeft && zoomState.refAreaRight ? (
+                            <ReferenceArea x1={zoomState.refAreaLeft} x2={zoomState.refAreaRight} strokeOpacity={0.3} />
                         ) : null}
                     </ScatterChart>
                 </ResponsiveContainer>
