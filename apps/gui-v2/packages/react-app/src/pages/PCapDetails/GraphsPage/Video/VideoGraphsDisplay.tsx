@@ -4,6 +4,8 @@ import CbufferAnalysis from './CbufferAnalysis';
 import VrxAnalysis from './VrxAnalysis';
 import FtpAnalysis from './FtpAnalysis';
 import RtpAnalysis from './RtpAnalysis';
+import PacketIntervalTimeGraph from '../Common/PacketIntervalTimeGraph';
+
 import '../../styles.scss';
 function VideoGraphsDisplay({
     currentStream,
@@ -21,6 +23,7 @@ function VideoGraphsDisplay({
             </div>
 
             <RtpAnalysis currentStream={currentStream} pcapID={pcapID} />
+            <PacketIntervalTimeGraph currentStream={currentStream} pcapID={pcapID} />
         </>
     );
 }

@@ -20,32 +20,38 @@ struct packet_interval_time_analyzer::impl
         info.packets_count++;
         const auto packet_ts = p.info.udp.packet_time;
 
-        if(!previous_timestamp_.has_value())
+        if(previous_timestamp_.has_value())
         {
-            previous_timestamp_ = packet_ts;
+
+            const auto diff_packet_time = packet_ts - previous_timestamp_.value();
+            const auto diff_packet_time_ns =
+                std::chrono::duration_cast<std::chrono::nanoseconds>(diff_packet_time).count();
+
+            if(diff_packet_time_ns > info.max)
+            {
+                info.max = diff_packet_time_ns;
+            }
+
+            if(!info.min.has_value())
+            {
+                info.min = info.max;
+            }
+            else if(diff_packet_time_ns < info.min)
+            {
+                info.min = diff_packet_time_ns;
+            }
+
+            info.avg = (info.avg * (info.packets_count - 1) + diff_packet_time_ns) / info.packets_count;
+
+            histogram_.add_value(diff_packet_time_ns, bucket_width);
         }
-        const auto diff_packet_time    = packet_ts - previous_timestamp_.value();
-        const auto diff_packet_time_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(diff_packet_time).count();
-
-        if(diff_packet_time_ns > info.max)
-        {
-            info.max = diff_packet_time_ns;
-        }
-
-        if(diff_packet_time_ns < info.min)
-        {
-            info.min = diff_packet_time_ns;
-        }
-
-        info.avg = (info.avg + diff_packet_time_ns) / info.packets_count;
-
-        histogram_.add_value(diff_packet_time_ns, bucket_width);
+        previous_timestamp_ = packet_ts;
     }
 
     const listener_uptr listener_;
     histogram_bucket<int> histogram_;
     std::optional<clock::time_point> previous_timestamp_;
-    const int bucket_width = 100000;
+    const int bucket_width = 10;
 };
 
 //------------------------------------------------------------------------------

@@ -45,7 +45,7 @@ void pit_writer::pit_writer::on_data(
 {
     nlohmann::json j;
     j["avg"]           = pit_info.avg;
-    j["min"]           = pit_info.min;
+    j["min"]           = pit_info.min.value();
     j["max"]           = pit_info.max;
     j["total_packets"] = pit_info.packets_count;
     j["histogram"]     = pit_info.histogram;
