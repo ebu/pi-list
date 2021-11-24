@@ -26,21 +26,21 @@ interface IComponentProps {
 }
 
 function ScatterGraphic({ data }: { data: IComponentProps }) {
-    const [zoomState, setZoomState] = React.useState({
+    const initialZoomState = {
         dataZoom: data?.graphicData,
         refAreaLeft: '',
         refAreaRight: '',
-        activeLabelLeft: '',
-        activeLabelRight: '',
         animation: true,
-    });
+    };
+
+    const [zoomState, setZoomState] = React.useState(initialZoomState);
 
     if (data === undefined) {
         return null;
     }
 
     const CustomTooltip = (props: any) => {
-        if (props.active) {
+        if (props.active && props.payload[1].value !== 0) {
             if (props.payload) {
                 if (props.payload[0] === undefined) {
                     return <div></div>;
@@ -49,7 +49,7 @@ function ScatterGraphic({ data }: { data: IComponentProps }) {
                     <TimeValueTooltip
                         valueY={props.payload[1].value}
                         valueYLabel={data.datakeyY.charAt(0).toUpperCase() + data.datakeyY.slice(1)}
-                        valueX={props.label}
+                        valueX={props.payload[0].value}
                         valueXLabel={data.xAxisTitle}
                     />
                 );
@@ -58,21 +58,23 @@ function ScatterGraphic({ data }: { data: IComponentProps }) {
         return null;
     };
 
+    const CustomizedDot = (props: any) => {
+        const { cx, cy, stroke, payload, value } = props;
+        if (payload.value !== 0) {
+            return <circle cx={cx} cy={cy} r="3" fill="#E6E7EA" stroke="#0083FF" strokeWidth="1" />;
+        }
+        return null;
+    };
+
     const handleZoom = () => {
-        console.log('HandleZoom');
         let { refAreaLeft, refAreaRight } = zoomState;
         const { dataZoom } = zoomState;
-
-        console.log('Left', refAreaLeft);
-        console.log('Right', refAreaRight);
 
         if (refAreaLeft === refAreaRight || refAreaRight === '') {
             setZoomState({
                 ...zoomState,
                 refAreaLeft: '',
                 refAreaRight: '',
-                activeLabelLeft: '',
-                activeLabelRight: '',
             });
             return;
         }
@@ -89,43 +91,37 @@ function ScatterGraphic({ data }: { data: IComponentProps }) {
             })
         );
 
-        console.log('dataNewZoom', dataNewZoom);
         setZoomState({
             animation: true,
             refAreaLeft: '',
             refAreaRight: '',
-            activeLabelLeft: '',
-            activeLabelRight: '',
             dataZoom: dataNewZoom,
         });
     };
 
     const handleZoomOut = () => {
-        console.log('HandleZoomOut');
         setZoomState({
             ...zoomState,
             dataZoom: data.graphicData,
             refAreaLeft: '',
             refAreaRight: '',
-            activeLabelLeft: '',
-            activeLabelRight: '',
         });
     };
     return (
-        <div className="line-graphic-container">
+        <div className="scatter-graphic-container">
             <div className="blend-div"></div>
-            <div className="line-graphic-legend">
+            <div className="scatter-graphic-legend">
                 <span>{data.title}</span>
                 <div>
-                    <div className="line-graphic-value-legend">
-                        <span className="line-graphic-value-dot"></span>
-                        <span className="line-graphic-value-label">
+                    <div className="scatter-graphic-value-legend">
+                        <span className="scatter-graphic-value-dot"></span>
+                        <span className="scatter-graphic-value-label">
                             {data.datakeyY.charAt(0).toUpperCase() + data.datakeyY.slice(1)}
                         </span>
                     </div>
                 </div>
             </div>
-            <div className="line-graphic" style={{ userSelect: 'none' }}>
+            <div className="scatter-graphic" style={{ userSelect: 'none' }}>
                 <LabelYAxis title={data.yAxisTitle.charAt(0).toUpperCase() + data.yAxisTitle.slice(1)} />
                 <ResponsiveContainer>
                     <ScatterChart
@@ -135,7 +131,6 @@ function ScatterGraphic({ data }: { data: IComponentProps }) {
                                 ? setZoomState({
                                       ...zoomState,
                                       refAreaLeft: e.xValue !== undefined ? parseInt(e.xValue).toString() : '',
-                                      activeLabelLeft: e.activeLabel !== undefined ? e.activeLabel : '',
                                   })
                                 : null;
                         }}
@@ -144,7 +139,6 @@ function ScatterGraphic({ data }: { data: IComponentProps }) {
                                 ? setZoomState({
                                       ...zoomState,
                                       refAreaRight: e.xValue !== undefined ? parseInt(e.xValue).toString() : '',
-                                      activeLabelRight: e.activeLabel !== undefined ? e.activeLabel : '',
                                   })
                                 : null;
                         }}
@@ -177,8 +171,9 @@ function ScatterGraphic({ data }: { data: IComponentProps }) {
                                     fill: '#b5b8c1',
                                 },
                             }}
+                            interval={0}
                             onClick={handleZoomOut}
-                            domain={['dataMin - 1', 'dataMax + 1']}
+                            domain={['auto', 'auto']}
                             type="number"
                         />
                         <YAxis
@@ -193,13 +188,11 @@ function ScatterGraphic({ data }: { data: IComponentProps }) {
                                 width: 'fit-content',
                                 dx: -10,
                             }}
-                            domain={['dataMin - 1', 'dataMax + 1']}
-                            interval="preserveStart"
                             width={0}
                         />
                         <Tooltip cursor={false} content={<CustomTooltip />} />
                         {zoomState.dataZoom?.map((data: any, index: number) => {
-                            return <Scatter key={index} data={data} fill="#0083FF" line shape="circle" />;
+                            return <Scatter key={index} data={data} fill="#0083FF" line shape={<CustomizedDot />} />;
                         })}
                         {zoomState.refAreaLeft && zoomState.refAreaRight ? (
                             <ReferenceArea x1={zoomState.refAreaLeft} x2={zoomState.refAreaRight} strokeOpacity={0.3} />

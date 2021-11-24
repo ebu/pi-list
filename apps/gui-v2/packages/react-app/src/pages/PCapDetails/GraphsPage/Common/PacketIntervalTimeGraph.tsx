@@ -1,12 +1,11 @@
 import React from 'react';
-import { BarGraphic, IScatterGraphic, IScatterGraphicElement, ScatterGraphic } from 'components/index';
+import { ScatterGraphic } from 'components/index';
 import SDK from '@bisect/ebu-list-sdk';
 import list from '../../../../utils/api';
 import {
     getFinalScatterBucketData,
     getScatterBucketData,
 } from '../../../../utils/graphs/dataTransformationScatterGraphs';
-import { translate } from '../../../../utils/translation';
 
 function PacketIntervalTimeGraph({
     currentStream,
@@ -28,8 +27,8 @@ function PacketIntervalTimeGraph({
         loadPitHistData();
     }, [currentStream?.id]);
 
-    const mediaInfoHistogram = 'Packet Interval Time Histogram';
-    const generalBufferLevel = translate('general.buffer_level');
+    const mediaInfoHistogram = 'Packet Interval Time';
+    const generalBufferLevel = 'Gap (ns)';
 
     if (pitScatterData === undefined || pitScatterData.length === 0) {
         return null;
@@ -37,19 +36,15 @@ function PacketIntervalTimeGraph({
 
     const initialPitScatterData = getScatterBucketData(pitScatterData);
     const pitScatterFinalData = getFinalScatterBucketData(initialPitScatterData);
-    // const leftMarginPitHist = getLeftMarginBarGraphic(pitHistFinalData);
 
     const pitScatterGraphData = {
         graphicData: pitScatterFinalData,
         title: mediaInfoHistogram,
         xAxisTitle: generalBufferLevel,
-        yAxisTitle: '%',
+        yAxisTitle: '#',
         datakeyY: 'value',
         datakeyX: 'label',
-        // leftMargin: leftMarginPitHist,
     };
-
-    console.log('pitdata', pitScatterGraphData);
 
     return (
         <>

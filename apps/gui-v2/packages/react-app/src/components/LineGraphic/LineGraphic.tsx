@@ -106,7 +106,6 @@ function LineGraphic({ data }: { data: IComponentProps | undefined }) {
 
         if (parseInt(refAreaLeft) > parseInt(refAreaRight)) [refAreaLeft, refAreaRight] = [refAreaRight, refAreaLeft];
         const dataNewZoom = dataZoom?.slice(parseInt(refAreaLeft), parseInt(refAreaRight) + 1);
-        console.log(dataNewZoom);
         setZoomState({
             animation: true,
             refAreaLeft: '',

@@ -1,6 +1,6 @@
 @import '../../../../style/variables/colors.scss';
 
-.line-graphic-container {
+.scatter-graphic-container {
     border-radius: 8px;
     flex: 1;
     position: relative;
@@ -17,7 +17,7 @@
     pointer-events: none;
 }
 
-.line-graphic {
+.scatter-graphic {
     flex: 1;
     width: 100%;
     height: 200px;
@@ -29,7 +29,7 @@
     grid-gap: 1rem;
 }
 
-.line-graphic-high-tolerance-dot {
+.scatter-graphic-high-tolerance-dot {
     height: 6px;
     width: 6px;
     background-color: $bright-red;
@@ -37,7 +37,7 @@
     display: inline-block;
 }
 
-.line-graphic-value-dot {
+.scatter-graphic-value-dot {
     height: 6px;
     width: 6px;
     background-color: $vibrant-blue;
@@ -45,7 +45,7 @@
     display: inline-block;
 }
 
-.line-graphic-legend {
+.scatter-graphic-legend {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -62,18 +62,18 @@
     }
 }
 
-.line-graphic-high-tolerance-legend {
+.scatter-graphic-high-tolerance-legend {
     display: flex;
     align-items: center;
 }
 
-.line-graphic-value-legend {
+.scatter-graphic-value-legend {
     display: flex;
     align-items: center;
     padding-top: 8px;
 }
 
-.line-graphic-high-tolerance-label {
+.scatter-graphic-high-tolerance-label {
     padding-left: 8px;
     font-family: Prompt;
     font-style: normal;
@@ -84,7 +84,7 @@
     color: $font-light-grey;
 }
 
-.line-graphic-value-label {
+.scatter-graphic-value-label {
     padding-left: 8px;
     font-family: Prompt;
     font-style: normal;
