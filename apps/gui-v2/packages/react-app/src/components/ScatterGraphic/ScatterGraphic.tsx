@@ -107,6 +107,7 @@ function ScatterGraphic({ data }: { data: IComponentProps }) {
             refAreaRight: '',
         });
     };
+
     return (
         <div className="scatter-graphic-container">
             <div className="blend-div"></div>
@@ -171,6 +172,7 @@ function ScatterGraphic({ data }: { data: IComponentProps }) {
                                     fill: '#b5b8c1',
                                 },
                             }}
+                            padding={{ left: 20 }}
                             interval={0}
                             onClick={handleZoomOut}
                             domain={['auto', 'auto']}
@@ -178,6 +180,7 @@ function ScatterGraphic({ data }: { data: IComponentProps }) {
                         />
                         <YAxis
                             dataKey={data.datakeyY}
+                            domain={['auto', 'auto']}
                             axisLine={false}
                             tick={{
                                 fontFamily: 'Prompt',
@@ -188,6 +191,7 @@ function ScatterGraphic({ data }: { data: IComponentProps }) {
                                 width: 'fit-content',
                                 dx: -10,
                             }}
+                            type="number"
                             width={0}
                         />
                         <Tooltip cursor={false} content={<CustomTooltip />} />

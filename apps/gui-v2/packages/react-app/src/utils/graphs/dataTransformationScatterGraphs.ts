@@ -12,10 +12,11 @@ export const getScatterBucketData = (data: number[][]) => {
 };
 
 export const getFinalScatterBucketData = (data: IScatterGraphicElement[]) => {
+    const total = data.reduce((acc, curr) => acc + curr.value, 0);
     const bucketArray: any = [];
     data.map(item => {
         bucketArray.push([
-            { label: item.label, value: item.value },
+            { label: item.label, value: Number(((item.value / total) * 100).toFixed(2)) },
             { label: item.label, value: 0 },
         ]);
     });

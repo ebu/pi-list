@@ -28,7 +28,7 @@ function PacketIntervalTimeGraph({
     }, [currentStream?.id]);
 
     const mediaInfoHistogram = 'Packet Interval Time';
-    const generalBufferLevel = 'Gap (ns)';
+    const generalBufferLevel = 'Time Interval (ns)';
 
     if (pitScatterData === undefined || pitScatterData.length === 0) {
         return null;
@@ -41,7 +41,7 @@ function PacketIntervalTimeGraph({
         graphicData: pitScatterFinalData,
         title: mediaInfoHistogram,
         xAxisTitle: generalBufferLevel,
-        yAxisTitle: '#',
+        yAxisTitle: '%',
         datakeyY: 'value',
         datakeyX: 'label',
     };
