@@ -10,6 +10,7 @@ import { useRecoilValue } from 'recoil';
 import useRecoilLiveSourceHandler from '../../store/gui/liveSource/useRecoilLiveSourceHandler';
 import { liveSourceAtom } from '../../store/gui/liveSource/liveSource';
 import { pcapsAnalysingAtom } from '../../store/gui/pcaps/pcapsAnalysing';
+import { pcapsCapturingAtom } from '../../store/gui/pcaps/pcapsCapturing';
 import { pcapsAtom } from '../../store/gui/pcaps/pcaps';
 import { pcapCapturingToTile, pcapAnalysingToTile, pcapToTile } from 'pages/Common/DashboardTileHOC';
 import './styles.scss';
@@ -25,6 +26,7 @@ function CaptureContent({
     useRecoilLiveSourceHandler();
     const liveSourceTableData = useRecoilValue(liveSourceAtom);
     const [selectedLiveSourceIds, setSelectedLiveSourceIds] = React.useState<string[]>([]);
+    const [filename, setFilename] = React.useState<string>('');
 
     const onRowClick = (item: any, e: React.MouseEvent<HTMLElement>) => {
         if (e.ctrlKey) {
@@ -38,25 +40,10 @@ function CaptureContent({
         }
     };
 
-    const [filename, setFilename] = React.useState<string>('');
-    const [captureProgress, setCaptureProgress] = React.useState<number>(0);
-    const msPeriod: number = 200;
-
-    function tick(msCounter: number, durationMs: number) {
-        const newMsCounter = msCounter + msPeriod;
-        if (newMsCounter < durationMs) {
-            setCaptureProgress(newMsCounter/durationMs*100);
-            setTimeout(tick, msPeriod, newMsCounter, durationMs);
-        } else {
-            setCaptureProgress(0);
-        }
-    }
-
     const onCapture = async (name: string, duration: number) => {
         const datetime: string = new Date().toLocaleString().split(" ").join("-").split("/").join("-");
         const newFilename: string = `${name}-${datetime}`;
         setFilename(newFilename);
-        setCaptureProgress(0);
 
         console.log(`Capturing ${newFilename}`)
         const captureResult = await list.live.startCapture(newFilename, duration, selectedLiveSourceIds);
@@ -73,7 +60,6 @@ function CaptureContent({
             });
             return;
         }
-        setTimeout(tick, msPeriod, 0, duration + 3000); // 3sec of workflow overhead
 
         const awaiterResult = await list.live.makeCaptureAwaiter(newFilename, 10 * duration);
         if (!awaiterResult) {
@@ -93,6 +79,7 @@ function CaptureContent({
 
     const pcapsFinished = useRecoilValue(pcapsAtom);
     const pcapsAnalysing = useRecoilValue(pcapsAnalysingAtom);
+    const pcapsCapturing = useRecoilValue(pcapsCapturingAtom);
 
     return ( <>
             <div className="main-page-header">
@@ -106,9 +93,12 @@ function CaptureContent({
                             sourceNum={selectedLiveSourceIds.length}
                         />
                         {
-                            (captureProgress > 0) ?
-                                pcapCapturingToTile(filename, captureProgress) :
-                                pcapsAnalysing
+                            pcapsCapturing
+                                .filter((pcap: SDK.types.IPcapFileReceived) => pcap.file_name !== undefined && pcap.file_name === filename)
+                                .map((pcap: SDK.types.IPcapFileReceived, index: number) => pcapCapturingToTile(pcap.file_name, pcap.progress))
+                        }
+                        {
+                            pcapsAnalysing
                                 .filter((pcap: SDK.types.IPcapFileReceived) => pcap.file_name !== undefined && pcap.file_name === filename)
                                 .map((pcap: SDK.types.IPcapFileReceived, index: number) => pcapAnalysingToTile(pcap))
                         }

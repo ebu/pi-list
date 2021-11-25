@@ -4,6 +4,7 @@ import SDK from '@bisect/ebu-list-sdk';
 import api from '@bisect/ebu-list-sdk';
 import { SetterOrUpdater, useSetRecoilState } from 'recoil';
 import { pcapsAtom } from './pcaps';
+import { pcapsCapturingAtom } from './pcapsCapturing';
 import { pcapsAnalysingAtom } from './pcapsAnalysing';
 import _ from 'lodash';
 import { Notification } from 'components/index';
@@ -11,13 +12,26 @@ import { Notification } from 'components/index';
 const handlePcapsUpdate = (
     data: any,
     setPcapsAtom: SetterOrUpdater<SDK.types.IPcapInfo[]>,
+    setPcapsCapturingAtom: SetterOrUpdater<SDK.types.IPcapFileReceived[]>,
     setPcapsAnalysingAtom: SetterOrUpdater<SDK.types.IPcapFileReceived[]>
 ) => {
     switch (data.event) {
         case 'PCAP_FILE_CAPTURING':
-            console.log('CAPTURING')
+            setPcapsCapturingAtom(current => {
+                const cloneCurrent = _.cloneDeep(current);
+                const index = cloneCurrent.findIndex(element => element.file_name === data.data.file_name);
+                if (index !== -1) {
+                    cloneCurrent[index].progress = data.data.progress;
+                    return cloneCurrent;
+                } else {
+                    return [...current, data.data];
+                }
+            });
             break;
         case 'PCAP_FILE_RECEIVED':
+            setPcapsCapturingAtom(current => {
+                return current.filter((pcap: SDK.api.pcap.IPcapFileReceived) => pcap.file_name !== data.data.file_name);
+            });
             setPcapsAnalysingAtom(current => {
                 return [...current, data.data];
             });
@@ -91,6 +105,7 @@ const handlePcapsUpdate = (
 
 export default () => {
     const setPcapsAtom = useSetRecoilState(pcapsAtom);
+    const setPcapsCapturingAtom = useSetRecoilState(pcapsCapturingAtom);
     const setPcapsAnalysingAtom = useSetRecoilState(pcapsAnalysingAtom);
 
     React.useEffect(() => {
@@ -104,10 +119,10 @@ export default () => {
 
     const wsClient = list.wsClient;
 
-    const onPcapsUpdate = React.useCallback(data => handlePcapsUpdate(data, setPcapsAtom, setPcapsAnalysingAtom), [
-        setPcapsAtom,
-        setPcapsAnalysingAtom,
-    ]);
+    const onPcapsUpdate = React.useCallback(
+        data => handlePcapsUpdate(
+            data, setPcapsAtom, setPcapsCapturingAtom, setPcapsAnalysingAtom),
+        [ setPcapsAtom, setPcapsCapturingAtom, setPcapsAnalysingAtom,]);
 
     React.useEffect(() => {
         if (wsClient === (null || undefined)) {
