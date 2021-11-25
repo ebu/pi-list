@@ -12,7 +12,7 @@ import { Notification } from 'components/index';
 const handlePcapsUpdate = (
     data: any,
     setPcapsAtom: SetterOrUpdater<SDK.types.IPcapInfo[]>,
-    setPcapsCapturingAtom: SetterOrUpdater<SDK.types.IPcapFileReceived[]>,
+    setPcapsCapturingAtom: SetterOrUpdater<SDK.types.IPcapFileCapturing[]>,
     setPcapsAnalysingAtom: SetterOrUpdater<SDK.types.IPcapFileReceived[]>
 ) => {
     switch (data.event) {
@@ -30,7 +30,7 @@ const handlePcapsUpdate = (
             break;
         case 'PCAP_FILE_RECEIVED':
             setPcapsCapturingAtom(current => {
-                return current.filter((pcap: SDK.api.pcap.IPcapFileReceived) => pcap.file_name !== data.data.file_name);
+                return current.filter((pcap: SDK.api.pcap.IPcapFileCapturing) => pcap.file_name !== data.data.file_name);
             });
             setPcapsAnalysingAtom(current => {
                 return [...current, data.data];

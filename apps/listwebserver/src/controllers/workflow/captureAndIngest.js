@@ -37,8 +37,6 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
         const workflowResponse = {
             id: 'dummy',
             file_name: inputConfig.filename,
-            pcap_file_name: 'dummy',
-            data: 0,
             progress: progress,
         };
         websocketManager.instance().sendEventToUser(userID, {

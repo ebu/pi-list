@@ -94,8 +94,8 @@ function CaptureContent({
                         />
                         {
                             pcapsCapturing
-                                .filter((pcap: SDK.types.IPcapFileReceived) => pcap.file_name !== undefined && pcap.file_name === filename)
-                                .map((pcap: SDK.types.IPcapFileReceived, index: number) => pcapCapturingToTile(pcap.file_name, pcap.progress))
+                                .filter((pcap: SDK.types.IPcapFileCapturing) => pcap.file_name !== undefined && pcap.file_name === filename)
+                                .map((pcap: SDK.types.IPcapFileCapturing, index: number) => pcapCapturingToTile(pcap.file_name, pcap.progress))
                         }
                         {
                             pcapsAnalysing
