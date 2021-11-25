@@ -275,9 +275,6 @@ void analysis::run_full_analysis(processing_context& context)
         else
         {
             counter.handle_unknown();
-            logger()->warn(
-                "Bypassing stream with destination: {}. Reason: Unknown media type",
-                ipv4::endpoint{first_packet.info.udp.destination_address, first_packet.info.udp.destination_port});
             auto handler = std::make_unique<rtp::null_listener>();
 
             auto ml = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
