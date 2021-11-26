@@ -9,7 +9,7 @@ using namespace ebu_list;
 namespace
 {
     constexpr auto maximum_packets_per_frame = 30000; // TODO: this is enough for UHD
-    constexpr auto minimum_packets_per_frame = 1000;
+    constexpr auto minimum_packets_per_frame = 300;
 
     std::tuple<int, int> get_dimensions_from_max_line(int max_line, bool is_field_based)
     {
@@ -66,6 +66,20 @@ detector::status_description line_data_analyzer::handle_data(const rtp::packet& 
     {
         const auto line_header = line_header_lens(*reinterpret_cast<const raw_line_header*>(p));
         p += sizeof(raw_line_header);
+
+        if(!packet.info.rtp().marker() && int(line_header.line_number()) >= line_number_)
+        {
+            line_number_ = int(line_header.line_number());
+        }
+        else if(packet.info.rtp().marker())
+        {
+            line_number_ = 0;
+        }
+        else
+        {
+            return detector::status_description{/*.state*/ detector::state::invalid,
+                                                /*.error_code*/ "STATUS_CODE_VIDEO_INVALID_LINE_NUMBER"};
+        }
 
         max_line_number_ = std::max(max_line_number_, int(line_header.line_number()));
 

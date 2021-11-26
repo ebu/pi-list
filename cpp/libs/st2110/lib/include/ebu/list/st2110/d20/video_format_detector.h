@@ -15,6 +15,7 @@ namespace ebu_list::st2110::d20
 
       private:
         int max_line_number_ = 0;
+        int line_number_ = 0;
         bool is_field_based_ = false;
     };
 
