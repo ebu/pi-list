@@ -10,7 +10,7 @@ const buildDpdkInfo = (globalConfig, captureOptions) => {
               return endpoint.dstAddr ? 'dst ' + endpoint.dstAddr : '';
           })}`.replace(/,/g, ' or ')
         : '';
-    var interfaces = _.get(globalConfig, ['interfaces']).split(',');
+    var interfaces = _.get(globalConfig, ['capture', 'interfaces']).split(',');
 
     if (interfaces.length == 0) {
         logger('live').info('no interface for capure');
@@ -36,37 +36,6 @@ const buildDpdkInfo = (globalConfig, captureOptions) => {
     return {
         program: dpdkProgram,
         arguments: dpdkArguments,
-        options: {},
-    };
-};
-
-const buildSubscriberInfo = (globalConfig, captureOptions) => {
-    const binPath = _.get(globalConfig, ['list', 'bin']);
-
-    if (!binPath) {
-        throw new Error(
-            `Invalid global configuration. list.bin not found: ${JSON.stringify(globalConfig)}`
-        );
-    }
-
-    const program = `${binPath}/subscribe_to`;
-
-    const interfaceName = _.get(globalConfig, ['dpdk', 'interface']);
-
-    const addresses = captureOptions.endpoints.map(endpoint => endpoint.dstAddr);
-    const groups = addresses.map(a => ["-g", a.toString()]);
-    const gargs = groups.reduce((acc, val) => acc.concat(val), []); // TODO: flat() in node.js 11
-    console.log("gargs");
-    console.dir(gargs);
-
-    const arguments = [
-        interfaceName,
-        ...gargs
-    ];
-
-    return {
-        program: program,
-        arguments: arguments,
         options: {},
     };
 };

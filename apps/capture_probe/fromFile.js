@@ -7,7 +7,7 @@ function sleep(ms) {
 }
 
 const ingestFromFile = async (globalConfig, workflowConfig) => {
-    const pcapFile = globalConfig.interfaces;
+    const pcapFile = globalConfig.capture.interfaces;
 
     await sleep(workflowConfig.durationMs + 3000); // simulate real capture + overhead
 

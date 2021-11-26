@@ -22,7 +22,7 @@ const performCaptureAndIngest = async (globalConfig, workflowConfig) => {
         .map(sender => sender.sdp)
         .map(sdp => sdp.streams[0]);
 
-    const captureFile = path.join(os.tmpdir(), workflowConfig.id + '.pcap');
+    const captureFile = path.join(globalConfig.capture.destination, workflowConfig.id + '.pcap');
 
     const captureConfig = {
         endpoints: endpoints,
@@ -30,13 +30,13 @@ const performCaptureAndIngest = async (globalConfig, workflowConfig) => {
         file: captureFile,
     };
 
-    if (globalConfig.engine === 'recorder') {
+    if (globalConfig.capture.engine === 'recorder') {
         await recorder.runRecorder(globalConfig, captureConfig);
-    } else if (globalConfig.engine === 'tcpdump') {
+    } else if (globalConfig.capture.engine === 'tcpdump') {
         while (await tcpdump.runTcpdump(globalConfig, captureConfig) == 2) {
             await sleep(1000);
         }
-    } else if (globalConfig.engine === 'dpdk') {
+    } else if (globalConfig.capture.engine === 'dpdk') {
         while (await dpdk.runDpdkCapture(globalConfig, captureConfig) == 2) {
             await sleep(1000);
         }

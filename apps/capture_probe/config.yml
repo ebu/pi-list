@@ -6,7 +6,10 @@ rabbitmq:
   hostname: localhost
   port: 5672
 
-# engine: recorder | tcpdump | dpdk | fromFile
-engine: fromFile
-# interfaces: <if_name> | <file_name> , ...
-interfaces: ../../js/tests/pcaps/eemebe_t_1080i59.pcap
+capture:
+    # engine: recorder | tcpdump | dpdk | fromFile
+    engine: fromFile
+    # interfaces: <if_name> | <file_name> , ...
+    interfaces: ../../js/tests/pcaps/eemebe_t_1080i59.pcap
+    # destination folder
+    pcapDir: /tmp

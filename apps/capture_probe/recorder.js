@@ -75,7 +75,7 @@ const runCapture = async (
 
 // Returns a promise
 const runRecorder = async (globalConfig, captureOptions) => {
-    const interfaceName = _.get(globalConfig, ['interfaces']);
+    const interfaceName = _.get(globalConfig, ['capture', 'interfaces']);
     const recorderBinPath = _.get(globalConfig, ['list', 'bin']);
 
     if (!recorderBinPath) {
