@@ -24,6 +24,7 @@ namespace
     constexpr auto audio_rtp_log_file = "rtp_log.txt";
     constexpr auto tsdf_log_file      = "tsdf_log.txt";
     constexpr auto pkt_hist_file_name = "pkt_hist.json";
+    constexpr auto pit_file_name      = "pit.json";
 } // namespace
 
 fs_handler_factory::fs_handler_factory(const path& storage_base_dir) : storage_base_dir_(storage_base_dir)
@@ -40,6 +41,13 @@ histogram_listener_uptr fs_handler_factory::create_c_inst_histogram_logger(const
 {
     const auto info_path = storage_base_dir_ / stream_id;
     return std::make_unique<histogram_writer>(info_path, cinst_file_name);
+}
+
+st2110::d22::packet_interval_time_analyzer::listener_uptr
+fs_handler_factory::create_pit_logger(const std::string& stream_id) const
+{
+    const auto info_path = storage_base_dir_ / stream_id;
+    return std::make_unique<pit_writer>(info_path, pit_file_name);
 }
 
 st2110::d20::rtp_ts_analyzer::listener_uptr fs_handler_factory::create_rtp_ts_logger(const std::string& pcap_id,

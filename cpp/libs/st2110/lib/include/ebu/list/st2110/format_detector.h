@@ -33,6 +33,7 @@ namespace ebu_list::st2110
 
         virtual detector::status_description handle_data(const rtp::packet& packet) = 0;
         virtual details get_details() const                                         = 0;
+        virtual std::string get_full_media_type() const                             = 0;
     };
 
     class sub_detector : public detector
@@ -52,6 +53,7 @@ namespace ebu_list::st2110
 
         detector::status_description status() const noexcept;
         detector::details get_details() const;
+        std::string get_full_media_type() const;
 
         const std::map<std::string, std::vector<std::string>>& get_error_codes() const;
 

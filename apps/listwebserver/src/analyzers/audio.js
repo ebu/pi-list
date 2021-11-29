@@ -5,7 +5,6 @@ const constants = require('../enums/analysis');
 const {
     appendError
 } = require('./utils');
-import logger from '../util/logger';
 
 // returns
 // {

@@ -12,16 +12,16 @@
     "wide_streams": 0,
     "generated_from_network": false,
     "truncated": false,
-    "_id": "616d79d2cc898540dc56c100",
-    "id": "44be98a0-3019-11ec-97d9-df0201cf8fc4",
+    "_id": "61a11389593eacb6c4bd2800",
+    "id": "df3062d0-4eda-11ec-b4b7-bfa8e810dab4",
     "__v": 0,
-    "analyzer_version": "2.0.2",
+    "analyzer_version": "2.0.3",
     "capture_date": 1576249998818,
-    "capture_file_name": "1634564562734_2dc01200-e1ab-4ddc-8e3e-c0d92ab7738d.pcap",
-    "date": 1634564562739,
+    "capture_file_name": "1637946249606_ea03609d-adca-402b-bc63-382248e2a88e.pcap",
+    "date": 1637946249614,
     "file_name": "ttmlRTP_fourPacketDocs.pcap",
-    "owner_id": "c9513e70-3004-11ec-85d6-d526ea87570e",
-    "pcap_file_name": "1634564562734_2dc01200-e1ab-4ddc-8e3e-c0d92ab7738d.pcap",
+    "owner_id": "2f4a1c80-4ec6-11ec-824f-153898937f4b",
+    "pcap_file_name": "1637946249606_ea03609d-adca-402b-bc63-382248e2a88e.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -45,19 +45,19 @@
     "summary": {
         "error_list": [
             {
-                "stream_id": "c697c9ef-8093-4e27-a7b2-ee961b55629a",
+                "stream_id": "36facd10-288e-40e0-b4f2-170c62312e35",
                 "value": {
                     "id": "errors.invalid_multicast_mac_address"
                 }
             },
             {
-                "stream_id": "c697c9ef-8093-4e27-a7b2-ee961b55629a",
+                "stream_id": "36facd10-288e-40e0-b4f2-170c62312e35",
                 "value": {
                     "id": "errors.invalid_multicast_ip_address"
                 }
             },
             {
-                "stream_id": "c697c9ef-8093-4e27-a7b2-ee961b55629a",
+                "stream_id": "36facd10-288e-40e0-b4f2-170c62312e35",
                 "value": {
                     "id": "errors.unrelated_multicast_addresses"
                 }
@@ -78,12 +78,22 @@
                     "id": "errors.unrelated_multicast_addresses"
                 }
             ],
-            "_id": "616d79d28d63c1cefe202ee6",
-            "id": "c697c9ef-8093-4e27-a7b2-ee961b55629a",
+            "_id": "61a11389dfe8542c253b8404",
+            "id": "36facd10-288e-40e0-b4f2-170c62312e35",
             "media_type": "ttml",
             "media_type_validation": {
-                "anc": ["STATUS_CODE_ANC_WRONG_FIELD_VALUE"],
-                "audio": ["STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"]
+                "audio/L16": [
+                    "STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"
+                ],
+                "video/jxsv": [
+                    "STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"
+                ],
+                "video/raw": [
+                    "STATUS_CODE_VIDEO_INVALID_LINE_NUMBER"
+                ],
+                "video/smpte291": [
+                    "STATUS_CODE_ANC_WRONG_FIELD_VALUE"
+                ]
             },
             "network_information": {
                 "destination_address": "127.0.0.1",
@@ -115,7 +125,7 @@
                 "valid_multicast_ip_address": false,
                 "valid_multicast_mac_address": false
             },
-            "pcap": "44be98a0-3019-11ec-97d9-df0201cf8fc4",
+            "pcap": "df3062d0-4eda-11ec-b4b7-bfa8e810dab4",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,

@@ -18,6 +18,7 @@ using namespace ebu_list::analysis;
 using namespace ebu_list::st2110;
 using namespace ebu_list::st2110::d20;
 using namespace ebu_list::st2110::d21;
+using namespace ebu_list::st2110::d22;
 using namespace ebu_list::analysis;
 using nlohmann::json;
 
@@ -167,6 +168,12 @@ void analysis::run_full_analysis(processing_context& context)
                 }
 
                 {
+                    auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+                    auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                    ml->add(std::move(analyzer));
+                }
+
+                {
                     auto framer_ml = std::make_unique<
                         multi_listener_t<frame_start_filter::listener, frame_start_filter::packet_info>>();
 
@@ -212,6 +219,11 @@ void analysis::run_full_analysis(processing_context& context)
                     ebu_list::media::audio::to_int(audio_info.audio.sampling));
                 ml->add(std::move(analyzer));
             }
+            {
+                auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+                auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                ml->add(std::move(analyzer));
+            }
             return ml;
         }
         else if(stream_info.type == media::media_type::ANCILLARY_DATA)
@@ -221,6 +233,11 @@ void analysis::run_full_analysis(processing_context& context)
                                                                        anc_finalizer_callback, context.storage_folder);
             auto ml              = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
             ml->add(std::move(new_handler));
+            {
+                auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+                auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                ml->add(std::move(analyzer));
+            }
 
             {
                 auto framer_ml =
@@ -258,11 +275,9 @@ void analysis::run_full_analysis(processing_context& context)
         else
         {
             counter.handle_unknown();
-            logger()->warn(
-                "Bypassing stream with destination: {}. Reason: Unknown media type",
-                ipv4::endpoint{first_packet.info.udp.destination_address, first_packet.info.udp.destination_port});
-            auto handler = std::make_unique<rtp::null_listener>();
-            return handler;
+            auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+            auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+            return analyzer;
         }
     };
 

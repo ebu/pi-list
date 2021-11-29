@@ -4,6 +4,7 @@ import SDK from '@bisect/ebu-list-sdk';
 import VideoGraphsDisplay from './Video/VideoGraphsDisplay';
 import AudioGraphsDisplay from './Audio/AudioGraphsDisplay';
 import AncillaryGraphsDisplay from './Ancillary/AncillaryGraphsDisplay';
+import UnknownGraphsDisplay from './Unknown/UnknownGraphsDisplay';
 
 const getPcapType = (currentStream: SDK.types.IStreamInfo | undefined, pcapID: string) => {
     switch (currentStream?.media_type) {
@@ -13,6 +14,8 @@ const getPcapType = (currentStream: SDK.types.IStreamInfo | undefined, pcapID: s
             return <AudioGraphsDisplay currentStream={currentStream} pcapID={pcapID} />;
         case 'ancillary_data':
             return <AncillaryGraphsDisplay currentStream={currentStream} pcapID={pcapID} />;
+        case 'unknown':
+            return <UnknownGraphsDisplay currentStream={currentStream} pcapID={pcapID} />;
     }
 };
 

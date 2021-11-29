@@ -34,7 +34,6 @@ namespace ebu_list::influx
         void on_data(const st2110::d21::c_analyzer::packet_info&) override;
         void on_complete() override;
         void on_error(std::exception_ptr ptr) override;
-
     };
 
     class null_rtp_ts_logger : public st2110::d20::rtp_ts_analyzer::listener
@@ -46,7 +45,6 @@ namespace ebu_list::influx
         void on_data(const st2110::d20::rtp_ts_analyzer::packet_info&) override;
         void on_complete() override;
         void on_error(std::exception_ptr ptr) override;
-
     };
 
     class null_rtp_logger : public st2110::d20::rtp_analyzer::listener
@@ -58,7 +56,6 @@ namespace ebu_list::influx
         void on_data(const st2110::d20::rtp_analyzer::packet_info&) override;
         void on_complete() override;
         void on_error(std::exception_ptr ptr) override;
-
     };
 
     class null_vrx_logger : public st2110::d21::vrx_analyzer::listener

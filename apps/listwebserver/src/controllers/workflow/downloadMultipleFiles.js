@@ -1,17 +1,19 @@
-const websocketManager = require('../../managers/websocket');
 const util = require('util');
 const path = require('path');
 const os = require('os');
-const glob = util.promisify(require('glob'));
+const websocketManager = require('../../managers/websocket');
 const { zipFiles } = require('../../util/zip');
 const pcapController = require('../../controllers/pcap');
 const fs = require('../../util/filesystem');
 const Pcap = require('../../models/pcap');
+const dmngrCtrl = require('../downloadmngr');
+const { unixTimeShort } = require('../../util/unixTime');
+
 import logger from '../../util/logger';
 import { api } from '@bisect/ebu-list-sdk';
 
-const dmngrCtrl = require('../downloadmngr');
-const { unixTimeShort } = require('../../util/unixTime');
+const glob = util.promisify(require('glob'));
+
 
 // TODO: some files may end in, say .pcap.gz but we don't deal with that
 const removeExtension = (orig) => path.parse(orig).name;

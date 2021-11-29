@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ebu/list/analysis/serialization/compliance.h"
-#include "ebu/list/st2110/d21/settings.h"
 #include "ebu/list/analysis/serialization/pcap.h"
+#include "ebu/list/st2110/d21/settings.h"
 
 namespace ebu_list::analysis
 {

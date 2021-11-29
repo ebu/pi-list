@@ -49,8 +49,8 @@ SCENARIO("Video stream analysis")
             profile.timestamps.source = timestamps_source::pcap;
 
             auto callback = [](float) {};
-            auto context  = processing_context{pcap_file,       profile,          storage_folder, pcap,
-                                              get_stream_info, &handler_factory, &updater,       callback, false};
+            auto context  = processing_context{pcap_file,        profile,  storage_folder, pcap, get_stream_info,
+                                              &handler_factory, &updater, callback,       false};
 
             run_full_analysis(context);
         }

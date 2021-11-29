@@ -12,16 +12,16 @@
     "wide_streams": 0,
     "generated_from_network": false,
     "truncated": true,
-    "_id": "616d57cdcc898540dc569f3a",
-    "id": "fd571d70-3004-11ec-9ba4-bbd607c5d02d",
+    "_id": "61a11380593eacb6c4bd277a",
+    "id": "d9df4d50-4eda-11ec-b4b7-bfa8e810dab4",
     "__v": 0,
-    "analyzer_version": "2.0.2",
+    "analyzer_version": "2.0.3",
     "capture_date": 1516906244153,
-    "capture_file_name": "1634555853018_39dd1d65-b71e-414c-bc52-943847f90cc1.pcap",
-    "date": 1634555853077,
+    "capture_file_name": "1637946240693_d890c3b9-6ac1-44f5-98bb-177f28412091.pcap",
+    "date": 1637946240884,
     "file_name": "eemebe_t_1080i59.pcap",
-    "owner_id": "c9513e70-3004-11ec-85d6-d526ea87570e",
-    "pcap_file_name": "1634555853018_39dd1d65-b71e-414c-bc52-943847f90cc1.pcap",
+    "owner_id": "2f4a1c80-4ec6-11ec-824f-153898937f4b",
+    "pcap_file_name": "1637946240693_d890c3b9-6ac1-44f5-98bb-177f28412091.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -56,8 +56,8 @@
     "streams": [
         {
             "error_list": [],
-            "_id": "616d57cd8d63c1cefe200edf",
-            "id": "2188907c-bca4-4b02-9841-32910eace966",
+            "_id": "61a11380dfe8542c253b8352",
+            "id": "67d51410-93bc-4ab0-ae03-e7c8267c4fe7",
             "media_specific": {
                 "avg_tro_ns": 615145,
                 "color_depth": 10,
@@ -77,9 +77,18 @@
             },
             "media_type": "video",
             "media_type_validation": {
-                "anc": ["STATUS_CODE_ANC_WRONG_HEADER"],
-                "audio": ["STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"],
-                "ttml": ["STATUS_CODE_TTML_INVALID_DOCUMENT"]
+                "application/ttml+xml": [
+                    "STATUS_CODE_TTML_INVALID_DOCUMENT"
+                ],
+                "audio/L16": [
+                    "STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"
+                ],
+                "video/jxsv": [
+                    "STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"
+                ],
+                "video/smpte291": [
+                    "STATUS_CODE_ANC_WRONG_HEADER"
+                ]
             },
             "network_information": {
                 "destination_address": "239.0.1.2",
@@ -111,7 +120,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "fd571d70-3004-11ec-9ba4-bbd607c5d02d",
+            "pcap": "d9df4d50-4eda-11ec-b4b7-bfa8e810dab4",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -133,8 +142,14 @@
                     "cmax_wide": 16,
                     "compliance": "narrow",
                     "histogram": [
-                        [0, 88.22222137451172],
-                        [1, 11.777777671813965]
+                        [
+                            0,
+                            88.22222137451172
+                        ],
+                        [
+                            1,
+                            11.777777671813965
+                        ]
                     ]
                 },
                 "compliance": "narrow",
@@ -144,10 +159,22 @@
                 "vrx": {
                     "compliance": "narrow",
                     "histogram": [
-                        [4, 0.10288065671920776],
-                        [5, 55.452674865722656],
-                        [6, 0.12345679104328156],
-                        [7, 44.320987701416016]
+                        [
+                            4,
+                            0.10288065671920776
+                        ],
+                        [
+                            5,
+                            55.452674865722656
+                        ],
+                        [
+                            6,
+                            0.12345679104328156
+                        ],
+                        [
+                            7,
+                            44.320987701416016
+                        ]
                     ],
                     "vrx_full_narrow": 8,
                     "vrx_full_wide": 720

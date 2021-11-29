@@ -2,10 +2,10 @@
 
 #include "ebu/list/analysis/handlers/video_stream_handler.h"
 #include "ebu/list/analysis/serialization/compliance.h"
+#include "ebu/list/analysis/serialization/video/frame_info_builder.h"
 #include "ebu/list/core/platform/executor.h"
 #include "ebu/list/st2110/d21/c_analyzer.h"
 #include "ebu/list/st2110/d21/compliance.h"
-#include "ebu/list/analysis/serialization/video/frame_info_builder.h"
 
 namespace ebu_list::analysis
 {

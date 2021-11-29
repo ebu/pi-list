@@ -1,11 +1,12 @@
 const fs = require('fs');
 const jetpack = require('fs-jetpack');
 const util = require('util');
-const readFileAsync = util.promisify(fs.readFile);
-const writeFileAsync = util.promisify(fs.writeFile);
 import logger from './logger';
 const API_ERRORS = require('../enums/apiErrors');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
+
+const readFileAsync = util.promisify(fs.readFile);
+const writeFileAsync = util.promisify(fs.writeFile);
 
 class FileSystem {
     createIfNotExists(dir) {

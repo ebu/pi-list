@@ -1,8 +1,8 @@
+const fs = require('fs');
+const path = require('path');
 const collection = require('../models/downloadmngr');
 import logger from '../util/logger';
 const cron = require('node-cron');
-const fs = require('fs');
-const path = require('path');
 
 /*
  * A minute of insanity

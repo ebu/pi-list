@@ -1,6 +1,4 @@
 const router = require('express').Router();
-const util = require('util');
-import logger from '../util/logger';
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const API_ERRORS = require('../enums/apiErrors');
 const StreamCompare = require('../models/streamCompare');
