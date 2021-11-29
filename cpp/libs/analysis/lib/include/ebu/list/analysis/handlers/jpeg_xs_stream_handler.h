@@ -32,7 +32,7 @@ namespace ebu_list::analysis
       public:
         using completion_handler = std::function<void(const jpeg_xs_stream_handler& vsh)>;
 
-        jpeg_xs_stream_handler(rtp::packet first_packet, serializable_stream_info info, completion_handler ch);
+        jpeg_xs_stream_handler(rtp::packet first_packet, completion_handler ch);
 
       private:
 #pragma region rtp::listener events
@@ -53,15 +53,12 @@ namespace ebu_list::analysis
         void parse_packet(const rtp::packet& packet);
         void detect_frame_transition(uint32_t timestamp);
 
+        uint32_t last_frame_ts_ = 0;
+        uint32_t frame_count_   = 0;
+
         frame_uptr current_frame_;
-        dscp_analyzer dscp_;
-        malloc_sbuffer_factory block_factory_;
-
-        serializable_stream_info info_;
-        rtp::inter_packet_spacing_analyzer inter_packet_spacing_;
-
         completion_handler completion_handler_;
     };
 
-    using jpeg_xs_stream_handler_uptr = std::unique_ptr<jpeg_xs_stream_handler>;
+    using stream_handler_uptr = std::unique_ptr<jpeg_xs_stream_handler>;
 } // namespace ebu_list::analysis
