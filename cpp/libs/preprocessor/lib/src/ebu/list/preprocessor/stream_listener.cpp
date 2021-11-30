@@ -87,6 +87,12 @@ void stream_listener::on_complete()
 
     stream_id_.network.dscp = dscp_.get_info();
 
+    if(std::holds_alternative<std::nullopt_t>(format)){
+        stream_id_.full_type = media::full_media_from_string("unknown");
+    }else{
+        stream_id_.full_type = media::full_media_from_string(detector_.get_full_media_type());
+    }
+
     if(std::holds_alternative<d20::video_description>(format))
     {
         const auto video_format = std::get<d20::video_description>(format);

@@ -28,3 +28,35 @@ media::media_type media::from_string(std::string_view media)
     else
         return media_type::UNKNOWN;
 }
+
+string media::full_media_to_string(full_media_type full_media_type)
+{
+    switch(full_media_type)
+    {
+    case full_media_type::RAW: return "video/raw";
+    case full_media_type::JXSV: return "video/jxsv";
+    case full_media_type::L16: return "audio/L16";
+    case full_media_type::L24: return "audio/L24";
+    case full_media_type::SMPTE291: return "video/smpte291";
+    case full_media_type::TTMLXML: return "ttml/ttml+xml";
+    default: assert(full_media_type == full_media_type::UNKNOWN); return "unknown";
+    }
+}
+
+media::full_media_type media::full_media_from_string(std::string_view media)
+{
+    if(media == "video/raw")
+        return full_media_type::RAW;
+    else if(media == "video/jxsv")
+        return full_media_type::JXSV;
+    else if(media == "audio/L16")
+        return full_media_type::L16;
+    else if(media == "audio/L24")
+        return full_media_type::L24;
+    else if(media == "video/smpte291")
+        return full_media_type::SMPTE291;
+    else if(media == "ttml/ttml+xml")
+        return full_media_type::TTMLXML;
+    else
+        return full_media_type::UNKNOWN;
+}

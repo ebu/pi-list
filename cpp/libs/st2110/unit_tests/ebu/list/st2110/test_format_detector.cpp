@@ -99,7 +99,7 @@ SCENARIO("format detector")
                 REQUIRE(audio_details.number_channels == 2);
                 REQUIRE(audio_details.encoding == media::audio::audio_encoding::L16);
 
-                REQUIRE(fd->get_full_media_type() == fmt::format("audio/{}", audio_details.encoding));
+                REQUIRE(fd->get_full_media_type() == "audio/L16");
             }
         }
     }
@@ -130,7 +130,7 @@ SCENARIO("format detector")
                 REQUIRE(audio_details.number_channels == 8);
                 REQUIRE(audio_details.encoding == media::audio::audio_encoding::L24);
 
-                REQUIRE(fd->get_full_media_type() == fmt::format("audio/{}", audio_details.encoding));
+                REQUIRE(fd->get_full_media_type() == "audio/L24");
             }
         }
     }
