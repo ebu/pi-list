@@ -1,34 +1,15 @@
 #include "ebu/list/analysis/serialization/jpeg_xs_stream_extractor.h"
-
 #include <utility>
+#include <cstdio>
 #include "ebu/list/analysis/serialization/utils.h"
 #include "ebu/list/analysis/serialization/video/st2110_d20_packet.h"
 #include "ebu/list/analysis/utils/color_conversion.h"
-#include "ebu/list/analysis/utils/png_writer.h"
-#include <stdio.h>
+#include "ebu/list/core/platform/file.h"
 
 using namespace ebu_list;
 using namespace ebu_list::analysis;
 using namespace ebu_list::st2110;
 using json = nlohmann::json;
-
-//------------------------------------------------------------------------------
-
-namespace
-{
-    media::video::video_dimensions get_frame_size(const video_stream_details& info)
-    {
-        auto dimensions = info.video.dimensions;
-        if(info.video.scan_type == media::video::scan_type::INTERLACED)
-        {
-            dimensions.height /= 2;
-        }
-
-        return dimensions;
-    }
-} // namespace
-
-//------------------------------------------------------------------------------
 
 jpeg_xs_stream_extractor::jpeg_xs_stream_extractor(rtp::packet first_packet, path base_dir, executor_ptr main_executor, std::string stream_id)
     : jpeg_xs_stream_handler(std::move(first_packet), [](const jpeg_xs_stream_handler&) {}),
@@ -54,22 +35,19 @@ void jpeg_xs_stream_extractor::on_frame_complete(frame_uptr&& f)
 
     std::experimental::filesystem::create_directories(info_base);
 
-    struct png_write_info
+    struct write_info
     {
-        long frame_size;
+        size_t frame_size;
         oview data;
-        path png_path;
+        path file_path;
     };
 
-    png_write_info wfi{f->buffer->size(), oview(f->buffer), png_path};
+    write_info wfi{static_cast<size_t>(f->buffer->size()), oview(f->buffer), png_path};
 
-    const auto size = f->buffer->size();
-    const auto buffer = oview(f->buffer);
-
-    auto png_writer = [png_path, buffer, size]() mutable {
-        file_handle file(png_path, file_handle::mode::write);
-        const auto count = fwrite(buffer, 1, size, file.handle());
-        LIST_ENFORCE(count == size, std::runtime_error, "Did not write the full PNG buffer");
+    auto png_writer = [wfi]() mutable {
+        file_handle file(wfi.file_path, file_handle::mode::write);
+        const auto count = fwrite(&wfi.data, 1, wfi.frame_size, file.handle());
+        LIST_ENFORCE(count == wfi.frame_size, std::runtime_error, "Did not write the full PNG buffer");
     };
 
     main_executor_->execute(std::move(png_writer));
