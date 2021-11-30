@@ -23,8 +23,6 @@ namespace ebu_list::analysis
         rtp::packet_info rtp;
         const rtp::packet& packet;
         const frame& of_frame;
-        uint32_t full_sequence_number;
-        lines_info line_info;
     };
 
     class jpeg_xs_stream_handler : public rtp::listener
