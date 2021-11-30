@@ -4,6 +4,7 @@ const http = require('http');
 const app = require('./app');
 const programArguments = require('./util/programArguments');
 import logger from './util/logger';
+const ingestProgress = require('./managers/ingestProgress');
 const websocketManager = require('./managers/websocket');
 const { onError, onListening, onProcessClosed } = require('./util/serverUtils');
 
