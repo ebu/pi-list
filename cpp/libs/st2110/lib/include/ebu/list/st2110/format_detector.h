@@ -31,9 +31,11 @@ namespace ebu_list::st2110
         using details = std::variant<std::nullopt_t, d20::video_description, d30::audio_description,
                                      d40::anc_description, ebu_list::ttml::description>;
 
+        using full_type = std::variant<std::nullopt_t, std::string>;
+
         virtual detector::status_description handle_data(const rtp::packet& packet) = 0;
         virtual details get_details() const                                         = 0;
-        virtual std::string get_full_media_type() const                             = 0;
+        virtual full_type get_full_media_type() const                             = 0;
     };
 
     class sub_detector : public detector
@@ -53,7 +55,7 @@ namespace ebu_list::st2110
 
         detector::status_description status() const noexcept;
         detector::details get_details() const;
-        std::string get_full_media_type() const;
+        detector::full_type get_full_media_type() const;
 
         const std::map<std::string, std::vector<std::string>>& get_error_codes() const;
 

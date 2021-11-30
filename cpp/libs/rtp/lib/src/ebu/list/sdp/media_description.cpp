@@ -60,3 +60,66 @@ media::full_media_type media::full_media_from_string(std::string_view media)
     else
         return full_media_type::UNKNOWN;
 }
+
+bool media::is_full_media_type_video_raw(media::full_media_type full_media_type)
+{
+    if(full_media_type == full_media_type::RAW)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool media::is_full_media_type_video_jxsv(media::full_media_type full_media_type)
+{
+    if(full_media_type == full_media_type::JXSV)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool media::is_full_media_type_video_smpte291(media::full_media_type full_media_type)
+{
+    if(full_media_type == full_media_type::SMPTE291)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool media::is_full_media_type_audio_l16(media::full_media_type full_media_type)
+{
+    if(full_media_type == full_media_type::L16)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool media::is_full_media_type_audio_l24(media::full_media_type full_media_type)
+{
+    if(full_media_type == full_media_type::L24)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool media::is_full_media_type_ttml_xml(media::full_media_type full_media_type)
+{
+    if(full_media_type == full_media_type::TTMLXML)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool media::is_full_media_type_unknown(media::full_media_type full_media_type)
+{
+    if(full_media_type == full_media_type::UNKNOWN)
+    {
+        return true;
+    }
+    return false;
+}

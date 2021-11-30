@@ -17,15 +17,15 @@ jpeg_xs_stream_extractor::jpeg_xs_stream_extractor(rtp::packet first_packet, pat
 {
 }
 
-void jpeg_xs_stream_extractor::on_frame_started(const frame&)
+void jpeg_xs_stream_extractor::on_frame_started(const frame_jpeg_xs&)
 {
 }
 
-void jpeg_xs_stream_extractor::on_packet(const packet_info&)
+void jpeg_xs_stream_extractor::on_packet(const packet_jpeg_xs_info&)
 {
 }
 
-void jpeg_xs_stream_extractor::on_frame_complete(frame_uptr&& f)
+void jpeg_xs_stream_extractor::on_frame_complete(frame_jpeg_xs_uptr&& f)
 {
     const auto frame_id  = std::to_string(f->timestamp);
 

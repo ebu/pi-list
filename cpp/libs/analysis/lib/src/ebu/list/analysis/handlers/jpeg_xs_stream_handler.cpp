@@ -20,7 +20,7 @@ jpeg_xs_stream_handler::jpeg_xs_stream_handler(rtp::packet first_packet, complet
 
 void jpeg_xs_stream_handler::new_frame()
 {
-    current_frame_            = std::make_unique<frame>();
+    current_frame_            = std::make_unique<frame_jpeg_xs>();
     current_frame_->timestamp = last_frame_ts_;
 
     this->on_frame_started(*current_frame_);
@@ -76,7 +76,7 @@ void jpeg_xs_stream_handler::parse_packet(const rtp::packet& packet)
     auto payload_header = header(sdu);
     p += sizeof(payload_header);
 
-    packet_info info{packet.info, packet, *current_frame_};
+    packet_jpeg_xs_info info{packet.info, packet, *current_frame_};
 
 
 #if defined(LIST_TRACE)

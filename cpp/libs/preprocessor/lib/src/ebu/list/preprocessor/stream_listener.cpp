@@ -82,15 +82,26 @@ void stream_listener::on_complete()
 
     const auto format                                                     = detector_.get_details();
     std::map<std::string, std::vector<std::string>> detectors_error_codes = detector_.get_error_codes();
-
     media_stream_details details;
+    const auto maybe_full_media_type = detector_.get_full_media_type();
 
     stream_id_.network.dscp = dscp_.get_info();
 
-    if(std::holds_alternative<std::nullopt_t>(format)){
+    if(std::holds_alternative<std::nullopt_t>(format) && std::holds_alternative<std::nullopt_t>(maybe_full_media_type))
+    {
         stream_id_.full_type = media::full_media_from_string("unknown");
-    }else{
-        stream_id_.full_type = media::full_media_from_string(detector_.get_full_media_type());
+        stream_id_.state = stream_state::NEEDS_INFO;
+    }
+    else if(std::holds_alternative<std::string>(maybe_full_media_type))
+    {
+        const auto full_media_type = std::get<std::string>(maybe_full_media_type);
+        stream_id_.full_type = media::full_media_from_string(full_media_type);
+
+        if(media::is_full_media_type_video_jxsv(media::full_media_from_string(full_media_type)))
+         {
+             stream_id_.type = media::media_type::VIDEO;
+             stream_id_.state = stream_state::READY;
+         }
     }
 
     if(std::holds_alternative<d20::video_description>(format))
@@ -135,10 +146,6 @@ void stream_listener::on_complete()
 
         analysis::ttml::stream_details ttml_details{};
         details = ttml_details;
-    }
-    else
-    {
-        stream_id_.state = stream_state::NEEDS_INFO;
     }
 
     stream_with_details swd{stream_id_, details};

@@ -45,6 +45,8 @@ namespace ebu_list::analysis
 
         void handle_unknown() { ++nr_total; }
 
+        void handle_jpeg_xs() { ++nr_video; }
+
         void fill_streams_summary(pcap_info& pcap)
         {
             pcap.audio_streams         = nr_audio.load();

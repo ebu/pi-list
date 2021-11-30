@@ -12,17 +12,17 @@
 
 namespace ebu_list::analysis
 {
-    struct frame : frame_info
+    struct frame_jpeg_xs : frame_info
     {
         sbuffer_ptr buffer;
     };
-    using frame_uptr = std::unique_ptr<frame>;
+    using frame_jpeg_xs_uptr = std::unique_ptr<frame_jpeg_xs>;
 
-    struct packet_info
+    struct packet_jpeg_xs_info
     {
         rtp::packet_info rtp;
         const rtp::packet& packet;
-        const frame& of_frame;
+        const frame_jpeg_xs& of_frame;
     };
 
     class jpeg_xs_stream_handler : public rtp::listener
@@ -42,9 +42,9 @@ namespace ebu_list::analysis
 #pragma endregion udp::listener events
 
 #pragma region event handlers
-        virtual void on_frame_started(const frame& f)      = 0;
-        virtual void on_packet(const packet_info& p)       = 0;
-        virtual void on_frame_complete(frame_uptr&& frame) = 0;
+        virtual void on_frame_started(const frame_jpeg_xs& f)      = 0;
+        virtual void on_packet(const packet_jpeg_xs_info& p)       = 0;
+        virtual void on_frame_complete(frame_jpeg_xs_uptr&& frame) = 0;
 #pragma endregion event handlers
 
         void new_frame();
@@ -54,9 +54,9 @@ namespace ebu_list::analysis
         uint32_t last_frame_ts_ = 0;
         uint32_t frame_count_   = 0;
 
-        frame_uptr current_frame_;
+        frame_jpeg_xs_uptr current_frame_;
         completion_handler completion_handler_;
     };
 
-    using stream_handler_uptr = std::unique_ptr<jpeg_xs_stream_handler>;
+    using stream_jpeg_xs_handler_uptr = std::unique_ptr<jpeg_xs_stream_handler>;
 } // namespace ebu_list::analysis
