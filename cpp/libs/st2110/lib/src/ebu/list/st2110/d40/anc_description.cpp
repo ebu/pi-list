@@ -129,7 +129,7 @@ void st2110_40_sdp_serializer::additional_attributes(std::vector<std::string>& c
     /** Obligatory Parameters **/
     // https://tools.ietf.org/id/draft-ietf-payload-rtp-ancillary-10.xml
     std::string fmtp = fmt::format("a=fmtp:{} ", network_info.network.payload_type);
-    for(const auto s : anc_desc_.sub_streams)
+    for(const auto& s : anc_desc_.sub_streams)
     {
         std::ostringstream stream_did;
         stream_did << std::hex << ((static_cast<uint16_t>(s.did_sdid()) >> 8) & 0xFF);

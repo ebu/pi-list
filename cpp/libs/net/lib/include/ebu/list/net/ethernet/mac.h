@@ -4,6 +4,7 @@
 
 #include <array>
 #include <string>
+#include <optional>
 
 namespace ebu_list::ethernet
 {
