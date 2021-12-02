@@ -38,15 +38,15 @@ void jpeg_xs_stream_extractor::on_frame_complete(frame_jpeg_xs_uptr&& f)
     struct write_info
     {
         size_t frame_size;
-        oview data;
+        std::vector<std::byte> data;
         path file_path;
     };
 
-    write_info wfi{static_cast<size_t>(f->buffer->size()), oview(f->buffer), png_path};
+    write_info wfi{static_cast<size_t>(f->buffer.size()), f->buffer, png_path};
 
     auto png_writer = [wfi]() mutable {
         file_handle file(wfi.file_path, file_handle::mode::write);
-        const auto count = fwrite(&wfi.data, 1, wfi.frame_size, file.handle());
+        const auto count = fwrite(&wfi.data[0], 1, wfi.frame_size, file.handle());
         LIST_ENFORCE(count == wfi.frame_size, std::runtime_error, "Did not write the full PNG buffer");
     };
 

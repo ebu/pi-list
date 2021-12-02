@@ -14,7 +14,7 @@ namespace ebu_list::analysis
 {
     struct frame_jpeg_xs : frame_info
     {
-        sbuffer_ptr buffer;
+        std::vector<std::byte> buffer;
     };
     using frame_jpeg_xs_uptr = std::unique_ptr<frame_jpeg_xs>;
 

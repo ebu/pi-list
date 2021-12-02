@@ -70,10 +70,11 @@ void jpeg_xs_stream_handler::parse_packet(const rtp::packet& packet)
     auto& sdu = packet.sdu;
 
     if(static_cast<size_t>(sdu.view().size()) < sizeof(uint32_t)) return;
-    auto p = sdu.view().data();
 
-    // skip esn
-    auto payload_header = header(sdu);
+    auto p = sdu.view().data();
+    const auto end = sdu.view().data() + sdu.view().size();
+
+    const auto payload_header = header(sdu);
     p += sizeof(payload_header);
 
     packet_jpeg_xs_info info{packet.info, packet, *current_frame_};
@@ -91,16 +92,7 @@ void jpeg_xs_stream_handler::parse_packet(const rtp::packet& packet)
     logger()->info("Available size: {}", available_size);
 #endif // defined(LIST_TRACE)
 
-    const auto target = current_frame_->buffer->begin();
-    if(target > current_frame_->buffer->end())
-    {
-        // TODO: report this
-        logger()->error("Buffer out of bounds");
-    }
-
-    cbyte_span source_data(p, (sdu.view().size() - sizeof(payload_header)));
-    byte_span target_data(target, current_frame_->buffer->end() - target);
-    ebu_list::copy(source_data, target_data);
+    current_frame_->buffer.insert(current_frame_->buffer.end(), p, end);
 
     this->on_packet(info);
 }
