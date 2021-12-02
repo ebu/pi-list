@@ -281,7 +281,6 @@ void analysis::run_full_analysis(processing_context& context)
         else if(media::is_full_media_type_video_jxsv(stream_info.full_type))
         {
             logger()->info("Full media type jpeg xs: {}", media::full_media_to_string(stream_info.full_type));
-            counter.handle_jpeg_xs();
 
             auto ml = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
 
@@ -290,6 +289,12 @@ void analysis::run_full_analysis(processing_context& context)
                 auto new_handler = std::make_unique<jpeg_xs_stream_extractor>(first_packet, context.storage_folder,
                                                                               main_executor, stream_info.id);
                 ml->add(std::move(new_handler));
+            }
+            else
+            {
+                auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+                auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                ml->add(std::move(analyzer));
             }
 
             return ml;

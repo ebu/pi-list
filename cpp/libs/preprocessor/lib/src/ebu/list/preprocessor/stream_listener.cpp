@@ -96,6 +96,7 @@ void stream_listener::on_complete()
     {
         const auto full_media_type = std::get<std::string>(maybe_full_media_type);
         stream_id_.full_type = media::full_media_from_string(full_media_type);
+        logger()->info("Full media type: {}", full_media_type);
 
         if(media::is_full_media_type_video_jxsv(media::full_media_from_string(full_media_type)))
          {
