@@ -17,7 +17,7 @@ namespace ebu_list::analysis
 
       private:
         size_t packet_count_                           = 0;
-        std::optional<int64_t> first_packet_timestamp_ = 0;
+        std::optional<int64_t> first_packet_timestamp_;
         int64_t last_packet_timestamp_                 = 0;
     };
 } // namespace ebu_list::analysis

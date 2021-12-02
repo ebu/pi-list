@@ -23,7 +23,7 @@ router.post('/', (req, res, next) => {
         configuration
     } = req.body;
     logger('workflow-api').info(`Create workflow request for ${type}`);
-    configuration.authorization = req.headers.authorization;
+    configuration.authorization = req.headers.authorization.replace('Bearer ', '');
 
     const userId = getUserId(req);
     const userFolder = getUserFolder(req);

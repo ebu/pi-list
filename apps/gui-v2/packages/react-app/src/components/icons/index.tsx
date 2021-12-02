@@ -18,6 +18,9 @@ export const ArrowExpandedIcon = icon(arrowExpandedSrc);
 const comparisonIconSrc = require('./comparison.svg');
 export const ComparisonIcon = icon(comparisonIconSrc);
 
+const recordIconSrc = require('./record-rec.svg');
+export const RecordIcon = icon(recordIconSrc);
+
 const downloadManagerIconSrc = require('./downloadManager.svg');
 export const DownloadManagerIcon = icon(downloadManagerIconSrc);
 
@@ -104,3 +107,12 @@ export const NetworkRedundancyIcon = icon(networkRedundancySrc);
 
 const alertSrc = require('./alert.svg');
 export const AlertIcon = icon(alertSrc);
+
+const plusSrc = require('./plus.svg');
+export const PlusIcon = icon(plusSrc);
+
+const minusSrc = require('./minus.svg');
+export const MinusIcon = icon(minusSrc);
+
+const editSrc = require('./pencil.svg');
+export const EditIcon = icon(editSrc);

@@ -1,8 +1,6 @@
 import React from 'react';
 import Tippy from '@tippyjs/react';
 import './styles.scss';
-import 'tippy.js/animations/scale.css';
-import 'tippy.js/dist/svg-arrow.css';
 
 interface ComponentProps {
     content: JSX.Element;

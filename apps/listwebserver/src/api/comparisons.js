@@ -90,7 +90,7 @@ router.post('/:comparisonID/', checkIsReadOnly, (req, res) => {
     } = req.params;
     const userId = getUserId(req);
     const comparison = req.body;
-    console.log(comparison);
+
     StreamCompare.findOneAndUpdate({
             id: comparisonID
         }, comparison, {

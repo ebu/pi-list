@@ -6,6 +6,7 @@ import {
     DownloadManagerIcon,
     CreditsIcon,
     HelpIcon,
+    RecordIcon,
     SettingsIcon,
     CollapseIcon,
 } from 'components/icons/index';
@@ -44,7 +45,7 @@ function SidebarHOC() {
         getVersion();
     }, []);
 
-    const buttonsList: IButtonWithRoutes = {
+    let buttonsList: IButtonWithRoutes = {
         upperButtons: [
             {
                 text: translate('media_information.analysis'),
@@ -106,12 +107,26 @@ function SidebarHOC() {
         ],
     };
 
+    if ( (typeof(process.env.REACT_APP_LIVE) !== 'undefined') &&
+         (process.env.REACT_APP_LIVE)) {
+        buttonsList.upperButtons.splice(1, 0, {
+            text: translate('navigation.capture'),
+            clicked: false,
+            key: sidebarButtonsKeys.capture,
+            icon: RecordIcon,
+            route: routeNames.CAPTURE,
+        });
+    }
+
     const helpString = translate('navigation.help');
     const onSidebarClick = (buttonKey: number): void => {
         let path: string | undefined | null = '';
         switch (buttonKey) {
             case sidebarButtonsKeys.analysis:
                 path = routeNames.PCAPS;
+                break;
+            case sidebarButtonsKeys.capture:
+                path = routeNames.CAPTURE;
                 break;
             case sidebarButtonsKeys.streamComparison:
                 path = routeNames.STREAM_COMPARISON;

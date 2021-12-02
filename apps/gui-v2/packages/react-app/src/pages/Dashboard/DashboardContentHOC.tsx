@@ -116,17 +116,17 @@ const getPCapDetail = (currentPCap: SDK.types.IPcapInfo | null | undefined): IPc
 };
 
 const getMultipleFilesDownload = async (type: string, pCapIdsToDownload: string[]) => {
-    // const workflowRequest = translate('workflow.requested');
     const workflowRequest = 'Workflow requested';
     const workflowRequestFailed = 'Workflow request failed';
 
     const workflowInfo = {
-        type: 'downloadMultipleFiles',
+        type: SDK.api.workflows.types.downloadMultipleFiles,
         configuration: {
             ids: pCapIdsToDownload,
             type: type,
         },
     };
+
     await list.workflows
         .create(workflowInfo)
         .then(() => {

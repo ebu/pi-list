@@ -4,6 +4,7 @@
 #include "ebu/list/core/types.h"
 #include <set>
 #include <optional>
+
 //------------------------------------------------------------------------------
 
 namespace ebu_list::st2110

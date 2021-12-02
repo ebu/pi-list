@@ -50,7 +50,7 @@ const getMetaForUserDefinedSource = (source) => {
     return meta;
 };
 
-const getLiveSources = async () => {
+const getAllLiveSources = async () => {
     const localP = await LiveSource.find().exec();
     const local = localP.map((s) => s.toJSON());
     return [...local, ...nmosSources];
@@ -62,7 +62,6 @@ function addLiveSource(_source) {
     if (source.id === undefined) {
         source.id = uuid();
     }
-
     source.meta = getMetaForUserDefinedSource(source);
 
     // race-condition problem ?!
@@ -74,18 +73,24 @@ function addLiveSource(_source) {
         new: true,
         upsert: true
     }).exec();
-    upsertedSource.then(function (doc) {
-        console.log(doc);
-
-        const changeSet = {
-            added: [doc],
-            removedIds: [],
-        };
-
-        sendMqttUpdate(changeSet);
-    });
 
     return Promise.resolve(upsertedSource);
+}
+
+function updateLiveSource(_source) {
+    logger('live-sources').info(`Updating source - id: ${_source.id}`);
+    const source = _.cloneDeep(_source);
+    const filter = { id: source.id };
+    const upsertedSource = LiveSource.findOneAndUpdate(filter, source, { new: false, overwrite: true }).exec();
+
+    return Promise.resolve(upsertedSource);
+}
+
+function deleteLiveSource(sourceId) {
+    logger('live-sources').info(`Deleting source - id: ${sourceId}`);
+    LiveSource.deleteOne({ id: sourceId }).exec();
+
+    return Promise.resolve({ id: sourceId });
 }
 
 function deleteLiveSources(ids) {
@@ -197,13 +202,15 @@ const onChanged = async ({
 onUpdate.on(events.updateEvent, onChanged);
 
 const findLiveSources = async (wantedIds) => {
-    const sources = await getLiveSources();
+    const sources = await getAllLiveSources();
     return sources.filter((source) => wantedIds.includes(source.id));
 };
 
 module.exports = {
-    getLiveSources,
+    getAllLiveSources,
     findLiveSources,
     addLiveSource,
+    updateLiveSource,
+    deleteLiveSource,
     deleteLiveSources,
 };

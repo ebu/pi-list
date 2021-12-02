@@ -77,8 +77,6 @@ function StreamComparisonPanel({
         streamB.pcap === null ||
         streamB.stream === null;
 
-    console.log(selectedComparison);
-
     const useaudioChannelSelectorMap: any = {};
     useaudioChannelSelectorMap[workflowTypes.compareStreams] = true;
     useaudioChannelSelectorMap[workflowTypes.st2022_7_analysis] = false;
