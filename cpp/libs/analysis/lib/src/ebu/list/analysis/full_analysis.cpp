@@ -272,7 +272,15 @@ void analysis::run_full_analysis(processing_context& context)
 
             auto new_handler = std::make_unique<ttml::stream_handler>(first_packet, std::move(doc_logger), stream_info,
                                                                       ttml_info, ttml_finalizer_callback);
-            return new_handler;
+            auto ml              = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
+            ml->add(std::move(new_handler));
+            {
+                auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+                auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                ml->add(std::move(analyzer));
+            }
+
+            return ml;
         }
         else if(media::is_full_media_type_video_jxsv(stream_info.full_type))
         {

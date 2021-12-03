@@ -5,6 +5,7 @@ import VideoGraphsDisplay from './Video/VideoGraphsDisplay';
 import AudioGraphsDisplay from './Audio/AudioGraphsDisplay';
 import AncillaryGraphsDisplay from './Ancillary/AncillaryGraphsDisplay';
 import UnknownGraphsDisplay from './Unknown/UnknownGraphsDisplay';
+import TtmlGraphsDisplay from './Ttml/TtmlGraphsDisplay';
 
 const getPcapType = (currentStream: SDK.types.IStreamInfo | undefined, pcapID: string) => {
     switch (currentStream?.media_type) {
@@ -16,6 +17,8 @@ const getPcapType = (currentStream: SDK.types.IStreamInfo | undefined, pcapID: s
             return <AncillaryGraphsDisplay currentStream={currentStream} pcapID={pcapID} />;
         case 'unknown':
             return <UnknownGraphsDisplay currentStream={currentStream} pcapID={pcapID} />;
+        case 'ttml':
+            return <TtmlGraphsDisplay currentStream={currentStream} pcapID={pcapID} />;
     }
 };
 
