@@ -12,16 +12,16 @@
     "wide_streams": 0,
     "generated_from_network": false,
     "truncated": false,
-    "_id": "61a11373593eacb6c4bd2717",
-    "id": "d1518360-4eda-11ec-b4b7-bfa8e810dab4",
+    "_id": "61a9f8f6fb53982c4f02b437",
+    "id": "522c1b10-5428-11ec-8f11-6fd1707e940b",
     "__v": 0,
     "analyzer_version": "2.0.3",
     "capture_date": 1622750341522,
-    "capture_file_name": "1637946226409_e9f41de1-85a6-4b81-b773-c3c2f089c27e.gz",
-    "date": 1637946227943,
+    "capture_file_name": "1638529269636_d5d27741-c816-471e-8362-eb1bef012fd5.gz",
+    "date": 1638529270826,
     "file_name": "2vid_2aud.pcap.gz",
     "owner_id": "2f4a1c80-4ec6-11ec-824f-153898937f4b",
-    "pcap_file_name": "1637946226409_e9f41de1-85a6-4b81-b773-c3c2f089c27e.pcap",
+    "pcap_file_name": "1638529269636_d5d27741-c816-471e-8362-eb1bef012fd5.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -45,7 +45,7 @@
     "summary": {
         "error_list": [
             {
-                "stream_id": "1d1d386d-3a95-433d-9667-cd5f85514987",
+                "stream_id": "173b7068-b4e9-41c9-8fc0-535938306dc2",
                 "value": {
                     "id": "errors.vrx_above_maximum"
                 }
@@ -56,8 +56,9 @@
     "streams": [
         {
             "error_list": [],
-            "_id": "61a11373dfe8542c253b82d3",
-            "id": "004de236-1db7-41a1-8e07-f3beb5033239",
+            "_id": "61a9f8f64fc73f7594e23683",
+            "full_media_type": "video/raw",
+            "id": "ad609693-c418-4907-93a6-2dc55fa4307b",
             "media_specific": {
                 "avg_tro_ns": 616492,
                 "color_depth": 10,
@@ -120,7 +121,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "d1518360-4eda-11ec-b4b7-bfa8e810dab4",
+            "pcap": "522c1b10-5428-11ec-8f11-6fd1707e940b",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -267,8 +268,9 @@
                     "id": "errors.vrx_above_maximum"
                 }
             ],
-            "_id": "61a11373dfe8542c253b82d4",
-            "id": "1d1d386d-3a95-433d-9667-cd5f85514987",
+            "_id": "61a9f8f64fc73f7594e23684",
+            "full_media_type": "video/raw",
+            "id": "173b7068-b4e9-41c9-8fc0-535938306dc2",
             "media_specific": {
                 "avg_tro_ns": 672742,
                 "color_depth": 10,
@@ -331,7 +333,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "d1518360-4eda-11ec-b4b7-bfa8e810dab4",
+            "pcap": "522c1b10-5428-11ec-8f11-6fd1707e940b",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -486,8 +488,9 @@
         },
         {
             "error_list": [],
-            "_id": "61a11373dfe8542c253b82d5",
-            "id": "28bcf455-c0bf-4d80-afc2-d44c0f23ad01",
+            "_id": "61a9f8f64fc73f7594e23685",
+            "full_media_type": "audio/L24",
+            "id": "a1cebf94-286f-4507-bdea-a1e525d87572",
             "media_specific": {
                 "encoding": "L24",
                 "number_channels": 2,
@@ -536,7 +539,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "d1518360-4eda-11ec-b4b7-bfa8e810dab4",
+            "pcap": "522c1b10-5428-11ec-8f11-6fd1707e940b",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -633,8 +636,9 @@
         },
         {
             "error_list": [],
-            "_id": "61a11373dfe8542c253b82d6",
-            "id": "dab55ecb-482b-436c-abb4-be4883dfec22",
+            "_id": "61a9f8f64fc73f7594e23686",
+            "full_media_type": "audio/L24",
+            "id": "0d148d9b-7e8d-40a7-9ca2-01ea5b7fa548",
             "media_specific": {
                 "encoding": "L24",
                 "number_channels": 2,
@@ -683,7 +687,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "d1518360-4eda-11ec-b4b7-bfa8e810dab4",
+            "pcap": "522c1b10-5428-11ec-8f11-6fd1707e940b",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,

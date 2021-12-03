@@ -12,16 +12,16 @@
     "wide_streams": 0,
     "generated_from_network": false,
     "truncated": false,
-    "_id": "61a1137f593eacb6c4bd2752",
-    "id": "d8491cf0-4eda-11ec-b4b7-bfa8e810dab4",
+    "_id": "61a9f8fefb53982c4f02b47a",
+    "id": "57385f60-5428-11ec-8f11-6fd1707e940b",
     "__v": 0,
     "analyzer_version": "2.0.3",
     "capture_date": 1528353584317,
-    "capture_file_name": "1637946238281_3b1858a7-3a33-4285-a319-1213fe54e276.pcap",
-    "date": 1637946239237,
+    "capture_file_name": "1638529278273_78a22393-0c0f-434f-a246-b702266e8ec6.pcap",
+    "date": 1638529278961,
     "file_name": "4k_50fps.pcap",
     "owner_id": "2f4a1c80-4ec6-11ec-824f-153898937f4b",
-    "pcap_file_name": "1637946238281_3b1858a7-3a33-4285-a319-1213fe54e276.pcap",
+    "pcap_file_name": "1638529278273_78a22393-0c0f-434f-a246-b702266e8ec6.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -45,7 +45,7 @@
     "summary": {
         "error_list": [
             {
-                "stream_id": "c14b2034-a4f3-4cd3-8509-795b0b9509fb",
+                "stream_id": "5ef17799-b308-4844-a5de-927abe629ede",
                 "value": {
                     "id": "errors.dropped_packets"
                 }
@@ -60,8 +60,9 @@
                     "id": "errors.dropped_packets"
                 }
             ],
-            "_id": "61a1137fdfe8542c253b8319",
-            "id": "c14b2034-a4f3-4cd3-8509-795b0b9509fb",
+            "_id": "61a9f8fe4fc73f7594e236d3",
+            "full_media_type": "unknown",
+            "id": "5ef17799-b308-4844-a5de-927abe629ede",
             "media_specific": null,
             "media_type": "unknown",
             "media_type_validation": {
@@ -111,7 +112,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "d8491cf0-4eda-11ec-b4b7-bfa8e810dab4",
+            "pcap": "57385f60-5428-11ec-8f11-6fd1707e940b",
             "state": "needs_info",
             "statistics": {
                 "dropped_packet_count": 4,
