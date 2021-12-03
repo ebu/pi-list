@@ -141,7 +141,6 @@ void analysis::run_full_analysis(processing_context& context)
 
         if(media::is_full_media_type_video_raw(stream_info.full_type))
         {
-            logger()->info("Full media type video/raw: {}", media::full_media_to_string(stream_info.full_type));
             const auto& in_video_info = std::get<video_stream_details>(media_info);
             const auto video_info     = media::video::info{in_video_info.video.rate, in_video_info.video.scan_type,
                                                        in_video_info.video.dimensions};
@@ -206,7 +205,6 @@ void analysis::run_full_analysis(processing_context& context)
         else if(media::is_full_media_type_audio_l16(stream_info.full_type) ||
                 media::is_full_media_type_audio_l24(stream_info.full_type))
         {
-            logger()->info("Full media type audio: {}", media::full_media_to_string(stream_info.full_type));
             const auto& audio_info = std::get<audio_stream_details>(media_info);
             auto new_handler       = std::make_unique<audio_stream_serializer>(
                 first_packet, stream_info, audio_info, audio_finalizer_callback, context.storage_folder);
@@ -232,7 +230,6 @@ void analysis::run_full_analysis(processing_context& context)
         }
         else if(media::is_full_media_type_video_smpte291(stream_info.full_type))
         {
-            logger()->info("Full media type anc: {}", media::full_media_to_string(stream_info.full_type));
             const auto& anc_info = std::get<anc_stream_details>(media_info);
             auto new_handler     = std::make_unique<anc_stream_serializer>(first_packet, stream_info, anc_info,
                                                                        anc_finalizer_callback, context.storage_folder);
@@ -270,7 +267,6 @@ void analysis::run_full_analysis(processing_context& context)
         }
         else if(media::is_full_media_type_ttml_xml(stream_info.full_type))
         {
-            logger()->info("Full media type ttml: {}", media::full_media_to_string(stream_info.full_type));
             const auto& ttml_info = std::get<ttml::stream_details>(media_info);
             auto doc_logger       = context.handler_factory->create_ttml_document_logger(stream_info.id);
 
@@ -280,8 +276,6 @@ void analysis::run_full_analysis(processing_context& context)
         }
         else if(media::is_full_media_type_video_jxsv(stream_info.full_type))
         {
-            logger()->info("Full media type jpeg xs: {}", media::full_media_to_string(stream_info.full_type));
-
             auto ml = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
 
             if(context.extract_frames)
@@ -302,7 +296,6 @@ void analysis::run_full_analysis(processing_context& context)
 
         else
         {
-            logger()->info("Full media type unknown: {}", media::full_media_to_string(stream_info.full_type));
             counter.handle_unknown();
             auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
             auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));

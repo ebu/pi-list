@@ -71,14 +71,13 @@ void jpeg_xs_stream_handler::parse_packet(const rtp::packet& packet)
 
     if(static_cast<size_t>(sdu.view().size()) < sizeof(uint32_t)) return;
 
-    auto p = sdu.view().data();
+    auto p         = sdu.view().data();
     const auto end = sdu.view().data() + sdu.view().size();
 
     const auto payload_header = header(sdu);
     p += sizeof(payload_header);
 
     packet_jpeg_xs_info info{packet.info, packet, *current_frame_};
-
 
 #if defined(LIST_TRACE)
     logger()->info("UDP packet size: {} SDU size: {}", packet.info.udp.datagram_size, sdu.view().size_bytes());
