@@ -99,7 +99,7 @@ void stream_listener::on_complete()
 
         if(media::is_full_media_type_video_jxsv(media::full_media_from_string(full_media_type)))
          {
-             stream_id_.type = media::media_type::VIDEO;
+             stream_id_.type = media::media_type::UNKNOWN;
              stream_id_.state = stream_state::READY;
          }
     }

@@ -276,6 +276,7 @@ void analysis::run_full_analysis(processing_context& context)
         }
         else if(media::is_full_media_type_video_jxsv(stream_info.full_type))
         {
+            counter.handle_unknown();
             auto ml = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
 
             if(context.extract_frames)

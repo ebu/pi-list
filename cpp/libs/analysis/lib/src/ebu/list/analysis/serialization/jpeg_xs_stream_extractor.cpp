@@ -31,7 +31,7 @@ void jpeg_xs_stream_extractor::on_frame_complete(frame_jpeg_xs_uptr&& f)
 
     const auto info_base = base_dir_ / stream_id_ / frame_id;
 
-    const auto png_path = info_base / "frame.png";
+    const auto png_path = info_base / "frame.jxs";
 
     std::experimental::filesystem::create_directories(info_base);
 
