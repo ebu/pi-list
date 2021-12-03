@@ -67,6 +67,7 @@ SCENARIO("TTML stream analysis")
                                          /*first_packet*/) -> std::optional<stream_with_details> {
         auto stream_info = serializable_stream_info{};
         stream_info.type = media::media_type::TTML;
+        stream_info.full_type = media::full_media_type::TTMLXML;
         auto details     = analysis::ttml::stream_details{};
 
         stream_ids.push_back(stream_info.id);
