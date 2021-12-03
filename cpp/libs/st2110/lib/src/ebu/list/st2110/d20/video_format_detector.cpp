@@ -142,7 +142,7 @@ detector::details video_format_detector::get_details() const
     return result;
 }
 
-std::string video_format_detector::get_full_media_type() const
+detector::full_type video_format_detector::get_full_media_type() const
 {
     return "video/raw";
 }

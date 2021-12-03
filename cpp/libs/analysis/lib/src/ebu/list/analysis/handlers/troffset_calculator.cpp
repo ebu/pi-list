@@ -130,7 +130,7 @@ tro_map analysis::calculate_average_troffset(ebu_list::path pcap_file,
 
         const auto& stream_info = stream_info_it->second.first;
 
-        if(stream_info.type == media::media_type::VIDEO)
+        if(stream_info.full_type == media::full_media_type::RAW)
         {
             const auto& in_video_info = std::get<video_stream_details>(stream_info_it->second.second);
             const auto video_info     = media::video::info{in_video_info.video.rate, in_video_info.video.scan_type,

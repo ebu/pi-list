@@ -19,6 +19,27 @@ namespace ebu_list::media
     std::string to_string(media_type media_type);
     media_type from_string(std::string_view media);
 
+    enum class full_media_type
+    {
+        RAW,
+        JXSV,
+        L16,
+        L24,
+        SMPTE291,
+        TTMLXML,
+        UNKNOWN
+    };
+
+    std::string full_media_to_string(full_media_type full_media_type);
+    full_media_type full_media_from_string(std::string_view full_media);
+    bool is_full_media_type_video_raw(media::full_media_type full_media_type);
+    bool is_full_media_type_video_jxsv(media::full_media_type full_media_type);
+    bool is_full_media_type_video_smpte291(media::full_media_type full_media_type);
+    bool is_full_media_type_audio_l16(media::full_media_type full_media_type);
+    bool is_full_media_type_audio_l24(media::full_media_type full_media_type);
+    bool is_full_media_type_ttml_xml(media::full_media_type full_media_type);
+    bool is_full_media_type_unknown(media::full_media_type full_media_type);
+
     struct dscp_info
     {
         std::optional<ipv4::dscp_type> value; // the last value found
@@ -57,6 +78,7 @@ namespace ebu_list::media
     struct network_media_description
     {
         network_info network;
-        media_type type = media_type::UNKNOWN;
+        media_type type           = media_type::UNKNOWN;
+        full_media_type full_type = full_media_type::UNKNOWN;
     };
 } // namespace ebu_list::media

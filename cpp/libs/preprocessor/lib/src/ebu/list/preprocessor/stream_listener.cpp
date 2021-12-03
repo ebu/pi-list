@@ -28,10 +28,10 @@ namespace
             serialized_streams_details["media_type_validation"]["video/raw"] = detectors_error_codes["video/raw"];
         if(detectors_error_codes["video/jxsv"].size() > 0)
             serialized_streams_details["media_type_validation"]["video/jxsv"] = detectors_error_codes["video/jxsv"];
-        if(detectors_error_codes["audio/0"].size() > 0)
-            serialized_streams_details["media_type_validation"]["audio/L16"] = detectors_error_codes["audio/0"];
-        if(detectors_error_codes["audio/1"].size() > 0)
-            serialized_streams_details["media_type_validation"]["audio/L24"] = detectors_error_codes["audio/1"];
+        if(detectors_error_codes["audio/L16"].size() > 0)
+            serialized_streams_details["media_type_validation"]["audio/L16"] = detectors_error_codes["audio/L16"];
+        if(detectors_error_codes["audio/L24"].size() > 0)
+            serialized_streams_details["media_type_validation"]["audio/L24"] = detectors_error_codes["audio/L24"];
         if(detectors_error_codes["video/smpte291"].size() > 0)
             serialized_streams_details["media_type_validation"]["video/smpte291"] =
                 detectors_error_codes["video/smpte291"];
@@ -82,10 +82,27 @@ void stream_listener::on_complete()
 
     const auto format                                                     = detector_.get_details();
     std::map<std::string, std::vector<std::string>> detectors_error_codes = detector_.get_error_codes();
-
     media_stream_details details;
+    const auto maybe_full_media_type = detector_.get_full_media_type();
 
     stream_id_.network.dscp = dscp_.get_info();
+
+    if(std::holds_alternative<std::nullopt_t>(format) && std::holds_alternative<std::nullopt_t>(maybe_full_media_type))
+    {
+        stream_id_.full_type = media::full_media_from_string("unknown");
+        stream_id_.state = stream_state::NEEDS_INFO;
+    }
+    else if(std::holds_alternative<std::string>(maybe_full_media_type))
+    {
+        const auto full_media_type = std::get<std::string>(maybe_full_media_type);
+        stream_id_.full_type = media::full_media_from_string(full_media_type);
+
+        if(media::is_full_media_type_video_jxsv(media::full_media_from_string(full_media_type)))
+         {
+             stream_id_.type = media::media_type::UNKNOWN;
+             stream_id_.state = stream_state::READY;
+         }
+    }
 
     if(std::holds_alternative<d20::video_description>(format))
     {
@@ -129,10 +146,6 @@ void stream_listener::on_complete()
 
         analysis::ttml::stream_details ttml_details{};
         details = ttml_details;
-    }
-    else
-    {
-        stream_id_.state = stream_state::NEEDS_INFO;
     }
 
     stream_with_details swd{stream_id_, details};

@@ -26,7 +26,7 @@ namespace ebu_list::st2110::d20
 
         detector::status_description handle_data(const rtp::packet& packet) override;
         virtual details get_details() const override;
-        virtual std::string get_full_media_type() const override;
+        virtual full_type get_full_media_type() const override;
         inline virtual std::string get_kind() const noexcept override { return "video"; }
 
       private:

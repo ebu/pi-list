@@ -9,11 +9,12 @@ using nlohmann::json;
 serializable_stream_info serializable_stream_info::from_json(const json& j)
 {
     serializable_stream_info stream;
-    stream.id      = j["id"].get<string>();
-    stream.pcap    = j["pcap"].get<string>();
-    stream.state   = from_string(j["state"].get<string>());
-    stream.type    = media::from_string(j["media_type"].get<string>());
-    stream.network = media::from_json(j.at("network_information"));
+    stream.id        = j["id"].get<string>();
+    stream.pcap      = j["pcap"].get<string>();
+    stream.state     = from_string(j["state"].get<string>());
+    stream.type      = media::from_string(j["media_type"].get<string>());
+    stream.full_type = media::full_media_from_string(j["full_media_type"].get<string>());
+    stream.network   = media::from_json(j.at("network_information"));
 
     return stream;
 }
@@ -25,6 +26,7 @@ json serializable_stream_info::to_json(const serializable_stream_info& info)
     j["pcap"]                = info.pcap;
     j["state"]               = to_string(info.state);
     j["media_type"]          = to_string(info.type);
+    j["full_media_type"]     = full_media_to_string(info.full_type);
     j["network_information"] = media::to_json(info.network);
 
     return j;

@@ -13,7 +13,7 @@ namespace ebu_list::ttml
         ebu_list::st2110::detector::status_description handle_data(const rtp::packet& packet) override;
 
         virtual ebu_list::st2110::detector::details get_details() const override;
-        virtual std::string get_full_media_type() const override;
+        virtual full_type get_full_media_type() const override;
 
         inline virtual std::string get_kind() const noexcept override { return "ttml"; }
 

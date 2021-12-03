@@ -60,7 +60,7 @@ SCENARIO("SDP serialization")
 
     GIVEN("a generic video stream")
     {
-        media::network_media_description media{network_info, media::media_type::VIDEO};
+        media::network_media_description media{network_info, media::media_type::VIDEO, media::full_media_type::RAW};
 
         WHEN("we try to serialize it into SDP format")
         {
@@ -94,7 +94,7 @@ SCENARIO("SDP serialization")
 
     GIVEN("a generic anc stream")
     {
-        media::network_media_description media{network_info, media::media_type::ANCILLARY_DATA};
+        media::network_media_description media{network_info, media::media_type::ANCILLARY_DATA, media::full_media_type::SMPTE291};
 
         WHEN("we try to serialize it into SDP format")
         {
@@ -128,7 +128,7 @@ SCENARIO("SDP serialization")
     GIVEN("an unknown stream")
     {
         auto sdp = sdp_builder(settings);
-        media::network_media_description unknown{network_info, media::media_type::UNKNOWN};
+        media::network_media_description unknown{network_info, media::media_type::UNKNOWN, media::full_media_type::UNKNOWN};
 
         WHEN("we try to serialize it into SDP format")
         {

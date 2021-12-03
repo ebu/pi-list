@@ -1,6 +1,7 @@
 #include "ebu/list/analysis/full_analysis.h"
 #include "ebu/list/analysis/serialization/anc_stream_serializer.h"
 #include "ebu/list/analysis/serialization/audio_stream_serializer.h"
+#include "ebu/list/analysis/serialization/jpeg_xs_stream_extractor.h"
 #include "ebu/list/analysis/serialization/ttml_stream_serializer.h"
 #include "ebu/list/analysis/serialization/video_stream_extractor.h"
 #include "ebu/list/analysis/serialization/video_stream_serializer.h"
@@ -138,7 +139,7 @@ void analysis::run_full_analysis(processing_context& context)
         const auto& stream_info = maybe_stream_info->first;
         const auto& media_info  = maybe_stream_info->second;
 
-        if(stream_info.type == media::media_type::VIDEO)
+        if(media::is_full_media_type_video_raw(stream_info.full_type))
         {
             const auto& in_video_info = std::get<video_stream_details>(media_info);
             const auto video_info     = media::video::info{in_video_info.video.rate, in_video_info.video.scan_type,
@@ -201,7 +202,8 @@ void analysis::run_full_analysis(processing_context& context)
             }
             return ml;
         }
-        else if(stream_info.type == media::media_type::AUDIO)
+        else if(media::is_full_media_type_audio_l16(stream_info.full_type) ||
+                media::is_full_media_type_audio_l24(stream_info.full_type))
         {
             const auto& audio_info = std::get<audio_stream_details>(media_info);
             auto new_handler       = std::make_unique<audio_stream_serializer>(
@@ -226,7 +228,7 @@ void analysis::run_full_analysis(processing_context& context)
             }
             return ml;
         }
-        else if(stream_info.type == media::media_type::ANCILLARY_DATA)
+        else if(media::is_full_media_type_video_smpte291(stream_info.full_type))
         {
             const auto& anc_info = std::get<anc_stream_details>(media_info);
             auto new_handler     = std::make_unique<anc_stream_serializer>(first_packet, stream_info, anc_info,
@@ -263,7 +265,7 @@ void analysis::run_full_analysis(processing_context& context)
 
             return ml;
         }
-        else if(stream_info.type == media::media_type::TTML)
+        else if(media::is_full_media_type_ttml_xml(stream_info.full_type))
         {
             const auto& ttml_info = std::get<ttml::stream_details>(media_info);
             auto doc_logger       = context.handler_factory->create_ttml_document_logger(stream_info.id);
@@ -272,6 +274,27 @@ void analysis::run_full_analysis(processing_context& context)
                                                                       ttml_info, ttml_finalizer_callback);
             return new_handler;
         }
+        else if(media::is_full_media_type_video_jxsv(stream_info.full_type))
+        {
+            counter.handle_unknown();
+            auto ml = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
+
+            if(context.extract_frames)
+            {
+                auto new_handler = std::make_unique<jpeg_xs_stream_extractor>(first_packet, context.storage_folder,
+                                                                              main_executor, stream_info.id);
+                ml->add(std::move(new_handler));
+            }
+            else
+            {
+                auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+                auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                ml->add(std::move(analyzer));
+            }
+
+            return ml;
+        }
+
         else
         {
             counter.handle_unknown();
