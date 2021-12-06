@@ -19,10 +19,12 @@ const getInformation = (pcap: SDK.types.IPcapInfo): IInformation[] => {
     const ancStreams = pcap.anc_streams;
     const audioStreams = pcap.audio_streams;
     const videoStreams = pcap.video_streams;
+    const ttmlStreams = pcap.ttml_streams;
     const totalStreams = pcap.total_streams;
-    const unkownStreams = totalStreams - (videoStreams + audioStreams + ancStreams);
+    const unkownStreams = totalStreams - (videoStreams + audioStreams + ancStreams + ttmlStreams);
 
     values.push(['Ancillary', ancStreams]);
+    values.push(['Ttml', ttmlStreams]);
     values.push(['Audio', audioStreams]);
     values.push(['Video', videoStreams]);
     values.push(['Unknown', unkownStreams]);
@@ -36,8 +38,9 @@ const getContent = (pcap: SDK.types.IPcapInfo): { label: string; percentage: num
     const ancStreams = pcap.anc_streams;
     const audioStreams = pcap.audio_streams;
     const videoStreams = pcap.video_streams;
+    const ttmlStreams = pcap.ttml_streams;
     const totalStreams = pcap.total_streams;
-    const unkownStreams = totalStreams - (videoStreams + audioStreams + ancStreams);
+    const unkownStreams = totalStreams - (videoStreams + audioStreams + ancStreams + ttmlStreams);
     let label =
         pcap.summary === undefined ? 'ERROR' : pcap.summary.error_list.length === 0 ? 'Compliant' : 'Not Compliant';
     if (unkownStreams > 0) {
@@ -66,11 +69,7 @@ export const pcapCapturingToTile = (file_name: string, progress: number) => {
     const title = { mainTitle: file_name };
     return (
         <div className="dashboard-page-tile" key="0">
-            <DashboardTile
-                id={'0'}
-                title={title}
-                content={content}
-            />
+            <DashboardTile id={'0'} title={title} content={content} />
         </div>
     );
 };
@@ -80,11 +79,7 @@ export const pcapAnalysingToTile = (pcap: SDK.types.IPcapFileReceived) => {
     const title = { mainTitle: pcap.file_name };
     return (
         <div className="dashboard-page-tile" key={pcap.id}>
-            <DashboardTile
-                id={pcap.id}
-                title={title}
-                content={content}
-            />
+            <DashboardTile id={pcap.id} title={title} content={content} />
         </div>
     );
 };

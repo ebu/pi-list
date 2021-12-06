@@ -32,7 +32,7 @@ function SidebarStreamsList({ streamsList, onItemClicked, activeStreamId, onBack
                         }
                     >
                         <span>{item.key}</span>
-                        <span>{item.type}</span>
+                        <span>{item.fullType}</span>
                     </div>
                     <div
                         className={
@@ -51,6 +51,7 @@ export interface ISidebarItem {
     id: string;
     key: string;
     type: string;
+    fullType: string;
     protocol: string;
 }
 

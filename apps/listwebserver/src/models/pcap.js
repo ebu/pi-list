@@ -5,101 +5,105 @@ const PcapSchema = new mongoose.Schema({
     id: {
         type: String,
         unique: true,
-        required: true
+        required: true,
     },
     owner_id: {
         type: String,
         unique: false,
-        required: true
+        required: true,
     },
     file_name: {
         type: String,
         unique: false,
-        required: true
+        required: true,
     },
     capture_file_name: {
         type: String,
-        required: true
+        required: true,
     },
     pcap_file_name: {
         type: String,
-        required: true
+        required: true,
     },
     capture_date: {
-      type: Number,
-      required: true
+        type: Number,
+        required: true,
     },
     date: {
-      type: Number,
-      required: true
+        type: Number,
+        required: true,
     },
     analyzed: {
         type: Boolean,
-        default: false
+        default: false,
     },
     analyzer_version: {
         type: String,
-        required: true
+        required: true,
     },
     error: {
         type: String,
-        default: ''
+        default: '',
     },
     offset_from_ptp_clock: {
         type: Number,
-        default: 0
+        default: 0,
     },
     anc_streams: {
         type: Number,
-        default: 0
+        default: 0,
     },
     audio_streams: {
         type: Number,
-        default: 0
+        default: 0,
     },
     video_streams: {
         type: Number,
-        default: 0
+        default: 0,
+    },
+    ttml_streams: {
+        type: Number,
+        default: 0,
     },
     total_streams: {
         type: Number,
-        default: 0
+        default: 0,
     },
     narrow_linear_streams: {
         type: Number,
-        default: 0
+        default: 0,
     },
     narrow_streams: {
         type: Number,
-        default: 0
+        default: 0,
     },
     not_compliant_streams: {
         type: Number,
-        default: 0
+        default: 0,
     },
     wide_streams: {
         type: Number,
-        default: 0
+        default: 0,
     },
     generated_from_network: {
         type: Boolean,
-        default: false
+        default: false,
     },
     summary: {
         type: Object,
-        default: {}
+        default: {},
     },
     analysis_profile: {
         type: mongoose.Schema.Types.Mixed,
     },
     truncated: {
         type: Boolean,
-        default: false
-    }
+        default: false,
+    },
 });
 
 PcapSchema.set('toJSON', {
-    versionKey: false
+    versionKey: false,
 });
 
 module.exports = db.model('pcaps', PcapSchema);

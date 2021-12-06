@@ -64,6 +64,7 @@ interface IStreamsList {
     id: string;
     key: string;
     type: string;
+    fullType: string;
     protocol: string;
 }
 
@@ -121,6 +122,7 @@ const getStreamsToSidebarStreamsList = (streams: SDK.types.IStreamInfo[]): IStre
             id: item.id,
             key: getKey(index),
             type: item.media_type === 'ancillary_data' ? 'Ancillary' : item.media_type,
+            fullType: item.full_media_type,
             protocol: 'ST2110',
         });
     });
