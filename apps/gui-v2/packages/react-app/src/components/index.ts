@@ -63,3 +63,4 @@ export { default as MinMaxAvgLineGraphic } from './MultipleLineGraphic/MinMaxAvg
 export type {IGraphicMinMaxAvgData} from './MultipleLineGraphic/MinMaxAvgLineGraphic';
 export {default as MinAvgMaxTooltip} from './Tooltips/MinAvgMaxTooltip';
 export {default as News} from './News/News';
+export {default as SearchBar} from './SearchBar/SearchBar';

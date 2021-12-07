@@ -7,7 +7,6 @@ interface IComponentProps {
 
 function StatusTag({ status, unknown }: { status: IComponentProps; unknown?: number }) {
     const getStatusTag = () => {
-        console.log('teste');
         if (unknown) {
             const isUnkown = unknown > 0 ? true : false;
             return (

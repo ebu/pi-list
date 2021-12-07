@@ -1,7 +1,8 @@
 import React from 'react';
 import DashboardTilesView from './DashboardTilesView';
-import { DetailsTableHOC } from 'components/index';
+import { DetailsTableHOC, SearchBar } from 'components/index';
 import SDK from '@bisect/ebu-list-sdk';
+import _ from 'lodash';
 import '../styles.scss';
 
 interface IDetailsTableData {
@@ -47,21 +48,61 @@ const DashboardHybridView: React.FunctionComponent<IPropTypes> = ({
         return tableData;
     };
 
+    const [filterString, setFilterString] = React.useState<string>('');
+    const [filterTableData, setFilterTableData] = React.useState<any[]>(getTableData(pcaps));
+    const [filterTilesData, setFilterTilesData] = React.useState<any[]>(pcaps.slice(0, 3));
+
+    const findOne = (target: string, tokens: string[]) => {
+        if (_.isNil(target)) return false;
+        return tokens.some((token: string) => {
+            const regSearch = new RegExp(`.*${token}.*`, 'i');
+            return target.match(regSearch);
+        });
+    };
+
+    React.useEffect(() => {
+        if (filterString === '') {
+            setFilterTableData(getTableData(pcaps));
+            setFilterTilesData(pcaps.slice(0, 3));
+        } else {
+            const tokens = filterString.split(/\s+/).filter(v => v !== '');
+
+            const dataFilter = pcaps.filter(value => {
+                const filenameResult = findOne(value.file_name, tokens);
+                const unknownStreams =
+                    value.total_streams - (value.video_streams + value.audio_streams + value.anc_streams);
+                const compliant =
+                    value.summary === undefined ? undefined : value.summary.error_list.length === 0 ? true : false;
+                const compliantResult =
+                    unknownStreams > 0
+                        ? findOne('unknown', tokens)
+                        : compliant === true
+                        ? findOne('compliant', tokens)
+                        : findOne('not', tokens) || findOne('compliant', tokens);
+
+                return filenameResult || compliantResult;
+            });
+            setFilterTableData(getTableData(dataFilter));
+            setFilterTilesData(dataFilter.slice(0, 3));
+        }
+    }, [filterString]);
+
     return (
         <>
+            <SearchBar filterString={filterString} setFilterString={setFilterString} />
             <DashboardTilesView
                 onClick={onClick}
                 onDoubleClick={onDoubleClick}
-                pcaps={pcaps.slice(0, 3)}
+                pcaps={filterTilesData}
                 selectedPcapIds={selectedPcapIds}
             />
             <div className="dashboard-details-table-container">
                 <div className="details-table-container">
-                    {getTableData(pcaps).length === 0 ? null : (
+                    {filterTableData.length === 0 ? null : (
                         <DetailsTableHOC
                             onRowClicked={onRowClicked}
                             onDoubleClick={onDoubleClick}
-                            detailsTableData={getTableData(pcaps)}
+                            detailsTableData={filterTableData}
                             selectedPcapIds={selectedPcapIds}
                         />
                     )}
