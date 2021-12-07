@@ -20,6 +20,7 @@ nlohmann::json pcap_info::to_json(const pcap_info& info)
     j["video_streams"]         = info.video_streams;
     j["audio_streams"]         = info.audio_streams;
     j["anc_streams"]           = info.anc_streams;
+    j["ttml_streams"]          = info.ttml_streams;
     j["total_streams"]         = info.total_streams;
     j["wide_streams"]          = info.wide_streams;
     j["narrow_streams"]        = info.narrow_streams;
@@ -52,6 +53,7 @@ pcap_info pcap_info::from_json(const nlohmann::json& j)
     pcap.offset_from_ptp_clock = std::chrono::nanoseconds{ptp_offset_ns};
     pcap.video_streams         = j.at("video_streams").get<int>();
     pcap.audio_streams         = j.at("audio_streams").get<int>();
+    pcap.ttml_streams          = j.at("ttml_streams").get<int>();
     pcap.total_streams         = j.at("total_streams").get<int>();
     pcap.wide_streams          = j.at("wide_streams").get<int>();
     pcap.narrow_streams        = j.at("narrow_streams").get<int>();

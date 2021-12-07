@@ -1,9 +1,9 @@
-#include "ebu/list/st2110/d22/packet_interval_time_analyzer.h"
+#include "ebu/list/st2110/packet_interval_time_analyzer.h"
 #include "ebu/list/st2110/d21/settings.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110::d21;
-using namespace ebu_list::st2110::d22;
+using namespace ebu_list::st2110;
 using nlohmann::json;
 
 //------------------------------------------------------------------------------

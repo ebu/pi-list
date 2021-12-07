@@ -12,8 +12,8 @@ const getPcapType = (
     pcapID: string,
     pcap: SDK.types.IPcapInfo | undefined
 ) => {
-    switch (currentStream?.media_type) {
-        case 'video':
+    switch (currentStream?.full_media_type) {
+        case 'video/raw':
             return (
                 <div className="pcap-details-page-image-gallery-container ">
                     {pcap?.truncated ? (
@@ -26,7 +26,8 @@ const getPcapType = (
                     )}
                 </div>
             );
-        case 'audio':
+        case 'audio/L16':
+        case 'audio/L24':
             return (
                 <div className="pcap-details-page-audio-player-container ">
                     {pcap?.truncated ? (
@@ -39,7 +40,7 @@ const getPcapType = (
                     )}
                 </div>
             );
-        case 'ancillary_data':
+        case 'video/smpte291':
             return (
                 <div className="pcap-details-page-ancillary-data-container ">
                     {pcap?.truncated ? (
@@ -52,7 +53,7 @@ const getPcapType = (
                     )}
                 </div>
             );
-        case 'ttml':
+        case 'application/ttml+xml':
             return (
                 <div className="pcap-details-page-ttml">
                     {pcap?.truncated ? (
