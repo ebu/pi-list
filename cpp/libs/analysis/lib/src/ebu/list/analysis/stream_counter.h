@@ -9,7 +9,7 @@ namespace ebu_list::analysis
     class stream_counter
     {
       public:
-        void handle_video_completed(const st2110::d21::video_analysis_info& info)
+        void handle_video_raw_completed(const st2110::d21::video_analysis_info& info)
         {
             ++nr_total;
             ++nr_video;
@@ -40,7 +40,13 @@ namespace ebu_list::analysis
         void handle_ttml_completed()
         {
             ++nr_total;
-            ++nr_anc; // TODO: TTML is being treated as ANC
+            ++nr_ttml;
+        }
+
+        void handle_video_jxsv()
+        {
+            ++nr_total;
+            ++nr_video;
         }
 
         void handle_unknown() { ++nr_total; }
@@ -50,6 +56,7 @@ namespace ebu_list::analysis
             pcap.audio_streams         = nr_audio.load();
             pcap.video_streams         = nr_video.load();
             pcap.anc_streams           = nr_anc.load();
+            pcap.ttml_streams          = nr_ttml.load();
             pcap.total_streams         = nr_total.load();
             pcap.wide_streams          = nr_wide.load();
             pcap.narrow_streams        = nr_narrow.load();
@@ -61,6 +68,7 @@ namespace ebu_list::analysis
         std::atomic_int nr_audio = 0;
         std::atomic_int nr_video = 0;
         std::atomic_int nr_anc   = 0;
+        std::atomic_int nr_ttml  = 0;
         std::atomic_int nr_total = 0;
 
         std::atomic_int nr_wide          = 0;

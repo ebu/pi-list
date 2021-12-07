@@ -22,6 +22,7 @@ namespace ebu_list::analysis
         int total_streams = 0;
         int audio_streams = 0;
         int video_streams = 0;
+        int ttml_streams  = 0;
         int anc_streams   = 0;
 
         int wide_streams          = 0;

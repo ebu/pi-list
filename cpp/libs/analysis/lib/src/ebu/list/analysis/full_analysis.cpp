@@ -19,7 +19,6 @@ using namespace ebu_list::analysis;
 using namespace ebu_list::st2110;
 using namespace ebu_list::st2110::d20;
 using namespace ebu_list::st2110::d21;
-using namespace ebu_list::st2110::d22;
 using namespace ebu_list::analysis;
 using nlohmann::json;
 
@@ -108,7 +107,7 @@ void analysis::run_full_analysis(processing_context& context)
     auto main_executor = std::make_shared<executor>();
 
     auto video_finalizer_callback = [&](const video_stream_serializer& handler) {
-        counter.handle_video_completed(handler.get_video_analysis_info());
+        counter.handle_video_raw_completed(handler.get_video_analysis_info());
         video_finalizer(context, handler);
     };
     auto audio_finalizer_callback = [&context, &counter](const audio_stream_handler& ash) {
@@ -284,7 +283,7 @@ void analysis::run_full_analysis(processing_context& context)
         }
         else if(media::is_full_media_type_video_jxsv(stream_info.full_type))
         {
-            counter.handle_unknown();
+            counter.handle_video_jxsv();
             auto ml = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
 
             if(context.extract_frames)

@@ -41,7 +41,7 @@ pit_writer::pit_writer::pit_writer(path info_path, std::string_view filename)
 }
 
 void pit_writer::pit_writer::on_data(
-    const st2110::d22::packet_interval_time_analyzer::packet_interval_time_info& pit_info)
+    const st2110::packet_interval_time_analyzer::packet_interval_time_info& pit_info)
 {
     nlohmann::json j;
     j["avg"]           = pit_info.avg;

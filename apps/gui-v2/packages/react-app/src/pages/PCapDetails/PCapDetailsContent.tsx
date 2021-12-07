@@ -19,16 +19,17 @@ function PCapDetailsContent({
 }) {
     const [currentHeaderType, setcurrentHeaderType] = React.useState<number>(0);
 
-    const isTTML = currentStream?.media_type === 'ttml' ? true : false;
-    const isUnknown = currentStream?.media_type === 'unknown' ? true : false;
+    const isTTML = currentStream?.full_media_type === 'application/ttml+xml' ? true : false;
+    const isUnknown = currentStream?.full_media_type === 'unknown' ? true : false;
+    const isJxsv = currentStream?.full_media_type === 'video/jxsv' ? true : false;
 
     //If we support more media types that don't need graphs or analysis, this needs to be changed
-    const hasAnalysis = !isTTML;
-    const hasStreamExplorer = !isUnknown;
+    const hasAnalysis = !isTTML && !isJxsv;
+    const hasStreamExplorer = !isUnknown && !isJxsv;
 
     React.useEffect(() => {
         if (!hasAnalysis) {
-            setcurrentHeaderType(1);
+            !hasStreamExplorer ? setcurrentHeaderType(2) : setcurrentHeaderType(1);
         }
     }, [hasAnalysis]);
 

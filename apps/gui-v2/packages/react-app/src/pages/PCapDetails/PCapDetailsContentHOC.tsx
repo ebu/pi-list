@@ -64,6 +64,7 @@ interface IStreamsList {
     id: string;
     key: string;
     type: string;
+    fullType: string;
     protocol: string;
 }
 
@@ -79,7 +80,7 @@ const getDataToInformationSidebar = (
         content: (
             <div style={{ height: '100vh', overflow: 'auto' }}>
                 <CustomScrollbar>
-                    {currentStream.media_type !== 'unknown' ? (
+                    {currentStream.full_media_type !== 'unknown' ? (
                         <div className="sb-information-sidebar-content">
                             <div>
                                 <ButtonWithIconSidebarContainer
@@ -92,9 +93,11 @@ const getDataToInformationSidebar = (
                             <div>
                                 <ComplianceTagPanel stream={currentStream} />
                             </div>
-                            <div>
-                                <MediaInformationPanel stream={currentStream} />
-                            </div>
+                            {currentStream.full_media_type !== 'video/jxsv' ? (
+                                <div>
+                                    <MediaInformationPanel stream={currentStream} />
+                                </div>
+                            ) : null}
                             <div>
                                 <NetworkInformationPanel stream={currentStream} />
                             </div>
@@ -115,12 +118,16 @@ const getDataToInformationSidebar = (
 
 const getStreamsToSidebarStreamsList = (streams: SDK.types.IStreamInfo[]): IStreamsList[] => {
     const streamsList: IStreamsList[] = [];
-
+    let fullMediaType: string;
     streams.map((item, index) => {
+        item.full_media_type === 'application/ttml+xml'
+            ? (fullMediaType = 'application/ ttml+xml')
+            : (fullMediaType = item.full_media_type);
         streamsList.push({
             id: item.id,
             key: getKey(index),
             type: item.media_type === 'ancillary_data' ? 'Ancillary' : item.media_type,
+            fullType: fullMediaType,
             protocol: 'ST2110',
         });
     });

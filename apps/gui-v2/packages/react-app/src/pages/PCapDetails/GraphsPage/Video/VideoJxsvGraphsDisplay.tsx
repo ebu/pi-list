@@ -7,7 +7,7 @@ import RtpAnalysis from './RtpAnalysis';
 import PacketIntervalTimeGraph from '../Common/PacketIntervalTimeGraph';
 
 import '../../styles.scss';
-function VideoGraphsDisplay({
+function VideoJxsvGraphsDisplay({
     currentStream,
     pcapID,
 }: {
@@ -16,16 +16,9 @@ function VideoGraphsDisplay({
 }) {
     return (
         <>
-            <CbufferAnalysis currentStream={currentStream} pcapID={pcapID} />
-            <VrxAnalysis currentStream={currentStream} pcapID={pcapID} />
-            <div className="pcap-details-page-line-graphic-container ">
-                <FtpAnalysis currentStream={currentStream} pcapID={pcapID} />
-            </div>
-
-            <RtpAnalysis currentStream={currentStream} pcapID={pcapID} />
             <PacketIntervalTimeGraph currentStream={currentStream} pcapID={pcapID} />
         </>
     );
 }
 
-export default VideoGraphsDisplay;
+export default VideoJxsvGraphsDisplay;

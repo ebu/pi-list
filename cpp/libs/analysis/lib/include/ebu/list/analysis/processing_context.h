@@ -13,7 +13,7 @@
 #include "ebu/list/st2110/d20/rtp_ts_analyzer.h"
 #include "ebu/list/st2110/d21/c_analyzer.h"
 #include "ebu/list/st2110/d21/vrx_analyzer.h"
-#include "ebu/list/st2110/d22/packet_interval_time_analyzer.h"
+#include "ebu/list/st2110/packet_interval_time_analyzer.h"
 #include "nlohmann/json.hpp"
 
 namespace ebu_list::analysis
@@ -26,7 +26,7 @@ namespace ebu_list::analysis
         virtual st2110::d21::c_analyzer::listener_uptr
         create_c_inst_data_logger(const std::string& pcap_id, const std::string& stream_id) const          = 0;
         virtual histogram_listener_uptr create_c_inst_histogram_logger(const std::string& stream_id) const = 0;
-        virtual st2110::d22::packet_interval_time_analyzer::listener_uptr
+        virtual st2110::packet_interval_time_analyzer::listener_uptr
         create_pit_logger(const std::string& stream_id) const = 0;
         virtual st2110::d20::rtp_ts_analyzer::listener_uptr
         create_rtp_ts_logger(const std::string& pcap_id, const std::string& stream_id) const                        = 0;

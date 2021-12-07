@@ -14,6 +14,7 @@ interface IDetailsTableData {
     compliant: boolean | undefined;
     video: number;
     audio: number;
+    ttml: number;
     ancillary: number;
     unknown: number;
 }
@@ -42,9 +43,12 @@ const DashboardTableView: React.FunctionComponent<IPropTypes> = ({
                 index: index,
                 compliant: item.summary === undefined ? undefined : item.summary.error_list.length === 0 ? true : false,
                 video: item.video_streams,
+                ttml: item.ttml_streams,
                 audio: item.audio_streams,
                 ancillary: item.anc_streams,
-                unknown: item.total_streams - (item.video_streams + item.audio_streams + item.anc_streams),
+                unknown:
+                    item.total_streams -
+                    (item.video_streams + item.audio_streams + item.anc_streams + item.ttml_streams),
             };
             tableData.push(data);
         });
