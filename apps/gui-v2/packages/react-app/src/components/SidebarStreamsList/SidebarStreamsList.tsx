@@ -31,8 +31,7 @@ function SidebarStreamsList({ streamsList, onItemClicked, activeStreamId, onBack
                                 : 'sidebar-helper-index-type'
                         }
                     >
-                        <span>{item.key}</span>
-                        <span>{item.fullType}</span>
+                        <span>{item.key + ' ' + item.fullType}</span>
                     </div>
                     <div
                         className={
