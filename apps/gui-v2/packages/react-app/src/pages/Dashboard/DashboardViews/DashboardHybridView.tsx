@@ -67,7 +67,8 @@ const DashboardHybridView: React.FunctionComponent<IPropTypes> = ({
             const dataFilter = pcaps.filter(value => {
                 const filenameResult = findOne(value.file_name, tokens);
                 const unknownStreams =
-                    value.total_streams - (value.video_streams + value.audio_streams + value.anc_streams);
+                    value.total_streams -
+                    (value.video_streams + value.audio_streams + value.anc_streams + value.ttml_streams);
                 const compliant =
                     value.summary === undefined ? undefined : value.summary.error_list.length === 0 ? true : false;
                 const compliantResult =
