@@ -13,7 +13,7 @@ namespace ebu_list::st2110_extractor
         st2110::d21::c_analyzer::listener_uptr create_c_inst_data_logger(const std::string& pcap_id,
                                                                          const std::string& stream_id) const override;
         histogram_listener_uptr create_c_inst_histogram_logger(const std::string& stream_id) const override;
-        st2110::d22::packet_interval_time_analyzer::listener_uptr
+        st2110::packet_interval_time_analyzer::listener_uptr
         create_pit_logger(const std::string& stream_id) const override;
         st2110::d20::rtp_ts_analyzer::listener_uptr create_rtp_ts_logger(const std::string& pcap_id,
                                                                          const std::string& stream_id) const override;

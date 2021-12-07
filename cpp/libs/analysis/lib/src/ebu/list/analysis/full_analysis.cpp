@@ -19,7 +19,6 @@ using namespace ebu_list::analysis;
 using namespace ebu_list::st2110;
 using namespace ebu_list::st2110::d20;
 using namespace ebu_list::st2110::d21;
-using namespace ebu_list::st2110::d22;
 using namespace ebu_list::analysis;
 using nlohmann::json;
 

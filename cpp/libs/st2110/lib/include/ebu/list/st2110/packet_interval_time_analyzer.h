@@ -10,7 +10,7 @@
 
 using namespace ebu_list::analysis;
 
-namespace ebu_list::st2110::d22
+namespace ebu_list::st2110
 {
     class packet_interval_time_analyzer : public rtp::listener
     {

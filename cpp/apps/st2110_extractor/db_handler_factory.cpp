@@ -36,7 +36,7 @@ histogram_listener_uptr db_handler_factory::create_c_inst_histogram_logger(const
     return std::make_unique<histogram_writer>(info_path, cinst_file_name);
 }
 
-st2110::d22::packet_interval_time_analyzer::listener_uptr
+st2110::packet_interval_time_analyzer::listener_uptr
 db_handler_factory::create_pit_logger(const std::string& stream_id) const
 {
     const auto info_path = config_.storage_folder / stream_id;
