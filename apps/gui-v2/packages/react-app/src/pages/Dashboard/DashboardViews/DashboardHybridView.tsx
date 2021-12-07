@@ -1,6 +1,7 @@
 import React from 'react';
 import DashboardTilesView from './DashboardTilesView';
 import { DetailsTableHOC, SearchBar } from 'components/index';
+import { findOne } from '../../../utils/searchBar';
 import SDK from '@bisect/ebu-list-sdk';
 import _ from 'lodash';
 import '../styles.scss';
@@ -51,14 +52,6 @@ const DashboardHybridView: React.FunctionComponent<IPropTypes> = ({
     const [filterString, setFilterString] = React.useState<string>('');
     const [filterTableData, setFilterTableData] = React.useState<any[]>(getTableData(pcaps));
     const [filterTilesData, setFilterTilesData] = React.useState<any[]>(pcaps.slice(0, 3));
-
-    const findOne = (target: string, tokens: string[]) => {
-        if (_.isNil(target)) return false;
-        return tokens.some((token: string) => {
-            const regSearch = new RegExp(`.*${token}.*`, 'i');
-            return target.match(regSearch);
-        });
-    };
 
     React.useEffect(() => {
         if (filterString === '') {

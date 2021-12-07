@@ -5,7 +5,7 @@ import '../styles.scss';
 import UploadPcap from '../UploadPcap/UploadPcap';
 import { useRecoilValue } from 'recoil';
 import { pcapsAnalysingAtom } from '../../../store/gui/pcaps/pcapsAnalysing';
-import _ from 'lodash';
+import { findOne } from '../../../utils/searchBar';
 
 interface IDetailsTableData {
     id: string;
@@ -54,14 +54,6 @@ const DashboardTableView: React.FunctionComponent<IPropTypes> = ({
 
     const [filterString, setFilterString] = React.useState<string>('');
     const [filterTableData, setFilterTableData] = React.useState<any[]>(getTableData(pcaps));
-
-    const findOne = (target: string, tokens: string[]) => {
-        if (_.isNil(target)) return false;
-        return tokens.some((token: string) => {
-            const regSearch = new RegExp(`.*${token}.*`, 'i');
-            return target.match(regSearch);
-        });
-    };
 
     React.useEffect(() => {
         if (filterString === '') {
