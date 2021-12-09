@@ -84,7 +84,9 @@ const DashboardTableView: React.FunctionComponent<IPropTypes> = ({
         <>
             <div className="dashboard-details-table-container">
                 <div className="details-table-container">
-                    <SearchBar filterString={filterString} setFilterString={setFilterString} />
+                    <div className="details-table-search-bar-container">
+                        <SearchBar filterString={filterString} setFilterString={setFilterString} />
+                    </div>
                     <UploadPcap isButton={true} />
                     <DetailsTableHOC
                         onRowClicked={onRowClicked}

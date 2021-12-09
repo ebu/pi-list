@@ -116,3 +116,9 @@ export const MinusIcon = icon(minusSrc);
 
 const editSrc = require('./pencil.svg');
 export const EditIcon = icon(editSrc);
+
+const searchSrc = require('./search.svg');
+export const SearchIcon = icon(searchSrc);
+
+const cancelSrc = require('./cancel.svg');
+export const CancelIcon = icon(cancelSrc);

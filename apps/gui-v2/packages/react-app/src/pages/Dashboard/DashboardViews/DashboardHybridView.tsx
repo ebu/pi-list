@@ -87,7 +87,9 @@ const DashboardHybridView: React.FunctionComponent<IPropTypes> = ({
 
     return (
         <>
-            <SearchBar filterString={filterString} setFilterString={setFilterString} />
+            <div className="dashboard-search-bar-container">
+                <SearchBar filterString={filterString} setFilterString={setFilterString} />
+            </div>
             <DashboardTilesView
                 onClick={onClick}
                 onDoubleClick={onDoubleClick}

@@ -1,7 +1,40 @@
+@import '../../../../style/variables/colors.scss';
+
 .search-bar-container {
-    //TODO
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 270px;
 }
 
 .search-bar-input {
-    //TODO
+    border-radius: 8px;
+    width: 100%;
+    padding: 10px 40px 10px 40px !important;
+    outline: 0;
+    border: 2px solid transparent !important;
+    background-color: $font-light-grey !important;
+    &:focus {
+        border: 2px solid $darker-vibrant-blue !important;
+    }
+}
+
+.search-icon {
+    position: absolute;
+    margin-top: 15px;
+    margin-left: 4px;
+    text-align: left;
+    width: 14%;
+    border: none;
+    background: none;
+}
+
+.cancel-icon {
+    position: absolute;
+    margin-top: 21px;
+    right: 4px;
+    cursor: pointer;
+    width: 10%;
+    border: none;
+    background: none;
 }

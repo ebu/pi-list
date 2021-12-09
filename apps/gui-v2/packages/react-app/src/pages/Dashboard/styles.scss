@@ -24,7 +24,7 @@
 }
 .details-table-container {
     width: 100%;
-    padding: 50px;
+    padding: 0px 30px 50px 30px;
 }
 
 .dashboard-page-container-drag-and-drop-tile {
@@ -67,4 +67,12 @@ button.dashboard-view {
     font-size: 18px;
     line-height: 27px;
     color: #ffffff;
+}
+
+.dashboard-search-bar-container {
+    padding-left: 3em;
+}
+
+.details-table-search-bar-container {
+    padding-left: 1.1em;
 }

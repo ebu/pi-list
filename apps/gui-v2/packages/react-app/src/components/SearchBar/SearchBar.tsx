@@ -1,7 +1,5 @@
-import React from 'react';
 import './styles.scss';
-import { ButtonWithIcon } from 'components/index';
-import { BinIcon } from 'components/icons';
+import { SearchIcon, CancelIcon } from 'components/icons/index';
 
 export interface IComponentProps {
     filterString: string;
@@ -11,23 +9,23 @@ export interface IComponentProps {
 function SearchBar({ filterString, setFilterString }: IComponentProps) {
     return (
         <div className="search-bar-container">
-            <div>
-                <input
-                    className="search-bar-input"
-                    type="text"
-                    value={filterString}
-                    onChange={evt => {
-                        setFilterString(evt.currentTarget.value);
-                    }}
-                />
-            </div>
-            <ButtonWithIcon
-                icon={BinIcon}
-                text="Cancel"
-                onClick={() => {
-                    setFilterString('');
+            <button className="search-icon">
+                <SearchIcon />
+            </button>
+            <input
+                className="search-bar-input"
+                type="text"
+                placeholder="Search"
+                value={filterString}
+                onChange={evt => {
+                    setFilterString(evt.currentTarget.value);
                 }}
             />
+            {filterString !== '' ? (
+                <button className="cancel-icon" onClick={() => setFilterString('')}>
+                    <CancelIcon />
+                </button>
+            ) : null}
         </div>
     );
 }
