@@ -1,6 +1,9 @@
 import React from 'react';
-import DashboardTilesView from './DashboardTilesView';
+import { pcapsAnalysingAtom } from '../../../store/gui/pcaps/pcapsAnalysing';
+import UploadPcap from '../UploadPcap/UploadPcap';
 import { DetailsTableHOC, SearchBar } from 'components/index';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { pcapAnalysingToTile, pcapToTile } from 'pages/Common/DashboardTileHOC';
 import { findOne } from '../../../utils/searchBar';
 import SDK from '@bisect/ebu-list-sdk';
 import _ from 'lodash';
@@ -32,6 +35,7 @@ const DashboardHybridView: React.FunctionComponent<IPropTypes> = ({
     onDoubleClick,
     selectedPcapIds,
 }: IPropTypes) => {
+    const pcapsAnalysing = useRecoilValue(pcapsAnalysingAtom);
     const getTableData = (pcaps: SDK.types.IPcapInfo[]): IDetailsTableData[] => {
         const tableData: IDetailsTableData[] = [];
         pcaps.slice(3).forEach((item, index) => {
@@ -83,19 +87,27 @@ const DashboardHybridView: React.FunctionComponent<IPropTypes> = ({
             setFilterTableData(getTableData(dataFilter));
             setFilterTilesData(dataFilter.slice(0, 3));
         }
-    }, [filterString]);
+
+        if (pcapsAnalysing.length > 0) {
+            const numberPcapsToShow = 3 - pcapsAnalysing.length;
+            numberPcapsToShow > 0 ? setFilterTilesData(pcaps.slice(0, numberPcapsToShow)) : setFilterTilesData([]);
+        }
+    }, [filterString, pcapsAnalysing, pcaps]);
 
     return (
         <>
             <div className="dashboard-search-bar-container">
                 <SearchBar filterString={filterString} setFilterString={setFilterString} />
             </div>
-            <DashboardTilesView
-                onClick={onClick}
-                onDoubleClick={onDoubleClick}
-                pcaps={filterTilesData}
-                selectedPcapIds={selectedPcapIds}
-            />
+            <div className="dashboard-page-container">
+                <div className="dashboard-page-container-drag-and-drop-tile">
+                    <UploadPcap isButton={false} />
+                </div>
+                {pcapsAnalysing.map((pcap: SDK.types.IPcapFileReceived, index: number) => pcapAnalysingToTile(pcap))}
+                {filterTilesData.map((pcap: SDK.types.IPcapInfo, index: number) =>
+                    pcapToTile(onDoubleClick, onClick, pcap, index, selectedPcapIds)
+                )}
+            </div>
             <div className="dashboard-details-table-container">
                 <div className="details-table-container">
                     {filterTableData.length === 0 ? null : (

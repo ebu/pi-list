@@ -78,7 +78,7 @@ const DashboardTableView: React.FunctionComponent<IPropTypes> = ({
             });
             setFilterTableData(dataFilter);
         }
-    }, [filterString]);
+    }, [filterString, pcapsAnalysing, pcaps]);
 
     return (
         <>

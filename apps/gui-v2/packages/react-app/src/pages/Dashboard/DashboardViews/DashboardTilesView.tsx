@@ -55,7 +55,7 @@ const DashboardTilesView: React.FunctionComponent<IPropTypes> = ({
             });
             setFilterTilesData(dataFilter);
         }
-    }, [filterString]);
+    }, [filterString, pcapsAnalysing, pcaps]);
     return (
         <>
             <div className="dashboard-search-bar-container">
