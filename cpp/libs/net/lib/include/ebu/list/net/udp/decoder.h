@@ -26,6 +26,8 @@ namespace ebu_list::udp
         oview sdu;
     };
 
+    using maybe_datagram = std::optional<datagram>;
+
     std::tuple<header, oview> decode(oview&& pdu);
 
     udp::datagram make_datagram(ethernet::mac_address source_mac_address, ethernet::mac_address destination_mac_address,
