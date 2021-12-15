@@ -11,6 +11,7 @@ string media::to_string(media_type media_type)
     case media_type::AUDIO: return "audio";
     case media_type::ANCILLARY_DATA: return "ancillary_data";
     case media_type::TTML: return "ttml";
+    case media_type::SRT: return "srt";
     default: assert(media_type == media_type::UNKNOWN); return "unknown";
     }
 }
@@ -25,6 +26,8 @@ media::media_type media::from_string(std::string_view media)
         return media_type::ANCILLARY_DATA;
     else if(media == "ttml")
         return media_type::TTML;
+    else if(media == "srt")
+        return media_type::SRT;
     else
         return media_type::UNKNOWN;
 }
@@ -39,6 +42,7 @@ string media::full_media_to_string(full_media_type full_media_type)
     case full_media_type::L24: return "audio/L24";
     case full_media_type::SMPTE291: return "video/smpte291";
     case full_media_type::TTMLXML: return "application/ttml+xml";
+    case full_media_type::SRT: return "srt";
     default: assert(full_media_type == full_media_type::UNKNOWN); return "unknown";
     }
 }
@@ -57,6 +61,8 @@ media::full_media_type media::full_media_from_string(std::string_view media)
         return full_media_type::SMPTE291;
     else if(media == "application/ttml+xml")
         return full_media_type::TTMLXML;
+    else if(media == "srt")
+        return full_media_type::SRT;
     else
         return full_media_type::UNKNOWN;
 }
@@ -118,6 +124,15 @@ bool media::is_full_media_type_ttml_xml(media::full_media_type full_media_type)
 bool media::is_full_media_type_unknown(media::full_media_type full_media_type)
 {
     if(full_media_type == full_media_type::UNKNOWN)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool media::is_full_media_type_srt(media::full_media_type full_media_type)
+{
+    if(full_media_type == full_media_type::SRT)
     {
         return true;
     }

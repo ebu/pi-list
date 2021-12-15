@@ -13,6 +13,7 @@ namespace ebu_list::media
         AUDIO,
         ANCILLARY_DATA,
         TTML,
+        SRT,
         UNKNOWN
     };
 
@@ -27,6 +28,7 @@ namespace ebu_list::media
         L24,
         SMPTE291,
         TTMLXML,
+        SRT,
         UNKNOWN
     };
 
@@ -38,6 +40,7 @@ namespace ebu_list::media
     bool is_full_media_type_audio_l16(media::full_media_type full_media_type);
     bool is_full_media_type_audio_l24(media::full_media_type full_media_type);
     bool is_full_media_type_ttml_xml(media::full_media_type full_media_type);
+    bool is_full_media_type_srt(media::full_media_type full_media_type);
     bool is_full_media_type_unknown(media::full_media_type full_media_type);
 
     struct dscp_info

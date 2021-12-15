@@ -1,38 +1,14 @@
 #include "ebu/list/srt/srt_format_detector.h"
 #include "ebu/list/srt/header.h"
 
-using namespace ebu_list::st2110;
 using namespace ebu_list::srt;
-using namespace ebu_list;
+using namespace ebu_list::st2110;
 
-srt_format_detector::srt_format_detector() /*: detector_({maximum_packets_per_frame, minimum_packets_per_frame})*/
-{
-}
-void srt_format_detector::on_data(udp::datagram&& datagram)
-{
-    if(status_description_.state != detector::state::detecting) return;
-
-    const auto result = handle_data(datagram);
-    if(result.state == detector::state::invalid)
-    {
-        error_code_ = result.error_code;
-        logger()->debug("This stream has not valid format ({})", result.error_code);
-    }
-    else if(result.state == detector::state::valid)
-    {
-        status_description_ = result;
-    }
-}
-
-void srt_format_detector::on_complete()
+srt_format_detector::srt_format_detector() : num_retransmitted_packets_(0)
 {
 }
 
-void srt_format_detector::on_error(std::exception_ptr)
-{
-}
-
-detector::status_description srt_format_detector::handle_data(udp::datagram& datagram)
+detector::status_description srt_format_detector::handle_data(udp::datagram&& datagram)
 {
     auto& sdu = datagram.sdu;
     // Verify packet payload header to see if matches payload header of srt packet
@@ -82,19 +58,13 @@ detector::status_description srt_format_detector::handle_data(udp::datagram& dat
     auto retransmission_flag = payload_header.get_retransmission_flag();
     if(retransmission_flag == 1)
     {
-        ++count_retransmitted_packets;
+        ++num_retransmitted_packets_;
     }
 
     return detector::status_description{/*.state*/ detector::state::valid,
                                         /*.error_code*/ "STATUS_CODE_SRT_VALID"};
 }
 
-detector::status_description srt_format_detector::status() const noexcept
-{
-    return status_description_;
-}
-
-const std::string& srt_format_detector::get_error_code() const
-{
-    return error_code_;
+int64_t srt_format_detector::get_num_retransmitted_packets() const {
+    return num_retransmitted_packets_;
 }
