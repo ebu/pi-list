@@ -3,6 +3,7 @@ import { testUtils } from '@bisect/bisect-core-ts-be';
 import { requirements, run as runRepo } from './repo';
 import './basic';
 import './advanced';
+import './time';
 
 const parser = yargs(process.argv.slice(2))
     .usage('Usage: $0 <command> [options]')
@@ -80,9 +81,10 @@ async function run(): Promise<boolean> {
     for (const arg of argv._) {
         if (arg === 'test-basic') {
             return await runTests(requirements.Basic);
-        }
-        else if (arg === 'test-advanced') {
+        } else if (arg === 'test-advanced') {
             return await runTests(requirements.Advanced);
+        } else if (arg === 'test-time') {
+            return await runTests(requirements.Time);
         }
     }
 
