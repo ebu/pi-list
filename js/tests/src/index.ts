@@ -11,6 +11,11 @@ const parser = yargs(process.argv.slice(2))
     .example('$0 test-basic -b https://list.ebu.io', 'Run the basic tests in https://list.ebu.io.')
     .command('test-advanced', 'Run the advanced tests (analysis profile, comparison soon).')
     .example('$0 test-advanced -b https://list.ebu.io', 'Run the advanced tests in https://list.ebu.io.')
+    .command('test-time', 'Run the time tests (Upload pcaps duration).')
+    .example(
+        'EBU_LIST_PCAPS=~/.list/performance_tests $0 time-tests -b https://list.ebu.io',
+        'Run the time tests in https://list.ebu.io.'
+    )
     .demandCommand(1, 1)
     .alias('p', 'password')
     .nargs('p', 1)

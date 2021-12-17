@@ -57,7 +57,8 @@ const doUploadTimeTests = async (
 export const runUploadTimeTest = async (name: string, c: testUtils.ITestContext) => {
     const list = new LIST(c.settings.address);
 
-    const pcapDir = path.join('/home', 'nelsonsilva', '.list', 'performance_tests');
+    // const pcapDir = path.join('/home', 'nelsonsilva', '.list', 'performance_tests');
+    const pcapDir = path.join(process.env.EBU_LIST_PCAPS as string);
     const pcapFile = path.join(pcapDir, name);
     const logFile = path.join(pcapDir, 'duration_time_tests.txt');
 
