@@ -139,9 +139,22 @@ int main(int argc, char* argv[])
                 console->info("Processing {}.", pcap_id->get<std::string>());
                 try
                 {
-                    const json analysis_result =
-                        analyze_stream(pcap_path->get<std::string>(), pcap_id->get<std::string>(), true);
-                    response = compose_response(workflow_id->get<std::string>(), "completed", 100, "", analysis_result);
+                    const auto is_srt = true;
+                    if(!is_srt)
+                    {
+                        const json analysis_result =
+                            analyze_stream(pcap_path->get<std::string>(), pcap_id->get<std::string>());
+                        response =
+                            compose_response(workflow_id->get<std::string>(), "completed", 100, "", analysis_result);
+                    }
+                    else
+                    {
+                        const json analysis_result =
+                            analyze_srt_stream(pcap_path->get<std::string>(), pcap_id->get<std::string>());
+                        response =
+                            compose_response(workflow_id->get<std::string>(), "completed", 100, "", analysis_result);
+                    }
+
                     console->info("Processing {} succeeded.", pcap_id->get<std::string>());
                 }
                 catch(std::exception& ex)

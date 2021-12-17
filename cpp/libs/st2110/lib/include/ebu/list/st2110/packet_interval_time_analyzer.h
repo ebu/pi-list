@@ -2,7 +2,7 @@
 
 #include "ebu/list/analysis/utils/histogram_listener.h"
 #include "ebu/list/core/math/histogram_bucket.h"
-#include "ebu/list/rtp/listener.h"
+#include "ebu/list/net/udp/listener.h"
 #include "ebu/list/rtp/types.h"
 #include "nlohmann/json.hpp"
 #include <ebu/list/core/media/video_description.h>
@@ -12,7 +12,7 @@ using namespace ebu_list::analysis;
 
 namespace ebu_list::st2110
 {
-    class packet_interval_time_analyzer : public rtp::listener
+    class packet_interval_time_analyzer : public udp::listener
     {
       public:
         struct packet_interval_time_info
@@ -40,7 +40,7 @@ namespace ebu_list::st2110
         packet_interval_time_analyzer(listener_uptr listener);
         ~packet_interval_time_analyzer();
 
-        void on_data(const rtp::packet&) override;
+        void on_data(const udp::datagram& datagram) override;
         void on_complete() override;
         void on_error(std::exception_ptr ptr) override;
 

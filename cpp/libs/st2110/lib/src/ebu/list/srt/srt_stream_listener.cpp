@@ -29,22 +29,22 @@ namespace
 
 ///////////////////////////////////////////////////////////////////////////////
 
-srt_stream_listener::srt_stream_listener(udp::datagram& datagram, std::string_view pcap_id) : num_packets_(0)
+srt_stream_listener::srt_stream_listener(const udp::datagram& first_datagram, std::string_view pcap_id) : num_packets_(0)
 {
     stream_id_.pcap = pcap_id;
-    stream_id_.network.source_mac      = datagram.ethernet_info.source_address;
-    stream_id_.network.source          = source(datagram.info);
-    stream_id_.network.destination_mac = datagram.ethernet_info.destination_address;
-    stream_id_.network.destination     = destination(datagram.info);
+    stream_id_.network.source_mac      = first_datagram.ethernet_info.source_address;
+    stream_id_.network.source          = source(first_datagram.info);
+    stream_id_.network.destination_mac = first_datagram.ethernet_info.destination_address;
+    stream_id_.network.destination     = destination(first_datagram.info);
 }
 
-void srt_stream_listener::on_data(udp::datagram&& datagram)
+void srt_stream_listener::on_data(const udp::datagram& datagram)
 {
     ++num_packets_;
 
     if(status_description_.state != st2110::detector::state::detecting) return;
 
-    const auto result = detector_.handle_data(std::move(datagram));
+    const auto result = detector_.handle_data(datagram);
     if(result.state == st2110::detector::state::invalid)
     {
         status_description_ = result;

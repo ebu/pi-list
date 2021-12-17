@@ -51,6 +51,8 @@ namespace ebu_list::analysis
 
         void handle_unknown() { ++nr_total; }
 
+        void handle_srt() { ++nr_srt; }
+
         void fill_streams_summary(pcap_info& pcap)
         {
             pcap.audio_streams         = nr_audio.load();
@@ -69,6 +71,7 @@ namespace ebu_list::analysis
         std::atomic_int nr_video = 0;
         std::atomic_int nr_anc   = 0;
         std::atomic_int nr_ttml  = 0;
+        std::atomic_int nr_srt   = 0;
         std::atomic_int nr_total = 0;
 
         std::atomic_int nr_wide          = 0;

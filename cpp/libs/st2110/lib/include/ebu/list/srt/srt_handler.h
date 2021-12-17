@@ -9,21 +9,20 @@ namespace ebu_list::srt
     class srt_handler : public udp::listener
     {
       public:
-        using handler_creator = std::function<udp::listener_uptr(udp::datagram& datagram)>;
+        using handler_creator = std::function<udp::listener_uptr(const udp::datagram& datagram)>;
 
         explicit srt_handler(handler_creator creator);
 
 #pragma region udp::listener events
-        void on_data(udp::datagram&& datagram) override;
+        void on_data(const udp::datagram& datagram) override;
         void on_complete() override;
         void on_error(std::exception_ptr e) override;
 #pragma endregion udp::listener events
 
       private:
+        udp::listener* find_or_create(const udp::datagram& datagram);
 
         handler_creator creator_;
-
-        udp::listener* find_or_create(udp::datagram& datagram);
 
         // first: source;
         // second: destination;
@@ -31,4 +30,4 @@ namespace ebu_list::srt
         using handler_map = std::map<stream_key, udp::listener_uptr>;
         handler_map handlers_;
     };
-} // namespace ebu_list::rtp
+} // namespace ebu_list::srt

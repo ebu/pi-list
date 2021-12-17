@@ -43,9 +43,19 @@ namespace
     }
 } // namespace
 
-stream_listener::stream_listener(rtp::packet first_packet, std::string_view pcap_id)
-    : detector_(first_packet), num_packets_(0)
+stream_listener::stream_listener(const udp::datagram& first_datagram, std::string_view pcap_id)
+    : num_packets_(0)
 {
+    auto maybe_rtp_packet = rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
+    if(!maybe_rtp_packet)
+    {
+        // logger()->trace("Non-RTP datagram from {} to {}", to_string(source(datagram.info)),
+        // to_string(destination(datagram.info)));
+        return;
+    }
+
+    auto first_packet = std::move(maybe_rtp_packet.value());
+
     stream_id_.network.source_mac      = first_packet.info.ethernet_info.source_address;
     stream_id_.network.source          = source(first_packet.info.udp);
     stream_id_.network.destination_mac = first_packet.info.ethernet_info.destination_address;
@@ -55,8 +65,18 @@ stream_listener::stream_listener(rtp::packet first_packet, std::string_view pcap
     stream_id_.pcap                    = pcap_id;
 }
 
-void stream_listener::on_data(const rtp::packet& packet)
+void stream_listener::on_data(const udp::datagram& datagram)
 {
+    auto maybe_rtp_packet = rtp::decode(datagram.ethernet_info, datagram.info, datagram.sdu);
+    if(!maybe_rtp_packet)
+    {
+        // logger()->trace("Non-RTP datagram from {} to {}", to_string(source(datagram.info)),
+        // to_string(destination(datagram.info)));
+        return;
+    }
+
+    auto packet = std::move(maybe_rtp_packet.value());
+
     if(packet.sdu.view().size() == 0 && packet.info.rtp.view().extension())
     {
         // logger()->info("Skipping packet containing only extension data");

@@ -9,7 +9,7 @@ using namespace ebu_list::analysis;
 //------------------------------------------------------------------------------
 namespace
 {
-    std::optional<stream_with_details> get_stream_info(const rtp::packet& /*first_packet*/)
+    std::optional<stream_with_details> get_stream_info(const bool /*is_srt*/, const udp::datagram& /*first_packet*/)
     {
         auto stream_info                      = serializable_stream_info{};
         stream_info.type                      = media::media_type::VIDEO;
@@ -52,7 +52,7 @@ SCENARIO("Video stream analysis")
             auto context  = processing_context{pcap_file,        profile,  storage_folder, pcap, get_stream_info,
                                               &handler_factory, &updater, callback,       false};
 
-            run_full_analysis(context);
+            run_full_analysis(false, context);
         }
     }
 }

@@ -9,7 +9,7 @@ using namespace ebu_list;
 using namespace ebu_list::st2110;
 //////////////////////////////////////////////////////////////////////
 
-format_detector::format_detector(rtp::packet /*first_packet*/)
+format_detector::format_detector(/*rtp::packet first_packet*/)
 {
     detectors_.push_back(std::make_unique<d20::video_format_detector>());
     detectors_.push_back(std::make_unique<d22::video_format_detector>());

@@ -23,7 +23,7 @@ namespace
         auto context = processing_context{pcap_file,        profile,  storage_folder, pcap, get_stream_info,
                                           &handler_factory, &updater, callback,       false};
 
-        run_full_analysis(context);
+        run_full_analysis(false, context);
     }
 
     json load_json(path full_path)
@@ -63,7 +63,7 @@ SCENARIO("TTML stream analysis")
 
     const auto storage_folder = path("/tmp");
 
-    auto get_stream_info = [&stream_ids](const rtp::packet&
+    auto get_stream_info = [&stream_ids](const bool /*is_srt*/, const udp::datagram&
                                          /*first_packet*/) -> std::optional<stream_with_details> {
         auto stream_info = serializable_stream_info{};
         stream_info.type = media::media_type::TTML;

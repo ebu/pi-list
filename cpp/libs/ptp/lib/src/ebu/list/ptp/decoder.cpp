@@ -63,7 +63,7 @@ bool ptp::may_be_ptp(port p)
     return false;
 }
 
-maybe_message ptp::decode(clock::time_point packet_timestamp, oview&& pdu)
+maybe_message ptp::decode(clock::time_point packet_timestamp, oview pdu)
 {
     if(size(pdu) < ssizeof<common_message_header>()) return std::nullopt;
     const auto common = reinterpret_cast<const common_message_header*>(pdu.view().data());

@@ -8,7 +8,7 @@ srt_format_detector::srt_format_detector() : num_retransmitted_packets_(0)
 {
 }
 
-detector::status_description srt_format_detector::handle_data(udp::datagram&& datagram)
+detector::status_description srt_format_detector::handle_data(const udp::datagram& datagram)
 {
     auto& sdu = datagram.sdu;
     // Verify packet payload header to see if matches payload header of srt packet

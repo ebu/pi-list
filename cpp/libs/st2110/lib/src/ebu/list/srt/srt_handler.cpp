@@ -9,7 +9,7 @@ srt_handler::srt_handler(handler_creator creator) : creator_(std::move(creator))
 {
 }
 
-void srt_handler::on_data(udp::datagram&& datagram)
+void srt_handler::on_data(const udp::datagram& datagram)
 {
     auto handler = find_or_create(datagram);
 
@@ -42,7 +42,7 @@ void srt_handler::on_error(std::exception_ptr e)
     }
 }
 
-udp::listener* srt_handler::find_or_create(udp::datagram& datagram)
+udp::listener* srt_handler::find_or_create(const udp::datagram& datagram)
 {
     const auto s = source(datagram.info);
     const auto d = destination(datagram.info);

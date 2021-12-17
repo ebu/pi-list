@@ -14,11 +14,11 @@ struct packet_interval_time_analyzer::impl
 
     packet_interval_time_info info{};
 
-    void on_data(const rtp::packet& p)
+    void on_data(const udp::datagram& p)
     {
 
         info.packets_count++;
-        const auto packet_ts = p.info.udp.packet_time;
+        const auto packet_ts = p.info.packet_time;
 
         if(previous_timestamp_.has_value())
         {
@@ -63,7 +63,7 @@ packet_interval_time_analyzer::packet_interval_time_analyzer(listener_uptr liste
 
 packet_interval_time_analyzer::~packet_interval_time_analyzer() = default;
 
-void packet_interval_time_analyzer::on_data(const rtp::packet& p)
+void packet_interval_time_analyzer::on_data(const udp::datagram& p)
 {
     impl_->on_data(p);
 }

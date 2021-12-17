@@ -90,7 +90,7 @@ namespace
 } // namespace
 //------------------------------------------------------------------------------
 
-maybe_pdu rtp::decode(oview&& raw_pdu)
+maybe_pdu rtp::decode(oview raw_pdu)
 {
     if(size(raw_pdu) < ssizeof<raw_header>()) return std::nullopt;
     auto header_p = reinterpret_cast<const byte*>(raw_pdu.view().data());
@@ -114,9 +114,9 @@ maybe_pdu rtp::decode(oview&& raw_pdu)
     return pdu{std::move(h), std::move(sdu)};
 }
 
-maybe_packet rtp::decode(ethernet::header ethernet_info, udp::datagram_info udp_info, oview&& raw_pdu)
+maybe_packet rtp::decode(ethernet::header ethernet_info, udp::datagram_info udp_info, oview raw_pdu)
 {
-    auto p = decode(std::move(raw_pdu));
+    auto p = decode(raw_pdu);
     if(!p) return std::nullopt;
 
     header& hl = std::get<0>(p.value());

@@ -25,13 +25,13 @@ udp_filter::udp_filter(listener_ptr l, ipv4::endpoint_list wanted_endpoints)
     LIST_ENFORCE(listener_ != nullptr, std::runtime_error, "listener can't be null");
 }
 
-void udp_filter::on_data(datagram&& datagram)
+void udp_filter::on_data(const udp::datagram& datagram)
 {
     for(const auto& wanted : wanted_endpoints_)
     {
         if(datagram.info.destination_address != wanted.addr) continue;
         if(datagram.info.destination_port != wanted.p) continue;
-        listener_->on_data(std::move(datagram));
+        listener_->on_data(datagram);
 
         return;
     }

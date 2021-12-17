@@ -32,7 +32,7 @@ namespace ebu_list::rtp
     using pdu       = std::tuple<header, oview>;
     using maybe_pdu = std::optional<pdu>;
 
-    maybe_pdu decode(oview&& raw_pdu);
+    maybe_pdu decode(oview raw_pdu);
     bool validate_padding(const std::byte* start, const std::byte* end);
 
     struct packet_info
@@ -52,5 +52,5 @@ namespace ebu_list::rtp
 
     using maybe_packet = std::optional<packet>;
 
-    maybe_packet decode(ethernet::header ethernet_info, udp::datagram_info udp_info, oview&& raw_pdu);
+    maybe_packet decode(ethernet::header ethernet_info, udp::datagram_info udp_info, oview raw_pdu);
 } // namespace ebu_list::rtp

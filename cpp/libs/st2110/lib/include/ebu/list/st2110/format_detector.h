@@ -47,7 +47,7 @@ namespace ebu_list::st2110
     class format_detector : public rtp::listener
     {
       public:
-        explicit format_detector(rtp::packet first_packet);
+        format_detector(/*rtp::packet first_packet*/);
 
         void on_data(const rtp::packet& packet) override;
         void on_complete() override;

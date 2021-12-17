@@ -10,10 +10,10 @@ namespace ebu_list::srt
     class srt_stream_listener : public udp::listener
     {
       public:
-        explicit srt_stream_listener(udp::datagram& datagram, std::string_view pcap_id);
+        explicit srt_stream_listener(const udp::datagram& datagram, std::string_view pcap_id);
 
 #pragma region udp::listener events
-        void on_data(udp::datagram&& datagram) override;
+        void on_data(const udp::datagram& datagram) override;
         void on_complete() override;
         void on_error(std::exception_ptr e) override;
 #pragma endregion udp::listener events

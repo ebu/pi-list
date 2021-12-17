@@ -66,7 +66,7 @@ namespace ebu_list::analysis
         const analysis_profile profile;
         path storage_folder;
         pcap_info& pcap;
-        std::function<std::optional<stream_with_details>(const rtp::packet& first_packet)> get_stream_info;
+        std::function<std::optional<stream_with_details>(const bool is_srt, const udp::datagram& first_datagram)> get_stream_info;
         abstract_handler_factory const* const handler_factory;
         abstract_updater* const updater;
         std::function<void(float percentage)> progress_callback;

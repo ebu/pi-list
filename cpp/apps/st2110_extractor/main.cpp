@@ -128,11 +128,26 @@ namespace
         ///
 
         const auto get_stream_info =
-            [&streams_to_process](const rtp::packet& first_packet) -> std::optional<stream_with_details> {
-            const auto ssrc             = first_packet.info.rtp.view().ssrc();
-            const ipv4::endpoint source = {first_packet.info.udp.source_address, first_packet.info.udp.source_port};
-            const ipv4::endpoint destination = {first_packet.info.udp.destination_address,
-                                                first_packet.info.udp.destination_port};
+            [&streams_to_process](const bool is_srt,
+                                  const udp::datagram& first_datagram) -> std::optional<stream_with_details> {
+            uint32_t ssrc = 0;
+            if(!is_srt)
+            {
+                auto maybe_rtp_packet =
+                    rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
+                if(!maybe_rtp_packet)
+                {
+                    return std::nullopt;
+                }
+
+                auto first_packet = std::move(maybe_rtp_packet.value());
+
+                ssrc = first_packet.info.rtp.view().ssrc();
+            }
+
+            const ipv4::endpoint source      = {first_datagram.info.source_address, first_datagram.info.source_port};
+            const ipv4::endpoint destination = {first_datagram.info.destination_address,
+                                                first_datagram.info.destination_port};
 
             const auto stream_info_it =
                 std::find_if(streams_to_process.begin(), streams_to_process.end(), [&](const auto& entry) {
@@ -160,11 +175,14 @@ namespace
         //        null_handler_factory factory(config);
 
         db_updater updater(db, config.storage_folder);
+
         auto context = processing_context{
             config.pcap_file, config.profile,    config.storage_folder, pcap, get_stream_info, &factory,
             &updater,         progress_callback, config.extract_frames};
 
-        run_full_analysis(context);
+        const auto is_srt = true;
+
+        run_full_analysis(is_srt, context);
     }
 } // namespace
 

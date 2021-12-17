@@ -10,7 +10,7 @@ namespace ebu_list::srt
       public:
         srt_format_detector();
 
-        st2110::detector::status_description handle_data(udp::datagram&& datagram);
+        st2110::detector::status_description handle_data(const udp::datagram& datagram);
         int64_t get_num_retransmitted_packets() const;
 
       private:
