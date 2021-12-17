@@ -18,3 +18,5 @@ EBU_LIST_PCAPS=<path to pcap files> yarn run time-tests -b http://<server_@> -u 
 ```
 
 It is necessary to define the path where the pcap files are, without it the tests will not run.
+
+The test results will be written on a file named duration_time_tests.txt located in the directory assigned by the env variable 'EBU_LIST_PCAPS'.
