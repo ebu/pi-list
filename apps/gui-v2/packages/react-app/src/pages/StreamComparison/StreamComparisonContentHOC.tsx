@@ -6,6 +6,7 @@ import { MainContentLayout } from '../Common';
 import StreamComparisonContent from './StreamComparisonContent';
 import { pcapsAtom } from '../../store/gui/pcaps/pcaps';
 import { CustomScrollbar } from 'components';
+import ReactGA from 'react-ga';
 
 export const workflowTypes = {
     compareStreams: 'compareStreams',
@@ -23,6 +24,10 @@ function StreamComparisonContentHOC() {
     const history = useHistory();
     const pcaps = useRecoilValue(pcapsAtom);
     const userInfo = useRecoilValue(userAtom);
+
+    React.useEffect(() => {
+        ReactGA.pageview(window.location.pathname);
+    }, []);
 
     const [selectedWorkflow, setSelectedWorkflow] = React.useState<string>(workflowTypes.compareStreams);
     const [selectedComparison, setSelectedComparison] = React.useState<string>();

@@ -11,10 +11,15 @@ import { userAtom } from '../../store/gui/user/userInfo';
 import { MainContentLayout } from '../Common';
 import { analysisProfileAtom } from '../../store/gui/analysisProfile/analysisProfile';
 import { analysisProfileDefaultAtom } from '../../store/gui/analysisProfile/analysisProfileDefault';
+import ReactGA from 'react-ga';
 
 function SettingsHOC() {
     const history = useHistory();
     const [userInfo, setuserInfo] = useRecoilState(userAtom);
+
+    React.useEffect(() => {
+        ReactGA.pageview(window.location.pathname);
+    }, []);
 
     const analysisProfile = useRecoilValue(analysisProfileAtom);
     const [analysisProfileDefault, setAnalysisProfileDefault] = useRecoilState(analysisProfileDefaultAtom);

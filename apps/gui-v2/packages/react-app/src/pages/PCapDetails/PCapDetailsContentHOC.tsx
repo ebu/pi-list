@@ -12,6 +12,7 @@ import { MediaInformationPanel, ComplianceTagPanel, NetworkInformationPanel } fr
 import { VideoIcon } from 'components/icons';
 import './styles.scss';
 import { userAtom } from '../../store/gui/user/userInfo';
+import ReactGA from 'react-ga';
 
 const buttonWithIconList = (currentStream: SDK.types.IStreamInfo) => {
     switch (currentStream.media_type) {
@@ -147,6 +148,7 @@ function PCapDetailsContentHOC(props: any) {
         };
 
         loadStreams();
+        ReactGA.pageview(window.location.pathname);
     }, []);
 
     const pcapFilename = pcap?.file_name;

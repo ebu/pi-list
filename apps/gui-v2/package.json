@@ -59,6 +59,7 @@
         "react": "^16.10.2",
         "react-dom": "^16.10.2",
         "react-dropzone": "^10.2.2",
+        "react-ga": "^3.3.0",
         "react-image-gallery": "^1.0.8",
         "react-modal": "^3.14.3",
         "react-router-dom": "^5.2.0",
