@@ -120,7 +120,7 @@ const getMultipleFilesDownload = async (type: string, pCapIdsToDownload: string[
     const workflowRequestFailed = 'Workflow request failed';
 
     const workflowInfo = {
-        type: SDK.api.workflows.types.downloadMultipleFiles,
+        type: 'downloadMultipleFiles',
         configuration: {
             ids: pCapIdsToDownload,
             type: type,
