@@ -3,7 +3,7 @@ const db = require('../managers/database')('list');
 
 const DownloadManagerSchema = new mongoose.Schema(
     {
-        _id: {
+        id: {
             type: String,
             required: true,
         },

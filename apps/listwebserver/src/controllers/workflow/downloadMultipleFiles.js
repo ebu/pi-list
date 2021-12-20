@@ -110,14 +110,16 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
             //Add info to downloadmanager
             const availableon = Date.now();
             const availableuntil = availableon + 24 * 60 * 60 * 1000;
+            const dateString = `${unixTimeShort(availableon)}`
 
             const fileItem = {
-                name: `${wf.id}_${type}.zip`,
+                id: wf.id,
+                name: `${dateString}_${type}.zip`,
                 nameondisk: `${wf.id}_${type}.zip`,
                 path: `${zipFolder}`,
                 type: type,
                 availableon: availableon,
-                availableonfancy: unixTimeShort(availableon),
+                availableonfancy: dateString,
                 availableuntil: availableuntil,
                 availableuntilfancy: unixTimeShort(availableuntil),
             };
