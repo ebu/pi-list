@@ -495,7 +495,7 @@ SCENARIO("Sequence number analyser")
         const clock::time_point ts2 = clock::now();
         const clock::time_point ts3 = clock::now();
         const uint32_t ignore_ssrc{};
-        
+
 
         analyzer.handle_packet(2, ignore_timestamp, ignore_ssrc);
         analyzer.handle_packet(1, ts1, ignore_ssrc);

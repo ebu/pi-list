@@ -32,6 +32,7 @@ namespace ebu_list::rtp
         int64_t num_dropped_    = 0;
         Counter current_seqnum_ = 0;
         uint32_t retransmitted_packets_ = 0;
+        bool possibly_rist_ = false;
         clock::time_point current_timestamp_{};
 
         std::vector<packet_gap_info> dropped_packet_samples_{};
