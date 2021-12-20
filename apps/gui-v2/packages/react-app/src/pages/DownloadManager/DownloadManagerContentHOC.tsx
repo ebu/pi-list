@@ -6,7 +6,7 @@ import { useRecoilValue } from 'recoil';
 import { userAtom } from '../../store/gui/user/userInfo';
 import { MainContentLayout } from '../Common';
 import DownloadManagerContent from './DownloadManagerContent';
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 
 function DownloadManagerContentHOC() {
     const history = useHistory();
@@ -23,7 +23,7 @@ function DownloadManagerContentHOC() {
             setDownloadData(allDataSortedByDate);
         };
         loadDownloadData();
-        ReactGA.pageview(window.location.pathname);
+        ReactGA.send({ hitType: 'pageview', page: '/DownloadManager' });
     }, []);
 
     const userInfo = useRecoilValue(userAtom);

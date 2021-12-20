@@ -21,7 +21,7 @@ import { pcapsAtom } from '../../store/gui/pcaps/pcaps';
 import { userAtom } from '../../store/gui/user/userInfo';
 import { extractFileFromResponse } from '../../utils/downloadResponseHandler';
 import './styles.scss';
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 
 type IIcons = {
     text: string;
@@ -323,7 +323,7 @@ function DashboardContentHOC() {
     const resetStateSelectedPcaps = () => setCurrentPCapIds([]);
 
     React.useEffect(() => {
-        ReactGA.pageview(window.location.pathname);
+        ReactGA.send({ hitType: 'pageview', page: '/Analysis' });
     }, []);
 
     const onClick = (id: string, e: React.MouseEvent<HTMLElement>) => {
