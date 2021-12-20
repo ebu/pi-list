@@ -27,10 +27,20 @@ std::vector<packet_gap_info> sequence_number_analyzer<Counter>::dropped_packets(
 }
 
 template <typename Counter>
-void sequence_number_analyzer<Counter>::handle_packet(Counter sequence_number, clock::time_point packet_time) noexcept
+uint32_t sequence_number_analyzer<Counter>::retransmitted_packets() const noexcept
 {
+    return retransmitted_packets_;
+}
+
+template <typename Counter>
+void sequence_number_analyzer<Counter>::handle_packet(Counter sequence_number, clock::time_point packet_time, uint32_t ssrc) noexcept
+{
+
     if(started_)
     {
+        if(((ssrc & 1) == 1) && (current_seqnum_ == sequence_number) && (current_timestamp_ == packet_time)){
+            ++retransmitted_packets_;
+        }
         if(static_cast<Counter>(current_seqnum_ + 1) == sequence_number)
         {
             current_seqnum_    = sequence_number;
