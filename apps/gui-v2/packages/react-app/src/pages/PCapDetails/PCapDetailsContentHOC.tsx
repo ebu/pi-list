@@ -12,7 +12,7 @@ import { MediaInformationPanel, ComplianceTagPanel, NetworkInformationPanel } fr
 import { VideoIcon } from 'components/icons';
 import './styles.scss';
 import { userAtom } from '../../store/gui/user/userInfo';
-import ReactGA from 'react-ga4';
+import { GoogleAnalyticsHandler } from 'utils/googleAnalytics';
 
 const buttonWithIconList = (currentStream: SDK.types.IStreamInfo) => {
     switch (currentStream.media_type) {
@@ -140,6 +140,16 @@ function PCapDetailsContentHOC(props: any) {
     const { pcapID } = props.match.params;
 
     const [pcap, setPcap] = React.useState<SDK.types.IPcapInfo>();
+    const [gdprConsent, setGdprConsent] = React.useState<boolean>();
+
+    React.useEffect(() => {
+        const gdprConsentLocalStorage = localStorage.getItem('gdprConsent');
+        if (gdprConsentLocalStorage) {
+            setGdprConsent(gdprConsentLocalStorage === 'true' ? true : false);
+        }
+    }, []);
+
+    const pagePath: string = window.location.pathname;
 
     React.useEffect(() => {
         const loadStreams = async (): Promise<void> => {
@@ -148,7 +158,6 @@ function PCapDetailsContentHOC(props: any) {
         };
 
         loadStreams();
-        ReactGA.send({ hitType: 'pageview', page: '/PcapDetails' });
     }, []);
 
     const pcapFilename = pcap?.file_name;
@@ -201,6 +210,7 @@ function PCapDetailsContentHOC(props: any) {
     const renderStream = (match: any, streams: SDK.types.IStreamInfo[]) => {
         return (
             <div className="pcap-details-content-layout">
+                <GoogleAnalyticsHandler gdprConsent={gdprConsent} pathName={pagePath} />
                 <div className="pcap-details-content-sidebar-streams-list">
                     <SidebarStreamsList
                         streamsList={getStreamsToSidebarStreamsList(streams)}

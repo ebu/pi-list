@@ -1,7 +1,9 @@
 import Select from 'react-select';
 import React from 'react';
 import SDK from '@bisect/ebu-list-sdk';
+import { useHistory } from 'react-router-dom';
 import SettingsHeaderHOC from './Header/SettingsHeaderHOC';
+import { GoogleAnalyticsHandler } from 'utils/googleAnalytics';
 
 export interface ILanguage {
     value: string;
@@ -67,6 +69,8 @@ function SettingsContent({
     analysisProfileDefaultValue,
     onChangeAnalysisProfile,
 }: IComponentProps) {
+    const history = useHistory();
+
     const currentLanguage = languages.find(item => item.value === userData?.preferences?.gui?.language);
     const [gdprConsent, setGdprConsent] = React.useState<boolean>();
 
@@ -80,10 +84,12 @@ function SettingsContent({
     const onGDPRClick = (gdpr: boolean) => {
         localStorage.setItem('gdprConsent', gdpr.toString());
         setGdprConsent(gdpr);
+        history.go(0);
     };
 
     return (
         <>
+            <GoogleAnalyticsHandler gdprConsent={gdprConsent} />
             <div className="main-page-header">
                 <SettingsHeaderHOC />
             </div>

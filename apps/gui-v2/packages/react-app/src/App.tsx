@@ -6,10 +6,10 @@ import Logout from './pages/Logout';
 import routeNames from './routes/routeNames';
 import './styles.scss';
 import { RecoilRoot } from 'recoil';
-import ReactGA from 'react-ga4';
+import ReactGA from 'react-ga';
 
 const App = (): ReactElement => {
-    ReactGA.initialize('G-4VD9154HGG');
+    // ReactGA.initialize('UA-183941332-1');
     return (
         <RecoilRoot>
             <BrowserRouter>

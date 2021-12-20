@@ -11,15 +11,21 @@ import { userAtom } from '../../store/gui/user/userInfo';
 import { MainContentLayout } from '../Common';
 import { analysisProfileAtom } from '../../store/gui/analysisProfile/analysisProfile';
 import { analysisProfileDefaultAtom } from '../../store/gui/analysisProfile/analysisProfileDefault';
-import ReactGA from 'react-ga4';
+import { GoogleAnalyticsHandler } from 'utils/googleAnalytics';
 
 function SettingsHOC() {
     const history = useHistory();
     const [userInfo, setuserInfo] = useRecoilState(userAtom);
+    const [gdprConsent, setGdprConsent] = React.useState<boolean>();
 
     React.useEffect(() => {
-        ReactGA.send({ hitType: 'pageview', page: '/Settings' });
+        const gdprConsentLocalStorage = localStorage.getItem('gdprConsent');
+        if (gdprConsentLocalStorage) {
+            setGdprConsent(gdprConsentLocalStorage === 'true' ? true : false);
+        }
     }, []);
+
+    const pagePath: string = window.location.pathname;
 
     const analysisProfile = useRecoilValue(analysisProfileAtom);
     const [analysisProfileDefault, setAnalysisProfileDefault] = useRecoilState(analysisProfileDefaultAtom);
@@ -75,6 +81,7 @@ function SettingsHOC() {
 
     return (
         <>
+            <GoogleAnalyticsHandler gdprConsent={gdprConsent} pathName={pagePath} />
             <MainContentLayout
                 middlePageContent={
                     <SettingsContent

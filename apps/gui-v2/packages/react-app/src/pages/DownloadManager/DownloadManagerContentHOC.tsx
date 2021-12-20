@@ -6,13 +6,23 @@ import { useRecoilValue } from 'recoil';
 import { userAtom } from '../../store/gui/user/userInfo';
 import { MainContentLayout } from '../Common';
 import DownloadManagerContent from './DownloadManagerContent';
-import ReactGA from 'react-ga4';
+import { GoogleAnalyticsHandler } from 'utils/googleAnalytics';
 
 function DownloadManagerContentHOC() {
     const history = useHistory();
 
     const initial: SDK.types.IDownloadManagerDataContent[] = [];
     const [downloadData, setDownloadData] = React.useState(initial);
+    const [gdprConsent, setGdprConsent] = React.useState<boolean>();
+
+    React.useEffect(() => {
+        const gdprConsentLocalStorage = localStorage.getItem('gdprConsent');
+        if (gdprConsentLocalStorage) {
+            setGdprConsent(gdprConsentLocalStorage === 'true' ? true : false);
+        }
+    }, []);
+
+    const pagePath: string = window.location.pathname;
 
     React.useEffect(() => {
         const loadDownloadData = async (): Promise<void> => {
@@ -23,7 +33,6 @@ function DownloadManagerContentHOC() {
             setDownloadData(allDataSortedByDate);
         };
         loadDownloadData();
-        ReactGA.send({ hitType: 'pageview', page: '/DownloadManager' });
     }, []);
 
     const userInfo = useRecoilValue(userAtom);
@@ -34,6 +43,7 @@ function DownloadManagerContentHOC() {
 
     return (
         <>
+            <GoogleAnalyticsHandler gdprConsent={gdprConsent} pathName={pagePath} />
             <MainContentLayout
                 middlePageContent={<DownloadManagerContent downloadData={downloadData} />}
                 informationSidebarContent={{ usermail: userInfo?.username }}

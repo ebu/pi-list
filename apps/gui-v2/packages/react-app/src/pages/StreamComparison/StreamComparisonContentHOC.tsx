@@ -6,7 +6,7 @@ import { MainContentLayout } from '../Common';
 import StreamComparisonContent from './StreamComparisonContent';
 import { pcapsAtom } from '../../store/gui/pcaps/pcaps';
 import { CustomScrollbar } from 'components';
-import ReactGA from 'react-ga4';
+import { GoogleAnalyticsHandler } from 'utils/googleAnalytics';
 
 export const workflowTypes = {
     compareStreams: 'compareStreams',
@@ -24,10 +24,16 @@ function StreamComparisonContentHOC() {
     const history = useHistory();
     const pcaps = useRecoilValue(pcapsAtom);
     const userInfo = useRecoilValue(userAtom);
+    const [gdprConsent, setGdprConsent] = React.useState<boolean>();
 
     React.useEffect(() => {
-        ReactGA.send({ hitType: 'pageview', page: '/StreamComparison' });
+        const gdprConsentLocalStorage = localStorage.getItem('gdprConsent');
+        if (gdprConsentLocalStorage) {
+            setGdprConsent(gdprConsentLocalStorage === 'true' ? true : false);
+        }
     }, []);
+
+    const pagePath: string = window.location.pathname;
 
     const [selectedWorkflow, setSelectedWorkflow] = React.useState<string>(workflowTypes.compareStreams);
     const [selectedComparison, setSelectedComparison] = React.useState<string>();
@@ -144,6 +150,7 @@ function StreamComparisonContentHOC() {
 
     return (
         <>
+            <GoogleAnalyticsHandler gdprConsent={gdprConsent} pathName={pagePath} />
             <MainContentLayout
                 middlePageContent={
                     <StreamComparisonContent

@@ -5,6 +5,8 @@ import list from '../utils/api';
 import News from 'components/News/News';
 import { EbuListLogoIcon } from 'components/icons';
 import useLoginWithToken from 'utils/useLoginWithToken';
+import ReactGA from 'react-ga';
+import { GoogleAnalyticsHandler } from 'utils/googleAnalytics';
 
 const Login = (): any => {
     const history = useHistory();
@@ -27,14 +29,6 @@ const Login = (): any => {
         };
         getVersion();
     }, []);
-
-    const onGdprConsentClick = (e: React.ChangeEvent<HTMLInputElement>) => {
-        localStorage.setItem('gdprConsent', (!gdprConsent).toString());
-        if (e.target.checked === false) {
-            window.localStorage.removeItem('gdprConsent');
-        }
-        setGdprConsent(e.target.checked);
-    };
 
     const onGDPRClick = (gdpr: boolean) => {
         localStorage.setItem('gdprConsent', gdpr.toString());
@@ -84,11 +78,12 @@ const Login = (): any => {
 
     return (
         <div className="login-page">
+            <GoogleAnalyticsHandler gdprConsent={gdprConsent} />
             <EbuListLogoIcon className={'login-page-logo'} />
             <span className="login-page-version">{`v${version?.major}.${version?.minor}.${version?.patch} @ ${version?.hash}`}</span>
             <div className="login-items-container">
                 {loginComponent}
-                <News gdprConsent={gdprConsent} onGdprConsentClick={onGdprConsentClick} onGDPRClick={onGDPRClick} />
+                <News gdprConsent={gdprConsent} onGDPRClick={onGDPRClick} />
             </div>
         </div>
     );
