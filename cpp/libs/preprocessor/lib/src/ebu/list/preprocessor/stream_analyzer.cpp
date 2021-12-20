@@ -5,7 +5,6 @@
 #include "ebu/list/ptp/ptp_offset_calculator.h"
 #include "ebu/list/ptp/udp_filter.h"
 #include "ebu/list/rtp/udp_handler.h"
-#include "ebu/list/srt/srt_handler.h"
 #include "ebu/list/version.h"
 
 using namespace ebu_list;

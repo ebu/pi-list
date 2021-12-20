@@ -1,12 +1,9 @@
 #include "catch2/catch.hpp"
 #include "ebu/list/pcap/player.h"
 #include "ebu/list/rtp/udp_handler.h"
-#include "ebu/list/st2110/d20/video_format_detector.h"
-#include "ebu/list/st2110/d22/video_format_detector.h"
-#include "ebu/list/st2110/d30/audio_format_detector.h"
 #include "ebu/list/st2110/format_detector.h"
 #include "ebu/list/test_lib/sample_files.h"
-#include "ebu/list/ttml/ttml_format_detector.h"
+#include "format_detector_handler.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110;
@@ -18,10 +15,10 @@ using namespace ebu_list::st2110::d40;
 
 SCENARIO("format detector")
 {
-    format_detector* fd = nullptr;
+    format_detector_handler* fd = nullptr;
 
-    auto create_handler = [&](rtp::packet first_packet) {
-        auto d = std::make_unique<format_detector>(first_packet);
+    auto create_handler = [&](const udp::datagram&) {
+        auto d = std::make_unique<format_detector_handler>();
         fd     = d.get();
         return d;
     };
@@ -42,7 +39,7 @@ SCENARIO("format detector")
         WHEN("we check the format")
         {
             const auto maybe_full_media_type = fd->get_full_media_type();
-            const auto full_media_type = std::get<std::string>(maybe_full_media_type);
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
 
             REQUIRE(fd->status().state == detector::state::valid);
             REQUIRE(full_media_type == "video/jxsv");
@@ -63,7 +60,7 @@ SCENARIO("format detector")
         WHEN("we check the format")
         {
             const auto maybe_full_media_type = fd->get_full_media_type();
-            const auto full_media_type = std::get<std::string>(maybe_full_media_type);
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
 
             REQUIRE(fd->status().state == detector::state::valid);
             REQUIRE(full_media_type == "video/raw");
@@ -96,7 +93,7 @@ SCENARIO("format detector")
             REQUIRE(fd->status().state == detector::state::valid);
 
             const auto maybe_full_media_type = fd->get_full_media_type();
-            const auto full_media_type = std::get<std::string>(maybe_full_media_type);
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
 
             THEN("we get audio")
             {
@@ -130,7 +127,7 @@ SCENARIO("format detector")
             REQUIRE(fd->status().state == detector::state::valid);
 
             const auto maybe_full_media_type = fd->get_full_media_type();
-            const auto full_media_type = std::get<std::string>(maybe_full_media_type);
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
 
             THEN("we get audio")
             {
@@ -162,7 +159,7 @@ SCENARIO("format detector")
         WHEN("we check the format")
         {
             const auto maybe_full_media_type = fd->get_full_media_type();
-            const auto full_media_type = std::get<std::string>(maybe_full_media_type);
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
 
             REQUIRE(fd->status().state == detector::state::valid);
             REQUIRE(full_media_type == "video/smpte291");
@@ -192,7 +189,7 @@ SCENARIO("format detector")
         WHEN("we check the format")
         {
             const auto maybe_full_media_type = fd->get_full_media_type();
-            const auto full_media_type = std::get<std::string>(maybe_full_media_type);
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
 
             REQUIRE(fd->status().state == detector::state::valid);
             REQUIRE(full_media_type == "video/smpte291");
@@ -223,7 +220,7 @@ SCENARIO("format detector")
         WHEN("we check the format")
         {
             const auto maybe_full_media_type = fd->get_full_media_type();
-            const auto full_media_type = std::get<std::string>(maybe_full_media_type);
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
 
             REQUIRE(fd->status().state == detector::state::valid);
             REQUIRE(full_media_type == "application/ttml+xml");
@@ -251,7 +248,7 @@ SCENARIO("format detector")
         WHEN("we check the format")
         {
             const auto maybe_full_media_type = fd->get_full_media_type();
-            const auto full_media_type = std::get<std::string>(maybe_full_media_type);
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
 
             REQUIRE(fd->status().state == detector::state::valid);
             REQUIRE(full_media_type == "application/ttml+xml");
@@ -279,7 +276,7 @@ SCENARIO("format detector")
         WHEN("we check the format")
         {
             const auto maybe_full_media_type = fd->get_full_media_type();
-            const auto full_media_type = std::get<std::string>(maybe_full_media_type);
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
 
             REQUIRE(fd->status().state == detector::state::valid);
             REQUIRE(full_media_type == "application/ttml+xml");
