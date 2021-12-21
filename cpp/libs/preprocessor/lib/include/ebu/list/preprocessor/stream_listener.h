@@ -13,6 +13,12 @@ namespace ebu_list::analysis
 {
     class stream_listener : public udp::listener
     {
+        enum class state
+        {
+            valid,
+            invalid
+        };
+
       public:
         stream_listener(const udp::datagram& first_datagram, std::string_view pcap_id);
 
@@ -20,7 +26,7 @@ namespace ebu_list::analysis
         void on_complete() override;
         void on_error(std::exception_ptr ptr) override;
 
-        nlohmann::json get_info() const;
+        std::optional<nlohmann::json> get_info() const;
 
       private:
         analysis::serializable_stream_info stream_id_;
@@ -29,6 +35,7 @@ namespace ebu_list::analysis
         rtp::sequence_number_analyzer<uint16_t> seqnum_analyzer_;
         dscp_analyzer dscp_;
         nlohmann::json info_;
+        state state_ = state::valid;
     };
 
     using stream_listener_uptr = std::unique_ptr<stream_listener>;

@@ -57,14 +57,8 @@ void srt_stream_listener::on_data(const udp::datagram& datagram)
     if(status_description_.state != st2110::detector::state::detecting) return;
 
     const auto result = detector_.handle_data(datagram);
-    if(result.state == st2110::detector::state::invalid)
-    {
-        status_description_ = result;
-    }
-    else if(result.state == st2110::detector::state::valid)
-    {
-        status_description_ = result;
-    }
+    status_description_ = result;
+    status_description_ = result;
 }
 
 void srt_stream_listener::on_complete()
@@ -106,7 +100,7 @@ st2110::detector::status_description srt_stream_listener::status() const noexcep
     return status_description_;
 }
 
-nlohmann::json srt_stream_listener::get_info() const
+std::optional<nlohmann::json> srt_stream_listener::get_info() const
 {
     return info_;
 }

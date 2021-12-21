@@ -98,8 +98,13 @@ nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_f
     j_info["pcap"] = j_pcap_info;
     json j_streams = json::array();
 
-    std::transform(begin(streams), end(streams), std::back_inserter(j_streams),
-                   [&](const stream_listener* stream) { return stream->get_info(); });
+    std::for_each(begin(streams), end(streams), [&](const stream_listener* stream) {
+        auto maybe_stream_info = stream->get_info();
+        if(maybe_stream_info)
+        {
+            j_streams.push_back(std::move(maybe_stream_info.value()));
+        }
+    });
 
     j_info["streams"] = j_streams;
 
@@ -147,8 +152,13 @@ nlohmann::json ebu_list::analysis::analyze_srt_stream(const std::string_view& pc
     j_info["pcap"] = j_pcap_info;
     json j_streams = json::array();
 
-    std::transform(begin(streams), end(streams), std::back_inserter(j_streams),
-                   [&](const srt::srt_stream_listener* stream) { return stream->get_info(); });
+    std::for_each(begin(streams), end(streams), [&](const srt::srt_stream_listener* stream) {
+        auto maybe_stream_info = stream->get_info();
+        if(maybe_stream_info)
+        {
+            j_streams.push_back(std::move(maybe_stream_info.value()));
+        }
+    });
 
     j_info["streams"] = j_streams;
 

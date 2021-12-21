@@ -43,14 +43,14 @@ namespace
     }
 } // namespace
 
-stream_listener::stream_listener(const udp::datagram& first_datagram, std::string_view pcap_id)
-    : num_packets_(0)
+stream_listener::stream_listener(const udp::datagram& first_datagram, std::string_view pcap_id) : num_packets_(0)
 {
     auto maybe_rtp_packet = rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
     if(!maybe_rtp_packet)
     {
         // logger()->trace("Non-RTP datagram from {} to {}", to_string(source(datagram.info)),
         // to_string(destination(datagram.info)));
+        state_ = state::invalid;
         return;
     }
 
@@ -67,11 +67,16 @@ stream_listener::stream_listener(const udp::datagram& first_datagram, std::strin
 
 void stream_listener::on_data(const udp::datagram& datagram)
 {
+    if(state_ == state::invalid)
+    {
+        return;
+    }
     auto maybe_rtp_packet = rtp::decode(datagram.ethernet_info, datagram.info, datagram.sdu);
     if(!maybe_rtp_packet)
     {
         // logger()->trace("Non-RTP datagram from {} to {}", to_string(source(datagram.info)),
         // to_string(destination(datagram.info)));
+        state_ = state::invalid;
         return;
     }
 
@@ -98,6 +103,11 @@ void stream_listener::on_data(const udp::datagram& datagram)
 
 void stream_listener::on_complete()
 {
+    if(state_ == state::invalid)
+    {
+        return;
+    }
+
     detector_.on_complete();
 
     const auto format                                                     = detector_.get_details();
@@ -110,18 +120,18 @@ void stream_listener::on_complete()
     if(std::holds_alternative<std::nullopt_t>(format) && std::holds_alternative<std::nullopt_t>(maybe_full_media_type))
     {
         stream_id_.full_type = media::full_media_from_string("unknown");
-        stream_id_.state = stream_state::NEEDS_INFO;
+        stream_id_.state     = stream_state::NEEDS_INFO;
     }
     else if(std::holds_alternative<std::string>(maybe_full_media_type))
     {
         const auto full_media_type = std::get<std::string>(maybe_full_media_type);
-        stream_id_.full_type = media::full_media_from_string(full_media_type);
+        stream_id_.full_type       = media::full_media_from_string(full_media_type);
 
         if(media::is_full_media_type_video_jxsv(media::full_media_from_string(full_media_type)))
-         {
-             stream_id_.type = media::media_type::VIDEO;
-             stream_id_.state = stream_state::READY;
-         }
+        {
+            stream_id_.type  = media::media_type::VIDEO;
+            stream_id_.state = stream_state::READY;
+        }
     }
 
     if(std::holds_alternative<d20::video_description>(format))
@@ -175,8 +185,12 @@ void stream_listener::on_complete()
                              seqnum_analyzer_.dropped_packets());
 }
 
-nlohmann::json stream_listener::get_info() const
+std::optional<nlohmann::json> stream_listener::get_info() const
 {
+    if(state_ == state::invalid)
+    {
+        return std::nullopt;
+    }
     return info_;
 }
 

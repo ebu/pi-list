@@ -20,7 +20,7 @@ namespace ebu_list::srt
 #pragma endregion udp::listener events
 
         st2110::detector::status_description status() const noexcept;
-        nlohmann::json get_info() const;
+        std::optional<nlohmann::json> get_info() const;
 
       private:
         analysis::serializable_stream_info stream_id_;
