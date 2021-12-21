@@ -140,20 +140,10 @@ int main(int argc, char* argv[])
                 try
                 {
                     const auto is_srt = true;
-                    if(!is_srt)
-                    {
-                        const json analysis_result =
-                            analyze_stream(pcap_path->get<std::string>(), pcap_id->get<std::string>());
-                        response =
-                            compose_response(workflow_id->get<std::string>(), "completed", 100, "", analysis_result);
-                    }
-                    else
-                    {
-                        const json analysis_result =
-                            analyze_srt_stream(pcap_path->get<std::string>(), pcap_id->get<std::string>());
-                        response =
-                            compose_response(workflow_id->get<std::string>(), "completed", 100, "", analysis_result);
-                    }
+
+                    const json analysis_result =
+                        analyze_stream(pcap_path->get<std::string>(), pcap_id->get<std::string>(), is_srt);
+                    response = compose_response(workflow_id->get<std::string>(), "completed", 100, "", analysis_result);
 
                     console->info("Processing {} succeeded.", pcap_id->get<std::string>());
                 }
