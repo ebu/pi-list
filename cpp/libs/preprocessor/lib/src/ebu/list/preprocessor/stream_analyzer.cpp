@@ -60,7 +60,8 @@ nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_f
     std::vector<stream_listener*> streams;
     clock::time_point capture_timestamp = {};
 
-    auto create_handler = [&capture_timestamp, &streams, pcap_uuid](const udp::datagram& datagram) -> stream_listener_uptr {
+    auto create_handler = [&capture_timestamp, &streams,
+                           pcap_uuid](const udp::datagram& datagram) -> stream_listener_uptr {
         if(should_ignore(datagram.info.destination_address))
         {
             return {};
@@ -113,6 +114,10 @@ nlohmann::json ebu_list::analysis::analyze_srt_stream(const std::string_view& pc
 
     auto create_handler = [&capture_timestamp, &streams,
                            pcap_uuid](const udp::datagram& datagram) -> srt::srt_stream_handler_uptr {
+        if(should_ignore(datagram.info.destination_address))
+        {
+            return {};
+        }
         capture_timestamp = datagram.info.packet_time;
         auto listener     = std::make_unique<srt::srt_stream_listener>(datagram, pcap_uuid);
         streams.push_back(listener.get());

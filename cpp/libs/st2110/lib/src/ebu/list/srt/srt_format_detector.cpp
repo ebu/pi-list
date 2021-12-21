@@ -4,10 +4,6 @@
 using namespace ebu_list::srt;
 using namespace ebu_list::st2110;
 
-srt_format_detector::srt_format_detector() : num_retransmitted_packets_(0)
-{
-}
-
 detector::status_description srt_format_detector::handle_data(const udp::datagram& datagram)
 {
     auto& sdu = datagram.sdu;
@@ -55,16 +51,6 @@ detector::status_description srt_format_detector::handle_data(const udp::datagra
                                             /*.error_code*/ "STATUS_CODE_SRT_INVALID_TIMESTAMP"};
     }
 
-    auto retransmission_flag = payload_header.get_retransmission_flag();
-    if(retransmission_flag == 1)
-    {
-        ++num_retransmitted_packets_;
-    }
-
     return detector::status_description{/*.state*/ detector::state::valid,
                                         /*.error_code*/ "STATUS_CODE_SRT_VALID"};
-}
-
-int64_t srt_format_detector::get_num_retransmitted_packets() const {
-    return num_retransmitted_packets_;
 }

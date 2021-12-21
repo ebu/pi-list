@@ -3,6 +3,7 @@
 #include "ebu/list/analysis/serialization/serializable_stream_info.h"
 #include "ebu/list/net/udp/listener.h"
 #include "ebu/list/srt/srt_format_detector.h"
+#include "ebu/list/srt/srt_sequence_number_analyzer.h"
 #include "ebu/list/st2110/format_detector.h"
 
 namespace ebu_list::srt
@@ -27,6 +28,8 @@ namespace ebu_list::srt
         st2110::detector::status_description status_description_ =
             st2110::detector::status_description{/*.state=*/st2110::detector::state::detecting,
                                                  /*.error_code*/ "STATUS_CODE_FORMAT_DETECTING"};
+
+        srt_sequence_number_analyzer<uint32_t> srt_sequence_number_analyzer_;
         int64_t num_packets_;
         nlohmann::json info_;
     };
