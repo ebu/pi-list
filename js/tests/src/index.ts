@@ -89,6 +89,10 @@ async function run(): Promise<boolean> {
         } else if (arg === 'test-advanced') {
             return await runTests(requirements.Advanced);
         } else if (arg === 'test-time') {
+            const ebuListPcaps = process.env.EBU_LIST_PCAPS;
+            if (!ebuListPcaps) {
+                process.exit(1);
+            }
             return await runTests(requirements.Time);
         }
     }
