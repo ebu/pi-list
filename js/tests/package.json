@@ -11,7 +11,8 @@
         "clean": "rm -rf ./dist",
         "compile": "tsc",
         "validation-tests-basics": "npm run build && node dist/index.js test-basic",
-        "validation-tests-advanced": "npm run build && node dist/index.js test-advanced"
+        "validation-tests-advanced": "npm run build && node dist/index.js test-advanced",
+        "time-tests": "npm run build && node dist/index.js test-time"
     },
     "dependencies": {
         "@bisect/bisect-core-ts": "0.1.0",
