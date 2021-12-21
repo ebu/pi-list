@@ -51,30 +51,37 @@ bool should_ignore(const ipv4::address& a)
     return it != addresses_to_ignore.end();
 }
 
-nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_file, const std::string_view& pcap_uuid)
+nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_file, const std::string_view& pcap_uuid,
+                                                  const bool is_srt)
 {
     // These will hold pointers to the stream handlers.
     // They will, however, be owned by the udp_handler, so we cannot access these after the stream handler is
     // destroyed.
-
     std::vector<stream_listener*> streams;
+    std::vector<srt::srt_stream_listener*> srt_streams;
     clock::time_point capture_timestamp = {};
 
-    auto create_handler = [&capture_timestamp, &streams,
-                           pcap_uuid](const udp::datagram& datagram) -> stream_listener_uptr {
+    auto handler = [&capture_timestamp, &streams, &srt_streams, &is_srt,
+                    pcap_uuid](const udp::datagram& datagram) -> udp::listener_uptr {
         if(should_ignore(datagram.info.destination_address))
         {
             return {};
         }
 
         capture_timestamp = datagram.info.packet_time;
-        auto listener     = std::make_unique<stream_listener>(datagram, pcap_uuid);
+        if(is_srt)
+        {
+            auto listener = std::make_unique<srt::srt_stream_listener>(datagram, pcap_uuid);
+            srt_streams.push_back(listener.get());
+            return listener;
+        }
+        auto listener = std::make_unique<stream_listener>(datagram, pcap_uuid);
         streams.push_back(listener.get());
         return listener;
     };
 
     auto offset_calculator = std::make_shared<ptp::ptp_offset_calculator>();
-    auto udp_handler       = std::make_shared<rtp::udp_handler>(create_handler);
+    auto udp_handler       = std::make_shared<rtp::udp_handler>(handler);
     auto filter            = std::make_shared<ptp::udp_filter>(offset_calculator, udp_handler);
     auto progress_callback = [](float) {};
     auto player = std::make_unique<pcap::pcap_player>(path(pcap_file), progress_callback, filter, on_error_ignore);
@@ -98,67 +105,26 @@ nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_f
     j_info["pcap"] = j_pcap_info;
     json j_streams = json::array();
 
-    std::for_each(begin(streams), end(streams), [&](const stream_listener* stream) {
-        auto maybe_stream_info = stream->get_info();
-        if(maybe_stream_info)
-        {
-            j_streams.push_back(std::move(maybe_stream_info.value()));
-        }
-    });
-
-    j_info["streams"] = j_streams;
-
-    return j_info;
-}
-
-nlohmann::json ebu_list::analysis::analyze_srt_stream(const std::string_view& pcap_file,
-                                                      const std::string_view& pcap_uuid)
-{
-    std::vector<srt::srt_stream_listener*> streams;
-    clock::time_point capture_timestamp = {};
-
-    auto create_handler = [&capture_timestamp, &streams,
-                           pcap_uuid](const udp::datagram& datagram) -> srt::srt_stream_handler_uptr {
-        if(should_ignore(datagram.info.destination_address))
-        {
-            return {};
-        }
-        capture_timestamp = datagram.info.packet_time;
-        auto listener     = std::make_unique<srt::srt_stream_listener>(datagram, pcap_uuid);
-        streams.push_back(listener.get());
-        return listener;
-    };
-
-    auto offset_calculator = std::make_shared<ptp::ptp_offset_calculator>();
-    auto srt_handler       = std::make_shared<rtp::udp_handler>(create_handler);
-    auto progress_callback = [](float) {};
-    auto player = std::make_unique<pcap::pcap_player>(path(pcap_file), progress_callback, srt_handler, on_error_ignore);
-    const auto start_time = std::chrono::steady_clock::now();
-
-    auto launcher = launch(std::move(player));
-
-    launcher.wait();
-
-    const auto end_time        = std::chrono::steady_clock::now();
-    const auto processing_time = end_time - start_time;
-    const auto processing_time_ms =
-        static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(processing_time).count());
-    logger()->info("Processing time: {:.3f} s", processing_time_ms / 1000.0);
-
-    auto j_pcap_info = make_pcap_info(pcap_file, pcap_uuid, capture_timestamp,
-                                      launcher.target().pcap_has_truncated_packets(), offset_calculator->get_info());
-
-    json j_info;
-    j_info["pcap"] = j_pcap_info;
-    json j_streams = json::array();
-
-    std::for_each(begin(streams), end(streams), [&](const srt::srt_stream_listener* stream) {
-        auto maybe_stream_info = stream->get_info();
-        if(maybe_stream_info)
-        {
-            j_streams.push_back(std::move(maybe_stream_info.value()));
-        }
-    });
+    if(is_srt)
+    {
+        std::for_each(begin(srt_streams), end(srt_streams), [&](const srt::srt_stream_listener* stream) {
+            auto maybe_stream_info = stream->get_info();
+            if(maybe_stream_info)
+            {
+                j_streams.push_back(std::move(maybe_stream_info.value()));
+            }
+        });
+    }
+    else
+    {
+        std::for_each(begin(streams), end(streams), [&](const stream_listener* stream) {
+            auto maybe_stream_info = stream->get_info();
+            if(maybe_stream_info)
+            {
+                j_streams.push_back(std::move(maybe_stream_info.value()));
+            }
+        });
+    }
 
     j_info["streams"] = j_streams;
 

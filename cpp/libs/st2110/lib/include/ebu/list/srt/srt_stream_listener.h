@@ -34,5 +34,5 @@ namespace ebu_list::srt
         nlohmann::json info_;
     };
 
-    using srt_stream_handler_uptr = std::unique_ptr<srt_stream_listener>;
+    using srt_stream_listener_uptr = std::unique_ptr<srt_stream_listener>;
 } // namespace ebu_list::srt

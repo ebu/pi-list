@@ -5,7 +5,7 @@
 
 namespace ebu_list::analysis
 {
-    nlohmann::json analyze_stream(const std::string_view& pcap_file, const std::string_view& pcap_uuid);
-    nlohmann::json analyze_srt_stream(const std::string_view& pcap_file, const std::string_view& pcap_uuid);
+    nlohmann::json analyze_stream(const std::string_view& pcap_file, const std::string_view& pcap_uuid,
+                                  const bool is_srt);
 
 } // namespace ebu_list::analysis
