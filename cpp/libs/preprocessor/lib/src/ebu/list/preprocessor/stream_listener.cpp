@@ -14,7 +14,7 @@ namespace
     json make_stream_info(const stream_with_details& stream_info,
                           std::map<std::string, std::vector<std::string>>& detectors_error_codes,
                           int64_t num_packets = 0, uint16_t num_dropped_packets = 0,
-                          std::vector<ebu_list::rtp::packet_gap_info> dropped_packet_samples = {})
+                          std::vector<ebu_list::rtp::packet_gap_info> dropped_packet_samples = {}, uint32_t retransmitted_packets = 0)
     {
         json serialized_streams_details = stream_with_details_serializer::to_json(stream_info);
         if(num_packets > 0)
@@ -22,6 +22,8 @@ namespace
             serialized_streams_details["statistics"]["packet_count"]           = num_packets;
             serialized_streams_details["statistics"]["dropped_packet_count"]   = num_dropped_packets;
             serialized_streams_details["statistics"]["dropped_packet_samples"] = dropped_packet_samples;
+            serialized_streams_details["statistics"]["retransmitted_packets"] = retransmitted_packets;
+
         }
 
         if(detectors_error_codes["video/raw"].size() > 0)
@@ -69,7 +71,7 @@ void stream_listener::on_data(const rtp::packet& packet)
     // NOTE: seqnum_analyzer_ assumes only the presence of
     // RTP's sequence number field, and not any extended field, hence the uint16_t qualification.
     seqnum_analyzer_.handle_packet(static_cast<uint16_t>(packet.info.rtp.view().sequence_number()),
-                                   packet.info.udp.packet_time);
+                                   packet.info.udp.packet_time, packet.info.rtp.view().ssrc());
 
     dscp_.handle_packet(packet);
 
@@ -103,7 +105,6 @@ void stream_listener::on_complete()
              stream_id_.state = stream_state::READY;
          }
     }
-
     if(std::holds_alternative<d20::video_description>(format))
     {
         const auto video_format = std::get<d20::video_description>(format);
@@ -152,7 +153,7 @@ void stream_listener::on_complete()
 
     info_ = make_stream_info(swd, detectors_error_codes, num_packets_,
                              static_cast<uint16_t>(seqnum_analyzer_.num_dropped_packets()),
-                             seqnum_analyzer_.dropped_packets());
+                             seqnum_analyzer_.dropped_packets(), seqnum_analyzer_.retransmitted_packets());
 }
 
 nlohmann::json stream_listener::get_info() const

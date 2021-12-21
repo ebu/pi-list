@@ -25,11 +25,12 @@ SCENARIO("Sequence number analyser")
     {
         sequence_number_analyzer<uint32_t> analyzer;
         const clock::time_point ignore_timestamp{};
+        const uint32_t ignore_ssrc{};
 
-        analyzer.handle_packet(0, ignore_timestamp);
-        analyzer.handle_packet(1, ignore_timestamp);
-        analyzer.handle_packet(2, ignore_timestamp);
-        analyzer.handle_packet(3, ignore_timestamp);
+        analyzer.handle_packet(0, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(1, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(2, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(3, ignore_timestamp, ignore_ssrc);
 
         WHEN("we check the dropped count")
         {
@@ -45,12 +46,13 @@ SCENARIO("Sequence number analyser")
     {
         sequence_number_analyzer<uint32_t> analyzer;
         const clock::time_point ignore_timestamp{};
+        const uint32_t ignore_ssrc{};
 
-        analyzer.handle_packet(0, ignore_timestamp);
-        analyzer.handle_packet(1, ignore_timestamp);
-        analyzer.handle_packet(2, ignore_timestamp);
-        analyzer.handle_packet(2, ignore_timestamp);
-        analyzer.handle_packet(3, ignore_timestamp);
+        analyzer.handle_packet(0, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(1, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(2, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(2, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(3, ignore_timestamp, ignore_ssrc);
 
         WHEN("we check the dropped count")
         {
@@ -66,16 +68,17 @@ SCENARIO("Sequence number analyser")
     {
         sequence_number_analyzer<uint16_t> analyzer;
         const clock::time_point ignore_timestamp{};
+        const uint32_t ignore_ssrc{};
 
-        analyzer.handle_packet(UINT16_MAX - 4, ignore_timestamp);
-        analyzer.handle_packet(UINT16_MAX - 3, ignore_timestamp);
-        analyzer.handle_packet(UINT16_MAX - 2, ignore_timestamp);
-        analyzer.handle_packet(UINT16_MAX - 1, ignore_timestamp);
-        analyzer.handle_packet(UINT16_MAX, ignore_timestamp);
-        analyzer.handle_packet(0, ignore_timestamp);
-        analyzer.handle_packet(1, ignore_timestamp);
-        analyzer.handle_packet(2, ignore_timestamp);
-        analyzer.handle_packet(3, ignore_timestamp);
+        analyzer.handle_packet(UINT16_MAX - 4, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT16_MAX - 3, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT16_MAX - 2, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT16_MAX - 1, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT16_MAX, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(0, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(1, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(2, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(3, ignore_timestamp, ignore_ssrc);
 
         WHEN("we check the dropped count")
         {
@@ -91,16 +94,17 @@ SCENARIO("Sequence number analyser")
     {
         sequence_number_analyzer<uint32_t> analyzer;
         const clock::time_point ignore_timestamp{};
+        const uint32_t ignore_ssrc{};
 
-        analyzer.handle_packet(UINT32_MAX - 4, ignore_timestamp);
-        analyzer.handle_packet(UINT32_MAX - 3, ignore_timestamp);
-        analyzer.handle_packet(UINT32_MAX - 2, ignore_timestamp);
-        analyzer.handle_packet(UINT32_MAX - 1, ignore_timestamp);
-        analyzer.handle_packet(UINT32_MAX, ignore_timestamp);
-        analyzer.handle_packet(0, ignore_timestamp);
-        analyzer.handle_packet(1, ignore_timestamp);
-        analyzer.handle_packet(2, ignore_timestamp);
-        analyzer.handle_packet(3, ignore_timestamp);
+        analyzer.handle_packet(UINT32_MAX - 4, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT32_MAX - 3, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT32_MAX - 2, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT32_MAX - 1, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT32_MAX, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(0, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(1, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(2, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(3, ignore_timestamp, ignore_ssrc);
 
         WHEN("we check the dropped count")
         {
@@ -117,10 +121,11 @@ SCENARIO("Sequence number analyser")
         sequence_number_analyzer<uint32_t> analyzer;
         const clock::time_point ignore_timestamp{};
         const clock::time_point ts = clock::now();
+        const uint32_t ignore_ssrc{};
 
-        analyzer.handle_packet(0, ignore_timestamp);
-        analyzer.handle_packet(1, ignore_timestamp);
-        analyzer.handle_packet(3, ts);
+        analyzer.handle_packet(0, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(1, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(3, ts, ignore_ssrc);
 
         WHEN("we check the dropped count")
         {
@@ -149,10 +154,11 @@ SCENARIO("Sequence number analyser")
         sequence_number_analyzer<uint32_t> analyzer;
         const clock::time_point ignore_timestamp{};
         const clock::time_point ts = clock::now();
+        const uint32_t ignore_ssrc{};
 
-        analyzer.handle_packet(0, ignore_timestamp);
-        analyzer.handle_packet(1, ignore_timestamp);
-        analyzer.handle_packet(7, ts);
+        analyzer.handle_packet(0, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(1, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(7, ts, ignore_ssrc);
 
         WHEN("we check the dropped count")
         {
@@ -181,10 +187,11 @@ SCENARIO("Sequence number analyser")
         sequence_number_analyzer<uint32_t> analyzer;
         const clock::time_point ignore_timestamp{};
         const clock::time_point ts = clock::now();
+        const uint32_t ignore_ssrc{};
 
-        analyzer.handle_packet(UINT32_MAX - 6, ignore_timestamp);
-        analyzer.handle_packet(UINT32_MAX, ts);
-        analyzer.handle_packet(0, ignore_timestamp);
+        analyzer.handle_packet(UINT32_MAX - 6, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT32_MAX, ts, ignore_ssrc);
+        analyzer.handle_packet(0, ignore_timestamp, ignore_ssrc);
 
         WHEN("we check the dropped count")
         {
@@ -213,15 +220,16 @@ SCENARIO("Sequence number analyser")
         sequence_number_analyzer<uint32_t> analyzer;
         const clock::time_point ignore_timestamp{};
         const clock::time_point ts = clock::now();
+        const uint32_t ignore_ssrc{};
 
-        analyzer.handle_packet(UINT32_MAX - 4, ignore_timestamp);
-        analyzer.handle_packet(UINT32_MAX - 3, ignore_timestamp);
-        analyzer.handle_packet(UINT32_MAX - 2, ignore_timestamp);
-        analyzer.handle_packet(UINT32_MAX - 1, ignore_timestamp);
-        analyzer.handle_packet(0, ts);
-        analyzer.handle_packet(1, ignore_timestamp);
-        analyzer.handle_packet(2, ignore_timestamp);
-        analyzer.handle_packet(3, ignore_timestamp);
+        analyzer.handle_packet(UINT32_MAX - 4, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT32_MAX - 3, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT32_MAX - 2, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT32_MAX - 1, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(0, ts, ignore_ssrc);
+        analyzer.handle_packet(1, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(2, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(3, ignore_timestamp, ignore_ssrc);
 
         WHEN("we check the dropped count")
         {
@@ -252,11 +260,12 @@ SCENARIO("Sequence number analyser")
         const clock::time_point ts1 = clock::now();
         const clock::time_point ts2 = clock::now();
         const clock::time_point ts3 = clock::now();
+        const uint32_t ignore_ssrc{};
 
-        analyzer.handle_packet(UINT32_MAX - 4, ignore_timestamp);
-        analyzer.handle_packet(UINT32_MAX - 1, ts1);
-        analyzer.handle_packet(0, ts2);
-        analyzer.handle_packet(3, ts3);
+        analyzer.handle_packet(UINT32_MAX - 4, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT32_MAX - 1, ts1, ignore_ssrc);
+        analyzer.handle_packet(0, ts2, ignore_ssrc);
+        analyzer.handle_packet(3, ts3, ignore_ssrc);
 
         WHEN("we check the dropped count")
         {
@@ -309,15 +318,16 @@ SCENARIO("Sequence number analyser")
         sequence_number_analyzer<uint16_t> analyzer;
         const clock::time_point ignore_timestamp{};
         const clock::time_point ts = clock::now();
+        const uint32_t ignore_ssrc{};
 
-        analyzer.handle_packet(UINT16_MAX - 4, ignore_timestamp);
-        analyzer.handle_packet(UINT16_MAX - 3, ignore_timestamp);
-        analyzer.handle_packet(UINT16_MAX - 2, ignore_timestamp);
-        analyzer.handle_packet(UINT16_MAX - 1, ignore_timestamp);
-        analyzer.handle_packet(0, ts);
-        analyzer.handle_packet(1, ignore_timestamp);
-        analyzer.handle_packet(2, ignore_timestamp);
-        analyzer.handle_packet(3, ignore_timestamp);
+        analyzer.handle_packet(UINT16_MAX - 4, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT16_MAX - 3, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT16_MAX - 2, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT16_MAX - 1, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(0, ts, ignore_ssrc);
+        analyzer.handle_packet(1, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(2, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(3, ignore_timestamp, ignore_ssrc);
 
         WHEN("we check the dropped count")
         {
@@ -348,11 +358,13 @@ SCENARIO("Sequence number analyser")
         const clock::time_point ts1 = clock::now();
         const clock::time_point ts2 = clock::now();
         const clock::time_point ts3 = clock::now();
+        const uint32_t ignore_ssrc{};
 
-        analyzer.handle_packet(UINT16_MAX - 4, ignore_timestamp);
-        analyzer.handle_packet(UINT16_MAX - 1, ts1);
-        analyzer.handle_packet(0, ts2);
-        analyzer.handle_packet(3, ts3);
+
+        analyzer.handle_packet(UINT16_MAX - 4, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT16_MAX - 1, ts1, ignore_ssrc);
+        analyzer.handle_packet(0, ts2, ignore_ssrc);
+        analyzer.handle_packet(3, ts3, ignore_ssrc);
 
         WHEN("we check the dropped count")
         {
@@ -406,9 +418,11 @@ SCENARIO("Sequence number analyser")
         sequence_number_analyzer<uint32_t> analyzer;
         const clock::time_point ignore_timestamp{};
         const clock::time_point ts = clock::now();
+        const uint32_t ignore_ssrc{};
 
-        analyzer.handle_packet(0, ignore_timestamp);
-        analyzer.handle_packet(UINT32_MAX, ts);
+
+        analyzer.handle_packet(0, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(UINT32_MAX, ts, ignore_ssrc);
 
         WHEN("we check the dropped count")
         {
@@ -441,9 +455,11 @@ SCENARIO("Sequence number analyser")
         sequence_number_analyzer<uint32_t> analyzer;
         const clock::time_point ignore_timestamp{};
         const clock::time_point ts = clock::now();
+        const uint32_t ignore_ssrc{};
 
-        analyzer.handle_packet(2, ignore_timestamp);
-        analyzer.handle_packet(1, ts);
+
+        analyzer.handle_packet(2, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(1, ts, ignore_ssrc);
 
         WHEN("we check the dropped count")
         {
@@ -478,13 +494,15 @@ SCENARIO("Sequence number analyser")
         const clock::time_point ts1 = clock::now();
         const clock::time_point ts2 = clock::now();
         const clock::time_point ts3 = clock::now();
+        const uint32_t ignore_ssrc{};
 
-        analyzer.handle_packet(2, ignore_timestamp);
-        analyzer.handle_packet(1, ts1);
-        analyzer.handle_packet(2, ignore_timestamp);
-        analyzer.handle_packet(1, ts2);
-        analyzer.handle_packet(2, ignore_timestamp);
-        analyzer.handle_packet(1, ts3);
+
+        analyzer.handle_packet(2, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(1, ts1, ignore_ssrc);
+        analyzer.handle_packet(2, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(1, ts2, ignore_ssrc);
+        analyzer.handle_packet(2, ignore_timestamp, ignore_ssrc);
+        analyzer.handle_packet(1, ts3, ignore_ssrc);
 
         WHEN("we check the dropped count")
         {

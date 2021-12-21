@@ -20,16 +20,19 @@ namespace ebu_list::rtp
     template <typename Counter> class sequence_number_analyzer
     {
       public:
-        void handle_packet(Counter sequence_number, clock::time_point packet_time) noexcept;
+        void handle_packet(Counter sequence_number, clock::time_point packet_time, uint32_t ssrc) noexcept;
         int64_t num_dropped_packets() const noexcept;
+        uint32_t retransmitted_packets() const noexcept;
 
-        std::vector<packet_gap_info> dropped_packets() const noexcept;
+            std::vector<packet_gap_info> dropped_packets() const noexcept;
 
       private:
         bool started_ = false;
 
         int64_t num_dropped_    = 0;
         Counter current_seqnum_ = 0;
+        uint32_t retransmitted_packets_ = 0;
+        bool possibly_rist_ = false;
         clock::time_point current_timestamp_{};
 
         std::vector<packet_gap_info> dropped_packet_samples_{};

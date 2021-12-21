@@ -22,6 +22,7 @@ namespace ebu_list::analysis
         std::vector<rtp::packet_gap_info> dropped_packet_samples{};
         clock::time_point first_packet_ts{};
         clock::time_point last_packet_ts{};
+        uint32_t retransmitted_packets{};
     };
 
     void to_json(nlohmann::json& j, const common_stream_details& p);
