@@ -28,7 +28,7 @@ router.post('/', (req, res, next) => {
     const userId = getUserId(req);
     const userFolder = getUserFolder(req);
 
-    controller.createWorkflow(type, userId, userFolder, configuration);
+    controller.createWorkflow(req.body.type, userId, userFolder, req.body.configuration);
 
     res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
 });

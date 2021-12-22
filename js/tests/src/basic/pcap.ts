@@ -82,7 +82,7 @@ const deleteJsonProperties = (jsonToParse: any) => {
     return jsonToParse;
 };
 
-const doUpload = async (
+export const doUpload = async (
     list: LIST,
     name: string,
     stream: fs.ReadStream,
@@ -97,7 +97,7 @@ const doUpload = async (
             }
 
             const pcapId = uuid();
-            const timeoutMs = 30000; // It may be necessary to increase timeout due to the size of the pcap file
+            const timeoutMs = 300000; // It may be necessary to increase timeout due to the size of the pcap file
 
             const uploadAwaiter = list.pcap.makeUploadAwaiter(pcapId, timeoutMs);
             await list.pcap.upload(name, stream, callback, pcapId);

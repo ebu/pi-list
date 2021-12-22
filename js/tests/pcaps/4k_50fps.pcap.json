@@ -13,16 +13,16 @@
     "wide_streams": 0,
     "generated_from_network": false,
     "truncated": false,
-    "_id": "61af49d3bb008d0a66f20335",
-    "id": "75646aa0-5753-11ec-8863-a1e7e1c3fd91",
+    "_id": "61c0b2752951ad7435eef042",
+    "id": "d1bdcd40-61b3-11ec-8541-3771a6a1dca6",
     "__v": 0,
     "analyzer_version": "2.0.3",
     "capture_date": 1528353584317,
-    "capture_file_name": "1638877650736_ce58bac9-2eeb-47da-9fa3-8c0117b802f8.pcap",
-    "date": 1638877651462,
+    "capture_file_name": "1640018548956_5f581766-9536-4ded-847e-388c231263ff.pcap",
+    "date": 1640018549495,
     "file_name": "4k_50fps.pcap",
-    "owner_id": "2f4a1c80-4ec6-11ec-824f-153898937f4b",
-    "pcap_file_name": "1638877650736_ce58bac9-2eeb-47da-9fa3-8c0117b802f8.pcap",
+    "owner_id": "01af63b0-618c-11ec-a37e-a5a32c8bd20f",
+    "pcap_file_name": "1640018548956_5f581766-9536-4ded-847e-388c231263ff.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -46,7 +46,7 @@
     "summary": {
         "error_list": [
             {
-                "stream_id": "413e40f0-92f6-4b6e-88c0-284cb2e30922",
+                "stream_id": "39394bf4-6628-4c31-9809-972c2982835a",
                 "value": {
                     "id": "errors.dropped_packets"
                 }
@@ -61,9 +61,9 @@
                     "id": "errors.dropped_packets"
                 }
             ],
-            "_id": "61af49d3bc9d1587abae0b8d",
+            "_id": "61c0b2757043ce61263c2e5d",
             "full_media_type": "unknown",
-            "id": "413e40f0-92f6-4b6e-88c0-284cb2e30922",
+            "id": "39394bf4-6628-4c31-9809-972c2982835a",
             "media_specific": null,
             "media_type": "unknown",
             "media_type_validation": {
@@ -113,7 +113,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "75646aa0-5753-11ec-8863-a1e7e1c3fd91",
+            "pcap": "d1bdcd40-61b3-11ec-8541-3771a6a1dca6",
             "state": "needs_info",
             "statistics": {
                 "dropped_packet_count": 4,
@@ -124,7 +124,8 @@
                         "last_sequence_number": "42333"
                     }
                 ],
-                "packet_count": 80000
+                "packet_count": 80000,
+                "retransmitted_packets": 0
             },
             "__v": 0,
             "analyses": {

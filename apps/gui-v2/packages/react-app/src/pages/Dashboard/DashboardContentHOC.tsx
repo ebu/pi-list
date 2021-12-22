@@ -21,6 +21,7 @@ import { pcapsAtom } from '../../store/gui/pcaps/pcaps';
 import { userAtom } from '../../store/gui/user/userInfo';
 import { extractFileFromResponse } from '../../utils/downloadResponseHandler';
 import './styles.scss';
+import { GoogleAnalyticsHandler } from 'utils/googleAnalytics';
 
 type IIcons = {
     text: string;
@@ -120,7 +121,7 @@ const getMultipleFilesDownload = async (type: string, pCapIdsToDownload: string[
     const workflowRequestFailed = 'Workflow request failed';
 
     const workflowInfo = {
-        type: SDK.api.workflows.types.downloadMultipleFiles,
+        type: 'downloadMultipleFiles',
         configuration: {
             ids: pCapIdsToDownload,
             type: type,
@@ -320,6 +321,20 @@ function DashboardContentHOC() {
     const [currentPCapIds, setCurrentPCapIds] = React.useState<string[]>([]);
 
     const resetStateSelectedPcaps = () => setCurrentPCapIds([]);
+    const [gdprConsent, setGdprConsent] = React.useState<boolean>();
+
+    const pagePath: string = window.location.pathname;
+
+    React.useEffect(() => {
+        const gdprConsentLocalStorage = localStorage.getItem('gdprConsent');
+        if (gdprConsentLocalStorage) {
+            setGdprConsent(gdprConsentLocalStorage === 'true' ? true : false);
+        }
+    }, []);
+
+    // React.useEffect(() => {
+    //     ReactGA.pageview(window.location.pathname + window.location.search);
+    // }, []);
 
     const onClick = (id: string, e: React.MouseEvent<HTMLElement>) => {
         if (e.ctrlKey) {
@@ -372,6 +387,7 @@ function DashboardContentHOC() {
 
     return (
         <>
+            <GoogleAnalyticsHandler gdprConsent={gdprConsent} pathName={pagePath} />
             <MainContentLayout
                 middlePageContent={
                     <DashboardContent

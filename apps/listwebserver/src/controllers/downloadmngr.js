@@ -132,7 +132,7 @@ function download(fileId) {
     return new Promise(function (resolve, reject) {
         collection
             .findOne({
-                _id: fileId
+                id: fileId
             })
             .exec()
             .then(function (data) {
