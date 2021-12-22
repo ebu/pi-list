@@ -17,7 +17,7 @@
     "id": "d456eeb0-61b3-11ec-8541-3771a6a1dca6",
     "__v": 0,
     "analyzer_version": "2.0.3",
-    "capture_date": 1548356088263,
+    "capture_date": 1516906244153,
     "capture_file_name": "1640018553185_74d2d705-8545-4f96-b699-4ff43a719174.pcap",
     "date": 1640018553493,
     "file_name": "Newcapture-20210419-154617.pcap",
@@ -72,18 +72,10 @@
             },
             "media_type": "video",
             "media_type_validation": {
-                "application/ttml+xml": [
-                    "STATUS_CODE_TTML_INVALID_DOCUMENT"
-                ],
-                "audio/L16": [
-                    "STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"
-                ],
-                "video/jxsv": [
-                    "STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"
-                ],
-                "video/smpte291": [
-                    "STATUS_CODE_ANC_WRONG_HEADER"
-                ]
+                "application/ttml+xml": ["STATUS_CODE_TTML_INVALID_DOCUMENT"],
+                "audio/L16": ["STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"],
+                "video/jxsv": ["STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"],
+                "video/smpte291": ["STATUS_CODE_ANC_WRONG_HEADER"]
             },
             "network_information": {
                 "destination_address": "239.0.1.2",
@@ -138,14 +130,8 @@
                     "cmax_wide": 16,
                     "compliance": "narrow",
                     "histogram": [
-                        [
-                            0,
-                            88.22222137451172
-                        ],
-                        [
-                            1,
-                            11.777777671813965
-                        ]
+                        [0, 88.22222137451172],
+                        [1, 11.777777671813965]
                     ]
                 },
                 "compliance": "narrow",
@@ -155,22 +141,10 @@
                 "vrx": {
                     "compliance": "narrow",
                     "histogram": [
-                        [
-                            4,
-                            0.10288065671920776
-                        ],
-                        [
-                            5,
-                            55.452674865722656
-                        ],
-                        [
-                            6,
-                            0.12345679104328156
-                        ],
-                        [
-                            7,
-                            44.320987701416016
-                        ]
+                        [4, 0.10288065671920776],
+                        [5, 55.452674865722656],
+                        [6, 0.12345679104328156],
+                        [7, 44.320987701416016]
                     ],
                     "vrx_full_narrow": 8,
                     "vrx_full_wide": 720
@@ -266,18 +240,10 @@
             },
             "media_type": "audio",
             "media_type_validation": {
-                "application/ttml+xml": [
-                    "STATUS_CODE_TTML_INVALID_LENGTH"
-                ],
-                "video/jxsv": [
-                    "STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"
-                ],
-                "video/raw": [
-                    "STATUS_CODE_VIDEO_INVALID_LINE_NUMBER"
-                ],
-                "video/smpte291": [
-                    "STATUS_CODE_ANC_WRONG_RESERVED_BIT"
-                ]
+                "application/ttml+xml": ["STATUS_CODE_TTML_INVALID_LENGTH"],
+                "video/jxsv": ["STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"],
+                "video/raw": ["STATUS_CODE_VIDEO_INVALID_LINE_NUMBER"],
+                "video/smpte291": ["STATUS_CODE_ANC_WRONG_RESERVED_BIT"]
             },
             "network_information": {
                 "destination_address": "239.0.1.13",
