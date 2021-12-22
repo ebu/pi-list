@@ -17,13 +17,13 @@ template <typename... Ts> void log([[maybe_unused]] Ts... ts)
 
 template <typename Counter> int64_t sequence_number_analyzer<Counter>::num_dropped_packets() const noexcept
 {
-    return num_dropped_;
+    return dropped_packets_analyzer_.num_dropped_packets();
 }
 
 template <typename Counter>
 std::vector<packet_gap_info> sequence_number_analyzer<Counter>::dropped_packets() const noexcept
 {
-    return dropped_packet_samples_;
+    return dropped_packets_analyzer_.dropped_packets();
 }
 
 template <typename Counter> uint32_t sequence_number_analyzer<Counter>::retransmitted_packets() const noexcept
@@ -38,9 +38,8 @@ void sequence_number_analyzer<Counter>::handle_packet(Counter sequence_number, c
 
     if(!started_)
     {
-        started_           = true;
-        current_seqnum_    = sequence_number;
-        current_timestamp_ = packet_time;
+        started_        = true;
+        current_seqnum_ = sequence_number;
         return;
     }
 
@@ -51,50 +50,19 @@ void sequence_number_analyzer<Counter>::handle_packet(Counter sequence_number, c
 
     if(static_cast<Counter>(current_seqnum_ + 1) == sequence_number)
     {
-        current_seqnum_    = sequence_number;
-        current_timestamp_ = packet_time;
+        current_seqnum_ = sequence_number;
         return;
     }
 
     if(((ssrc & 1) == 1) && possibly_rist_)
     {
         ++retransmitted_packets_;
-    }
-
-    if(current_seqnum_ < sequence_number)
-    {
-        const auto dropped_now = sequence_number - current_seqnum_ - 1;
-        num_dropped_ += dropped_now;
-
-        if(dropped_packet_samples_.size() < max_samples_)
-            dropped_packet_samples_.push_back(packet_gap_info{current_seqnum_, sequence_number, packet_time});
-
-        log("Sequence number ({}) is larger than expected. Previous was ({}). Dropped now: {}. "
-            "Accumulated: {}",
-            sequence_number, current_seqnum_, dropped_now, num_dropped_);
-
-        current_seqnum_    = sequence_number;
-        current_timestamp_ = packet_time;
-
         return;
     }
 
-    if(current_seqnum_ > sequence_number)
-    {
-        const auto dropped_now = std::numeric_limits<Counter>::max() - current_seqnum_ + sequence_number;
-        num_dropped_ += dropped_now;
-
-        if(dropped_packet_samples_.size() < max_samples_)
-            dropped_packet_samples_.push_back(packet_gap_info{current_seqnum_, sequence_number, packet_time});
-
-        log("Sequence number ({}) is smaller than expected. Previous was ({}). Dropped now: {}. "
-            "Accumulated: {}",
-            sequence_number, current_seqnum_, dropped_now, num_dropped_);
-
-        current_seqnum_    = sequence_number;
-        current_timestamp_ = packet_time;
-        return;
-    }
+    dropped_packets_analyzer_.handle_packet(static_cast<uint32_t>(sequence_number),
+                                            static_cast<uint32_t>(current_seqnum_), packet_time);
+    current_seqnum_ = sequence_number;
 }
 
 template class ebu_list::rtp::sequence_number_analyzer<uint16_t>;

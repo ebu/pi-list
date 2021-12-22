@@ -2,8 +2,8 @@
 
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/net/udp/decoder.h"
-#include "ebu/list/rtp/header.h"
 #include "ebu/list/rtp/dropped_packets_analyzer.h"
+#include "ebu/list/rtp/header.h"
 #include <vector>
 
 //------------------------------------------------------------------------------
@@ -17,19 +17,15 @@ namespace ebu_list::rtp
         int64_t num_dropped_packets() const noexcept;
         uint32_t retransmitted_packets() const noexcept;
 
-            std::vector<packet_gap_info> dropped_packets() const noexcept;
+        std::vector<packet_gap_info> dropped_packets() const noexcept;
 
       private:
         bool started_ = false;
 
-        int64_t num_dropped_    = 0;
-        Counter current_seqnum_ = 0;
+        Counter current_seqnum_         = 0;
         uint32_t retransmitted_packets_ = 0;
-        bool possibly_rist_ = false;
-        clock::time_point current_timestamp_{};
-
-        std::vector<packet_gap_info> dropped_packet_samples_{};
-        size_t max_samples_ = 10;
+        bool possibly_rist_             = false;
+        rtp::dropped_packets_analyzer<uint32_t> dropped_packets_analyzer_;
     };
 
 } // namespace ebu_list::rtp
