@@ -27,6 +27,7 @@ namespace ebu_list::analysis
         void on_error(std::exception_ptr ptr) override;
 
         std::optional<nlohmann::json> get_info() const;
+        clock::time_point get_capture_timestamp() const;
 
       private:
         analysis::serializable_stream_info stream_id_;
@@ -35,6 +36,7 @@ namespace ebu_list::analysis
         rtp::sequence_number_analyzer<uint16_t> seqnum_analyzer_;
         dscp_analyzer dscp_;
         nlohmann::json info_;
+        clock::time_point capture_timestamp_ = {};
         state state_ = state::valid;
     };
 

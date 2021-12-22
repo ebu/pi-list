@@ -38,6 +38,7 @@ srt_stream_listener::srt_stream_listener(const udp::datagram& first_datagram, st
     : num_packets_(0)
 {
     stream_id_.pcap                    = pcap_id;
+    capture_timestamp_                 = first_datagram.info.packet_time;
     stream_id_.network.source_mac      = first_datagram.ethernet_info.source_address;
     stream_id_.network.source          = source(first_datagram.info);
     stream_id_.network.destination_mac = first_datagram.ethernet_info.destination_address;
@@ -56,7 +57,7 @@ void srt_stream_listener::on_data(const udp::datagram& datagram)
 
     if(status_description_.state != st2110::detector::state::detecting) return;
 
-    const auto result = detector_.handle_data(datagram);
+    const auto result   = detector_.handle_data(datagram);
     status_description_ = result;
     status_description_ = result;
 }
@@ -103,4 +104,9 @@ st2110::detector::status_description srt_stream_listener::status() const noexcep
 std::optional<nlohmann::json> srt_stream_listener::get_info() const
 {
     return info_;
+}
+
+clock::time_point srt_stream_listener::get_capture_timestamp() const
+{
+    return capture_timestamp_;
 }

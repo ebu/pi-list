@@ -21,6 +21,7 @@ namespace ebu_list::srt
 
         st2110::detector::status_description status() const noexcept;
         std::optional<nlohmann::json> get_info() const;
+        clock::time_point get_capture_timestamp() const;
 
       private:
         analysis::serializable_stream_info stream_id_;
@@ -32,6 +33,7 @@ namespace ebu_list::srt
         srt_sequence_number_analyzer<uint32_t> srt_sequence_number_analyzer_;
         int64_t num_packets_;
         nlohmann::json info_;
+        clock::time_point capture_timestamp_ = {};
     };
 
     using srt_stream_listener_uptr = std::unique_ptr<srt_stream_listener>;

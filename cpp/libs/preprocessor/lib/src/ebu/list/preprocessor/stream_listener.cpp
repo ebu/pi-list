@@ -56,6 +56,7 @@ stream_listener::stream_listener(const udp::datagram& first_datagram, std::strin
 
     auto first_packet = std::move(maybe_rtp_packet.value());
 
+    capture_timestamp_                 = first_packet.info.udp.packet_time;
     stream_id_.network.source_mac      = first_packet.info.ethernet_info.source_address;
     stream_id_.network.source          = source(first_packet.info.udp);
     stream_id_.network.destination_mac = first_packet.info.ethernet_info.destination_address;
@@ -192,6 +193,11 @@ std::optional<nlohmann::json> stream_listener::get_info() const
         return std::nullopt;
     }
     return info_;
+}
+
+clock::time_point stream_listener::get_capture_timestamp() const
+{
+    return capture_timestamp_;
 }
 
 void stream_listener::on_error(std::exception_ptr ex)
