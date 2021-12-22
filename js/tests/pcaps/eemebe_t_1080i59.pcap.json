@@ -13,16 +13,16 @@
     "wide_streams": 0,
     "generated_from_network": false,
     "truncated": true,
-    "_id": "61c0b2762951ad7435eef072",
-    "id": "d2a742e0-61b3-11ec-8541-3771a6a1dca6",
+    "_id": "61c3595b7a9a14b521a241e0",
+    "id": "79a73880-6348-11ec-983e-b98fcba92f70",
     "__v": 0,
     "analyzer_version": "2.0.3",
     "capture_date": 1516906244153,
-    "capture_file_name": "1640018550297_8ec9c7ba-9fb7-48b1-be31-7af9440922ca.pcap",
-    "date": 1640018550413,
+    "capture_file_name": "1640192347158_28e39757-b1fe-494c-b900-66505e628826.pcap",
+    "date": 1640192347273,
     "file_name": "eemebe_t_1080i59.pcap",
     "owner_id": "01af63b0-618c-11ec-a37e-a5a32c8bd20f",
-    "pcap_file_name": "1640018550297_8ec9c7ba-9fb7-48b1-be31-7af9440922ca.pcap",
+    "pcap_file_name": "1640192347158_28e39757-b1fe-494c-b900-66505e628826.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -57,9 +57,10 @@
     "streams": [
         {
             "error_list": [],
-            "_id": "61c0b2767043ce61263c2e9e",
+            "_id": "61c3595bae612b9dffb9c760",
             "full_media_type": "video/raw",
-            "id": "e745341a-fb66-4a8b-b5ce-c9cee5e69453",
+            "full_transport_type": "RTP",
+            "id": "3ac328ed-46d9-4595-8576-9ec7a6571071",
             "media_specific": {
                 "avg_tro_ns": 615145,
                 "color_depth": 10,
@@ -122,7 +123,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "d2a742e0-61b3-11ec-8541-3771a6a1dca6",
+            "pcap": "79a73880-6348-11ec-983e-b98fcba92f70",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,

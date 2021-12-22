@@ -13,16 +13,16 @@
     "wide_streams": 0,
     "generated_from_network": false,
     "truncated": false,
-    "_id": "61c0b2792951ad7435eef0cb",
-    "id": "d456eeb0-61b3-11ec-8541-3771a6a1dca6",
+    "_id": "61c3595e7a9a14b521a24239",
+    "id": "7b669bc0-6348-11ec-983e-b98fcba92f70",
     "__v": 0,
     "analyzer_version": "2.0.3",
     "capture_date": 1548356088263,
-    "capture_file_name": "1640018553185_74d2d705-8545-4f96-b699-4ff43a719174.pcap",
-    "date": 1640018553493,
+    "capture_file_name": "1640192350160_dcbb6f89-9dfb-402c-85de-1ca25839edd2.pcap",
+    "date": 1640192350487,
     "file_name": "Newcapture-20210419-154617.pcap",
     "owner_id": "01af63b0-618c-11ec-a37e-a5a32c8bd20f",
-    "pcap_file_name": "1640018553185_74d2d705-8545-4f96-b699-4ff43a719174.pcap",
+    "pcap_file_name": "1640192350160_dcbb6f89-9dfb-402c-85de-1ca25839edd2.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -50,9 +50,10 @@
     "streams": [
         {
             "error_list": [],
-            "_id": "61c0b2797043ce61263c2f17",
+            "_id": "61c3595eae612b9dffb9c7d9",
             "full_media_type": "video/raw",
-            "id": "844aa924-2ecc-444e-9e17-7fe1561d592c",
+            "full_transport_type": "RTP",
+            "id": "038f49b9-0ad4-4f64-a82a-f70518ea48f6",
             "media_specific": {
                 "avg_tro_ns": 615145,
                 "color_depth": 10,
@@ -115,7 +116,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "d456eeb0-61b3-11ec-8541-3771a6a1dca6",
+            "pcap": "7b669bc0-6348-11ec-983e-b98fcba92f70",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -255,9 +256,10 @@
         },
         {
             "error_list": [],
-            "_id": "61c0b2797043ce61263c2f18",
+            "_id": "61c3595eae612b9dffb9c7da",
             "full_media_type": "audio/L24",
-            "id": "bc887202-d61e-4836-b128-448c29556edb",
+            "full_transport_type": "RTP",
+            "id": "81b203e9-47fb-4ed2-8696-be5fcc22e637",
             "media_specific": {
                 "encoding": "L24",
                 "number_channels": 16,
@@ -309,7 +311,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "d456eeb0-61b3-11ec-8541-3771a6a1dca6",
+            "pcap": "7b669bc0-6348-11ec-983e-b98fcba92f70",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
