@@ -30,8 +30,17 @@ namespace ebu_list::media
         UNKNOWN
     };
 
+    enum class transport_type
+    {
+        RIST,
+        RTP,
+        UNKNOWN
+    };
+
     std::string full_media_to_string(full_media_type full_media_type);
     full_media_type full_media_from_string(std::string_view full_media);
+    std::string full_transport_type_to_string(transport_type full_transport_type);
+    transport_type full_transport_type_from_string(std::string_view full_media);
     bool is_full_media_type_video_raw(media::full_media_type full_media_type);
     bool is_full_media_type_video_jxsv(media::full_media_type full_media_type);
     bool is_full_media_type_video_smpte291(media::full_media_type full_media_type);
@@ -80,5 +89,7 @@ namespace ebu_list::media
         network_info network;
         media_type type           = media_type::UNKNOWN;
         full_media_type full_type = full_media_type::UNKNOWN;
+        transport_type full_transport_type = transport_type::UNKNOWN;
+
     };
 } // namespace ebu_list::media

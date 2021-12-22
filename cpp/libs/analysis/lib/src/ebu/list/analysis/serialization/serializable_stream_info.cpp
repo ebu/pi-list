@@ -14,6 +14,7 @@ serializable_stream_info serializable_stream_info::from_json(const json& j)
     stream.state     = from_string(j["state"].get<string>());
     stream.type      = media::from_string(j["media_type"].get<string>());
     stream.full_type = media::full_media_from_string(j["full_media_type"].get<string>());
+    stream.full_transport_type = media::full_transport_type_from_string(j["full_transport_type"].get<string>());
     stream.network   = media::from_json(j.at("network_information"));
 
     return stream;
@@ -27,6 +28,7 @@ json serializable_stream_info::to_json(const serializable_stream_info& info)
     j["state"]               = to_string(info.state);
     j["media_type"]          = to_string(info.type);
     j["full_media_type"]     = full_media_to_string(info.full_type);
+    j["full_transport_type"]     = full_transport_type_to_string(info.full_transport_type);
     j["network_information"] = media::to_json(info.network);
 
     return j;

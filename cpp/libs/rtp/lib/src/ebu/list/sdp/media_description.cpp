@@ -43,6 +43,26 @@ string media::full_media_to_string(full_media_type full_media_type)
     }
 }
 
+string media::full_transport_type_to_string(transport_type full_transport_type)
+{
+    switch(full_transport_type)
+    {
+    case transport_type::RIST: return "RIST";
+    case transport_type::RTP: return "RTP";
+    default: assert(full_transport_type == transport_type::UNKNOWN); return "unknown";
+    }
+}
+
+media::transport_type media::full_transport_type_from_string(std::string_view media)
+{
+    if(media == "RIST")
+        return transport_type::RIST;
+    else if(media == "RTP")
+        return transport_type::RTP;
+    else
+        return transport_type::UNKNOWN;
+}
+
 media::full_media_type media::full_media_from_string(std::string_view media)
 {
     if(media == "video/raw")

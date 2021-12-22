@@ -182,3 +182,8 @@ detector::full_type anc_format_detector::get_full_media_type() const
 {
     return "video/smpte291";
 }
+
+detector::transport_type anc_format_detector::get_transport_type() const
+{
+    return "RTP";
+}
