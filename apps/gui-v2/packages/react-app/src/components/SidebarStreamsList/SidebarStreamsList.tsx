@@ -10,6 +10,7 @@ interface IComponentProps {
 }
 
 function SidebarStreamsList({ streamsList, onItemClicked, activeStreamId, onBackButtonClick }: IComponentProps) {
+    console.log(streamsList);
     return (
         <div className="sidebar-helper-container">
             <div className="sidebar-helper-title" onClick={onBackButtonClick}>
@@ -38,7 +39,7 @@ function SidebarStreamsList({ streamsList, onItemClicked, activeStreamId, onBack
                             item.id === activeStreamId ? 'sidebar-helper-protocol-active' : 'sidebar-helper-protocol'
                         }
                     >
-                        <span>{item.protocol}</span>
+                        <span>{item.protocol + ' - ' + item.transport_type}</span>
                     </div>
                 </div>
             ))}
@@ -52,6 +53,7 @@ export interface ISidebarItem {
     type: string;
     fullType: string;
     protocol: string;
+    transport_type: string;
 }
 
 export default SidebarStreamsList;

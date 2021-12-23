@@ -67,6 +67,7 @@ interface IStreamsList {
     type: string;
     fullType: string;
     protocol: string;
+    transport_type: string;
 }
 
 const getKey = (key: number): string => (key + 1).toString().padStart(2, '0');
@@ -130,6 +131,7 @@ const getStreamsToSidebarStreamsList = (streams: SDK.types.IStreamInfo[]): IStre
             type: item.media_type === 'ancillary_data' ? 'Ancillary' : item.media_type,
             fullType: fullMediaType,
             protocol: 'ST2110',
+            transport_type: item.full_transport_type
         });
     });
 
