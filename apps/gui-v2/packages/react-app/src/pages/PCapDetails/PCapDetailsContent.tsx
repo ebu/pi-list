@@ -19,6 +19,8 @@ function PCapDetailsContent({
 }) {
     const [currentHeaderType, setcurrentHeaderType] = React.useState<number>(0);
 
+    console.log(currentStream);
+
     const isTTML = currentStream?.full_media_type === 'application/ttml+xml' ? true : false;
     const isUnknown = currentStream?.full_media_type === 'unknown' ? true : false;
     const isJxsv = currentStream?.full_media_type === 'video/jxsv' ? true : false;

@@ -63,6 +63,10 @@ const getNetworkInformationList = (
             title: 'DSCP',
             value: currentStream?.network_information.dscp.value.toString(),
         },
+        {
+            title: "Retransmitted Packets",
+            value: currentStream?.statistics.retransmitted_packets
+        }
     ];
 };
 

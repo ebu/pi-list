@@ -96,6 +96,10 @@ void stream_listener::on_complete()
         stream_id_.full_type = media::full_media_from_string("unknown");
         stream_id_.full_transport_type = media::full_transport_type_from_string("unknown");
 
+        if(seqnum_analyzer_.retransmitted_packets() > 0){
+            stream_id_.full_transport_type = media::full_transport_type_from_string("RIST");
+        }
+
         stream_id_.state = stream_state::NEEDS_INFO;
     }
     else if(std::holds_alternative<std::string>(maybe_full_media_type))
@@ -104,9 +108,7 @@ void stream_listener::on_complete()
         stream_id_.full_type = media::full_media_from_string(full_media_type);
         stream_id_.full_transport_type = media::full_transport_type_from_string("RTP");
 
-        if(seqnum_analyzer_.retransmitted_packets() > 0){
-            stream_id_.full_transport_type = media::full_transport_type_from_string("RIST");
-        }
+
 
         if(media::is_full_media_type_video_jxsv(media::full_media_from_string(full_media_type)))
          {
