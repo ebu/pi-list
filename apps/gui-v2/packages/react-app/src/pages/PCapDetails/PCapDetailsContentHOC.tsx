@@ -124,6 +124,7 @@ const getStreamsToSidebarStreamsList = (streams: SDK.types.IStreamInfo[]): IStre
         item.full_media_type === 'application/ttml+xml'
             ? (fullMediaType = 'application/ ttml+xml')
             : (fullMediaType = item.full_media_type);
+        item.full_transport_type === 'SRT' ? (fullMediaType = 'SRT') : (fullMediaType = item.full_media_type);
         streamsList.push({
             id: item.id,
             key: getKey(index),
