@@ -52,6 +52,9 @@ const StreamSchema = new mongoose.Schema({
     full_media_type: {
         type: String,
     },
+    full_transport_type: {
+        type: String,
+    },
 });
 
 StreamSchema.set('toJSON', {

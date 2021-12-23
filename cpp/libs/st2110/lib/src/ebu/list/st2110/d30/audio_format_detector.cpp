@@ -201,3 +201,8 @@ detector::full_type audio_format_detector::get_full_media_type() const
         return "audio/L24";
     }
 }
+
+detector::transport_type audio_format_detector::get_transport_type() const
+{
+        return "RTP";
+}

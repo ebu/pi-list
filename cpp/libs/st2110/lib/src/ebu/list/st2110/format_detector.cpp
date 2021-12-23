@@ -95,6 +95,14 @@ detector::full_type format_detector::get_full_media_type() const
     return detectors_[0]->get_full_media_type();
 }
 
+detector::full_type format_detector::get_transport_type() const
+{
+    if(status_description_.state != detector::state::valid) return std::nullopt;
+
+    assert(detectors_.size() == 1);
+    return detectors_[0]->get_transport_type();
+}
+
 const std::map<std::string, std::vector<std::string>>& format_detector::get_error_codes() const
 {
     return error_codes_list_;

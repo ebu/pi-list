@@ -117,18 +117,27 @@ void stream_listener::on_complete()
     std::map<std::string, std::vector<std::string>> detectors_error_codes = detector_.get_error_codes();
     media_stream_details details;
     const auto maybe_full_media_type = detector_.get_full_media_type();
+    const auto maybe_transport_type = detector_.get_transport_type();
+
 
     stream_id_.network.dscp = dscp_.get_info();
 
     if(std::holds_alternative<std::nullopt_t>(format) && std::holds_alternative<std::nullopt_t>(maybe_full_media_type))
     {
         stream_id_.full_type = media::full_media_from_string("unknown");
-        stream_id_.state     = stream_state::NEEDS_INFO;
+        stream_id_.full_transport_type = media::full_transport_type_from_string("unknown");
+
+        stream_id_.state = stream_state::NEEDS_INFO;
     }
     else if(std::holds_alternative<std::string>(maybe_full_media_type))
     {
         const auto full_media_type = std::get<std::string>(maybe_full_media_type);
-        stream_id_.full_type       = media::full_media_from_string(full_media_type);
+        stream_id_.full_type = media::full_media_from_string(full_media_type);
+        stream_id_.full_transport_type = media::full_transport_type_from_string("RTP");
+
+        if(seqnum_analyzer_.retransmitted_packets() > 0){
+            stream_id_.full_transport_type = media::full_transport_type_from_string("RIST");
+        }
 
         if(media::is_full_media_type_video_jxsv(media::full_media_from_string(full_media_type)))
         {

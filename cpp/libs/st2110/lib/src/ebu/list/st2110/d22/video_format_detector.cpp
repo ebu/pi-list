@@ -69,3 +69,8 @@ detector::full_type video_format_detector::get_full_media_type() const
 {
     return "video/jxsv";
 }
+
+detector::transport_type video_format_detector::get_transport_type() const
+{
+    return "RTP";
+}
