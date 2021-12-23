@@ -11,6 +11,7 @@
     "narrow_streams": 0,
     "not_compliant_streams": 0,
     "wide_streams": 0,
+    "srt_streams": 0,
     "generated_from_network": false,
     "truncated": false,
     "_id": "61c3595c7a9a14b521a2420c",
@@ -62,18 +63,10 @@
             },
             "media_type": "audio",
             "media_type_validation": {
-                "application/ttml+xml": [
-                    "STATUS_CODE_TTML_INVALID_LENGTH"
-                ],
-                "video/jxsv": [
-                    "STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"
-                ],
-                "video/raw": [
-                    "STATUS_CODE_VIDEO_INVALID_LINE_NUMBER"
-                ],
-                "video/smpte291": [
-                    "STATUS_CODE_ANC_WRONG_RESERVED_BIT"
-                ]
+                "application/ttml+xml": ["STATUS_CODE_TTML_INVALID_LENGTH"],
+                "video/jxsv": ["STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"],
+                "video/raw": ["STATUS_CODE_VIDEO_INVALID_LINE_NUMBER"],
+                "video/smpte291": ["STATUS_CODE_ANC_WRONG_RESERVED_BIT"]
             },
             "network_information": {
                 "destination_address": "239.0.1.13",

@@ -11,6 +11,7 @@
     "narrow_streams": 1,
     "not_compliant_streams": 0,
     "wide_streams": 0,
+    "srt_streams": 0,
     "generated_from_network": false,
     "truncated": true,
     "_id": "61c3595b7a9a14b521a241e0",
@@ -80,18 +81,10 @@
             },
             "media_type": "video",
             "media_type_validation": {
-                "application/ttml+xml": [
-                    "STATUS_CODE_TTML_INVALID_DOCUMENT"
-                ],
-                "audio/L16": [
-                    "STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"
-                ],
-                "video/jxsv": [
-                    "STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"
-                ],
-                "video/smpte291": [
-                    "STATUS_CODE_ANC_WRONG_HEADER"
-                ]
+                "application/ttml+xml": ["STATUS_CODE_TTML_INVALID_DOCUMENT"],
+                "audio/L16": ["STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"],
+                "video/jxsv": ["STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"],
+                "video/smpte291": ["STATUS_CODE_ANC_WRONG_HEADER"]
             },
             "network_information": {
                 "destination_address": "239.0.1.2",
@@ -146,14 +139,8 @@
                     "cmax_wide": 16,
                     "compliance": "narrow",
                     "histogram": [
-                        [
-                            0,
-                            88.22222137451172
-                        ],
-                        [
-                            1,
-                            11.777777671813965
-                        ]
+                        [0, 88.22222137451172],
+                        [1, 11.777777671813965]
                     ]
                 },
                 "compliance": "narrow",
@@ -163,22 +150,10 @@
                 "vrx": {
                     "compliance": "narrow",
                     "histogram": [
-                        [
-                            4,
-                            0.10288065671920776
-                        ],
-                        [
-                            5,
-                            55.452674865722656
-                        ],
-                        [
-                            6,
-                            0.12345679104328156
-                        ],
-                        [
-                            7,
-                            44.320987701416016
-                        ]
+                        [4, 0.10288065671920776],
+                        [5, 55.452674865722656],
+                        [6, 0.12345679104328156],
+                        [7, 44.320987701416016]
                     ],
                     "vrx_full_narrow": 8,
                     "vrx_full_wide": 720

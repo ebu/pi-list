@@ -11,6 +11,7 @@
     "narrow_streams": 0,
     "not_compliant_streams": 1,
     "wide_streams": 0,
+    "srt_streams": 0,
     "generated_from_network": false,
     "truncated": false,
     "_id": "61c359617a9a14b521a24299",
@@ -85,12 +86,8 @@
             "id": "95b2abfc-563c-45d8-a486-969ef35e49f8",
             "media_type": "ttml",
             "media_type_validation": {
-                "video/jxsv": [
-                    "STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"
-                ],
-                "video/smpte291": [
-                    "STATUS_CODE_ANC_WRONG_FIELD_VALUE"
-                ]
+                "video/jxsv": ["STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"],
+                "video/smpte291": ["STATUS_CODE_ANC_WRONG_FIELD_VALUE"]
             },
             "network_information": {
                 "destination_address": "127.0.0.1",
