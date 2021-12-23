@@ -97,7 +97,7 @@ void stream_listener::on_data(const udp::datagram& datagram)
     // NOTE: seqnum_analyzer_ assumes only the presence of
     // RTP's sequence number field, and not any extended field, hence the uint16_t qualification.
     seqnum_analyzer_.handle_packet(static_cast<uint16_t>(packet.info.rtp.view().sequence_number()),
-                                   packet.info.udp.packet_time, packet.info.rtp.view().ssrc());
+                                   packet.info.udp.packet_time, static_cast<uint32_t>(packet.info.rtp.view().ssrc()));
 
     dscp_.handle_packet(datagram);
 

@@ -23,7 +23,7 @@ namespace ebu_list::srt
 
       private:
         bool started_ = false;
-        rtp::dropped_packets_analyzer<uint32_t> dropped_packets_analyzer_;
+        rtp::dropped_packets_analyzer<Counter> dropped_packets_analyzer_;
         Counter current_seqnum_    = 0;
         int64_t num_retransmitted_ = 0;
     };

@@ -25,7 +25,7 @@ namespace ebu_list::rtp
         Counter current_seqnum_         = 0;
         uint32_t retransmitted_packets_ = 0;
         bool possibly_rist_             = false;
-        rtp::dropped_packets_analyzer<uint32_t> dropped_packets_analyzer_;
+        rtp::dropped_packets_analyzer<Counter> dropped_packets_analyzer_;
     };
 
 } // namespace ebu_list::rtp

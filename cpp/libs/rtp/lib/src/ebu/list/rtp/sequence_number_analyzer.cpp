@@ -57,11 +57,12 @@ void sequence_number_analyzer<Counter>::handle_packet(Counter sequence_number, c
     if(((ssrc & 1) == 1) && possibly_rist_)
     {
         ++retransmitted_packets_;
+        current_seqnum_ = sequence_number;
         return;
     }
 
-    dropped_packets_analyzer_.handle_packet(static_cast<uint32_t>(sequence_number),
-                                            static_cast<uint32_t>(current_seqnum_), packet_time);
+    dropped_packets_analyzer_.handle_packet(static_cast<Counter>(sequence_number),
+                                            static_cast<Counter>(current_seqnum_), packet_time);
     current_seqnum_ = sequence_number;
 }
 

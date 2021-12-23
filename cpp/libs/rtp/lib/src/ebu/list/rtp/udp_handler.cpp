@@ -12,20 +12,7 @@ udp_handler::udp_handler(handler_creator creator) : creator_(std::move(creator))
 
 void udp_handler::on_data(const udp::datagram& datagram)
 {
-   /* auto maybe_rtp_packet = rtp::decode(datagram.ethernet_info, datagram.info, std::move(datagram.sdu));
-    if(!maybe_rtp_packet)
-    {
-        // logger()->trace("Non-RTP datagram from {} to {}", to_string(source(datagram.info)),
-        // to_string(destination(datagram.info)));
-        return;
-    }
-
-    auto rtp_packet = std::move(maybe_rtp_packet.value());
-
-    // logger()->trace("RTP datagram from {} to {}, SSRC: {:08x}", to_string(source(rtp_packet.info.udp)),
-    //                to_string(destination(rtp_packet.info.udp)), rtp_packet.info.rtp.view().ssrc());
-*/
-   auto handler = find_or_create(datagram);
+    auto handler = find_or_create(datagram);
 
     if(handler)
     {

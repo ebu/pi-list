@@ -55,12 +55,13 @@ void srt_sequence_number_analyzer<Counter>::handle_packet(Counter sequence_numbe
     if(retransmitted_flag == 1)
     {
         num_retransmitted_++;
+        current_seqnum_ = sequence_number;
         return;
     }
     else
     {
-        dropped_packets_analyzer_.handle_packet(static_cast<uint32_t>(sequence_number),
-                                                static_cast<uint32_t>(current_seqnum_), packet_time);
+        dropped_packets_analyzer_.handle_packet(static_cast<Counter>(sequence_number),
+                                                static_cast<Counter>(current_seqnum_), packet_time);
         current_seqnum_ = sequence_number;
     }
 }
