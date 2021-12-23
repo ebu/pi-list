@@ -5,6 +5,7 @@
 #include "ebu/list/srt/srt_format_detector.h"
 #include "ebu/list/srt/srt_sequence_number_analyzer.h"
 #include "ebu/list/st2110/format_detector.h"
+#include "ebu/list/analysis/handlers/dscp_analyzer.h"
 
 namespace ebu_list::srt
 {
@@ -31,6 +32,7 @@ namespace ebu_list::srt
                                                  /*.error_code*/ "STATUS_CODE_FORMAT_DETECTING"};
 
         srt_sequence_number_analyzer<uint32_t> srt_sequence_number_analyzer_;
+        analysis::dscp_analyzer dscp_;
         int64_t num_packets_;
         nlohmann::json info_;
         clock::time_point capture_timestamp_ = {};

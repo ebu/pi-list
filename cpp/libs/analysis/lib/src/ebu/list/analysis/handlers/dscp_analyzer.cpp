@@ -6,9 +6,9 @@ using namespace ebu_list::media;
 
 //------------------------------------------------------------------------------
 
-void dscp_analyzer::handle_packet(const rtp::packet& packet) noexcept
+void dscp_analyzer::handle_packet(const udp::datagram& datagram) noexcept
 {
-    const auto& dscp = packet.info.udp.dscp;
+    const auto& dscp = datagram.info.dscp;
 
     if(info_.value)
     {

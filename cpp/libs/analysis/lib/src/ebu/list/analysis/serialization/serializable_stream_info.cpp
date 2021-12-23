@@ -72,7 +72,7 @@ stream_state analysis::from_string(std::string_view s)
 void media::to_json(json& j, const dscp_info& dscp)
 {
     j["consistent"] = dscp.is_consistent;
-    if(dscp.value)
+    if(dscp.value.has_value())
     {
         j["value"] = dscp.value.value();
     }
@@ -191,7 +191,9 @@ media::network_info media::from_json(const json& j)
     const auto has_extended_header_key = j.find("has_extended_header");
     if(has_extended_header_key != j.end()) stream.has_extended_header = has_extended_header_key->get<bool>();
 
-    from_json(j, stream.dscp);
+    const auto has_dscp = j.find("dscp");
+    if(has_dscp != j.end()) from_json(*has_dscp, stream.dscp);
+
 
     const auto inter_packet_spacing_info = j.find("inter_packet_spacing");
     if(inter_packet_spacing_info != j.end())

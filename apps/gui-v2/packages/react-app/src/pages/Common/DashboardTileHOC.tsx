@@ -20,13 +20,15 @@ const getInformation = (pcap: SDK.types.IPcapInfo): IInformation[] => {
     const audioStreams = pcap.audio_streams;
     const videoStreams = pcap.video_streams;
     const ttmlStreams = pcap.ttml_streams;
+    const srtStreams = pcap.srt_streams;
     const totalStreams = pcap.total_streams;
-    const unkownStreams = totalStreams - (videoStreams + audioStreams + ancStreams + ttmlStreams);
+    const unkownStreams = totalStreams - (videoStreams + audioStreams + ancStreams + ttmlStreams + srtStreams);
 
     values.push(['Ancillary', ancStreams]);
     values.push(['Ttml', ttmlStreams]);
     values.push(['Audio', audioStreams]);
     values.push(['Video', videoStreams]);
+    values.push(['SRT', srtStreams]);
     values.push(['Unknown', unkownStreams]);
 
     const activeValues = values.filter(v => v[1] > 0);
@@ -39,8 +41,9 @@ const getContent = (pcap: SDK.types.IPcapInfo): { label: string; percentage: num
     const audioStreams = pcap.audio_streams;
     const videoStreams = pcap.video_streams;
     const ttmlStreams = pcap.ttml_streams;
+    const srtStreams = pcap.srt_streams;
     const totalStreams = pcap.total_streams;
-    const unkownStreams = totalStreams - (videoStreams + audioStreams + ancStreams + ttmlStreams);
+    const unkownStreams = totalStreams - (videoStreams + audioStreams + ancStreams + ttmlStreams + srtStreams);
     let label =
         pcap.summary === undefined ? 'ERROR' : pcap.summary.error_list.length === 0 ? 'Compliant' : 'Not Compliant';
     if (unkownStreams > 0) {

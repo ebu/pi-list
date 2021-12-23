@@ -38,7 +38,6 @@ namespace ebu_list::analysis
         serializable_stream_info info_;
         audio_stream_details audio_description_;
         completion_handler completion_handler_;
-        dscp_analyzer dscp_;
         rtp::inter_packet_spacing_analyzer inter_packet_spacing_;
     };
 

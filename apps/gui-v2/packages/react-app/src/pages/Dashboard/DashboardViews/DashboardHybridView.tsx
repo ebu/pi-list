@@ -48,9 +48,10 @@ const DashboardHybridView: React.FunctionComponent<IPropTypes> = ({
                 ttml: item.ttml_streams,
                 audio: item.audio_streams,
                 ancillary: item.anc_streams,
+                srt: item.srt_streams,
                 unknown:
                     item.total_streams -
-                    (item.video_streams + item.audio_streams + item.anc_streams + item.ttml_streams),
+                    (item.video_streams + item.audio_streams + item.anc_streams + item.ttml_streams + item.srt_streams),
             };
             tableData.push(data);
         });

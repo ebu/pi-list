@@ -22,10 +22,11 @@ function PCapDetailsContent({
     const isTTML = currentStream?.full_media_type === 'application/ttml+xml' ? true : false;
     const isUnknown = currentStream?.full_media_type === 'unknown' ? true : false;
     const isJxsv = currentStream?.full_media_type === 'video/jxsv' ? true : false;
+    const isSRT = currentStream?.full_transport_type === 'SRT' ? true : false;
 
     //If we support more media types that don't need graphs or analysis, this needs to be changed
-    const hasAnalysis = !isTTML && !isJxsv;
-    const hasStreamExplorer = !isUnknown && !isJxsv;
+    const hasAnalysis = !isTTML && !isJxsv && !isSRT;
+    const hasStreamExplorer = !isUnknown && !isJxsv && !isSRT;
 
     React.useEffect(() => {
         if (!hasAnalysis) {

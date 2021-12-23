@@ -38,6 +38,8 @@ audio_stream_handler::audio_stream_handler(rtp::packet first_packet, serializabl
 
     info_.network.has_extended_header = first_packet.info.rtp.view().extension();
 
+    info_.network.dscp = info.network.dscp;
+
     audio_description_.first_sample_ts    = first_packet.info.rtp.view().timestamp();
     audio_description_.last_sample_ts     = audio_description_.first_sample_ts;
     audio_description_.first_packet_ts    = first_packet.info.udp.packet_time;
@@ -67,7 +69,6 @@ void audio_stream_handler::on_data(const rtp::packet& packet)
 
 void audio_stream_handler::on_complete()
 {
-    info_.network.dscp                      = dscp_.get_info();
     info_.network.inter_packet_spacing_info = inter_packet_spacing_.get_info();
 
     this->on_stream_complete();
@@ -106,7 +107,6 @@ void audio_stream_handler::parse_packet(const rtp::packet& packet)
     auto p         = sdu.view().data();
     const auto end = sdu.view().data() + sdu.view().size();
     // no extended sequence number for audio
-    dscp_.handle_packet(packet);
 
     this->on_sample_data(cbyte_span(p, end));
 

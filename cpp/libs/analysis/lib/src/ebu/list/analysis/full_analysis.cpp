@@ -254,8 +254,7 @@ void analysis::run_full_analysis(const bool is_srt, processing_context& context)
         {
             const auto& anc_info = std::get<anc_stream_details>(media_info);
 
-            auto maybe_rtp_packet =
-                rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
+            auto maybe_rtp_packet = rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
             if(!maybe_rtp_packet)
             {
                 auto handler = std::make_unique<udp::null_listener>();
@@ -263,9 +262,9 @@ void analysis::run_full_analysis(const bool is_srt, processing_context& context)
             }
             auto first_packet = std::move(maybe_rtp_packet.value());
 
-            auto new_handler     = std::make_unique<anc_stream_serializer>(first_packet, stream_info, anc_info,
+            auto new_handler = std::make_unique<anc_stream_serializer>(first_packet, stream_info, anc_info,
                                                                        anc_finalizer_callback, context.storage_folder);
-            auto ml              = std::make_unique<udp_multi_listener_t<udp::listener, udp::datagram>>();
+            auto ml          = std::make_unique<udp_multi_listener_t<udp::listener, udp::datagram>>();
             ml->add_rtp_listener(std::move(new_handler));
             {
                 auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
@@ -301,8 +300,7 @@ void analysis::run_full_analysis(const bool is_srt, processing_context& context)
         {
             const auto& ttml_info = std::get<ttml::stream_details>(media_info);
 
-            auto maybe_rtp_packet =
-                rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
+            auto maybe_rtp_packet = rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
             if(!maybe_rtp_packet)
             {
                 auto handler = std::make_unique<udp::null_listener>();
@@ -310,7 +308,7 @@ void analysis::run_full_analysis(const bool is_srt, processing_context& context)
             }
             auto first_packet = std::move(maybe_rtp_packet.value());
 
-            auto doc_logger       = context.handler_factory->create_ttml_document_logger(stream_info.id);
+            auto doc_logger = context.handler_factory->create_ttml_document_logger(stream_info.id);
 
             auto new_handler = std::make_unique<ttml::stream_handler>(first_packet, std::move(doc_logger), stream_info,
                                                                       ttml_info, ttml_finalizer_callback);
@@ -328,8 +326,7 @@ void analysis::run_full_analysis(const bool is_srt, processing_context& context)
         {
             counter.handle_video_jxsv();
 
-            auto maybe_rtp_packet =
-                rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
+            auto maybe_rtp_packet = rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
             if(!maybe_rtp_packet)
             {
                 auto handler = std::make_unique<udp::null_listener>();
@@ -354,14 +351,13 @@ void analysis::run_full_analysis(const bool is_srt, processing_context& context)
 
             return ml;
         }
-        if(media::is_full_media_type_srt(stream_info.full_type))
+        else if(stream_info.full_transport_type == media::transport_type::SRT)
         {
             counter.handle_srt();
             auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
             auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
             return analyzer;
         }
-
         else
         {
             counter.handle_unknown();

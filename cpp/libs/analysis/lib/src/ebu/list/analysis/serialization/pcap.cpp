@@ -26,6 +26,7 @@ nlohmann::json pcap_info::to_json(const pcap_info& info)
     j["narrow_streams"]        = info.narrow_streams;
     j["narrow_linear_streams"] = info.narrow_linear_streams;
     j["not_compliant_streams"] = info.not_compliant_streams;
+    j["srt_streams"]           = info.srt_streams;
 
     return j;
 }
@@ -59,6 +60,7 @@ pcap_info pcap_info::from_json(const nlohmann::json& j)
     pcap.narrow_streams        = j.at("narrow_streams").get<int>();
     pcap.narrow_linear_streams = j.at("narrow_linear_streams").get<int>();
     pcap.not_compliant_streams = j.at("not_compliant_streams").get<int>();
+    pcap.srt_streams           = j.at("srt_streams").get<int>();
 
     return pcap;
 }

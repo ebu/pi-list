@@ -16,7 +16,9 @@ const getPcapType = (currentStream: SDK.types.IStreamInfo | undefined, pcapID: s
         case 'video/smpte291':
             return <AncillaryAnalysisDisplay currentStream={currentStream} />;
         case 'unknown':
-            return <UnknownAnalysisDisplay currentStream={currentStream} />;
+            if (currentStream?.full_transport_type !== 'SRT') {
+                return <UnknownAnalysisDisplay currentStream={currentStream} />;
+            }
     }
 };
 

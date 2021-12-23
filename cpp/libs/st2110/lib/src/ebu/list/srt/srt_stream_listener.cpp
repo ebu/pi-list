@@ -19,10 +19,10 @@ namespace
         json serialized_streams_details = stream_with_details_serializer::to_json(stream_info);
         if(num_packets > 0)
         {
-            serialized_streams_details["statistics"]["packet_count"]               = num_packets;
-            serialized_streams_details["statistics"]["packet_retransmitted_count"] = num_retransmitted_packets;
-            serialized_streams_details["statistics"]["dropped_packet_count"]       = num_dropped_packets;
-            serialized_streams_details["statistics"]["dropped_packet_samples"]     = dropped_packet_samples;
+            serialized_streams_details["statistics"]["packet_count"]           = num_packets;
+            serialized_streams_details["statistics"]["retransmitted_packets"]  = num_retransmitted_packets;
+            serialized_streams_details["statistics"]["dropped_packet_count"]   = num_dropped_packets;
+            serialized_streams_details["statistics"]["dropped_packet_samples"] = dropped_packet_samples;
         }
 
         if(status_description.state == st2110::detector::state::invalid)
@@ -53,28 +53,32 @@ void srt_stream_listener::on_data(const udp::datagram& datagram)
     srt_sequence_number_analyzer_.handle_packet(static_cast<uint32_t>(payload_header.get_packet_sequence_number()),
                                                 datagram.info.packet_time, payload_header.get_retransmission_flag(),
                                                 payload_header.get_packet_type_flag());
+
+    dscp_.handle_packet(datagram);
+
     ++num_packets_;
 
     if(status_description_.state != st2110::detector::state::detecting) return;
 
     const auto result   = detector_.handle_data(datagram);
     status_description_ = result;
-    status_description_ = result;
 }
 
 void srt_stream_listener::on_complete()
 {
+    stream_id_.network.dscp = dscp_.get_info();
+
     if(status_description_.state == st2110::detector::state::invalid)
     {
-        stream_id_.type      = media::media_type::UNKNOWN;
-        stream_id_.full_type = media::full_media_from_string("unknown");
-        stream_id_.state     = stream_state::NEEDS_INFO;
+        stream_id_.type                = media::media_type::UNKNOWN;
+        stream_id_.full_type           = media::full_media_from_string("unknown");
+        stream_id_.full_transport_type = media::transport_type::UNKNOWN;
+        stream_id_.state               = stream_state::NEEDS_INFO;
     }
     else if(status_description_.state == st2110::detector::state::valid)
     {
-        stream_id_.type      = media::media_type::SRT;
-        stream_id_.full_type = media::full_media_type::SRT;
-        stream_id_.state     = stream_state::READY;
+        stream_id_.full_transport_type = media::transport_type::SRT;
+        stream_id_.state               = stream_state::READY;
     }
 
     stream_with_details swd{stream_id_, {}};

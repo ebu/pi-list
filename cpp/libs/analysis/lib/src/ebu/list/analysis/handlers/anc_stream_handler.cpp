@@ -39,9 +39,10 @@ anc_stream_handler::anc_stream_handler(rtp::packet first_packet, serializable_st
 
     info_.network.has_extended_header = first_packet.info.rtp.view().extension();
 
-    info_.state      = stream_state::ON_GOING_ANALYSIS; // mark as analysis started
-    const auto& anc  = this->info();
-    nlohmann::json j = anc_stream_details::to_json(anc);
+    info_.network.dscp = info.network.dscp;
+    info_.state        = stream_state::ON_GOING_ANALYSIS; // mark as analysis started
+    const auto& anc    = this->info();
+    nlohmann::json j   = anc_stream_details::to_json(anc);
     logger()->trace("Stream info:\n {}", j.dump(2, ' '));
 
     if(klvanc_context_create(&klvanc_ctx) < 0)
@@ -136,7 +137,6 @@ void anc_stream_handler::on_complete()
     }
 
     this->on_stream_complete();
-    info_.network.dscp                      = dscp_.get_info();
     info_.network.inter_packet_spacing_info = inter_packet_spacing_.get_info();
     info_.state                             = stream_state::ANALYZED;
     completion_handler_(*this);
@@ -169,8 +169,6 @@ void anc_stream_handler::parse_packet(const rtp::packet& packet)
     //    raw_extended_sequence_number*>(p)->esn); const uint32_t full_sequence_number = (extended_sequence_number <<
     //    16) | packet.info.rtp.view().sequence_number();
     p += sizeof(raw_extended_sequence_number);
-
-    dscp_.handle_packet(packet);
 
     const auto anc_header = anc_header_lens(*reinterpret_cast<const raw_anc_header*>(p));
     p += sizeof(raw_anc_header);

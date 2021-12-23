@@ -11,7 +11,6 @@ string media::to_string(media_type media_type)
     case media_type::AUDIO: return "audio";
     case media_type::ANCILLARY_DATA: return "ancillary_data";
     case media_type::TTML: return "ttml";
-    case media_type::SRT: return "srt";
     default: assert(media_type == media_type::UNKNOWN); return "unknown";
     }
 }
@@ -26,8 +25,6 @@ media::media_type media::from_string(std::string_view media)
         return media_type::ANCILLARY_DATA;
     else if(media == "ttml")
         return media_type::TTML;
-    else if(media == "srt")
-        return media_type::SRT;
     else
         return media_type::UNKNOWN;
 }
@@ -42,7 +39,6 @@ string media::full_media_to_string(full_media_type full_media_type)
     case full_media_type::L24: return "audio/L24";
     case full_media_type::SMPTE291: return "video/smpte291";
     case full_media_type::TTMLXML: return "application/ttml+xml";
-    case full_media_type::SRT: return "srt";
     default: assert(full_media_type == full_media_type::UNKNOWN); return "unknown";
     }
 }
@@ -53,6 +49,7 @@ string media::full_transport_type_to_string(transport_type full_transport_type)
     {
     case transport_type::RIST: return "RIST";
     case transport_type::RTP: return "RTP";
+    case transport_type::SRT: return "SRT";
     default: assert(full_transport_type == transport_type::UNKNOWN); return "unknown";
     }
 }
@@ -63,6 +60,8 @@ media::transport_type media::full_transport_type_from_string(std::string_view me
         return transport_type::RIST;
     else if(media == "RTP")
         return transport_type::RTP;
+    else if(media == "SRT")
+        return transport_type::SRT;
     else
         return transport_type::UNKNOWN;
 }
@@ -81,8 +80,6 @@ media::full_media_type media::full_media_from_string(std::string_view media)
         return full_media_type::SMPTE291;
     else if(media == "application/ttml+xml")
         return full_media_type::TTMLXML;
-    else if(media == "srt")
-        return full_media_type::SRT;
     else
         return full_media_type::UNKNOWN;
 }
@@ -144,15 +141,6 @@ bool media::is_full_media_type_ttml_xml(media::full_media_type full_media_type)
 bool media::is_full_media_type_unknown(media::full_media_type full_media_type)
 {
     if(full_media_type == full_media_type::UNKNOWN)
-    {
-        return true;
-    }
-    return false;
-}
-
-bool media::is_full_media_type_srt(media::full_media_type full_media_type)
-{
-    if(full_media_type == full_media_type::SRT)
     {
         return true;
     }

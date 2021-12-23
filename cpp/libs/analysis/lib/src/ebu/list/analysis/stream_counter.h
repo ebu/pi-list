@@ -51,7 +51,11 @@ namespace ebu_list::analysis
 
         void handle_unknown() { ++nr_total; }
 
-        void handle_srt() { ++nr_srt; }
+        void handle_srt()
+        {
+            ++nr_total;
+            ++nr_srt;
+        }
 
         void fill_streams_summary(pcap_info& pcap)
         {
@@ -64,6 +68,7 @@ namespace ebu_list::analysis
             pcap.narrow_streams        = nr_narrow.load();
             pcap.narrow_linear_streams = nr_narrow_linear.load();
             pcap.not_compliant_streams = nr_not_compliant.load();
+            pcap.srt_streams           = nr_srt.load();
         }
 
       private:

@@ -99,7 +99,7 @@ void stream_listener::on_data(const udp::datagram& datagram)
     seqnum_analyzer_.handle_packet(static_cast<uint16_t>(packet.info.rtp.view().sequence_number()),
                                    packet.info.udp.packet_time, packet.info.rtp.view().ssrc());
 
-    dscp_.handle_packet(packet);
+    dscp_.handle_packet(datagram);
 
     ++num_packets_;
 }
