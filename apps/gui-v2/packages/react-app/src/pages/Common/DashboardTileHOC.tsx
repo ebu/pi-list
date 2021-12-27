@@ -25,7 +25,7 @@ const getInformation = (pcap: SDK.types.IPcapInfo): IInformation[] => {
     const unkownStreams = totalStreams - (videoStreams + audioStreams + ancStreams + ttmlStreams + srtStreams);
 
     values.push(['Ancillary', ancStreams]);
-    values.push(['Ttml', ttmlStreams]);
+    values.push(['TTML', ttmlStreams]);
     values.push(['Audio', audioStreams]);
     values.push(['Video', videoStreams]);
     values.push(['SRT', srtStreams]);
