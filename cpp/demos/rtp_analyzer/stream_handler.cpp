@@ -8,8 +8,16 @@ using namespace ebu_list::st2110::d20;
 
 //------------------------------------------------------------------------------
 
-stream_handler::stream_handler(rtp::packet first_packet)
+stream_handler::stream_handler(const udp::datagram& first_datagram)
 {
+    auto maybe_rtp_packet = rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
+    if(!maybe_rtp_packet)
+    {
+        return;
+    }
+
+    auto first_packet = std::move(maybe_rtp_packet.value());
+
     info_.source         = source(first_packet.info.udp);
     info_.destination    = destination(first_packet.info.udp);
     info_.ssrc           = first_packet.info.rtp.view().ssrc();
@@ -28,8 +36,16 @@ const stream_info& stream_handler::info() const
     return info_;
 }
 
-void stream_handler::on_data(const rtp::packet& packet)
+void stream_handler::on_data(const udp::datagram& datagram)
 {
+    auto maybe_rtp_packet = rtp::decode(datagram.ethernet_info, datagram.info, datagram.sdu);
+    if(!maybe_rtp_packet)
+    {
+        return;
+    }
+
+    auto packet = std::move(maybe_rtp_packet.value());
+
     ++info_.packet_count;
     info_.payload_type = packet.info.rtp.view().payload_type();
 
