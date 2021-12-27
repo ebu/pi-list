@@ -6,9 +6,11 @@ import './styles.scss';
 import { streamComparisonAtom } from '../../store/gui/streamComparison/streamComparison';
 import useRecoilStreamComparisonHandler from '../../store/gui/streamComparison/useRecoilStreamComparisonHandler';
 import StreamComparisonTable from './StreamComparisonTable';
-import { CustomScrollbar } from '../../components';
+import { CustomScrollbar, SearchBar } from '../../components';
 import { useRecoilValue } from 'recoil';
 import { useHistory } from 'react-router-dom';
+import { findOne } from '../../utils/searchBar';
+import { getComparisonType } from '../../utils/titles';
 
 interface IPropTypes {
     pcaps: SDK.types.IPcapInfo[];
@@ -39,6 +41,24 @@ function StreamComparisonContent({
         history.push(`/streamComparison/${item.id}`);
     };
 
+    const [filterString, setFilterString] = React.useState<string>('');
+    const [filterTableData, setFilterTableData] = React.useState<any[]>(comparisonTableData);
+
+    React.useEffect(() => {
+        if (filterString === '') {
+            setFilterTableData(comparisonTableData);
+        } else {
+            const tokens = filterString.split(/\s+/).filter(v => v !== '');
+            const dataFilter = comparisonTableData.filter(value => {
+                const filenameResult = findOne(value.name, tokens);
+                const typeResult = findOne(getComparisonType(value.type), tokens);
+
+                return filenameResult || typeResult;
+            });
+            setFilterTableData(dataFilter);
+        }
+    }, [filterString, comparisonTableData]);
+
     return (
         <div>
             <div className="main-page-header">
@@ -53,8 +73,11 @@ function StreamComparisonContent({
                         onSelectedComparisonClick={onSelectedComparisonClick}
                         selectedComparison={selectedComparison}
                     />
+                    <div className="dashboard-search-bar-container">
+                        <SearchBar filterString={filterString} setFilterString={setFilterString} />
+                    </div>
                     <StreamComparisonTable
-                        comparisonTableData={comparisonTableData}
+                        comparisonTableData={filterTableData}
                         onTableRowClick={onTableRowClick}
                         onTableRowDoubleClick={onTableRowDoubleClick}
                         selectedComparisonsIds={selectedComparisonsIds}
