@@ -125,14 +125,16 @@ const getStreamsToSidebarStreamsList = (streams: SDK.types.IStreamInfo[]): IStre
         item.full_media_type === 'application/ttml+xml'
             ? (fullMediaType = 'application/ ttml+xml')
             : (fullMediaType = item.full_media_type);
-        item.full_transport_type === 'SRT' ? (fullMediaType = 'SRT') : (fullMediaType = item.full_media_type);
+        if (item.full_transport_type === 'SRT') {
+            fullMediaType = 'SRT';
+        }
         streamsList.push({
             id: item.id,
             key: getKey(index),
             type: item.media_type === 'ancillary_data' ? 'Ancillary' : item.media_type,
             fullType: fullMediaType,
             protocol: 'ST2110',
-            transport_type: item.full_transport_type
+            transport_type: item.full_transport_type,
         });
     });
 
