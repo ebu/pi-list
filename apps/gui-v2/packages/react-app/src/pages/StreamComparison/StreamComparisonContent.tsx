@@ -53,12 +53,6 @@ function StreamComparisonContent({
                         onSelectedComparisonClick={onSelectedComparisonClick}
                         selectedComparison={selectedComparison}
                     />
-                    {/* <button
-                        className="stream-comparison-panel-compare-button button-padding"
-                        onClick={() => onDeleteComparisons()}
-                    >
-                        Delete selected comparisons
-                    </button> */}
                     <StreamComparisonTable
                         comparisonTableData={comparisonTableData}
                         onTableRowClick={onTableRowClick}
