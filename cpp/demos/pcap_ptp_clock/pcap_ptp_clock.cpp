@@ -37,26 +37,13 @@ namespace
 } // namespace
 
 //------------------------------------------------------------------------------
-class null_udp_listener : public udp::listener
-{
-  private:
-#pragma region udp::listener events
-    void on_data(udp::datagram&&) override {}
-
-    void on_complete() override {}
-
-    void on_error(std::exception_ptr) override {}
-#pragma endregion udp::listener events
-};
-
-//------------------------------------------------------------------------------
 
 void run(const config& config)
 {
     logger()->info("Press <enter> to exit.\n\n");
 
     auto sm                = std::make_shared<ptp::state_machine>();
-    auto non_ptp_listener  = std::make_shared<null_udp_listener>();
+    auto non_ptp_listener  = std::make_shared<udp::null_listener>();
     auto filter            = std::make_shared<ptp::udp_filter>(sm, non_ptp_listener);
     auto progress_callback = [](float) {};
     auto player = std::make_unique<pcap::pcap_player>(path(config.pcap_file), progress_callback, filter, on_error_exit);
