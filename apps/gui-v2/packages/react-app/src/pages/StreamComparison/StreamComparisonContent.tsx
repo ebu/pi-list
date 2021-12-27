@@ -1,4 +1,5 @@
 import React from 'react';
+import SDK from '@bisect/ebu-list-sdk';
 import StreamComparisonHeaderHOC from './Header/StreamComparisonHeaderHOC';
 import StreamComparisonPanel from './StreamComparisonPanel';
 import './styles.scss';
@@ -8,7 +9,16 @@ import StreamComparisonTable from './StreamComparisonTable';
 import { CustomScrollbar } from '../../components';
 import { useRecoilValue } from 'recoil';
 import { useHistory } from 'react-router-dom';
-import list from '../../utils/api';
+
+interface IPropTypes {
+    pcaps: SDK.types.IPcapInfo[];
+    onIconsClick: (type: string) => void;
+    selectedWorkflow: string;
+    onSelectedComparisonClick: (type: string) => void;
+    selectedComparison: string;
+    onTableRowClick: (item: any, e: React.MouseEvent<HTMLElement>) => void;
+    selectedComparisonsIds: string[];
+}
 
 function StreamComparisonContent({
     pcaps,
@@ -16,35 +26,17 @@ function StreamComparisonContent({
     selectedWorkflow,
     onSelectedComparisonClick,
     selectedComparison,
-}: any) {
+    onTableRowClick,
+    selectedComparisonsIds,
+}: IPropTypes) {
     const history = useHistory();
 
     useRecoilStreamComparisonHandler();
 
     const comparisonTableData = useRecoilValue(streamComparisonAtom);
 
-    const [currentComparisonsIds, setCurrentComparisonsIds] = React.useState<string[]>([]);
-
-    const onTableRowClick = (item: any, e: React.MouseEvent<HTMLElement>) => {
-        if (e.ctrlKey) {
-            if (currentComparisonsIds.includes(item.id)) {
-                setCurrentComparisonsIds(currentComparisonsIds.filter(i => i !== item.id));
-            } else {
-                setCurrentComparisonsIds([...currentComparisonsIds, item.id]);
-            }
-        } else {
-            setCurrentComparisonsIds([item.id]);
-        }
-    };
-
     const onTableRowDoubleClick = (item: any) => {
         history.push(`/streamComparison/${item.id}`);
-    };
-
-    const onDeleteComparisons = async () => {
-        currentComparisonsIds.forEach(async (comparisonId: string) => {
-            await list.streamComparison.delete(comparisonId);
-        });
     };
 
     return (
@@ -61,17 +53,17 @@ function StreamComparisonContent({
                         onSelectedComparisonClick={onSelectedComparisonClick}
                         selectedComparison={selectedComparison}
                     />
-                    <button
+                    {/* <button
                         className="stream-comparison-panel-compare-button button-padding"
                         onClick={() => onDeleteComparisons()}
                     >
                         Delete selected comparisons
-                    </button>
+                    </button> */}
                     <StreamComparisonTable
                         comparisonTableData={comparisonTableData}
                         onTableRowClick={onTableRowClick}
                         onTableRowDoubleClick={onTableRowDoubleClick}
-                        selectedComparisonsIds={currentComparisonsIds}
+                        selectedComparisonsIds={selectedComparisonsIds}
                     />
                 </CustomScrollbar>
             </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import SDK from '@bisect/ebu-list-sdk';
 import { DateTime } from 'luxon';
 import { translate } from '../../utils/translation';
 import list from '../../utils/api';
@@ -9,13 +10,21 @@ import './styles.scss';
 import { TransitDelayIcon, AvSyncIcon, DiffTransitDelayIcon, NetworkRedundancyIcon } from 'components/icons/index';
 import ItemsList from 'components/DropdownMenu/ItemsList';
 
+interface IPropTypes {
+    pcaps: SDK.types.IPcapInfo[];
+    onIconsClick: (type: string) => void;
+    selectedWorkflow: string;
+    onSelectedComparisonClick: (type: string) => void;
+    selectedComparison: string;
+}
+
 function StreamComparisonPanel({
     pcaps,
     onIconsClick,
     selectedWorkflow,
     onSelectedComparisonClick,
     selectedComparison,
-}: any) {
+}: IPropTypes) {
     const [streamA, setStreamA] = React.useState<any>({});
     const [streamB, setStreamB] = React.useState<any>({});
     const [description, setDescription] = React.useState('');

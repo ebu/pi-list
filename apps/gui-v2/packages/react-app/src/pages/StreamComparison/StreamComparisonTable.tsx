@@ -1,3 +1,4 @@
+import SDK from '@bisect/ebu-list-sdk';
 import { DateTime } from 'luxon';
 import { CustomScrollbar } from '../../components';
 import { getMediaTypeIcon, getComparisonType } from '../../utils/titles';
@@ -9,12 +10,19 @@ export const comparisonTypes = {
     avSync: 'AVSync',
 };
 
+interface IPropTypes {
+    comparisonTableData: any[];
+    onTableRowClick: (item: any, e: React.MouseEvent<HTMLElement>) => void;
+    onTableRowDoubleClick: (item: any) => void;
+    selectedComparisonsIds: string[];
+}
+
 function StreamComparisonTable({
     comparisonTableData,
     onTableRowClick,
     onTableRowDoubleClick,
     selectedComparisonsIds,
-}: any) {
+}: IPropTypes) {
     const renderDelay = (value: number) => {
         return (value / 1000).toFixed(3);
     };
