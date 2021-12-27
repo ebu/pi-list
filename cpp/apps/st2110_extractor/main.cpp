@@ -180,7 +180,7 @@ namespace
             config.pcap_file, config.profile,    config.storage_folder, pcap, get_stream_info, &factory,
             &updater,         progress_callback, config.extract_frames};
 
-        const auto is_srt = true;
+        const auto is_srt = false;
 
         run_full_analysis(is_srt, context);
     }
