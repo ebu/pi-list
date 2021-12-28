@@ -11,6 +11,7 @@ import { useRecoilValue } from 'recoil';
 import { useHistory } from 'react-router-dom';
 import { findOne } from '../../utils/searchBar';
 import { getComparisonType } from '../../utils/titles';
+import routeBuilder from '../../routes/routeBuilder';
 
 interface IPropTypes {
     pcaps: SDK.types.IPcapInfo[];
@@ -38,7 +39,8 @@ function StreamComparisonContent({
     const comparisonTableData = useRecoilValue(streamComparisonAtom);
 
     const onTableRowDoubleClick = (item: any) => {
-        history.push(`/streamComparison/${item.id}`);
+        const route = routeBuilder.stream_comparison_list(item.id);
+        history.push(route);
     };
 
     const [filterString, setFilterString] = React.useState<string>('');

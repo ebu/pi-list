@@ -71,9 +71,11 @@ export const getRouteInfoForPath = (path: string) => {
             return path === r.path;
         }
 
-        return path.startsWith(r.path);
-    });
+        const splitRoutePath = r.path?.split('/', 2);
+        const routeBasePath = splitRoutePath?.join('/');
 
+        return path.startsWith(routeBasePath);
+    });
     return route;
 };
 
