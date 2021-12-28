@@ -64,3 +64,5 @@ export type {IGraphicMinMaxAvgData} from './MultipleLineGraphic/MinMaxAvgLineGra
 export {default as MinAvgMaxTooltip} from './Tooltips/MinAvgMaxTooltip';
 export {default as News} from './News/News';
 export {default as SearchBar} from './SearchBar/SearchBar';
+export {default as BaseSelector} from './BaseSelector/BaseSelector';
+export {default as customStyles} from './BaseSelector/BaseSelector';
