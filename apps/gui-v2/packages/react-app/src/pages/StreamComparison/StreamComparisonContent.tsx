@@ -1,14 +1,27 @@
 import React from 'react';
+import SDK from '@bisect/ebu-list-sdk';
 import StreamComparisonHeaderHOC from './Header/StreamComparisonHeaderHOC';
 import StreamComparisonPanel from './StreamComparisonPanel';
 import './styles.scss';
 import { streamComparisonAtom } from '../../store/gui/streamComparison/streamComparison';
 import useRecoilStreamComparisonHandler from '../../store/gui/streamComparison/useRecoilStreamComparisonHandler';
 import StreamComparisonTable from './StreamComparisonTable';
-import { CustomScrollbar } from '../../components';
+import { CustomScrollbar, SearchBar } from '../../components';
 import { useRecoilValue } from 'recoil';
 import { useHistory } from 'react-router-dom';
-import list from '../../utils/api';
+import { findOne } from '../../utils/searchBar';
+import { getComparisonType } from '../../utils/titles';
+import routeBuilder from '../../routes/routeBuilder';
+
+interface IPropTypes {
+    pcaps: SDK.types.IPcapInfo[];
+    onIconsClick: (type: string) => void;
+    selectedWorkflow: string;
+    onSelectedComparisonClick: (type: string) => void;
+    selectedComparison: string;
+    onTableRowClick: (item: any, e: React.MouseEvent<HTMLElement>) => void;
+    selectedComparisonsIds: string[];
+}
 
 function StreamComparisonContent({
     pcaps,
@@ -16,36 +29,37 @@ function StreamComparisonContent({
     selectedWorkflow,
     onSelectedComparisonClick,
     selectedComparison,
-}: any) {
+    onTableRowClick,
+    selectedComparisonsIds,
+}: IPropTypes) {
     const history = useHistory();
 
     useRecoilStreamComparisonHandler();
 
     const comparisonTableData = useRecoilValue(streamComparisonAtom);
 
-    const [currentComparisonsIds, setCurrentComparisonsIds] = React.useState<string[]>([]);
-
-    const onTableRowClick = (item: any, e: React.MouseEvent<HTMLElement>) => {
-        if (e.ctrlKey) {
-            if (currentComparisonsIds.includes(item.id)) {
-                setCurrentComparisonsIds(currentComparisonsIds.filter(i => i !== item.id));
-            } else {
-                setCurrentComparisonsIds([...currentComparisonsIds, item.id]);
-            }
-        } else {
-            setCurrentComparisonsIds([item.id]);
-        }
-    };
-
     const onTableRowDoubleClick = (item: any) => {
-        history.push(`/streamComparison/${item.id}`);
+        const route = routeBuilder.stream_comparison_list(item.id);
+        history.push(route);
     };
 
-    const onDeleteComparisons = async () => {
-        currentComparisonsIds.forEach(async (comparisonId: string) => {
-            await list.streamComparison.delete(comparisonId);
-        });
-    };
+    const [filterString, setFilterString] = React.useState<string>('');
+    const [filterTableData, setFilterTableData] = React.useState<any[]>(comparisonTableData);
+
+    React.useEffect(() => {
+        if (filterString === '') {
+            setFilterTableData(comparisonTableData);
+        } else {
+            const tokens = filterString.split(/\s+/).filter(v => v !== '');
+            const dataFilter = comparisonTableData.filter(value => {
+                const filenameResult = findOne(value.name, tokens);
+                const typeResult = findOne(getComparisonType(value.type), tokens);
+
+                return filenameResult || typeResult;
+            });
+            setFilterTableData(dataFilter);
+        }
+    }, [filterString, comparisonTableData]);
 
     return (
         <div>
@@ -61,17 +75,14 @@ function StreamComparisonContent({
                         onSelectedComparisonClick={onSelectedComparisonClick}
                         selectedComparison={selectedComparison}
                     />
-                    <button
-                        className="stream-comparison-panel-compare-button button-padding"
-                        onClick={() => onDeleteComparisons()}
-                    >
-                        Delete selected comparisons
-                    </button>
+                    <div className="dashboard-search-bar-container">
+                        <SearchBar filterString={filterString} setFilterString={setFilterString} />
+                    </div>
                     <StreamComparisonTable
-                        comparisonTableData={comparisonTableData}
+                        comparisonTableData={filterTableData}
                         onTableRowClick={onTableRowClick}
                         onTableRowDoubleClick={onTableRowDoubleClick}
-                        selectedComparisonsIds={currentComparisonsIds}
+                        selectedComparisonsIds={selectedComparisonsIds}
                     />
                 </CustomScrollbar>
             </div>

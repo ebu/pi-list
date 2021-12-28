@@ -1,6 +1,5 @@
-import React from 'react';
 import './styles.scss';
-import Select from 'react-select';
+import BaseSelector from '../BaseSelector/BaseSelector';
 //TODO See what are the pcaps parameters and make the interface for it
 interface IComponentProps {
     pcaps: any;
@@ -16,13 +15,13 @@ function PcapSelector({ pcaps, selectedPcapId, onChange }: IComponentProps) {
         <div className="pcap-selector-container">
             <span className="stream-comparison-panel-h3">PCAP:</span>
             <div>
-                <Select
+                <BaseSelector
                     options={entries}
-                    onChange={e => {
+                    onChange={(e: any) => {
                         onChange(e);
                     }}
                     value={current}
-                ></Select>
+                ></BaseSelector>
             </div>
         </div>
     );

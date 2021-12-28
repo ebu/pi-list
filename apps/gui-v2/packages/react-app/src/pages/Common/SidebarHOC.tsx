@@ -29,7 +29,10 @@ interface IButtonWithRoutes {
 function SidebarHOC() {
     const location = useLocation();
     const routeInfo = getRouteInfoForPath(location.pathname);
-    const routeBasePath = routeInfo && routeInfo.path;
+    const routePath = routeInfo && routeInfo.path;
+    const splitRoutePath = routePath?.split('/', 2);
+    const routeBasePath = splitRoutePath?.join('/');
+
     const history = useHistory();
 
     const [sidebarCollapsed, setSidebarCollapsed] = useRecoilState(sidebarCollapsedAtom);
@@ -89,26 +92,25 @@ function SidebarHOC() {
                 clicked: false,
                 key: sidebarButtonsKeys.help,
                 icon: HelpIcon,
-                route: 'ola',
+                route: 'none',
             },
             {
                 text: 'Collapse',
                 clicked: false,
                 key: sidebarButtonsKeys.collapse,
                 icon: CollapseIcon,
-                route: 'ola',
+                route: 'none',
             },
             {
                 text: `v${version?.major}.${version?.minor}.${version?.patch} @${version?.hash}`,
                 clicked: false,
                 key: sidebarButtonsKeys.version,
-                route: 'ola',
+                route: 'none',
             },
         ],
     };
 
-    if ( (typeof(process.env.REACT_APP_LIVE) !== 'undefined') &&
-         (process.env.REACT_APP_LIVE)) {
+    if (typeof process.env.REACT_APP_LIVE !== 'undefined' && process.env.REACT_APP_LIVE) {
         buttonsList.upperButtons.splice(1, 0, {
             text: translate('navigation.capture'),
             clicked: false,

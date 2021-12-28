@@ -100,6 +100,8 @@ thead th {
 .details-table-filename-data {
     text-align: left !important;
     padding-right: 2.3em;
+    max-width: 370px;
+    overflow-wrap: break-word;
 }
 
 .details-table-filename-name {
