@@ -3,9 +3,15 @@ import logger from '../util/logger';
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const API_ERRORS = require('../enums/apiErrors');
 const LiveStream = require('../models/liveStream');
-const fs = require('../util/filesystem');
 const liveSources = require('../controllers/live/sources');
-const { checkIsReadOnly } = require('../auth/middleware');
+const {
+    getUserId,
+    checkIsReadOnly
+} = require('../auth/middleware');
+const websocketManager = require('../managers/websocket');
+import {
+    api
+} from '@bisect/ebu-list-sdk';
 
 // get all live streams, active or not
 router.get('/streams', (req, res) => {
@@ -17,9 +23,13 @@ router.get('/streams', (req, res) => {
 
 // get a single stream definition
 router.get('/streams/:streamID/', (req, res) => {
-    const { streamID } = req.params;
+    const {
+        streamID
+    } = req.params;
 
-    LiveStream.findOne({ id: streamID })
+    LiveStream.findOne({
+            id: streamID
+        })
         .exec()
         .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
@@ -27,9 +37,13 @@ router.get('/streams/:streamID/', (req, res) => {
 
 // delete a live stream
 router.delete('/streams/:streamID/', checkIsReadOnly, (req, res) => {
-    const { streamID } = req.params;
+    const {
+        streamID
+    } = req.params;
 
-    LiveStream.deleteOne({ id: streamID })
+    LiveStream.deleteOne({
+            id: streamID
+        })
         .exec()
         .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
@@ -37,11 +51,17 @@ router.delete('/streams/:streamID/', checkIsReadOnly, (req, res) => {
 
 /* Patch the stream info with a new name */
 router.patch('/streams/:streamID/', checkIsReadOnly, (req, res) => {
-    const { streamID } = req.params;
+    const {
+        streamID
+    } = req.params;
     const alias = req.body.name;
 
     // todo: maybe check if it found a document (check data.n)?
-    LiveStream.updateOne({ id: streamID }, { alias: alias })
+    LiveStream.updateOne({
+            id: streamID
+        }, {
+            alias: alias
+        })
         .exec()
         .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
@@ -61,30 +81,59 @@ router.put('/streams/subscribe', checkIsReadOnly, (req, res) => {
 // get all live sources
 router.get('/sources', (req, res) => {
     liveSources
-        .getLiveSources()
+        .getAllLiveSources()
         .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(API_ERRORS.UNEXPECTED_ERROR));
 });
 
-// add a live sources. body : { source: <source to add> }
+// add a live source. body : { source: <source to add> }
 router.post('/sources', checkIsReadOnly, (req, res) => {
+    const userId = getUserId(req);
     liveSources
-        .addLiveSource(req.body.source)
-        .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send(data))
+        .addLiveSource(req.body)
+        .then((data) => {
+            websocketManager.instance().sendEventToUser(userId, {
+                event: api.wsEvents.LiveSource.list_update,
+                data: data,
+            });
+            res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send(data)
+        })
         .catch(() => res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(API_ERRORS.UNEXPECTED_ERROR));
 });
 
-// delete live sources
-router.put('/sources/delete', checkIsReadOnly, (req, res) => {
-    const { ids } = req.body;
-    if (ids === null || ids === undefined) {
+// update a live source. body : { source: <source to update> }
+router.put('/sources/:sourceID', checkIsReadOnly, (req, res) => {
+    const userId = getUserId(req);
+    liveSources
+        .updateLiveSource(req.body)
+        .then((data) => {
+            websocketManager.instance().sendEventToUser(userId, {
+                event: api.wsEvents.LiveSource.list_update,
+                data: data,
+            });
+            res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data)
+        })
+        .catch(() => res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(API_ERRORS.UNEXPECTED_ERROR));
+});
+
+// delete live source
+router.delete('/sources/:sourceID', checkIsReadOnly, (req, res) => {
+    const {
+        sourceID
+    } = req.params;
+    const userId = getUserId(req);
+    if (sourceID === null || sourceID === undefined) {
         res.status(HTTP_STATUS_CODE.SERVER_ERROR.BAD_REQUEST).send(API_ERRORS.RESOURCE_NOT_FOUND);
         return;
     }
 
     liveSources
-        .deleteLiveSources(ids)
+        .deleteLiveSource(sourceID)
         .then((data) => {
+            websocketManager.instance().sendEventToUser(userId, {
+                event: api.wsEvents.LiveSource.list_update,
+                data: data,
+            });
             res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data);
         })
         .catch(() => res.status(HTTP_STATUS_CODE.SERVER_ERROR.INTERNAL_SERVER_ERROR).send(API_ERRORS.UNEXPECTED_ERROR));

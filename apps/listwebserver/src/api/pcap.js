@@ -1,7 +1,6 @@
 const child_process = require('child_process');
 const path = require('path');
 const router = require('express').Router();
-const child_process = require('child_process');
 const multer = require('multer');
 const util = require('util');
 const influxDbManager = require('../managers/influx-db');

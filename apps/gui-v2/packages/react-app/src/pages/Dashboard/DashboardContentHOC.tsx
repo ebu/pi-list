@@ -127,6 +127,7 @@ const getMultipleFilesDownload = async (type: string, pCapIdsToDownload: string[
             type: type,
         },
     };
+
     await list.workflows
         .create(workflowInfo)
         .then(() => {

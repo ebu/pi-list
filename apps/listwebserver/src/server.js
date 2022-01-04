@@ -6,7 +6,6 @@ const programArguments = require('./util/programArguments');
 import logger from './util/logger';
 const ingestProgress = require('./managers/ingestProgress');
 const websocketManager = require('./managers/websocket');
-const ingestProgress = require('./managers/ingestProgress');
 const {
     onError,
     onListening,
