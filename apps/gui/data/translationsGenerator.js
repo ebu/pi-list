@@ -12,7 +12,9 @@
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
-const { google } = require('googleapis');
+const {
+    google
+} = require('googleapis');
 
 /**
  * If modifying these scopes, delete token.json.
@@ -53,11 +55,11 @@ const TOKEN_PATH = path.join(__dirname, 'token.json');
  *
  */
 
-fs.readFile(path.join(__dirname, 'credentials.json'), (err, content) => {
-    if (err) return console.log('Error loading client secret file:', err);
-    // Authorize a client with credentials, then call the Google Sheets API.
-    authorize(process.argv.includes('-t'), JSON.parse(content), DownloadSheetData);
-});
+// fs.readFile(path.join(__dirname, 'credentials.json'), (err, content) => {
+//     if (err) return console.log('Error loading client secret file:', err);
+//     // Authorize a client with credentials, then call the Google Sheets API.
+//     authorize(process.argv.includes('-t'), JSON.parse(content), DownloadSheetData);
+// });
 
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
@@ -66,7 +68,11 @@ fs.readFile(path.join(__dirname, 'credentials.json'), (err, content) => {
  * @param {function} callback The callback to call with the authorized client.
  */
 function authorize(generateToken, credentials, callback) {
-    const { client_secret, client_id, redirect_uris } = credentials.installed;
+    const {
+        client_secret,
+        client_id,
+        redirect_uris
+    } = credentials.installed;
     const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
 
     // Check if we have previously stored a token.
@@ -118,9 +124,11 @@ function getNewToken(oAuth2Client) {
  * @param {google.auth.OAuth2} auth The authenticated Google OAuth client.
  */
 function DownloadSheetData(auth) {
-    const sheets = google.sheets({ version: 'v4', auth });
-    sheets.spreadsheets.values.get(
-        {
+    const sheets = google.sheets({
+        version: 'v4',
+        auth
+    });
+    sheets.spreadsheets.values.get({
             spreadsheetId: '1yqL3CKmUu_M1AWCtHEzG5hp-8B1X-5_qxcgDn4AbFYo',
             range: 'translations!A:Z', //Range can be from min to max, because the API will retrieve only the columns with data.
         },

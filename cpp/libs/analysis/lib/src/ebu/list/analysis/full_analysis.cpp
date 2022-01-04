@@ -1,10 +1,12 @@
 #include "ebu/list/analysis/full_analysis.h"
 #include "ebu/list/analysis/serialization/anc_stream_serializer.h"
 #include "ebu/list/analysis/serialization/audio_stream_serializer.h"
+#include "ebu/list/analysis/serialization/jpeg_xs_stream_extractor.h"
 #include "ebu/list/analysis/serialization/ttml_stream_serializer.h"
 #include "ebu/list/analysis/serialization/video_stream_extractor.h"
 #include "ebu/list/analysis/serialization/video_stream_serializer.h"
 #include "ebu/list/analysis/utils/multi_listener.h"
+#include "ebu/list/analysis/utils/udp_multi_listener.h"
 #include "ebu/list/core/platform/executor.h"
 #include "ebu/list/core/platform/parallel.h"
 #include "ebu/list/pcap/player.h"
@@ -99,14 +101,14 @@ namespace
     }
 } // namespace
 
-void analysis::run_full_analysis(processing_context& context)
+void analysis::run_full_analysis(const bool is_srt, processing_context& context)
 {
     stream_counter counter;
 
     auto main_executor = std::make_shared<executor>();
 
     auto video_finalizer_callback = [&](const video_stream_serializer& handler) {
-        counter.handle_video_completed(handler.get_video_analysis_info());
+        counter.handle_video_raw_completed(handler.get_video_analysis_info());
         video_finalizer(context, handler);
     };
     auto audio_finalizer_callback = [&context, &counter](const audio_stream_handler& ash) {
@@ -122,40 +124,50 @@ void analysis::run_full_analysis(processing_context& context)
         ttml_finalizer(context, tsh);
     };
 
-    auto create_handler = [&](const rtp::packet& first_packet) -> rtp::listener_uptr {
-        const auto maybe_stream_info = context.get_stream_info(first_packet);
+    auto create_handler = [&](const udp::datagram& first_datagram) -> udp::listener_uptr {
+        const auto maybe_stream_info = context.get_stream_info(is_srt, first_datagram);
 
         if(!maybe_stream_info)
         {
-            logger()->warn("Bypassing stream with ssrc: {}", first_packet.info.rtp.view().ssrc());
-            logger()->warn("\tdestination: {}", to_string(ipv4::endpoint{first_packet.info.udp.destination_address,
-                                                                         first_packet.info.udp.destination_port}));
-            auto handler = std::make_unique<rtp::null_listener>();
+            /*logger()->warn("Bypassing stream with ssrc: {}", first_packet.info.rtp.view().ssrc());*/
+            logger()->warn("\tdestination: {}", to_string(ipv4::endpoint{first_datagram.info.destination_address,
+                                                                         first_datagram.info.destination_port}));
+            auto handler = std::make_unique<udp::null_listener>();
             return handler;
         }
 
         const auto& stream_info = maybe_stream_info->first;
         const auto& media_info  = maybe_stream_info->second;
 
-        if(stream_info.type == media::media_type::VIDEO)
+        if(media::is_full_media_type_video_raw(stream_info.full_type))
         {
             const auto& in_video_info = std::get<video_stream_details>(media_info);
             const auto video_info     = media::video::info{in_video_info.video.rate, in_video_info.video.scan_type,
                                                        in_video_info.video.dimensions};
 
-            auto ml = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
+            auto maybe_rtp_packet =
+                rtp::decode(first_datagram.ethernet_info, first_datagram.info, std::move(first_datagram.sdu));
+            if(!maybe_rtp_packet)
+            {
+                auto handler = std::make_unique<udp::null_listener>();
+                return handler;
+            }
+
+            auto first_packet = std::move(maybe_rtp_packet.value());
+
+            auto ml = std::make_unique<udp_multi_listener_t<udp::listener, udp::datagram>>();
 
             if(context.extract_frames)
             {
                 auto new_handler = std::make_unique<video_stream_extractor>(first_packet, stream_info, in_video_info,
                                                                             context.storage_folder, main_executor);
-                ml->add(std::move(new_handler));
+                ml->add_rtp_listener(std::move(new_handler));
             }
             else
             {
                 auto new_handler = std::make_unique<video_stream_serializer>(
                     first_packet, stream_info, in_video_info, context.storage_folder, video_finalizer_callback);
-                ml->add(std::move(new_handler));
+                ml->add_rtp_listener(std::move(new_handler));
                 {
                     auto db_logger =
                         context.handler_factory->create_c_inst_data_logger(context.pcap.id, stream_info.id);
@@ -163,7 +175,13 @@ void analysis::run_full_analysis(processing_context& context)
                     auto analyzer =
                         std::make_unique<c_analyzer>(std::move(db_logger), std::move(cinst_writer),
                                                      in_video_info.video.packets_per_frame, video_info.rate);
-                    ml->add(std::move(analyzer));
+                    ml->add_rtp_listener(std::move(analyzer));
+                }
+
+                {
+                    auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+                    auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                    ml->add_udp_listener(std::move(analyzer));
                 }
 
                 {
@@ -189,18 +207,31 @@ void analysis::run_full_analysis(processing_context& context)
 
                     auto framer =
                         std::make_unique<frame_start_filter>(frame_start_filter::listener_uptr(std::move(framer_ml)));
-                    ml->add(std::move(framer));
+                    ml->add_rtp_listener(std::move(framer));
                 }
             }
             return ml;
         }
-        else if(stream_info.type == media::media_type::AUDIO)
+        else if(media::is_full_media_type_audio_l16(stream_info.full_type) ||
+                media::is_full_media_type_audio_l24(stream_info.full_type))
         {
             const auto& audio_info = std::get<audio_stream_details>(media_info);
-            auto new_handler       = std::make_unique<audio_stream_serializer>(
+
+            auto maybe_rtp_packet =
+                rtp::decode(first_datagram.ethernet_info, first_datagram.info, std::move(first_datagram.sdu));
+            if(!maybe_rtp_packet)
+            {
+                auto handler = std::make_unique<udp::null_listener>();
+                return handler;
+            }
+
+            auto first_packet = std::move(maybe_rtp_packet.value());
+
+            auto new_handler = std::make_unique<audio_stream_serializer>(
                 first_packet, stream_info, audio_info, audio_finalizer_callback, context.storage_folder);
-            auto ml = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
-            ml->add(std::move(new_handler));
+
+            auto ml = std::make_unique<udp_multi_listener_t<udp::listener, udp::datagram>>();
+            ml->add_rtp_listener(std::move(new_handler));
 
             {
                 auto db_rtp_logger =
@@ -210,17 +241,36 @@ void analysis::run_full_analysis(processing_context& context)
                 auto analyzer = std::make_unique<audio_timing_analyser>(
                     first_packet, std::move(db_rtp_logger), std::move(db_tsdf_logger),
                     ebu_list::media::audio::to_int(audio_info.audio.sampling));
-                ml->add(std::move(analyzer));
+                ml->add_rtp_listener(std::move(analyzer));
+            }
+            {
+                auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+                auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                ml->add_udp_listener(std::move(analyzer));
             }
             return ml;
         }
-        else if(stream_info.type == media::media_type::ANCILLARY_DATA)
+        else if(media::is_full_media_type_video_smpte291(stream_info.full_type))
         {
             const auto& anc_info = std::get<anc_stream_details>(media_info);
-            auto new_handler     = std::make_unique<anc_stream_serializer>(first_packet, stream_info, anc_info,
+
+            auto maybe_rtp_packet = rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
+            if(!maybe_rtp_packet)
+            {
+                auto handler = std::make_unique<udp::null_listener>();
+                return handler;
+            }
+            auto first_packet = std::move(maybe_rtp_packet.value());
+
+            auto new_handler = std::make_unique<anc_stream_serializer>(first_packet, stream_info, anc_info,
                                                                        anc_finalizer_callback, context.storage_folder);
-            auto ml              = std::make_unique<multi_listener_t<rtp::listener, rtp::packet>>();
-            ml->add(std::move(new_handler));
+            auto ml          = std::make_unique<udp_multi_listener_t<udp::listener, udp::datagram>>();
+            ml->add_rtp_listener(std::move(new_handler));
+            {
+                auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+                auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                ml->add_udp_listener(std::move(analyzer));
+            }
 
             {
                 auto framer_ml =
@@ -241,28 +291,79 @@ void analysis::run_full_analysis(processing_context& context)
                 }
                 auto framer =
                     std::make_unique<frame_start_filter>(frame_start_filter::listener_uptr(std::move(framer_ml)));
-                ml->add(std::move(framer));
+                ml->add_rtp_listener(std::move(framer));
             }
 
             return ml;
         }
-        else if(stream_info.type == media::media_type::TTML)
+        else if(media::is_full_media_type_ttml_xml(stream_info.full_type))
         {
             const auto& ttml_info = std::get<ttml::stream_details>(media_info);
-            auto doc_logger       = context.handler_factory->create_ttml_document_logger(stream_info.id);
+
+            auto maybe_rtp_packet = rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
+            if(!maybe_rtp_packet)
+            {
+                auto handler = std::make_unique<udp::null_listener>();
+                return handler;
+            }
+            auto first_packet = std::move(maybe_rtp_packet.value());
+
+            auto doc_logger = context.handler_factory->create_ttml_document_logger(stream_info.id);
 
             auto new_handler = std::make_unique<ttml::stream_handler>(first_packet, std::move(doc_logger), stream_info,
                                                                       ttml_info, ttml_finalizer_callback);
-            return new_handler;
+            auto ml          = std::make_unique<udp_multi_listener_t<udp::listener, udp::datagram>>();
+            ml->add_rtp_listener(std::move(new_handler));
+            {
+                auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+                auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                ml->add_udp_listener(std::move(analyzer));
+            }
+
+            return ml;
+        }
+        else if(media::is_full_media_type_video_jxsv(stream_info.full_type))
+        {
+            counter.handle_video_jxsv();
+
+            auto maybe_rtp_packet = rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
+            if(!maybe_rtp_packet)
+            {
+                auto handler = std::make_unique<udp::null_listener>();
+                return handler;
+            }
+            auto first_packet = std::move(maybe_rtp_packet.value());
+
+            auto ml = std::make_unique<udp_multi_listener_t<udp::listener, udp::datagram>>();
+
+            if(context.extract_frames)
+            {
+                auto new_handler = std::make_unique<jpeg_xs_stream_extractor>(first_packet, context.storage_folder,
+                                                                              main_executor, stream_info.id);
+                ml->add_rtp_listener(std::move(new_handler));
+            }
+            else
+            {
+                auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+                auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                ml->add_udp_listener(std::move(analyzer));
+            }
+
+            return ml;
+        }
+        else if(stream_info.full_transport_type == media::transport_type::SRT)
+        {
+            counter.handle_srt();
+            auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+            auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+            return analyzer;
         }
         else
         {
             counter.handle_unknown();
-            logger()->warn(
-                "Bypassing stream with destination: {}. Reason: Unknown media type",
-                ipv4::endpoint{first_packet.info.udp.destination_address, first_packet.info.udp.destination_port});
-            auto handler = std::make_unique<rtp::null_listener>();
-            return handler;
+            auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+            auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+            return analyzer;
         }
     };
 

@@ -1,12 +1,17 @@
 const _ = require('lodash');
 const collection = require('../models/user');
-import logger from '../util/logger';
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
-const { getUserId } = require('../auth/middleware');
-const { defaultPreferences } = require('../auth/middleware');
+const {
+    getUserId
+} = require('../auth/middleware');
+const {
+    defaultPreferences
+} = require('../auth/middleware');
 
 const getPreferences = async (userId) => {
-    const user = await collection.findOne({ id: userId }).exec();
+    const user = await collection.findOne({
+        id: userId
+    }).exec();
     if (user === null) return null;
 
     if (user.preferences === null) {
@@ -18,7 +23,9 @@ const getPreferences = async (userId) => {
 };
 
 const setPreferences = async (userId, newPreferences) => {
-    const user = await collection.findOne({ id: userId }).exec();
+    const user = await collection.findOne({
+        id: userId
+    }).exec();
     if (user === null) {
         throw new Error(`User ${userId} not found`);
     }
@@ -28,7 +35,9 @@ const setPreferences = async (userId, newPreferences) => {
 };
 
 async function getUser(username) {
-    const user = await collection.findOne({ username: username }).select(['-salt', '-password']).exec();
+    const user = await collection.findOne({
+        username: username
+    }).select(['-salt', '-password']).exec();
     if (user === null) return null;
 
     if (user.preferences === null) {
@@ -45,7 +54,9 @@ function updatePreferences(req, res, next) {
     const value = req.body.value;
 
     collection
-        .findOne({ id: userId })
+        .findOne({
+            id: userId
+        })
         .exec()
         .then((user) => {
             if (user === null) {
@@ -56,7 +67,9 @@ function updatePreferences(req, res, next) {
             const preferences = _.merge(user.preferences, value);
             user.preferences = preferences;
             return user.save().then((d) => {
-                res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({ value: d });
+                res.status(HTTP_STATUS_CODE.SUCCESS.OK).send({
+                    value: d
+                });
             });
         })
         .catch((e) => {
@@ -68,7 +81,9 @@ const setReadOnly = async (req) => {
     const userId = getUserId(req);
     const value = req.body.value;
 
-    const user = await collection.findOne({ id: userId }).exec();
+    const user = await collection.findOne({
+        id: userId
+    }).exec();
     if (user === null) {
         throw new Error(`User ${userId} not found`);
     }

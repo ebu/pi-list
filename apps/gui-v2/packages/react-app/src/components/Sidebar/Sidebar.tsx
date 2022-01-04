@@ -1,5 +1,4 @@
 import React from 'react';
-import 'tippy.js/dist/tippy.css';
 import './styles.scss';
 import { LogoIcon } from '../icons/index';
 import { useHistory } from 'react-router-dom';
@@ -21,6 +20,7 @@ export const sidebarButtonsKeys = {
     settings: 5,
     collapse: 6,
     version: 7,
+    capture: 8,
 };
 
 export type Button = {

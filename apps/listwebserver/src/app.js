@@ -4,12 +4,16 @@ const session = require('express-session');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
-const url = require('url');
 const bodyParser = require('body-parser');
-const { promisify } = require('util');
+const {
+    promisify
+} = require('util');
 const child_process = require('child_process');
 const api = require('./api');
-const { apiErrorHandler, resourceNotFoundHandler, isAuthenticated } = require('./util/express-middleware');
+const {
+    apiErrorHandler,
+    resourceNotFoundHandler
+} = require('./util/express-middleware');
 const HTTP_STATUS_CODE = require('./enums/httpStatusCode');
 const programArguments = require('./util/programArguments');
 import logger from './util/logger';
@@ -19,7 +23,9 @@ const program = require('./util/programArguments');
 const app = express();
 
 // Initialize the REST API logger
-app.use(morgan('short', { stream: logger('rest-api').restAPILogger }));
+app.use(morgan('short', {
+    stream: logger('rest-api').restAPILogger
+}));
 
 logger('static-generator').info('CORS: ', '*');
 

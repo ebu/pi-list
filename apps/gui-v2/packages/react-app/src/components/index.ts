@@ -29,6 +29,9 @@ export type { IGraphicTimeMaxData } from './LineGraphic/LineGraphic';
 export type { IGraphicTimeValueData } from './LineGraphic/LineGraphic';
 export { default as BarGraphic } from './BarGraphic/BarGraphic';
 export type { IBarGraphic } from './BarGraphic/BarGraphic';
+export { default as ScatterGraphic } from './ScatterGraphic/ScatterGraphic';
+export type { IScatterGraphic } from './ScatterGraphic/ScatterGraphic';
+export type { IScatterGraphicElement } from './ScatterGraphic/ScatterGraphic';
 export { default as ImagesGallery } from './ImagesGallery/ImagesGallery';
 export { default as DropdownMenu } from './DropdownMenu/DropdownMenu';
 export { default as CustomScrollbar } from './CustomScrollbar/CustomScrollbar';
@@ -60,3 +63,6 @@ export { default as MinMaxAvgLineGraphic } from './MultipleLineGraphic/MinMaxAvg
 export type {IGraphicMinMaxAvgData} from './MultipleLineGraphic/MinMaxAvgLineGraphic';
 export {default as MinAvgMaxTooltip} from './Tooltips/MinAvgMaxTooltip';
 export {default as News} from './News/News';
+export {default as SearchBar} from './SearchBar/SearchBar';
+export {default as BaseSelector} from './BaseSelector/BaseSelector';
+export {default as customStyles} from './BaseSelector/BaseSelector';

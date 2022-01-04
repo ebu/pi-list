@@ -22,12 +22,12 @@ namespace
 
 //------------------------------------------------------------------------------
 
-class troffset_analyzer : public rtp::listener
+class troffset_analyzer : public udp::listener
 {
   public:
     troffset_analyzer(std::string stream_id, media::video::info video_info, tro_map& tro_info);
 
-    void on_data(const rtp::packet& p) override;
+    void on_data(const udp::datagram& datagram) override;
 
     void on_complete() override;
 
@@ -48,8 +48,16 @@ troffset_analyzer::troffset_analyzer(std::string stream_id, media::video::info v
 {
 }
 
-void troffset_analyzer::on_data(const rtp::packet& p)
+void troffset_analyzer::on_data(const udp::datagram& datagram)
 {
+    auto maybe_rtp_packet = rtp::decode(datagram.ethernet_info, datagram.info, std::move(datagram.sdu));
+    if(!maybe_rtp_packet)
+    {
+        return;
+    }
+
+    auto p = std::move(maybe_rtp_packet.value());
+
     const auto sequence_number = p.info.rtp.view().sequence_number();
 
     if(p.info.rtp.view().marker())
@@ -112,10 +120,19 @@ tro_map analysis::calculate_average_troffset(ebu_list::path pcap_file,
 {
     tro_map tro_info;
 
-    auto create_handler = [&](rtp::packet first_packet) -> rtp::listener_uptr {
+    auto create_handler = [&](const udp::datagram& first_datagram) -> udp::listener_uptr {
+        auto maybe_rtp_packet =
+            rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
+        if(!maybe_rtp_packet)
+        {
+            return std::make_unique<udp::null_listener>();
+        }
+
+        auto first_packet = std::move(maybe_rtp_packet.value());
+
         const auto ssrc                  = first_packet.info.rtp.view().ssrc();
-        const ipv4::endpoint destination = {first_packet.info.udp.destination_address,
-                                            first_packet.info.udp.destination_port};
+        const ipv4::endpoint destination = {first_datagram.info.destination_address,
+                                            first_datagram.info.destination_port};
 
         const auto stream_info_it = std::find_if(wanted_streams.begin(), wanted_streams.end(), [&](const auto& info) {
             const stream_with_details& details = info.second;
@@ -125,12 +142,12 @@ tro_map analysis::calculate_average_troffset(ebu_list::path pcap_file,
 
         if(stream_info_it == wanted_streams.end())
         {
-            return std::make_unique<rtp::null_listener>();
+            return std::make_unique<udp::null_listener>();
         }
 
         const auto& stream_info = stream_info_it->second.first;
 
-        if(stream_info.type == media::media_type::VIDEO)
+        if(stream_info.full_type == media::full_media_type::RAW)
         {
             const auto& in_video_info = std::get<video_stream_details>(stream_info_it->second.second);
             const auto video_info     = media::video::info{in_video_info.video.rate, in_video_info.video.scan_type,
@@ -142,7 +159,7 @@ tro_map analysis::calculate_average_troffset(ebu_list::path pcap_file,
         }
         else
         {
-            return std::make_unique<rtp::null_listener>();
+            return std::make_unique<udp::null_listener>();
         }
     };
 

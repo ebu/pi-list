@@ -11,7 +11,7 @@ namespace ebu_list::analysis
         using completion_callback = std::function<void(const video_stream_extractor& vsh)>;
 
         video_stream_extractor(rtp::packet first_packet, serializable_stream_info info, video_stream_details details,
-                                path base_dir, executor_ptr main_executor);
+                               path base_dir, executor_ptr main_executor);
 
       private:
         void on_frame_started(const frame& f) override;

@@ -1,0 +1,220 @@
+@import '../../../../style/variables/colors.scss';
+
+.capture-panel-container {
+    margin: 0 3em 1em 3em;
+    justify-content: center;
+    align-items: center;
+}
+
+.capture-container {
+    border-radius: 8px 8px 8px 8px;
+    background: $background-dark-blue;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+}
+
+.capture-title {
+    padding-bottom: 20px;
+}
+
+.capture-title > span {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 18px;
+    color: $font-light-grey;
+}
+
+.capture-panel-select {
+    width: 40%;
+}
+
+.capture-panel-row {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 50px;
+    margin: auto 2em;
+    justify-content: space-between;
+}
+
+.capture-panel-capture-button {
+    cursor: pointer;
+    background: $vibrant-blue;
+    border: 1px solid $vibrant-blue;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: 10em;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+
+    color: $white;
+}
+
+.capture-panel-capture-button:disabled {
+    cursor: default;
+    background: $bright-blue;
+    color: $grey;
+}
+
+.capture-content-column {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: baseline;
+    padding-bottom: 20px;
+    margin: auto 2em;
+}
+
+.capture-content-row {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 50px;
+    margin: auto 2em;
+}
+
+.capture-settings-label-container {
+    padding-bottom: 0.5em;
+}
+
+.capture-settings-label {
+    padding-bottom: 0.5em;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #e6e7ea;
+}
+
+.capture-description-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.capture-description-title {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 27px;
+    color: #ffffff;
+    padding-bottom: 0.9em;
+}
+
+.capture-description-text {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 26px;
+    color: #848898;
+    padding-bottom: 0.9em;
+}
+
+.user-capture-description {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+    color: white;
+    font-family: Prompt;
+}
+
+.live-source-table-container {
+    width: 100%;
+    padding: 0 50px 50px 50px;
+}
+
+.live-source-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+table.live-source-table {
+    width: 100%;
+    border-radius: 8px 8px 8px 8px;
+    background: $background-dark-blue;
+}
+
+thead {
+    & > tr {
+        border-bottom: 0.5px solid $black;
+    }
+}
+
+.live-source-centered-value {
+    text-align: center !important;
+}
+
+.live-source-table-label {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+    padding-left: 4px;
+    color: #e6e7ea;
+    overflow-wrap: anywhere;
+    white-space: pre-line;
+}
+
+.live-source-name-data-container {
+    padding-left: 32px;
+}
+
+.live-source-table-tool-row {
+    padding-bottom: 50px;
+    margin: auto 2em;
+    justify-content: space-between;
+}
+
+.live-source-table-row {
+    &.active {
+        background: $background-blue-active;
+        border-left: 2px solid $vibrant-blue;
+    }
+}
+
+.live-source-table-centered-header-label {
+    text-align: center !important;
+    padding-left: 32px !important;
+}
+
+.live-source-button {
+    cursor: pointer;
+    background: $dark-blue;
+    border: 1px solid $vibrant-blue;
+    box-sizing: border-box;
+    border-radius: 4px;
+    line-height: 24px;
+    color: $white;
+}
+
+.live-source-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $white-transparent-54
+}
+
+.live-source-modal-content {
+    position: inherit;
+    top: 51%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    background-color: $dark-blue;
+    transform: translate(-50%, -50%);
+}

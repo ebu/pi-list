@@ -12,7 +12,7 @@ export const getFinalHistData = (dataPercentage: number[][]) => {
     const result = dataPercentage.reduce((acc, curr) => {
         const index = curr[0];
         const value = curr[1];
-        acc.push({ label: index.toString(), value: parseFloat(value.toFixed(3)) });
+        acc.push({ label: index, value: parseFloat(value.toFixed(3)) });
         return acc;
     }, [] as IBarGraphic[]);
 

@@ -1,8 +1,10 @@
 import Select from 'react-select';
 import React from 'react';
 import SDK from '@bisect/ebu-list-sdk';
+import { useHistory } from 'react-router-dom';
 import SettingsHeaderHOC from './Header/SettingsHeaderHOC';
-
+import { GoogleAnalyticsHandler } from 'utils/googleAnalytics';
+import { customStyles } from 'components/BaseSelector/BaseSelector';
 export interface ILanguage {
     value: string;
     label: string;
@@ -24,40 +26,6 @@ interface IComponentProps {
     onChangeAnalysisProfile: (e: any) => void;
 }
 
-const customStyles = {
-    option: (provided: any, state: any) => ({
-        ...provided,
-        borderBottom: '2px solid #b5b8c1',
-        color: state.isSelected ? 'white' : 'black',
-        backgroundColor: state.isSelected ? '#b5b8c1' : 'white',
-    }),
-    control: (provided: any) => ({
-        ...provided,
-        height: 40,
-    }),
-    indicatorContainer: (provided: any) => ({ ...provided, height: 40 }),
-    valueContainer: (provided: any) => ({ ...provided, height: 40 }),
-    menuList: (base: any) => ({
-        ...base,
-        scrollbarWidth: 'thin',
-        scrollbarColor: 'gray',
-
-        '::-webkit-scrollbar': {
-            width: '6px',
-        },
-        '::-webkit-scrollbar-track': {
-            background: 'none',
-        },
-        '::-webkit-scrollbar-thumb': {
-            background: 'gray',
-            borderRadius: '6px',
-        },
-        '::-webkit-scrollbar-thumb:hover': {
-            background: '#555',
-        },
-    }),
-};
-
 function SettingsContent({
     languages,
     onChangeLanguage,
@@ -67,6 +35,8 @@ function SettingsContent({
     analysisProfileDefaultValue,
     onChangeAnalysisProfile,
 }: IComponentProps) {
+    const history = useHistory();
+
     const currentLanguage = languages.find(item => item.value === userData?.preferences?.gui?.language);
     const [gdprConsent, setGdprConsent] = React.useState<boolean>();
 
@@ -80,10 +50,12 @@ function SettingsContent({
     const onGDPRClick = (gdpr: boolean) => {
         localStorage.setItem('gdprConsent', gdpr.toString());
         setGdprConsent(gdpr);
+        history.go(0);
     };
 
     return (
         <>
+            <GoogleAnalyticsHandler gdprConsent={gdprConsent} />
             <div className="main-page-header">
                 <SettingsHeaderHOC />
             </div>

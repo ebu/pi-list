@@ -1,11 +1,8 @@
 const router = require('express').Router();
-const util = require('util');
-import logger from '../util/logger';
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 const API_ERRORS = require('../enums/apiErrors');
 const StreamCompare = require('../models/streamCompare');
 const websocketManager = require('../managers/websocket');
-const WS_EVENTS = require('../enums/wsEvents');
 const {
     getUserId,
     checkIsReadOnly
@@ -93,7 +90,6 @@ router.post('/:comparisonID/', checkIsReadOnly, (req, res) => {
     } = req.params;
     const userId = getUserId(req);
     const comparison = req.body;
-    console.log(comparison);
     StreamCompare.findOneAndUpdate({
             id: comparisonID
         }, comparison, {

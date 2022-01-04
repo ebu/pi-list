@@ -1,20 +1,26 @@
-const { v1: uuid } = require('uuid');
 const path = require('path');
-const tmp = require('tmp');
 const fs = require('fs');
-const { promisify } = require('util');
+const {
+    promisify
+} = require('util');
+const child_process = require('child_process');
+const {
+    v1: uuid
+} = require('uuid');
+const tmp = require('tmp');
 const websocketManager = require('../../managers/websocket');
-const WS_EVENTS = require('../../enums/wsEvents');
 import logger from '../../util/logger';
 const Stream = require('../../models/stream');
 const Pcap = require('../../models/pcap');
 const StreamCompare = require('../../models/streamCompare');
+const program = require('../../util/programArguments');
+import {
+    api
+} from '@bisect/ebu-list-sdk';
+
+const exec = promisify(child_process.exec);
 const writeFile = promisify(fs.writeFile);
 const readFile = promisify(fs.readFile);
-const child_process = require('child_process');
-const exec = promisify(child_process.exec);
-const program = require('../../util/programArguments');
-import { api } from '@bisect/ebu-list-sdk';
 
 // async
 const tmpFile = () => {
@@ -27,8 +33,12 @@ const tmpFile = () => {
 };
 
 const getStreamInfo = async (streamId, folder) => {
-    const stream = await Stream.findOne({ id: streamId }).exec();
-    const pcap = await Pcap.findOne({ id: stream.pcap }).exec();
+    const stream = await Stream.findOne({
+        id: streamId
+    }).exec();
+    const pcap = await Pcap.findOne({
+        id: stream.pcap
+    }).exec();
     const pcap_file = path.join(folder, pcap.id, pcap.pcap_file_name);
 
     const network_information = {
@@ -121,8 +131,7 @@ const createWorkflow = async (wf, inputConfig, workSender) => {
 
     const completeAnalysis = (result) => {
         const id = uuid();
-        StreamCompare.create(
-            {
+        StreamCompare.create({
                 id: id,
                 name: name,
                 owner_id: userID,

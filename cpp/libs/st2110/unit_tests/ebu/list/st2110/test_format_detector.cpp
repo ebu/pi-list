@@ -1,32 +1,52 @@
 #include "catch2/catch.hpp"
 #include "ebu/list/pcap/player.h"
 #include "ebu/list/rtp/udp_handler.h"
-#include "ebu/list/st2110/d20/video_format_detector.h"
-#include "ebu/list/st2110/d30/audio_format_detector.h"
 #include "ebu/list/st2110/format_detector.h"
 #include "ebu/list/test_lib/sample_files.h"
-#include "ebu/list/ttml/ttml_format_detector.h"
+#include "format_detector_handler.h"
 
 using namespace ebu_list;
 using namespace ebu_list::st2110;
 using namespace ebu_list::st2110::d20;
 using namespace ebu_list::st2110::d30;
+using namespace ebu_list::st2110::d40;
 
 //------------------------------------------------------------------------------
 
 SCENARIO("format detector")
 {
-    format_detector* fd = nullptr;
+    format_detector_handler* fd = nullptr;
 
-    auto create_handler = [&](rtp::packet first_packet) {
-        auto d = std::make_unique<format_detector>(first_packet);
+    auto create_handler = [&](const udp::datagram&) {
+        auto d = std::make_unique<format_detector_handler>();
         fd     = d.get();
         return d;
     };
 
     auto udp_handler = std::make_shared<rtp::udp_handler>(create_handler);
 
-    GIVEN("a video stream")
+    GIVEN("a st2110-22 video stream")
+    {
+        const auto pcap_file   = test_lib::sample_file("pcap/st2110/2110-22/125mbps-JPEGXS.pcap");
+        auto progress_callback = [](float) {};
+        pcap::pcap_player player(pcap_file, progress_callback, udp_handler, on_error_exit);
+        while(player.next())
+        {
+        }
+
+        REQUIRE(fd != nullptr);
+
+        WHEN("we check the format")
+        {
+            const auto maybe_full_media_type = fd->get_full_media_type();
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
+
+            REQUIRE(fd->status().state == detector::state::valid);
+            REQUIRE(full_media_type == "video/jxsv");
+        }
+    }
+
+    GIVEN("a st2110-20 video stream")
     {
         const auto pcap_file   = test_lib::sample_file("pcap/st2110/2110-20/2110-20_1080i5994.pcap");
         auto progress_callback = [](float) {};
@@ -39,7 +59,11 @@ SCENARIO("format detector")
 
         WHEN("we check the format")
         {
+            const auto maybe_full_media_type = fd->get_full_media_type();
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
+
             REQUIRE(fd->status().state == detector::state::valid);
+            REQUIRE(full_media_type == "video/raw");
 
             THEN("we get video")
             {
@@ -68,6 +92,9 @@ SCENARIO("format detector")
         {
             REQUIRE(fd->status().state == detector::state::valid);
 
+            const auto maybe_full_media_type = fd->get_full_media_type();
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
+
             THEN("we get audio")
             {
                 const auto details = fd->get_details();
@@ -77,6 +104,8 @@ SCENARIO("format detector")
                 REQUIRE(audio_details.packet_time == audio_packet_time(std::chrono::milliseconds(1)));
                 REQUIRE(audio_details.number_channels == 2);
                 REQUIRE(audio_details.encoding == media::audio::audio_encoding::L16);
+
+                REQUIRE(full_media_type == "audio/L16");
             }
         }
     }
@@ -97,6 +126,9 @@ SCENARIO("format detector")
         {
             REQUIRE(fd->status().state == detector::state::valid);
 
+            const auto maybe_full_media_type = fd->get_full_media_type();
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
+
             THEN("we get audio")
             {
                 const auto details = fd->get_details();
@@ -106,6 +138,69 @@ SCENARIO("format detector")
                 REQUIRE(audio_details.packet_time == audio_packet_time(std::chrono::microseconds(125)));
                 REQUIRE(audio_details.number_channels == 8);
                 REQUIRE(audio_details.encoding == media::audio::audio_encoding::L24);
+
+                REQUIRE(full_media_type == "audio/L24");
+            }
+        }
+    }
+
+    GIVEN("a ancillary stream")
+    {
+        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-40/2110-40_5994i.pcap");
+
+        auto progress_callback = [](float) {};
+        pcap::pcap_player player(pcap_file, progress_callback, udp_handler, on_error_exit);
+        while(player.next())
+        {
+        }
+
+        REQUIRE(fd != nullptr);
+
+        WHEN("we check the format")
+        {
+            const auto maybe_full_media_type = fd->get_full_media_type();
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
+
+            REQUIRE(fd->status().state == detector::state::valid);
+            REQUIRE(full_media_type == "video/smpte291");
+
+            THEN("we get anc")
+            {
+                const auto details = fd->get_details();
+                REQUIRE(std::holds_alternative<anc_description>(details));
+            }
+        }
+    }
+
+    GIVEN("an ancillary stream with 3 valid types inside")
+    {
+        const auto pcap_file = test_lib::sample_file("pcap/st2110/2110-40/anc_with_timecode+CC+AFD.pcap");
+        /* Note that this pcap also contains SCTE-104 but not too late
+         * to be captured by the format detector */
+
+        auto progress_callback = [](float) {};
+        pcap::pcap_player player(pcap_file, progress_callback, udp_handler, on_error_exit);
+        while(player.next())
+        {
+        }
+
+        REQUIRE(fd != nullptr);
+
+        WHEN("we check the format")
+        {
+            const auto maybe_full_media_type = fd->get_full_media_type();
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
+
+            REQUIRE(fd->status().state == detector::state::valid);
+            REQUIRE(full_media_type == "video/smpte291");
+
+            THEN("it has 3 valid sub-streams @ 5 pkts/frame")
+            {
+                const auto details = fd->get_details();
+                REQUIRE(std::holds_alternative<anc_description>(details));
+                const auto anc_details = std::get<anc_description>(details);
+                REQUIRE(anc_details.packets_per_frame == 5);
+                REQUIRE(anc_details.sub_streams.size() == 3);
             }
         }
     }
@@ -124,7 +219,11 @@ SCENARIO("format detector")
 
         WHEN("we check the format")
         {
+            const auto maybe_full_media_type = fd->get_full_media_type();
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
+
             REQUIRE(fd->status().state == detector::state::valid);
+            REQUIRE(full_media_type == "application/ttml+xml");
 
             THEN("we get ttml")
             {
@@ -148,7 +247,11 @@ SCENARIO("format detector")
 
         WHEN("we check the format")
         {
+            const auto maybe_full_media_type = fd->get_full_media_type();
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
+
             REQUIRE(fd->status().state == detector::state::valid);
+            REQUIRE(full_media_type == "application/ttml+xml");
 
             THEN("we get ttml")
             {
@@ -172,7 +275,11 @@ SCENARIO("format detector")
 
         WHEN("we check the format")
         {
+            const auto maybe_full_media_type = fd->get_full_media_type();
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
+
             REQUIRE(fd->status().state == detector::state::valid);
+            REQUIRE(full_media_type == "application/ttml+xml");
 
             THEN("we get ttml")
             {

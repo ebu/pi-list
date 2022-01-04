@@ -7,15 +7,18 @@ import AncillaryAnalysisDisplay from './Ancillary/AncillaryAnalysisDisplay';
 import UnknownAnalysisDisplay from './Unknown/UnknownAnalysisDisplay';
 
 const getPcapType = (currentStream: SDK.types.IStreamInfo | undefined, pcapID: string) => {
-    switch (currentStream?.media_type) {
-        case 'video':
+    switch (currentStream?.full_media_type) {
+        case 'video/raw':
             return <VideoAnalysisDisplay currentStream={currentStream} pcapID={pcapID} />;
-        case 'audio':
+        case 'audio/L16':
+        case 'audio/L24':
             return <AudioAnalysisDisplay currentStream={currentStream} />;
-        case 'ancillary_data':
+        case 'video/smpte291':
             return <AncillaryAnalysisDisplay currentStream={currentStream} />;
         case 'unknown':
-            return <UnknownAnalysisDisplay currentStream={currentStream} />;
+            if (currentStream?.full_transport_type !== 'SRT') {
+                return <UnknownAnalysisDisplay currentStream={currentStream} />;
+            }
     }
 };
 

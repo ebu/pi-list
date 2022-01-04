@@ -18,7 +18,7 @@ void frame_info_builder::on_packet(const packet_info& p) noexcept
 void frame_info_builder::reset() noexcept
 {
     packet_count_           = 0;
-    first_packet_timestamp_ = 0;
+    first_packet_timestamp_.reset();
     last_packet_timestamp_  = 0;
 }
 
@@ -30,7 +30,6 @@ size_t frame_info_builder::get_packet_count() const noexcept
 int64_t frame_info_builder::get_first_packet_timestamp() const noexcept
 {
     return first_packet_timestamp_.value_or(0);
-    ;
 }
 
 int64_t frame_info_builder::get_last_packet_timestamp() const noexcept

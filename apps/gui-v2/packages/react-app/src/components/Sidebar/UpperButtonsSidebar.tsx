@@ -1,5 +1,4 @@
 import React from 'react';
-import 'tippy.js/dist/tippy.css';
 import './styles.scss';
 import { LogoIcon } from '../icons/index';
 
@@ -17,7 +16,6 @@ export type Button = {
 };
 
 function UpperButtonsSidebar({ upperButtons, onClick, isCollapsed }: IComponentProps) {
-    const Icon = LogoIcon;
     return (
         <ul className="menu-list top">
             {upperButtons.map(button => {

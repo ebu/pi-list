@@ -13,6 +13,7 @@
 #include "ebu/list/st2110/d20/rtp_ts_analyzer.h"
 #include "ebu/list/st2110/d21/c_analyzer.h"
 #include "ebu/list/st2110/d21/vrx_analyzer.h"
+#include "ebu/list/st2110/packet_interval_time_analyzer.h"
 #include "nlohmann/json.hpp"
 
 namespace ebu_list::analysis
@@ -25,6 +26,8 @@ namespace ebu_list::analysis
         virtual st2110::d21::c_analyzer::listener_uptr
         create_c_inst_data_logger(const std::string& pcap_id, const std::string& stream_id) const          = 0;
         virtual histogram_listener_uptr create_c_inst_histogram_logger(const std::string& stream_id) const = 0;
+        virtual st2110::packet_interval_time_analyzer::listener_uptr
+        create_pit_logger(const std::string& stream_id) const = 0;
         virtual st2110::d20::rtp_ts_analyzer::listener_uptr
         create_rtp_ts_logger(const std::string& pcap_id, const std::string& stream_id) const                        = 0;
         virtual st2110::d20::rtp_analyzer::listener_uptr create_rtp_logger(const std::string& pcap_id,
@@ -63,7 +66,7 @@ namespace ebu_list::analysis
         const analysis_profile profile;
         path storage_folder;
         pcap_info& pcap;
-        std::function<std::optional<stream_with_details>(const rtp::packet& first_packet)> get_stream_info;
+        std::function<std::optional<stream_with_details>(const bool is_srt, const udp::datagram& first_datagram)> get_stream_info;
         abstract_handler_factory const* const handler_factory;
         abstract_updater* const updater;
         std::function<void(float percentage)> progress_callback;

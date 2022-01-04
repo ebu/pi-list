@@ -1,10 +1,11 @@
+const child_process = require('child_process');
+const path = require('path');
 const router = require('express').Router();
 const child_process = require('child_process');
 const multer = require('multer');
 const util = require('util');
 const influxDbManager = require('../managers/influx-db');
 const fs = require('../util/filesystem');
-const path = require('path');
 import logger from '../util/logger';
 const API_ERRORS = require('../enums/apiErrors');
 const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
@@ -21,7 +22,6 @@ const {
     pcapFromLocalFile
 } = require('../util/analysis');
 const websocketManager = require('../managers/websocket');
-const exec = util.promisify(child_process.exec);
 const {
     getUserId,
     checkIsReadOnly
@@ -38,6 +38,8 @@ import {
     generateRandomPcapFilename,
     generateRandomPcapDefinition
 } from '../util/analysis/utils';
+
+const exec = util.promisify(child_process.exec);
 
 /**
  *  Analyze local PCAP file
@@ -86,7 +88,7 @@ function isAuthorized(req, res, next) {
 
         Pcap.findOne({
                 owner_id: userId,
-                id: pcapID
+                id: pcapID,
             })
             .exec()
             .then((data) => {
@@ -109,7 +111,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({
-    storage: storage
+    storage: storage,
 });
 
 // Check if the user can access the pcap
@@ -142,7 +144,7 @@ router.patch(
         console.log(req.params);
 
         Stream.deleteMany({
-                pcap: pcapId
+                pcap: pcapId,
             })
             .exec()
             .then(() => {
@@ -150,7 +152,7 @@ router.patch(
             })
             .then(() => {
                 return Pcap.findOne({
-                    id: pcapId
+                    id: pcapId,
                 }).exec();
             })
             .then((pcap) => {
@@ -191,7 +193,7 @@ router.patch(
 router.get('/', (req, res) => {
     const userId = getUserId(req);
     Pcap.find({
-            owner_id: userId
+            owner_id: userId,
         })
         .exec()
         .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
@@ -206,7 +208,7 @@ router.delete('/:pcapID/', checkIsReadOnly, (req, res) => {
     const path = `${getUserFolder(req)}/${pcapID}`;
 
     Pcap.deleteOne({
-            id: pcapID
+            id: pcapID,
         })
         .exec()
         .then(() => {
@@ -215,13 +217,13 @@ router.delete('/:pcapID/', checkIsReadOnly, (req, res) => {
         .then(() => {
             // delete the associated streams and comparisons
             StreamCompare.deleteMany({
-                'config.main.pcap': pcapID
+                'config.main.pcap': pcapID,
             }).exec();
             StreamCompare.deleteMany({
-                'config.reference.pcap': pcapID
+                'config.reference.pcap': pcapID,
             }).exec();
             return Stream.deleteMany({
-                pcap: pcapID
+                pcap: pcapID,
             }).exec();
         })
         .then(() => {
@@ -235,7 +237,7 @@ router.delete('/:pcapID/', checkIsReadOnly, (req, res) => {
             websocketManager.instance().sendEventToUser(userId, {
                 event: api.wsEvents.Pcap.deleted,
                 data: {
-                    id: pcapID
+                    id: pcapID,
                 },
             });
         })
@@ -256,7 +258,7 @@ router.get('/:pcapID/report', (req, res) => {
         .getReport(pcapID, reportType)
         .then((report) => {
             Pcap.findOne({
-                    id: pcapID
+                    id: pcapID,
                 })
                 .exec()
                 .then((data) => {
@@ -277,7 +279,7 @@ router.get('/:pcapID/download_original', (req, res, next) => {
     logger('original-get').info(`Getting Original PCAP for ${pcapID}`);
 
     Pcap.findOne({
-            id: pcapID
+            id: pcapID,
         })
         .exec()
         .then((data) => {
@@ -302,7 +304,7 @@ router.get('/:pcapID/download', (req, res, next) => {
     logger('pcap-get').info(`Getting PCAP for ${pcapID}`);
 
     Pcap.findOne({
-            id: pcapID
+            id: pcapID,
         })
         .exec()
         .then((data) => {
@@ -328,7 +330,7 @@ router.get('/:pcapID/sdp', (req, res, next) => {
     logger('sdp-get').info(`Getting SDP for ${pcapID}`);
 
     Pcap.findOne({
-            id: pcapID
+            id: pcapID,
         })
         .exec()
         .then((data) => {
@@ -352,7 +354,7 @@ router.get('/:pcapID/', (req, res) => {
     } = req.params;
 
     Pcap.findOne({
-            id: pcapID
+            id: pcapID,
         })
         .exec()
         .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
@@ -416,9 +418,9 @@ router.patch('/:pcapID/stream/:streamID', checkIsReadOnly, (req, res) => {
 
     // todo: maybe check if it found a document (check data.n)?
     Stream.updateOne({
-            id: streamID
+            id: streamID,
         }, {
-            alias: alias
+            alias: alias,
         })
         .exec()
         .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
@@ -442,6 +444,16 @@ router.get('/:pcapID/stream/:streamID/analytics/Vrx/histogram', (req, res) => {
     } = req.params;
 
     const path = `${getUserFolder(req)}/${pcapID}/${streamID}/${CONSTANTS.VRX_FILE}`;
+    fs.sendFileAsResponse(path, res);
+});
+
+router.get('/:pcapID/stream/:streamID/analytics/Pit/histogram', (req, res) => {
+    const {
+        pcapID,
+        streamID
+    } = req.params;
+
+    const path = `${getUserFolder(req)}/${pcapID}/${streamID}/${CONSTANTS.PIT_FILE}`;
     fs.sendFileAsResponse(path, res);
 });
 
@@ -591,15 +603,17 @@ router.put(
         } = req.params;
 
         Stream.findOneAndUpdate({
-                id: streamID
-            }, req.body, {
-                new: true,
-                overwrite: true,
-            })
+                    id: streamID,
+                },
+                req.body, {
+                    new: true,
+                    overwrite: true,
+                }
+            )
             .exec()
             .then(() => {
                 return Pcap.findOne({
-                    id: pcapID
+                    id: pcapID,
                 }).exec();
             })
             .then((pcap) => {
@@ -693,7 +707,7 @@ function renderMp3(req, res) {
     }
 
     Stream.findOne({
-            id: streamID
+            id: streamID,
         })
         .exec()
         .then((data) => {
@@ -722,7 +736,7 @@ function renderMp3(req, res) {
                     websocketManager.instance().sendEventToUser(userId, {
                         event: api.wsEvents.Mp3.rendered,
                         data: {
-                            channels: channels
+                            channels: channels,
                         },
                     });
                 })

@@ -9,11 +9,13 @@ using nlohmann::json;
 serializable_stream_info serializable_stream_info::from_json(const json& j)
 {
     serializable_stream_info stream;
-    stream.id      = j["id"].get<string>();
-    stream.pcap    = j["pcap"].get<string>();
-    stream.state   = from_string(j["state"].get<string>());
-    stream.type    = media::from_string(j["media_type"].get<string>());
-    stream.network = media::from_json(j.at("network_information"));
+    stream.id        = j["id"].get<string>();
+    stream.pcap      = j["pcap"].get<string>();
+    stream.state     = from_string(j["state"].get<string>());
+    stream.type      = media::from_string(j["media_type"].get<string>());
+    stream.full_type = media::full_media_from_string(j["full_media_type"].get<string>());
+    stream.full_transport_type = media::full_transport_type_from_string(j["full_transport_type"].get<string>());
+    stream.network   = media::from_json(j.at("network_information"));
 
     return stream;
 }
@@ -25,6 +27,8 @@ json serializable_stream_info::to_json(const serializable_stream_info& info)
     j["pcap"]                = info.pcap;
     j["state"]               = to_string(info.state);
     j["media_type"]          = to_string(info.type);
+    j["full_media_type"]     = full_media_to_string(info.full_type);
+    j["full_transport_type"]     = full_transport_type_to_string(info.full_transport_type);
     j["network_information"] = media::to_json(info.network);
 
     return j;
@@ -68,7 +72,7 @@ stream_state analysis::from_string(std::string_view s)
 void media::to_json(json& j, const dscp_info& dscp)
 {
     j["consistent"] = dscp.is_consistent;
-    if(dscp.value)
+    if(dscp.value.has_value())
     {
         j["value"] = dscp.value.value();
     }
@@ -187,7 +191,9 @@ media::network_info media::from_json(const json& j)
     const auto has_extended_header_key = j.find("has_extended_header");
     if(has_extended_header_key != j.end()) stream.has_extended_header = has_extended_header_key->get<bool>();
 
-    from_json(j, stream.dscp);
+    const auto has_dscp = j.find("dscp");
+    if(has_dscp != j.end()) from_json(*has_dscp, stream.dscp);
+
 
     const auto inter_packet_spacing_info = j.find("inter_packet_spacing");
     if(inter_packet_spacing_info != j.end())

@@ -6,8 +6,7 @@ const HTTP_STATUS_CODE = require('../enums/httpStatusCode');
 import logger from '../util/logger';
 const controller = require('../controllers/workflow');
 const {
-    getUserId,
-    checkIsReadOnly
+    getUserId
 } = require('../auth/middleware');
 import {
     getUserFolder
@@ -24,12 +23,12 @@ router.post('/', (req, res, next) => {
         configuration
     } = req.body;
     logger('workflow-api').info(`Create workflow request for ${type}`);
-    configuration.authorization = req.headers.authorization;
+    configuration.authorization = req.headers.authorization.replace('Bearer ', '');
 
     const userId = getUserId(req);
     const userFolder = getUserFolder(req);
 
-    controller.createWorkflow(type, userId, userFolder, configuration);
+    controller.createWorkflow(req.body.type, userId, userFolder, req.body.configuration);
 
     res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
 });

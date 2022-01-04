@@ -8,7 +8,7 @@ namespace ebu_list::analysis
     class dscp_analyzer
     {
       public:
-        void handle_packet(const rtp::packet& packet) noexcept;
+        void handle_packet(const udp::datagram& datagram) noexcept;
 
         const media::dscp_info& get_info() const noexcept;
 

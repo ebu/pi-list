@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ebu/list/rtp/listener.h"
+#include "ebu/list/net/udp/listener.h"
 #include "ebu/list/st2110/d20/packet.h"
 #include "ebu/list/st2110/rate_calculator.h"
 #include <map>
@@ -80,22 +80,18 @@ namespace ebu_list
         int packet_count = 0;
     };
 
-    class stream_handler : public rtp::listener
+    class stream_handler : public udp::listener
     {
       public:
-        explicit stream_handler(rtp::packet first_packet);
+        explicit stream_handler(const udp::datagram& first_datagram);
+
+        void on_data(const udp::datagram& datagram) override;
+        void on_complete() override;
+        void on_error(std::exception_ptr e) override;
 
         const stream_info& info() const;
 
       private:
-#pragma region udp::listener events
-        void on_data(const rtp::packet& packet) override;
-
-        void on_complete() override;
-
-        void on_error(std::exception_ptr e) override;
-#pragma endregion udp::listener events
-
         st2110::rate_calculator rate_;
         mutable stream_info info_;
         histogram_data<size_t> packet_sizes_;

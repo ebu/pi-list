@@ -49,6 +49,12 @@ const StreamSchema = new mongoose.Schema({
     processing: {
         type: Object,
     },
+    full_media_type: {
+        type: String,
+    },
+    full_transport_type: {
+        type: String,
+    },
 });
 
 StreamSchema.set('toJSON', {

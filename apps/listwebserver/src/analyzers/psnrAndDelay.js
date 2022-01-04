@@ -1,14 +1,17 @@
 const path = require('path');
 const fs = require('fs');
 const util = require('util');
-const glob = util.promisify(require('glob'));
 const child_process = require('child_process');
-const { waitForFramesExtraction } = require('../controllers/streams2');
-
-const exec = util.promisify(child_process.exec);
-const readFile = util.promisify(fs.readFile);
+const {
+    waitForFramesExtraction
+} = require('../controllers/streams2');
+const _glob = require('glob');
 import logger from '../util/logger';
 const CONSTANTS = require('../enums/constants');
+
+const glob = util.promisify(_glob);
+const exec = util.promisify(child_process.exec);
+const readFile = util.promisify(fs.readFile);
 
 const getTsFromMetaFile = async (path) => {
     return JSON.parse(await readFile(`${path}/${CONSTANTS.META_FILE}`, 'utf8'));
@@ -69,7 +72,10 @@ const getPsnrMax = async (psnrList) => {
         psnrList[0]
     );
 
-    return { psnr: max, index: psnrList.findIndex((e) => e == max) };
+    return {
+        psnr: max,
+        index: psnrList.findIndex((e) => e == max)
+    };
 };
 
 const getPsnrAvg = async (psnrList) => {
@@ -136,8 +142,7 @@ const createComparator = async (config) => {
     const delay = {
         sample: deltaIndex,
         rtp: mainFrame.rtp_ts - refFrame.rtp_ts,
-        actual:
-            (mainFrame.first_packet_ts -
+        actual: (mainFrame.first_packet_ts -
                 refFrame.first_packet_ts +
                 (mainFrame.last_packet_ts - refFrame.last_packet_ts)) /
             2 /

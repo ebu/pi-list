@@ -3,11 +3,10 @@ import './styles.scss';
 
 interface IComponentProps {
     gdprConsent: boolean | undefined;
-    onGdprConsentClick: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onGDPRClick: (gdpr: boolean) => void;
 }
 
-function News({ gdprConsent, onGdprConsentClick, onGDPRClick }: IComponentProps) {
+function News({ gdprConsent, onGDPRClick }: IComponentProps) {
     return (
         <div className="news-page-container">
             <span className="login-page-title news-title">NEWS</span>

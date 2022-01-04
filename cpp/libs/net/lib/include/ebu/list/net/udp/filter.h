@@ -12,7 +12,7 @@ namespace ebu_list::udp
 
       private:
 #pragma region listener events
-        void on_data(datagram&& datagram) override;
+        void on_data(const udp::datagram& datagram) override;
         void on_complete() override;
         void on_error(std::exception_ptr e) override;
 #pragma endregion listener events

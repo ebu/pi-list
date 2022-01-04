@@ -2,10 +2,7 @@ const EventEmitter = require('events');
 const axios = require('axios');
 const _ = require('lodash');
 import logger from '../util/logger';
-const websocketManager = require('../managers/websocket');
 const program = require('../util/programArguments');
-const WebSocketClient = require('websocket').client;
-const W3CWebSocket = require('websocket').w3cwebsocket;
 const webSocketMonitor = require('./webSocketMonitor');
 
 const updateEvent = 'updateEvent';
@@ -57,7 +54,10 @@ const makeIs04Manager = () => {
 
         senders.push(sender);
 
-        const data = { added: [sender], removedIds: [] };
+        const data = {
+            added: [sender],
+            removedIds: []
+        };
         onUpdate.emit(updateEvent, data);
     };
 
@@ -66,19 +66,29 @@ const makeIs04Manager = () => {
 
         senders = senders.filter((s) => s.id !== senderId);
 
-        const data = { added: [], removedIds: [senderId] };
+        const data = {
+            added: [],
+            removedIds: [senderId]
+        };
         onUpdate.emit(updateEvent, data);
     };
 
-    const handleCreate = async ({ post }) => {
+    const handleCreate = async ({
+        post
+    }) => {
         await appendSender(post);
     };
 
-    const handleDelete = ({ pre }) => {
+    const handleDelete = ({
+        pre
+    }) => {
         removeSender(pre.id);
     };
 
-    const handleUpdate = async ({ pre, post }) => {
+    const handleUpdate = async ({
+        pre,
+        post
+    }) => {
         removeSender(pre.id);
         await appendSender(post);
     };
@@ -97,7 +107,10 @@ const makeIs04Manager = () => {
     };
 };
 
-const { getSenders, onUpdate } = makeIs04Manager();
+const {
+    getSenders,
+    onUpdate
+} = makeIs04Manager();
 
 module.exports = {
     getSenders,

@@ -1,6 +1,5 @@
-import React from 'react';
 import './styles.scss';
-import Select from 'react-select';
+import BaseSelector from '../BaseSelector/BaseSelector';
 
 function getTitleFor(stream: any, index: any) {
     switch (stream.media_type) {
@@ -36,7 +35,7 @@ function StreamSelector({ streams, selectedStreamId, onChange }: any) {
         <div className="stream-selector-container">
             <span className="stream-comparison-panel-h3">Stream:</span>
             <div>
-                <Select options={entries} onChange={onChange} value={current}></Select>
+                <BaseSelector options={entries} onChange={onChange} value={current}></BaseSelector>
             </div>
         </div>
     );

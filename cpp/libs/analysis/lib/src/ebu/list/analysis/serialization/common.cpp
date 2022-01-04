@@ -42,6 +42,7 @@ void rtp::from_json(const nlohmann::json& j, std::vector<ebu_list::rtp::packet_g
 void analysis::to_json(json& j, const common_stream_details& details)
 {
     j["packet_count"]           = details.packet_count;
+    j["retransmitted_packets"]  = details.retransmitted_packets;
     j["dropped_packet_count"]   = details.dropped_packet_count;
     j["dropped_packet_samples"] = details.dropped_packet_samples;
     j["first_packet_ts"]        = std::to_string(to_nanoseconds(details.first_packet_ts));
@@ -50,8 +51,9 @@ void analysis::to_json(json& j, const common_stream_details& details)
 
 void analysis::from_json(const json& j, common_stream_details& details)
 {
-    details.packet_count         = j.at("packet_count").get<uint32_t>();
-    details.dropped_packet_count = j.at("dropped_packet_count").get<uint32_t>();
+    details.packet_count          = j.at("packet_count").get<uint32_t>();
+    details.retransmitted_packets = j.at("retransmitted_packets").get<uint32_t>();
+    details.dropped_packet_count  = j.at("dropped_packet_count").get<uint32_t>();
     from_json(j["dropped_packet_samples"], details.dropped_packet_samples);
     details.first_packet_ts = clock::time_point{clock::duration{std::stol(j.at("first_packet_ts").get<std::string>())}};
     details.last_packet_ts  = clock::time_point{clock::duration{std::stol(j.at("last_packet_ts").get<std::string>())}};

@@ -3,7 +3,7 @@
     border-radius: 8px 8px 8px 8px;
     background: #0a153d;
     padding: 2em;
-    margin: 2em;
+    margin: 0em 2em 2em 2em;
 }
 
 .row-stream-selectors {
@@ -12,9 +12,10 @@
 
 .stream-selectors-container {
     display: flex;
-    justify-content: space-between;
     flex-direction: row;
     width: 100%;
+    justify-content: space-around;
+    padding-top: 1em;
 }
 
 .stream-comparison-panel-h3 {
@@ -32,6 +33,8 @@
 .stream-comparison-compare-container {
     display: flex;
     align-items: center;
+    margin-left: 3.5em;
+    margin-top: 1em;
 }
 
 .stream-comparison-panel-type-selector-container {
@@ -88,7 +91,7 @@
 }
 
 .stream-comparison-icons-title-container {
-    padding-bottom: 1em;
+    padding-bottom: 1.5em;
 }
 
 .button-padding {
@@ -133,10 +136,11 @@
 
 .stream-comparison-icons-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
     border-radius: 8px;
+    padding-bottom: 1em;
 }
 
 .comparison-types-description-container {

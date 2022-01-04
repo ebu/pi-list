@@ -1,112 +1,13 @@
-import { DashboardTile, DragAndDropTile } from 'components/index';
 import UploadPcap from '../UploadPcap/UploadPcap';
 import React, { MouseEventHandler } from 'react';
+import { SearchBar } from 'components/index';
+import { findOne } from '../../../utils/searchBar';
 import SDK from '@bisect/ebu-list-sdk';
 import '../styles.scss';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { sidebarCollapsedAtom } from '../../../store/gui/sidebar/sidebarCollapsed';
 import { pcapsAnalysingAtom } from '../../../store/gui/pcaps/pcapsAnalysing';
-
-interface IInformation {
-    number: string;
-    title: string;
-}
-
-interface ITileInformation {
-    id: string;
-    information: IInformation[];
-    title: { mainTitle: string; titleNumber: string };
-    content: { label: string; percentage: number };
-}
-
-const getInformation = (pCap: SDK.types.IPcapInfo): IInformation[] => {
-    const values: Array<[string, number]> = [];
-
-    const ancStreams = pCap.anc_streams;
-    const audioStreams = pCap.audio_streams;
-    const videoStreams = pCap.video_streams;
-    const totalStreams = pCap.total_streams;
-    const unkownStreams = totalStreams - (videoStreams + audioStreams + ancStreams);
-
-    values.push(['Ancillary', ancStreams]);
-    values.push(['Audio', audioStreams]);
-    values.push(['Video', videoStreams]);
-    values.push(['Unknown', unkownStreams]);
-
-    const activeValues = values.filter(v => v[1] > 0);
-
-    return activeValues.map(([title, count]) => ({ number: count.toString(), title: title }));
-};
-
-const getContent = (pCap: SDK.types.IPcapInfo): { label: string; percentage: number } => {
-    const ancStreams = pCap.anc_streams;
-    const audioStreams = pCap.audio_streams;
-    const videoStreams = pCap.video_streams;
-    const totalStreams = pCap.total_streams;
-    const unkownStreams = totalStreams - (videoStreams + audioStreams + ancStreams);
-    let label =
-        pCap.summary === undefined ? 'ERROR' : pCap.summary.error_list.length === 0 ? 'Compliant' : 'Not Compliant';
-    if (unkownStreams > 0) {
-        label = 'Unknown';
-    }
-    return {
-        label: label,
-        percentage: 100,
-    };
-};
-
-const getTitle = (pCap: SDK.types.IPcapInfo, index: number): { mainTitle: string; titleNumber: string } => ({
-    mainTitle: pCap.file_name,
-    titleNumber: (index + 1).toString().padStart(2, '0'),
-});
-
-const getTileInformation = (pCap: SDK.types.IPcapInfo, index: number): ITileInformation => ({
-    information: getInformation(pCap),
-    content: getContent(pCap),
-    title: getTitle(pCap, index),
-    id: pCap.id,
-});
-
-const pcapAnalysingToTile = (pcap: SDK.types.IPcapFileReceived) => {
-    const content = { label: 'Analysing', percentage: pcap.progress };
-    const title = { mainTitle: pcap.file_name };
-    return (
-        <div className="dashboard-page-tile" key={pcap.id}>
-            <DashboardTile id={pcap.id} title={title} content={content} />
-        </div>
-    );
-};
-
-const pcapToTile = (
-    onDoubleClick: (id: string) => void,
-    onClick: (id: string, e: React.MouseEvent<HTMLElement>) => void,
-    pCap: SDK.types.IPcapInfo,
-    index: number,
-    selectedPcapIds: string[]
-) => {
-    const tileInformation = getTileInformation(pCap, index);
-
-    const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-        onClick(tileInformation.id, e);
-    };
-
-    return (
-        <div
-            className="dashboard-page-tile"
-            onClick={handleClick}
-            onDoubleClick={() => (tileInformation.content.label !== 'ERROR' ? onDoubleClick(tileInformation.id) : null)}
-            key={pCap.id}
-        >
-            <DashboardTile
-                id={tileInformation.id}
-                information={tileInformation.information}
-                title={tileInformation.title}
-                content={tileInformation.content}
-                selectedPcapIds={selectedPcapIds}
-            />
-        </div>
-    );
-};
+import { pcapAnalysingToTile, pcapToTile } from 'pages/Common/DashboardTileHOC';
 
 interface IPropTypes {
     onClick: (id: string, e: React.MouseEvent<HTMLElement>) => void;
@@ -126,16 +27,50 @@ const DashboardTilesView: React.FunctionComponent<IPropTypes> = ({
         setSidebarCollapsed(false);
     }, []);
     const pcapsAnalysing = useRecoilValue(pcapsAnalysingAtom);
+
+    const [filterString, setFilterString] = React.useState<string>('');
+    const [filterTilesData, setFilterTilesData] = React.useState<any[]>(pcaps);
+
+    React.useEffect(() => {
+        if (filterString === '') {
+            setFilterTilesData(pcaps);
+        } else {
+            const tokens = filterString.split(/\s+/).filter(v => v !== '');
+
+            const dataFilter = pcaps.filter(value => {
+                const filenameResult = findOne(value.file_name, tokens);
+                const unknownStreams =
+                    value.total_streams -
+                    (value.video_streams + value.audio_streams + value.anc_streams + value.ttml_streams);
+                const compliant =
+                    value.summary === undefined ? undefined : value.summary.error_list.length === 0 ? true : false;
+                const compliantResult =
+                    unknownStreams > 0
+                        ? findOne('unknown', tokens)
+                        : compliant === true
+                        ? findOne('compliant', tokens)
+                        : findOne('not', tokens) || findOne('compliant', tokens);
+
+                return filenameResult || compliantResult;
+            });
+            setFilterTilesData(dataFilter);
+        }
+    }, [filterString, pcapsAnalysing, pcaps]);
     return (
-        <div className="dashboard-page-container">
-            <div className="dashboard-page-container-drag-and-drop-tile">
-                <UploadPcap isButton={false} />
+        <>
+            <div className="dashboard-search-bar-container">
+                <SearchBar filterString={filterString} setFilterString={setFilterString} />
             </div>
-            {pcapsAnalysing.map((pcap: SDK.types.IPcapFileReceived, index: number) => pcapAnalysingToTile(pcap))}
-            {pcaps.map((pCap: SDK.types.IPcapInfo, index: number) =>
-                pcapToTile(onDoubleClick, onClick, pCap, index, selectedPcapIds)
-            )}
-        </div>
+            <div className="dashboard-page-container">
+                <div className="dashboard-page-container-drag-and-drop-tile">
+                    <UploadPcap isButton={false} />
+                </div>
+                {pcapsAnalysing.map((pcap: SDK.types.IPcapFileReceived, index: number) => pcapAnalysingToTile(pcap))}
+                {filterTilesData.map((pcap: SDK.types.IPcapInfo, index: number) =>
+                    pcapToTile(onDoubleClick, onClick, pcap, index, selectedPcapIds)
+                )}
+            </div>
+        </>
     );
 };
 

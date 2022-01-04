@@ -31,6 +31,8 @@ function DetailsTable({
                         <th className="details-table-centered-header-label">{translate('headings.video')}</th>
                         <th className="details-table-centered-header-label">{translate('headings.audio')}</th>
                         <th className="details-table-centered-header-label">Ancillary</th>
+                        <th className="details-table-centered-header-label">TTML</th>
+                        <th className="details-table-centered-header-label">SRT</th>
                         <th className="details-table-centered-header-label">{translate('headings.unknown')}</th>
                     </tr>
                 </thead>
@@ -107,6 +109,24 @@ function DetailsTable({
                                 </td>
                                 <td
                                     className={
+                                        item.ttml === 0
+                                            ? 'details-table-ancialary-data none'
+                                            : 'details-table-ancialary-data'
+                                    }
+                                >
+                                    {item.ttml === 0 ? 'None' : item.ttml}
+                                </td>
+                                <td
+                                    className={
+                                        item.srt === 0
+                                            ? 'details-table-ancialary-data none'
+                                            : 'details-table-ancialary-data'
+                                    }
+                                >
+                                    {item.srt === 0 ? 'None' : item.srt}
+                                </td>
+                                <td
+                                    className={
                                         item.unknown === 0
                                             ? 'details-table-unknown-data none'
                                             : 'details-table-unknown-data'
@@ -130,6 +150,8 @@ export interface IRowItem {
     compliant: boolean | undefined;
     video: number;
     audio: number;
+    ttml: number;
+    srt: number;
     ancillary: number;
     unknown: number;
 }

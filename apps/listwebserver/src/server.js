@@ -4,9 +4,14 @@ const http = require('http');
 const app = require('./app');
 const programArguments = require('./util/programArguments');
 import logger from './util/logger';
+const ingestProgress = require('./managers/ingestProgress');
 const websocketManager = require('./managers/websocket');
 const ingestProgress = require('./managers/ingestProgress');
-const { onError, onListening, onProcessClosed } = require('./util/serverUtils');
+const {
+    onError,
+    onListening,
+    onProcessClosed
+} = require('./util/serverUtils');
 
 logger('server').info(`LIST web server root folder: ${programArguments.folder}`);
 logger('server').info(`Path for the executables directory: ${programArguments.cpp}`);
@@ -30,7 +35,9 @@ if (programArguments.liveMode) {
     logger('server').info(`Starting message queue worker`);
     require('./worker/streamUpdates');
 
-    const { createManager } = require('./managers/probes');
+    const {
+        createManager
+    } = require('./managers/probes');
     createManager(programArguments)
         .then((probesManager) => (programArguments.probesManager = probesManager))
         .catch((err) => logger('server').error(`Error creating probes manager: ${err}`));

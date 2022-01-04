@@ -12,6 +12,7 @@ import { MediaInformationPanel, ComplianceTagPanel, NetworkInformationPanel } fr
 import { VideoIcon } from 'components/icons';
 import './styles.scss';
 import { userAtom } from '../../store/gui/user/userInfo';
+import { GoogleAnalyticsHandler } from 'utils/googleAnalytics';
 
 const buttonWithIconList = (currentStream: SDK.types.IStreamInfo) => {
     switch (currentStream.media_type) {
@@ -64,7 +65,9 @@ interface IStreamsList {
     id: string;
     key: string;
     type: string;
+    fullType: string;
     protocol: string;
+    transport_type: string;
 }
 
 const getKey = (key: number): string => (key + 1).toString().padStart(2, '0');
@@ -79,7 +82,7 @@ const getDataToInformationSidebar = (
         content: (
             <div style={{ height: '100vh', overflow: 'auto' }}>
                 <CustomScrollbar>
-                    {currentStream.media_type !== 'unknown' ? (
+                    {currentStream.full_media_type !== 'unknown' ? (
                         <div className="sb-information-sidebar-content">
                             <div>
                                 <ButtonWithIconSidebarContainer
@@ -92,9 +95,11 @@ const getDataToInformationSidebar = (
                             <div>
                                 <ComplianceTagPanel stream={currentStream} />
                             </div>
-                            <div>
-                                <MediaInformationPanel stream={currentStream} />
-                            </div>
+                            {currentStream.full_media_type !== 'video/jxsv' ? (
+                                <div>
+                                    <MediaInformationPanel stream={currentStream} />
+                                </div>
+                            ) : null}
                             <div>
                                 <NetworkInformationPanel stream={currentStream} />
                             </div>
@@ -115,13 +120,21 @@ const getDataToInformationSidebar = (
 
 const getStreamsToSidebarStreamsList = (streams: SDK.types.IStreamInfo[]): IStreamsList[] => {
     const streamsList: IStreamsList[] = [];
-
+    let fullMediaType: string;
     streams.map((item, index) => {
+        item.full_media_type === 'application/ttml+xml'
+            ? (fullMediaType = 'application/ ttml+xml')
+            : (fullMediaType = item.full_media_type);
+        if (item.full_transport_type === 'SRT') {
+            fullMediaType = 'SRT';
+        }
         streamsList.push({
             id: item.id,
             key: getKey(index),
             type: item.media_type === 'ancillary_data' ? 'Ancillary' : item.media_type,
+            fullType: fullMediaType,
             protocol: 'ST2110',
+            transport_type: item.full_transport_type,
         });
     });
 
@@ -132,6 +145,16 @@ function PCapDetailsContentHOC(props: any) {
     const { pcapID } = props.match.params;
 
     const [pcap, setPcap] = React.useState<SDK.types.IPcapInfo>();
+    const [gdprConsent, setGdprConsent] = React.useState<boolean>();
+
+    React.useEffect(() => {
+        const gdprConsentLocalStorage = localStorage.getItem('gdprConsent');
+        if (gdprConsentLocalStorage) {
+            setGdprConsent(gdprConsentLocalStorage === 'true' ? true : false);
+        }
+    }, []);
+
+    const pagePath: string = window.location.pathname;
 
     React.useEffect(() => {
         const loadStreams = async (): Promise<void> => {
@@ -192,6 +215,7 @@ function PCapDetailsContentHOC(props: any) {
     const renderStream = (match: any, streams: SDK.types.IStreamInfo[]) => {
         return (
             <div className="pcap-details-content-layout">
+                <GoogleAnalyticsHandler gdprConsent={gdprConsent} pathName={pagePath} />
                 <div className="pcap-details-content-sidebar-streams-list">
                     <SidebarStreamsList
                         streamsList={getStreamsToSidebarStreamsList(streams)}

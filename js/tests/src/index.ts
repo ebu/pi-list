@@ -3,6 +3,7 @@ import { testUtils } from '@bisect/bisect-core-ts-be';
 import { requirements, run as runRepo } from './repo';
 import './basic';
 import './advanced';
+import './time';
 
 const parser = yargs(process.argv.slice(2))
     .usage('Usage: $0 <command> [options]')
@@ -10,6 +11,11 @@ const parser = yargs(process.argv.slice(2))
     .example('$0 test-basic -b https://list.ebu.io', 'Run the basic tests in https://list.ebu.io.')
     .command('test-advanced', 'Run the advanced tests (analysis profile, comparison soon).')
     .example('$0 test-advanced -b https://list.ebu.io', 'Run the advanced tests in https://list.ebu.io.')
+    .command('test-time', 'Run the time tests (Upload pcaps duration).')
+    .example(
+        'EBU_LIST_PCAPS=~/.list/performance_tests $0 time-tests -b https://list.ebu.io',
+        'Run the time tests in https://list.ebu.io.'
+    )
     .demandCommand(1, 1)
     .alias('p', 'password')
     .nargs('p', 1)
@@ -80,9 +86,14 @@ async function run(): Promise<boolean> {
     for (const arg of argv._) {
         if (arg === 'test-basic') {
             return await runTests(requirements.Basic);
-        }
-        else if (arg === 'test-advanced') {
+        } else if (arg === 'test-advanced') {
             return await runTests(requirements.Advanced);
+        } else if (arg === 'test-time') {
+            const ebuListPcaps = process.env.EBU_LIST_PCAPS;
+            if (!ebuListPcaps) {
+                process.exit(1);
+            }
+            return await runTests(requirements.Time);
         }
     }
 

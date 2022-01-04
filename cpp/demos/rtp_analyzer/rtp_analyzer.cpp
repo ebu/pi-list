@@ -74,8 +74,8 @@ namespace
     {
         stream_handlers streams;
 
-        auto create_handler = [&](rtp::packet first_packet) {
-            auto new_handler = std::make_unique<stream_handler>(first_packet);
+        auto create_handler = [&](const udp::datagram& first_datagram) {
+            auto new_handler = std::make_unique<stream_handler>(first_datagram);
             streams.push_back(new_handler.get());
             return new_handler;
         };

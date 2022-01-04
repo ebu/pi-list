@@ -14,7 +14,7 @@ namespace ebu_list
             read,
             write
         };
-        explicit file_handle(const path& path, mode _mode = mode::read);
+        explicit file_handle(const path& _path, mode _mode = mode::read);
         ~file_handle();
 
         FILE* handle();

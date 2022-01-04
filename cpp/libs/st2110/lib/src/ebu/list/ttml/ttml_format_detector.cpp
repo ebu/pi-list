@@ -73,3 +73,13 @@ detector::details ttml::format_detector::get_details() const
 {
     return description_;
 }
+
+detector::full_type ttml::format_detector::get_full_media_type() const
+{
+    return "application/ttml+xml";
+}
+
+detector::transport_type ttml::format_detector::get_transport_type() const
+{
+    return "RTP";
+}

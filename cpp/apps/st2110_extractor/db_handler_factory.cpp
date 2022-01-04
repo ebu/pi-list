@@ -14,6 +14,7 @@ namespace
     constexpr auto cinst_file_name = "cinst.json";
     constexpr auto vrx_file_name   = "vrx.json";
     constexpr auto pkt_file_name   = "pkt_hist.json";
+    constexpr auto pit_file_name   = "pit.json";
 } // namespace
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -23,7 +24,7 @@ db_handler_factory::db_handler_factory(const config& c) : config_(c)
 }
 
 st2110::d21::c_analyzer::listener_uptr db_handler_factory::create_c_inst_data_logger(const std::string& pcap_id,
-                                                                              const std::string& stream_id) const
+                                                                                     const std::string& stream_id) const
 {
     return std::make_unique<influx::influxdb_c_inst_logger>(config_.influxdb_url.value_or(INFLUX_DEFAULT_URL), pcap_id,
                                                             stream_id);
@@ -35,23 +36,30 @@ histogram_listener_uptr db_handler_factory::create_c_inst_histogram_logger(const
     return std::make_unique<histogram_writer>(info_path, cinst_file_name);
 }
 
+st2110::packet_interval_time_analyzer::listener_uptr
+db_handler_factory::create_pit_logger(const std::string& stream_id) const
+{
+    const auto info_path = config_.storage_folder / stream_id;
+    return std::make_unique<pit_writer>(info_path, pit_file_name);
+}
+
 st2110::d20::rtp_ts_analyzer::listener_uptr db_handler_factory::create_rtp_ts_logger(const std::string& pcap_id,
-                                                                              const std::string& stream_id) const
+                                                                                     const std::string& stream_id) const
 {
     return std::make_unique<influx::influxdb_rtp_ts_logger>(config_.influxdb_url.value_or(INFLUX_DEFAULT_URL), pcap_id,
                                                             stream_id);
 }
 
 st2110::d20::rtp_analyzer::listener_uptr db_handler_factory::create_rtp_logger(const std::string& pcap_id,
-                                                                        const std::string& stream_id) const
+                                                                               const std::string& stream_id) const
 {
     return std::make_unique<influx::influxdb_rtp_logger>(config_.influxdb_url.value_or(INFLUX_DEFAULT_URL), pcap_id,
                                                          stream_id);
 }
 
 st2110::d21::vrx_analyzer::listener_uptr db_handler_factory::create_vrx_data_logger(const std::string& pcap_id,
-                                                                             const std::string& stream_id,
-                                                                             const std::string& prefix) const
+                                                                                    const std::string& stream_id,
+                                                                                    const std::string& prefix) const
 {
     return std::make_unique<influx::influxdb_vrx_logger>(config_.influxdb_url.value_or(INFLUX_DEFAULT_URL), pcap_id,
                                                          stream_id, prefix);
@@ -64,16 +72,16 @@ histogram_listener_uptr db_handler_factory::create_vrx_histogram_logger(const st
 }
 
 audio_timing_analyser::listener_uptr db_handler_factory::create_audio_rtp_logger(const std::string& pcap_id,
-                                                                          const std::string& stream_id,
-                                                                          const std::string& prefix) const
+                                                                                 const std::string& stream_id,
+                                                                                 const std::string& prefix) const
 {
     return std::make_unique<influx::influxdb_audio_rtp_logger>(config_.influxdb_url.value_or(INFLUX_DEFAULT_URL),
                                                                pcap_id, stream_id, prefix);
 }
 
 audio_timing_analyser::listener_uptr db_handler_factory::create_audio_tsdf_logger(const std::string& pcap_id,
-                                                                           const std::string& stream_id,
-                                                                           const std::string& prefix) const
+                                                                                  const std::string& stream_id,
+                                                                                  const std::string& prefix) const
 {
     return std::make_unique<influx::influxdb_audio_tsdf_logger>(config_.influxdb_url.value_or(INFLUX_DEFAULT_URL),
                                                                 pcap_id, stream_id, prefix);

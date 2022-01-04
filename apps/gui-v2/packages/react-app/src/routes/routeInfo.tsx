@@ -2,6 +2,7 @@ import React from 'react';
 import routeNames from './routeNames';
 import DashboardContentHOC from '../pages/Dashboard/DashboardContentHOC';
 import PCapDetailsContentHOC from '../pages/PCapDetails/PCapDetailsContentHOC';
+import CaptureContentHOC from '../pages/Capture/CaptureContentHOC';
 import ComparisonPageContentHOC from '../pages/StreamComparison/ComparisonPage/ComparisonPageContentHOC';
 import DownloadManagerContentHOC from '../pages/DownloadManager/DownloadManagerContentHOC';
 import StreamComparisonContentHOC from '../pages/StreamComparison/StreamComparisonContentHOC';
@@ -27,6 +28,12 @@ const routeInfo: IRouteInfo[] = [
         name: 'Stream Comparison',
         path: routeNames.STREAM_COMPARISON,
         component: StreamComparisonContentHOC,
+        exact: true,
+    },
+    {
+        name: 'Pcap Capture',
+        path: routeNames.CAPTURE,
+        component: CaptureContentHOC,
         exact: true,
     },
     {
@@ -64,9 +71,11 @@ export const getRouteInfoForPath = (path: string) => {
             return path === r.path;
         }
 
-        return path.startsWith(r.path);
-    });
+        const splitRoutePath = r.path?.split('/', 2);
+        const routeBasePath = splitRoutePath?.join('/');
 
+        return path.startsWith(routeBasePath);
+    });
     return route;
 };
 

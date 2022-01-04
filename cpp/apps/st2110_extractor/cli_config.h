@@ -2,6 +2,7 @@
 
 #include "ebu/list/analysis/analysis_profile.h"
 #include "ebu/list/core/types.h"
+#include <optional>
 
 namespace ebu_list::st2110_extractor
 {

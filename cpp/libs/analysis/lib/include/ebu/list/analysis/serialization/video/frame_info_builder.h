@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ebu/list/st2110/d21/settings.h"
 #include "ebu/list/analysis/handlers/video_stream_handler.h"
+#include "ebu/list/st2110/d21/settings.h"
 
 namespace ebu_list::analysis
 {
@@ -16,8 +16,8 @@ namespace ebu_list::analysis
         int64_t get_last_packet_timestamp() const noexcept;
 
       private:
-        size_t packet_count_ = 0;
-        std::optional<int64_t> first_packet_timestamp_ = 0;
-        int64_t last_packet_timestamp_ = 0;
+        size_t packet_count_                           = 0;
+        std::optional<int64_t> first_packet_timestamp_;
+        int64_t last_packet_timestamp_                 = 0;
     };
 } // namespace ebu_list::analysis

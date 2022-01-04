@@ -5,7 +5,10 @@ import { userAtom } from '../../store/gui/user/userInfo';
 import { MainContentLayout } from '../Common';
 import StreamComparisonContent from './StreamComparisonContent';
 import { pcapsAtom } from '../../store/gui/pcaps/pcaps';
-import { CustomScrollbar } from 'components';
+import { ButtonWithIcon, CustomScrollbar } from 'components';
+import { GoogleAnalyticsHandler } from 'utils/googleAnalytics';
+import { BinIcon } from 'components/icons';
+import list from '../../utils/api';
 
 export const workflowTypes = {
     compareStreams: 'compareStreams',
@@ -23,9 +26,20 @@ function StreamComparisonContentHOC() {
     const history = useHistory();
     const pcaps = useRecoilValue(pcapsAtom);
     const userInfo = useRecoilValue(userAtom);
+    const [gdprConsent, setGdprConsent] = React.useState<boolean>();
+
+    React.useEffect(() => {
+        const gdprConsentLocalStorage = localStorage.getItem('gdprConsent');
+        if (gdprConsentLocalStorage) {
+            setGdprConsent(gdprConsentLocalStorage === 'true' ? true : false);
+        }
+    }, []);
+
+    const pagePath: string = window.location.pathname;
 
     const [selectedWorkflow, setSelectedWorkflow] = React.useState<string>(workflowTypes.compareStreams);
-    const [selectedComparison, setSelectedComparison] = React.useState<string>();
+    const [selectedComparison, setSelectedComparison] = React.useState<string>('');
+    const [currentComparisonsIds, setCurrentComparisonsIds] = React.useState<string[]>([]);
 
     if (!userInfo) {
         return null;
@@ -115,6 +129,7 @@ function StreamComparisonContentHOC() {
                 setSelectedWorkflow(workflowTypes.st2022_7_analysis);
                 break;
             default:
+                setSelectedWorkflow('');
                 return;
         }
     };
@@ -123,13 +138,44 @@ function StreamComparisonContentHOC() {
         setSelectedComparison(type);
     };
 
+    const onTableRowClick = (item: any, e: React.MouseEvent<HTMLElement>) => {
+        if (e.ctrlKey) {
+            if (currentComparisonsIds.includes(item.id)) {
+                setCurrentComparisonsIds(currentComparisonsIds.filter(i => i !== item.id));
+            } else {
+                setCurrentComparisonsIds([...currentComparisonsIds, item.id]);
+            }
+        } else {
+            setCurrentComparisonsIds([item.id]);
+        }
+    };
+
+    const onDeleteComparisons = async () => {
+        currentComparisonsIds.forEach(async (comparisonId: string) => {
+            await list.streamComparison.delete(comparisonId);
+        });
+    };
+    const resetStateComparisonsIds = () => setCurrentComparisonsIds([]);
+
     const getDataToInformationSidebar = () => {
         const data = {
             usermail: userInfo?.username,
             content: (
                 <div style={{ height: '100vh', overflow: 'auto' }}>
                     <CustomScrollbar>
-                        <div className="sb-information-sidebar-content">{getComparisonTypesDescription()}</div>
+                        <div className="sb-information-sidebar-content">
+                            {getComparisonTypesDescription()}
+                            {currentComparisonsIds.length > 0 ? (
+                                <ButtonWithIcon
+                                    icon={BinIcon}
+                                    text={'Remove'}
+                                    onClick={() => {
+                                        onDeleteComparisons();
+                                        resetStateComparisonsIds();
+                                    }}
+                                />
+                            ) : null}
+                        </div>
                     </CustomScrollbar>
                 </div>
             ),
@@ -139,6 +185,7 @@ function StreamComparisonContentHOC() {
 
     return (
         <>
+            <GoogleAnalyticsHandler gdprConsent={gdprConsent} pathName={pagePath} />
             <MainContentLayout
                 middlePageContent={
                     <StreamComparisonContent
@@ -147,6 +194,8 @@ function StreamComparisonContentHOC() {
                         selectedWorkflow={selectedWorkflow}
                         onSelectedComparisonClick={onSelectedComparisonClick}
                         selectedComparison={selectedComparison}
+                        onTableRowClick={onTableRowClick}
+                        selectedComparisonsIds={currentComparisonsIds}
                     />
                 }
                 informationSidebarContent={getDataToInformationSidebar()}

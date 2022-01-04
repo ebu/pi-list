@@ -80,8 +80,8 @@ video_stream_handler::video_stream_handler(decode_video should_decode_video, rtp
     update_net_info_with_address_validation(info_.network, first_packet.info);
 
     info_.network.has_extended_header = first_packet.info.rtp.view().extension();
-
-    info_.state = stream_state::ON_GOING_ANALYSIS; // mark as analysis started
+    info_.network.dscp                = info.network.dscp;
+    info_.state                       = stream_state::ON_GOING_ANALYSIS; // mark as analysis started
 }
 
 void video_stream_handler::new_frame()
@@ -142,7 +142,6 @@ void video_stream_handler::on_complete()
 {
     if(!current_frame_) return;
 
-    info_.network.dscp                      = dscp_.get_info();
     info_.network.inter_packet_spacing_info = inter_packet_spacing_.get_info();
     video_description_.video.packing_mode   = pm_analyzer_.get_mode();
 
@@ -267,8 +266,5 @@ void video_stream_handler::parse_packet(const rtp::packet& packet)
             p += line.length;
         }
     }
-
-    dscp_.handle_packet(packet);
-
     this->on_packet(info);
 }

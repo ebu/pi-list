@@ -1,15 +1,15 @@
 #pragma once
 
 #include "ebu/list/analysis/serialization/compliance.h"
-#include "ebu/list/st2110/d21/settings.h"
 #include "ebu/list/analysis/serialization/pcap.h"
+#include "ebu/list/st2110/d21/settings.h"
 
 namespace ebu_list::analysis
 {
     class stream_counter
     {
       public:
-        void handle_video_completed(const st2110::d21::video_analysis_info& info)
+        void handle_video_raw_completed(const st2110::d21::video_analysis_info& info)
         {
             ++nr_total;
             ++nr_video;
@@ -40,27 +40,43 @@ namespace ebu_list::analysis
         void handle_ttml_completed()
         {
             ++nr_total;
-            ++nr_anc; // TODO: TTML is being treated as ANC
+            ++nr_ttml;
+        }
+
+        void handle_video_jxsv()
+        {
+            ++nr_total;
+            ++nr_video;
         }
 
         void handle_unknown() { ++nr_total; }
+
+        void handle_srt()
+        {
+            ++nr_total;
+            ++nr_srt;
+        }
 
         void fill_streams_summary(pcap_info& pcap)
         {
             pcap.audio_streams         = nr_audio.load();
             pcap.video_streams         = nr_video.load();
             pcap.anc_streams           = nr_anc.load();
+            pcap.ttml_streams          = nr_ttml.load();
             pcap.total_streams         = nr_total.load();
             pcap.wide_streams          = nr_wide.load();
             pcap.narrow_streams        = nr_narrow.load();
             pcap.narrow_linear_streams = nr_narrow_linear.load();
             pcap.not_compliant_streams = nr_not_compliant.load();
+            pcap.srt_streams           = nr_srt.load();
         }
 
       private:
         std::atomic_int nr_audio = 0;
         std::atomic_int nr_video = 0;
         std::atomic_int nr_anc   = 0;
+        std::atomic_int nr_ttml  = 0;
+        std::atomic_int nr_srt   = 0;
         std::atomic_int nr_total = 0;
 
         std::atomic_int nr_wide          = 0;

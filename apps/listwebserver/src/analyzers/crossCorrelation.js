@@ -1,15 +1,12 @@
-const path = require('path');
 const fs = require('fs');
 const util = require('util');
+const child_process = require('child_process');
 const {
     Xcorr
 } = require('abr-xcorr');
-const child_process = require('child_process');
-const exec = util.promisify(child_process.exec);
-const readFile = util.promisify(fs.readFile);
 import logger from '../util/logger';
 
-const CONSTANTS = require('../enums/constants');
+const exec = util.promisify(child_process.exec);
 
 const getAudioBuffer = async (folder, channel, media_specific) => {
     const outputFormat = 's16le';
@@ -18,7 +15,6 @@ const getAudioBuffer = async (folder, channel, media_specific) => {
     const encodingBits = media_specific.encoding == 'L24' ? 24 : 16;
     const sampling = parseInt(media_specific.sampling) / 1000;
     const channelNumber = media_specific.number_channels;
-    const readFileAsync = util.promisify(fs.readFile);
 
     const ffmpegCommand = `ffmpeg -hide_banner -y -f s${encodingBits}be -ar ${sampling}k -ac ${channelNumber} -i "${inputFile}" -map_channel 0.0.${
         parseInt(channel) - 1

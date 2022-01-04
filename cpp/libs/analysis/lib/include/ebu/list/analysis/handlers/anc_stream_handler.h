@@ -68,7 +68,6 @@ namespace ebu_list::analysis
         bool last_frame_was_marked_ = false;
         uint8_t field_              = static_cast<uint8_t>(ebu_list::st2110::d40::field_kind::undefined);
         uint8_t last_field_         = static_cast<uint8_t>(ebu_list::st2110::d40::field_kind::undefined);
-        dscp_analyzer dscp_;
         rtp::inter_packet_spacing_analyzer inter_packet_spacing_;
     };
 

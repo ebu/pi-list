@@ -15,6 +15,7 @@ namespace ebu_list::st2110::d20
 
       private:
         int max_line_number_ = 0;
+        int line_number_ = 0;
         bool is_field_based_ = false;
     };
 
@@ -25,6 +26,8 @@ namespace ebu_list::st2110::d20
 
         detector::status_description handle_data(const rtp::packet& packet) override;
         virtual details get_details() const override;
+        virtual full_type get_full_media_type() const override;
+        virtual transport_type get_transport_type() const override;
         inline virtual std::string get_kind() const noexcept override { return "video"; }
 
       private:

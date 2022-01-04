@@ -5,7 +5,6 @@ const constants = require('../enums/analysis');
 const {
     appendError
 } = require('./utils');
-import logger from '../util/logger';
 
 // returns
 // {
@@ -104,13 +103,11 @@ function updateStreamWithPktTsVsRtpTs(stream, range, profile) {
     // convert to 'μs'
     const packet_time_us = stream.media_specific.packet_time * 1000;
     const limit =
-        profile.unit === 'packet_time' ?
-        {
+        profile.unit === 'packet_time' ? {
             min: profile.min * packet_time_us,
             maxAvg: profile.maxAvg * packet_time_us,
             max: profile.max * packet_time_us,
-        } :
-        {
+        } : {
             min: profile.min,
             maxAvg: profile.maxAvg,
             max: profile.max,

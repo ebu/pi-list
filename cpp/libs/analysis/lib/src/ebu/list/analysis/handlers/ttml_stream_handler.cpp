@@ -42,15 +42,12 @@ struct ebu_list::analysis::ttml::stream_handler::impl
 
         info_.network.has_extended_header = first_packet.info.rtp.view().extension();
 
-        nlohmann::json j = stream_details::to_json(ttml_description_);
+        info_.network.dscp = info.network.dscp;
+        nlohmann::json j   = stream_details::to_json(ttml_description_);
         logger()->trace("Stream info:\n {}", j.dump(2, ' '));
     }
 
-    void on_complete()
-    {
-        info_.network.dscp = dscp_.get_info();
-        listener_->on_complete();
-    }
+    void on_complete() { listener_->on_complete(); }
 
     void parse_packet(const ebu_list::rtp::packet& packet)
     {
@@ -71,8 +68,6 @@ struct ebu_list::analysis::ttml::stream_handler::impl
 
         const auto end = ptr + payload_header.length;
 
-        dscp_.handle_packet(packet);
-
         current_doc_.insert(current_doc_.end(), ptr, end);
     }
 
@@ -80,7 +75,6 @@ struct ebu_list::analysis::ttml::stream_handler::impl
     ebu_list::analysis::serializable_stream_info info_;
     stream_details ttml_description_;
     completion_handler completion_handler_;
-    dscp_analyzer dscp_;
     std::vector<std::byte> current_doc_;
 };
 

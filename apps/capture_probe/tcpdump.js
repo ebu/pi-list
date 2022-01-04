@@ -4,7 +4,7 @@ const _ = require('lodash');
 const logger = require('./logger');
 
 const buildTcpdumpInfo = (globalConfig, captureOptions) => {
-    const interfaceName = _.get(globalConfig, ['tcpdump', 'interface']);
+    const interfaceName = _.get(globalConfig, ['capture', 'interfaces']);
 
     const tcpdumpFilter = captureOptions.endpoints
         ? `${captureOptions.endpoints.map(endpoint => {
@@ -48,7 +48,7 @@ const buildSubscriberInfo = (globalConfig, captureOptions) => {
 
     const program = `${binPath}/subscribe_to`;
 
-    const interfaceName = _.get(globalConfig, ['tcpdump', 'interface']);
+    const interfaceName = _.get(globalConfig, ['capture', 'interfaces']);
 
     const addresses = captureOptions.endpoints.map(endpoint => endpoint.dstAddr);
     const groups = addresses.map(a => ["-g", a.toString()]);
