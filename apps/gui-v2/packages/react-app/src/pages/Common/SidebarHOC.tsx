@@ -14,6 +14,7 @@ import routeNames from '../../routes/routeNames';
 import { getRouteInfoForPath } from '../../routes/routeInfo';
 import { useLocation, useHistory } from 'react-router-dom';
 import { translate } from '../../utils/translation';
+import { hasLiveMode } from '../../utils/config';
 import { useRecoilState } from 'recoil';
 import { sidebarCollapsedAtom } from '../../store/gui/sidebar/sidebarCollapsed';
 import list from 'utils/api';
@@ -110,7 +111,7 @@ function SidebarHOC() {
         ],
     };
 
-    if (typeof process.env.REACT_APP_LIVE !== 'undefined' && process.env.REACT_APP_LIVE) {
+    if (hasLiveMode()) {
         buttonsList.upperButtons.splice(1, 0, {
             text: translate('navigation.capture'),
             clicked: false,

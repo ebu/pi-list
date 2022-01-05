@@ -9,8 +9,7 @@
         "@ebu-list/translations": "^0.1.0"
     },
     "scripts": {
-        "start": "react-app-rewired start",
-        "live": "REACT_APP_LIVE=true react-app-rewired start",
+        "start": "REACT_APP_LIVE_MODE=${EBU_LIST_LIVE_MODE:-false} react-app-rewired start",
         "build:production": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
