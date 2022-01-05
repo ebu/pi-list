@@ -374,13 +374,21 @@ function DashboardContentHOC() {
     const history = useHistory();
 
     const onDoubleClick = (id: string, analyzerVersion: string): void => {
-        console.log('pcap_version', analyzerVersion);
-        console.log('list_version', version);
-        if (analyzerVersion == version) {
-            const route = routeBuilder.pcap_stream_list(id);
-            history.push(route);
-        } else {
-        }
+        // console.log('pcap_version', analyzerVersion);
+        // console.log('list_version', version);
+        // if (analyzerVersion == version) {
+        //     const route = routeBuilder.pcap_stream_list(id);
+        //     history.push(route);
+        // } else {
+        // }
+        list.pcap
+            .updatePcapAnalysis(id)
+            .then(() => {
+                console.log('finished');
+            })
+            .catch((err: any) => {
+                console.log('error', err);
+            });
     };
 
     const onViewAllDetailsButtonClick = (id: string): void => {

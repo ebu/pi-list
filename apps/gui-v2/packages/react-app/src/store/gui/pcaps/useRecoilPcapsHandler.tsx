@@ -39,7 +39,22 @@ const handlePcapsUpdate = (
             });
             break;
         case 'PCAP_FILE_PROCESSED':
+            let existingPcap = false;
+            setPcapsAtom(current => {
+                const cloneCurrent = _.cloneDeep(current);
+                const index = cloneCurrent.findIndex(element => element.id === data.data.id);
+                if (index !== -1) {
+                    existingPcap = true;
+                    return current.filter((pcap: SDK.api.pcap.IPcapInfo) => pcap.id !== data.data.id);
+                }
+
+                return cloneCurrent;
+            });
             setPcapsAnalysingAtom(current => {
+                if (existingPcap) {
+                    data.data.progress = 0;
+                    return [...current, data.data];
+                }
                 const cloneCurrent = _.cloneDeep(current);
                 const index = cloneCurrent.findIndex(element => element.id === data.data.id);
                 if (index !== -1) {
