@@ -7,7 +7,7 @@ interface IComponentProps {
     detailsTableData: Array<IRowItem>;
     selectedPcapIds: string[];
     onRowClicked: (id: string, e: React.MouseEvent<HTMLElement>) => void;
-    onDoubleClick: (id: string) => void;
+    onDoubleClick: (id: string, analyzerVersion: string) => void;
     detailsPcapsAnalysingData?: IRowPcapAnalysingItem[];
 }
 
@@ -68,7 +68,9 @@ function DetailsTable({
                             <tr
                                 className={isActive ? 'details-table-row active' : 'details-table-row'}
                                 onClick={handleRowClick}
-                                onDoubleClick={() => (item.compliant !== undefined ? onDoubleClick(item.id) : null)}
+                                onDoubleClick={() =>
+                                    item.compliant !== undefined ? onDoubleClick(item.id, item.analyzerVersion) : null
+                                }
                                 key={item.id}
                             >
                                 <td>
@@ -154,6 +156,7 @@ export interface IRowItem {
     srt: number;
     ancillary: number;
     unknown: number;
+    analyzerVersion: string;
 }
 
 export interface IRowPcapAnalysingItem {

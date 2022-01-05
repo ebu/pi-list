@@ -25,7 +25,7 @@ const getCurrentView = (
     onClick: (id: string, e: React.MouseEvent<HTMLElement>) => void,
     pcaps: SDK.types.IPcapInfo[],
     onRowClicked: (id: string, e: React.MouseEvent<HTMLElement>) => void,
-    onDoubleClick: (id: string) => void,
+    onDoubleClick: (id: string, analyzerVersion: string) => void,
     selectedPcapIds: string[]
 ): ReactElement => {
     switch (currentViewName) {
@@ -67,7 +67,7 @@ interface IPropTypes {
     pcaps: SDK.types.IPcapInfo[];
     onViewClick: (viewType: string) => void;
     currentViewName: string;
-    onDoubleClick: (id: string) => void;
+    onDoubleClick: (id: string, analyzerVersion: string) => void;
     onHeaderFilterClick: (filterType: number) => void;
     pcapsCount: { totalPcaps: number; notCompliantStreams: number; compliantStreams: number };
     currentSelection: number;

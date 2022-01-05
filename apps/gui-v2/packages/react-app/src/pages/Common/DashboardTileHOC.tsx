@@ -88,7 +88,7 @@ export const pcapAnalysingToTile = (pcap: SDK.types.IPcapFileReceived) => {
 };
 
 export const pcapToTile = (
-    onDoubleClick: (id: string) => void,
+    onDoubleClick: (id: string, analyzerVersion: string) => void,
     onClick: (id: string, e: React.MouseEvent<HTMLElement>) => void,
     pcap: SDK.types.IPcapInfo,
     index: number,
@@ -104,7 +104,11 @@ export const pcapToTile = (
         <div
             className="dashboard-page-tile"
             onClick={handleClick}
-            onDoubleClick={() => (tileInformation.content.label !== 'ERROR' ? onDoubleClick(tileInformation.id) : null)}
+            onDoubleClick={() =>
+                tileInformation.content.label !== 'ERROR'
+                    ? onDoubleClick(tileInformation.id, pcap.analyzer_version)
+                    : null
+            }
             key={pcap.id}
         >
             <DashboardTile

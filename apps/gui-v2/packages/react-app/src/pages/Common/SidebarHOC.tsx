@@ -17,7 +17,7 @@ import { translate } from '../../utils/translation';
 import { useRecoilState } from 'recoil';
 import { sidebarCollapsedAtom } from '../../store/gui/sidebar/sidebarCollapsed';
 import list from 'utils/api';
-import { IVersion } from '../../../../../../../third_party/ebu-list-sdk/lib/dist/types';
+import SDK from '@bisect/ebu-list-sdk';
 
 type ButtonList = Array<Button & { route: string }>;
 
@@ -37,7 +37,7 @@ function SidebarHOC() {
 
     const [sidebarCollapsed, setSidebarCollapsed] = useRecoilState(sidebarCollapsedAtom);
 
-    const [version, setVersion] = React.useState<IVersion>();
+    const [version, setVersion] = React.useState<SDK.types.IVersion>();
 
     React.useEffect(() => {
         const getVersion = async (): Promise<void> => {

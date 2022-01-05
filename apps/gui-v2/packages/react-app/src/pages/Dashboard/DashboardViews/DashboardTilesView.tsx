@@ -11,7 +11,7 @@ import { pcapAnalysingToTile, pcapToTile } from 'pages/Common/DashboardTileHOC';
 
 interface IPropTypes {
     onClick: (id: string, e: React.MouseEvent<HTMLElement>) => void;
-    onDoubleClick: (id: string) => void;
+    onDoubleClick: (id: string, analyzerVersion: string) => void;
     pcaps: SDK.types.IPcapInfo[];
     selectedPcapIds: string[];
 }

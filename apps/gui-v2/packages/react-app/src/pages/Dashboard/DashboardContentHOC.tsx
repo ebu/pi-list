@@ -12,10 +12,8 @@ import {
     Notification,
 } from 'components/index';
 import { SettingsMiniIcon, CalendarIcon, BinIcon, DownloadIcon, AlertIcon } from 'components/icons';
-import { translate } from '../../utils/translation';
 import DashboardContent from './DashboardContent';
 import MainContentLayout from '../Common/MainContentLayout';
-import filterHeaderNames from '../../enums/filterHeaderNames';
 import { useRecoilValue } from 'recoil';
 import { pcapsAtom } from '../../store/gui/pcaps/pcaps';
 import { userAtom } from '../../store/gui/user/userInfo';
@@ -322,6 +320,7 @@ function DashboardContentHOC() {
 
     const resetStateSelectedPcaps = () => setCurrentPCapIds([]);
     const [gdprConsent, setGdprConsent] = React.useState<boolean>();
+    const [version, setVersion] = React.useState<string>('');
 
     const pagePath: string = window.location.pathname;
 
@@ -330,6 +329,15 @@ function DashboardContentHOC() {
         if (gdprConsentLocalStorage) {
             setGdprConsent(gdprConsentLocalStorage === 'true' ? true : false);
         }
+    }, []);
+
+    React.useEffect(() => {
+        const getVersion = async (): Promise<void> => {
+            const version: SDK.types.IVersion = await list.info.getVersion();
+            const stringVersion: string = `${version?.major}.${version?.minor}.${version?.patch}`;
+            setVersion(stringVersion);
+        };
+        getVersion();
     }, []);
 
     // React.useEffect(() => {
@@ -365,9 +373,14 @@ function DashboardContentHOC() {
 
     const history = useHistory();
 
-    const onDoubleClick = (id: string): void => {
-        const route = routeBuilder.pcap_stream_list(id);
-        history.push(route);
+    const onDoubleClick = (id: string, analyzerVersion: string): void => {
+        console.log('pcap_version', analyzerVersion);
+        console.log('list_version', version);
+        if (analyzerVersion == version) {
+            const route = routeBuilder.pcap_stream_list(id);
+            history.push(route);
+        } else {
+        }
     };
 
     const onViewAllDetailsButtonClick = (id: string): void => {

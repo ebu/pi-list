@@ -22,7 +22,7 @@ interface IDetailsTableData {
 interface IPropTypes {
     pcaps: SDK.types.IPcapInfo[];
     onRowClicked: (id: string, e: React.MouseEvent<HTMLElement>) => void;
-    onDoubleClick: (id: string) => void;
+    onDoubleClick: (id: string, analyzerVersion: string) => void;
     selectedPcapIds: string[];
 }
 
@@ -50,6 +50,7 @@ const DashboardTableView: React.FunctionComponent<IPropTypes> = ({
                 unknown:
                     item.total_streams -
                     (item.video_streams + item.audio_streams + item.anc_streams + item.ttml_streams + item.srt_streams),
+                analyzerVersion: item.analyzer_version,
             };
             tableData.push(data);
         });

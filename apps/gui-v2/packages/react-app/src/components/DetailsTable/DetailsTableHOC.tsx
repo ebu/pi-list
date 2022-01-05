@@ -11,7 +11,7 @@ function DetailsTableHOC({
 }: {
     detailsTableData: IRowItem[];
     onRowClicked: (id: string, e: React.MouseEvent<HTMLElement>) => void;
-    onDoubleClick: (id: string) => void;
+    onDoubleClick: (id: string, analyzerVersion: string) => void;
     selectedPcapIds: string[];
     detailsPcapsAnalysingData?: IRowPcapAnalysingItem[];
 }) {
