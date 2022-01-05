@@ -25,3 +25,4 @@ services:
             - ./data/config:/etc/nginx
             - ../../scripts/deploy/artifacts/data/certs:/etc/ssl/certs
             - ../../scripts/deploy/artifacts/data/log/nginx:/var/log/nginx/
+            - ../../apps/listwebserver/static.config.json:/var/data/nginx/static.config.json

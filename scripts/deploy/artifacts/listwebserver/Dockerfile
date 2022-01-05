@@ -27,6 +27,9 @@ ADD lib/ /usr/local/lib
 ADD data/config/ /etc/nginx/
 # nginx certs
 ADD data/certs/ /etc/ssl/certs/
+# for static content
+RUN mkdir -p /var/data/nginx/
+RUN chown -R www-data:www-data /var/data/nginx/
 
 WORKDIR /app/listwebserver/
 

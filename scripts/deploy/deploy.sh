@@ -36,12 +36,10 @@ echo "Copying apps..."
 mkdir -p $RELEASE_DIR/server/app/listwebserver
 cp -R $TOP_DIR/apps/listwebserver/dist $RELEASE_DIR/server/app/listwebserver/
 cp -R $TOP_DIR/apps/listwebserver/version.yml $RELEASE_DIR/server/app/listwebserver
-cp -R $TOP_DIR/apps/listwebserver/static.config.json $RELEASE_DIR/server/app/listwebserver
 cp -R $TOP_DIR/apps/listwebserver/package.json $RELEASE_DIR/server/app/listwebserver
 cp -L -R $TOP_DIR/apps/listwebserver/node_modules $RELEASE_DIR/server/app/listwebserver
 cp -R $TOP_DIR/apps/gui-v2/packages/react-app/build/* $RELEASE_DIR/server/app/gui
-cp -R $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/sedstaticconfig.sh $RELEASE_DIR/server/app/
-cp -R $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/static.config.json $RELEASE_DIR/server/app/gui
+cp -R $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/gen_static_config.sh $RELEASE_DIR/server/app/
 cp -R $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/static.config.json $RELEASE_DIR/server/app/listwebserver
 cp -R $DEPLOY_SCRIPT_DIR/artifacts/listwebserver/launch.sh $RELEASE_DIR/server/app/listwebserver
 echo "Copying apps... done"

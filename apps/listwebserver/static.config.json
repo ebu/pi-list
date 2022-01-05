@@ -1,4 +1,5 @@
 {
     "publicApiPort" : "80",
-    "publicApiProtocol": "http"
+    "publicApiProtocol" : "http",
+    "liveMode" : "false"
 }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-bash /app/sedstaticconfig.sh &
+bash /app/gen_static_config.sh &
 service nginx start &
 serve -s /app/gui -p 8080 &
 npm start -- config.yml --dev &
