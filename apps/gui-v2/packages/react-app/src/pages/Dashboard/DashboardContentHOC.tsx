@@ -185,6 +185,7 @@ const getDataToInformationSidebar = (
     onViewAllDetailsButtonClick: (id: string) => void,
     currentPCapIds: string[],
     username: string,
+    currentVersion: string,
     resetStateSelectedPcaps: () => void
 ) => {
     const pCapDetailsList = currentPCap ? getPCapDetail(currentPCap) : null;
@@ -257,8 +258,21 @@ const getDataToInformationSidebar = (
                                 </h3>
                             </div>
                         ) : null}
-                        {pCapDetailsRender}
-                        {totalStreamRender}
+                        {currentPCap && currentPCap?.analyzer_version !== currentVersion ? (
+                            <div>
+                                <div className="alert-version-container">
+                                    <AlertIcon className={'alert-version-icon'} />
+                                    <span className="text-warning">double click to reanalyze</span>
+                                </div>
+                                <div>
+                                    <span className="text-warning-description">
+                                        This files was analyzed by an older version of EBU LIST.
+                                    </span>
+                                </div>
+                            </div>
+                        ) : null}
+                        {currentPCap?.analyzer_version === currentVersion ? pCapDetailsRender : null}
+                        {currentPCap?.analyzer_version === currentVersion ? totalStreamRender : null}
                     </div>
                 </CustomScrollbar>
             </div>
@@ -374,21 +388,14 @@ function DashboardContentHOC() {
     const history = useHistory();
 
     const onDoubleClick = (id: string, analyzerVersion: string): void => {
-        // console.log('pcap_version', analyzerVersion);
-        // console.log('list_version', version);
-        // if (analyzerVersion == version) {
-        //     const route = routeBuilder.pcap_stream_list(id);
-        //     history.push(route);
-        // } else {
-        // }
-        list.pcap
-            .updatePcapAnalysis(id)
-            .then(() => {
-                console.log('finished');
-            })
-            .catch((err: any) => {
-                console.log('error', err);
+        if (analyzerVersion == version) {
+            const route = routeBuilder.pcap_stream_list(id);
+            history.push(route);
+        } else {
+            list.pcap.updatePcapAnalysis(id).catch((err: any) => {
+                console.log(err);
             });
+        }
     };
 
     const onViewAllDetailsButtonClick = (id: string): void => {
@@ -428,6 +435,7 @@ function DashboardContentHOC() {
                     onViewAllDetailsButtonClick,
                     currentPCapIds,
                     userInfo?.username,
+                    version,
                     resetStateSelectedPcaps
                 )}
                 logout={() => history.push('/logout')}

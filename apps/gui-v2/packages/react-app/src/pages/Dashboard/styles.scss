@@ -76,3 +76,33 @@ button.dashboard-view {
 .details-table-search-bar-container {
     padding-left: 1.1em;
 }
+
+.alert-version-icon {
+    width: 1.5em;
+    margin-right: 0.7em;
+}
+.text-warning {
+    color: red;
+}
+
+.alert-version-container {
+    display: flex;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #52586f;
+    padding-bottom: 0.7em;
+}
+
+.text-warning-description {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    color: #40a2ff;
+}
