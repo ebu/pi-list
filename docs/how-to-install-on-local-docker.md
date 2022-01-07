@@ -278,3 +278,15 @@ A docker volume `listserver` is created by default for persistent storage of fil
 export EBU_LIST_HOST_DATA_FOLDER=/mnt/
 docker-compose up
 ```
+
+### Activate the capture AKA live mode
+
+This option allows to capture network packets to create your own pcap files by unlocking a dedicated page in the web interface.
+
+```sh
+export EBU_LIST_LIVE_MODE=true
+docker-compose up
+```
+
+Note that the capture engine is not included in this project. Plus, your system needs to meet a list of additional requirements:
+Hardware-timestamp-capable NIC, PTP synchronization, a stream source, etc.
