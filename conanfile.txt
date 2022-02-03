@@ -1,23 +1,26 @@
 [requires]
 cpprestsdk/2.10.18
 libpng/1.6.37
-rxcpp/4.1.0
-fmt/8.0.1
+rxcpp/4.1.1
+fmt/8.1.1
 nlohmann_json/3.10.2
 spdlog/1.9.2
-catch2/2.13.7
+catch2/2.13.8
 mongo-c-driver/1.17.6
-mongo-cxx-driver/3.6.2
+mongo-cxx-driver/3.6.6
 zlib/1.2.11
 libuuid/1.0.3
-rabbitmq-c/0.10.0
+rabbitmq-c/0.11.0
 bzip2/1.0.8
-boost/1.76.0
+boost/1.78.0
+openssl/1.1.1m
 
 [options]
 cpprestsdk:with_websockets=True
 cpprestsdk:with_compression=True
 OpenSSL:shared=True
+mongo-c-driver:shared=True
+mongo-cxx-driver:shared=True
 
 [generators]
 cmake
