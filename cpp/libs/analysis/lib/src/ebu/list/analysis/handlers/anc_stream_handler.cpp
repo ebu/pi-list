@@ -14,11 +14,11 @@ using namespace ebu_list::st2110::d40;
 namespace
 {
     constexpr uint32_t rtp_seqnum_window = 2048;
-    static struct klvanc_callbacks_s klvanc_callbacks;
+    struct klvanc_callbacks_s klvanc_callbacks;
 } // namespace
 
-anc_stream_handler::anc_stream_handler(rtp::packet first_packet, serializable_stream_info info,
-                                       anc_stream_details details, completion_handler ch)
+anc_stream_handler::anc_stream_handler(const rtp::packet& first_packet, const serializable_stream_info& info,
+                                       const anc_stream_details& details, completion_handler ch)
     : info_(std::move(info)), anc_description_(std::move(details)), completion_handler_(std::move(ch))
 {
     logger()->info("Ancillary: created handler for {:08x}, {}->{}", info_.network.ssrc, to_string(info_.network.source),
@@ -59,7 +59,7 @@ anc_stream_handler::anc_stream_handler(rtp::packet first_packet, serializable_st
     klvanc_callbacks.scte_104   = cb_scte_104;
 }
 
-anc_stream_handler::~anc_stream_handler(void)
+anc_stream_handler::~anc_stream_handler()
 {
     klvanc_context_destroy(klvanc_ctx);
 }
@@ -217,7 +217,7 @@ void anc_stream_handler::parse_packet(const rtp::packet& packet)
         }
 
         uint16_t bit_counter = 0;
-        raw_anc_packet_header anc_packet_header;
+        raw_anc_packet_header anc_packet_header{};
         anc_packet_header.color_channel     = get_bits<1>(&p, &bit_counter);
         anc_packet_header.line_num          = get_bits<11>(&p, &bit_counter);
         anc_packet_header.horizontal_offset = get_bits<12>(&p, &bit_counter);
