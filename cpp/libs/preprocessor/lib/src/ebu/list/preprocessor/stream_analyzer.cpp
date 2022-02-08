@@ -41,15 +41,25 @@ namespace
 
         return j_fi;
     }
+
+    bool should_ignore(const ethernet::mac_address& a)
+    {
+        static const std::array<ethernet::mac_address, 1> addresses_to_ignore(
+            {ethernet::to_mac_address("ff:ff:ff:ff:ff:ff").value() /* Layer 2 broadcast */});
+
+        const auto it = std::find(addresses_to_ignore.begin(), addresses_to_ignore.end(), a);
+        return it != addresses_to_ignore.end();
+    }
+
+    bool should_ignore(const ipv4::address& a)
+    {
+        static const std::array<ipv4::address, 1> addresses_to_ignore(
+            {ipv4::from_dotted_string("224.0.0.252") /* LLMNR */});
+
+        const auto it = std::find(addresses_to_ignore.begin(), addresses_to_ignore.end(), a);
+        return it != addresses_to_ignore.end();
+    }
 } // namespace
-
-bool should_ignore(const ipv4::address& a)
-{
-    static std::vector<ipv4::address> addresses_to_ignore({ipv4::from_dotted_string("224.0.0.252") /* LLMNR */});
-
-    const auto it = std::find(addresses_to_ignore.begin(), addresses_to_ignore.end(), a);
-    return it != addresses_to_ignore.end();
-}
 
 nlohmann::json get_streams_info(const bool is_srt, std::vector<stream_listener*>& streams,
                                 std::vector<srt::srt_stream_listener*>& srt_streams,
@@ -107,6 +117,12 @@ nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_f
         {
             return {};
         }
+
+        if(should_ignore(first_datagram.ethernet_info.destination_address))
+        {
+            return {};
+        }
+
         if(is_srt)
         {
             auto listener = std::make_unique<srt::srt_stream_listener>(first_datagram, pcap_uuid);
