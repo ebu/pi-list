@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const fs = require('../util/filesystem');
 const constants = require('../enums/analysis');
+const enums = require('../enums/constants');
 const Stream = require('../models/stream');
 const {
     appendError
@@ -84,10 +85,21 @@ const ancillaryCheckPayloads = async (stream) => {
     }
 };
 
-const ancillaryPktPerFrame = async (req, stream) => {
+const getHistogram = async (req, stream) => {
     // Read from range histogram file and report everthing in stream data
-    const histogramFile = `${getUserFolder(req)}/${req.pcap.uuid}/${stream.id}/pkt_hist.json`;
-    const histogram = (await fs.readFile(histogramFile))['histogram'];
+    const histogramFile = `${getUserFolder(req)}/${req.pcap.uuid}/${stream.id}/${enums.ANC_PKT_FILE}`;
+
+    try {
+        const histogram = await fs.readFile(histogramFile);
+        return histogram['histogram'] || [];
+    } catch (e) {
+        console.log(`Did not find the histogram file: ${histogramFile}`);
+    }
+    return [];
+};
+
+const ancillaryPktPerFrame = async (req, stream) => {
+    const histogram = await getHistogram(req, stream);
 
     const limit = validation.rtp.pktsPerFrame;
     const range = {
