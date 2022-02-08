@@ -170,6 +170,8 @@ const runUploadTest = async (name: string, c: testUtils.ITestContext) => {
 };
 
 [
+    'mac_address.pcap.gz', // This stream contains packets send to the same IP multicast address but with 
+                           // different MAC addresses.
     '2vid_2aud.pcap.gz',
     '4k_50fps.pcap',
     'eemebe_t_1080i59.pcap',
