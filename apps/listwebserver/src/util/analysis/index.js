@@ -458,8 +458,14 @@ const pcapFullAnalysis = async (req, res, next) => {
         userId: userId,
         analysisProfileFile: req.analysisProfileFile,
     };
-    const result = await runAnalysis(params);
-    next(result);
+    const err = await runAnalysis(params);
+
+    if(err) {
+        // If failed, abort the processing
+        return;
+    }
+
+    next();
 };
 
 const singleStreamAnalysis = async (req, res, next) => {
