@@ -1,0 +1,145 @@
+{
+    "analyzed": true,
+    "error": "",
+    "offset_from_ptp_clock": 1644295935292738300,
+    "anc_streams": 1,
+    "audio_streams": 0,
+    "video_streams": 0,
+    "ttml_streams": 0,
+    "total_streams": 1,
+    "narrow_linear_streams": 0,
+    "narrow_streams": 0,
+    "not_compliant_streams": 1,
+    "wide_streams": 0,
+    "srt_streams": 0,
+    "generated_from_network": false,
+    "truncated": true,
+    "_id": "6202a5060591dd8042243cdf",
+    "id": "9d151ff0-8902-11ec-89f2-497d5080363a",
+    "__v": 0,
+    "analyzer_version": "2.0.3",
+    "capture_date": 1644339098260,
+    "capture_file_name": "1644340486003_20564ed7-7d59-4de1-ae9f-cc1ddbb4cdb4.gz",
+    "date": 1644340486018,
+    "file_name": "anc_payload_errors.pcap.gz",
+    "owner_id": "394827d0-3d79-11ec-b594-7b169052ad1a",
+    "pcap_file_name": "1644340486003_20564ed7-7d59-4de1-ae9f-cc1ddbb4cdb4.pcap",
+    "analysis_profile": {
+        "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
+        "label": "JT-NM Tested 2020",
+        "timestamps": { "source": "pcap" },
+        "audio": {
+            "deltaPktTsVsRtpTsLimit": { "unit": "μs", "min": 0, "maxAvg": 1000, "max": 1000 },
+            "tsdf": { "tolerance": 1, "limit": 17, "unit": "packet_time" }
+        }
+    },
+    "summary": {
+        "error_list": [
+            {
+                "stream_id": "1ca77a2a-cd4a-4ae0-bc91-0dd4e10d3e4c",
+                "value": { "id": "errors.ancillary_invalid_payload" }
+            }
+        ],
+        "warning_list": [{ "stream_id": null, "value": { "id": "warnings.pcap.truncated" } }]
+    },
+    "streams": [
+        {
+            "error_list": [{ "id": "errors.ancillary_invalid_payload" }],
+            "_id": "6202a506199dcdaa90cedfa3",
+            "full_media_type": "video/smpte291",
+            "full_transport_type": "RTP",
+            "id": "1ca77a2a-cd4a-4ae0-bc91-0dd4e10d3e4c",
+            "media_specific": {
+                "packets_per_frame": 2,
+                "rate": "50",
+                "scan_type": "progressive",
+                "sub_streams": [
+                    { "did_sdid": 24672, "errors": 450, "line": 11, "num": 0, "offset": 0, "packet_count": 50 },
+                    { "did_sdid": 16645, "errors": 50, "line": 11, "num": 0, "offset": 23, "packet_count": 50 }
+                ]
+            },
+            "media_type": "ancillary_data",
+            "media_type_validation": {
+                "application/ttml+xml": ["STATUS_CODE_TTML_INVALID_DOCUMENT"],
+                "audio/L16": ["STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"],
+                "video/jxsv": ["STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"],
+                "video/raw": ["STATUS_CODE_VIDEO_MINIMUM_PACKETS_PER_FRAME"]
+            },
+            "network_information": {
+                "destination_address": "239.200.3.1",
+                "destination_mac_address": "01:00:5e:48:03:01",
+                "destination_port": "7000",
+                "dscp": { "consistent": true, "value": 25 },
+                "has_extended_header": false,
+                "inter_packet_spacing": {
+                    "after_m_bit": { "avg": 20000000, "max": 20000000, "min": 20000000 },
+                    "regular": { "avg": 0, "max": 0, "min": 0 }
+                },
+                "multicast_address_match": true,
+                "payload_type": 100,
+                "source_address": "192.168.200.105",
+                "source_mac_address": "00:20:fc:32:85:40",
+                "source_port": "7000",
+                "ssrc": 0,
+                "valid_multicast_ip_address": true,
+                "valid_multicast_mac_address": true
+            },
+            "pcap": "9d151ff0-8902-11ec-89f2-497d5080363a",
+            "state": "analyzed",
+            "statistics": {
+                "dropped_packet_count": 0,
+                "dropped_packet_samples": [],
+                "first_packet_ts": "1644339098260178000",
+                "frame_count": 49,
+                "last_frame_ts": 3125780624,
+                "last_packet_ts": "1644339099240178000",
+                "packet_count": 100,
+                "packets_per_frame": 2,
+                "payload_error_count": 500,
+                "retransmitted_packets": 0,
+                "wrong_field_count": 0,
+                "wrong_marker_count": 0
+            },
+            "__v": 0,
+            "analyses": {
+                "marker_bit": { "result": "compliant" },
+                "field_bits": { "result": "compliant" },
+                "anc_payloads": { "result": "not_compliant", "detail": { "count": 500 } },
+                "pkts_per_frame": {
+                    "result": "compliant",
+                    "details": {
+                        "histogram": [[2, 48]],
+                        "range": { "min": 2, "max": 2, "avg": 0.96 },
+                        "limit": { "min": 1 },
+                        "unit": "packets"
+                    }
+                },
+                "packet_ts_vs_rtp_ts": {
+                    "details": {
+                        "range": { "min": 177860, "max": 178099, "avg": 178001.44897959183 },
+                        "limit": { "min": 0, "max": 1000000 },
+                        "unit": "ns"
+                    },
+                    "result": "compliant"
+                },
+                "inter_frame_rtp_ts_delta": {
+                    "details": {
+                        "range": { "min": 1800, "max": 1800, "avg": 1800 },
+                        "limit": { "min": 1800, "max": 1800 },
+                        "unit": "ticks"
+                    },
+                    "result": "compliant"
+                },
+                "unique_multicast_destination_ip_address": { "result": "compliant" },
+                "destination_multicast_mac_address": { "result": "compliant" },
+                "destination_multicast_ip_address": { "result": "compliant" },
+                "unrelated_multicast_addresses": { "result": "compliant" },
+                "rtp_sequence": {
+                    "result": "compliant",
+                    "details": { "dropped_packets_count": 0, "dropped_packets_samples": [], "packet_count": 100 }
+                }
+            },
+            "processing": { "extractedFrames": "IDLE" }
+        }
+    ]
+}
