@@ -30,27 +30,27 @@ namespace ebu_list::st2110::d40
     {
       private:
         void check();
-        anc::did_sdid did_sdid_;
-        uint16_t line_num_;
-        uint16_t horizontal_offset_;
-        uint8_t num_;
-        uint16_t errors_;
+        anc::did_sdid did_sdid_{};
+        uint16_t line_num_{};
+        uint16_t horizontal_offset_{};
+        uint8_t num_{};
+        uint16_t errors_{};
 
       public:
-        anc_sub_stream(const anc_packet_header_lens anc_packet);
+        explicit anc_sub_stream(const anc_packet_header_lens anc_packet);
         anc_sub_stream(uint16_t did_sdid, uint8_t num);
-        anc::did_sdid did_sdid() const;
-        uint16_t line_num() const;
-        uint16_t horizontal_offset() const;
-        uint8_t num() const;
-        uint16_t errors() const;
+        [[nodiscard]] anc::did_sdid did_sdid() const;
+        [[nodiscard]] uint16_t line_num() const;
+        [[nodiscard]] uint16_t horizontal_offset() const;
+        [[nodiscard]] uint8_t num() const;
+        [[nodiscard]] uint16_t errors() const;
         void errors(uint16_t err);
-        std::string type() const;
+        [[nodiscard]] std::string type() const;
         bool operator==(const anc_sub_stream& other);
-        bool is_valid() const;
+        [[nodiscard]] bool is_valid() const;
         void write(ebu_list::path path) const;
 
-        uint16_t packet_count;
+        uint16_t packet_count{};
         std::vector<anc_sub_sub_stream> anc_sub_sub_streams;
     };
 

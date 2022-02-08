@@ -52,7 +52,7 @@ bool d40::sanity_check_word(const uint16_t word)
         parity ^= (word_copy & 1);
         word_copy >>= 1;
     }
-    res = (parity == parity_bit) ? res : false;
+    res = (parity == parity_bit) && res;
 
     if(!res)
     {
