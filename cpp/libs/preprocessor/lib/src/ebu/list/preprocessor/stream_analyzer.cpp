@@ -156,8 +156,10 @@ nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_f
 
     j_info["streams"] = get_streams_info(is_srt, streams, srt_streams, capture_timestamp);
 
+    const auto offset_info =
+        launcher.target().pcap_has_truncated_packets() ? std::nullopt : offset_calculator->get_info();
     auto j_pcap_info = make_pcap_info(pcap_file, pcap_uuid, capture_timestamp,
-                                      launcher.target().pcap_has_truncated_packets(), offset_calculator->get_info());
+                                      launcher.target().pcap_has_truncated_packets(), offset_info);
     j_info["pcap"]   = j_pcap_info;
 
     return j_info;
