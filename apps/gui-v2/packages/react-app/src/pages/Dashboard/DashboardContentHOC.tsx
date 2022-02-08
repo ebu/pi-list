@@ -83,7 +83,7 @@ const getPCapDetail = (currentPCap: SDK.types.IPcapInfo | null | undefined): IPc
     if (currentPCap) {
         const analysisDate = new Date(currentPCap.date).toLocaleString();
         const captureDate = new Date(currentPCap.capture_date).toLocaleString();
-        const profile = currentPCap.analysis_profile.label;
+        const profile = currentPCap.analysis_profile?.label;
         const isTruncated = currentPCap.truncated;
 
         const PCapDetailData = [
