@@ -262,7 +262,7 @@ void analysis::run_full_analysis(processing_context& context)
             }
             auto first_packet = std::move(maybe_rtp_packet.value());
 
-            const auto perform_essence_analysis = anc_stream_serializer::payload_analysis_t::yes;
+            const auto perform_essence_analysis = context.pcap.truncated ? anc_stream_serializer::payload_analysis_t::no : anc_stream_serializer::payload_analysis_t::yes;
             auto new_handler =
                 std::make_unique<anc_stream_serializer>(first_packet, stream_info, anc_info, perform_essence_analysis,
                                                         anc_finalizer_callback, context.storage_folder);
