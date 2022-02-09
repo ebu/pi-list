@@ -48,12 +48,9 @@ detector::details format_detector_handler::get_details() const
 detector::full_type format_detector_handler::get_full_media_type() const
 {
     return format_detector_.get_full_media_type();
-
 }
 
 const std::map<std::string, std::vector<std::string>>& format_detector_handler::get_error_codes() const
 {
     return format_detector_.get_error_codes();
-
 }
-

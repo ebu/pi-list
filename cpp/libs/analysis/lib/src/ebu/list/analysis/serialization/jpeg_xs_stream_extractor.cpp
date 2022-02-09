@@ -1,17 +1,18 @@
 #include "ebu/list/analysis/serialization/jpeg_xs_stream_extractor.h"
-#include <utility>
-#include <cstdio>
 #include "ebu/list/analysis/serialization/utils.h"
 #include "ebu/list/analysis/serialization/video/st2110_d20_packet.h"
 #include "ebu/list/analysis/utils/color_conversion.h"
 #include "ebu/list/core/platform/file.h"
+#include <cstdio>
+#include <utility>
 
 using namespace ebu_list;
 using namespace ebu_list::analysis;
 using namespace ebu_list::st2110;
 using json = nlohmann::json;
 
-jpeg_xs_stream_extractor::jpeg_xs_stream_extractor(rtp::packet first_packet, path base_dir, executor_ptr main_executor, std::string stream_id)
+jpeg_xs_stream_extractor::jpeg_xs_stream_extractor(rtp::packet first_packet, path base_dir, executor_ptr main_executor,
+                                                   std::string stream_id)
     : jpeg_xs_stream_handler(std::move(first_packet), [](const jpeg_xs_stream_handler&) {}),
       base_dir_(std::move(base_dir)), main_executor_(std::move(main_executor)), stream_id_(std::move(stream_id))
 {
@@ -27,7 +28,7 @@ void jpeg_xs_stream_extractor::on_packet(const packet_jpeg_xs_info&)
 
 void jpeg_xs_stream_extractor::on_frame_complete(frame_jpeg_xs_uptr&& f)
 {
-    const auto frame_id  = std::to_string(f->timestamp);
+    const auto frame_id = std::to_string(f->timestamp);
 
     const auto info_base = base_dir_ / stream_id_ / frame_id;
 

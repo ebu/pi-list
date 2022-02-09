@@ -27,7 +27,8 @@ std::vector<packet_gap_info> dropped_packets_analyzer<Counter>::dropped_packets(
 }
 
 template <typename Counter>
-void dropped_packets_analyzer<Counter>::handle_packet(Counter sequence_number, Counter current_seqnum, clock::time_point packet_time) noexcept
+void dropped_packets_analyzer<Counter>::handle_packet(Counter sequence_number, Counter current_seqnum,
+                                                      clock::time_point packet_time) noexcept
 {
     if(current_seqnum < sequence_number)
     {
@@ -40,7 +41,6 @@ void dropped_packets_analyzer<Counter>::handle_packet(Counter sequence_number, C
         log("Sequence number ({}) is larger than expected. Previous was ({}). Dropped now: {}. "
             "Accumulated: {}",
             sequence_number, current_seqnum, dropped_now, num_dropped_);
-
     }
     else if(current_seqnum > sequence_number)
     {
@@ -53,7 +53,6 @@ void dropped_packets_analyzer<Counter>::handle_packet(Counter sequence_number, C
         log("Sequence number ({}) is smaller than expected. Previous was ({}). Dropped now: {}. "
             "Accumulated: {}",
             sequence_number, current_seqnum, dropped_now, num_dropped_);
-
     }
 }
 

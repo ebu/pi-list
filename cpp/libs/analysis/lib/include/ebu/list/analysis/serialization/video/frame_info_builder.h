@@ -16,8 +16,8 @@ namespace ebu_list::analysis
         int64_t get_last_packet_timestamp() const noexcept;
 
       private:
-        size_t packet_count_                           = 0;
+        size_t packet_count_ = 0;
         std::optional<int64_t> first_packet_timestamp_;
-        int64_t last_packet_timestamp_                 = 0;
+        int64_t last_packet_timestamp_ = 0;
     };
 } // namespace ebu_list::analysis

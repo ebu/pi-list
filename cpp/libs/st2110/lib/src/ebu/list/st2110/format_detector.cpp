@@ -31,7 +31,7 @@ void format_detector::on_data(const rtp::packet& packet)
         if(result.state == detector::state::invalid)
         {
             const auto maybe_full_media_type = d->get_full_media_type();
-            const auto full_media_type = std::get<std::string>(maybe_full_media_type);
+            const auto full_media_type       = std::get<std::string>(maybe_full_media_type);
 
             // const auto kind = d->get_kind();
             logger()->debug("This stream has not {} valid format ({})", full_media_type, result.error_code);
