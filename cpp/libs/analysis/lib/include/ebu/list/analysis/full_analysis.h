@@ -4,6 +4,6 @@
 
 namespace ebu_list::analysis
 {
-    void run_full_analysis(const bool is_srt, processing_context& context);
+    void run_full_analysis(processing_context& context);
 
 } // namespace ebu_list::analysis

@@ -13,7 +13,7 @@ detector::status_description test::run_srt_format_detector(srt_format_detector& 
         auto packet = s.next();
         if(!packet)
             return detector::status_description{/*.state*/ detector::state::invalid,
-                                                           /*.error_code*/ "UNIT_TESTING"};
+                                                /*.error_code*/ "UNIT_TESTING"};
 
         const auto result = srt_d.handle_data(std::move(packet.value()));
         if(result.state == detector::state::valid || result.state == detector::state::invalid) return result;

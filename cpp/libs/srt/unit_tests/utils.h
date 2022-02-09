@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ebu/list/st2110/format_detector.h"
 #include "ebu/list/srt/srt_format_detector.h"
+#include "ebu/list/st2110/format_detector.h"
 #include "udp_source.h"
 
 namespace ebu_list::test

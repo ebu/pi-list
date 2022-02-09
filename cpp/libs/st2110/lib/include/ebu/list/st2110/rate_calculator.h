@@ -2,8 +2,8 @@
 
 #include "ebu/list/core/media/video_description.h"
 #include "ebu/list/core/types.h"
-#include <set>
 #include <optional>
+#include <set>
 
 //------------------------------------------------------------------------------
 

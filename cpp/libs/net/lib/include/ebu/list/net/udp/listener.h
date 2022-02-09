@@ -12,8 +12,8 @@ namespace ebu_list::udp
         virtual ~listener() = default;
 
         virtual void on_data(const datagram& datagram) = 0;
-        virtual void on_complete()                = 0;
-        virtual void on_error(std::exception_ptr) = 0;
+        virtual void on_complete()                     = 0;
+        virtual void on_error(std::exception_ptr)      = 0;
     };
 
     using listener_ptr  = std::shared_ptr<listener>;

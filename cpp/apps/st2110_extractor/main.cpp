@@ -176,13 +176,12 @@ namespace
 
         db_updater updater(db, config.storage_folder);
 
+        constexpr auto is_srt = false;
         auto context = processing_context{
             config.pcap_file, config.profile,    config.storage_folder, pcap, get_stream_info, &factory,
-            &updater,         progress_callback, config.extract_frames};
+            &updater,         progress_callback, config.extract_frames, is_srt};
 
-        const auto is_srt = false;
-
-        run_full_analysis(is_srt, context);
+        run_full_analysis(context);
     }
 } // namespace
 

@@ -16,7 +16,6 @@ namespace ebu_list::ttml
         virtual full_type get_full_media_type() const override;
         virtual transport_type get_transport_type() const override;
 
-
         inline virtual std::string get_kind() const noexcept override { return "ttml"; }
 
       private:

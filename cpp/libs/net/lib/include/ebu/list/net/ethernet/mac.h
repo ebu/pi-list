@@ -3,8 +3,8 @@
 #include "ebu/list/core/types.h"
 
 #include <array>
-#include <string>
 #include <optional>
+#include <string>
 
 namespace ebu_list::ethernet
 {

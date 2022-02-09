@@ -101,7 +101,7 @@ namespace
     }
 } // namespace
 
-void analysis::run_full_analysis(const bool is_srt, processing_context& context)
+void analysis::run_full_analysis(processing_context& context)
 {
     stream_counter counter;
 
@@ -125,13 +125,13 @@ void analysis::run_full_analysis(const bool is_srt, processing_context& context)
     };
 
     auto create_handler = [&](const udp::datagram& first_datagram) -> udp::listener_uptr {
-        const auto maybe_stream_info = context.get_stream_info(is_srt, first_datagram);
+        const auto maybe_stream_info = context.get_stream_info(context.is_srt, first_datagram);
 
         if(!maybe_stream_info)
         {
             /*logger()->warn("Bypassing stream with ssrc: {}", first_packet.info.rtp.view().ssrc());*/
-            logger()->warn("\tdestination: {}", to_string(ipv4::endpoint{first_datagram.info.destination_address,
-                                                                         first_datagram.info.destination_port}));
+//            logger()->warn("\tdestination: {}", to_string(ipv4::endpoint{first_datagram.info.destination_address,
+//                                                                         first_datagram.info.destination_port}));
             auto handler = std::make_unique<udp::null_listener>();
             return handler;
         }
@@ -262,9 +262,11 @@ void analysis::run_full_analysis(const bool is_srt, processing_context& context)
             }
             auto first_packet = std::move(maybe_rtp_packet.value());
 
-            auto new_handler = std::make_unique<anc_stream_serializer>(first_packet, stream_info, anc_info,
-                                                                       anc_finalizer_callback, context.storage_folder);
-            auto ml          = std::make_unique<udp_multi_listener_t<udp::listener, udp::datagram>>();
+            const auto perform_essence_analysis = anc_stream_serializer::payload_analysis_t::yes;
+            auto new_handler =
+                std::make_unique<anc_stream_serializer>(first_packet, stream_info, anc_info, perform_essence_analysis,
+                                                        anc_finalizer_callback, context.storage_folder);
+            auto ml = std::make_unique<udp_multi_listener_t<udp::listener, udp::datagram>>();
             ml->add_rtp_listener(std::move(new_handler));
             {
                 auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);

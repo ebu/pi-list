@@ -1,11 +1,11 @@
 #pragma once
 
+#include "ebu/list/analysis/handlers/dscp_analyzer.h"
 #include "ebu/list/analysis/serialization/serializable_stream_info.h"
 #include "ebu/list/net/udp/listener.h"
 #include "ebu/list/srt/srt_format_detector.h"
 #include "ebu/list/srt/srt_sequence_number_analyzer.h"
 #include "ebu/list/st2110/format_detector.h"
-#include "ebu/list/analysis/handlers/dscp_analyzer.h"
 
 namespace ebu_list::srt
 {

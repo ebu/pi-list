@@ -14,7 +14,8 @@ namespace
     json make_stream_info(const stream_with_details& stream_info,
                           std::map<std::string, std::vector<std::string>>& detectors_error_codes,
                           int64_t num_packets = 0, uint16_t num_dropped_packets = 0,
-                          std::vector<ebu_list::rtp::packet_gap_info> dropped_packet_samples = {}, uint32_t retransmitted_packets = 0)
+                          std::vector<ebu_list::rtp::packet_gap_info> dropped_packet_samples = {},
+                          uint32_t retransmitted_packets                                     = 0)
     {
         json serialized_streams_details = stream_with_details_serializer::to_json(stream_info);
         if(num_packets > 0)
@@ -22,8 +23,7 @@ namespace
             serialized_streams_details["statistics"]["packet_count"]           = num_packets;
             serialized_streams_details["statistics"]["dropped_packet_count"]   = num_dropped_packets;
             serialized_streams_details["statistics"]["dropped_packet_samples"] = dropped_packet_samples;
-            serialized_streams_details["statistics"]["retransmitted_packets"] = retransmitted_packets;
-
+            serialized_streams_details["statistics"]["retransmitted_packets"]  = retransmitted_packets;
         }
 
         if(detectors_error_codes["video/raw"].size() > 0)
@@ -117,17 +117,17 @@ void stream_listener::on_complete()
     std::map<std::string, std::vector<std::string>> detectors_error_codes = detector_.get_error_codes();
     media_stream_details details;
     const auto maybe_full_media_type = detector_.get_full_media_type();
-    const auto maybe_transport_type = detector_.get_transport_type();
-
+    const auto maybe_transport_type  = detector_.get_transport_type();
 
     stream_id_.network.dscp = dscp_.get_info();
 
     if(std::holds_alternative<std::nullopt_t>(format) && std::holds_alternative<std::nullopt_t>(maybe_full_media_type))
     {
-        stream_id_.full_type = media::full_media_from_string("unknown");
+        stream_id_.full_type           = media::full_media_from_string("unknown");
         stream_id_.full_transport_type = media::full_transport_type_from_string("unknown");
 
-        if(seqnum_analyzer_.retransmitted_packets() > 0){
+        if(seqnum_analyzer_.retransmitted_packets() > 0)
+        {
             stream_id_.full_transport_type = media::full_transport_type_from_string("RIST");
         }
 
@@ -135,11 +135,9 @@ void stream_listener::on_complete()
     }
     else if(std::holds_alternative<std::string>(maybe_full_media_type))
     {
-        const auto full_media_type = std::get<std::string>(maybe_full_media_type);
-        stream_id_.full_type = media::full_media_from_string(full_media_type);
+        const auto full_media_type     = std::get<std::string>(maybe_full_media_type);
+        stream_id_.full_type           = media::full_media_from_string(full_media_type);
         stream_id_.full_transport_type = media::full_transport_type_from_string("RTP");
-
-
 
         if(media::is_full_media_type_video_jxsv(media::full_media_from_string(full_media_type)))
         {

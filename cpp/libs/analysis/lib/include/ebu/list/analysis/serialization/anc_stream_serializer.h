@@ -9,7 +9,8 @@ namespace ebu_list::analysis
     class anc_stream_serializer : public anc_stream_handler
     {
       public:
-        anc_stream_serializer(rtp::packet first_packet, serializable_stream_info info, anc_stream_details details,
+        anc_stream_serializer(const rtp::packet& first_packet, const serializable_stream_info& info,
+                              const anc_stream_details& details, payload_analysis_t payload_analysis,
                               completion_handler ch, path base_dir);
 
       private:
