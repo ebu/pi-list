@@ -254,7 +254,7 @@ int cb_afd(void* callback_context, [[maybe_unused]] struct klvanc_context_s* ctx
     it->decoded_data +=
         fmt::format("AFD: {} ({}) Aspect Ratio: {} Bar Flags: {} (0x{:02x})\n", klvanc_afd_to_string(pkt->afd),
                     pkt->afd, klvanc_aspectRatio_to_string(pkt->aspectRatio),
-                    klvanc_barFlags_to_string(pkt->barDataFlags), pkt->barDataFlags);
+                    klvanc_barFlags_to_string(pkt->barDataFlags), static_cast<int>(pkt->barDataFlags));
 
     return 0;
 }
