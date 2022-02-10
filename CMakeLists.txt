@@ -30,7 +30,8 @@ conan_add_remote(NAME conancenter URL https://center.conan.io)
 
 conan_cmake_run(CONANFILE conanfile.txt
         BASIC_SETUP CMAKE_TARGETS
-        BUILD missing mongo-c-driver mongo-cxx-driver # Build from source, otherwise it may fail due to being built against a different glibc)
+        # Build mongo stuff from source, otherwise it may fail due to being built against a different glibc
+        BUILD missing mongo-c-driver mongo-cxx-driver)
 
 # -------------------------------------------------------------------------
 
