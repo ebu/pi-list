@@ -19,8 +19,6 @@ openssl/1.1.1m
 cpprestsdk:with_websockets=True
 cpprestsdk:with_compression=True
 OpenSSL:shared=True
-mongo-c-driver:shared=True
-mongo-cxx-driver:shared=True
 
 [generators]
 cmake
