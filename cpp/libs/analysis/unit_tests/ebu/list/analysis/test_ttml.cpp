@@ -20,10 +20,11 @@ namespace
         profile.timestamps.source = timestamps_source::pcap;
         auto callback             = [](float) {};
 
+        constexpr auto is_srt = false;
         auto context = processing_context{pcap_file,        profile,  storage_folder, pcap, get_stream_info,
-                                          &handler_factory, &updater, callback,       false};
+                                          &handler_factory, &updater, callback,       false, is_srt};
 
-        run_full_analysis(false, context);
+        run_full_analysis(context);
     }
 
     json load_json(path full_path)
@@ -65,10 +66,10 @@ SCENARIO("TTML stream analysis")
 
     auto get_stream_info = [&stream_ids](const bool /*is_srt*/, const udp::datagram&
                                          /*first_packet*/) -> std::optional<stream_with_details> {
-        auto stream_info = serializable_stream_info{};
-        stream_info.type = media::media_type::TTML;
+        auto stream_info      = serializable_stream_info{};
+        stream_info.type      = media::media_type::TTML;
         stream_info.full_type = media::full_media_type::TTMLXML;
-        auto details     = analysis::ttml::stream_details{};
+        auto details          = analysis::ttml::stream_details{};
 
         stream_ids.push_back(stream_info.id);
 

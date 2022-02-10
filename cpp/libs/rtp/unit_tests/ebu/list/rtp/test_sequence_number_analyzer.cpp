@@ -360,7 +360,6 @@ SCENARIO("Sequence number analyser")
         const clock::time_point ts3 = clock::now();
         const uint32_t ignore_ssrc{};
 
-
         analyzer.handle_packet(UINT16_MAX - 4, ignore_timestamp, ignore_ssrc);
         analyzer.handle_packet(UINT16_MAX - 1, ts1, ignore_ssrc);
         analyzer.handle_packet(0, ts2, ignore_ssrc);
@@ -420,7 +419,6 @@ SCENARIO("Sequence number analyser")
         const clock::time_point ts = clock::now();
         const uint32_t ignore_ssrc{};
 
-
         analyzer.handle_packet(0, ignore_timestamp, ignore_ssrc);
         analyzer.handle_packet(UINT32_MAX, ts, ignore_ssrc);
 
@@ -456,7 +454,6 @@ SCENARIO("Sequence number analyser")
         const clock::time_point ignore_timestamp{};
         const clock::time_point ts = clock::now();
         const uint32_t ignore_ssrc{};
-
 
         analyzer.handle_packet(2, ignore_timestamp, ignore_ssrc);
         analyzer.handle_packet(1, ts, ignore_ssrc);
@@ -495,7 +492,6 @@ SCENARIO("Sequence number analyser")
         const clock::time_point ts2 = clock::now();
         const clock::time_point ts3 = clock::now();
         const uint32_t ignore_ssrc{};
-
 
         analyzer.handle_packet(2, ignore_timestamp, ignore_ssrc);
         analyzer.handle_packet(1, ts1, ignore_ssrc);

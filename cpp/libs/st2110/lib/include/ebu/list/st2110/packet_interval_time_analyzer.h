@@ -48,4 +48,4 @@ namespace ebu_list::st2110
         struct impl;
         const std::unique_ptr<impl> impl_;
     };
-} // namespace ebu_list::st2110::d22
+} // namespace ebu_list::st2110

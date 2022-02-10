@@ -77,7 +77,8 @@ detector::status_description line_data_analyzer::handle_data(const rtp::packet& 
         }
         else
         {
-            logger()->error("ERROR - Packet not marked. Packet Line Number {}. Previous Packet Line Number {}", int(line_header.line_number()), line_number_);
+            logger()->error("ERROR - Packet not marked. Packet Line Number {}. Previous Packet Line Number {}",
+                            int(line_header.line_number()), line_number_);
             return detector::status_description{/*.state*/ detector::state::invalid,
                                                 /*.error_code*/ "STATUS_CODE_VIDEO_INVALID_LINE_NUMBER"};
         }

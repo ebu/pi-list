@@ -18,8 +18,9 @@ namespace
 } // namespace
 
 anc_stream_handler::anc_stream_handler(const rtp::packet& first_packet, const serializable_stream_info& info,
-                                       const anc_stream_details& details, completion_handler ch)
-    : info_(std::move(info)), anc_description_(std::move(details)), completion_handler_(std::move(ch))
+                                       const anc_stream_details& details, payload_analysis_t payload_analysis,
+                                       completion_handler ch)
+    : info_(info), anc_description_(details), payload_analysis_(payload_analysis), completion_handler_(std::move(ch))
 {
     logger()->info("Ancillary: created handler for {:08x}, {}->{}", info_.network.ssrc, to_string(info_.network.source),
                    to_string(info_.network.destination));
@@ -80,7 +81,10 @@ void anc_stream_handler::on_data(const rtp::packet& packet)
     anc_description_.last_packet_ts = packet.info.udp.packet_time;
     const auto marked               = packet.info.rtp().marker();
 
-    parse_packet(packet);
+    if(payload_analysis_ == payload_analysis_t::yes)
+    {
+        parse_packet(packet);
+    }
 
     logger()->trace("Ancillary frame={}, marker={}", anc_description_.frame_count, (marked) ? "1" : "0");
     if(anc_description_.anc.scan_type == video::scan_type::INTERLACED)

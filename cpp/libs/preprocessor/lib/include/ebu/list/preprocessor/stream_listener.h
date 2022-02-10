@@ -37,7 +37,7 @@ namespace ebu_list::analysis
         dscp_analyzer dscp_;
         nlohmann::json info_;
         clock::time_point capture_timestamp_ = {};
-        state state_ = state::valid;
+        state state_                         = state::valid;
     };
 
     using stream_listener_uptr = std::unique_ptr<stream_listener>;

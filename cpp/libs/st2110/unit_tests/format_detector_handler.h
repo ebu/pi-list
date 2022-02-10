@@ -11,7 +11,6 @@ namespace ebu_list::st2110
     class format_detector_handler : public udp::listener
     {
       public:
-
         format_detector_handler() = default;
         detector::status_description status() const noexcept;
         detector::details get_details() const;
@@ -26,8 +25,6 @@ namespace ebu_list::st2110
 #pragma endregion udp::listener events
 
       private:
-
         st2110::format_detector format_detector_;
-
     };
-} // namespace ebu_list::rtp
+} // namespace ebu_list::st2110

@@ -121,8 +121,7 @@ tro_map analysis::calculate_average_troffset(ebu_list::path pcap_file,
     tro_map tro_info;
 
     auto create_handler = [&](const udp::datagram& first_datagram) -> udp::listener_uptr {
-        auto maybe_rtp_packet =
-            rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
+        auto maybe_rtp_packet = rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
         if(!maybe_rtp_packet)
         {
             return std::make_unique<udp::null_listener>();

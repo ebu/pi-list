@@ -194,9 +194,12 @@ detector::details audio_format_detector::get_details() const
 
 detector::full_type audio_format_detector::get_full_media_type() const
 {
-    if(description_.encoding == media::audio::audio_encoding::L16){
+    if(description_.encoding == media::audio::audio_encoding::L16)
+    {
         return "audio/L16";
-    }else{
+    }
+    else
+    {
         assert(description_.encoding == media::audio::audio_encoding::L24);
         return "audio/L24";
     }
@@ -204,5 +207,5 @@ detector::full_type audio_format_detector::get_full_media_type() const
 
 detector::transport_type audio_format_detector::get_transport_type() const
 {
-        return "RTP";
+    return "RTP";
 }
