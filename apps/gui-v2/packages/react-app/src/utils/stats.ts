@@ -1,4 +1,5 @@
 import { api } from '@bisect/ebu-list-sdk';
+
 export const getComplianceSummary = (v: any) => {
     var res = true;
     for (var i = 0; i < v.length; i++) {

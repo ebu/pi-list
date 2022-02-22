@@ -9,16 +9,28 @@ const ComplianceTagPanel = ({ stream }: { stream: types.IStreamInfo | any | unde
     const badges = Object.keys(analyses)
         .sort()
         .map(analysis => {
-            const compliance = analyses[analysis].result === api.constants.analysisConstants.outcome.compliant;
+            const compliance = analyses[analysis].result;
             const analysisNames: { [key: string]: string | undefined } = api.constants.analysisConstants.analysesNames;
             const name = analysisNames[analysis];
             if (!name) return null;
-            const data = {
-                text: name,
-                compliant: compliance,
-            };
-            dataArray.push(data);
+
+
+            if (compliance === api.constants.analysisConstants.outcome.disabled) {
+                const data = {
+                    text: `[Disabled] ${name}`,
+                    compliant: compliance,
+                }
+                dataArray.push(data);
+            } else {
+                const data = {
+                    text: name,
+                    compliant: compliance,
+                };
+                dataArray.push(data);
+
+            }
         });
+
     return <ComplianceTagContainer complianceTagList={dataArray} hasError={hasError} />;
 };
 
