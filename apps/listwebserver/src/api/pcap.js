@@ -14,7 +14,7 @@ const pcapController = require('../controllers/pcap');
 const Stream = require('../models/stream');
 const StreamCompare = require('../models/streamCompare');
 const streamsController = require('../controllers/streams');
-const { pcapSingleStreamIngest, pcapIngest, pcapReanalyze, pcapFromLocalFile } = require('../util/analysis');
+const { pcapSingleStreamIngest, pcapIngest, pcapReanalyze, pcapFromLocalFile, pcapOnlyUpload } = require('../util/analysis');
 const websocketManager = require('../managers/websocket');
 const { getUserId, checkIsReadOnly } = require('../auth/middleware');
 import { verifyIfFramesAreExtractedOrExtract } from '../controllers/streams2';
@@ -23,6 +23,7 @@ const pcap2 = require('../controllers/pcap2');
 import { getUserFolder, generateRandomPcapFilename, generateRandomPcapDefinition } from '../util/analysis/utils';
 
 const exec = util.promisify(child_process.exec);
+
 
 /**
  *  Analyze local PCAP file
@@ -93,6 +94,25 @@ const upload = multer({
     storage: storage,
 });
 
+/**
+ *  PCAP file upload
+ *  URL: /api/pcap/upload
+ *  Method: PUT
+ *  This is used to only upload a pcap to the database
+ *  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ *  This call can't be moved to anywhere after the next ones or they will match before to a pcapID
+ *  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ */
+router.put(
+    '/upload',
+    checkIsReadOnly,
+    upload.single('pcap', 'originalFilename'),
+    pcapOnlyUpload,
+    (req, res, next) => {
+        res.status(HTTP_STATUS_CODE.SUCCESS.CREATED).send(req.pcap);
+    }
+);
+
 // Check if the user can access the pcap
 router.use('/:pcapID', isAuthorized);
 
@@ -113,8 +133,8 @@ router.put(
 );
 
 /* Reanalyze an existing PCAP file */
-router.patch(
-    '/:pcapId',
+router.put(
+    '/:pcapId/reanalyze',
     checkIsReadOnly,
     (req, res, next) => {
         const { pcapId } = req.params;
@@ -159,6 +179,62 @@ router.patch(
                     API_ERRORS.PCAP_EXTRACT_METADATA_ERROR
                 );
             });
+    },
+    (req, res, next) => {
+        res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
+        next();
+    },
+    pcapReanalyze
+);
+
+router.patch(
+    '/:pcapId',
+    checkIsReadOnly,
+    (req, res, next) => {
+        const { pcapId } = req.params;
+        const sdps = req.body.sdps;
+        const transport_type = req.body.transport_type
+
+        Stream.deleteMany({
+            pcap: pcapId,
+        })
+            .exec()
+            .then(() => {
+                return influxDbManager.deleteSeries(pcapId);
+            })
+            .then(() => {
+                return Pcap.findOneAndUpdate(
+                    {
+                        id: pcapId,
+                    },
+                    {
+                        sdps: sdps,
+                        transport_type: transport_type
+                    }, { upsert: true }).exec();
+            })
+            .then((pcap) => {
+                const pcapFolder = `${getUserFolder(req)}/${pcapId}`;
+                const pcapLocation = `${pcapFolder}/${pcap.pcap_file_name}`;
+
+                req.file = {
+                    path: pcapLocation,
+                    originalname: pcap.file_name,
+                    filename: pcap.pcap_file_name,
+                };
+                req.pcap = {
+                    uuid: pcapId,
+                    folder: pcapFolder,
+                    data: pcap
+                };
+
+                res.locals = {
+                    pcapFileName: pcap.pcap_file_name,
+                    pcapFilePath: pcapLocation,
+                };
+
+                next();
+
+            })
     },
     (req, res, next) => {
         res.status(HTTP_STATUS_CODE.SUCCESS.OK).send();
@@ -291,29 +367,29 @@ router.get('/:pcapID/download', (req, res, next) => {
         });
 });
 
-/* Get sdp.sdp file for a pcap */
-router.get('/:pcapID/sdp', (req, res, next) => {
-    const { pcapID } = req.params;
+// /* Get sdp.sdp file for a pcap */
+// router.get('/:pcapID/sdp', (req, res, next) => {
+//     const { pcapID } = req.params;
 
-    logger('sdp-get').info(`Getting SDP for ${pcapID}`);
+//     logger('sdp-get').info(`Getting SDP for ${pcapID}`);
 
-    Pcap.findOne({
-        id: pcapID,
-    })
-        .exec()
-        .then((data) => {
-            const filename = data.file_name.replace(/\.[^\.]*$/, '-sdp.zip');
-            const sdpPath = path.join(`${getUserFolder(req)}`, `${pcapID}`, `${filename}`);
+//     Pcap.findOne({
+//         id: pcapID,
+//     })
+//         .exec()
+//         .then((data) => {
+//             const filename = data.file_name.replace(/\.[^\.]*$/, '-sdp.zip');
+//             const sdpPath = path.join(`${getUserFolder(req)}`, `${pcapID}`, `${filename}`);
 
-            res.download(sdpPath, filename, (err) => {
-                if (err) {
-                    next(err);
-                } else {
-                    logger('download').info(`File ${sdpPath}`);
-                }
-            });
-        });
-});
+//             res.download(sdpPath, filename, (err) => {
+//                 if (err) {
+//                     next(err);
+//                 } else {
+//                     logger('download').info(`File ${sdpPath}`);
+//                 }
+//             });
+//         });
+// });
 
 /* Get info from pcap */
 router.get('/:pcapID/', (req, res) => {

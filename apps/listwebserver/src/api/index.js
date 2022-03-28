@@ -6,12 +6,14 @@
  */
 const { Router } = require('express');
 const program = require('../util/programArguments');
+const pcap2  = require('./pcap2');
 
 // Initialize Express Router
 const router = Router();
 
 // API routes
 router.use('/pcap', require('./pcap'));
+router.use('/pcap', pcap2);
 router.use('/sdp', require('./sdp'));
 router.use('/user', require('./user'));
 router.use('/meta', require('./meta'));

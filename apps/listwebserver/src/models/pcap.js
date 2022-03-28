@@ -104,6 +104,18 @@ const PcapSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    sdps: {
+        type: Array,
+        default: []
+    },
+    sdp_count: {
+        type: Number,
+        default: 0
+    },
+    transport_type: {
+        type: String,
+        default: "RTP"
+    }
 });
 
 PcapSchema.set('toJSON', {

@@ -7,8 +7,12 @@ import {
     CircularProgressBar,
     DragAndDropTileUpload,
 } from 'components/index';
+import UploadModal from './UploadModal';
 import './styles.scss';
 import list from '../../../utils/api';
+import { CustomScrollbar } from 'components'
+
+
 
 const states = {
     normal: 'normal',
@@ -27,10 +31,12 @@ const uploadProgressKind = {
 
 function UploadPcap({ isButton }: { isButton: boolean }) {
     const [state, setState] = React.useState(states.normal);
+    const [isModalOpen, setModalOpen] = React.useState<boolean>(false);
     const [uploadPercentage, setUploadPercentage] = React.useState(0);
     const [filename, setFilename] = React.useState<string>('');
     const [numberFiles, setNumberFiles] = React.useState<number>(0);
     const [uploadedFiles, setUploadedFiles] = React.useState<number>(0);
+    const [receivedFiles, setReceivedFiles] = React.useState<any[]>([]);
 
     const uploadProgress = (progressKind: string, percentage?: number) => {
         switch (progressKind) {
@@ -79,6 +85,7 @@ function UploadPcap({ isButton }: { isButton: boolean }) {
             ? callback(uploadProgressKind.completed)
             : callback(uploadProgressKind.failed);
     };
+
     const onAcceptProgress = (
         receivedFiles: any,
         numberFiles: number,
@@ -89,19 +96,13 @@ function UploadPcap({ isButton }: { isButton: boolean }) {
         const filesUploaded: string[] = [];
         receivedFiles.map((fileToUpload: any) => {
             list.pcap
-                .upload(fileToUpload.name, fileToUpload, info => {
-                    callback(
-                        uploadProgressKind.progress,
-                        getAllFilesPercentage(info.percentage, numberFiles, uploadedFiles)
-                    );
-                    if (info.percentage === 100) {
-                        uploadedFiles++;
+                .onlyInsertInDatabase(fileToUpload.name, fileToUpload)
+                .then((data: any) => {
+                    setReceivedFiles(current => [...current, data]);
+                    uploadedFiles++;
+                    if (uploadedFiles === numberFiles) {
+                        setModalOpen(true);
                     }
-                })
-                .then(() => {
-                    completedFiles++;
-                    filesUploaded.push('completed');
-                    if (completedFiles === numberFiles) getUploadStatus(filesUploaded, numberFiles, callback);
                 })
                 .catch((err: any) => {
                     console.log(err);
@@ -123,6 +124,7 @@ function UploadPcap({ isButton }: { isButton: boolean }) {
         setUploadedFiles(0);
         setNumberFiles(0);
     };
+
     const normalContents = <DragAndDropTileUpload />;
     const activeContents = <DropHere />;
     const uploading = (
@@ -157,6 +159,30 @@ function UploadPcap({ isButton }: { isButton: boolean }) {
         return null;
     }
 
+    const onModalClose = () => {
+        setUploadedFiles(0);
+        setNumberFiles(0);
+        setReceivedFiles([]);
+        receivedFiles.map(async (fileToUpload: any) => {
+            await list.pcap
+                .delete(fileToUpload.pcap_id)
+                .then(() => {
+                    setModalOpen(false);
+
+                })
+                .catch((err: any) => {
+                    console.log(err);
+                });
+        });
+    }
+
+    const onUploadDone = () => {
+        setModalOpen(false);
+        setUploadedFiles(0);
+        setNumberFiles(0);
+        setReceivedFiles([]);
+    }
+
     const showAsButton = isButton && state === states.normal;
 
     return (
@@ -169,6 +195,8 @@ function UploadPcap({ isButton }: { isButton: boolean }) {
                     <div className={`drag-and-drop-tile ${contents[1]}`}> {contents[0]}</div>
                 )}
             </div>
+            {isModalOpen && <UploadModal isOpen={isModalOpen} onUploadDone={onUploadDone} onModalClose={onModalClose} receivedFiles={receivedFiles} />}
+
         </div>
     );
 }

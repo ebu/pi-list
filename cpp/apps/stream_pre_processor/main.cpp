@@ -35,6 +35,15 @@ namespace
         return response;
     }
 
+    std::string get_transport_type(const json::const_iterator& options)
+    {
+        const auto transport_type = options->find("transport_type");
+        if(transport_type == options->end() || transport_type.value() == nullptr){
+            return "RTP";
+        }
+        return transport_type->get<std::string>();
+    }
+
     bool is_action_valid(const json& msg, const json::const_iterator& action)
     {
         return action != msg.end() && action->is_string() && action->get<std::string>() == "preprocessing.request";
@@ -112,6 +121,9 @@ int main(int argc, char* argv[])
             const auto workflow_id = message.find("workflow_id");
             const auto pcap_id     = message.find("pcap_id");
             const auto pcap_path   = message.find("pcap_path");
+            const auto options = message.find("options");
+            const auto transport_type = get_transport_type(options);
+            const auto is_srt = transport_type == "SRT";
             json response{};
 
             ack();
@@ -139,10 +151,8 @@ int main(int argc, char* argv[])
                 console->info("Processing {}.", pcap_id->get<std::string>());
                 try
                 {
-                    const auto is_srt = false;
-
                     const json analysis_result =
-                        analyze_stream(pcap_path->get<std::string>(), pcap_id->get<std::string>(), is_srt);
+                        analyze_stream(pcap_path->get<std::string>(), pcap_id->get<std::string>(), transport_type, is_srt);
                     response = compose_response(workflow_id->get<std::string>(), "completed", 100, "", analysis_result);
 
                     console->info("Processing {} succeeded.", pcap_id->get<std::string>());

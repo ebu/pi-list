@@ -8,6 +8,7 @@ import { pcapsCapturingAtom } from './pcapsCapturing';
 import { pcapsAnalysingAtom } from './pcapsAnalysing';
 import _ from 'lodash';
 import { Notification } from 'components/index';
+import { pcap } from '@bisect/ebu-list-sdk/dist/api';
 
 const handlePcapsUpdate = (
     data: any,
@@ -90,8 +91,12 @@ const handlePcapsUpdate = (
 
         case 'PCAP_FILE_DELETED':
             setPcapsAtom(current => {
-                return current.filter((pcap: SDK.api.pcap.IPcapInfo) => pcap.id !== data.data.id);
+                console.log("DELETE THIS ONE", current);
+                return current.filter((pcap: SDK.api.pcap.IPcapInfo | any) => pcap.id !== data.data.id);
             });
+            setPcapsAnalysingAtom(current => {
+                return current.filter((pcap: any) => pcap.id !== data.data.id);
+            })
             break;
 
         case 'ZIP_FILE_COMPLETE':

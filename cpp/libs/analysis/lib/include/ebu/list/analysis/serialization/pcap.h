@@ -17,6 +17,7 @@ namespace ebu_list::analysis
         bool truncated                             = false; // True iff the pcap file only has partial packets
         clock::duration offset_from_ptp_clock      = {};
         clock::time_point capture_timestamp        = {};
+        std::string transport_type;
 
         // statistics
         int total_streams = 0;

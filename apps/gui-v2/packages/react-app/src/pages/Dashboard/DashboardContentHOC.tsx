@@ -234,6 +234,9 @@ const getDataToInformationSidebar = (
         },
     ];
 
+    
+    if(currentPCap && currentPCap.sdp_count < 1) delete buttonWithIconList[1];
+
     const isMultipleFilesSelected = currentPCapIds.length > 1;
 
     const data = {
@@ -392,7 +395,7 @@ function DashboardContentHOC() {
             const route = routeBuilder.pcap_stream_list(id);
             history.push(route);
         } else {
-            list.pcap.updatePcapAnalysis(id).catch((err: any) => {
+            list.pcap.reanalyze(id).catch((err: any) => {
                 console.log(err);
             });
         }

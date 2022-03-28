@@ -14,16 +14,19 @@
     "srt_streams": 0,
     "generated_from_network": false,
     "truncated": false,
-    "_id": "62165d92830981d2a90bd046",
-    "id": "c835def0-94c3-11ec-813a-2dcc012942fb",
+    "sdps": [],
+    "sdp_count": 0,
+    "transport_type": "RTP",
+    "_id": "6241bb0b473eea6ba1f0805f",
+    "id": "c5e98730-ae9c-11ec-b777-cd72974845fb",
     "__v": 0,
     "analyzer_version": "2.0.3",
     "capture_date": 1548356088263,
-    "capture_file_name": "1645632914045_54e846a5-6842-4956-8b84-7b61e9639af9.pcap",
-    "date": 1645632914116,
+    "capture_file_name": "1648474890046_2ad5b877-8f27-418d-8284-74d33ebaf28c.pcap",
+    "date": 1648474891397,
     "file_name": "emb_L24_48k_16ch_pt125us.pcap",
-    "owner_id": "c2625300-94c3-11ec-bd96-f58012b5a1e4",
-    "pcap_file_name": "1645632914045_54e846a5-6842-4956-8b84-7b61e9639af9.pcap",
+    "owner_id": "c24cda70-ae86-11ec-827c-6fa823236acc",
+    "pcap_file_name": "1648474890046_2ad5b877-8f27-418d-8284-74d33ebaf28c.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -51,10 +54,10 @@
     "streams": [
         {
             "error_list": [],
-            "_id": "62165d92084dd64d8622138e",
+            "_id": "6241bb0ba74491f7dbbdbad8",
             "full_media_type": "audio/L24",
             "full_transport_type": "RTP",
-            "id": "fc9ca59a-ba2b-42c6-afd1-046db13cb856",
+            "id": "26b81fc1-3cf7-482d-bc78-0cbc09a74072",
             "media_specific": {
                 "encoding": "L24",
                 "number_channels": 16,
@@ -106,7 +109,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "c835def0-94c3-11ec-813a-2dcc012942fb",
+            "pcap": "c5e98730-ae9c-11ec-b777-cd72974845fb",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,

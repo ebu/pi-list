@@ -7,7 +7,7 @@
             "label": "Build all",
             "type": "shell",
             "command": "npx",
-            "args": ["lerna", "run", "build"],
+            "args": ["lerna", "run", "build", "--scope=@list/validation-tests"],
             "group": {
                 "kind": "build",
                 "isDefault": true

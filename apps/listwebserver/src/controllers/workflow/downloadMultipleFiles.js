@@ -62,7 +62,7 @@ const getFiles = async (wf, inputConfig) => {
         }
 
         case 'sdp': // these files can be found by extension only
-            const pattern = `${zipFolder}/+(${inputConfig.ids.join('|')})/**/*.${ext}`;
+            const pattern = `${zipFolder}/+(${inputConfig.ids.join('|')})/*.${ext}`;
             const files = await glob(pattern);
             return files.map((file) => ({
                 path: file,

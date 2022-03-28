@@ -15,7 +15,7 @@ using nlohmann::json;
 namespace
 {
     json make_pcap_info(const path& pcap_file, std::string_view pcap_uuid, clock::time_point capture_timestamp,
-                        bool has_truncated_packets, const std::optional<ptp_offset_calculator::info>& ptp_info)
+                        bool has_truncated_packets, const std::optional<ptp_offset_calculator::info>& ptp_info, std::string transport_type)
     {
         auto info                  = pcap_info{};
         info.id                    = pcap_uuid;
@@ -24,6 +24,7 @@ namespace
         info.truncated             = has_truncated_packets;
         info.offset_from_ptp_clock = ptp_info.has_value() ? ptp_info->average_offset : std::chrono::seconds{0};
         info.capture_timestamp     = capture_timestamp;
+        info.transport_type = transport_type;
 
         auto j_fi = pcap_info::to_json(info);
 
@@ -101,7 +102,7 @@ nlohmann::json get_streams_info(const bool is_srt, std::vector<stream_listener*>
     return j_streams;
 }
 
-nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_file, const std::string_view& pcap_uuid,
+nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_file, const std::string_view& pcap_uuid, std::string transport_type,
                                                   const bool is_srt)
 {
     // These will hold pointers to the stream handlers.
@@ -159,7 +160,7 @@ nlohmann::json ebu_list::analysis::analyze_stream(const std::string_view& pcap_f
     const auto offset_info =
         launcher.target().pcap_has_truncated_packets() ? std::nullopt : offset_calculator->get_info();
     auto j_pcap_info = make_pcap_info(pcap_file, pcap_uuid, capture_timestamp,
-                                      launcher.target().pcap_has_truncated_packets(), offset_info);
+                                      launcher.target().pcap_has_truncated_packets(), offset_info, transport_type);
     j_info["pcap"]   = j_pcap_info;
 
     return j_info;

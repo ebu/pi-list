@@ -14,16 +14,19 @@
     "srt_streams": 0,
     "generated_from_network": false,
     "truncated": false,
-    "_id": "62165d88830981d2a90bcf4d",
-    "id": "c28d5aa0-94c3-11ec-813a-2dcc012942fb",
+    "sdps": [],
+    "sdp_count": 0,
+    "transport_type": "RTP",
+    "_id": "6241bb12473eea6ba1f0815f",
+    "id": "caacb490-ae9c-11ec-b777-cd72974845fb",
     "__v": 0,
     "analyzer_version": "2.0.3",
     "capture_date": 1518791594875,
-    "capture_file_name": "1645632904573_d361fb0a-9408-4b93-99e2-bfcfe66157b8.gz",
-    "date": 1645632904749,
+    "capture_file_name": "1648474898037_f11ccf78-2e04-4de1-9332-15d7516d6b29.gz",
+    "date": 1648474898254,
     "file_name": "mac_address.pcap.gz",
-    "owner_id": "c2625300-94c3-11ec-bd96-f58012b5a1e4",
-    "pcap_file_name": "1645632904573_d361fb0a-9408-4b93-99e2-bfcfe66157b8.pcap",
+    "owner_id": "c24cda70-ae86-11ec-827c-6fa823236acc",
+    "pcap_file_name": "1648474898037_f11ccf78-2e04-4de1-9332-15d7516d6b29.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -47,25 +50,25 @@
     "summary": {
         "error_list": [
             {
-                "stream_id": "e1d39a9c-7248-4152-876b-b1b8ddfeb534",
+                "stream_id": "3ae0e781-5999-4b3e-82ad-336bba1de26f",
                 "value": {
                     "id": "errors.invalid_rtp_ts_vs_nt"
                 }
             },
             {
-                "stream_id": "e1d39a9c-7248-4152-876b-b1b8ddfeb534",
+                "stream_id": "3ae0e781-5999-4b3e-82ad-336bba1de26f",
                 "value": {
                     "id": "errors.invalid_delta_packet_ts_vs_rtp_ts"
                 }
             },
             {
-                "stream_id": "e1d39a9c-7248-4152-876b-b1b8ddfeb534",
+                "stream_id": "3ae0e781-5999-4b3e-82ad-336bba1de26f",
                 "value": {
                     "id": "errors.vrx_above_maximum"
                 }
             },
             {
-                "stream_id": "e1d39a9c-7248-4152-876b-b1b8ddfeb534",
+                "stream_id": "3ae0e781-5999-4b3e-82ad-336bba1de26f",
                 "value": {
                     "id": "errors.invalid_multicast_mac_address"
                 }
@@ -89,10 +92,10 @@
                     "id": "errors.invalid_multicast_mac_address"
                 }
             ],
-            "_id": "62165d88084dd64d8622124a",
+            "_id": "6241bb12a74491f7dbbdbc26",
             "full_media_type": "video/raw",
             "full_transport_type": "RTP",
-            "id": "e1d39a9c-7248-4152-876b-b1b8ddfeb534",
+            "id": "3ae0e781-5999-4b3e-82ad-336bba1de26f",
             "media_specific": {
                 "avg_tro_ns": 12493753,
                 "color_depth": 10,
@@ -155,7 +158,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": false
             },
-            "pcap": "c28d5aa0-94c3-11ec-813a-2dcc012942fb",
+            "pcap": "caacb490-ae9c-11ec-b777-cd72974845fb",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,

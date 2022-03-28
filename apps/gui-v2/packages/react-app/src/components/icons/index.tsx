@@ -1,6 +1,6 @@
 import React from 'react';
 
-const makeIcon = (src: string) => ({ className }: { className?: string }) => <img src={src} className={className} />;
+const makeIcon = (src: string) => ({ className, onClick }: { className?: string, onClick?: any }) => <img src={src} className={className} onClick={onClick} />;
 
 const icon = (iconScr: any) => {
     return makeIcon(iconScr.default === undefined ? iconScr : iconScr.default);

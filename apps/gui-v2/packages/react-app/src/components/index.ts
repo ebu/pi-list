@@ -66,3 +66,8 @@ export {default as News} from './News/News';
 export {default as SearchBar} from './SearchBar/SearchBar';
 export {default as BaseSelector} from './BaseSelector/BaseSelector';
 export {default as customStyles} from './BaseSelector/BaseSelector';
+export { default as DropSdpHere } from './UploadSdp/DropSdpHere';
+export { default as UploadSdpSuccess } from './UploadSdp/UploadSdpSuccess';
+export { default as UploadSdpFailed } from './UploadSdp/UploadSdpFailed';
+export { default as DragAndDropSdpUpload } from './UploadSdp/DragAndDropSdpUpload';
+

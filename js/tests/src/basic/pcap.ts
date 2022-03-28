@@ -1,5 +1,5 @@
 import { LIST, types } from '@bisect/ebu-list-sdk';
-import { Unwinder } from '@bisect/bisect-core-ts';
+import { Unwinder, sleepFor, Duration } from '@bisect/bisect-core-ts';
 import _ from 'lodash';
 import { promises as fs1 } from 'fs';
 import fs from 'fs';
@@ -82,6 +82,7 @@ const deleteJsonProperties = (jsonToParse: any) => {
     return jsonToParse;
 };
 
+//This function inserts the pcap on the database and analyze it
 export const doUpload = async (
     list: LIST,
     name: string,
@@ -121,6 +122,30 @@ export const doUpload = async (
         }
     });
 
+//This function only inserts the pcap on the database without analyzing it
+export const doOnlyUpload = async (
+    list: LIST,
+    name: string,
+    stream: fs.ReadStream
+): Promise<string> =>
+    new Promise(async (resolve, reject) => {
+        try {
+            const wsClient = list.wsClient;
+            if (wsClient === undefined) {
+                reject(new Error('WebSocket client not connected'));
+                return;
+            }
+
+            const pcapId = uuid();
+
+            await list.pcap.onlyInsertInDatabase(name, stream, pcapId);
+
+            resolve(pcapId);
+        } catch (err) {
+            reject(err);
+        }
+    });
+
 const runUploadTest = async (name: string, c: testUtils.ITestContext) => {
     const list = new LIST(c.settings.address);
 
@@ -143,7 +168,7 @@ const runUploadTest = async (name: string, c: testUtils.ITestContext) => {
         const actualPath = await c.writeToFile('actual.json', JSON.stringify(testAnalysis.data));
 
         /* Update refAnalysisFile if necessary */
-        // fs.writeFileSync(refAnalysisFile, JSON.stringify(testAnalysis.data, null, 4));
+        //fs.writeFileSync(refAnalysisFile, JSON.stringify(testAnalysis.data, null, 4));
 
         const refAnalysis = fs.readFileSync(refAnalysisFile);
         const filteredRefAnalysis = deleteJsonProperties(JSON.parse(refAnalysis.toString()));
@@ -266,6 +291,68 @@ addTest('Pcap: download', async (c: testUtils.ITestContext) => {
         await list.close();
     }
 });
+
+addTest('Pcap: only upload', async (c: testUtils.ITestContext) => {
+    const list = new LIST(c.settings.address);
+    const name = "4k_50fps.pcap"
+    const pcapDir = path.join(__dirname, '..', '..', 'pcaps');
+    const pcapFile = path.join(pcapDir, name);
+
+    try {
+        await loginOrRegister(list, c);
+
+        const stream = fs.createReadStream(pcapFile);
+
+        const pcapId = await doOnlyUpload(list, name, stream);
+
+        const pcap = await list.pcap.getInfo(pcapId);
+
+        expect(pcap).not.toBeNull();
+        expect(pcap.id).toBe(pcapId);
+
+        await list.pcap.delete(pcapId);
+    } catch (err: unknown) {
+        const { message } = err as Error;
+        console.error(`Error uploading file: ${message}`);
+        throw err;
+    } finally {
+        await list.close();
+    }
+});
+
+addTest('Pcap: only upload and reanalyze', async (c: testUtils.ITestContext) => {
+    const list = new LIST(c.settings.address);
+    const name = "4k_50fps.pcap"
+    const pcapDir = path.join(__dirname, '..', '..', 'pcaps');
+    const pcapFile = path.join(pcapDir, name);
+
+    try {
+        await loginOrRegister(list, c);
+
+        const stream = fs.createReadStream(pcapFile);
+
+        const pcapId = await doOnlyUpload(list, name, stream);
+
+        await list.pcap.reanalyze(pcapId);
+
+        await sleepFor(Duration.s(5));
+
+        const pcap = await list.pcap.getInfo(pcapId);
+
+        expect(pcap).not.toBeNull();
+        expect(pcap.id).toBe(pcapId);
+        expect(pcap.analyzed).toBeTruthy();
+
+        await list.pcap.delete(pcapId);
+    } catch (err: unknown) {
+        const { message } = err as Error;
+        console.error(`Error uploading file: ${message}`);
+        throw err;
+    } finally {
+        await list.close();
+    }
+});
+
 
 addTest('Pcap: download Sdp', async (c: testUtils.ITestContext) => {
     const list = new LIST(c.settings.address);

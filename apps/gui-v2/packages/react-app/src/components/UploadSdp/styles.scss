@@ -1,0 +1,64 @@
+@import "../../../../style/variables/colors.scss";
+
+.drag-and-drop-sdp-tile {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 8px;
+    padding: 20px;
+    width: 100%;
+    border: 1px dashed $dark-blue;
+    justify-content: center;
+    &:hover {
+        border: 1px dashed $darker-vibrant-blue;
+        & > .drag-and-drop-tile-content {
+            color: $vibrant-blue;
+        }
+    }
+}
+
+.drag-and-drop-sdp-tile-content {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 21px;
+    text-align: center;
+    color: $darker-vibrant-blue;
+}
+
+.drag-and-drop-sdp-tile-content-upload {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 21px;
+    text-align: center;
+    color: $darker-vibrant-blue;
+}
+
+.cancel-icon-sdp-upload {
+    filter: invert(38%) sepia(33%) saturate(3302%) hue-rotate(334deg) brightness(109%) contrast(112%);
+    width: 1em;
+    height: 1em;
+    margin-left: 0.5em;
+    cursor: pointer;
+}
+
+.upload-sdp-file-name-container {
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    padding-bottom: 0.5em;
+}
+
+.upload-sdp-file-name{
+    font-family: Prompt;
+    font-style: normal;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0.1em;
+    font-weight: normal;
+    color: #e6e7ea;
+}

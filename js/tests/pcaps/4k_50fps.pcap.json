@@ -14,16 +14,19 @@
     "srt_streams": 0,
     "generated_from_network": false,
     "truncated": false,
-    "_id": "62165d90830981d2a90bcfea",
-    "id": "c6bbe920-94c3-11ec-813a-2dcc012942fb",
+    "sdps": [],
+    "sdp_count": 0,
+    "transport_type": "RTP",
+    "_id": "6241bb04473eea6ba1f07ff5",
+    "id": "bdf00e00-ae9c-11ec-b777-cd72974845fb",
     "__v": 0,
     "analyzer_version": "2.0.3",
     "capture_date": 1528353584317,
-    "capture_file_name": "1645632911746_e3f36631-a26b-4060-a0a3-99fe83a30524.pcap",
-    "date": 1645632912021,
+    "capture_file_name": "1648474876923_b241eb49-d4b1-4a4a-8670-1d63c0ac69a2.pcap",
+    "date": 1648474884833,
     "file_name": "4k_50fps.pcap",
-    "owner_id": "c2625300-94c3-11ec-bd96-f58012b5a1e4",
-    "pcap_file_name": "1645632911746_e3f36631-a26b-4060-a0a3-99fe83a30524.pcap",
+    "owner_id": "c24cda70-ae86-11ec-827c-6fa823236acc",
+    "pcap_file_name": "1648474876923_b241eb49-d4b1-4a4a-8670-1d63c0ac69a2.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -47,7 +50,7 @@
     "summary": {
         "error_list": [
             {
-                "stream_id": "ae493e5a-5566-4ef7-8f97-6715912beb45",
+                "stream_id": "e4db140a-4246-49b0-838d-00e8eb791efc",
                 "value": {
                     "id": "errors.dropped_packets"
                 }
@@ -62,10 +65,10 @@
                     "id": "errors.dropped_packets"
                 }
             ],
-            "_id": "62165d90084dd64d86221311",
+            "_id": "6241bb04a74491f7dbbdba4f",
             "full_media_type": "unknown",
-            "full_transport_type": "unknown",
-            "id": "ae493e5a-5566-4ef7-8f97-6715912beb45",
+            "full_transport_type": "RTP",
+            "id": "e4db140a-4246-49b0-838d-00e8eb791efc",
             "media_specific": null,
             "media_type": "unknown",
             "media_type_validation": {
@@ -115,7 +118,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "c6bbe920-94c3-11ec-813a-2dcc012942fb",
+            "pcap": "bdf00e00-ae9c-11ec-b777-cd72974845fb",
             "state": "needs_info",
             "statistics": {
                 "dropped_packet_count": 4,
