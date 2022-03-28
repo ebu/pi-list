@@ -3,6 +3,7 @@ const fs = require('../util/filesystem');
 const constants = require('../enums/analysis');
 const enums = require('../enums/constants');
 const Stream = require('../models/stream');
+const Pcap = require('../models/pcap');
 const {
     appendError
 } = require('./utils');
@@ -125,9 +126,17 @@ const ancillaryPktPerFrame = async (req, stream) => {
 
 const doAncillaryStreamAnalysis = async (req, stream) => {
     const pcapId = req.pcap.uuid;
-    await ancillaryCheckMarkerBit(stream);
-    await ancillaryCheckFieldBits(stream);
-    await ancillaryCheckPayloads(stream);
+
+    const pcap = await Pcap.findOne({
+        id: pcapId
+    }).exec();
+
+    if (pcap.truncated === false) {
+        await ancillaryCheckMarkerBit(stream);
+        await ancillaryCheckFieldBits(stream);
+        await ancillaryCheckPayloads(stream);
+    }
+
     await ancillaryPktPerFrame(req, stream);
     await doRtpTsAnalysis(pcapId, stream);
     await validateRtpTs(stream, validation);

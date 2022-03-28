@@ -170,15 +170,6 @@ const runUploadTest = async (name: string, c: testUtils.ITestContext) => {
 };
 
 [
-    // This stream contains packets send to the same IP multicast address but with
-    // different MAC addresses.
-    'mac_address.pcap.gz',
-
-    // This stream contains packets sent to Layer 2 multicast
-    'mac_multicast.pcap.gz',
-
-    //'anc_truncated.pcap.gz',
-    '2vid_2aud.pcap.gz',
     '4k_50fps.pcap',
     'eemebe_t_1080i59.pcap',
     'emb_L24_48k_16ch_pt125us.pcap',
@@ -186,6 +177,13 @@ const runUploadTest = async (name: string, c: testUtils.ITestContext) => {
     'ttmlRTP_fourPacketDocs.pcap',
     'ttmlRTP_singlePacketDocs.pcap',
     'ttmlRTP-invalid-clock-timing.pcap',
+    // This stream contains packets send to the same IP multicast address but with
+    // different MAC addresses.
+    'mac_address.pcap.gz',
+    // This stream contains packets sent to Layer 2 multicast
+    'mac_multicast.pcap.gz',
+    //'anc_truncated.pcap.gz',
+    '2vid_2aud.pcap.gz',
 ].forEach((name) => {
     addTest(`Pcap: upload pcap "${name}"`, async (c: testUtils.ITestContext) => runUploadTest(name, c));
 });
