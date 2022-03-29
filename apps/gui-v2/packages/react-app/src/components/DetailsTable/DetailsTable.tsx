@@ -103,8 +103,8 @@ function DetailsTable({
                                 <td
                                     className={
                                         item.ancillary === 0
-                                            ? 'details-table-ancialary-data none'
-                                            : 'details-table-ancialary-data'
+                                            ? 'details-table-ancillary-data none'
+                                            : 'details-table-ancillary-data'
                                     }
                                 >
                                     {item.ancillary === 0 ? 'None' : item.ancillary}
@@ -112,8 +112,8 @@ function DetailsTable({
                                 <td
                                     className={
                                         item.ttml === 0
-                                            ? 'details-table-ancialary-data none'
-                                            : 'details-table-ancialary-data'
+                                            ? 'details-table-ancillary-data none'
+                                            : 'details-table-ancillary-data'
                                     }
                                 >
                                     {item.ttml === 0 ? 'None' : item.ttml}
@@ -121,8 +121,8 @@ function DetailsTable({
                                 <td
                                     className={
                                         item.srt === 0
-                                            ? 'details-table-ancialary-data none'
-                                            : 'details-table-ancialary-data'
+                                            ? 'details-table-ancillary-data none'
+                                            : 'details-table-ancillary-data'
                                     }
                                 >
                                     {item.srt === 0 ? 'None' : item.srt}
