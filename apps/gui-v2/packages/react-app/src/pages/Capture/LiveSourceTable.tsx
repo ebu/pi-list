@@ -137,12 +137,10 @@ function LiveSourceTable({
                         <SearchBar filterString={filterString} setFilterString={setFilterString} />
                     </div>
                     <table className="live-source-table">
-                        <thead>
-                            <tr className="live-source-table-header-table-row">
-                                <th>Name</th>
-                                <th>Mcast</th>
-                            </tr>
-                        </thead>
+                        <tr>
+                            <th className="live-source-table-header-label">Name</th>
+                            <th className="live-source-table-header-label">Mcast</th>
+                        </tr>
                         <tbody>
                             {filteredLiveSourceTableData.map((item: any) => {
                                 const isActive = selectedLiveSourceIds.includes(item.id);
