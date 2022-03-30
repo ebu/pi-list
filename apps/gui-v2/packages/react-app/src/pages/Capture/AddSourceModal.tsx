@@ -46,12 +46,12 @@ function AddSourceModal({
                             />
                             <div className="capture-content-row">
                                 <div className="capture-page-select">
-                                    <button className="capture-page-capture-button" onClick={onPressAdd}>
+                                    <button className="capture-panel-capture-button" onClick={onPressAdd}>
                                         Add
                                     </button>
                                 </div>
                                 <div className="capture-page-select">
-                                    <button className="capture-page-capture-button">
+                                    <button className="capture-panel-capture-button">
                                         Cancel
                                     </button>
                                 </div>

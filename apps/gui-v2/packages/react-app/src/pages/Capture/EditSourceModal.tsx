@@ -50,12 +50,12 @@ function EditSourceModal({
                             />
                             <div className="capture-content-row">
                                 <div className="capture-page-select">
-                                    <button className="capture-page-capture-button" onClick={onPressOK}>
+                                    <button className="capture-panel-capture-button" onClick={onPressOK}>
                                         OK
                                     </button>
                                 </div>
                                 <div className="capture-page-select">
-                                    <button className="capture-page-capture-button">
+                                    <button className="capture-panel-capture-button">
                                         Cancel
                                     </button>
                                 </div>

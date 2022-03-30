@@ -73,7 +73,7 @@
 .capture-content-row {
     display: flex;
     flex-direction: row;
-    padding-bottom: 50px;
+    padding: 20px;
     margin: auto 2em;
 }
 
@@ -146,12 +146,6 @@ table.live-source-table {
     background: $background-dark-blue;
 }
 
-thead {
-    & > tr {
-        border-bottom: 0.5px solid $black;
-    }
-}
-
 .live-source-centered-value {
     text-align: center !important;
 }
@@ -173,9 +167,9 @@ thead {
 }
 
 .live-source-table-tool-row {
-    padding-bottom: 50px;
+    display: flex;
+    flex-direction: row;
     margin: auto 2em;
-    justify-content: space-between;
 }
 
 .live-source-table-row {
@@ -185,8 +179,8 @@ thead {
     }
 }
 
-.live-source-table-centered-header-label {
-    text-align: center !important;
+.live-source-table-header-label {
+    text-align: left !important;
     padding-left: 32px !important;
 }
 

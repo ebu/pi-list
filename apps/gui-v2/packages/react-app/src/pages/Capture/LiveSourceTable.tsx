@@ -3,7 +3,9 @@ import { CustomScrollbar } from '../../components';
 import ConfirmModal from './ConfirmModal';
 import AddSourceModal from './AddSourceModal';
 import EditSourceModal from './EditSourceModal';
-import { EditIcon, PlusIcon, MinusIcon } from '../../components/icons/index';
+import { EditIcon, PlusIcon, MinusIcon } from 'components/icons/index';
+import { SearchBar } from 'components/index';
+import { findOne } from 'utils/searchBar';
 import list from '../../utils/api';
 import SDK from '@bisect/ebu-list-sdk';
 import { v1 as uuidv1 } from 'uuid';
@@ -23,6 +25,23 @@ function LiveSourceTable({
     const [addModalIsOpen, setAddModalIsOpen] = React.useState<boolean>(false);
     const [editModalIsOpen, setEditModalIsOpen] = React.useState<boolean>(false);
     const [deleteModalIsOpen, setDeleteModalIsOpen] = React.useState<boolean>(false);
+    const [filterString, setFilterString] = React.useState<string>('');
+    const [filteredLiveSourceTableData, setFilteredLiveSourceTableData] = React.useState<any[]>(liveSourceTableData);
+
+    React.useEffect(() => {
+        if (filterString === '') {
+            setFilteredLiveSourceTableData(liveSourceTableData);
+        } else {
+            const tokens = filterString.split(/\s+/).filter(v => v !== '');
+            const dataFilter = liveSourceTableData.filter(value => {
+                const nameResult = findOne(value.meta.label, tokens);
+                const addressResult = findOne(value.sdp.streams[0].dstAddr, tokens);
+                const selectedResult = selectedLiveSourceIds.includes(value.id);
+                return nameResult || addressResult || selectedResult;
+            });
+            setFilteredLiveSourceTableData(dataFilter);
+        }
+    }, [filterString, selectedLiveSourceIds, liveSourceTableData]);
 
     const onPressAdd = () => {
         setAddModalIsOpen(true);
@@ -115,16 +134,15 @@ function LiveSourceTable({
                         <button className="live-source-button" onClick={onPressEdit}>
                             <EditIcon />
                         </button>
+                        <SearchBar filterString={filterString} setFilterString={setFilterString} />
                     </div>
                     <table className="live-source-table">
-                        <thead>
-                            <tr className="live-source-table-header-table-row">
-                                <th>Name</th>
-                                <th>Mcast</th>
-                            </tr>
-                        </thead>
+                        <tr>
+                            <th className="live-source-table-header-label">Name</th>
+                            <th className="live-source-table-header-label">Mcast</th>
+                        </tr>
                         <tbody>
-                            {liveSourceTableData.map((item: any) => {
+                            {filteredLiveSourceTableData.map((item: any) => {
                                 const isActive = selectedLiveSourceIds.includes(item.id);
                                 return (
                                     <tr
