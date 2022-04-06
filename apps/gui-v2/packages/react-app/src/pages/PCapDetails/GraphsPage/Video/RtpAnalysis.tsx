@@ -15,6 +15,7 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     const [rtpOffsetData, setRtpOffsetData] = React.useState<IGraphicTimeValueData[]>([]);
     const [rtpTimeStepData, setRtpTimeStepData] = React.useState<IGraphicTimeValueData[]>([]);
     React.useEffect(() => {
+        setlatencyData([]);
         const loadLatencyData = async (): Promise<void> => {
             const all = await list.stream.getDeltaPacketTimeVsRtpTimeRaw(
                 pcapID,
@@ -29,6 +30,7 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     }, [currentStream?.id]);
 
     React.useEffect(() => {
+        setRtpOffsetData([]);
         const loadRtpOffsetData = async (): Promise<void> => {
             const all = await list.stream.getDeltaRtpVsNtRaw(pcapID, streamID, first_packet_ts, last_packet_ts);
             setRtpOffsetData(getFinalData(all) as IGraphicTimeValueData[]);
@@ -37,6 +39,7 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     }, [currentStream?.id]);
 
     React.useEffect(() => {
+        setRtpTimeStepData([]);
         const loadRtpTimeStepData = async (): Promise<void> => {
             const all = await list.stream.getDeltaToPreviousRtpTsRaw(pcapID, streamID, first_packet_ts, last_packet_ts);
             setRtpTimeStepData(getFinalData(all) as IGraphicTimeValueData[]);

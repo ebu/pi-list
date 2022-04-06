@@ -1,16 +1,16 @@
 import React from 'react';
 import { LineGraphic, IGraphicTimeMaxData, BarGraphic } from 'components/index';
 import SDK from '@bisect/ebu-list-sdk';
-import list from '../../../../utils/api';
-import { getFinalData, getLeftMargin } from '../../../../utils/graphs/dataTransformationLineGraphs';
+import list from 'utils/api';
+import { getFinalData, getLeftMargin } from 'utils/graphs/dataTransformationLineGraphs';
 import {
     IHistogram,
     getFinalHistData,
     getLeftMarginBarGraphic,
     getPercHistData,
     getCompliance,
-} from '../../../../utils/graphs/dataTransformationBarGraphs';
-import { translate } from '../../../../utils/translation';
+} from 'utils/graphs/dataTransformationBarGraphs';
+import { translate } from 'utils/translation';
 
 function VrxAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStreamInfo | undefined; pcapID: string }) {
     const streamID = currentStream?.id;
@@ -20,6 +20,7 @@ function VrxAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     const [vrxData, setVrxData] = React.useState<IGraphicTimeMaxData[]>([]);
 
     React.useEffect(() => {
+        setVrxData([]);
         const loadVrxData = async (): Promise<void> => {
             const all = await list.stream.getVrxIdealForStream(pcapID, streamID, first_packet_ts, last_packet_ts);
             setVrxData(getFinalData(all) as IGraphicTimeMaxData[]);
@@ -31,6 +32,7 @@ function VrxAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     const [vrxHistData, setVrxHistData] = React.useState(initialHist);
 
     React.useEffect(() => {
+        setVrxHistData(initialHist);
         const loadVrxHistData = async (): Promise<void> => {
             const all = await list.stream.getVrxHistogramForStream(pcapID, streamID);
             setVrxHistData(all);

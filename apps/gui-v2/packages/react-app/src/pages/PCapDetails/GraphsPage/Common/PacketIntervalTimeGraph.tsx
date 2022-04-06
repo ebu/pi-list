@@ -20,6 +20,7 @@ function PacketIntervalTimeGraph({
     const [pitScatterData, setPitScatterData] = React.useState(initialScatter);
 
     React.useEffect(() => {
+        setPitScatterData(initialScatter);
         const loadPitHistData = async (): Promise<void> => {
             const all = await list.stream.getPitHistogramForStream(pcapID, streamID);
             setPitScatterData(all.histogram);

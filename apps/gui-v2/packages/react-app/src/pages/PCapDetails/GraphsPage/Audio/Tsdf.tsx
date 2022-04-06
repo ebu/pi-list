@@ -40,6 +40,7 @@ function Tsdf({ currentStream, pcapID }: { currentStream: SDK.types.IStreamInfo 
     const [tsdfData, setTsdfData] = React.useState<IGraphicInitialData[]>([]);
 
     React.useEffect(() => {
+        setTsdfData([]);
         const loadTsdfData = async (): Promise<void> => {
             const all = await list.stream.getAudioTimeStampedDelayFactor(
                 pcapID,

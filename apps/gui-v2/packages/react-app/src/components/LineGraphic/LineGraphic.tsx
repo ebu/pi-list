@@ -27,8 +27,12 @@ interface IComponentProps {
 }
 
 function LineGraphic({ data }: { data: IComponentProps | undefined }) {
+    if (data === undefined) {
+        return null;
+    }
+
     const initialZoomState = {
-        dataZoom: data?.graphicData,
+        dataZoom: data.graphicData,
         refAreaLeft: '',
         refAreaRight: '',
         activeLabelLeft: '',
@@ -36,10 +40,6 @@ function LineGraphic({ data }: { data: IComponentProps | undefined }) {
         animation: true,
     };
     const [zoomState, setZoomState] = React.useState(initialZoomState);
-
-    if (data === undefined) {
-        return null;
-    }
 
     const CustomTooltip = (props: any) => {
         if (props.active) {
@@ -105,7 +105,7 @@ function LineGraphic({ data }: { data: IComponentProps | undefined }) {
         }
 
         if (parseInt(refAreaLeft) > parseInt(refAreaRight)) [refAreaLeft, refAreaRight] = [refAreaRight, refAreaLeft];
-        const dataNewZoom = dataZoom?.slice(parseInt(refAreaLeft), parseInt(refAreaRight) + 1);
+        const dataNewZoom = dataZoom.slice(parseInt(refAreaLeft), parseInt(refAreaRight) + 1);
         setZoomState({
             animation: true,
             refAreaLeft: '',

@@ -26,6 +26,7 @@ function CbufferAnalysis({
     const [cinstData, setCinstData] = React.useState<IGraphicTimeMaxData[]>([]);
 
     React.useEffect(() => {
+        setCinstData([]);
         const loadCinstData = async (): Promise<void> => {
             const all = await list.stream.getCInstForStream(pcapID, streamID, first_packet_ts, last_packet_ts);
             const cinstFinalData = getFinalData(all);
@@ -38,6 +39,7 @@ function CbufferAnalysis({
     const [cHistData, setcHistData] = React.useState(initialHist);
 
     React.useEffect(() => {
+        setcHistData(initialHist);
         const loadCHistData = async (): Promise<void> => {
             const all = await list.stream.getCInstHistogramForStream(pcapID, streamID);
             setcHistData(all);
