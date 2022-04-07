@@ -7,6 +7,7 @@
         "third_party/bisect-core-ts",
         "third_party/bisect-core-ts-be",
         "third_party/ebu-list-sdk/lib",
+        "third_party/ebu-list-sdk/demos",
         "apps/gui-v2/packages/*",
         "apps/gui-v2"
     ],
