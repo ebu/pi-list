@@ -29,7 +29,7 @@ const nsAsMicroseconds = value => (value / 1000).toFixed(3);
 const FpoDisplay = props => (
     <MinAvgMaxDisplay
         label={<span>FPT</span>}
-        units="μs"
+        units="ns"
         min={nsAsMicroseconds(props.min_tro_ns)}
         avg={nsAsMicroseconds(props.avg_tro_ns)}
         max={nsAsMicroseconds(props.max_tro_ns)}
@@ -43,7 +43,7 @@ const RegularInterPacketTimeDisplay = ({ data }) => (
 const GapInterPacketTimeDisplay = ({ data }) => (
     <MinAvgMaxDisplay
         label={<span>Gap</span>}
-        units="μs"
+        units="ns"
         min={nsAsMicroseconds(data.min)}
         avg={nsAsMicroseconds(data.avg)}
         max={nsAsMicroseconds(data.max)}
@@ -59,7 +59,7 @@ const TroDefaultDisplay = props => {
                     TRO<sub>DEFAULT</sub>
                 </span>
             }
-            units="μs"
+            units="ns"
             values={[{ label: '', value: value }]}
             min={nsAsMicroseconds(props.min_tro_ns)}
             avg={nsAsMicroseconds(props.avg_tro_ns)}
