@@ -183,7 +183,6 @@ const {
 } = require('../../worker/nmosRegistryProxy');
 if (!onUpdate) {
     logger('live-sources').info('No NMOS querier');
-    return;
 }
 
 const onChanged = async ({
