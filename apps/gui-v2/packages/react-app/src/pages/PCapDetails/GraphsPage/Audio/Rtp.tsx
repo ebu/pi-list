@@ -1,9 +1,9 @@
 import React from 'react';
 import { MinMaxAvgLineGraphic, IGraphicMinMaxAvgData } from 'components/index';
 import SDK from '@bisect/ebu-list-sdk';
-import list from '../../../../utils/api';
-import { getLeftMargin } from '../../../../utils/graphs/dataTransformationLineGraphs';
-import { translate } from '../../../../utils/translation';
+import list from 'utils/api';
+import { getLeftMargin } from 'utils/graphs/dataTransformationLineGraphs';
+import { translate } from 'utils/translation';
 
 function Rtp({ currentStream, pcapID }: { currentStream: SDK.types.IStreamInfo | undefined; pcapID: string }) {
     const streamID = currentStream?.id;
@@ -16,6 +16,7 @@ function Rtp({ currentStream, pcapID }: { currentStream: SDK.types.IStreamInfo |
     const [rtpData, setRtpData] = React.useState<IGraphicMinMaxAvgData[]>([]);
 
     React.useEffect(() => {
+        setRtpData([]);
         const loadRtpData = async (): Promise<void> => {
             const all = await list.stream.getAudioPktTsVsRtpTsGrouped(
                 pcapID,

@@ -29,6 +29,7 @@ function RtpLineCharts({
     const [rtpTimeStepData, setRtpTimeStepData] = React.useState<IGraphicTimeValueData[]>([]);
 
     React.useEffect(() => {
+        setpacketsFrameData([]);
         const loadPacketsFrameData = async (): Promise<void> => {
             const all = await list.stream.getPacketsPerFrame(pcapID, streamID, first_packet_ts, last_packet_ts);
             const packetsFrameFinalData = getFinalData(all);
@@ -38,6 +39,7 @@ function RtpLineCharts({
     }, [currentStream?.id]);
 
     React.useEffect(() => {
+        setlatencyData([]);
         const loadLatencyData = async (): Promise<void> => {
             const all = await list.stream.getDeltaPacketTimeVsRtpTimeRaw(
                 pcapID,
@@ -52,6 +54,7 @@ function RtpLineCharts({
     }, [currentStream?.id]);
 
     React.useEffect(() => {
+        setRtpTimeStepData([]);
         const loadRtpTimeStepData = async (): Promise<void> => {
             const all = await list.stream.getDeltaToPreviousRtpTsRaw(pcapID, streamID, first_packet_ts, last_packet_ts);
             const rtpTimeStepFinalData = getFinalData(all);
@@ -64,6 +67,7 @@ function RtpLineCharts({
     const [packetsFrameHistData, setpacketsFrameHistData] = React.useState(initialHist);
 
     React.useEffect(() => {
+        setpacketsFrameHistData(initialHist);
         const loadPacketsFrameHistData = async (): Promise<void> => {
             const all = await list.stream.getAncillaryPktPerFrameHistogram(pcapID, streamID);
             setpacketsFrameHistData(all);

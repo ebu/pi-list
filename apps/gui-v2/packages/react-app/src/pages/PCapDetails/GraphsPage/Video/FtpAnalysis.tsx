@@ -11,6 +11,7 @@ function FtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
 
     const [ftpData, setFtpData] = React.useState<IGraphicTimeValueData[]>([]);
     React.useEffect(() => {
+        setFtpData([]);
         const loadFtpData = async (): Promise<void> => {
             const all = await list.stream.getDeltaToIdealTpr0Raw(pcapID, streamID, first_packet_ts, last_packet_ts);
             const ftpFinalData = getFinalData(dataAsMicroseconds(all));
