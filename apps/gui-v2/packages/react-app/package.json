@@ -39,6 +39,7 @@
         "@types/smpte-timecode": "^1.2.1",
         "recoil": "^0.1.2",
         "rc-scrollbars": "^1.1.2",
+        "react-custom-scrollbars-2": "^4.4.0",
         "@types/wavesurfer.js": "^3.3.2",
         "wavesurfer.js": "^4.2.0",
         "npm-license-crawler": "^0.2.1",
