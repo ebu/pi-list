@@ -1,7 +1,7 @@
 import React from 'react';
 import list from '../../utils/api';
 import SDK from '@bisect/ebu-list-sdk';
-import { Switch, Route, BrowserRouter, useHistory } from 'react-router-dom';
+import { Routes, Route, BrowserRouter, useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { sidebarCollapsedAtom } from '../../store/gui/sidebar/sidebarCollapsed';
 import { informationSidebarContentAtom } from '../../store/gui/informationSidebar/informationSidebarContent';
@@ -55,7 +55,7 @@ const buttonWithIconList = (currentStream: SDK.types.IStreamInfo) => {
                 {
                     icon: VideoIcon,
                     text: 'Ancillary Analysis Explained',
-                    onClick: () => {},
+                    onClick: () => { },
                 },
             ];
     }
@@ -142,7 +142,11 @@ const getStreamsToSidebarStreamsList = (streams: SDK.types.IStreamInfo[]): IStre
 };
 
 function PCapDetailsContentHOC(props: any) {
-    const { pcapID } = props.match.params;
+    let params = useParams();
+
+    const pcapID = params.pcapID;
+
+    if (!pcapID) return <div>PCAP ID not found</div>;
 
     const [pcap, setPcap] = React.useState<SDK.types.IPcapInfo>();
     const [gdprConsent, setGdprConsent] = React.useState<boolean>();
@@ -169,11 +173,11 @@ function PCapDetailsContentHOC(props: any) {
 
     const [activeStreamId, setActiveStreamId] = React.useState<string | undefined>(undefined);
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const onItemClick = (streamID: string) => {
         setActiveStreamId(streamID);
-        history.push(`/pcaps/${pcapID}/streams/${streamID}`);
+        navigate(`/pcaps/${pcapID}/streams/${streamID}`);
     };
 
     const initial: SDK.types.IStreamInfo[] = [];
@@ -192,17 +196,15 @@ function PCapDetailsContentHOC(props: any) {
         setSidebarCollapsed(true);
     }, []);
 
+
     React.useEffect(() => {
         if (streams.length === 0) return;
         const firstStreamId = streams[0].id;
         onItemClick(firstStreamId);
     }, [streams]);
 
-    const currentStream: SDK.types.IStreamInfo | undefined =
-        activeStreamId === undefined ? undefined : streams.find((v: any) => v.id === activeStreamId);
-
     const onBackButtonClick = () => {
-        history.push('/');
+        navigate('/pcaps');
     };
     const informationSidebarContent = useRecoilValue(informationSidebarContentAtom);
 
@@ -212,7 +214,10 @@ function PCapDetailsContentHOC(props: any) {
         return null;
     }
 
-    const renderStream = (match: any, streams: SDK.types.IStreamInfo[]) => {
+    const currentStream: SDK.types.IStreamInfo | undefined =
+        activeStreamId === undefined ? undefined : streams.find((v: any) => v.id === activeStreamId);
+
+    const renderStream = (streams: SDK.types.IStreamInfo[]) => {
         return (
             <div className="pcap-details-content-layout">
                 <GoogleAnalyticsHandler gdprConsent={gdprConsent} pathName={pagePath} />
@@ -237,14 +242,12 @@ function PCapDetailsContentHOC(props: any) {
     };
 
     const middleContent = (
-        <BrowserRouter>
-            <Switch>
-                <Route
-                    path={`/pcaps/${pcapID}/streams/:streamID?`}
-                    render={props => renderStream(props.match, streams)}
-                />
-            </Switch>
-        </BrowserRouter>
+        <Routes>
+            <Route
+                path={`:streamID`}
+                element={renderStream(streams)}
+            />
+        </Routes>
     );
 
     return (
@@ -257,7 +260,7 @@ function PCapDetailsContentHOC(props: any) {
                         informationSidebarContent,
                         userInfo?.username
                     )}
-                    logout={() => history.push('/logout')}
+                    logout={() => navigate('/logout')}
                 />
             )}
         </>

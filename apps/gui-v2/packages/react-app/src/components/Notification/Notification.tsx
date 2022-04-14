@@ -1,9 +1,9 @@
 import React from 'react';
-import { toast } from 'react-toastify';
+import { toast, ToastContent } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './styles.scss';
 
-const getToast = (typeMessage: string, message: string | React.ReactElement) => {
+const getToast = (typeMessage: string, message: ToastContent) => {
     switch (typeMessage) {
         case 'sucess':
             toast.success(message, {
@@ -29,7 +29,8 @@ const getToast = (typeMessage: string, message: string | React.ReactElement) => 
             break;
     }
 };
-function Notification({ typeMessage, message }: { typeMessage: string; message: string | React.ReactElement }) {
+
+function Notification({ typeMessage, message }: { typeMessage: string; message: ToastContent }) {
     return getToast(typeMessage, message);
 }
 

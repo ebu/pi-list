@@ -12,7 +12,7 @@ import {
 } from 'components/icons/index';
 import routeNames from '../../routes/routeNames';
 import { getRouteInfoForPath } from '../../routes/routeInfo';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { translate } from '../../utils/translation';
 import { hasLiveMode } from '../../utils/config';
 import { useRecoilState } from 'recoil';
@@ -34,7 +34,7 @@ function SidebarHOC() {
     const splitRoutePath = routePath?.split('/', 2);
     const routeBasePath = splitRoutePath?.join('/');
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const [sidebarCollapsed, setSidebarCollapsed] = useRecoilState(sidebarCollapsedAtom);
 
@@ -122,6 +122,7 @@ function SidebarHOC() {
     }
 
     const helpString = translate('navigation.help');
+    
     const onSidebarClick = (buttonKey: number): void => {
         let path: string | undefined | null = '';
         switch (buttonKey) {
@@ -159,8 +160,9 @@ function SidebarHOC() {
                 path = '/';
                 break;
         }
-        history.push(path);
+        navigate(path);
     };
+
     const mapButtons = (bnt: ButtonList): ButtonList =>
         bnt.map(item => ({
             ...item,

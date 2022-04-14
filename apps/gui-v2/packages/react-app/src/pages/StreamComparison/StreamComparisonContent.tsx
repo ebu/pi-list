@@ -8,7 +8,7 @@ import useRecoilStreamComparisonHandler from '../../store/gui/streamComparison/u
 import StreamComparisonTable from './StreamComparisonTable';
 import { CustomScrollbar, SearchBar } from '../../components';
 import { useRecoilValue } from 'recoil';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { findOne } from '../../utils/searchBar';
 import { getComparisonType } from '../../utils/titles';
 import routeBuilder from '../../routes/routeBuilder';
@@ -32,7 +32,7 @@ function StreamComparisonContent({
     onTableRowClick,
     selectedComparisonsIds,
 }: IPropTypes) {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     useRecoilStreamComparisonHandler();
 
@@ -40,7 +40,7 @@ function StreamComparisonContent({
 
     const onTableRowDoubleClick = (item: any) => {
         const route = routeBuilder.stream_comparison_list(item.id);
-        history.push(route);
+        navigate(route);
     };
 
     const [filterString, setFilterString] = React.useState<string>('');

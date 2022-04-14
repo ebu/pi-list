@@ -40,7 +40,7 @@ export default () => {
     const wsClient = list.wsClient;
 
     const onLiveSourceUpdate = React.useCallback(
-        data => handleLiveSourceUpdate(data, setLiveSourceAtom),
+        (data: any) => handleLiveSourceUpdate(data, setLiveSourceAtom),
         [setLiveSourceAtom]
     );
 

@@ -67,7 +67,7 @@ function StreamSelectorPanel({ pcaps, onChange, enableAudioChannelSelector, isAu
                     onChange({ pcap: selectedPcapId, stream: selectedStreamId, audioChannel: null });
                 }
             })
-            .catch((e: Error) => {
+            .catch((e: React.ReactNode) => {
                 Notification({
                     typeMessage: 'error',
                     message: (

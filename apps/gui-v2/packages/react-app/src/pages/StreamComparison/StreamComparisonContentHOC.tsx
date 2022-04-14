@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { userAtom } from '../../store/gui/user/userInfo';
@@ -23,7 +23,7 @@ export const comparisonTypes = {
 };
 
 function StreamComparisonContentHOC() {
-    const history = useHistory();
+    const navigate = useNavigate();
     const pcaps = useRecoilValue(pcapsAtom);
     const userInfo = useRecoilValue(userAtom);
     const [gdprConsent, setGdprConsent] = React.useState<boolean>();
@@ -199,7 +199,7 @@ function StreamComparisonContentHOC() {
                     />
                 }
                 informationSidebarContent={getDataToInformationSidebar()}
-                logout={() => history.push('/logout')}
+                logout={() => navigate('/logout')}
             />
         </>
     );

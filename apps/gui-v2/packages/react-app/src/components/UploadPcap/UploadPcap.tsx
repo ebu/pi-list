@@ -58,7 +58,7 @@ function UploadPcap() {
         });
     };
 
-    const onDrop = React.useCallback(acceptedFiles => {
+    const onDrop = React.useCallback((acceptedFiles:any) => {
         setFilename(acceptedFiles[0].path);
         onAcceptProgress(uploadProgress);
     }, []);

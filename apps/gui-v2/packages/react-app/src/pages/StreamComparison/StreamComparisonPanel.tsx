@@ -61,13 +61,13 @@ function StreamComparisonPanel({
                     ),
                 });
             })
-            .catch((err: Error) => {
+            .catch((err: React.ReactNode) => {
                 Notification({
                     typeMessage: 'error',
                     message: (
                         <div>
-                            <p>{workflowRequestFailed}</p>
-                            <p> {err} </p>
+                            <p>{workflowRequestFailed} </p>
+                            <p>{err}</p>
                         </div>
                     ),
                 });

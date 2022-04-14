@@ -15,49 +15,49 @@ const routeInfo: IRouteInfo[] = [
     {
         name: 'Analysis',
         path: routeNames.PCAPS,
-        component: DashboardContentHOC,
+        component: <DashboardContentHOC/>,
         exact: true,
     },
     {
         name: 'Pcap info',
-        path: '/pcaps/:pcapID/streams',
-        component: PCapDetailsContentHOC,
+        path: '/pcaps/:pcapID/streams/*',
+        component: <PCapDetailsContentHOC/>,
         exact: false,
     },
     {
         name: 'Stream Comparison',
         path: routeNames.STREAM_COMPARISON,
-        component: StreamComparisonContentHOC,
+        component: <StreamComparisonContentHOC/>,
         exact: true,
     },
     {
         name: 'Pcap Capture',
         path: routeNames.CAPTURE,
-        component: CaptureContentHOC,
+        component: <CaptureContentHOC/>,
         exact: true,
     },
     {
         name: 'Comparison View',
         path: '/streamComparison/:comparisonId',
-        component: ComparisonPageContentHOC,
+        component: <ComparisonPageContentHOC/>,
         exact: false,
     },
     {
         name: 'Download Manager',
         path: routeNames.DOWNLOAD_MANAGER,
-        component: DownloadManagerContentHOC,
+        component: <DownloadManagerContentHOC/>,
         exact: true,
     },
     {
         name: 'Credits',
         path: routeNames.CREDITS,
-        component: CreditsHOC,
+        component: <CreditsHOC/>,
         exact: true,
     },
     {
         name: 'Settings',
         path: routeNames.SETTINGS,
-        component: SettingsHOC,
+        component: <SettingsHOC/>,
         exact: true,
     },
 ];
@@ -82,7 +82,7 @@ export const getRouteInfoForPath = (path: string) => {
 export interface IRouteInfo {
     name: string;
     path: string;
-    component?: React.FC<any> & React.ReactNode;
+    component?: React.ReactNode;
     exact: boolean;
     render?: () => JSX.Element;
 }

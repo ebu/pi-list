@@ -1,7 +1,7 @@
 import Select from 'react-select';
 import React from 'react';
 import SDK from '@bisect/ebu-list-sdk';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import SettingsHeaderHOC from './Header/SettingsHeaderHOC';
 import { GoogleAnalyticsHandler } from 'utils/googleAnalytics';
 import { customStyles } from 'components/BaseSelector/BaseSelector';
@@ -35,7 +35,7 @@ function SettingsContent({
     analysisProfileDefaultValue,
     onChangeAnalysisProfile,
 }: IComponentProps) {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const currentLanguage = languages.find(item => item.value === userData?.preferences?.gui?.language);
     const [gdprConsent, setGdprConsent] = React.useState<boolean>();
@@ -50,7 +50,7 @@ function SettingsContent({
     const onGDPRClick = (gdpr: boolean) => {
         localStorage.setItem('gdprConsent', gdpr.toString());
         setGdprConsent(gdpr);
-        history.go(0);
+        navigate(0);
     };
 
     return (

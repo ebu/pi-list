@@ -1,7 +1,7 @@
 import React from 'react';
 import './styles.scss';
 import { LogoIcon } from '../icons/index';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import LowerButtonsSidebar from './LowerButtonsSidebar';
 import UpperButtonsSidebar from './UpperButtonsSidebar';
 
@@ -32,11 +32,11 @@ export type Button = {
 
 function Sidebar({ state, onClick, isCollapsed }: IComponentProps) {
     const Icon = LogoIcon;
-    const history = useHistory();
+    const navigate = useNavigate();
     return (
         <div className={` sidebar ${isCollapsed ? 'sidebar-collapsed' : ''}`}>
             <aside className="sidebar-menu">
-                <div className="sidebar-logo" onClick={() => history.push('/')}>
+                <div className="sidebar-logo" onClick={() => navigate('/')}>
                     <Icon />
                 </div>
                 <UpperButtonsSidebar upperButtons={state.upperButtons} onClick={onClick} isCollapsed={isCollapsed} />
