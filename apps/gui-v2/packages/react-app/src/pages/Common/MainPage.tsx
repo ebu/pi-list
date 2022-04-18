@@ -1,6 +1,6 @@
 import React from 'react';
 import './styles.scss';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import SidebarHOC from './SidebarHOC';
 // import 'components/stories/styles.scss';
 import routes from '../../routes';
@@ -10,14 +10,14 @@ import useRecoilUserHandler from '../../store/gui/user/useRecoilUserHandler';
 import useRecoilAnalysisProfileHandler from '../../store/gui/analysisProfile/useRecoilAnalysisProfileHandler';
 import { ToastContainer } from 'react-toastify';
 
-const MainPage: React.FunctionComponent<{}> = () => {
+const MainPage  = () => {
     useRecoilUserHandler();
 
     useRecoilPcapsHandler();
 
     useRecoilAnalysisProfileHandler();
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const [gdprConsent, setGdprConsent] = React.useState<boolean>();
 
     React.useEffect(() => {
@@ -25,11 +25,11 @@ const MainPage: React.FunctionComponent<{}> = () => {
             try {
                 await list.info.getVersion();
             } catch {
-                history.push('/login');
+                navigate('/login');
             }
         };
         f();
-    }, [history]);
+    }, [navigate]);
 
     React.useEffect(() => {
         const gdprConsentLocalStorage = localStorage.getItem('gdprConsent');

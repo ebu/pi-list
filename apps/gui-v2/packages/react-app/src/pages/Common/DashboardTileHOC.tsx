@@ -46,6 +46,10 @@ const getContent = (pcap: SDK.types.IPcapInfo): { label: string; percentage: num
     const unkownStreams = totalStreams - (videoStreams + audioStreams + ancStreams + ttmlStreams + srtStreams);
     let label =
         pcap.summary === undefined ? 'ERROR' : pcap.summary.error_list.length === 0 ? 'Compliant' : 'Not Compliant';
+    if(pcap.total_streams === 0){
+        label = "Empty"
+    }
+
     if (unkownStreams > 0) {
         label = 'Unknown';
     }
@@ -104,10 +108,13 @@ export const pcapToTile = (
         <div
             className="dashboard-page-tile"
             onClick={handleClick}
-            onDoubleClick={() =>
-                tileInformation.content.label !== 'ERROR'
-                    ? onDoubleClick(tileInformation.id, pcap.analyzer_version)
-                    : null
+            onDoubleClick={() => {
+                if(pcap.total_streams === 0) return;
+                return tileInformation.content.label !== 'ERROR'
+                ? onDoubleClick(tileInformation.id, pcap.analyzer_version)
+                : null
+            }
+                
             }
             key={pcap.id}
         >

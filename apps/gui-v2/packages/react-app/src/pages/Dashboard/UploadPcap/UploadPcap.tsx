@@ -112,7 +112,7 @@ function UploadPcap({ isButton }: { isButton: boolean }) {
         });
     };
 
-    const onDrop = React.useCallback(receivedFiles => {
+    const onDrop = React.useCallback((receivedFiles: any) => {
         if (Object.keys(receivedFiles).length === 1) setFilename(receivedFiles[0].path);
         setNumberFiles(Object.keys(receivedFiles).length);
         onAcceptProgress(receivedFiles, Object.keys(receivedFiles).length, uploadProgress);

@@ -2,6 +2,7 @@
 #include "ebu/list/analysis/serialization/anc_stream_serializer.h"
 #include "ebu/list/analysis/serialization/audio_stream_serializer.h"
 #include "ebu/list/analysis/serialization/jpeg_xs_stream_extractor.h"
+#include "ebu/list/srt/srt_extractor.h"
 #include "ebu/list/analysis/serialization/ttml_stream_serializer.h"
 #include "ebu/list/analysis/serialization/video_stream_extractor.h"
 #include "ebu/list/analysis/serialization/video_stream_serializer.h"
@@ -356,9 +357,22 @@ void analysis::run_full_analysis(processing_context& context)
         else if(stream_info.full_transport_type == media::transport_type::SRT)
         {
             counter.handle_srt();
-            auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
-            auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
-            return analyzer;
+
+            auto ml = std::make_unique<udp_multi_listener_t<udp::listener, udp::datagram>>();
+
+            if(context.extract_frames)
+            {
+                auto new_handler = std::make_unique<srt_extractor>(first_datagram, context.storage_folder,
+                                                                              main_executor, stream_info.id);
+                ml->add_udp_listener(std::move(new_handler));
+            }else {
+
+                auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+                auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                ml->add_udp_listener(std::move(analyzer));
+            }
+
+            return ml;
         }
         else
         {

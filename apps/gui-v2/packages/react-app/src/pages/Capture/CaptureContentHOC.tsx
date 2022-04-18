@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { userAtom } from '../../store/gui/user/userInfo';
 import routeBuilder from '../../routes/routeBuilder';
@@ -7,7 +7,7 @@ import { MainContentLayout } from '../Common';
 import CaptureContent from './CaptureContent';
 
 function CaptureContentHOC() {
-    const history = useHistory();
+    const navigate = useNavigate();
     const userInfo = useRecoilValue(userAtom);
     if (!userInfo) {
         return null;
@@ -15,7 +15,7 @@ function CaptureContentHOC() {
 
     const onTileDoubleClick = (id: string): void => {
         const route = routeBuilder.pcap_stream_list(id);
-        history.push(route);
+        navigate(route);
     };
 
     return (
@@ -46,7 +46,7 @@ function CaptureContentHOC() {
                             </div>
                         )
                 } }
-                logout={() => history.push('/logout')}
+                logout={() => navigate('/logout')}
             />
         </>
     );

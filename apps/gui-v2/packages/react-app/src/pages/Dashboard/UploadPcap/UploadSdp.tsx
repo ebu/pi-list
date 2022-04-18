@@ -96,7 +96,7 @@ function UploadSdp({ patchPcap, pcapId }: IComponentProps) {
         });
     };
 
-    const onDrop = React.useCallback(receivedFiles => {
+    const onDrop = React.useCallback((receivedFiles: any) => {
         onAcceptProgress(receivedFiles, Object.keys(receivedFiles).length, uploadProgress);
         
     }, []);

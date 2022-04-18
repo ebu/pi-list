@@ -66,7 +66,7 @@ export default () => {
     const wsClient = list.wsClient;
 
     const onStreamComparisonUpdate = React.useCallback(
-        data => handleStreamComparisonUpdate(data, setStreamComparisonAtom),
+        (data: any) => handleStreamComparisonUpdate(data, setStreamComparisonAtom),
         [setStreamComparisonAtom]
     );
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import queryString from 'query-string';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import list from 'utils/api';
 
 const getQueryParamAsString = (location: null | string | (string | null)[], or: string): string => {
@@ -13,7 +13,7 @@ const getQueryParamAsString = (location: null | string | (string | null)[], or: 
 };
 
 export default () => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
 
     if (location.search) {
@@ -21,7 +21,7 @@ export default () => {
 
         if (queryParams.token) {
             list.setToken(getQueryParamAsString(queryParams.token, ''));
-            history.push(getQueryParamAsString(queryParams.location, '/'));
+            navigate(getQueryParamAsString(queryParams.location, '/'));
         }
     }
 };

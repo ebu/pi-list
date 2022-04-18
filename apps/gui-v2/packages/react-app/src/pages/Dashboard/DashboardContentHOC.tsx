@@ -1,7 +1,7 @@
 import React from 'react';
 import list from '../../utils/api';
 import SDK from '@bisect/ebu-list-sdk';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import routeBuilder from '../../routes/routeBuilder';
 import {
     CustomScrollbar,
@@ -388,12 +388,12 @@ function DashboardContentHOC() {
         setCurrentHeaderFilter(filterType);
     };
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const onDoubleClick = (id: string, analyzerVersion: string): void => {
         if (analyzerVersion == version) {
             const route = routeBuilder.pcap_stream_list(id);
-            history.push(route);
+            navigate(route);
         } else {
             list.pcap.reanalyze(id).catch((err: any) => {
                 console.log(err);
@@ -403,7 +403,7 @@ function DashboardContentHOC() {
 
     const onViewAllDetailsButtonClick = (id: string): void => {
         const route = routeBuilder.pcap_stream_list(id);
-        history.push(route);
+        navigate(route);
     };
 
     const predicate = getFilter(currentFilterType);
@@ -441,7 +441,7 @@ function DashboardContentHOC() {
                     version,
                     resetStateSelectedPcaps
                 )}
-                logout={() => history.push('/logout')}
+                logout={() => navigate('/logout')}
             />
         </>
     );

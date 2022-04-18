@@ -142,7 +142,7 @@ export default () => {
     const wsClient = list.wsClient;
 
     const onPcapsUpdate = React.useCallback(
-        data => handlePcapsUpdate(data, setPcapsAtom, setPcapsCapturingAtom, setPcapsAnalysingAtom),
+        (data: any) => handlePcapsUpdate(data, setPcapsAtom, setPcapsCapturingAtom, setPcapsAnalysingAtom),
         [setPcapsAtom, setPcapsCapturingAtom, setPcapsAnalysingAtom]
     );
 

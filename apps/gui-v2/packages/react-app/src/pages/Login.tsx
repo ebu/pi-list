@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import LoginPage from 'components/LoginPage/LoginPage';
 import list from '../utils/api';
 import News from 'components/News/News';
@@ -9,7 +9,7 @@ import ReactGA from 'react-ga';
 import { GoogleAnalyticsHandler } from 'utils/googleAnalytics';
 
 const Login = (): any => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const [loginError, setLoginError] = React.useState<boolean>(false);
     const [registerError, setRegisterError] = React.useState<boolean>(false);
     const [gdprConsent, setGdprConsent] = React.useState<boolean>();
@@ -41,7 +41,7 @@ const Login = (): any => {
         try {
             await list.login(username, password);
             setLoginError(false);
-            history.push('/');
+            navigate('/');
         } catch (e) {
             setLoginError(true);
             console.error(`login error: ${JSON.stringify(e)}`);

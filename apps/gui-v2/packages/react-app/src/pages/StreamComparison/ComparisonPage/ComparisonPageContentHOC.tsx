@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { userAtom } from '../../../store/gui/user/userInfo';
 import { MainContentLayout } from '../../Common';
@@ -14,9 +14,11 @@ function ComparisonPageContentHOC(props: any) {
     const [mainStreamInfo, setMainStreamInfo] = React.useState<any>();
     const [referenceStreamInfo, setReferenceStreamInfo] = React.useState<any>();
 
-    const { comparisonId } = props.match.params;
+    const params = useParams();
 
-    const history = useHistory();
+    const  comparisonId  = params.comparisonId;
+
+    const navigate = useNavigate();
     const userInfo = useRecoilValue(userAtom);
     const getHelpMessage = () => {
         if (comparisonInfo.type === 'st2022_7_analysis') {
@@ -72,7 +74,7 @@ function ComparisonPageContentHOC(props: any) {
 
     React.useEffect(() => {
         const loadComparisonData = async (): Promise<void> => {
-            await list.streamComparison.getInfo(comparisonId).then(async (comparisonData: any) => {
+            await list.streamComparison.getInfo(comparisonId!).then(async (comparisonData: any) => {
                 setComparisonInfo(comparisonData);
                 await list.pcap.getInfo(comparisonData.config.main.pcap).then(async (data: any) => {
                     setMainPcap(data);
@@ -122,7 +124,7 @@ function ComparisonPageContentHOC(props: any) {
                     />
                 }
                 informationSidebarContent={getDataToInformationSidebar()}
-                logout={() => history.push('/logout')}
+                logout={() => navigate('/logout')}
             />
         </>
     );

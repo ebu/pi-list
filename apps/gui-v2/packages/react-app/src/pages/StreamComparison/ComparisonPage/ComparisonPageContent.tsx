@@ -5,8 +5,7 @@ import ST2022_7_View from './Views/ST2022_7_View';
 import PsnrAndDelayView from './Views/PsnrAndDelayView';
 import CrossCorrelationView from './Views/CrossCorrelationView';
 import AVSyncView from './Views/AVSyncView';
-import { useHistory } from 'react-router-dom';
-import routeBuilder from '../../../routes/routeBuilder';
+import { useNavigate } from 'react-router-dom';
 
 function ComparisonPageContent({ comparisonInfo, mainPcap, referencePcap, mainStreamInfo, referenceStreamInfo }: any) {
     const changeView = (type: any) => {
@@ -38,10 +37,10 @@ function ComparisonPageContent({ comparisonInfo, mainPcap, referencePcap, mainSt
         }
     };
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const onStreamBadgeClick = (pcapId: string, streamId: string) => {
-        history.push(`/pcaps/${pcapId}/streams/${streamId}`);
+        navigate(`/pcaps/${pcapId}/streams/${streamId}`);
     };
 
     return (

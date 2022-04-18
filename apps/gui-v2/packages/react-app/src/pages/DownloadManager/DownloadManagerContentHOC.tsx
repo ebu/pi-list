@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import list from '../../utils/api';
 import SDK from '@bisect/ebu-list-sdk';
 import { useRecoilValue } from 'recoil';
@@ -9,7 +9,7 @@ import DownloadManagerContent from './DownloadManagerContent';
 import { GoogleAnalyticsHandler } from 'utils/googleAnalytics';
 
 function DownloadManagerContentHOC() {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const initial: SDK.types.IDownloadManagerDataContent[] = [];
     const [downloadData, setDownloadData] = React.useState(initial);
@@ -47,7 +47,7 @@ function DownloadManagerContentHOC() {
             <MainContentLayout
                 middlePageContent={<DownloadManagerContent downloadData={downloadData} />}
                 informationSidebarContent={{ usermail: userInfo?.username }}
-                logout={() => history.push('/logout')}
+                logout={() => navigate('/logout')}
             />
         </>
     );

@@ -4,7 +4,7 @@ import SDK from '@bisect/ebu-list-sdk';
 import list from '../../utils/api';
 import './styles.scss';
 import _ from 'lodash';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import SettingsContent, { ILanguage, IProfileAnalysisData } from './SettingsContent';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userAtom } from '../../store/gui/user/userInfo';
@@ -14,7 +14,7 @@ import { analysisProfileDefaultAtom } from '../../store/gui/analysisProfile/anal
 import { GoogleAnalyticsHandler } from 'utils/googleAnalytics';
 
 function SettingsHOC() {
-    const history = useHistory();
+    const navigate = useNavigate();
     const [userInfo, setuserInfo] = useRecoilState(userAtom);
     const [gdprConsent, setGdprConsent] = React.useState<boolean>();
 
@@ -68,7 +68,7 @@ function SettingsHOC() {
 
     const onDeleteUser = async () => {
         await list.user.delete({}).then(() => {
-            history.push('/login');
+            navigate('/login');
         });
     };
 
@@ -95,7 +95,7 @@ function SettingsHOC() {
                     />
                 }
                 informationSidebarContent={{ usermail: userInfo?.username }}
-                logout={() => history.push('/logout')}
+                logout={() => navigate('/logout')}
             />
         </>
     );

@@ -1,6 +1,7 @@
 export default {
     HOME: '/',
     LOGIN: '/login',
+    LOGOUT: '/logout',
     PCAPS: '/pcaps',
     STREAMS_PAGE: 'streams',
     ANALYSIS: '/analysis',
