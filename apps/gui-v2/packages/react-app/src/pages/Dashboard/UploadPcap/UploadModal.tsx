@@ -1,13 +1,11 @@
 import React from 'react';
 import Modal from 'react-modal';
 import './styles.scss';
-import Select from 'react-select';
-import { customStyles } from 'components/BaseSelector/BaseSelector';
 import _ from 'lodash';
 import list from '../../../utils/api';
-import UploadSdp from './UploadSdp';
 import PcapUploadInformation from './PcapUploadInformation';
 import { CancelIcon } from 'components/icons';
+
 
 interface IComponentProps {
     isOpen: boolean;
@@ -47,9 +45,8 @@ const UploadModal = ({
     const onChangeProtocol = (receivedFile: any, e: any) => {
         const filesToAnalyzePatched = _.cloneDeep(filesToAnalyze);
         const objIndex = filesToAnalyzePatched.findIndex((obj => obj.pcap_id == receivedFile.pcap_id));
-        //Update object's protocol property.
+        //Update object's transport type property.
         filesToAnalyzePatched[objIndex].transport_type = e.target.value;
-
 
         setFilesToAnalyze(filesToAnalyzePatched);
     }
@@ -91,11 +88,11 @@ const UploadModal = ({
                     <span className='upload-pcap-modal-title'>Upload PCAP</span>
                     <CancelIcon onClick={() => onModalClose()} className='cancel-icon-sdp-upload' />
                 </div>
-
                 <div className='pcap-modal-form-container'>
                     {receivedFiles.map((receivedFile: any) => {
+                        console.log(receivedFiles)
                         return (
-                            <PcapUploadInformation key={receivedFile.pcap_id} receivedPcap={receivedFile} patchPcap={patchPcap} onChangeProtocol={onChangeProtocol} />
+                            <PcapUploadInformation key={receivedFile.pcap_id} receivedPcap={receivedFile} patchPcap={patchPcap} filesToAnalyze={filesToAnalyze} onChangeProtocol={onChangeProtocol} />
                         )
                     })}
                 </div>

@@ -196,7 +196,6 @@ function UploadPcap({ isButton }: { isButton: boolean }) {
                 )}
             </div>
             {isModalOpen && <UploadModal isOpen={isModalOpen} onUploadDone={onUploadDone} onModalClose={onModalClose} receivedFiles={receivedFiles} />}
-
         </div>
     );
 }
