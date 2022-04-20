@@ -90,7 +90,6 @@ const UploadModal = ({
                 </div>
                 <div className='pcap-modal-form-container'>
                     {receivedFiles.map((receivedFile: any) => {
-                        console.log(receivedFiles)
                         return (
                             <PcapUploadInformation key={receivedFile.pcap_id} receivedPcap={receivedFile} patchPcap={patchPcap} filesToAnalyze={filesToAnalyze} onChangeProtocol={onChangeProtocol} />
                         )

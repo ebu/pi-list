@@ -96,13 +96,24 @@ function UploadPcap({ isButton }: { isButton: boolean }) {
         const filesUploaded: string[] = [];
         receivedFiles.map((fileToUpload: any) => {
             list.pcap
-                .onlyInsertInDatabase(fileToUpload.name, fileToUpload)
-                .then((data: any) => {
-                    setReceivedFiles(current => [...current, data]);
-                    uploadedFiles++;
-                    if (uploadedFiles === numberFiles) {
-                        setModalOpen(true);
+                .onlyInsertInDatabase(fileToUpload.name, fileToUpload, (info: any) => {
+                    callback(
+                        uploadProgressKind.progress,
+                        getAllFilesPercentage(info.percentage, numberFiles, uploadedFiles)
+                    );
+                    if (info.percentage === 100) {
+                        uploadedFiles++;
                     }
+                })
+                .then((data: any) => {
+                    completedFiles++;
+                    filesUploaded.push('completed');
+                    if (completedFiles === numberFiles) {
+                        getUploadStatus(filesUploaded, numberFiles, callback);
+                        setModalOpen(true)
+                    }
+
+                    setReceivedFiles(current => [...current, data]);
                 })
                 .catch((err: any) => {
                     console.log(err);

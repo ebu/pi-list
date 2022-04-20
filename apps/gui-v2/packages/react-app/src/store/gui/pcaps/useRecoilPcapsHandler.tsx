@@ -91,7 +91,6 @@ const handlePcapsUpdate = (
 
         case 'PCAP_FILE_DELETED':
             setPcapsAtom(current => {
-                console.log("DELETE THIS ONE", current);
                 return current.filter((pcap: SDK.api.pcap.IPcapInfo | any) => pcap.id !== data.data.id);
             });
             setPcapsAnalysingAtom(current => {

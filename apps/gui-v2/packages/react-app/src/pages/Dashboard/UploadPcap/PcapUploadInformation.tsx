@@ -29,6 +29,7 @@ const PcapUploadInformation = ({
 
     const isChecked = (type: string) => {
         const currentFile = getCurrentFile();
+        if (!currentFile) return false;
         if (!currentFile.transport_type) {
             return false;
         }

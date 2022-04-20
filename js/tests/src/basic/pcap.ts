@@ -126,7 +126,8 @@ export const doUpload = async (
 export const doOnlyUpload = async (
     list: LIST,
     name: string,
-    stream: fs.ReadStream
+    stream: fs.ReadStream,
+    callback: types.UploadProgressCallback
 ): Promise<string> =>
     new Promise(async (resolve, reject) => {
         try {
@@ -138,7 +139,7 @@ export const doOnlyUpload = async (
 
             const pcapId = uuid();
 
-            await list.pcap.onlyInsertInDatabase(name, stream, pcapId);
+            await list.pcap.onlyInsertInDatabase(name, stream, callback, pcapId);
 
             resolve(pcapId);
         } catch (err) {
@@ -303,7 +304,9 @@ addTest('Pcap: only upload', async (c: testUtils.ITestContext) => {
 
         const stream = fs.createReadStream(pcapFile);
 
-        const pcapId = await doOnlyUpload(list, name, stream);
+        const callback = (info: types.IUploadProgressInfo) => console.log(`percentage: ${info.percentage}`);
+
+        const pcapId = await doOnlyUpload(list, name, stream, callback);
 
         const pcap = await list.pcap.getInfo(pcapId);
 
@@ -331,7 +334,9 @@ addTest('Pcap: only upload and reanalyze', async (c: testUtils.ITestContext) => 
 
         const stream = fs.createReadStream(pcapFile);
 
-        const pcapId = await doOnlyUpload(list, name, stream);
+        const callback = (info: types.IUploadProgressInfo) => console.log(`percentage: ${info.percentage}`);
+
+        const pcapId = await doOnlyUpload(list, name, stream, callback);
 
         await list.pcap.reanalyze(pcapId);
 
