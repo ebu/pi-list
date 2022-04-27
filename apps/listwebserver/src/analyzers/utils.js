@@ -10,6 +10,7 @@ function appendError(stream, value) {
 
 function validateMulticastAddresses(stream) {
     const networkInfo = _.get(stream, 'network_information');
+    const analyses = _.get(stream, 'analyses')
 
     if (networkInfo.valid_multicast_mac_address == false) {
         stream = _.set(
@@ -45,6 +46,10 @@ function validateMulticastAddresses(stream) {
         );
     }
 
+    if (analyses?.mac_address_analysis?.result === "not_compliant") {
+        stream = appendError(stream, { id: constants.errors.repeated_mac_addresses });
+    }
+
     if (networkInfo.multicast_address_match == false) {
         stream = _.set(
             stream,
@@ -61,7 +66,7 @@ function validateMulticastAddresses(stream) {
             constants.outcome.compliant
         );
     }
-    
+
     return stream;
 }
 

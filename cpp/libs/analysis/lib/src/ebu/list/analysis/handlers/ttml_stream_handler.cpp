@@ -88,6 +88,10 @@ ebu_list::analysis::ttml::stream_handler::stream_handler(ebu_list::rtp::packet f
 
 stream_handler::~stream_handler() = default;
 
+mac_address_analyzer::mac_addresses_info stream_handler::get_mac_adresses_analyses() const{
+    return mac_analyzer_.get_mac_addresses_analysis();
+}
+
 const ebu_list::analysis::ttml::stream_details& ebu_list::analysis::ttml::stream_handler::info() const
 {
     return impl_->ttml_description_;
@@ -102,6 +106,7 @@ void ebu_list::analysis::ttml::stream_handler::on_data(const ebu_list::rtp::pack
 {
     impl_->ttml_description_.last_packet_ts = packet.info.udp.packet_time;
     const auto marked                       = packet.info.rtp().marker();
+    mac_analyzer_.on_data(packet);
 
     impl_->parse_packet(packet);
 

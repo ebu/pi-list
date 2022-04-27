@@ -3,6 +3,7 @@
 #include "ebu/list/analysis/serialization/audio_stream_serializer.h"
 #include "ebu/list/analysis/serialization/jpeg_xs_stream_extractor.h"
 #include "ebu/list/srt/srt_extractor.h"
+#include "ebu/list/net/mac_address_analyzer.h"
 #include "ebu/list/analysis/serialization/ttml_stream_serializer.h"
 #include "ebu/list/analysis/serialization/video_stream_extractor.h"
 #include "ebu/list/analysis/serialization/video_stream_serializer.h"
@@ -38,10 +39,14 @@ namespace
     {
         const auto analysis_info = handler.get_video_analysis_info();
         const auto& network_info = handler.network_info();
+        const auto mac_analyses = handler.get_mac_adresses_analyses();
 
-        auto video_info            = handler.info();
+        const auto& video_info            = handler.info();
         auto j                     = ::gather_info(network_info, video_info);
         j["global_video_analysis"] = nlohmann::json(analysis_info);
+        j["analyses"] = nlohmann::json::object();
+        j["analyses"]["mac_address_analysis"] = nlohmann::json::object();
+        j["analyses"]["mac_address_analysis"]["result"] = mac_analyses.repeated_mac_addresses.size() > 1 ? "not_compliant" : "compliant";
 
         context.updater->update_stream_info(network_info.id, j);
 
@@ -54,8 +59,14 @@ namespace
     void audio_finalizer(const processing_context& context, const audio_stream_handler& handler)
     {
         const auto& network_info = handler.network_info();
+        const auto mac_analyses = handler.get_mac_adresses_analyses();
         auto j                   = ::gather_info(network_info, handler.info());
+        j["analyses"] = nlohmann::json::object();
+        j["analyses"]["mac_address_analysis"] = nlohmann::json::object();
+        j["analyses"]["mac_address_analysis"]["result"] = mac_analyses.repeated_mac_addresses.size() > 1 ? "not_compliant" : "compliant";
+
         context.updater->update_stream_info(network_info.id, j);
+
 
         st2110::d30::st2110_30_sdp_serializer s(handler.info().audio);
         ebu_list::sdp::sdp_builder sdp({"LIST Generated SDP", "audio flow"});
@@ -67,6 +78,11 @@ namespace
     {
         const auto& network_info = handler.network_info();
         auto j                   = ::gather_info(network_info, handler.info());
+        const auto mac_analyses = handler.get_mac_adresses_analyses();
+        j["analyses"] = nlohmann::json::object();
+        j["analyses"]["mac_address_analysis"] = nlohmann::json::object();
+        j["analyses"]["mac_address_analysis"]["result"] = mac_analyses.repeated_mac_addresses.size() > 1 ? "not_compliant" : "compliant";
+
         context.updater->update_stream_info(network_info.id, j);
 
         st2110::d40::st2110_40_sdp_serializer s(handler.info().anc);
@@ -79,6 +95,11 @@ namespace
     {
         const auto& network_info = handler.network_info();
         auto j                   = ::gather_info(network_info, handler.info());
+        const auto mac_analyses = handler.get_mac_adresses_analyses();
+        j["analyses"] = nlohmann::json::object();
+        j["analyses"]["mac_address_analysis"] = nlohmann::json::object();
+        j["analyses"]["mac_address_analysis"]["result"] = mac_analyses.repeated_mac_addresses.size() > 1 ? "not_compliant" : "compliant";
+
         context.updater->update_stream_info(network_info.id, j);
 
         // TODO: add TTML support in SDP
@@ -182,6 +203,8 @@ void analysis::run_full_analysis(processing_context& context)
                 {
                     auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
                     auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                    auto mac_address = std::make_unique<mac_address_analyzer>();
+
                     ml->add_udp_listener(std::move(analyzer));
                 }
 

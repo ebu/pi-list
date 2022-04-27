@@ -6,6 +6,7 @@
 #include "ebu/list/core/platform/executor.h"
 #include "ebu/list/st2110/d21/c_analyzer.h"
 #include "ebu/list/st2110/d21/compliance.h"
+#include "ebu/list/net/mac_address_analyzer.h"
 
 namespace ebu_list::analysis
 {
@@ -21,12 +22,15 @@ namespace ebu_list::analysis
 
         st2110::d21::video_analysis_info get_video_analysis_info() const;
 
+        mac_address_analyzer::mac_addresses_info get_mac_adresses_analyses() const;
+
       private:
         void on_frame_started(const frame& f) override;
         void on_frame_complete(frame_uptr&& f) override;
         void on_packet(const packet_info& p) override;
 
         const path base_dir_;
+        mac_address_analyzer mac_analyzer_;
         completion_callback on_complete_callback_;
         frame_info_builder frame_info_;
         st2110::d21::compliance_analyzer compliance_;

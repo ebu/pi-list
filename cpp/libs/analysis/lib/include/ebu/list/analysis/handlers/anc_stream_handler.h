@@ -10,6 +10,7 @@
 #include "ebu/list/rtp/types.h"
 #include "ebu/list/st2110/d40/header.h"
 #include "ebu/list/st2110/packets_per_frame_calculator.h"
+#include "ebu/list/net/mac_address_analyzer.h"
 
 #pragma GCC diagnostic ignored "-Wpedantic"
 #include <libklvanc/vanc.h>
@@ -44,11 +45,14 @@ namespace ebu_list::analysis
             virtual void on_error(std::exception_ptr e)        = 0;
         };
 
+
+
         anc_stream_handler(
             const rtp::packet& first_packet, const serializable_stream_info& info, const anc_stream_details& details,
             payload_analysis_t payload_analysis, completion_handler ch = [](const anc_stream_handler&) {});
         ~anc_stream_handler() override;
 
+        [[nodiscard]] mac_address_analyzer::mac_addresses_info get_mac_adresses_analyses() const;
         [[nodiscard]] const anc_stream_details& info() const;
         [[nodiscard]] const serializable_stream_info& network_info() const;
 
@@ -70,6 +74,7 @@ namespace ebu_list::analysis
         anc_stream_details anc_description_;
         const payload_analysis_t payload_analysis_;
         completion_handler completion_handler_;
+        mac_address_analyzer mac_analyzer_;
 
         struct klvanc_context_s* klvanc_ctx = nullptr;
         bool last_frame_was_marked_         = false;

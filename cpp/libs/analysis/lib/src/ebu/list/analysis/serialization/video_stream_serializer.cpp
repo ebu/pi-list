@@ -43,6 +43,7 @@ void video_stream_serializer::on_frame_started(const frame& f)
 
 void video_stream_serializer::on_packet(const packet_info& p)
 {
+    mac_analyzer_.on_data(p.packet);
     frame_info_.on_packet(p);
     compliance_.handle_packet(p.packet.info);
 }
@@ -63,6 +64,10 @@ void video_stream_serializer::on_frame_complete(frame_uptr&& f)
         frame_info_.get_last_packet_timestamp(),
     };
     write_frame_info(base_dir_, stream_id, fi);
+}
+
+mac_address_analyzer::mac_addresses_info video_stream_serializer::get_mac_adresses_analyses() const{
+    return mac_analyzer_.get_mac_addresses_analysis();
 }
 
 st2110::d21::video_analysis_info video_stream_serializer::get_video_analysis_info() const

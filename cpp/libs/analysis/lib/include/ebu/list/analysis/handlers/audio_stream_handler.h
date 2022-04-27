@@ -6,6 +6,7 @@
 #include "ebu/list/core/memory/bimo.h"
 #include "ebu/list/rtp/inter_packet_spacing_analyzer.h"
 #include "ebu/list/rtp/listener.h"
+#include "ebu/list/net/mac_address_analyzer.h"
 
 namespace ebu_list::analysis
 {
@@ -20,6 +21,8 @@ namespace ebu_list::analysis
 
         [[nodiscard]] const audio_stream_details& info() const;
         [[nodiscard]] const serializable_stream_info& network_info() const;
+        [[nodiscard]] mac_address_analyzer::mac_addresses_info get_mac_adresses_analyses() const;
+
 
       private:
 #pragma region rtp::listener events
@@ -35,10 +38,13 @@ namespace ebu_list::analysis
 
         void parse_packet(const rtp::packet& packet);
 
+
+
         serializable_stream_info info_;
         audio_stream_details audio_description_;
         completion_handler completion_handler_;
         rtp::inter_packet_spacing_analyzer inter_packet_spacing_;
+        mac_address_analyzer mac_analyzer_;
     };
 
     using audio_stream_handler_uptr = std::unique_ptr<audio_stream_handler>;

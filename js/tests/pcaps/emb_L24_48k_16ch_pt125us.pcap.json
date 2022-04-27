@@ -17,16 +17,16 @@
     "sdps": [],
     "sdp_count": 0,
     "transport_type": "RTP",
-    "_id": "6241bb0b473eea6ba1f0805f",
-    "id": "c5e98730-ae9c-11ec-b777-cd72974845fb",
+    "_id": "626953d1f93e29dfd57d87df",
+    "id": "c37b63e0-c636-11ec-966a-13e25495ef0a",
     "__v": 0,
     "analyzer_version": "2.0.3",
     "capture_date": 1548356088263,
-    "capture_file_name": "1648474890046_2ad5b877-8f27-418d-8284-74d33ebaf28c.pcap",
-    "date": 1648474891397,
+    "capture_file_name": "1651069905229_79cd57b2-920e-476a-83a1-2838d93b2b16.pcap",
+    "date": 1651069905420,
     "file_name": "emb_L24_48k_16ch_pt125us.pcap",
-    "owner_id": "c24cda70-ae86-11ec-827c-6fa823236acc",
-    "pcap_file_name": "1648474890046_2ad5b877-8f27-418d-8284-74d33ebaf28c.pcap",
+    "owner_id": "473c23a0-c636-11ec-8bf3-e1cb62c23cbf",
+    "pcap_file_name": "1651069905229_79cd57b2-920e-476a-83a1-2838d93b2b16.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -54,10 +54,10 @@
     "streams": [
         {
             "error_list": [],
-            "_id": "6241bb0ba74491f7dbbdbad8",
+            "_id": "626953d1b7e764870dcfc1c1",
             "full_media_type": "audio/L24",
             "full_transport_type": "RTP",
-            "id": "26b81fc1-3cf7-482d-bc78-0cbc09a74072",
+            "id": "b29ae749-d05e-43b6-a657-3c0e07a32d10",
             "media_specific": {
                 "encoding": "L24",
                 "number_channels": 16,
@@ -109,7 +109,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "c5e98730-ae9c-11ec-b777-cd72974845fb",
+            "pcap": "c37b63e0-c636-11ec-966a-13e25495ef0a",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -126,6 +126,9 @@
             },
             "__v": 0,
             "analyses": {
+                "mac_address_analysis": {
+                    "result": "compliant"
+                },
                 "tsdf": {
                     "result": "compliant",
                     "details": {

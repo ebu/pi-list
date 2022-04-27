@@ -17,16 +17,16 @@
     "sdps": [],
     "sdp_count": 0,
     "transport_type": "RTP",
-    "_id": "6241bb12473eea6ba1f0815f",
-    "id": "caacb490-ae9c-11ec-b777-cd72974845fb",
+    "_id": "626953d6f93e29dfd57d88e1",
+    "id": "c6739540-c636-11ec-966a-13e25495ef0a",
     "__v": 0,
     "analyzer_version": "2.0.3",
     "capture_date": 1518791594875,
-    "capture_file_name": "1648474898037_f11ccf78-2e04-4de1-9332-15d7516d6b29.gz",
-    "date": 1648474898254,
+    "capture_file_name": "1651069910190_da83cc68-0347-4391-bf0c-2388990890d0.gz",
+    "date": 1651069910355,
     "file_name": "mac_address.pcap.gz",
-    "owner_id": "c24cda70-ae86-11ec-827c-6fa823236acc",
-    "pcap_file_name": "1648474898037_f11ccf78-2e04-4de1-9332-15d7516d6b29.pcap",
+    "owner_id": "473c23a0-c636-11ec-8bf3-e1cb62c23cbf",
+    "pcap_file_name": "1651069910190_da83cc68-0347-4391-bf0c-2388990890d0.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -50,27 +50,33 @@
     "summary": {
         "error_list": [
             {
-                "stream_id": "3ae0e781-5999-4b3e-82ad-336bba1de26f",
+                "stream_id": "99da9af9-c3ba-49f1-8929-753e54e558f4",
                 "value": {
                     "id": "errors.invalid_rtp_ts_vs_nt"
                 }
             },
             {
-                "stream_id": "3ae0e781-5999-4b3e-82ad-336bba1de26f",
+                "stream_id": "99da9af9-c3ba-49f1-8929-753e54e558f4",
                 "value": {
                     "id": "errors.invalid_delta_packet_ts_vs_rtp_ts"
                 }
             },
             {
-                "stream_id": "3ae0e781-5999-4b3e-82ad-336bba1de26f",
+                "stream_id": "99da9af9-c3ba-49f1-8929-753e54e558f4",
                 "value": {
                     "id": "errors.vrx_above_maximum"
                 }
             },
             {
-                "stream_id": "3ae0e781-5999-4b3e-82ad-336bba1de26f",
+                "stream_id": "99da9af9-c3ba-49f1-8929-753e54e558f4",
                 "value": {
                     "id": "errors.invalid_multicast_mac_address"
+                }
+            },
+            {
+                "stream_id": "99da9af9-c3ba-49f1-8929-753e54e558f4",
+                "value": {
+                    "id": "errors.repeated_mac_addresses"
                 }
             }
         ],
@@ -90,12 +96,15 @@
                 },
                 {
                     "id": "errors.invalid_multicast_mac_address"
+                },
+                {
+                    "id": "errors.repeated_mac_addresses"
                 }
             ],
-            "_id": "6241bb12a74491f7dbbdbc26",
+            "_id": "626953d6b7e764870dcfc30f",
             "full_media_type": "video/raw",
             "full_transport_type": "RTP",
-            "id": "3ae0e781-5999-4b3e-82ad-336bba1de26f",
+            "id": "99da9af9-c3ba-49f1-8929-753e54e558f4",
             "media_specific": {
                 "avg_tro_ns": 12493753,
                 "color_depth": 10,
@@ -158,7 +167,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": false
             },
-            "pcap": "caacb490-ae9c-11ec-b777-cd72974845fb",
+            "pcap": "c6739540-c636-11ec-966a-13e25495ef0a",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -175,51 +184,10 @@
                 "retransmitted_packets": 0
             },
             "__v": 0,
-            "global_video_analysis": {
-                "cinst": {
-                    "cmax_narrow": 4,
-                    "cmax_wide": 16,
-                    "compliance": "narrow",
-                    "histogram": [
-                        [
-                            0,
-                            88.85496520996094
-                        ],
-                        [
-                            1,
-                            11.145038604736328
-                        ]
-                    ]
-                },
-                "compliance": "not_compliant",
-                "trs": {
-                    "trs_ns": 7414.814814814815
-                },
-                "vrx": {
-                    "compliance": "not_compliant",
-                    "histogram": [
-                        [
-                            -1598,
-                            0.03703703731298447
-                        ],
-                        [
-                            -1597,
-                            59.96296310424805
-                        ],
-                        [
-                            -1596,
-                            0.018518518656492233
-                        ],
-                        [
-                            -1595,
-                            39.98147964477539
-                        ]
-                    ],
-                    "vrx_full_narrow": 8,
-                    "vrx_full_wide": 720
-                }
-            },
             "analyses": {
+                "mac_address_analysis": {
+                    "result": "not_compliant"
+                },
                 "rtp_ts_vs_nt": {
                     "details": {
                         "range": {
@@ -290,6 +258,50 @@
                         "dropped_packets_samples": [],
                         "packet_count": 11790
                     }
+                }
+            },
+            "global_video_analysis": {
+                "cinst": {
+                    "cmax_narrow": 4,
+                    "cmax_wide": 16,
+                    "compliance": "narrow",
+                    "histogram": [
+                        [
+                            0,
+                            88.85496520996094
+                        ],
+                        [
+                            1,
+                            11.145038604736328
+                        ]
+                    ]
+                },
+                "compliance": "not_compliant",
+                "trs": {
+                    "trs_ns": 7414.814814814815
+                },
+                "vrx": {
+                    "compliance": "not_compliant",
+                    "histogram": [
+                        [
+                            -1598,
+                            0.03703703731298447
+                        ],
+                        [
+                            -1597,
+                            59.96296310424805
+                        ],
+                        [
+                            -1596,
+                            0.018518518656492233
+                        ],
+                        [
+                            -1595,
+                            39.98147964477539
+                        ]
+                    ],
+                    "vrx_full_narrow": 8,
+                    "vrx_full_wide": 720
                 }
             },
             "processing": {

@@ -17,16 +17,16 @@
     "sdps": [],
     "sdp_count": 0,
     "transport_type": "RTP",
-    "_id": "6241bb08473eea6ba1f0802b",
-    "id": "c3447ee0-ae9c-11ec-b777-cd72974845fb",
+    "_id": "626953cff93e29dfd57d87ad",
+    "id": "c2a8aa90-c636-11ec-966a-13e25495ef0a",
     "__v": 0,
     "analyzer_version": "2.0.3",
     "capture_date": 1516906244153,
-    "capture_file_name": "1648474885599_d58bb6b4-05f0-4da4-ac73-d88abfeb06f9.pcap",
-    "date": 1648474888769,
+    "capture_file_name": "1651069903816_5c701fa8-7ce2-481c-af94-1a8b34d93b8d.pcap",
+    "date": 1651069903941,
     "file_name": "eemebe_t_1080i59.pcap",
-    "owner_id": "c24cda70-ae86-11ec-827c-6fa823236acc",
-    "pcap_file_name": "1648474885599_d58bb6b4-05f0-4da4-ac73-d88abfeb06f9.pcap",
+    "owner_id": "473c23a0-c636-11ec-8bf3-e1cb62c23cbf",
+    "pcap_file_name": "1651069903816_5c701fa8-7ce2-481c-af94-1a8b34d93b8d.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -61,10 +61,10 @@
     "streams": [
         {
             "error_list": [],
-            "_id": "6241bb08a74491f7dbbdba96",
+            "_id": "626953cfb7e764870dcfc17f",
             "full_media_type": "video/raw",
             "full_transport_type": "RTP",
-            "id": "7886b121-bb7d-453d-a701-267c64dde221",
+            "id": "71294c3a-9a1c-4046-ad16-4d1f7c7ec1c5",
             "media_specific": {
                 "avg_tro_ns": 615145,
                 "color_depth": 10,
@@ -127,7 +127,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "c3447ee0-ae9c-11ec-b777-cd72974845fb",
+            "pcap": "c2a8aa90-c636-11ec-966a-13e25495ef0a",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -144,51 +144,10 @@
                 "retransmitted_packets": 0
             },
             "__v": 0,
-            "global_video_analysis": {
-                "cinst": {
-                    "cmax_narrow": 4,
-                    "cmax_wide": 16,
-                    "compliance": "narrow",
-                    "histogram": [
-                        [
-                            0,
-                            88.22222137451172
-                        ],
-                        [
-                            1,
-                            11.777777671813965
-                        ]
-                    ]
-                },
-                "compliance": "narrow",
-                "trs": {
-                    "trs_ns": 7414.814814814815
-                },
-                "vrx": {
-                    "compliance": "narrow",
-                    "histogram": [
-                        [
-                            4,
-                            0.10288065671920776
-                        ],
-                        [
-                            5,
-                            55.452674865722656
-                        ],
-                        [
-                            6,
-                            0.12345679104328156
-                        ],
-                        [
-                            7,
-                            44.320987701416016
-                        ]
-                    ],
-                    "vrx_full_narrow": 8,
-                    "vrx_full_wide": 720
-                }
-            },
             "analyses": {
+                "mac_address_analysis": {
+                    "result": "compliant"
+                },
                 "rtp_ts_vs_nt": {
                     "details": {
                         "range": {
@@ -259,6 +218,50 @@
                         "dropped_packets_samples": [],
                         "packet_count": 21600
                     }
+                }
+            },
+            "global_video_analysis": {
+                "cinst": {
+                    "cmax_narrow": 4,
+                    "cmax_wide": 16,
+                    "compliance": "narrow",
+                    "histogram": [
+                        [
+                            0,
+                            88.22222137451172
+                        ],
+                        [
+                            1,
+                            11.777777671813965
+                        ]
+                    ]
+                },
+                "compliance": "narrow",
+                "trs": {
+                    "trs_ns": 7414.814814814815
+                },
+                "vrx": {
+                    "compliance": "narrow",
+                    "histogram": [
+                        [
+                            4,
+                            0.10288065671920776
+                        ],
+                        [
+                            5,
+                            55.452674865722656
+                        ],
+                        [
+                            6,
+                            0.12345679104328156
+                        ],
+                        [
+                            7,
+                            44.320987701416016
+                        ]
+                    ],
+                    "vrx_full_narrow": 8,
+                    "vrx_full_wide": 720
                 }
             },
             "processing": {

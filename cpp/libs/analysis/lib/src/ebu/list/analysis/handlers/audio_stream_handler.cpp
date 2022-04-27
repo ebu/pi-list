@@ -61,6 +61,7 @@ const serializable_stream_info& audio_stream_handler::network_info() const
 
 void audio_stream_handler::on_data(const rtp::packet& packet)
 {
+    mac_analyzer_.on_data(packet);
     audio_description_.last_packet_ts = packet.info.udp.packet_time;
     audio_description_.last_sample_ts = packet.info.rtp.view().timestamp();
     inter_packet_spacing_.handle_data(packet);
@@ -113,4 +114,8 @@ void audio_stream_handler::parse_packet(const rtp::packet& packet)
     const auto size_of_channel   = number_of_bits(audio_description_.audio.encoding) / 8;
     const auto number_of_samples = (end - p) / (size_of_channel * audio_description_.audio.number_channels);
     audio_description_.sample_count += number_of_samples;
+}
+
+mac_address_analyzer::mac_addresses_info audio_stream_handler::get_mac_adresses_analyses() const{
+    return mac_analyzer_.get_mac_addresses_analysis();
 }

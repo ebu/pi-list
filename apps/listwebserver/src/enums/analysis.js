@@ -90,6 +90,7 @@ module.exports = {
         invalid_marker_bit: 'errors.invalid_marker_bit',
         invalid_field_bits: 'errors.invalid_field_bits',
         ancillary_invalid_payload: 'errors.ancillary_invalid_payload',
+        repeated_mac_addresses: "errors.repeated_mac_addresses"
     },
     warnings: {
         pcap: {

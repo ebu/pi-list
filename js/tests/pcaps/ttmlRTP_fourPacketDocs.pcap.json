@@ -17,16 +17,16 @@
     "sdps": [],
     "sdp_count": 0,
     "transport_type": "RTP",
-    "_id": "6241bb11473eea6ba1f080cf",
-    "id": "ca5f57e0-ae9c-11ec-b777-cd72974845fb",
+    "_id": "626953d5f93e29dfd57d8851",
+    "id": "c638fd40-c636-11ec-966a-13e25495ef0a",
     "__v": 0,
     "analyzer_version": "2.0.3",
     "capture_date": 1576249998818,
-    "capture_file_name": "1648474897510_a1fd5fca-f2b0-4d6d-9190-7ae3c8cffd61.pcap",
-    "date": 1648474897522,
+    "capture_file_name": "1651069909785_9e63ec0d-18fa-4267-bc6a-4368eaa028c4.pcap",
+    "date": 1651069909794,
     "file_name": "ttmlRTP_fourPacketDocs.pcap",
-    "owner_id": "c24cda70-ae86-11ec-827c-6fa823236acc",
-    "pcap_file_name": "1648474897510_a1fd5fca-f2b0-4d6d-9190-7ae3c8cffd61.pcap",
+    "owner_id": "473c23a0-c636-11ec-8bf3-e1cb62c23cbf",
+    "pcap_file_name": "1651069909785_9e63ec0d-18fa-4267-bc6a-4368eaa028c4.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -50,19 +50,19 @@
     "summary": {
         "error_list": [
             {
-                "stream_id": "6d88ffac-20b0-40a8-a28a-9be9b185d5e6",
+                "stream_id": "1f6e832b-b3ea-4d7a-8851-f2ffe10b0aea",
                 "value": {
                     "id": "errors.invalid_multicast_mac_address"
                 }
             },
             {
-                "stream_id": "6d88ffac-20b0-40a8-a28a-9be9b185d5e6",
+                "stream_id": "1f6e832b-b3ea-4d7a-8851-f2ffe10b0aea",
                 "value": {
                     "id": "errors.invalid_multicast_ip_address"
                 }
             },
             {
-                "stream_id": "6d88ffac-20b0-40a8-a28a-9be9b185d5e6",
+                "stream_id": "1f6e832b-b3ea-4d7a-8851-f2ffe10b0aea",
                 "value": {
                     "id": "errors.unrelated_multicast_addresses"
                 }
@@ -83,10 +83,10 @@
                     "id": "errors.unrelated_multicast_addresses"
                 }
             ],
-            "_id": "6241bb11a74491f7dbbdbb66",
+            "_id": "626953d5b7e764870dcfc24f",
             "full_media_type": "application/ttml+xml",
             "full_transport_type": "RTP",
-            "id": "6d88ffac-20b0-40a8-a28a-9be9b185d5e6",
+            "id": "1f6e832b-b3ea-4d7a-8851-f2ffe10b0aea",
             "media_type": "ttml",
             "media_type_validation": {
                 "audio/L16": [
@@ -132,7 +132,7 @@
                 "valid_multicast_ip_address": false,
                 "valid_multicast_mac_address": false
             },
-            "pcap": "ca5f57e0-ae9c-11ec-b777-cd72974845fb",
+            "pcap": "c638fd40-c636-11ec-966a-13e25495ef0a",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -144,6 +144,9 @@
             },
             "__v": 0,
             "analyses": {
+                "mac_address_analysis": {
+                    "result": "compliant"
+                },
                 "ttml_time_base_is_media": {
                     "result": "compliant"
                 },

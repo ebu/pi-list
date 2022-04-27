@@ -30,7 +30,7 @@ async function doCommonConsolidation(pcapId, streams) {
     return Promise.all(promises);
 }
 
-function doConsolidateNotCompliantInfo(pcap) {}
+function doConsolidateNotCompliantInfo(pcap) { }
 
 module.exports = {
     doCommonConsolidation,

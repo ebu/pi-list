@@ -4,6 +4,7 @@
 #include "ebu/list/analysis/serialization/audio_serialization.h"
 #include "ebu/list/core/io/file_sink.h"
 #include "ebu/list/core/platform/executor.h"
+#include "ebu/list/net/mac_address_analyzer.h"
 
 namespace ebu_list::analysis
 {
@@ -16,6 +17,7 @@ namespace ebu_list::analysis
       private:
         void on_sample_data(cbyte_span data) override;
         void on_stream_complete() override;
+        mac_address_analyzer mac_analyzer_;
         path base_dir_;
         std::unique_ptr<file_sink> raw_data_;
     };
