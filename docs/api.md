@@ -169,8 +169,11 @@ aforementioned _API_.
 
 #### Download PDF report
 
--   Path: `/api/pcap/<pcapId>/report?type=json`
+-   Path: `/api/pcap/<pcapId>/report?type=pdf`
 -   Method: `GET`
+-   Response:
+    -   HTTP/200:
+        -   Content-disposition: `attachment; filename=<reportPdfFile>`
 
 #### Download bundle of genererated SDP
 
