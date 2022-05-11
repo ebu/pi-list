@@ -80,21 +80,21 @@ SCENARIO("Ancillary stream analysis")
         }
     }
 
-    GIVEN("a pcap file a with errors: 1 unknown DID/SDID, and 2 payload bytes")
-    {
-        const auto pcap_file      = test_lib::sample_file("pcap/st2110/2110-40/anc_with_wrong_DID_and_payload.pcap");
-        const auto storage_folder = path("/tmp");
-        auto pcap                 = pcap_info{};
+     GIVEN("a pcap file a with errors: 1 unknown DID/SDID, and 2 payload bytes")
+     {
+         const auto pcap_file      = test_lib::sample_file("pcap/st2110/2110-40/anc_with_wrong_DID_and_payload.pcap");
+         const auto storage_folder = path("/tmp");
+         auto pcap                 = pcap_info{};
 
-        WHEN("the file is analysed")
-        {
-            run_analysis(pcap_file, pcap, storage_folder, get_stream_info);
+         WHEN("the file is analysed")
+         {
+             run_analysis(pcap_file, pcap, storage_folder, get_stream_info);
 
-            REQUIRE(stream_ids.size() == 1);
-            const auto stream = load_stream_json(storage_folder / stream_ids[0]);
-            REQUIRE(stream["id"] == stream_ids[0]);
-            REQUIRE(stream["state"] == to_string(stream_state::ANALYZED));
-            REQUIRE(stream["statistics"]["payload_error_count"] == 3);
-        }
-    }
+             REQUIRE(stream_ids.size() == 1);
+             const auto stream = load_stream_json(storage_folder / stream_ids[0]);
+             REQUIRE(stream["id"] == stream_ids[0]);
+             REQUIRE(stream["state"] == to_string(stream_state::ANALYZED));
+             REQUIRE(stream["statistics"]["payload_error_count"] == 3);
+         }
+     }
 }

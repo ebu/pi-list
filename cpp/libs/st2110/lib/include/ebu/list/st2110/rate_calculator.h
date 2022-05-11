@@ -4,6 +4,7 @@
 #include "ebu/list/core/types.h"
 #include <optional>
 #include <set>
+#include <optional>
 
 //------------------------------------------------------------------------------
 
