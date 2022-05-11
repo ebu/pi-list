@@ -129,7 +129,7 @@ const getMultipleFilesDownload = async (type: string, pCapIdsToDownload: string[
     await list.workflows
         .create(workflowInfo)
         .then(() => {
-            Notification({ typeMessage: 'sucess', message: workflowRequest });
+            Notification({ typeMessage: 'success', message: workflowRequest });
         })
         .catch((err: Error) => {
             Notification({
@@ -234,8 +234,7 @@ const getDataToInformationSidebar = (
         },
     ];
 
-    
-    if(currentPCap && currentPCap.sdp_count < 1) delete buttonWithIconList[1];
+    if (currentPCap && currentPCap.sdp_count < 1) delete buttonWithIconList[1];
 
     const isMultipleFilesSelected = currentPCapIds.length > 1;
 

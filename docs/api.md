@@ -11,7 +11,7 @@ aforementioned _API_.
 -   Request and response bodies, when available, are formated in
     [_JSON_](https://www.json.org/json-en.html).
 -   In `POST/PUT` requests, the `Content-Type` header must be present and is usually
-    expected to have the value `application/json;charset=UTF-8`, otherwise it is
+    expected to have the value `application/json`, otherwise it is
     specified in this document.
 -   Except for the [Authentication routes](#authentication), all API routes
     require the presence of the `Authorization` header with the format
@@ -125,7 +125,7 @@ aforementioned _API_.
     -   HTTP/401:
         ```json
         {
-            "sucess": false
+            "success": false
         }
         ```
 
@@ -258,7 +258,7 @@ aforementioned _API_.
             "result": 0,
             "desc": "Authentication successful",
             "content": {
-                "sucess": true,
+                "success": true,
                 "token": "<bearer-token>"
             }
         }
@@ -269,7 +269,7 @@ aforementioned _API_.
             "result": 401,
             "desc": "Authentication failed",
             "content": {
-                "sucess": false,
+                "success": false,
                 "token": null
             }
         }
@@ -504,7 +504,7 @@ aforementioned _API_.
 -   Method: `PUT`
 -   Response:
     -   HTTP/201:
-        -   Content-Type: `Content-Type: application/json; charset=utf-8`
+        -   Content-Type: `Content-Type: application/json`
         ```
         {
           "result": "success",

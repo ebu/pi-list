@@ -1,12 +1,7 @@
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Dispatch } from 'react';
-import {
-    DropSdpHere,
-    UploadSdpSuccess,
-    UploadSdpFailed,
-    DragAndDropSdpUpload,
-} from 'components/index';
+import { DropSdpHere, UploadSdpSuccess, UploadSdpFailed, DragAndDropSdpUpload } from 'components/index';
 import './styles.scss';
 import { v1 as uuid } from 'uuid';
 
@@ -25,8 +20,8 @@ const uploadProgressKind = {
 };
 
 interface IComponentProps {
-    patchPcap: (pcapId: string, sdps: any) => void,
-    pcapId: string
+    patchPcap: (pcapId: string, sdps: any) => void;
+    pcapId: string;
 }
 
 function UploadSdp({ patchPcap, pcapId }: IComponentProps) {
@@ -46,37 +41,32 @@ function UploadSdp({ patchPcap, pcapId }: IComponentProps) {
         }
     };
 
-
     const setUploadedSdps = (sdps: any[]) => {
         setSdps(sdps);
         patchPcap(pcapId, sdps);
-    }
+    };
 
     const getUploadStatus = (
         filesUploaded: string[],
         numberFiles: number,
         callback: (progressKind: string) => void
     ) => {
-        const sucessfullUploadedFiles = filesUploaded.reduce((acc: number, curr: string) => {
+        const successfullUploadedFiles = filesUploaded.reduce((acc: number, curr: string) => {
             if (curr === 'completed') {
                 acc++;
             }
             return acc;
         }, 0);
-        sucessfullUploadedFiles === numberFiles
+        successfullUploadedFiles === numberFiles
             ? callback(uploadProgressKind.completed)
             : callback(uploadProgressKind.failed);
     };
 
     React.useEffect(() => {
         patchPcap(pcapId, sdps);
-    }, [sdps])
+    }, [sdps]);
 
-    const onAcceptProgress = (
-        receivedFiles: any,
-        numberFiles: number,
-        callback: (progressKind: string) => void
-    ) => {
+    const onAcceptProgress = (receivedFiles: any, numberFiles: number, callback: (progressKind: string) => void) => {
         let completedFiles = 0;
         let uploadedFiles = 0;
         const filesUploaded: string[] = [];
@@ -84,8 +74,8 @@ function UploadSdp({ patchPcap, pcapId }: IComponentProps) {
         receivedFiles.map((fileToUpload: any) => {
             var reader = new FileReader();
             fileToUpload.id = uuid();
-            reader.onload = function (event) {
-                setSdps(current => [...current, { sdpParsed: event?.target?.result, sdpFile: fileToUpload }])
+            reader.onload = function(event) {
+                setSdps(current => [...current, { sdpParsed: event?.target?.result, sdpFile: fileToUpload }]);
             };
             reader.readAsText(fileToUpload);
             patchPcap(pcapId, sdps);
@@ -98,7 +88,6 @@ function UploadSdp({ patchPcap, pcapId }: IComponentProps) {
 
     const onDrop = React.useCallback((receivedFiles: any) => {
         onAcceptProgress(receivedFiles, Object.keys(receivedFiles).length, uploadProgress);
-        
     }, []);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -109,7 +98,7 @@ function UploadSdp({ patchPcap, pcapId }: IComponentProps) {
     const normalContents = <DragAndDropSdpUpload />;
     const activeContents = <DropSdpHere />;
 
-    const uploadCompleted = <UploadSdpSuccess receivedSdps={sdps} setUploadedSdps={setUploadedSdps} pcapId={pcapId}/>;
+    const uploadCompleted = <UploadSdpSuccess receivedSdps={sdps} setUploadedSdps={setUploadedSdps} pcapId={pcapId} />;
     const uploadFailed = <UploadSdpFailed onResetState={resetState} />;
 
     const getContents = React.useCallback(() => {
@@ -131,11 +120,15 @@ function UploadSdp({ patchPcap, pcapId }: IComponentProps) {
     }
 
     return (
-        <div className='upload-pcap-tile'>
-            {state === states.uploadCompleted? uploadCompleted : <div {...getRootProps()}>
-                <input {...getInputProps()} />
-                <div className={`drag-and-drop-sdp-tile ${contents[1]}`}> {contents[0]}</div>
-            </div>}
+        <div className="upload-pcap-tile">
+            {state === states.uploadCompleted ? (
+                uploadCompleted
+            ) : (
+                <div {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    <div className={`drag-and-drop-sdp-tile ${contents[1]}`}> {contents[0]}</div>
+                </div>
+            )}
         </div>
     );
 }

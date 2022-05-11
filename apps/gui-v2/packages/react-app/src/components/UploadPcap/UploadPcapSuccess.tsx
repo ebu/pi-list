@@ -2,7 +2,7 @@ import React from 'react';
 import { AnalysisIcon } from '../icons/index';
 import './styles.scss';
 
-function UploadPcapSucess({ onResetState }: { onResetState: () => void }) {
+function UploadPcapSuccess({ onResetState }: { onResetState: () => void }) {
     const onClick = (event: any) => {
         event.preventDefault();
         event.stopPropagation();
@@ -20,4 +20,4 @@ function UploadPcapSucess({ onResetState }: { onResetState: () => void }) {
     );
 }
 
-export default UploadPcapSucess;
+export default UploadPcapSuccess;
