@@ -5,7 +5,7 @@ import './styles.scss';
 
 const getToast = (typeMessage: string, message: ToastContent) => {
     switch (typeMessage) {
-        case 'sucess':
+        case 'success':
             toast.success(message, {
                 position: 'bottom-right',
                 autoClose: 5000,

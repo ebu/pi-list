@@ -95,12 +95,12 @@ const handlePcapsUpdate = (
             });
             setPcapsAnalysingAtom(current => {
                 return current.filter((pcap: any) => pcap.id !== data.data.id);
-            })
+            });
             break;
 
         case 'ZIP_FILE_COMPLETE':
             Notification({
-                typeMessage: 'sucess',
+                typeMessage: 'success',
                 message: (
                     <div>
                         <p>Zip Complete</p>

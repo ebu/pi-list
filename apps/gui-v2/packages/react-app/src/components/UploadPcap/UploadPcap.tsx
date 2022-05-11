@@ -2,7 +2,7 @@ import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import CircularProgressBar from '../CircularProgressBar/CircularProgressBar';
 import DragAndDropTileUpload from '../DragAndDropTile/DragAndDropTileUpload';
-import { DropHere, UploadPcapSucess, UploadPcapFailed } from '../index';
+import { DropHere, UploadPcapSuccess, UploadPcapFailed } from '../index';
 import './styles.scss';
 
 const states = {
@@ -58,7 +58,7 @@ function UploadPcap() {
         });
     };
 
-    const onDrop = React.useCallback((acceptedFiles:any) => {
+    const onDrop = React.useCallback((acceptedFiles: any) => {
         setFilename(acceptedFiles[0].path);
         onAcceptProgress(uploadProgress);
     }, []);
@@ -72,7 +72,7 @@ function UploadPcap() {
     const uploading = (
         <CircularProgressBar filename={filename} percentage={uploadPercentage} numberFiles={1} uploadedFiles={1} />
     );
-    const uploadCompleted = <UploadPcapSucess onResetState={resetState} />;
+    const uploadCompleted = <UploadPcapSuccess onResetState={resetState} />;
     const uploadFailed = <UploadPcapFailed onResetState={resetState} />;
 
     const getContents = React.useCallback(() => {

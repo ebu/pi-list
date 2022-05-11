@@ -2,7 +2,7 @@ import React from 'react';
 import { useDropzone } from 'react-dropzone';
 import {
     DropHere,
-    UploadPcapSucess,
+    UploadPcapSuccess,
     UploadPcapFailed,
     CircularProgressBar,
     DragAndDropTileUpload,
@@ -10,9 +10,7 @@ import {
 import UploadModal from './UploadModal';
 import './styles.scss';
 import list from '../../../utils/api';
-import { CustomScrollbar } from 'components'
-
-
+import { CustomScrollbar } from 'components';
 
 const states = {
     normal: 'normal',
@@ -75,13 +73,13 @@ function UploadPcap({ isButton }: { isButton: boolean }) {
         numberFiles: number,
         callback: (progressKind: string, percentage?: number) => void
     ) => {
-        const sucessfullUploadedFiles = filesUploaded.reduce((acc: number, curr: string) => {
+        const successfullUploadedFiles = filesUploaded.reduce((acc: number, curr: string) => {
             if (curr === 'completed') {
                 acc++;
             }
             return acc;
         }, 0);
-        sucessfullUploadedFiles === numberFiles
+        successfullUploadedFiles === numberFiles
             ? callback(uploadProgressKind.completed)
             : callback(uploadProgressKind.failed);
     };
@@ -110,7 +108,7 @@ function UploadPcap({ isButton }: { isButton: boolean }) {
                     filesUploaded.push('completed');
                     if (completedFiles === numberFiles) {
                         getUploadStatus(filesUploaded, numberFiles, callback);
-                        setModalOpen(true)
+                        setModalOpen(true);
                     }
 
                     setReceivedFiles(current => [...current, data]);
@@ -147,7 +145,7 @@ function UploadPcap({ isButton }: { isButton: boolean }) {
         />
     );
 
-    const uploadCompleted = <UploadPcapSucess onResetState={resetState} />;
+    const uploadCompleted = <UploadPcapSuccess onResetState={resetState} />;
     const uploadFailed = <UploadPcapFailed onResetState={resetState} />;
 
     const getContents = React.useCallback(() => {
@@ -179,20 +177,19 @@ function UploadPcap({ isButton }: { isButton: boolean }) {
                 .delete(fileToUpload.pcap_id)
                 .then(() => {
                     setModalOpen(false);
-
                 })
                 .catch((err: any) => {
                     console.log(err);
                 });
         });
-    }
+    };
 
     const onUploadDone = () => {
         setModalOpen(false);
         setUploadedFiles(0);
         setNumberFiles(0);
         setReceivedFiles([]);
-    }
+    };
 
     const showAsButton = isButton && state === states.normal;
 
@@ -206,7 +203,14 @@ function UploadPcap({ isButton }: { isButton: boolean }) {
                     <div className={`drag-and-drop-tile ${contents[1]}`}> {contents[0]}</div>
                 )}
             </div>
-            {isModalOpen && <UploadModal isOpen={isModalOpen} onUploadDone={onUploadDone} onModalClose={onModalClose} receivedFiles={receivedFiles} />}
+            {isModalOpen && (
+                <UploadModal
+                    isOpen={isModalOpen}
+                    onUploadDone={onUploadDone}
+                    onModalClose={onModalClose}
+                    receivedFiles={receivedFiles}
+                />
+            )}
         </div>
     );
 }
