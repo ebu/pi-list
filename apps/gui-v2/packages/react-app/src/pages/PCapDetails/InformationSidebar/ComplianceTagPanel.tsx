@@ -6,23 +6,21 @@ const ComplianceTagPanel = ({ stream }: { stream: types.IStreamInfo | any | unde
     const hasError: boolean = stream?.error_list.length === 0 ? false : true;
     if (!analyses) return null;
     const dataArray: any = [];
-    console.log(analyses)
+
     const badges = Object.keys(analyses)
         .sort()
         .map(analysis => {
             const compliance = analyses[analysis].result;
             const analysisNames: { [key: string]: string | undefined } = api.constants.analysisConstants.analysesNames;
-            console.log(analysisNames)
+
             const name = analysisNames[analysis];
             if (!name) return null;
-
-            console.log(name)
 
             if (compliance === api.constants.analysisConstants.outcome.disabled) {
                 const data = {
                     text: `[Disabled] ${name}`,
                     compliant: compliance,
-                }
+                };
                 dataArray.push(data);
             } else {
                 const data = {
@@ -30,7 +28,6 @@ const ComplianceTagPanel = ({ stream }: { stream: types.IStreamInfo | any | unde
                     compliant: compliance,
                 };
                 dataArray.push(data);
-
             }
         });
 

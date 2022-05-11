@@ -50,7 +50,7 @@ function Tsdf({ currentStream, pcapID }: { currentStream: SDK.types.IStreamInfo 
                 tsdfTolerance,
                 tsdfMax
             );
-            setTsdfData(all);
+            setTsdfData(all.data);
         };
         loadTsdfData();
     }, [currentStream?.id]);
@@ -79,7 +79,7 @@ function Tsdf({ currentStream, pcapID }: { currentStream: SDK.types.IStreamInfo 
 
     return (
         <>
-            <LineGraphic key={currentStream?.id} data={tsdfGraphData} />
+            <LineGraphic key={currentStream?.id} data={tsdfGraphData} getNewData={() => console.log()} />
         </>
     );
 }

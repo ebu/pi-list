@@ -15,6 +15,8 @@ function DashboardRtpInfo({ currentStream }: { currentStream: SDK.types.IStreamI
     const setInformationSidebarContent = useSetRecoilState(informationSidebarContentAtom);
     const complianceSummary = getComplianceSummary([deltaPktTsVsRtpTs, deltaRtpTsVsNTFrame, interFrameRtpDelta]);
 
+    console.log(currentStream);
+
     const summaryValues = [
         {
             labelTag: 'stream.compliance',

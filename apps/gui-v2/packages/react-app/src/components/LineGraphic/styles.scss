@@ -17,6 +17,21 @@
     pointer-events: none;
 }
 
+.zoom-out-graph-button {
+    cursor: pointer;
+    background: #0083ff;
+    border: 1px solid #0083ff;
+    box-sizing: border-box;
+    border-radius: 4px;
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: #ffffff;
+    margin: 1em;
+}
+
 .line-graphic {
     flex: 1;
     width: 100%;

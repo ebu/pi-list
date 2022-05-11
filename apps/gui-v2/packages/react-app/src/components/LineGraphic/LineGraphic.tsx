@@ -26,7 +26,13 @@ interface IComponentProps {
     leftMargin: number;
 }
 
-function LineGraphic({ data }: { data: IComponentProps | undefined }) {
+function LineGraphic({
+    data,
+    getNewData,
+}: {
+    data: IComponentProps | undefined;
+    getNewData?: (first_packet_ts: string, last_packet_ts: string, numberOfPoints: number, isZoomOut: boolean) => void;
+}) {
     if (data === undefined) {
         return null;
     }
@@ -89,9 +95,17 @@ function LineGraphic({ data }: { data: IComponentProps | undefined }) {
         );
     };
 
-    const handleZoom = () => {
+    const handleZoom = async () => {
         let { refAreaLeft, refAreaRight } = zoomState;
         const { dataZoom } = zoomState;
+
+        const numberOfPoints = parseInt(zoomState.refAreaRight) - parseInt(zoomState.refAreaLeft);
+
+        if (zoomState.activeLabelLeft === '') {
+            await getNewData!(zoomState.activeLabelLeft, zoomState.activeLabelRight, numberOfPoints, true);
+        } else {
+            await getNewData!(zoomState.activeLabelLeft, zoomState.activeLabelRight, numberOfPoints, false);
+        }
 
         if (refAreaLeft === refAreaRight || refAreaRight === '') {
             setZoomState({
@@ -116,7 +130,11 @@ function LineGraphic({ data }: { data: IComponentProps | undefined }) {
         });
     };
 
-    const handleZoomOut = () => {
+    const handleZoomOut = async () => {
+        const numberOfPoints = parseInt(zoomState.refAreaRight) - parseInt(zoomState.refAreaLeft);
+
+        await getNewData!(zoomState.activeLabelLeft, zoomState.activeLabelRight, numberOfPoints, true);
+
         setZoomState({
             ...zoomState,
             dataZoom: data.graphicData,
@@ -255,15 +273,30 @@ function LineGraphic({ data }: { data: IComponentProps | undefined }) {
                     </LineChart>
                 </ResponsiveContainer>
             </div>
+            <button className="zoom-out-graph-button" onClick={handleZoomOut}>
+                Zoom Out
+            </button>
         </div>
     );
 }
+
 export type IGraphicTimeValueData = {
     value: number;
     time: string;
 };
+
 export type IGraphicTimeMaxData = {
     max: number;
     time: string;
 };
+
+export type IGraphicTimeValueObject = {
+    data: Array<IGraphicTimeValueData>;
+    isGrouped: string;
+};
+export type IGraphicTimeMaxObject = {
+    data: Array<IGraphicTimeMaxData>;
+    isGrouped: string;
+};
+
 export default LineGraphic;

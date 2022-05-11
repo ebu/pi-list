@@ -1,46 +1,50 @@
 import React from 'react';
-import { MinMaxAvgLineGraphic, IGraphicMinMaxAvgData } from 'components/index';
-import SDK from '@bisect/ebu-list-sdk';
+import { MinMaxAvgLineGraphic, IGraphicMinMaxAvgData, LineGraphic } from 'components/index';
+import SDK, { api } from '@bisect/ebu-list-sdk';
 import list from 'utils/api';
-import { getLeftMargin } from 'utils/graphs/dataTransformationLineGraphs';
+import { getLeftMargin, getFinalData } from 'utils/graphs/dataTransformationLineGraphs';
 import { translate } from 'utils/translation';
+import { useGraphData } from 'utils/graphs/getGraphData';
 
 function Rtp({ currentStream, pcapID }: { currentStream: SDK.types.IStreamInfo | undefined; pcapID: string }) {
     const streamID = currentStream?.id;
     const first_packet_ts = currentStream?.statistics.first_packet_ts;
     const last_packet_ts = currentStream?.statistics.last_packet_ts;
-    const grouped_ts = Math.round(
-        (parseInt(last_packet_ts || '0') - parseInt(first_packet_ts || '0')) / 1000
-    ).toString();
 
-    const [rtpData, setRtpData] = React.useState<IGraphicMinMaxAvgData[]>([]);
-
-    React.useEffect(() => {
-        setRtpData([]);
-        const loadRtpData = async (): Promise<void> => {
-            const all = await list.stream.getAudioPktTsVsRtpTsGrouped(
-                pcapID,
-                streamID,
-                first_packet_ts,
-                last_packet_ts,
-                grouped_ts
-            );
-            setRtpData(all);
-        };
-        loadRtpData();
-    }, [currentStream?.id]);
+    const [rtpData, setRtpData] = useGraphData({
+        pcapID,
+        streamID,
+        measurementType: api.constants.measurements.AUDIO_PKT_TS_VS_RTP_TS,
+        first_packet_ts,
+        last_packet_ts,
+    });
 
     const mediaInfoRtpDeltaPacketTimeRtpTime = translate('media_information.rtp.delta_packet_time_vs_rtp_time');
     const mediaInfoTimelime = translate('media_information.timeline');
     const MediaInfoDelay = translate('media_information.delay');
 
+    if (!rtpData) return null;
+
     if (rtpData.length === 0) {
         return null;
     }
-    const leftMargin = getLeftMargin(rtpData);
 
-    const rtpGraphData = {
-        graphicData: rtpData,
+    const rtpFinalData = rtpData.isGrouped ? null : getFinalData(rtpData.data);
+
+    const leftMargin = rtpData.isGrouped ? getLeftMargin(rtpData.data) : getLeftMargin(rtpFinalData!);
+
+    const rtpLineGraphData = {
+        graphicData: rtpFinalData!,
+        title: mediaInfoRtpDeltaPacketTimeRtpTime,
+        xAxisTitle: mediaInfoTimelime,
+        yAxisTitle: MediaInfoDelay,
+        datakeyY: 'value',
+        datakeyX: 'time',
+        leftMargin: leftMargin,
+    };
+
+    const rtpMinMaxAvgGraphData = {
+        graphicData: rtpData.data!,
         title: mediaInfoRtpDeltaPacketTimeRtpTime,
         xAxisTitle: mediaInfoTimelime,
         yAxisTitle: MediaInfoDelay,
@@ -49,7 +53,23 @@ function Rtp({ currentStream, pcapID }: { currentStream: SDK.types.IStreamInfo |
         leftMargin: leftMargin,
     };
 
-    return <MinMaxAvgLineGraphic key={currentStream?.id} data={rtpGraphData} />;
+    return (
+        <>
+            {!rtpData.isGrouped ? (
+                <div className="pcap-details-page-line-graphic-container ">
+                    <LineGraphic key={currentStream?.id} data={rtpLineGraphData} getNewData={setRtpData} />
+                </div>
+            ) : (
+                <div className="pcap-details-page-line-graphic-container ">
+                    <MinMaxAvgLineGraphic
+                        key={currentStream?.id}
+                        data={rtpMinMaxAvgGraphData}
+                        getNewData={setRtpData}
+                    />
+                </div>
+            )}
+        </>
+    );
 }
 
 export default Rtp;

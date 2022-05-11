@@ -14,7 +14,13 @@ interface IComponentProps {
     leftMargin: number;
 }
 
-function MinMaxAvgLineGraphic({ data }: { data: IComponentProps | undefined }) {
+function MinMaxAvgLineGraphic({
+    data,
+    getNewData,
+}: {
+    data: IComponentProps | undefined;
+    getNewData?: (first_packet_ts: string, last_packet_ts: string, numberOfPoints: number, isZoomOut: boolean) => void;
+}) {
     if (data === undefined) {
         return null;
     }
@@ -48,9 +54,16 @@ function MinMaxAvgLineGraphic({ data }: { data: IComponentProps | undefined }) {
         return null;
     };
 
-    const handleZoom = () => {
+    const handleZoom = async () => {
         let { refAreaLeft, refAreaRight } = zoomState;
         const { dataZoom } = zoomState;
+        const numberOfPoints = parseInt(zoomState.refAreaRight) - parseInt(zoomState.refAreaLeft);
+
+        if (zoomState.activeLabelLeft === '') {
+            await getNewData!(zoomState.activeLabelLeft, zoomState.activeLabelRight, numberOfPoints, true);
+        } else {
+            await getNewData!(zoomState.activeLabelLeft, zoomState.activeLabelRight, numberOfPoints, false);
+        }
 
         if (refAreaLeft === refAreaRight || refAreaRight === '') {
             setZoomState({
@@ -75,7 +88,11 @@ function MinMaxAvgLineGraphic({ data }: { data: IComponentProps | undefined }) {
         });
     };
 
-    const handleZoomOut = () => {
+    const handleZoomOut = async () => {
+        const numberOfPoints = parseInt(zoomState.refAreaRight) - parseInt(zoomState.refAreaLeft);
+
+        await getNewData!(zoomState.activeLabelLeft, zoomState.activeLabelRight, numberOfPoints, true);
+
         setZoomState({
             ...zoomState,
             dataZoom: data.graphicData,
@@ -221,6 +238,9 @@ function MinMaxAvgLineGraphic({ data }: { data: IComponentProps | undefined }) {
                     </LineChart>
                 </ResponsiveContainer>
             </div>
+            <button className="zoom-out-graph-button" onClick={handleZoomOut}>
+                Zoom Out
+            </button>
         </div>
     );
 }

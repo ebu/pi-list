@@ -3,7 +3,7 @@ import { IGraphicTimeMaxData, IGraphicTimeValueData } from 'components/index';
 const isIGraphicTimeMaxData = (
     data: IGraphicTimeMaxData[] | IGraphicTimeValueData[]
 ): data is IGraphicTimeMaxData[] => {
-    return (data as IGraphicTimeMaxData[])[0].max !== undefined;
+    return (data as IGraphicTimeMaxData[])[0].max !== (undefined || null);
 };
 
 export const getFinalData = (data: IGraphicTimeMaxData[] | IGraphicTimeValueData[]) => {
@@ -56,7 +56,7 @@ export const getLeftMargin = (data: IGraphicTimeMaxData[] | IGraphicTimeValueDat
         });
     } else {
         data.forEach(item => {
-            const textWidth = measureText(item.value.toString());
+            const textWidth = measureText(item?.value?.toString());
             if (textWidth > leftMargin) {
                 leftMargin = textWidth;
             }

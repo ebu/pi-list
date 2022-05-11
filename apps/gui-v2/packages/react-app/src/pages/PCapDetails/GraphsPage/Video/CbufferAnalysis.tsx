@@ -1,16 +1,17 @@
 import React from 'react';
-import { LineGraphic, IGraphicTimeMaxData, BarGraphic } from 'components/index';
-import SDK from '@bisect/ebu-list-sdk';
-import list from '../../../../utils/api';
-import { getFinalData, getLeftMargin } from '../../../../utils/graphs/dataTransformationLineGraphs';
+import { LineGraphic, IGraphicTimeMaxData, BarGraphic, MinMaxAvgLineGraphic } from 'components/index';
+import SDK, { api } from '@bisect/ebu-list-sdk';
+import list from 'utils/api';
+import { getFinalData, getLeftMargin } from 'utils/graphs/dataTransformationLineGraphs';
 import {
     IHistogram,
     getFinalHistData,
     getLeftMarginBarGraphic,
     getPercHistData,
     getCompliance,
-} from '../../../../utils/graphs/dataTransformationBarGraphs';
-import { translate } from '../../../../utils/translation';
+} from 'utils/graphs/dataTransformationBarGraphs';
+import { useGraphData } from 'utils/graphs/getGraphData';
+import { translate } from 'utils/translation';
 
 function CbufferAnalysis({
     currentStream,
@@ -23,17 +24,13 @@ function CbufferAnalysis({
     const first_packet_ts = currentStream?.statistics.first_packet_ts;
     const last_packet_ts = currentStream?.statistics.last_packet_ts;
 
-    const [cinstData, setCinstData] = React.useState<IGraphicTimeMaxData[]>([]);
-
-    React.useEffect(() => {
-        setCinstData([]);
-        const loadCinstData = async (): Promise<void> => {
-            const all = await list.stream.getCInstForStream(pcapID, streamID, first_packet_ts, last_packet_ts);
-            const cinstFinalData = getFinalData(all);
-            setCinstData(cinstFinalData as IGraphicTimeMaxData[]);
-        };
-        loadCinstData();
-    }, [currentStream?.id]);
+    const [cinstData, setCinstData] = useGraphData({
+        pcapID,
+        streamID,
+        measurementType: api.constants.measurements.C_INST,
+        first_packet_ts,
+        last_packet_ts,
+    });
 
     const initialHist: IHistogram = { histogram: [] };
     const [cHistData, setcHistData] = React.useState(initialHist);
@@ -50,6 +47,10 @@ function CbufferAnalysis({
     const mediaInfoRtpPacketCount = translate('media_information.rtp.packet_count');
     const generalBufferLevel = translate('general.buffer_level');
 
+    if (!cinstData) return null;
+
+    const cinstFinalData = cinstData.isGrouped ? null : getFinalData(cinstData.data);
+
     if (cinstData.length === 0) {
         return null;
     }
@@ -57,13 +58,24 @@ function CbufferAnalysis({
         return null;
     }
 
-    const leftMarginCinst = getLeftMargin(cinstData);
-    const cinstGraphData = {
-        graphicData: cinstData,
+    const leftMarginCinst = cinstData.isGrouped ? getLeftMargin(cinstData.data) : getLeftMargin(cinstFinalData!);
+
+    const cinstLineGraphData = {
+        graphicData: cinstFinalData!,
         title: 'Cinst',
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: mediaInfoRtpPacketCount,
         datakeyY: 'max',
+        datakeyX: 'time',
+        leftMargin: leftMarginCinst,
+    };
+
+    const cinstMinMaxAvgGraphData = {
+        graphicData: cinstData.data!,
+        title: 'Cinst',
+        xAxisTitle: 'Time (TAI)',
+        yAxisTitle: mediaInfoRtpPacketCount,
+        datakeyY: ['min', 'avg', 'max'],
         datakeyX: 'time',
         leftMargin: leftMarginCinst,
     };
@@ -85,9 +97,19 @@ function CbufferAnalysis({
 
     return (
         <>
-            <div className="pcap-details-page-line-graphic-container ">
-                <LineGraphic key={currentStream?.id} data={cinstGraphData} />
-            </div>
+            {!cinstData.isGrouped ? (
+                <div className="pcap-details-page-line-graphic-container ">
+                    <LineGraphic key={currentStream?.id} data={cinstLineGraphData} getNewData={setCinstData} />
+                </div>
+            ) : (
+                <div className="pcap-details-page-line-graphic-container ">
+                    <MinMaxAvgLineGraphic
+                        key={currentStream?.id}
+                        data={cinstMinMaxAvgGraphData}
+                        getNewData={setCinstData}
+                    />
+                </div>
+            )}
             <div className="pcap-details-page-bar-graphic-container ">
                 <BarGraphic key={currentStream?.id} barGraphicData={cHistGraphData} />
             </div>

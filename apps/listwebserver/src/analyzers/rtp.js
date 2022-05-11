@@ -96,7 +96,7 @@ function validateInterFrameRtpTsDelta(stream) {
 const doInterFrameRtpTsDeltaAnalysis = async (pcapId, stream) => {
     const value = await influxDbManager.getDeltaToPreviousRtpTsMinMax(pcapId, stream.id);
 
-    if (_.isNil(value) || value.length < 1 || _.isNil(value[0])) {
+    if (_.isNil(value.data) || value.data.length < 1 || _.isNil(value.data[0])) {
         stream = appendError(stream, {
             id: constants.errors.missing_information,
             value: 'no DeltaToPreviousRtpTsMinMax for stream `stream.id` in `pcapId`',
@@ -104,7 +104,7 @@ const doInterFrameRtpTsDeltaAnalysis = async (pcapId, stream) => {
         return stream;
     }
 
-    const { min, max, avg } = value[0];
+    const { min, max, avg } = value.data[0];
     _.set(stream, 'analyses.inter_frame_rtp_ts_delta.details.range', {
         min,
         max,
@@ -118,7 +118,7 @@ const doRtpTsAnalysis = async (pcapId, stream) => {
     //const value = await influxDbManager.getAncillaryPktTsVsRtpTsMinMax(pcapId, stream.id);
     const value = await influxDbManager.getDeltaPacketTimeVsRtpTimeMinMax(pcapId, stream.id);
 
-    if (_.isNil(value) || value.length < 1 || _.isNil(value[0])) {
+    if (_.isNil(value.data) || value.data.length < 1 || _.isNil(value.data[0])) {
         stream = appendError(stream, {
             id: constants.errors.missing_information,
             value: 'no DeltaPacketTimeVsRtpTimeMinMax for stream `stream.id` in `pcapId`',
@@ -126,7 +126,7 @@ const doRtpTsAnalysis = async (pcapId, stream) => {
         return stream;
     }
 
-    const { min, max, avg } = value[0];
+    const { min, max, avg } = value.data[0];
     _.set(stream, 'analyses.packet_ts_vs_rtp_ts.details.range', {
         min,
         max,
@@ -169,7 +169,7 @@ function validateRtpTs(stream, validation) {
 const doRtpTicksAnalysis = async (pcapId, stream) => {
     const value = await influxDbManager.getDeltaRtpVsNtTicksMinMax(pcapId, stream.id);
 
-    if (_.isNil(value) || value.length < 1 || _.isNil(value[0])) {
+    if (_.isNil(value.data) || value.data.length < 1 || _.isNil(value.data[0])) {
         stream = appendError(stream, {
             id: constants.errors.missing_information,
             value: 'no DeltaRtpVsNtTicksMinMax for stream `stream.id` in `pcapId`',
@@ -177,7 +177,7 @@ const doRtpTicksAnalysis = async (pcapId, stream) => {
         return stream;
     }
 
-    const { min, max, avg } = value[0];
+    const { min, max, avg } = value.data[0];
     _.set(stream, 'analyses.rtp_ts_vs_nt.details.range', {
         min,
         max,

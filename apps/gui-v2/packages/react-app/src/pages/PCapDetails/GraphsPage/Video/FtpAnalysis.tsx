@@ -1,33 +1,35 @@
 import React from 'react';
-import { LineGraphic, IGraphicTimeValueData } from 'components/index';
-import SDK from '@bisect/ebu-list-sdk';
+import { LineGraphic, IGraphicTimeValueData, MinMaxAvgLineGraphic } from 'components/index';
+import SDK, { api } from '@bisect/ebu-list-sdk';
 import list from '../../../../utils/api';
 import { getLeftMargin, dataAsMicroseconds, getFinalData } from '../../../../utils/graphs/dataTransformationLineGraphs';
+import { useGraphData } from 'utils/graphs/getGraphData';
 
 function FtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStreamInfo | undefined; pcapID: string }) {
     const streamID = currentStream?.id;
     const first_packet_ts = currentStream?.statistics.first_packet_ts;
     const last_packet_ts = currentStream?.statistics.last_packet_ts;
 
-    const [ftpData, setFtpData] = React.useState<IGraphicTimeValueData[]>([]);
-    React.useEffect(() => {
-        setFtpData([]);
-        const loadFtpData = async (): Promise<void> => {
-            const all = await list.stream.getDeltaToIdealTpr0Raw(pcapID, streamID, first_packet_ts, last_packet_ts);
-            const ftpFinalData = getFinalData(dataAsMicroseconds(all));
-            setFtpData(ftpFinalData as IGraphicTimeValueData[]);
-        };
-        loadFtpData();
-    }, [currentStream?.id]);
+    const [ftpData, setFtpData] = useGraphData({
+        pcapID,
+        streamID,
+        measurementType: api.constants.measurements.DELTA_TO_IDEAL_TPR0,
+        first_packet_ts,
+        last_packet_ts,
+    });
+
+    if (!ftpData) return null;
 
     if (ftpData.length === 0) {
         return null;
     }
 
-    const leftMargin = getLeftMargin(ftpData);
+    const ftpFinalData = ftpData.isGrouped ? null : getFinalData(dataAsMicroseconds(ftpData.data));
 
-    const ftpGraphData = {
-        graphicData: ftpData,
+    const leftMargin = ftpData.isGrouped ? getLeftMargin(ftpData.data) : getLeftMargin(ftpFinalData!);
+
+    const ftpLineGraphData = {
+        graphicData: ftpFinalData!,
         title: 'First Packet Time',
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'FPT (μs)',
@@ -36,9 +38,23 @@ function FtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
         leftMargin: leftMargin,
     };
 
+    const ftpMinMaxAvgGraphData = {
+        graphicData: ftpData.data!,
+        title: 'First Packet Time',
+        xAxisTitle: 'Time (TAI)',
+        yAxisTitle: 'FPT (μs)',
+        datakeyY: ['min', 'avg', 'max'],
+        datakeyX: 'time',
+        leftMargin: leftMargin,
+    };
+
     return (
         <>
-            <LineGraphic key={currentStream?.id} data={ftpGraphData} />
+            {!ftpData.isGrouped ? (
+                <LineGraphic key={currentStream?.id} data={ftpLineGraphData} getNewData={setFtpData} />
+            ) : (
+                <MinMaxAvgLineGraphic key={currentStream?.id} data={ftpMinMaxAvgGraphData} getNewData={setFtpData} />
+            )}
         </>
     );
 }

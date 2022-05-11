@@ -14,9 +14,7 @@ function AudioGraphsDisplay({
 }) {
     return (
         <>
-            <div className="pcap-details-page-line-graphic-container ">
-                <Rtp currentStream={currentStream} pcapID={pcapID} />
-            </div>
+            <Rtp currentStream={currentStream} pcapID={pcapID} />
             <div className="pcap-details-page-line-graphic-container ">
                 <Tsdf currentStream={currentStream} pcapID={pcapID} />
             </div>

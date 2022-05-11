@@ -1,9 +1,10 @@
 import React from 'react';
-import { LineGraphic, IGraphicTimeValueData } from 'components/index';
-import SDK from '@bisect/ebu-list-sdk';
-import list from '../../../../utils/api';
-import { getFinalData, getDeltaFPTvsRTP, getLeftMargin } from '../../../../utils/graphs/dataTransformationLineGraphs';
-import { translate } from '../../../../utils/translation';
+import { LineGraphic, IGraphicTimeValueData, MinMaxAvgLineGraphic } from 'components/index';
+import SDK, { api } from '@bisect/ebu-list-sdk';
+import list from 'utils/api';
+import { getFinalData, getDeltaFPTvsRTP, getLeftMargin } from 'utils/graphs/dataTransformationLineGraphs';
+import { translate } from 'utils/translation';
+import { useGraphData } from 'utils/graphs/getGraphData';
 import '../../styles.scss';
 
 function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStreamInfo | undefined; pcapID: string }) {
@@ -11,44 +12,40 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     const first_packet_ts = currentStream?.statistics.first_packet_ts;
     const last_packet_ts = currentStream?.statistics.last_packet_ts;
 
-    const [latencyData, setlatencyData] = React.useState<IGraphicTimeValueData[]>([]);
-    const [rtpOffsetData, setRtpOffsetData] = React.useState<IGraphicTimeValueData[]>([]);
-    const [rtpTimeStepData, setRtpTimeStepData] = React.useState<IGraphicTimeValueData[]>([]);
-    React.useEffect(() => {
-        setlatencyData([]);
-        const loadLatencyData = async (): Promise<void> => {
-            const all = await list.stream.getDeltaPacketTimeVsRtpTimeRaw(
-                pcapID,
-                streamID,
-                first_packet_ts,
-                last_packet_ts
-            );
-            const latencyFinalData = getFinalData(getDeltaFPTvsRTP(all));
-            setlatencyData(latencyFinalData as IGraphicTimeValueData[]);
-        };
-        loadLatencyData();
-    }, [currentStream?.id]);
+    const [latencyData, setlatencyData] = useGraphData({
+        pcapID,
+        streamID,
+        measurementType: api.constants.measurements.DELTA_PACKET_TIME_VS_RTP_TIME,
+        first_packet_ts,
+        last_packet_ts,
+    });
 
-    React.useEffect(() => {
-        setRtpOffsetData([]);
-        const loadRtpOffsetData = async (): Promise<void> => {
-            const all = await list.stream.getDeltaRtpVsNtRaw(pcapID, streamID, first_packet_ts, last_packet_ts);
-            setRtpOffsetData(getFinalData(all) as IGraphicTimeValueData[]);
-        };
-        loadRtpOffsetData();
-    }, [currentStream?.id]);
+    const [rtpTimeStepData, setRtpTimeStepData] = useGraphData({
+        pcapID,
+        streamID,
+        measurementType: api.constants.measurements.DELTA_TO_PREVIOUS_RTP_TS,
+        first_packet_ts,
+        last_packet_ts,
+    });
 
-    React.useEffect(() => {
-        setRtpTimeStepData([]);
-        const loadRtpTimeStepData = async (): Promise<void> => {
-            const all = await list.stream.getDeltaToPreviousRtpTsRaw(pcapID, streamID, first_packet_ts, last_packet_ts);
-            setRtpTimeStepData(getFinalData(all) as IGraphicTimeValueData[]);
-        };
-        loadRtpTimeStepData();
-    }, [currentStream?.id]);
+    const [rtpOffsetData, setRtpOffsetData] = useGraphData({
+        pcapID,
+        streamID,
+        measurementType: api.constants.measurements.DELTA_RTP_VS_NT,
+        first_packet_ts,
+        last_packet_ts,
+    });
 
     const mediaInfoRtpDelta = translate('media_information.rtp.delta_rtp_ts_vs_nt');
     const mediaInfoRtpTsStep = translate('media_information.rtp.rtp_ts_step');
+
+    if (!rtpTimeStepData) return null;
+    if (!latencyData) return null;
+    if (!rtpOffsetData) return null;
+
+    const rtpTimeStepFinalData = rtpTimeStepData.isGrouped ? null : getFinalData(rtpTimeStepData.data);
+    const latencyFinalData = latencyData.isGrouped ? null : getFinalData(latencyData.data);
+    const rtpOffsetFinalData = rtpOffsetData.isGrouped ? null : getFinalData(rtpOffsetData.data);
 
     if (latencyData.length === 0) {
         return null;
@@ -60,12 +57,18 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
         return null;
     }
 
-    const leftMarginLatency = getLeftMargin(latencyData);
-    const leftMarginRtpOffset = getLeftMargin(rtpOffsetData);
-    const leftMarginRtpTimeStep = getLeftMargin(rtpTimeStepData);
+    const leftMarginLatency = latencyData.isGrouped
+        ? getLeftMargin(latencyData.data)
+        : getLeftMargin(latencyFinalData!);
+    const leftMarginRtpOffset = rtpOffsetData.isGrouped
+        ? getLeftMargin(rtpOffsetData.data)
+        : getLeftMargin(rtpOffsetFinalData!);
+    const leftMarginRtpTimeStep = rtpTimeStepData.isGrouped
+        ? getLeftMargin(rtpTimeStepData.data)
+        : getLeftMargin(rtpTimeStepFinalData!);
 
-    const latencyGraphData = {
-        graphicData: latencyData,
+    const latencyGraphLineGraphData = {
+        graphicData: latencyFinalData!,
         title: 'Latency',
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'Latency (μs)',
@@ -74,8 +77,18 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
         leftMargin: leftMarginLatency,
     };
 
-    const rtpOffsetGraphData = {
-        graphicData: rtpOffsetData,
+    const latencyGraphMinMaxAvgGraphData = {
+        graphicData: latencyData.data!,
+        title: 'Latency',
+        xAxisTitle: 'Time (TAI)',
+        yAxisTitle: 'Latency (μs)',
+        datakeyY: ['min', 'avg', 'max'],
+        datakeyX: 'time',
+        leftMargin: leftMarginLatency,
+    };
+
+    const rtpOffsetLineGraphData = {
+        graphicData: rtpOffsetFinalData!,
         title: mediaInfoRtpDelta,
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'RTP offset (ticks)',
@@ -83,8 +96,19 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
         datakeyX: 'time',
         leftMargin: leftMarginRtpOffset,
     };
-    const rtpTimeStepGraphData = {
-        graphicData: rtpTimeStepData,
+
+    const rtpOffsetMinMaxAvgGraphData = {
+        graphicData: rtpOffsetData.data,
+        title: mediaInfoRtpDelta,
+        xAxisTitle: 'Time (TAI)',
+        yAxisTitle: 'RTP offset (ticks)',
+        datakeyY: ['min', 'avg', 'max'],
+        datakeyX: 'time',
+        leftMargin: leftMarginRtpOffset,
+    };
+
+    const rtpTimeStepLineGraphData = {
+        graphicData: rtpTimeStepFinalData!,
         title: mediaInfoRtpTsStep,
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'RTP Time Step (ticks)',
@@ -93,17 +117,61 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
         leftMargin: leftMarginRtpTimeStep,
     };
 
+    const rtpTimeStepMinMaxAvgGraphData = {
+        graphicData: rtpTimeStepData.data,
+        title: mediaInfoRtpTsStep,
+        xAxisTitle: 'Time (TAI)',
+        yAxisTitle: 'RTP Time Step (ticks)',
+        datakeyY: ['min', 'avg', 'max'],
+        datakeyX: 'time',
+        leftMargin: leftMarginRtpTimeStep,
+    };
+
     return (
         <>
-            <div className="pcap-details-page-line-graphic-container ">
-                <LineGraphic key={currentStream?.id} data={latencyGraphData} />
-            </div>
-            <div className="pcap-details-page-line-graphic-container ">
-                <LineGraphic key={currentStream?.id} data={rtpOffsetGraphData} />
-            </div>
-            <div className="pcap-details-page-line-graphic-container ">
-                <LineGraphic key={currentStream?.id} data={rtpTimeStepGraphData} />
-            </div>
+            {!latencyData.isGrouped ? (
+                <div className="pcap-details-page-line-graphic-container ">
+                    <LineGraphic key={currentStream?.id} data={latencyGraphLineGraphData} getNewData={setlatencyData} />
+                </div>
+            ) : (
+                <div className="pcap-details-page-line-graphic-container ">
+                    <MinMaxAvgLineGraphic
+                        key={currentStream?.id}
+                        data={latencyGraphMinMaxAvgGraphData}
+                        getNewData={setlatencyData}
+                    />
+                </div>
+            )}
+            {!rtpOffsetData.isGrouped ? (
+                <div className="pcap-details-page-line-graphic-container ">
+                    <LineGraphic key={currentStream?.id} data={rtpOffsetLineGraphData} getNewData={setRtpOffsetData} />
+                </div>
+            ) : (
+                <div className="pcap-details-page-line-graphic-container ">
+                    <MinMaxAvgLineGraphic
+                        key={currentStream?.id}
+                        data={rtpOffsetMinMaxAvgGraphData}
+                        getNewData={setRtpOffsetData}
+                    />
+                </div>
+            )}
+            {!rtpTimeStepData.isGrouped ? (
+                <div className="pcap-details-page-line-graphic-container ">
+                    <LineGraphic
+                        key={currentStream?.id}
+                        data={rtpTimeStepLineGraphData}
+                        getNewData={setRtpTimeStepData}
+                    />
+                </div>
+            ) : (
+                <div className="pcap-details-page-line-graphic-container ">
+                    <MinMaxAvgLineGraphic
+                        key={currentStream?.id}
+                        data={rtpTimeStepMinMaxAvgGraphData}
+                        getNewData={setRtpTimeStepData}
+                    />
+                </div>
+            )}
         </>
     );
 }

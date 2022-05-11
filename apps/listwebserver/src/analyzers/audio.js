@@ -149,15 +149,15 @@ function calculateTsdfFromRange(stream, range, tsdfProfile) {
 // Returns one promise, which resolves to the stream.
 function doCalculateTsdf(pcapId, stream, tsdfProfile) {
     return influxDbManager.getAudioTimeStampedDelayFactorRange(pcapId, stream.id).then((range) => {
-        delete range.time;
-        calculateTsdfFromRange(stream, range, tsdfProfile);
+        delete range.data.time;
+        calculateTsdfFromRange(stream, range.data, tsdfProfile);
     });
 }
 
 function doCalculatePktTsVsRtpTsRange(pcapId, stream, rtpProfile) {
     return influxDbManager
         .getAudioPktTsVsRtpTsRange(pcapId, stream.id)
-        .then((range) => updateStreamWithPktTsVsRtpTs(stream, range[0], rtpProfile));
+        .then((range) => updateStreamWithPktTsVsRtpTs(stream, range.data[0], rtpProfile));
 }
 
 // Returns one promise, which result is undefined.

@@ -15,6 +15,7 @@ const Stream = require('../models/stream');
 const StreamCompare = require('../models/streamCompare');
 const streamsController = require('../controllers/streams');
 const { pcapSingleStreamIngest, pcapIngest, pcapReanalyze, pcapFromLocalFile, pcapOnlyUpload } = require('../util/analysis');
+const { api } = require("@bisect/ebu-list-sdk");
 const websocketManager = require('../managers/websocket');
 const { getUserId, checkIsReadOnly } = require('../auth/middleware');
 import { verifyIfFramesAreExtractedOrExtract } from '../controllers/streams2';
@@ -138,7 +139,6 @@ router.put(
     checkIsReadOnly,
     (req, res, next) => {
         const { pcapId } = req.params;
-        console.log(req.params);
 
         Stream.deleteMany({
             pcap: pcapId,
@@ -508,6 +508,30 @@ router.get('/:pcapID/stream/:streamID/analytics/AudioPktTsVsRtpTsGrouped', (req,
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
+router.get('/:pcapID/stream/:streamID/analytics/DeltaPacketTimeVsRtpTimeRaw', (req, res) => {
+    const { pcapID, streamID } = req.params;
+    const { from, to } = req.query;
+
+    let chartData = influxDbManager.getDeltaPacketTimeVsRtpTimeRaw(pcapID, streamID, from, to);
+    chartData
+        .then((data) => {
+            res.json(data);
+        })
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+});
+
+router.get('/:pcapID/stream/:streamID/analytics/DeltaPacketTimeVsRtpTimeGrouped', (req, res) => {
+    const { pcapID, streamID } = req.params;
+    const { from, to, group } = req.query;
+
+    let chartData = influxDbManager.getDeltaPacketTimeVsRtpTimeGrouped(pcapID, streamID, from, to, group);
+    chartData
+        .then((data) => {
+            res.json(data);
+        })
+        .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
+});
+
 router.get('/:pcapID/stream/:streamID/analytics/AudioTimeStampedDelayFactor', (req, res) => {
     const { pcapID, streamID } = req.params;
     const { from, to, tolerance, tsdfmax } = req.query;
@@ -516,7 +540,7 @@ router.get('/:pcapID/stream/:streamID/analytics/AudioTimeStampedDelayFactor', (r
     let chartData = influxDbManager.getAudioTimeStampedDelayFactor(pcapID, streamID, from, to);
     chartData
         .then((data) => {
-            data.forEach((e) => {
+            data.data.forEach((e) => {
                 e['high-tolerance'] = tolerance;
                 // display the red limit only when relevant
                 if (tsdfmax > 0.3 * limit) e['high-limit'] = limit;
@@ -550,32 +574,74 @@ router.get('/:pcapID/stream/:streamID/analytics/AncillaryPktHistogram', (req, re
 /* */
 router.get('/:pcapID/stream/:streamID/analytics/:measurement', (req, res) => {
     const { pcapID, streamID, measurement } = req.params;
-    const { from, to, groupByNanoseconds } = req.query;
+    const { from, to, groupByNanoseconds, group } = req.query;
 
     let chartData = null;
 
-    if (measurement === 'CInst') {
+    if (measurement === api.constants.measurements.C_INST) {
         chartData = influxDbManager.getCInstByStream(pcapID, streamID, from, to);
-    } else if (measurement === 'CInstRaw') {
+    } else if (measurement === api.constants.measurements.C_INST_RAW) {
         chartData = influxDbManager.getCInstRaw(pcapID, streamID, from, to);
-    } else if (measurement === 'VrxIdeal') {
+    } else if (measurement === api.constants.measurements.C_INST_GROUPED) {
+        chartData = influxDbManager.getCInstGrouped(pcapID, streamID, from, to, group);
+    } else if (measurement === api.constants.measurements.VRX_IDEAL) {
         chartData = influxDbManager.getVrxIdeal(pcapID, streamID, from, to, groupByNanoseconds);
-    } else if (measurement === 'VrxIdealRaw') {
+    } else if (measurement === api.constants.measurements.VRX_IDEAL_RAW) {
         chartData = influxDbManager.getVrxIdealRaw(pcapID, streamID, from, to);
-    } else if (measurement === 'DeltaToIdealTpr0Raw') {
+    } else if (measurement === api.constants.measurements.VRX_IDEAL_GROUPED) {
+        chartData = influxDbManager.getVrxIdealGrouped(pcapID, streamID, from, to, group);
+    } else if (measurement === api.constants.measurements.DELTA_TO_IDEAL_TPR0_RAW) {
         chartData = influxDbManager.getDeltaToIdealTpr0Raw(pcapID, streamID, from, to);
-    } else if (measurement === 'DeltaRtpTsVsPacketTsRaw') {
+    } else if (measurement === api.constants.measurements.DELTA_TO_IDEAL_TPR0_GROUPED) {
+        chartData = influxDbManager.getDeltaToIdealTpr0Grouped(pcapID, streamID, from, to, group);
+    } else if (measurement === api.constants.measurements.DELTA_RTP_TS_VS_PACKET_TS_RAW) {
         chartData = influxDbManager.getDeltaRtpTsVsPacketTsRaw(pcapID, streamID, from, to);
-    } else if (measurement === 'DeltaPacketTimeVsRtpTimeRaw') {
+    } else if (measurement === api.constants.measurements.DELTA_RTP_TS_VS_PACKET_TS_GROUPED) {
+        chartData = influxDbManager.getDeltaRtpTsVsPacketTsGrouped(pcapID, streamID, from, to, group);
+    } else if (measurement === api.constants.measurements.DELTA_PACKET_TIME_VS_RTP_TIME_RAW) {
         chartData = influxDbManager.getDeltaPacketTimeVsRtpTimeRaw(pcapID, streamID, from, to);
-    } else if (measurement === 'DeltaToPreviousRtpTsRaw') {
+    } else if (measurement === api.constants.measurements.DELTA_PACKET_TIME_VS_RTP_TIME_GROUPED) {
+        chartData = influxDbManager.getDeltaPacketTimeVsRtpTimeGrouped(pcapID, streamID, from, to, group);
+    } else if (measurement === api.constants.measurements.DELTA_TO_PREVIOUS_RTP_TS_RAW) {
         chartData = influxDbManager.getDeltaToPreviousRtpTsRaw(pcapID, streamID, from, to);
-    } else if (measurement === 'DeltaToPreviousRtpTsMinMax') {
-        chartData = influxDbManager.getDeltaToPreviousRtpTsMinMax(pcapID, streamID, from, to);
-    } else if (measurement === 'DeltaRtpVsNt') {
+    } else if (measurement === api.constants.measurements.DELTA_TO_PREVIOUS_RTP_TS_GROUPED) {
+        chartData = influxDbManager.getDeltaToPreviousRtpTsGrouped(pcapID, streamID, from, to, group);
+    } else if (measurement === api.constants.measurements.DELTA_RTP_VS_NT_RAW) {
         chartData = influxDbManager.getDeltaRtpVsNt(pcapID, streamID, from, to);
-    } else if (measurement === 'DeltaRtpVsNtTicksMinMax') {
-        chartData = influxDbManager.getDeltaRtpVsNtTicksMinMax(pcapID, streamID);
+    } else if (measurement === api.constants.measurements.DELTA_RTP_VS_NT_TICKS_GROUPED) {
+        chartData = influxDbManager.getDeltaRtpVsNtGrouped(pcapID, streamID, from, to, group);
+    } else if (measurement === api.constants.measurements.AUDIO_PKT_TS_VS_RTP_TS_RAW) {
+        chartData = influxDbManager.getAudioPktTsVsRtpTsRaw(pcapID, streamID, from, to);
+    } else if (measurement === api.constants.measurements.AUDIO_PKT_TS_VS_RTP_TS_GROUPED) {
+        chartData = influxDbManager.getAudioPktTsVsRtpTsGrouped(pcapID, streamID, from, to, group);
+    } else if (measurement === api.constants.measurements.AUDIO_TIME_STAMPED_DELAY_FACTOR) {
+        chartData = influxDbManager.getAudioPktTsVsRtpTsGrouped(pcapID, streamID, from, to, group);
+    }
+    chartData.then((data) => res.json(data));
+});
+
+router.get('/:pcapID/stream/:streamID/analytics/:measurement/count', (req, res) => {
+    const { pcapID, streamID, measurement } = req.params;
+
+
+    let chartData = null;
+
+    if (measurement === api.constants.measurements.C_INST) {
+        chartData = influxDbManager.getCInstCount(pcapID, streamID);
+    } else if (measurement === api.constants.measurements.VRX_IDEAL) {
+        chartData = influxDbManager.getVrxIdealCount(pcapID, streamID);
+    } else if (measurement === api.constants.measurements.DELTA_TO_IDEAL_TPR0) {
+        chartData = influxDbManager.getDeltaToIdealTpr0Count(pcapID, streamID);
+    } else if (measurement === api.constants.measurements.DELTA_RTP_TS_VS_PACKET_TS) {
+        chartData = influxDbManager.getDeltaRtpTsVsPacketTsCount(pcapID, streamID);
+    } else if (measurement === api.constants.measurements.DELTA_PACKET_TIME_VS_RTP_TIME) {
+        chartData = influxDbManager.getDeltaPacketTimeVsRtpTimeCount(pcapID, streamID);
+    } else if (measurement === api.constants.measurements.DELTA_TO_PREVIOUS_RTP_TS) {
+        chartData = influxDbManager.getDeltaToPreviousRtpTsCount(pcapID, streamID);
+    } else if (measurement === api.constants.measurements.DELTA_RTP_VS_NT) {
+        chartData = influxDbManager.getDeltaRtpVsNtCount(pcapID, streamID);
+    } else if (measurement === api.constants.measurements.AUDIO_PKT_TS_VS_RTP_TS) {
+        chartData = influxDbManager.getAudioPktTsVsRtpTsCount(pcapID, streamID);
     }
     chartData.then((data) => res.json(data));
 });

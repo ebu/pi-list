@@ -127,3 +127,27 @@ div.pcap-details-content-sidebar-streams-list {
     overflow-wrap: anywhere;
     white-space: nowrap;
 }
+
+.actions-and-details-container-pcap-details{
+    display: flex;
+    flex-direction: column;
+}
+
+.action-and-details-container-title {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 27px;
+    color: #ffffff;
+    padding-bottom: 0.9em;
+}
+
+.action-and-details-container-text{
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 26px;
+    color: #848898;
+}

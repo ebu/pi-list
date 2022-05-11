@@ -1,6 +1,6 @@
 import React from 'react';
-import { LineGraphic, IGraphicTimeMaxData, BarGraphic } from 'components/index';
-import SDK from '@bisect/ebu-list-sdk';
+import { LineGraphic, IGraphicTimeMaxData, BarGraphic, MinMaxAvgLineGraphic } from 'components/index';
+import SDK, { api } from '@bisect/ebu-list-sdk';
 import list from 'utils/api';
 import { getFinalData, getLeftMargin } from 'utils/graphs/dataTransformationLineGraphs';
 import {
@@ -11,22 +11,20 @@ import {
     getCompliance,
 } from 'utils/graphs/dataTransformationBarGraphs';
 import { translate } from 'utils/translation';
+import { useGraphData } from 'utils/graphs/getGraphData';
 
 function VrxAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStreamInfo | undefined; pcapID: string }) {
     const streamID = currentStream?.id;
     const first_packet_ts = currentStream?.statistics.first_packet_ts;
     const last_packet_ts = currentStream?.statistics.last_packet_ts;
 
-    const [vrxData, setVrxData] = React.useState<IGraphicTimeMaxData[]>([]);
-
-    React.useEffect(() => {
-        setVrxData([]);
-        const loadVrxData = async (): Promise<void> => {
-            const all = await list.stream.getVrxIdealForStream(pcapID, streamID, first_packet_ts, last_packet_ts);
-            setVrxData(getFinalData(all) as IGraphicTimeMaxData[]);
-        };
-        loadVrxData();
-    }, [currentStream?.id]);
+    const [vrxData, setVrxData] = useGraphData({
+        pcapID,
+        streamID,
+        measurementType: api.constants.measurements.VRX_IDEAL,
+        first_packet_ts,
+        last_packet_ts,
+    });
 
     const initialHist: IHistogram = { histogram: [] };
     const [vrxHistData, setVrxHistData] = React.useState(initialHist);
@@ -44,6 +42,8 @@ function VrxAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     const generalBufferLevel = translate('general.buffer_level');
     const mediaInfoRtpPacketCount = translate('media_information.rtp.packet_count');
 
+    if (!vrxData) return null;
+
     if (vrxData.length === 0) {
         return null;
     }
@@ -51,13 +51,26 @@ function VrxAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
         return null;
     }
 
-    const leftMarginVrx = getLeftMargin(vrxData);
-    const vrxGraphData = {
-        graphicData: vrxData,
+    const vrxIdealFinalData = vrxData.isGrouped ? null : getFinalData(vrxData.data);
+
+    const leftMarginVrx = vrxData.isGrouped ? getLeftMargin(vrxData.data) : getLeftMargin(vrxIdealFinalData!);
+
+    const vrxLineGraphData = {
+        graphicData: vrxIdealFinalData!,
         title: 'Vrx',
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: mediaInfoRtpPacketCount,
         datakeyY: 'max',
+        datakeyX: 'time',
+        leftMargin: leftMarginVrx,
+    };
+
+    const vrxMinMaxAvgGraphData = {
+        graphicData: vrxData.data!,
+        title: 'Vrx',
+        xAxisTitle: 'Time (TAI)',
+        yAxisTitle: mediaInfoRtpPacketCount,
+        datakeyY: ['min', 'avg', 'max'],
         datakeyX: 'time',
         leftMargin: leftMarginVrx,
     };
@@ -79,9 +92,19 @@ function VrxAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
 
     return (
         <>
-            <div className="pcap-details-page-line-graphic-container ">
-                <LineGraphic key={currentStream?.id} data={vrxGraphData} />
-            </div>
+            {!vrxData.isGrouped ? (
+                <div className="pcap-details-page-line-graphic-container ">
+                    <LineGraphic key={currentStream?.id} data={vrxLineGraphData} getNewData={setVrxData} />
+                </div>
+            ) : (
+                <div className="pcap-details-page-line-graphic-container ">
+                    <MinMaxAvgLineGraphic
+                        key={currentStream?.id}
+                        data={vrxMinMaxAvgGraphData}
+                        getNewData={setVrxData}
+                    />
+                </div>
+            )}
             <div className="pcap-details-page-bar-graphic-container ">
                 <BarGraphic key={currentStream?.id} barGraphicData={vrxHistGraphData} />
             </div>

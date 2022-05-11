@@ -55,7 +55,7 @@ const buttonWithIconList = (currentStream: SDK.types.IStreamInfo) => {
                 {
                     icon: VideoIcon,
                     text: 'Ancillary Analysis Explained',
-                    onClick: () => { },
+                    onClick: () => {},
                 },
             ];
     }
@@ -84,6 +84,12 @@ const getDataToInformationSidebar = (
                 <CustomScrollbar>
                     {currentStream.full_media_type !== 'unknown' ? (
                         <div className="sb-information-sidebar-content">
+                            <div className="actions-and-details-container-pcap-details">
+                                <span className="action-and-details-container-title">Actions & Details</span>
+                                <span className="action-and-details-container-text">
+                                    To zoom in on the graphs select an area with the cursor
+                                </span>
+                            </div>
                             <div>
                                 <ButtonWithIconSidebarContainer
                                     buttonWithIconList={buttonWithIconList(currentStream)}
@@ -196,7 +202,6 @@ function PCapDetailsContentHOC(props: any) {
         setSidebarCollapsed(true);
     }, []);
 
-
     React.useEffect(() => {
         if (streams.length === 0) return;
         const firstStreamId = streams[0].id;
@@ -243,10 +248,7 @@ function PCapDetailsContentHOC(props: any) {
 
     const middleContent = (
         <Routes>
-            <Route
-                path={`:streamID`}
-                element={renderStream(streams)}
-            />
+            <Route path={`:streamID`} element={renderStream(streams)} />
         </Routes>
     );
 
