@@ -199,7 +199,7 @@ function LineGraphic({
                         // eslint-disable-next-line react/jsx-no-bind
                         onMouseUp={handleZoom}
                     >
-                        <CartesianGrid strokeDasharray="5 10" vertical={false} stroke="#39415A" />
+                        <CartesianGrid strokeDasharray="5 10" vertical={false} stroke="#68759c" />
                         <XAxis
                             dataKey={data.datakeyX}
                             axisLine={false}
@@ -209,7 +209,7 @@ function LineGraphic({
                                 fontStyle: 'normal',
                                 fontWeight: 'normal',
                                 fontSize: 12,
-                                fill: '#39415A',
+                                fill: '#68759c',
                                 dy: 10,
                             }}
                             width={0}
