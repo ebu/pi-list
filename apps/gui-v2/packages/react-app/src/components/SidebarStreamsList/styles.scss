@@ -38,12 +38,24 @@
     font-family: Prompt;
     font-style: normal;
     font-weight: normal;
+    display: flex;
+    align-items: baseline;
     font-size: 12px;
     line-height: 18px;
     letter-spacing: 0.1em;
     text-transform: capitalize;
 
     color: $font-dark-grey;
+}
+
+.sidebar-stream-list-red-dot{
+    height: 10px;
+    width: 10px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: flex;
+    background-color: #ff5b44;
+    margin-left: 1em;
 }
 
 .sidebar-helper-protocol-active {
@@ -55,7 +67,8 @@
     letter-spacing: 0.1em;
     text-transform: capitalize;
     transition: ease-in-out 0.5s;
-
+    display: flex;
+    align-items: baseline;
     color: $white;
 }
 
@@ -79,6 +92,8 @@ div.sidebar-helper-container {
             font-style: normal;
             font-weight: normal;
             font-size: 12px;
+            display: flex;
+            align-items: baseline;
             line-height: 18px;
             letter-spacing: 0.1em;
             text-transform: capitalize;

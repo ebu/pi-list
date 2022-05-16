@@ -88,21 +88,24 @@ function MinMaxAvgLineGraphic({
         });
     };
 
-    const handleZoomOut = async () => {
+    const handleZoomOut = () => {
         const numberOfPoints = parseInt(zoomState.refAreaRight) - parseInt(zoomState.refAreaLeft);
 
-        await getNewData!(zoomState.activeLabelLeft, zoomState.activeLabelRight, numberOfPoints, true);
-
-        setZoomState({
-            ...zoomState,
-            dataZoom: data.graphicData,
-            refAreaLeft: '',
-            refAreaRight: '',
-            activeLabelLeft: '',
-            activeLabelRight: '',
-        });
+        getNewData!(zoomState.activeLabelLeft, zoomState.activeLabelRight, numberOfPoints, true);
     };
 
+    React.useEffect(
+        () =>
+            setZoomState({
+                ...zoomState,
+                dataZoom: data.graphicData,
+                refAreaLeft: '',
+                refAreaRight: '',
+                activeLabelLeft: '',
+                activeLabelRight: '',
+            }),
+        [data.graphicData]
+    );
     return (
         <div className="line-graphic-container">
             <div className="blend-div"></div>

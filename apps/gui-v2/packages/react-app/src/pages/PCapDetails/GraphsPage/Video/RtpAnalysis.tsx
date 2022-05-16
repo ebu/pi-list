@@ -6,6 +6,7 @@ import { getFinalData, getDeltaFPTvsRTP, getLeftMargin } from 'utils/graphs/data
 import { translate } from 'utils/translation';
 import { useGraphData } from 'utils/graphs/getGraphData';
 import '../../styles.scss';
+import { getFinalDataMinMaxAvgGraph } from 'utils/graphs/dataTransformationMinMaxAvgGraph';
 
 function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStreamInfo | undefined; pcapID: string }) {
     const streamID = currentStream?.id;
@@ -43,17 +44,23 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     if (!latencyData) return null;
     if (!rtpOffsetData) return null;
 
-    const rtpTimeStepFinalData = rtpTimeStepData.isGrouped ? null : getFinalData(rtpTimeStepData.data);
-    const latencyFinalData = latencyData.isGrouped ? null : getFinalData(latencyData.data);
-    const rtpOffsetFinalData = rtpOffsetData.isGrouped ? null : getFinalData(rtpOffsetData.data);
+    const rtpTimeStepFinalData = rtpTimeStepData.isGrouped
+        ? getFinalDataMinMaxAvgGraph(rtpTimeStepData.data)
+        : getFinalData(rtpTimeStepData.data);
+    const latencyFinalData = latencyData.isGrouped
+        ? getFinalDataMinMaxAvgGraph(latencyData.data)
+        : getFinalData(latencyData.data);
+    const rtpOffsetFinalData = rtpOffsetData.isGrouped
+        ? getFinalDataMinMaxAvgGraph(rtpOffsetData.data)
+        : getFinalData(rtpOffsetData.data);
 
-    if (latencyData.length === 0) {
+    if (latencyData.data.length === 0) {
         return null;
     }
-    if (rtpOffsetData.length === 0) {
+    if (rtpOffsetData.data.length === 0) {
         return null;
     }
-    if (rtpTimeStepData.length === 0) {
+    if (rtpTimeStepData.data.length === 0) {
         return null;
     }
 
@@ -68,7 +75,7 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
         : getLeftMargin(rtpTimeStepFinalData!);
 
     const latencyGraphLineGraphData = {
-        graphicData: latencyFinalData!,
+        graphicData: getFinalData(latencyFinalData!),
         title: 'Latency',
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'Latency (μs)',
@@ -78,7 +85,7 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     };
 
     const latencyGraphMinMaxAvgGraphData = {
-        graphicData: latencyData.data!,
+        graphicData: getFinalDataMinMaxAvgGraph(latencyData.data!),
         title: 'Latency',
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'Latency (μs)',
@@ -88,7 +95,7 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     };
 
     const rtpOffsetLineGraphData = {
-        graphicData: rtpOffsetFinalData!,
+        graphicData: getFinalData(rtpOffsetFinalData!),
         title: mediaInfoRtpDelta,
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'RTP offset (ticks)',
@@ -98,7 +105,7 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     };
 
     const rtpOffsetMinMaxAvgGraphData = {
-        graphicData: rtpOffsetData.data,
+        graphicData: getFinalDataMinMaxAvgGraph(rtpOffsetData.data),
         title: mediaInfoRtpDelta,
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'RTP offset (ticks)',
@@ -108,7 +115,7 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     };
 
     const rtpTimeStepLineGraphData = {
-        graphicData: rtpTimeStepFinalData!,
+        graphicData: getFinalData(rtpTimeStepFinalData!),
         title: mediaInfoRtpTsStep,
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'RTP Time Step (ticks)',
@@ -118,7 +125,7 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     };
 
     const rtpTimeStepMinMaxAvgGraphData = {
-        graphicData: rtpTimeStepData.data,
+        graphicData: getFinalDataMinMaxAvgGraph(rtpTimeStepData.data),
         title: mediaInfoRtpTsStep,
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'RTP Time Step (ticks)',

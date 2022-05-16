@@ -10,6 +10,8 @@ interface IComponentProps {
     last_packet_ts: string | undefined;
 }
 
+const NUMBER_OF_RENDERED_POINTS = 500;
+
 export function useGraphData({
     pcapID,
     streamID,
@@ -33,9 +35,14 @@ export function useGraphData({
         last_packet_ts,
     });
 
+    //Number of points of the initial render
+    const [numberOfInitialPoints, setNumberOfInitialPoints] = useState<number>(1);
     const [data, setData] = useState(null);
 
-    const [numberOfPoints, setNumberOfPoints] = useState<number>();
+    const [initialMeasurement, setInitialMeasurement] = useState<string>('');
+
+    //Number of points available from that graph
+    const [numberOfPoints, setNumberOfPoints] = useState<number>(1);
 
     useEffect(() => {
         const fetchCount = async () => {
@@ -44,8 +51,11 @@ export function useGraphData({
         };
 
         const fetchFirstData = async () => {
+            const numberOfPointsFinal =
+                numberOfPoints > NUMBER_OF_RENDERED_POINTS ? NUMBER_OF_RENDERED_POINTS : numberOfPoints;
+
             let nextState =
-                numberOfPoints! > 20
+                numberOfPointsFinal > 100
                     ? await list.stream.getMeasurement(
                           state.pcapID,
                           `${state.measurementType}Grouped`,
@@ -53,8 +63,7 @@ export function useGraphData({
                           state.first_packet_ts,
                           state.last_packet_ts,
                           Math.round(
-                              (parseInt(last_packet_ts || '0') - parseInt(first_packet_ts || '0')) /
-                                  (numberOfPoints! / 2)
+                              (parseInt(last_packet_ts || '0') - parseInt(first_packet_ts || '0')) / numberOfPointsFinal
                           ).toString()
                       )
                     : await list.stream.getMeasurement(
@@ -64,7 +73,14 @@ export function useGraphData({
                           state.first_packet_ts,
                           state.last_packet_ts
                       );
+
+            setInitialMeasurement(
+                numberOfPoints > 100 ? `${state.measurementType}Grouped` : `${state.measurementType}Raw`
+            );
             setData(nextState);
+            console.log(state.streamID);
+            console.log('first value', nextState.data[0]);
+            setNumberOfInitialPoints(nextState.data.length);
         };
 
         fetchCount().finally(() => {
@@ -80,33 +96,67 @@ export function useGraphData({
     ) {
         const first_packet_ts_final = isZoomOut ? state.first_packet_ts : getTimeInNs(first_packet_ts!).toString();
         const last_packet_ts_final = isZoomOut ? state.last_packet_ts : getTimeInNs(last_packet_ts!).toString();
-        const number_of_points_final = isZoomOut ? 10 : numberOfPoints! / 3;
+        //If it is zoom out we get the initial points to get the same result as the beggining
+        const number_of_points_final = isZoomOut ? numberOfInitialPoints : numberOfPointsGraph;
+
+        //If it has more than 150 points we only display NUMBER_OF_RENDERED_POINTS points
+        const numberOfPointsCondition =
+            number_of_points_final > NUMBER_OF_RENDERED_POINTS ? NUMBER_OF_RENDERED_POINTS : number_of_points_final;
 
         const grouped_ts = Math.round(
-            (parseInt(last_packet_ts_final || '0') - parseInt(first_packet_ts_final || '0')) / number_of_points_final
+            (parseInt(last_packet_ts_final || '0') - parseInt(first_packet_ts_final || '0')) / numberOfPointsCondition
         ).toString();
 
-        const fetchData = async () => {
-            let nextState =
-                numberOfPointsGraph! > 50 || isZoomOut
-                    ? await list.stream.getMeasurement(
-                          state.pcapID,
-                          `${state.measurementType}Grouped`,
-                          state.streamID,
-                          first_packet_ts_final,
-                          last_packet_ts_final,
-                          grouped_ts
-                      )
-                    : await list.stream.getMeasurement(
-                          state.pcapID,
-                          `${state.measurementType}Raw`,
-                          state.streamID,
-                          first_packet_ts_final,
-                          last_packet_ts_final
-                      );
+        //If it is Zoom out we get the initial state
+        const fetchData = isZoomOut
+            ? async () => {
+                  const numberOfPointsFinal =
+                      numberOfPoints > NUMBER_OF_RENDERED_POINTS ? NUMBER_OF_RENDERED_POINTS : numberOfPoints;
 
-            setData(nextState);
-        };
+                  let nextState =
+                      initialMeasurement === `${state.measurementType}Grouped`
+                          ? await list.stream.getMeasurement(
+                                state.pcapID,
+                                `${state.measurementType}Grouped`,
+                                state.streamID,
+                                first_packet_ts_final,
+                                last_packet_ts_final,
+                                Math.round(
+                                    (parseInt(last_packet_ts_final || '0') - parseInt(first_packet_ts_final || '0')) /
+                                        numberOfPointsFinal
+                                ).toString()
+                            )
+                          : await list.stream.getMeasurement(
+                                state.pcapID,
+                                `${state.measurementType}Raw`,
+                                state.streamID,
+                                first_packet_ts_final,
+                                last_packet_ts_final
+                            );
+
+                  setData(nextState);
+              }
+            : async () => {
+                  let nextState =
+                      numberOfPointsCondition > NUMBER_OF_RENDERED_POINTS
+                          ? await list.stream.getMeasurement(
+                                state.pcapID,
+                                `${state.measurementType}Grouped`,
+                                state.streamID,
+                                first_packet_ts_final,
+                                last_packet_ts_final,
+                                grouped_ts
+                            )
+                          : await list.stream.getMeasurement(
+                                state.pcapID,
+                                `${state.measurementType}Raw`,
+                                state.streamID,
+                                first_packet_ts_final,
+                                last_packet_ts_final
+                            );
+
+                  setData(nextState);
+              };
 
         fetchData();
     }

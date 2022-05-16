@@ -65,6 +65,7 @@ interface IStreamsList {
     id: string;
     key: string;
     type: string;
+    hasError: boolean;
     fullType: string;
     protocol: string;
     transport_type: string;
@@ -127,6 +128,7 @@ const getDataToInformationSidebar = (
 const getStreamsToSidebarStreamsList = (streams: SDK.types.IStreamInfo[]): IStreamsList[] => {
     const streamsList: IStreamsList[] = [];
     let fullMediaType: string;
+    console.log(streams);
     streams.map((item, index) => {
         item.full_media_type === 'application/ttml+xml'
             ? (fullMediaType = 'application/ ttml+xml')
@@ -137,6 +139,7 @@ const getStreamsToSidebarStreamsList = (streams: SDK.types.IStreamInfo[]): IStre
         streamsList.push({
             id: item.id,
             key: getKey(index),
+            hasError: item.error_list.length > 0,
             type: item.media_type === 'ancillary_data' ? 'Ancillary' : item.media_type,
             fullType: fullMediaType,
             protocol: 'ST2110',

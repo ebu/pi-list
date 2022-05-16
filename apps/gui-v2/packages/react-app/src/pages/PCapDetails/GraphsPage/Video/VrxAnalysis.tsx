@@ -2,7 +2,9 @@ import React from 'react';
 import { LineGraphic, IGraphicTimeMaxData, BarGraphic, MinMaxAvgLineGraphic } from 'components/index';
 import SDK, { api } from '@bisect/ebu-list-sdk';
 import list from 'utils/api';
-import { getFinalData, getLeftMargin } from 'utils/graphs/dataTransformationLineGraphs';
+import { getFinalData as getFinalDataLineGraphs, getLeftMargin } from 'utils/graphs/dataTransformationLineGraphs';
+import { getFinalDataMinMaxAvgGraph } from 'utils/graphs/dataTransformationMinMaxAvgGraph';
+
 import {
     IHistogram,
     getFinalHistData,
@@ -44,19 +46,21 @@ function VrxAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
 
     if (!vrxData) return null;
 
-    if (vrxData.length === 0) {
+    if (vrxData.data.length === 0) {
         return null;
     }
     if (vrxHistData === undefined) {
         return null;
     }
 
-    const vrxIdealFinalData = vrxData.isGrouped ? null : getFinalData(vrxData.data);
+    const vrxIdealFinalData = vrxData.isGrouped
+        ? getFinalDataMinMaxAvgGraph(vrxData.data)
+        : getFinalDataLineGraphs(vrxData.data);
 
     const leftMarginVrx = vrxData.isGrouped ? getLeftMargin(vrxData.data) : getLeftMargin(vrxIdealFinalData!);
 
     const vrxLineGraphData = {
-        graphicData: vrxIdealFinalData!,
+        graphicData: getFinalDataLineGraphs(vrxData.data),
         title: 'Vrx',
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: mediaInfoRtpPacketCount,
@@ -66,7 +70,7 @@ function VrxAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     };
 
     const vrxMinMaxAvgGraphData = {
-        graphicData: vrxData.data!,
+        graphicData: getFinalDataMinMaxAvgGraph(vrxData.data),
         title: 'Vrx',
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: mediaInfoRtpPacketCount,
@@ -97,7 +101,7 @@ function VrxAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
                     <LineGraphic key={currentStream?.id} data={vrxLineGraphData} getNewData={setVrxData} />
                 </div>
             ) : (
-                <div className="pcap-details-page-line-graphic-container ">
+                <div className="pcap-details-page-line-graphic-container">
                     <MinMaxAvgLineGraphic
                         key={currentStream?.id}
                         data={vrxMinMaxAvgGraphData}

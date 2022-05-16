@@ -14,6 +14,7 @@ import {
 } from 'recharts';
 import { TimeValueTooltip } from '../index';
 import LabelYAxis from '../LabelYAxis/LabelYAxis';
+import _ from 'lodash';
 
 interface IComponentProps {
     graphicData: Array<IGraphicTimeMaxData | IGraphicTimeValueData>;
@@ -45,6 +46,7 @@ function LineGraphic({
         activeLabelRight: '',
         animation: true,
     };
+
     const [zoomState, setZoomState] = React.useState(initialZoomState);
 
     if (data === undefined) {
@@ -99,16 +101,31 @@ function LineGraphic({
         );
     };
 
+    const isTimeGraph = (value: Array<any>) => {
+        if (Object.keys(value[0] === 'time')) return true;
+        return false;
+    };
+
     const handleZoom = async () => {
         let { refAreaLeft, refAreaRight } = zoomState;
         const { dataZoom } = zoomState;
 
-        const numberOfPoints = parseInt(zoomState.refAreaRight) - parseInt(zoomState.refAreaLeft);
+        let numberOfPoints = parseInt(zoomState.refAreaRight) - parseInt(zoomState.refAreaLeft);
+        const isTimeGraphValue = isTimeGraph(dataZoom);
+
+        let activeLabelRightFixed =
+            zoomState.activeLabelRight === ''
+                ? zoomState.dataZoom[dataZoom.length - 1].time
+                : zoomState.activeLabelRight;
+
+        console.log(zoomState);
+
+        if (numberOfPoints === 0 || isNaN(numberOfPoints) || _.isNil(numberOfPoints)) numberOfPoints = dataZoom.length;
 
         if (zoomState.activeLabelLeft === '') {
-            await getNewData!(zoomState.activeLabelLeft, zoomState.activeLabelRight, numberOfPoints, true);
+            await getNewData!(zoomState.activeLabelLeft, activeLabelRightFixed, numberOfPoints, true);
         } else {
-            await getNewData!(zoomState.activeLabelLeft, zoomState.activeLabelRight, numberOfPoints, false);
+            await getNewData!(zoomState.activeLabelLeft, activeLabelRightFixed, numberOfPoints, false);
         }
 
         if (refAreaLeft === refAreaRight || refAreaRight === '') {
@@ -134,11 +151,13 @@ function LineGraphic({
         });
     };
 
-    const handleZoomOut = async () => {
+    const handleZoomOut = () => {
         const numberOfPoints = parseInt(zoomState.refAreaRight) - parseInt(zoomState.refAreaLeft);
 
-        await getNewData!(zoomState.activeLabelLeft, zoomState.activeLabelRight, numberOfPoints, true);
+        getNewData!(zoomState.activeLabelLeft, zoomState.activeLabelRight, numberOfPoints, true);
+    };
 
+    React.useEffect(() => {
         setZoomState({
             ...zoomState,
             dataZoom: data.graphicData,
@@ -147,7 +166,7 @@ function LineGraphic({
             activeLabelLeft: '',
             activeLabelRight: '',
         });
-    };
+    }, [data.graphicData]);
 
     return (
         <div className="line-graphic-container">

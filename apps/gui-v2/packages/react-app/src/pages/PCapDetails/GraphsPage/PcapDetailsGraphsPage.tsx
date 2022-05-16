@@ -33,7 +33,11 @@ function PcapDetailsGraphsPage({
     currentStream: SDK.types.IStreamInfo | undefined;
     pcapID: string;
 }) {
-    return <div className="pcap-details-page-container">{getPcapType(currentStream, pcapID)}</div>;
+    return (
+        <div className="pcap-details-page-container" key={currentStream?.id}>
+            {getPcapType(currentStream, pcapID)}
+        </div>
+    );
 }
 
 export default PcapDetailsGraphsPage;

@@ -1,15 +1,17 @@
 import { IGraphicTimeMaxData, IGraphicTimeValueData } from 'components/index';
+import _ from 'lodash';
 
 const isIGraphicTimeMaxData = (
     data: IGraphicTimeMaxData[] | IGraphicTimeValueData[]
 ): data is IGraphicTimeMaxData[] => {
+    if (data.length === 0) return false;
     return (data as IGraphicTimeMaxData[])[0].max !== (undefined || null);
 };
 
 export const getFinalData = (data: IGraphicTimeMaxData[] | IGraphicTimeValueData[]) => {
     if (isIGraphicTimeMaxData(data)) {
         const result: IGraphicTimeMaxData[] = data.reduce((acc, curr) => {
-            if ((curr.time !== undefined || null) && (curr.max !== null || undefined)) {
+            if ((!_.isNil(curr.time)) || (!_.isNil(curr.max))) {
                 acc.push(curr);
             }
             return acc;
@@ -17,7 +19,7 @@ export const getFinalData = (data: IGraphicTimeMaxData[] | IGraphicTimeValueData
         return result;
     } else {
         const result: IGraphicTimeValueData[] = data.reduce((acc, curr) => {
-            if ((curr.time !== undefined || null) && (curr.value !== null || undefined)) {
+            if ((!_.isNil(curr.time)) && (_.isNil(curr.value))) {
                 acc.push(curr);
             }
             return acc;

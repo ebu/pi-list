@@ -12,6 +12,7 @@ import {
 } from 'utils/graphs/dataTransformationBarGraphs';
 import { useGraphData } from 'utils/graphs/getGraphData';
 import { translate } from 'utils/translation';
+import { getFinalDataMinMaxAvgGraph } from 'utils/graphs/dataTransformationMinMaxAvgGraph';
 
 function CbufferAnalysis({
     currentStream,
@@ -49,9 +50,11 @@ function CbufferAnalysis({
 
     if (!cinstData) return null;
 
-    const cinstFinalData = cinstData.isGrouped ? null : getFinalData(cinstData.data);
+    const cinstFinalData = cinstData.isGrouped
+        ? getFinalDataMinMaxAvgGraph(cinstData.data)
+        : getFinalData(cinstData.data);
 
-    if (cinstData.length === 0) {
+    if (cinstData.data.length === 0) {
         return null;
     }
     if (cHistData === undefined) {
@@ -61,7 +64,7 @@ function CbufferAnalysis({
     const leftMarginCinst = cinstData.isGrouped ? getLeftMargin(cinstData.data) : getLeftMargin(cinstFinalData!);
 
     const cinstLineGraphData = {
-        graphicData: cinstFinalData!,
+        graphicData: getFinalData(cinstFinalData!),
         title: 'Cinst',
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: mediaInfoRtpPacketCount,
@@ -71,7 +74,7 @@ function CbufferAnalysis({
     };
 
     const cinstMinMaxAvgGraphData = {
-        graphicData: cinstData.data!,
+        graphicData: getFinalDataMinMaxAvgGraph(cinstData.data!),
         title: 'Cinst',
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: mediaInfoRtpPacketCount,
