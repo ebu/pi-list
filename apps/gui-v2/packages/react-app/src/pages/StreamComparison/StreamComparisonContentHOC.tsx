@@ -5,7 +5,7 @@ import { userAtom } from '../../store/gui/user/userInfo';
 import { MainContentLayout } from '../Common';
 import StreamComparisonContent from './StreamComparisonContent';
 import { pcapsAtom } from '../../store/gui/pcaps/pcaps';
-import { ButtonWithIcon, CustomScrollbar } from 'components';
+import { ButtonWithIcon, CustomScrollbar, ContextHelp } from 'components';
 import { GoogleAnalyticsHandler } from 'utils/googleAnalytics';
 import { BinIcon } from 'components/icons';
 import list from '../../utils/api';
@@ -21,6 +21,22 @@ export const comparisonTypes = {
     networkRedundancy: 'networkRedundancy',
     avSync: 'avSync',
 };
+
+type IIcons = {
+    text: string;
+    key: number;
+};
+
+type IShortcuts = {
+    key: number;
+    description: string;
+    icons: IIcons[];
+};
+
+interface IContextHelp {
+    description: string;
+    shortcuts: IShortcuts[];
+}
 
 function StreamComparisonContentHOC() {
     const navigate = useNavigate();
@@ -44,6 +60,36 @@ function StreamComparisonContentHOC() {
     if (!userInfo) {
         return null;
     }
+
+    const getContextHelp = (): IContextHelp => ({
+        description: 'Select multiple comparisons to delete more than one at the same time.',
+        shortcuts: [
+            {
+                key: 0,
+                description: 'Select multiple files',
+                icons: [
+                    {
+                        text: 'ctrl',
+                        key: 0,
+                    },
+                    {
+                        text: 'left-click',
+                        key: 1,
+                    },
+                ],
+            },
+            {
+                key: 1,
+                description: 'View all details',
+                icons: [
+                    {
+                        text: 'dbl click',
+                        key: 0,
+                    },
+                ],
+            },
+        ],
+    });
 
     const getComparisonTypesDescription = () => {
         switch (selectedComparison) {
@@ -158,12 +204,16 @@ function StreamComparisonContentHOC() {
     const resetStateComparisonsIds = () => setCurrentComparisonsIds([]);
 
     const getDataToInformationSidebar = () => {
+        const shortcuts = getContextHelp();
         const data = {
             usermail: userInfo?.username,
             content: (
                 <div style={{ height: '100vh', overflow: 'auto' }}>
                     <CustomScrollbar>
                         <div className="sb-information-sidebar-content">
+                            <div>
+                                <ContextHelp shortcutsList={shortcuts} />
+                            </div>
                             {getComparisonTypesDescription()}
                             {currentComparisonsIds.length > 0 ? (
                                 <ButtonWithIcon
