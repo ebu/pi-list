@@ -7,7 +7,6 @@ import './styles.scss';
 
 function DownloadManagerContent({ downloadData }: { downloadData: SDK.types.IDownloadManagerDataContent[] }) {
     const downloadFile = async (fileItem: SDK.types.IDownloadManagerDataContent) => {
-        console.log(fileItem);
         const response = await list.downloadManager.download(fileItem.id);
         const downloadUrl = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');

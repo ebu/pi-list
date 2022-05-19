@@ -5,6 +5,7 @@ import { findOne } from '../../../utils/searchBar';
 import SDK from '@bisect/ebu-list-sdk';
 import '../styles.scss';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { userAtom } from '../../../store/gui/user/userInfo';
 import { sidebarCollapsedAtom } from '../../../store/gui/sidebar/sidebarCollapsed';
 import { pcapsAnalysingAtom } from '../../../store/gui/pcaps/pcapsAnalysing';
 import { pcapAnalysingToTile, pcapToTile } from 'pages/Common/DashboardTileHOC';
@@ -22,6 +23,11 @@ const DashboardTilesView: React.FunctionComponent<IPropTypes> = ({
     pcaps,
     selectedPcapIds,
 }: IPropTypes) => {
+    const userInfo = useRecoilValue(userAtom);
+    if (!userInfo) {
+        return null;
+    }
+
     const setSidebarCollapsed = useSetRecoilState(sidebarCollapsedAtom);
     React.useEffect(() => {
         setSidebarCollapsed(false);
@@ -62,9 +68,11 @@ const DashboardTilesView: React.FunctionComponent<IPropTypes> = ({
                 <SearchBar filterString={filterString} setFilterString={setFilterString} />
             </div>
             <div className="dashboard-page-container">
-                <div className="dashboard-page-container-drag-and-drop-tile">
-                    <UploadPcap isButton={false} />
-                </div>
+                {userInfo.is_read_only ? null : (
+                    <div className="dashboard-page-container-drag-and-drop-tile">
+                        <UploadPcap isButton={false} />
+                    </div>
+                )}
                 {pcapsAnalysing.map((pcap: SDK.types.IPcapFileReceived, index: number) => pcapAnalysingToTile(pcap))}
                 {filterTilesData.map((pcap: SDK.types.IPcapInfo, index: number) =>
                     pcapToTile(onDoubleClick, onClick, pcap, index, selectedPcapIds)

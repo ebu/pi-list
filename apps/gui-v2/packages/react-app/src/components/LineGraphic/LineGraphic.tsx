@@ -118,8 +118,6 @@ function LineGraphic({
                 ? zoomState.dataZoom[dataZoom.length - 1].time
                 : zoomState.activeLabelRight;
 
-        console.log(zoomState);
-
         if (numberOfPoints === 0 || isNaN(numberOfPoints) || _.isNil(numberOfPoints)) numberOfPoints = dataZoom.length;
 
         if (zoomState.activeLabelLeft === '') {

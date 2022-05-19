@@ -185,6 +185,7 @@ const getDataToInformationSidebar = (
     onViewAllDetailsButtonClick: (id: string) => void,
     currentPCapIds: string[],
     username: string,
+    isReadOnly: boolean,
     currentVersion: string,
     resetStateSelectedPcaps: () => void
 ) => {
@@ -233,6 +234,10 @@ const getDataToInformationSidebar = (
             },
         },
     ];
+
+    if (isReadOnly) {
+        buttonWithIconList.pop();
+    }
 
     if (currentPCap && currentPCap.sdp_count < 1) delete buttonWithIconList[1];
 
@@ -437,6 +442,7 @@ function DashboardContentHOC() {
                     onViewAllDetailsButtonClick,
                     currentPCapIds,
                     userInfo?.username,
+                    userInfo?.is_read_only,
                     version,
                     resetStateSelectedPcaps
                 )}

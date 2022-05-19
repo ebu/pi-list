@@ -10,7 +10,6 @@ interface IComponentProps {
 }
 
 function SidebarStreamsList({ streamsList, onItemClicked, activeStreamId, onBackButtonClick }: IComponentProps) {
-    console.log(streamsList);
     return (
         <div className="sidebar-helper-container">
             <div className="sidebar-helper-title" onClick={onBackButtonClick}>

@@ -78,8 +78,6 @@ export function useGraphData({
                 numberOfPoints > 100 ? `${state.measurementType}Grouped` : `${state.measurementType}Raw`
             );
             setData(nextState);
-            console.log(state.streamID);
-            console.log('first value', nextState.data[0]);
             setNumberOfInitialPoints(nextState.data.length);
         };
 

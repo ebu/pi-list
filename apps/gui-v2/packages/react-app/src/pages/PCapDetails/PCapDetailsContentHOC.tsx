@@ -128,7 +128,6 @@ const getDataToInformationSidebar = (
 const getStreamsToSidebarStreamsList = (streams: SDK.types.IStreamInfo[]): IStreamsList[] => {
     const streamsList: IStreamsList[] = [];
     let fullMediaType: string;
-    console.log(streams);
     streams.map((item, index) => {
         item.full_media_type === 'application/ttml+xml'
             ? (fullMediaType = 'application/ ttml+xml')

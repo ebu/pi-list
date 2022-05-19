@@ -4,6 +4,7 @@ import UploadPcap from '../UploadPcap/UploadPcap';
 import { DetailsTableHOC, SearchBar } from 'components/index';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { pcapAnalysingToTile, pcapToTile } from 'pages/Common/DashboardTileHOC';
+import { userAtom } from '../../../store/gui/user/userInfo';
 import { findOne } from '../../../utils/searchBar';
 import SDK from '@bisect/ebu-list-sdk';
 import _ from 'lodash';
@@ -36,6 +37,11 @@ const DashboardHybridView: React.FunctionComponent<IPropTypes> = ({
     selectedPcapIds,
 }: IPropTypes) => {
     const pcapsAnalysing = useRecoilValue(pcapsAnalysingAtom);
+    const userInfo = useRecoilValue(userAtom);
+    if (!userInfo) {
+        return null;
+    }
+
     const getTableData = (pcaps: SDK.types.IPcapInfo[]): IDetailsTableData[] => {
         const tableData: IDetailsTableData[] = [];
         pcaps.slice(3).forEach((item, index) => {
@@ -102,9 +108,11 @@ const DashboardHybridView: React.FunctionComponent<IPropTypes> = ({
                 <SearchBar filterString={filterString} setFilterString={setFilterString} />
             </div>
             <div className="dashboard-page-container">
-                <div className="dashboard-page-container-drag-and-drop-tile">
-                    <UploadPcap isButton={false} />
-                </div>
+                {userInfo.is_read_only ? null : (
+                    <div className="dashboard-page-container-drag-and-drop-tile">
+                        <UploadPcap isButton={false} />
+                    </div>
+                )}
                 {pcapsAnalysing.map((pcap: SDK.types.IPcapFileReceived, index: number) => pcapAnalysingToTile(pcap))}
                 {filterTilesData.map((pcap: SDK.types.IPcapInfo, index: number) =>
                     pcapToTile(onDoubleClick, onClick, pcap, index, selectedPcapIds)

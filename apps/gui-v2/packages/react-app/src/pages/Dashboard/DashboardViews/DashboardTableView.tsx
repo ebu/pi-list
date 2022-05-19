@@ -3,6 +3,7 @@ import { DetailsTableHOC, SearchBar } from 'components/index';
 import SDK from '@bisect/ebu-list-sdk';
 import '../styles.scss';
 import UploadPcap from '../UploadPcap/UploadPcap';
+import { userAtom } from '../../../store/gui/user/userInfo';
 import { useRecoilValue } from 'recoil';
 import { pcapsAnalysingAtom } from '../../../store/gui/pcaps/pcapsAnalysing';
 import { findOne } from '../../../utils/searchBar';
@@ -32,6 +33,10 @@ const DashboardTableView: React.FunctionComponent<IPropTypes> = ({
     onDoubleClick,
     selectedPcapIds,
 }: IPropTypes) => {
+    const userInfo = useRecoilValue(userAtom);
+    if (!userInfo) {
+        return null;
+    }
     const pcapsAnalysing = useRecoilValue(pcapsAnalysingAtom);
 
     const getTableData = (pcaps: SDK.types.IPcapInfo[]): IDetailsTableData[] => {
@@ -89,7 +94,7 @@ const DashboardTableView: React.FunctionComponent<IPropTypes> = ({
                     <div className="details-table-search-bar-container">
                         <SearchBar filterString={filterString} setFilterString={setFilterString} />
                     </div>
-                    <UploadPcap isButton={true} />
+                    {userInfo.is_read_only ? null : <UploadPcap isButton={true} />}
                     <DetailsTableHOC
                         onRowClicked={onRowClicked}
                         onDoubleClick={onDoubleClick}

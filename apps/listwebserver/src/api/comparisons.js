@@ -20,9 +20,9 @@ function isAuthorized(req, res, next) {
         const userId = getUserId(req);
 
         StreamCompare.findOne({
-                owner_id: userId,
-                id: comparisonID
-            })
+            owner_id: userId,
+            id: comparisonID
+        })
             .exec()
             .then((data) => {
                 if (data) next();
@@ -38,8 +38,8 @@ router.use('/:comparisonID', isAuthorized);
 router.get('/', (req, res) => {
     const userId = getUserId(req);
     StreamCompare.find({
-            owner_id: userId
-        })
+        owner_id: userId
+    })
         .exec()
         .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
@@ -51,23 +51,23 @@ router.get('/:comparisonID/', (req, res) => {
     } = req.params;
 
     StreamCompare.findOne({
-            id: comparisonID
-        })
+        id: comparisonID
+    })
         .exec()
         .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));
 });
 
 /* Delete a StreamCompare */
-router.delete('/:comparisonID/', checkIsReadOnly, (req, res) => {
+router.delete('/:comparisonID/', (req, res) => {
     const {
         comparisonID
     } = req.params;
     const userId = getUserId(req);
 
     StreamCompare.deleteOne({
-            id: comparisonID
-        })
+        id: comparisonID
+    })
         .exec()
         .then((data) => {
             res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data);
@@ -92,10 +92,10 @@ router.post('/:comparisonID/', checkIsReadOnly, (req, res) => {
     const comparison = req.body;
 
     StreamCompare.findOneAndUpdate({
-            id: comparisonID
-        }, comparison, {
-            new: true
-        })
+        id: comparisonID
+    }, comparison, {
+        new: true
+    })
         .exec()
         .then((data) => res.status(HTTP_STATUS_CODE.SUCCESS.OK).send(data))
         .catch(() => res.status(HTTP_STATUS_CODE.CLIENT_ERROR.NOT_FOUND).send(API_ERRORS.RESOURCE_NOT_FOUND));

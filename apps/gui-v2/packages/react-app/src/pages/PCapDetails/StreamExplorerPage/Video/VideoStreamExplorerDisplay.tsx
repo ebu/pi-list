@@ -19,7 +19,6 @@ function useWaitForFrames(pcapId: string, streamId: string): WaitForFramesStates
         }
 
         const handleMessage = (msg: any) => {
-            console.log(msg.event);
             if (msg.event === api.wsEvents.ExtractFrames.completed) {
                 setFramesAreReady(WaitForFramesStates.completed);
             } else if (msg.event === api.wsEvents.ExtractFrames.active) {
