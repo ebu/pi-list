@@ -25,7 +25,6 @@ import { getUserFolder, generateRandomPcapFilename, generateRandomPcapDefinition
 
 const exec = util.promisify(child_process.exec);
 
-
 /**
  *  Analyze local PCAP file
  *  URL: /api/pcap/local

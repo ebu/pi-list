@@ -37,6 +37,12 @@ const routeInfo: IRouteInfo[] = [
         exact: true,
     },
     {
+        name: 'Pcap Capture',
+        path: routeNames.CAPTURE,
+        component: CaptureContentHOC,
+        exact: true,
+    },
+    {
         name: 'Comparison View',
         path: '/streamComparison/:comparisonId',
         component: <ComparisonPageContentHOC />,
