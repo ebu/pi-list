@@ -135,7 +135,6 @@ router.put(
 /* Reanalyze an existing PCAP file */
 router.put(
     '/:pcapId/reanalyze',
-    checkIsReadOnly,
     (req, res, next) => {
         const { pcapId } = req.params;
 
