@@ -44,7 +44,7 @@
         "phantom": "6.3.0",
         "read-yaml": "^1.1.0",
         "sdp-transform": "^2.13.0",
-        "sdpoker": "Streampunk/sdpoker#6cf3966dffb9e4d3cb16b89f24a03dd3542e177b",
+        "sdpoker": "AMWA-TV/sdpoker#076999c144e105beb1bae428793b75589537c5d6",
         "socket.io": "^2.3.0",
         "tmp": "^0.1.0",
         "url": "^0.11.0",
