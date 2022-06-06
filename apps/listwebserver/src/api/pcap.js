@@ -199,6 +199,8 @@ router.patch(
             .exec()
             .then(() => {
                 return influxDbManager.deleteSeries(pcapId);
+            }).catch((err) => {
+                logger('This series does not exist yet').error(`${err}`);
             })
             .then(() => {
                 return Pcap.findOneAndUpdate(
