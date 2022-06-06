@@ -81,26 +81,49 @@
     justify-content: space-around;
     border-radius: 8px;
     border: 2px grey solid;
-    width: 90%;
     background-color: #0c1945;
     overflow-wrap: anywhere;
     padding: 0.5em;
+    max-width: 20%;
+    min-height: 90%;
+    /* width: 100px; */
+    /* height: 100px; */
+    flex-grow: 1;
+    /* background: red; */
 }
 
-.pcap-modal-form-container {
+.ReactModal__Content{
     display: flex;
-    height: 90%;
-    display: grid;
-    grid-gap: 1rem;
-    grid-template-columns: repeat(auto-fit, clamp(300px, 50%, 260px));
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: space-between;
+}
+
+.pcap-modal-parent-scroll-container {
+    overflow-y: auto;
+    height: 100%;
+    margin-bottom: 1em;
+}
+
+.pcap-modal-input-container{
+    padding: 10px;
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px;
     justify-content: center;
-    flex: 1;
 }
 
 .pcap-modal-name {
     font-family: Prompt;
+    margin-bottom: 1em;
     font-style: normal;
     font-weight: normal;
+    width: 90%;
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: 18px;
     line-height: 27px;
     color: #ffffff;
@@ -171,8 +194,10 @@
 
 .pcap-upload-information-radio-buttons-container {
     display: flex;
+    width: 100%;
     justify-content: space-evenly;
     align-items: center;
+    margin-top: 1em;
 
     & > label {
         font-family: Prompt;

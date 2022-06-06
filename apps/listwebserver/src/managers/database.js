@@ -9,7 +9,7 @@ function createNewConnection(databaseHostname, databasePort, databaseName) {
     const options = {
         reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
         reconnectInterval: 500, // Reconnect every 500ms
-        useFindAndModify: false,
+        useFindAndModify: false
     };
 
     const conn = mongoose.createConnection(mongoDatabaseUrl, options);
