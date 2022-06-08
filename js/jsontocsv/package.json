@@ -1,0 +1,30 @@
+{
+    "name": "jsontocsv",
+    "version": "1.0.0",
+    "description": "A JavaScript project",
+    "main": "./dist/index.js",
+    "scripts": {
+        "start": "node ./node_modules/parcel-bundler/bin/cli serve ./src/index.html --port 8080",
+        "lint": "node ./node_modules/eslint/bin/eslint . --ext .js --fix",
+        "generate": "node src/main.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "keywords": [],
+    "author": "",
+    "license": "MIT",
+    "devDependencies": {
+        "eslint": "^8.16.0",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-plugin-import": "^2.26.0",
+        "parcel-bundler": "^1.12.5"
+    },
+    "dependencies": {
+        "@beenotung/tslib": "^20.1.0",
+        "flat": "^5.0.2",
+        "json-2-csv": "^3.17.1",
+        "json2csv": "^5.0.7"
+    }
+}
