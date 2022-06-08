@@ -135,7 +135,6 @@ router.put(
 /* Reanalyze an existing PCAP file */
 router.put(
     '/:pcapId/reanalyze',
-    checkIsReadOnly,
     (req, res, next) => {
         const { pcapId } = req.params;
 
@@ -200,6 +199,8 @@ router.patch(
             .exec()
             .then(() => {
                 return influxDbManager.deleteSeries(pcapId);
+            }).catch((err) => {
+                logger('This series does not exist yet').error(`${err}`);
             })
             .then(() => {
                 return Pcap.findOneAndUpdate(
