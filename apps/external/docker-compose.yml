@@ -19,7 +19,7 @@ services:
             - '15675:15675'
 
     listreverseproxy:
-        image: nginx:1.19.0
+        image: nginx:1.22.0
         network_mode: host
         volumes:
             - ./data/config:/etc/nginx

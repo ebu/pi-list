@@ -4,7 +4,7 @@ services:
     reverseproxy:
         container_name: listv2-reverseproxy
         hostname: reverseproxy
-        image: nginx:1.19.0
+        image: nginx:1.22.0
         network_mode: host
         ports:
             - 8000:8000
