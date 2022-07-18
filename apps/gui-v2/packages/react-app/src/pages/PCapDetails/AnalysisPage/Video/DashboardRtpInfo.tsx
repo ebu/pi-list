@@ -39,7 +39,7 @@ function DashboardRtpInfo({ currentStream }: { currentStream: SDK.types.IStreamI
         const latencyPassCriteriaData = nsPropAsMinMaxAvgUs(deltaPktTsVsRtpTs?.details.limit);
         const latencyData = {
             measurementData: {
-                title: translate('media_information.rtp.delta_first_packet_time_vs_rtp_time'),
+                title: 'Video latency',
                 data: [
                     {
                         labelTag: 'Min',

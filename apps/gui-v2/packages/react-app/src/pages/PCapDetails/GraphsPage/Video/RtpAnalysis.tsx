@@ -76,7 +76,7 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
 
     const latencyGraphLineGraphData = {
         graphicData: getFinalData(latencyFinalData!),
-        title: 'Latency',
+        title: 'Video latency',
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'Latency (μs)',
         datakeyY: 'value',
@@ -86,7 +86,7 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
 
     const latencyGraphMinMaxAvgGraphData = {
         graphicData: getFinalDataMinMaxAvgGraph(latencyData.data!),
-        title: 'Latency',
+        title: 'Video latency',
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'Latency (μs)',
         datakeyY: ['min', 'avg', 'max'],
