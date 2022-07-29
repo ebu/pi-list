@@ -29,7 +29,7 @@ function AudioDashboardRtpInfo({ currentStream }: { currentStream: SDK.types.ISt
     const DeltaPacketVsRTPDisplay = () => {
         const deltaPacketVsRTPData = {
             measurementData: {
-                title: translate('media_information.rtp.delta_packet_time_vs_rtp_time'),
+                title: 'Audio latency',
                 data: [
                     {
                         labelTag: 'Min',
