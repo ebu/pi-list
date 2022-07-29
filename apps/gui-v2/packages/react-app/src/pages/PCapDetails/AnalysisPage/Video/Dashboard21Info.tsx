@@ -226,7 +226,7 @@ function Dashboard21Info({ currentStream }: { currentStream: SDK.types.IStreamIn
     const InterPacketTimeDisplay = () => {
         if (!interPacketData) return null;
         const interPacketTimeDisplayData = {
-            title: 'Inter-Packet Time',
+            title: 'PIT excluding the GAP',
             min: nsAsMicroseconds(interPacketData.min),
             avg: nsAsMicroseconds(interPacketData.avg),
             max: nsAsMicroseconds(interPacketData.max),
