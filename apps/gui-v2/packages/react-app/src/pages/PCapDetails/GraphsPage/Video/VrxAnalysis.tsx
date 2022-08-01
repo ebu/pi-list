@@ -40,7 +40,7 @@ function VrxAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
         loadVrxHistData();
     }, [currentStream?.id]);
 
-    const mediaInfoHistogram = translate('media_information.histogram');
+    const mediaInfoHistogram = 'VRX histogram';
     const generalBufferLevel = translate('general.buffer_level');
     const mediaInfoRtpPacketCount = translate('media_information.rtp.packet_count');
 
