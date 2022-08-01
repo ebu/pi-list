@@ -38,7 +38,7 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     });
 
     const mediaInfoRtpDelta = translate('media_information.rtp.delta_rtp_ts_vs_nt');
-    const mediaInfoRtpTsStep = translate('media_information.rtp.rtp_ts_step');
+    const mediaInfoRtpTsStep = 'Inter-frame RTP TS Delta';
 
     if (!rtpTimeStepData) return null;
     if (!latencyData) return null;
