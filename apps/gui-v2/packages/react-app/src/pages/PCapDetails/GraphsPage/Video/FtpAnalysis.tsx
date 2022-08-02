@@ -31,7 +31,7 @@ function FtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
 
     const ftpLineGraphData = {
         graphicData: getFinalData(ftpFinalData!),
-        title: 'First Packet Time',
+        title: 'TVD minus First Packet Time',
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'FPT (μs)',
         datakeyY: 'value',
@@ -41,7 +41,7 @@ function FtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
 
     const ftpMinMaxAvgGraphData = {
         graphicData: getFinalDataMinMaxAvgGraph(ftpData.data!),
-        title: 'First Packet Time',
+        title: 'TVD minus First Packet Time',
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'FPT (μs)',
         datakeyY: ['min', 'avg', 'max'],
