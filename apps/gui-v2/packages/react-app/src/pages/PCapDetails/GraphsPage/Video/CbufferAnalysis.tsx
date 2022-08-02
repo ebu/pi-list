@@ -89,7 +89,7 @@ function CbufferAnalysis({
     const leftMarginCHist = getLeftMarginBarGraphic(cHistFinalData);
     const cHistGraphData = {
         barGraphic: cHistFinalData,
-        title: 'C',
+        title: 'Cinst histogram',
         complianceInfo: complianceCHist,
         xAxisTitle: generalBufferLevel,
         yAxisTitle: '%',
