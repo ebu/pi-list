@@ -29,7 +29,7 @@ function PacketIntervalTimeGraph({
     }, [currentStream?.id]);
 
     const mediaInfoHistogram = 'Packet Interval Time';
-    const generalBufferLevel = 'Time Interval (ns)';
+    const generalBufferLevel = 'Time Interval (μs)';
 
     if (pitScatterData === undefined || pitScatterData.length === 0) {
         return null;
