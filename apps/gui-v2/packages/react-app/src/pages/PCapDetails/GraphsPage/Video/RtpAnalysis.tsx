@@ -54,16 +54,6 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
         ? getFinalDataMinMaxAvgGraph(rtpOffsetData.data)
         : getFinalData(rtpOffsetData.data);
 
-    if (latencyData.data.length === 0) {
-        return null;
-    }
-    if (rtpOffsetData.data.length === 0) {
-        return null;
-    }
-    if (rtpTimeStepData.data.length === 0) {
-        return null;
-    }
-
     const leftMarginLatency = latencyData.isGrouped
         ? getLeftMargin(latencyData.data)
         : getLeftMargin(latencyFinalData!);

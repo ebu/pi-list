@@ -26,10 +26,6 @@ function Rtp({ currentStream, pcapID }: { currentStream: SDK.types.IStreamInfo |
 
     if (!rtpData) return null;
 
-    if (rtpData.data.length === 0) {
-        return null;
-    }
-
     const rtpFinalData = rtpData.isGrouped ? getFinalDataMinMaxAvgGraph(rtpData.data) : getFinalData(rtpData.data);
 
     const leftMargin = rtpData.isGrouped ? getLeftMargin(rtpData.data) : getLeftMargin(rtpFinalData!);

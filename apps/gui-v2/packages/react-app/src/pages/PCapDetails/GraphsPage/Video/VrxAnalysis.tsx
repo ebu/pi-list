@@ -46,9 +46,6 @@ function VrxAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
 
     if (!vrxData) return null;
 
-    if (vrxData.data.length === 0) {
-        return null;
-    }
     if (vrxHistData === undefined) {
         return null;
     }

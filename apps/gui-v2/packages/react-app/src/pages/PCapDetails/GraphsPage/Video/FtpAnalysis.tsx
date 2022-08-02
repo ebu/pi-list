@@ -19,10 +19,6 @@ function FtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
 
     if (!ftpData) return null;
 
-    if (ftpData.data.length === 0) {
-        return null;
-    }
-
     const ftpFinalData = ftpData.isGrouped
         ? getFinalDataMinMaxAvgGraph(ftpData.data)
         : getFinalData(dataAsMicroseconds(ftpData.data));

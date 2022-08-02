@@ -54,9 +54,6 @@ function CbufferAnalysis({
         ? getFinalDataMinMaxAvgGraph(cinstData.data)
         : getFinalData(cinstData.data);
 
-    if (cinstData.data.length === 0) {
-        return null;
-    }
     if (cHistData === undefined) {
         return null;
     }

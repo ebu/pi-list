@@ -36,13 +36,14 @@ class InfluxDbManager {
 
     sendQueryAndFormatResults(query, isGrouped) {
         return this.influx.query(query).then((data) =>
-        ({
-            data: data.map((item) => ({
-                ...item,
-                time: item.time._nanoISO,
-            })),
-            isGrouped: isGrouped
-        })
+        (
+            {
+                data: data.map((item) => ({
+                    ...item,
+                    time: item.time._nanoISO,
+                })),
+                isGrouped: isGrouped
+            })
         );
     }
 
@@ -391,11 +392,11 @@ class InfluxDbManager {
     }
 
     getAudioPktTsVsRtpTsGrouped(pcapID, streamID, startTime, endTime, groupTime) {
-        const grouped_fixed = (parseInt(groupTime) * 10).toString();
+        const grouped_fixed = (parseInt(groupTime) / 10000).toString();
         const query = `
             select
             max("audio-pkt-vs-rtp") as "max", min("audio-pkt-vs-rtp") as "min", mean("audio-pkt-vs-rtp") as "avg"
-            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeGroupFilter(startTime, endTime, grouped_fixed)}
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeGroupFilter(startTime, endTime, groupTime)}
         `;
 
         log.info(`Get RTP-TS vs PKT-TS for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
