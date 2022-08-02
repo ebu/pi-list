@@ -77,7 +77,12 @@ function Dashboard21Info({ currentStream }: { currentStream: SDK.types.IStreamIn
     const CInstDisplay = () => {
         const CInstData = {
             measurementData: {
-                title: 'CInst',
+                title: (
+                    <>
+                        <span>C</span>
+                        <span style={{ verticalAlign: 'sub' }}>inst</span>
+                    </>
+                ),
                 data: [
                     {
                         labelTag: 'Min',

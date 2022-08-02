@@ -96,7 +96,12 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
 
     const rtpOffsetLineGraphData = {
         graphicData: getFinalData(rtpOffsetFinalData!),
-        title: mediaInfoRtpDelta,
+        title: (
+            <>
+                <span>RTP</span>
+                <span style={{ verticalAlign: 'sub' }}>offset</span>
+            </>
+        ),
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'RTP offset (ticks)',
         datakeyY: 'value',
@@ -106,7 +111,12 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
 
     const rtpOffsetMinMaxAvgGraphData = {
         graphicData: getFinalDataMinMaxAvgGraph(rtpOffsetData.data),
-        title: mediaInfoRtpDelta,
+        title: (
+            <div>
+                <span>Rtp</span>
+                <span style={{ verticalAlign: 'sub', backgroundColor: 'red' }}></span>
+            </div>
+        ),
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'RTP offset (ticks)',
         datakeyY: ['min', 'avg', 'max'],

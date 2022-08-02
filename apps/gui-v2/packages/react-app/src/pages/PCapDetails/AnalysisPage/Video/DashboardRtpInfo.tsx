@@ -89,7 +89,12 @@ function DashboardRtpInfo({ currentStream }: { currentStream: SDK.types.IStreamI
         const rtpOffsetPassCriteriaData = deltaRtpTsVsNTFrame?.details.limit;
         const rtpOffsetData = {
             measurementData: {
-                title: translate('media_information.rtp.delta_rtp_ts_vs_nt'),
+                title: (
+                    <>
+                        <span>RTP</span>
+                        <span style={{ verticalAlign: 'sub' }}>offset</span>
+                    </>
+                ),
                 data: [
                     {
                         labelTag: 'Min',

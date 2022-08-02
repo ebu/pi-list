@@ -2,17 +2,17 @@ import React from 'react';
 import './styles.scss';
 
 type labelValue = {
-    labelTag?: string;
+    labelTag?: string | React.ReactElement;
     value: string;
 };
 
 interface IMeasurementData {
-    title: string;
+    title: string | React.ReactElement;
     data: Array<labelValue>;
 }
 
 interface IPassCriteriaData {
-    title: string;
+    title: string | React.ReactElement;
     data: Array<labelValue>;
 }
 

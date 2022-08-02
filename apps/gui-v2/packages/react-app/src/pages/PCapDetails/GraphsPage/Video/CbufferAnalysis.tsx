@@ -65,7 +65,12 @@ function CbufferAnalysis({
 
     const cinstLineGraphData = {
         graphicData: getFinalData(cinstFinalData!),
-        title: 'Cinst',
+        title: (
+            <>
+                <span>C</span>
+                <span style={{ verticalAlign: 'sub' }}>inst</span>
+            </>
+        ),
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: mediaInfoRtpPacketCount,
         datakeyY: 'max',
@@ -75,7 +80,12 @@ function CbufferAnalysis({
 
     const cinstMinMaxAvgGraphData = {
         graphicData: getFinalDataMinMaxAvgGraph(cinstData.data!),
-        title: 'Cinst',
+        title: (
+            <>
+                <span>C</span>
+                <span style={{ verticalAlign: 'sub' }}>inst</span>
+            </>
+        ),
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: mediaInfoRtpPacketCount,
         datakeyY: ['min', 'avg', 'max'],

@@ -19,7 +19,7 @@ import _ from 'lodash';
 interface IComponentProps {
     graphicData: Array<IGraphicTimeMaxData | IGraphicTimeValueData>;
     toleranceValue?: number;
-    title: string;
+    title: string | React.ReactElement;
     yAxisTitle: string;
     xAxisTitle: string;
     datakeyX: string;
