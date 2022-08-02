@@ -62,7 +62,7 @@ function AudioDashboardRtpInfo({ currentStream }: { currentStream: SDK.types.ISt
         <>
             <div className="audio-dashboard-summary-container">
                 <div className="audio-dashboard-title">
-                    <span>TS-DF</span>
+                    <span>EBU TS-DF</span>
                 </div>
 
                 <div className="audio-dashboard-rtp-info-summary-value-container">
