@@ -25,6 +25,6 @@
         "@beenotung/tslib": "^20.1.0",
         "flat": "^5.0.2",
         "json-2-csv": "^3.17.1",
-        "json2csv": "^5.0.7"
+        "json2csv": "6.0.0-alpha.0"
     }
 }
