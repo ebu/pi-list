@@ -92,7 +92,7 @@ function DashboardRtpInfo({ currentStream }: { currentStream: SDK.types.IStreamI
                 title: (
                     <>
                         <span>RTP</span>
-                        <span style={{ verticalAlign: 'sub' }}>offset</span>
+                        <span style={{ verticalAlign: 'sub', fontSize: '0.75em' }}>offset</span>
                     </>
                 ),
                 data: [

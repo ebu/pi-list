@@ -65,7 +65,7 @@ function CbufferAnalysis({
         title: (
             <>
                 <span>C</span>
-                <span style={{ verticalAlign: 'sub' }}>inst</span>
+                <span style={{ verticalAlign: 'sub', fontSize: '0.75em' }}>inst</span>
             </>
         ),
         xAxisTitle: 'Time (TAI)',
@@ -80,7 +80,7 @@ function CbufferAnalysis({
         title: (
             <>
                 <span>C</span>
-                <span style={{ verticalAlign: 'sub' }}>inst</span>
+                <span style={{ verticalAlign: 'sub', fontSize: '0.75em' }}>inst</span>
             </>
         ),
         xAxisTitle: 'Time (TAI)',
