@@ -83,7 +83,7 @@ function SettingsContent({
                             <div className="settings-page-select">
                                 <div className="settings-select-container">
                                     <div className="settings-select-label-container">
-                                        <span className="settings-select-label">Analysis Profile Data</span>
+                                        <span className="settings-select-label">Analysis Profile</span>
                                     </div>
                                     <Select
                                         styles={customStyles}

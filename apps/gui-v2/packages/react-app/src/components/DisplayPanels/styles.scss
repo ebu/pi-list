@@ -86,18 +86,13 @@
     }
 }
 
-.display-panel-title-underline {
-    border: solid 1px $vibrant-blue;
-    border-radius: 50%;
-}
-
 .display-panel-title {
     @include Font();
     font-size: 16px;
     line-height: 14px;
     padding-bottom: 0.7em;
-
     color: $font-light-grey;
+    border-bottom: solid 1px $vibrant-blue;
 }
 
 //SUBSTREAMS ANALYSIS PANEL

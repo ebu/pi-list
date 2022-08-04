@@ -3,8 +3,21 @@
 .extra-panel-information-container {
     display: flex;
     flex-direction: column;
+
+    &:not(:last-of-type) {
+        margin-bottom: 1rem;
+    }
 }
 
+.extra-panel-information-header {
+    font-family: Prompt;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 27px;
+    color: $white;
+    padding-bottom: 0.9em;
+}
 .extra-panel-information-title {
     font-family: Prompt;
     font-style: normal;

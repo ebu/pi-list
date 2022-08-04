@@ -1,8 +1,9 @@
 import React from 'react';
+import { IMouseOverHandler } from 'utils/useSidebarInfo';
 import './styles.scss';
 
 interface IComponentProps {
-    title: string;
+    title: string | React.ReactElement;
     min: string;
     avg: string;
     max: string;
@@ -10,12 +11,21 @@ interface IComponentProps {
     attention?: boolean;
 }
 
-function MeasurementMinAvgMaxDisplay({ displayData }: { displayData: IComponentProps }) {
+function MeasurementMinAvgMaxDisplay({
+    displayData,
+    actions,
+}: {
+    displayData: IComponentProps;
+    actions?: IMouseOverHandler;
+}) {
     return (
-        <div className="display-panel-container">
+        <div
+            className={`display-panel-container ${actions ? 'actions' : ''}`}
+            onMouseEnter={actions?.onMouseEnter}
+            onMouseLeave={actions?.onMouseLeave}
+        >
             <div className="blend-div"></div>
             <span className="display-panel-title">{displayData.title}</span>
-            <div className="display-panel-title-underline"></div>
             <div className="display-panel-information">
                 <div className="display-panel-information-item">
                     <div className="display-panel-information-data">

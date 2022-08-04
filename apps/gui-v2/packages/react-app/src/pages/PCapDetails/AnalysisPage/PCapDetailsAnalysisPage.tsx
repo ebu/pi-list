@@ -9,7 +9,7 @@ import UnknownAnalysisDisplay from './Unknown/UnknownAnalysisDisplay';
 const getPcapType = (currentStream: SDK.types.IStreamInfo | undefined, pcapID: string) => {
     switch (currentStream?.full_media_type) {
         case 'video/raw':
-            return <VideoAnalysisDisplay currentStream={currentStream} pcapID={pcapID} />;
+            return <VideoAnalysisDisplay currentStream={currentStream} />;
         case 'audio/L16':
         case 'audio/L24':
             return <AudioAnalysisDisplay currentStream={currentStream} />;

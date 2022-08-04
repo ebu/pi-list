@@ -19,14 +19,17 @@
             font-size: 12px;
         }
 
-        a, button, button:hover {
+        a,
+        button,
+        button:hover {
             margin: 0.5rem 0;
             text-decoration: none;
             display: flex;
             color: $dark-white;
         }
 
-        button, button:hover {
+        button,
+        button:hover {
             i {
                 font-size: 17px !important;
                 padding-right: 0;

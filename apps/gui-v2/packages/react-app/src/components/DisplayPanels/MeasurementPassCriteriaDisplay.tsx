@@ -1,4 +1,5 @@
 import React from 'react';
+import { IMouseOverHandler } from 'utils/useSidebarInfo';
 import './styles.scss';
 
 type labelValue = {
@@ -23,11 +24,6 @@ interface IComponentProps {
     attention?: boolean;
 }
 
-export interface IMouseOverHandler {
-    onMouseEnter: () => void;
-    onMouseLeave: () => void;
-}
-
 function MeasurementPassCriteriaDisplay({
     displayData,
     actions,
@@ -43,7 +39,6 @@ function MeasurementPassCriteriaDisplay({
         >
             <div className="blend-div"></div>
             <span className="display-panel-title">{displayData.measurementData.title} </span>
-            <div className="display-panel-title-underline"></div>
             <div className="display-panel-information">
                 {displayData.measurementData.data.map((item, index) => (
                     <div className="display-panel-information-item" key={index}>
@@ -66,7 +61,6 @@ function MeasurementPassCriteriaDisplay({
             {displayData.passCriteriaData ? (
                 <>
                     <span className="display-panel-title">{displayData.passCriteriaData.title}</span>
-                    <span className="display-panel-title-underline"></span>
                     <div className="display-panel-information">
                         {displayData.passCriteriaData.data.map((item, index) => (
                             <div className="display-panel-information-item" key={index}>

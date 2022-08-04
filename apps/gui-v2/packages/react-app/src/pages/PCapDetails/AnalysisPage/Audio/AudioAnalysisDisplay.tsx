@@ -1,7 +1,8 @@
 import SDK from '@bisect/ebu-list-sdk';
 import AudioDashboardRtpInfo from './AudioDashboardRtpInfo';
-import AudioDashboardTsdInfo from './AudioDashboardTsdInfo';
+import AudioDashboardTsdfInfo from './AudioDashboardTsdfInfo';
 import '../../styles.scss';
+import './styles.scss';
 
 function AudioAnalysisDisplay({ currentStream }: { currentStream: SDK.types.IStreamInfo | undefined }) {
     return (
@@ -10,7 +11,7 @@ function AudioAnalysisDisplay({ currentStream }: { currentStream: SDK.types.IStr
                 <AudioDashboardRtpInfo currentStream={currentStream} />
             </div>
             <div className="analysis-page-container">
-                <AudioDashboardTsdInfo currentStream={currentStream} />
+                <AudioDashboardTsdfInfo currentStream={currentStream} />
             </div>
         </>
     );
