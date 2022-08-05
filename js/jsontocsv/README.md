@@ -1,3 +1,6 @@
 ## How to generate the csv file
 
-`yarn run generate`
+1. Run `yarn` on the jsontocsv folder
+2. Drag the jsons that need to be parsed to jsontocsv/src/jsonsToParse directory
+3. Run `yarn run generate` on jsontocsv folder
+4. The file will be generated to the jsontocsv/src/parsedJsons folder with the name `jsonParsed.csv`
