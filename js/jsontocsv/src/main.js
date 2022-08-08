@@ -31,7 +31,9 @@ let convertFile = () => {
     }
     //listing all files using forEach
     files.forEach(function (file) {
-      console.log(file)
+      const fileExtension = path.extname(file);
+
+      if (fileExtension !== ".json") return;
       const jsonPath = require(path.join(__dirname, './jsonsToParse/' + file));
       const pathToWrite = path.join(__dirname, './parsedJsons/jsonParsed.csv');
 
@@ -47,10 +49,8 @@ let convertFile = () => {
       { value: 'streams.media_specific.width', label: 'Width' },
       { value: 'streams.media_specific.height', label: 'Height' },
       { value: 'streams.media_specific.packets_per_frame', label: 'Packets per Frame' },
-      { value: 'streams.statistics.dropped_packet_count', label: 'Dropped Packets' },
       { value: 'streams.statistics.frame_counte', label: 'Frame Count' },
       { value: 'streams.statistics.packet_count', label: 'Packet Count' },
-      { value: 'streams.statistics.dropped_packet_count', label: 'Dropped Packets' },
       { value: 'streams.analyses.mac_address_analysis.result', label: 'Mac Address Analysis' },
       { value: 'streams.analyses.rtp_ts_vs_nt.result', label: 'RTP Offset' },
       { value: 'streams.analyses.packet_ts_vs_rtp_ts.result', label: 'Latency' },
@@ -78,8 +78,8 @@ let convertFile = () => {
 
       try {
         fs.readFile(file, function (err, data) {
-          console.log("DATA", data)
           if (!fs.existsSync(pathToWrite)) {
+
             const json2csvParser = new Parser({
               fields,
               transforms: [unwind({ paths: ['streams'] })],
@@ -88,10 +88,11 @@ let convertFile = () => {
 
             const csvFile = json2csvParser.parse(jsonPath);
 
-            fs.writeFile(pathToWrite, csvFile, function (err) {
+            fs.writeFileSync(pathToWrite, csvFile, function (err) {
               if (err) throw err;
               console.log('File saved');
-            });
+            })
+
           } else {
             const json2csvParser = new Parser({
               fields,
@@ -102,15 +103,11 @@ let convertFile = () => {
 
             const csvFile = json2csvParser.parse(jsonPath);
 
-            fs.appendFile('jsonParsed.csv', "\r\n", function (err) {
-              if (err) throw err;
-            });
 
-            fs.appendFile(pathToWrite, csvFile, function (err) {
+            fs.appendFile(pathToWrite, "\n" + csvFile, function (err) {
               if (err) throw err;
               console.log('File saved');
             });
-
           }
         });
 
