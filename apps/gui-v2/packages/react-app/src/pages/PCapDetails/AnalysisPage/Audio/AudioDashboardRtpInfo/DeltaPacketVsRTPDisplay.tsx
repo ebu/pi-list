@@ -1,7 +1,52 @@
 import SDK from '@bisect/ebu-list-sdk';
 import { MeasurementPassCriteriaDisplay, ExtraPanelInformation } from 'components';
+import { IMeasurementData } from 'utils/measurements';
 import { SetSidebarInfoType } from 'utils/useSidebarInfo';
 import * as labels from 'utils/labels';
+
+const rangeToString = (value: SDK.api.pcap.IAudioValueRangeUs): string | undefined => {
+    const min = value[0] ?? undefined;
+    const max = value[1] ?? undefined;
+
+    if (min === undefined && max === undefined) {
+        return undefined;
+    }
+
+    if (min === undefined) {
+        return `<= ${max}`;
+    }
+
+    if (max === undefined) {
+        return `>= ${min}`;
+    }
+
+    return `[${min} .. ${max}]`;
+};
+
+type LabelValue = {
+    label: string;
+    value: string;
+};
+
+const rangeToContentItem = (label: string, value: SDK.api.pcap.IAudioValueRangeUs): LabelValue | undefined => {
+    const v = rangeToString(value);
+    if (!v) return undefined;
+    return {
+        label,
+        value: v,
+    };
+};
+
+type RangeContentEntry = {
+    label: string;
+    value: SDK.api.pcap.IAudioValueRangeUs;
+};
+
+const rangeToContentArray = (entries: RangeContentEntry[]): LabelValue[] => {
+    const x = entries.map(item => rangeToContentItem(item.label, item.value));
+    const y = x.filter(v => v !== undefined) as LabelValue[];
+    return y;
+};
 
 const DeltaPacketVsRTPDisplay = ({
     deltaPktTsVsRtpTs,
@@ -10,44 +55,36 @@ const DeltaPacketVsRTPDisplay = ({
     deltaPktTsVsRtpTs: SDK.api.pcap.IStreamAnalysis;
     setAdditionalInformation: SetSidebarInfoType;
 }) => {
-    const deltaPacketVsRTPData = {
-        measurementData: {
-            title: labels.audioLatencyTitle,
-            data: [
-                {
-                    labelTag: 'Min',
-                    value: deltaPktTsVsRtpTs?.details.range.min.toFixed(1),
-                },
-                {
-                    labelTag: 'Avg',
-                    value: deltaPktTsVsRtpTs?.details.range.avg.toFixed(1),
-                },
-                {
-                    labelTag: 'Max',
-                    value: deltaPktTsVsRtpTs?.details.range.max.toFixed(1),
-                },
-            ],
-        },
-        unit: 'μs',
-    };
+    if (!deltaPktTsVsRtpTs) return null;
 
-    const extraPanelData = {
-        title: 'Range',
-        units: 'μs',
-        content: [
+    const measurementData: IMeasurementData = {
+        title: labels.audioLatencyTitle,
+        data: [
             {
                 label: 'Min',
-                value: deltaPktTsVsRtpTs?.details.limit.min,
+                value: deltaPktTsVsRtpTs.details.range.min.toFixed(1),
             },
             {
-                label: 'Max Avg',
-                value: deltaPktTsVsRtpTs?.details.limit.maxAvg,
+                label: 'Avg',
+                value: deltaPktTsVsRtpTs.details.range.avg.toFixed(1),
             },
             {
                 label: 'Max',
-                value: deltaPktTsVsRtpTs?.details.limit.max,
+                value: deltaPktTsVsRtpTs.details.range.max.toFixed(1),
             },
         ],
+        unit: 'μs',
+    };
+
+    const details = deltaPktTsVsRtpTs.details as SDK.api.pcap.IAudioLatencyAnalysisDetails;
+    const extraPanelData = {
+        title: 'Range',
+        units: 'μs',
+        content: rangeToContentArray([
+            { label: 'Min', value: details.limit.min },
+            { label: 'Avg', value: details.limit.avg },
+            { label: 'Max', value: details.limit.max },
+        ]),
     };
 
     const additionalInformation = (
@@ -70,7 +107,7 @@ const DeltaPacketVsRTPDisplay = ({
         },
     };
 
-    return <MeasurementPassCriteriaDisplay displayData={deltaPacketVsRTPData} actions={actions} />;
+    return <MeasurementPassCriteriaDisplay displayData={measurementData} actions={actions} />;
 };
 
 export default DeltaPacketVsRTPDisplay;

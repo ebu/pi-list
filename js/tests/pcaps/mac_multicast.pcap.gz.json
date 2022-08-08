@@ -17,46 +17,28 @@
     "sdps": [],
     "sdp_count": 0,
     "transport_type": "RTP",
-    "_id": "626953d7f93e29dfd57d8912",
-    "id": "c7017d60-c636-11ec-966a-13e25495ef0a",
+    "_id": "62eeac00c7dfc0f2f254c6e1",
+    "id": "83e15210-15b1-11ed-89ce-e97e27da4bfb",
     "__v": 0,
-    "analyzer_version": "2.0.3",
+    "analyzer_version": "2.1.0",
     "capture_date": 0,
-    "capture_file_name": "1651069911099_22b2f9bc-4272-4e6b-897c-27abdb47cd21.gz",
-    "date": 1651069911118,
+    "capture_file_name": "1659808768438_51f39311-cd96-47c6-ac84-b7caed0de506.gz",
+    "date": 1659808768454,
     "file_name": "mac_multicast.pcap.gz",
-    "owner_id": "473c23a0-c636-11ec-8bf3-e1cb62c23cbf",
-    "pcap_file_name": "1651069911099_22b2f9bc-4272-4e6b-897c-27abdb47cd21.pcap",
+    "owner_id": "cb1e4760-15b0-11ed-bdf3-41577ba67b6f",
+    "pcap_file_name": "1659808768438_51f39311-cd96-47c6-ac84-b7caed0de506.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
-        "timestamps": {
-            "source": "pcap"
-        },
+        "timestamps": { "source": "pcap" },
         "audio": {
-            "deltaPktTsVsRtpTsLimit": {
-                "unit": "μs",
-                "min": 0,
-                "maxAvg": 1000,
-                "max": 1000
-            },
-            "tsdf": {
-                "tolerance": 1,
-                "limit": 17,
-                "unit": "packet_time"
-            }
+            "deltaPktTsVsRtpTsLimit": { "min": [0, null, "μs"], "avg": [null, 1000, "μs"], "max": [null, 1000, "μs"] },
+            "tsdf": { "tolerance": 1, "limit": 17, "unit": "packet_time" }
         }
     },
     "summary": {
         "error_list": [],
-        "warning_list": [
-            {
-                "stream_id": null,
-                "value": {
-                    "id": "warnings.pcap.truncated"
-                }
-            }
-        ]
+        "warning_list": [{ "stream_id": null, "value": { "id": "warnings.pcap.truncated" } }]
     },
     "streams": []
 }

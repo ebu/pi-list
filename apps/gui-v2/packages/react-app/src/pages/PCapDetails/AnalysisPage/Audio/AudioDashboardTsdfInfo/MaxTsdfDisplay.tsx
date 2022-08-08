@@ -2,6 +2,7 @@ import React from 'react';
 import { translate } from 'utils/translation';
 import { ExtraPanelInformation, MeasurementPassCriteriaDisplay } from 'components';
 import { SetSidebarInfoType } from 'utils/useSidebarInfo';
+import { IMeasurementData } from 'utils/measurements';
 
 const MaxTsdfDisplay = ({
     analysis,
@@ -12,15 +13,14 @@ const MaxTsdfDisplay = ({
 }) => {
     const tsdf_max = analysis.max === null || analysis.max === undefined ? '---' : analysis.max;
 
-    const maximumTimestampedDelayFactorData = {
-        measurementData: {
-            title: translate('media_information.audio.tsdf_max'),
-            data: [
-                {
-                    value: tsdf_max,
-                },
-            ],
-        },
+    const measurementData: IMeasurementData = {
+        title: 'TS-DF',
+        data: [
+            {
+                label: 'Max',
+                value: tsdf_max,
+            },
+        ],
         unit: 'μs',
     };
 
@@ -51,7 +51,7 @@ const MaxTsdfDisplay = ({
         },
     };
 
-    return <MeasurementPassCriteriaDisplay displayData={maximumTimestampedDelayFactorData} actions={actions} />;
+    return <MeasurementPassCriteriaDisplay displayData={measurementData} actions={actions} />;
 };
 
 export default MaxTsdfDisplay;

@@ -8,6 +8,8 @@ interface IComponentProps {
 }
 
 function ExtraPanelInformation({ displayData }: { displayData: IComponentProps }) {
+    if (!displayData) return null;
+
     return (
         <div className="extra-panel-information-container">
             <span className="extra-panel-information-title">{displayData.title}</span>

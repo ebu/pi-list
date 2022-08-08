@@ -1,34 +1,13 @@
 import React from 'react';
 import { IMouseOverHandler } from 'utils/useSidebarInfo';
+import { IMeasurementData } from 'utils/measurements';
 import './styles.scss';
-
-type labelValue = {
-    labelTag?: string | React.ReactElement;
-    value: string;
-};
-
-interface IMeasurementData {
-    title: string | React.ReactElement;
-    data: Array<labelValue>;
-}
-
-interface IPassCriteriaData {
-    title: string | React.ReactElement;
-    data: Array<labelValue>;
-}
-
-interface IComponentProps {
-    measurementData: IMeasurementData;
-    passCriteriaData?: IPassCriteriaData;
-    unit: string;
-    attention?: boolean;
-}
 
 function MeasurementPassCriteriaDisplay({
     displayData,
     actions,
 }: {
-    displayData: IComponentProps;
+    displayData: IMeasurementData;
     actions?: IMouseOverHandler;
 }) {
     return (
@@ -38,45 +17,24 @@ function MeasurementPassCriteriaDisplay({
             onMouseLeave={actions?.onMouseLeave}
         >
             <div className="blend-div"></div>
-            <span className="display-panel-title">{displayData.measurementData.title} </span>
+            <span className="display-panel-title">{displayData.title} </span>
             <div className="display-panel-information">
-                {displayData.measurementData.data.map((item, index) => (
+                {displayData.data.map((item, index) => (
                     <div className="display-panel-information-item" key={index}>
                         <div
-                            className={`display-panel-information-data ${
-                                displayData.attention === true ? 'attention' : ''
-                            }`}
+                            className={`display-panel-information-data ${item.attention === true ? 'attention' : ''}`}
                             key={index}
                         >
                             <span>{item.value}</span>
                         </div>
                         <div className="display-panel-information-bar"></div>
                         <div className="display-panel-label">
-                            <span>{item.labelTag}</span>
+                            <span>{item.label}</span>
                         </div>
                     </div>
                 ))}
                 <span className="display-panel-information-units">{displayData.unit}</span>
             </div>
-            {displayData.passCriteriaData ? (
-                <>
-                    <span className="display-panel-title">{displayData.passCriteriaData.title}</span>
-                    <div className="display-panel-information">
-                        {displayData.passCriteriaData.data.map((item, index) => (
-                            <div className="display-panel-information-item" key={index}>
-                                <div className="display-panel-information-data">
-                                    <span>{item.value}</span>
-                                </div>
-                                <div className="display-panel-information-bar"></div>
-                                <div className="display-panel-label">
-                                    <span>{item.labelTag}</span>
-                                </div>
-                            </div>
-                        ))}
-                        <span className="display-panel-information-units">{displayData.unit}</span>
-                    </div>
-                </>
-            ) : null}
         </div>
     );
 }

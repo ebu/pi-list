@@ -2,6 +2,7 @@ import React from 'react';
 import SDK from '@bisect/ebu-list-sdk';
 import { nsPropAsMinMaxAvgUs } from 'utils/stats';
 import { MeasurementPassCriteriaDisplay, ExtraPanelInformation } from 'components';
+import { IMeasurementData } from 'utils/measurements';
 import { SetSidebarInfoType } from 'utils/useSidebarInfo';
 import * as labels from 'utils/labels';
 
@@ -14,26 +15,26 @@ const LatencyDisplay = ({
 }) => {
     const latencyMeasurementData = nsPropAsMinMaxAvgUs(deltaPktTsVsRtpTs?.details.range);
     const latencyPassCriteriaData = nsPropAsMinMaxAvgUs(deltaPktTsVsRtpTs?.details.limit);
-    const latencyData = {
-        measurementData: {
-            title: labels.videoLatencyTitle,
-            data: [
-                {
-                    labelTag: 'Min',
-                    value: latencyMeasurementData.min,
-                },
-                {
-                    labelTag: 'Avg',
-                    value: latencyMeasurementData.avg,
-                },
-                {
-                    labelTag: 'Max',
-                    value: latencyMeasurementData.max,
-                },
-            ],
-        },
+    const measurementData: IMeasurementData = {
+        title: labels.videoLatencyTitle,
+        data: [
+            {
+                label: 'Min',
+                value: latencyMeasurementData.min,
+                attention: deltaPktTsVsRtpTs?.result !== 'compliant',
+            },
+            {
+                label: 'Avg',
+                value: latencyMeasurementData.avg,
+                attention: deltaPktTsVsRtpTs?.result !== 'compliant',
+            },
+            {
+                label: 'Max',
+                value: latencyMeasurementData.max,
+                attention: deltaPktTsVsRtpTs?.result !== 'compliant',
+            },
+        ],
         unit: 'μs',
-        attention: deltaPktTsVsRtpTs?.result !== 'compliant',
     };
 
     const extraPanelData = {
@@ -70,7 +71,7 @@ const LatencyDisplay = ({
             setInfo(undefined);
         },
     };
-    return <MeasurementPassCriteriaDisplay displayData={latencyData} actions={actions} />;
+    return <MeasurementPassCriteriaDisplay displayData={measurementData} actions={actions} />;
 };
 
 export default LatencyDisplay;

@@ -3,10 +3,12 @@ import SDK from '@bisect/ebu-list-sdk';
 import { MeasurementPassCriteriaDisplay, ExtraPanelInformation } from '../../../../components';
 import { nsPropAsMinMaxAvgUs, propAsMinMaxAvg, getComplianceSummary } from '../../../../utils/stats';
 import { translate } from '../../../../utils/translation';
-import './styles.scss';
 import { informationSidebarContentAtom } from '../../../../store/gui/informationSidebar/informationSidebarContent';
 import { useSetRecoilState } from 'recoil';
 import { debounce } from 'lodash';
+import { IMeasurementData } from 'utils/measurements';
+
+import './styles.scss';
 
 function AncillaryDashboardRtpInfo({ currentStream }: { currentStream: SDK.types.IStreamInfo | undefined }) {
     const pktsPerFrame = currentStream?.analyses.pkts_per_frame || undefined;
@@ -29,22 +31,21 @@ function AncillaryDashboardRtpInfo({ currentStream }: { currentStream: SDK.types
 
     const PacketsPerFrameDisplay = () => {
         const packetsPerFrameMeasurementData = propAsMinMaxAvg(pktsPerFrame?.details.range, 1);
-        const packetsPerFrameData = {
-            measurementData: {
-                title: translate('media_information.video.packets_per_frame'),
-                data: [
-                    {
-                        labelTag: 'Min',
-                        value: packetsPerFrameMeasurementData.min,
-                    },
-                    {
-                        labelTag: 'Max',
-                        value: packetsPerFrameMeasurementData.max,
-                    },
-                ],
-            },
+        const packetsPerFrameData: IMeasurementData = {
+            title: translate('media_information.video.packets_per_frame'),
+            data: [
+                {
+                    label: 'Min',
+                    value: packetsPerFrameMeasurementData.min,
+                    attention: pktsPerFrame?.result !== 'compliant',
+                },
+                {
+                    label: 'Max',
+                    value: packetsPerFrameMeasurementData.max,
+                    attention: pktsPerFrame?.result !== 'compliant',
+                },
+            ],
             unit: pktsPerFrame?.details.unit,
-            attention: pktsPerFrame?.result !== 'compliant',
         };
 
         const extraPanelData = {
@@ -76,22 +77,21 @@ function AncillaryDashboardRtpInfo({ currentStream }: { currentStream: SDK.types
     const LatencyDisplay = () => {
         const latencyMeasurementData = nsPropAsMinMaxAvgUs(deltaPktTsVsRtpTs?.details.range);
         const latencyPassCriteriaData = nsPropAsMinMaxAvgUs(deltaPktTsVsRtpTs?.details.limit);
-        const latencyData = {
-            measurementData: {
-                title: translate('media_information.rtp.delta_first_packet_time_vs_rtp_time'),
-                data: [
-                    {
-                        labelTag: 'Min',
-                        value: latencyMeasurementData.min,
-                    },
-                    {
-                        labelTag: 'Max',
-                        value: latencyMeasurementData.max,
-                    },
-                ],
-            },
+        const latencyData: IMeasurementData = {
+            title: translate('media_information.rtp.delta_first_packet_time_vs_rtp_time'),
+            data: [
+                {
+                    label: 'Min',
+                    value: latencyMeasurementData.min,
+                    attention: deltaPktTsVsRtpTs?.result !== 'compliant',
+                },
+                {
+                    label: 'Max',
+                    value: latencyMeasurementData.max,
+                    attention: deltaPktTsVsRtpTs?.result !== 'compliant',
+                },
+            ],
             unit: 'us',
-            attention: deltaPktTsVsRtpTs?.result !== 'compliant',
         };
 
         const extraPanelData = {
@@ -123,26 +123,26 @@ function AncillaryDashboardRtpInfo({ currentStream }: { currentStream: SDK.types
     const InterFrameRtpTsDisplay = () => {
         const interFrameRtpTsMeasurementData = propAsMinMaxAvg(interFrameRtpDelta?.details.range, 1);
         const interFrameRtpTsPassCriteriaData = interFrameRtpDelta?.details.limit;
-        const interFrameRtpTsData = {
-            measurementData: {
-                title: translate('media_information.rtp.inter_frame_rtp_ts_delta'),
-                data: [
-                    {
-                        labelTag: 'Min',
-                        value: interFrameRtpTsMeasurementData.min,
-                    },
-                    {
-                        labelTag: 'Avg',
-                        value: interFrameRtpTsMeasurementData.avg,
-                    },
-                    {
-                        labelTag: 'Max',
-                        value: interFrameRtpTsMeasurementData.max,
-                    },
-                ],
-            },
+        const interFrameRtpTsData: IMeasurementData = {
+            title: translate('media_information.rtp.inter_frame_rtp_ts_delta'),
+            data: [
+                {
+                    label: 'Min',
+                    value: interFrameRtpTsMeasurementData.min,
+                    attention: interFrameRtpDelta?.result !== 'compliant',
+                },
+                {
+                    label: 'Avg',
+                    value: interFrameRtpTsMeasurementData.avg,
+                    attention: interFrameRtpDelta?.result !== 'compliant',
+                },
+                {
+                    label: 'Max',
+                    value: interFrameRtpTsMeasurementData.max,
+                    attention: interFrameRtpDelta?.result !== 'compliant',
+                },
+            ],
             unit: 'ticks',
-            attention: interFrameRtpDelta?.result !== 'compliant',
         };
 
         const extraPanelData = {

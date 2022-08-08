@@ -1,6 +1,7 @@
 import React from 'react';
 import { getAverageFromHistogram, getLowestFromHistogram, getHighestFromHistogram } from 'utils/stats';
 import { MeasurementPassCriteriaDisplay, ExtraPanelInformation } from 'components';
+import { IMeasurementData } from 'utils/measurements';
 import * as labels from 'utils/labels';
 import { SetSidebarInfoType } from 'utils/useSidebarInfo';
 
@@ -18,26 +19,26 @@ const CInstDisplay = ({
     const cavg = getAverageFromHistogram(globalVideoAnalysis.cinst.histogram);
     const invalidCinst = cinstAnalysis.result !== 'compliant';
 
-    const CInstData = {
-        measurementData: {
-            title: labels.cInst,
-            data: [
-                {
-                    labelTag: 'Min',
-                    value: cmin,
-                },
-                {
-                    labelTag: 'Avg',
-                    value: cavg.toFixed(3),
-                },
-                {
-                    labelTag: 'Max',
-                    value: cpeak,
-                },
-            ],
-        },
+    const cInstData: IMeasurementData = {
+        title: labels.cInst,
+        data: [
+            {
+                label: 'Min',
+                value: cmin,
+                attention: invalidCinst,
+            },
+            {
+                label: 'Avg',
+                value: cavg.toFixed(3),
+                attention: invalidCinst,
+            },
+            {
+                label: 'Max',
+                value: cpeak,
+                attention: invalidCinst,
+            },
+        ],
         unit: 'packets',
-        attention: invalidCinst,
     };
 
     const extraPanelData = {
@@ -70,7 +71,8 @@ const CInstDisplay = ({
             setInfo(undefined);
         },
     };
-    return <MeasurementPassCriteriaDisplay displayData={CInstData} actions={actions} />;
+
+    return <MeasurementPassCriteriaDisplay displayData={cInstData} actions={actions} />;
 };
 
 export default CInstDisplay;

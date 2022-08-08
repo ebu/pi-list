@@ -19,10 +19,10 @@ function PCapDetailsContent({
 }) {
     const [currentHeaderType, setcurrentHeaderType] = React.useState<number>(0);
 
-    const isTTML = currentStream?.full_media_type === 'application/ttml+xml' ? true : false;
-    const isUnknown = currentStream?.full_media_type === 'unknown' ? true : false;
-    const isJxsv = currentStream?.full_media_type === 'video/jxsv' ? true : false;
-    const isSRT = currentStream?.full_transport_type === 'SRT' ? true : false;
+    const isTTML = currentStream?.full_media_type === 'application/ttml+xml';
+    const isUnknown = currentStream?.full_media_type === 'unknown';
+    const isJxsv = currentStream?.full_media_type === 'video/jxsv';
+    const isSRT = currentStream?.full_transport_type === 'SRT';
 
     //If we support more media types that don't need graphs or analysis, this needs to be changed
     const hasAnalysis = !isTTML && !isJxsv && !isSRT;
@@ -51,11 +51,14 @@ function PCapDetailsContent({
         }
     };
 
+    const profileName = pcap?.analysis_profile.label;
+
     return (
         <div>
             <div className="main-page-header">
                 <PCapDetailsHeaderHOC
                     headerTitle={pcapFilename}
+                    profileName={profileName}
                     onHeaderTypeClick={onHeaderTypeClick}
                     currentHeaderType={currentHeaderType}
                     hasAnalysis={hasAnalysis}

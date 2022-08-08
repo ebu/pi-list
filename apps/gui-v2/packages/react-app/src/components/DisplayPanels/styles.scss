@@ -67,9 +67,10 @@
 
     &.attention {
         color: red;
+        font-weight: 300;
     }
 
-    color: $font-dark-grey;
+    color: $font-light-grey;
 }
 
 .display-panel-label {
@@ -82,7 +83,7 @@
         line-height: 18px;
         padding-top: 0.25em;
 
-        color: $font-light-grey;
+        color: $font-dark-grey;
     }
 }
 

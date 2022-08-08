@@ -1,6 +1,7 @@
 import React from 'react';
 import { getAverageFromHistogram, getLowestFromHistogram, getHighestFromHistogram } from 'utils/stats';
 import { MeasurementPassCriteriaDisplay, ExtraPanelInformation } from 'components';
+import { IMeasurementData } from 'utils/measurements';
 import { SetSidebarInfoType } from 'utils/useSidebarInfo';
 import * as labels from 'utils/labels';
 
@@ -18,26 +19,26 @@ const VrxDisplay = ({
     const vrxavg = getAverageFromHistogram(globalVideoAnalysis.vrx.histogram);
     const invalidVrx = vrxAnalysis.result !== 'compliant';
 
-    const VrxData = {
-        measurementData: {
-            title: 'VRX',
-            data: [
-                {
-                    labelTag: 'Min',
-                    value: vrxmin,
-                },
-                {
-                    labelTag: 'Avg',
-                    value: vrxavg.toFixed(3),
-                },
-                {
-                    labelTag: 'Max',
-                    value: vrxpeak,
-                },
-            ],
-        },
+    const measurementData: IMeasurementData = {
+        title: 'VRX',
+        data: [
+            {
+                label: 'Min',
+                value: vrxmin,
+                attention: invalidVrx,
+            },
+            {
+                label: 'Avg',
+                value: vrxavg.toFixed(3),
+                attention: invalidVrx,
+            },
+            {
+                label: 'Max',
+                value: vrxpeak,
+                attention: invalidVrx,
+            },
+        ],
         unit: 'packets',
-        attention: invalidVrx,
     };
 
     const extraPanelData = {
@@ -70,7 +71,8 @@ const VrxDisplay = ({
             setInfo(undefined);
         },
     };
-    return <MeasurementPassCriteriaDisplay displayData={VrxData} actions={actions} />;
+
+    return <MeasurementPassCriteriaDisplay displayData={measurementData} actions={actions} />;
 };
 
 export default VrxDisplay;

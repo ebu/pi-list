@@ -3,63 +3,7 @@
 // This file has to be the same in listwebserver and gui
 // *********************************************************
 
-/* For details about audio profiles, see `docs/audio_timing_analysis.md` */
-
-const JTNMAudioRtpProfile = {
-    unit: 'μs',
-    min: 0,
-    maxAvg: 1000, // same as max to inhibit the impact for this profile
-    max: 1000,
-};
-
-const CBCAudioRtpProfile = {
-    unit: 'packet_time',
-    min: 0,
-    maxAvg: 3,
-    max: 19,
-};
-
-const EBUAudioTsdfProfile = {
-    tolerance: 1,
-    limit: 17,
-    unit: 'packet_time',
-};
-
-const profiles = [
-    {
-        id: '5b2203b2-0aec-40fa-b0da-2f36a1c06af6',
-        label: 'JT-NM Tested 2020',
-        timestamps: {
-            source: 'pcap',
-        },
-        audio: {
-            deltaPktTsVsRtpTsLimit: JTNMAudioRtpProfile,
-            tsdf: EBUAudioTsdfProfile,
-        },
-    },
-    {
-        id: 'b89d08b5-0dc8-4860-b5d5-32d2a051957e',
-        label: 'JT-NM Tested 2020 (use PTP packets to derive clock)',
-        timestamps: {
-            source: 'ptp_packets',
-        },
-        audio: {
-            deltaPktTsVsRtpTsLimit: JTNMAudioRtpProfile,
-            tsdf: EBUAudioTsdfProfile,
-        },
-    },
-    {
-        id: 'b89d08b5-0dc8-4860-b5d5-32d2a0519f73',
-        label: 'CBC',
-        timestamps: {
-            source: 'pcap',
-        },
-        audio: {
-            deltaPktTsVsRtpTsLimit: CBCAudioRtpProfile,
-            tsdf: EBUAudioTsdfProfile,
-        },
-    },
-];
+const profiles = require('./profiles');
 
 module.exports = {
     outcome: {

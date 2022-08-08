@@ -1,14 +1,8 @@
 import React from 'react';
 import SDK from '@bisect/ebu-list-sdk';
-import { nsPropAsMinMaxAvgUs, propAsMinMaxAvg, getComplianceSummary } from 'utils/stats';
+import { propAsMinMaxAvg } from 'utils/stats';
 import { MeasurementPassCriteriaDisplay, ExtraPanelInformation } from 'components';
-import { translate } from 'utils/translation';
-import { informationSidebarContentAtom } from 'store/gui/informationSidebar/informationSidebarContent';
-import { useSetRecoilState } from 'recoil';
-import { debounce } from 'lodash';
-import LatencyDisplay from './LatencyDisplay';
-import RtpOffsetDisplay from './RtpOffsetDisplay';
-import useSidebarInfo from 'utils/useSidebarInfo';
+import { IMeasurementData } from 'utils/measurements';
 import { SetSidebarInfoType } from 'utils/useSidebarInfo';
 import * as labels from 'utils/labels';
 
@@ -21,26 +15,26 @@ const InterFrameRtpTsDisplay = ({
 }) => {
     const interFrameRtpTsMeasurementData = propAsMinMaxAvg(interFrameRtpDelta?.details.range, 1);
     const interFrameRtpTsPassCriteriaData = interFrameRtpDelta?.details.limit;
-    const interFrameRtpTsData = {
-        measurementData: {
-            title: labels.interFrameRtpTsTitle,
-            data: [
-                {
-                    labelTag: 'Min',
-                    value: interFrameRtpTsMeasurementData.min,
-                },
-                {
-                    labelTag: 'Avg',
-                    value: interFrameRtpTsMeasurementData.avg,
-                },
-                {
-                    labelTag: 'Max',
-                    value: interFrameRtpTsMeasurementData.max,
-                },
-            ],
-        },
+    const measurementData: IMeasurementData = {
+        title: labels.interFrameRtpTsTitle,
+        data: [
+            {
+                label: 'Min',
+                value: interFrameRtpTsMeasurementData.min,
+                attention: interFrameRtpDelta?.result !== 'compliant',
+            },
+            {
+                label: 'Avg',
+                value: interFrameRtpTsMeasurementData.avg,
+                attention: interFrameRtpDelta?.result !== 'compliant',
+            },
+            {
+                label: 'Max',
+                value: interFrameRtpTsMeasurementData.max,
+                attention: interFrameRtpDelta?.result !== 'compliant',
+            },
+        ],
         unit: 'ticks',
-        attention: interFrameRtpDelta?.result !== 'compliant',
     };
 
     const extraPanelData = {
@@ -78,7 +72,7 @@ const InterFrameRtpTsDisplay = ({
         },
     };
 
-    return <MeasurementPassCriteriaDisplay displayData={interFrameRtpTsData} actions={actions} />;
+    return <MeasurementPassCriteriaDisplay displayData={measurementData} actions={actions} />;
 };
 
 export default InterFrameRtpTsDisplay;

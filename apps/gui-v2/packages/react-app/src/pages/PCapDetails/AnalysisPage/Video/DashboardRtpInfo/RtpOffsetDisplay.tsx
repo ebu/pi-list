@@ -2,6 +2,7 @@ import React from 'react';
 import SDK from '@bisect/ebu-list-sdk';
 import { propAsMinMaxAvg } from 'utils/stats';
 import { MeasurementPassCriteriaDisplay, ExtraPanelInformation } from 'components';
+import { IMeasurementData } from 'utils/measurements';
 import { SetSidebarInfoType } from 'utils/useSidebarInfo';
 import * as labels from 'utils/labels';
 
@@ -14,26 +15,26 @@ const RtpOffsetDisplay = ({
 }) => {
     const rtpOffsetMeasurementData = propAsMinMaxAvg(deltaRtpTsVsNTFrame?.details.range);
     const rtpOffsetPassCriteriaData = deltaRtpTsVsNTFrame?.details.limit;
-    const rtpOffsetData = {
-        measurementData: {
-            title: labels.rtpOffset,
-            data: [
-                {
-                    labelTag: 'Min',
-                    value: rtpOffsetMeasurementData.min,
-                },
-                {
-                    labelTag: 'Avg',
-                    value: rtpOffsetMeasurementData.avg,
-                },
-                {
-                    labelTag: 'Max',
-                    value: rtpOffsetMeasurementData.max,
-                },
-            ],
-        },
+    const measurementData: IMeasurementData = {
+        title: labels.rtpOffset,
+        data: [
+            {
+                label: 'Min',
+                value: rtpOffsetMeasurementData.min,
+                attention: deltaRtpTsVsNTFrame?.result !== 'compliant',
+            },
+            {
+                label: 'Avg',
+                value: rtpOffsetMeasurementData.avg,
+                attention: deltaRtpTsVsNTFrame?.result !== 'compliant',
+            },
+            {
+                label: 'Max',
+                value: rtpOffsetMeasurementData.max,
+                attention: deltaRtpTsVsNTFrame?.result !== 'compliant',
+            },
+        ],
         unit: 'ticks',
-        attention: deltaRtpTsVsNTFrame?.result !== 'compliant',
     };
 
     const extraPanelData = {
@@ -70,7 +71,7 @@ const RtpOffsetDisplay = ({
             setInfo(undefined);
         },
     };
-    return <MeasurementPassCriteriaDisplay displayData={rtpOffsetData} actions={actions} />;
+    return <MeasurementPassCriteriaDisplay displayData={measurementData} actions={actions} />;
 };
 
 export default RtpOffsetDisplay;

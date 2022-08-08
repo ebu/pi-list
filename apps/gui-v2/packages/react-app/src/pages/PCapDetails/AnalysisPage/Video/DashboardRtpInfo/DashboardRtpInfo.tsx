@@ -1,16 +1,11 @@
 import React from 'react';
 import SDK from '@bisect/ebu-list-sdk';
-import { nsPropAsMinMaxAvgUs, propAsMinMaxAvg, getComplianceSummary } from 'utils/stats';
-import { MeasurementPassCriteriaDisplay, ExtraPanelInformation } from 'components';
+import { getComplianceSummary } from 'utils/stats';
 import { translate } from 'utils/translation';
-import { informationSidebarContentAtom } from 'store/gui/informationSidebar/informationSidebarContent';
-import { useSetRecoilState } from 'recoil';
-import { debounce } from 'lodash';
 import LatencyDisplay from './LatencyDisplay';
 import RtpOffsetDisplay from './RtpOffsetDisplay';
 import InterFrameRtpTsDisplay from './InterFrameRtpTsDisplay';
 import useSidebarInfo from 'utils/useSidebarInfo';
-import * as labels from 'utils/labels';
 
 function DashboardRtpInfo({ currentStream }: { currentStream: SDK.types.IStreamInfo | undefined }) {
     const setInfo = useSidebarInfo();
@@ -44,7 +39,9 @@ function DashboardRtpInfo({ currentStream }: { currentStream: SDK.types.IStreamI
                 <div className="video-dashboard-rtp-info-summary-value-container">
                     {summaryValues.map((item, index) => (
                         <div key={index}>
-                            <span className="video-dashboard-rtp-info-summary-title ">{translate(item.labelTag)}:</span>
+                            <span className="video-dashboard-rtp-info-summary-title ">
+                                {translate(item.labelTag)}:{' '}
+                            </span>
                             <span
                                 className={`video-dashboard-rtp-info-summary-value ${
                                     item.attention === true ? 'attention' : ''

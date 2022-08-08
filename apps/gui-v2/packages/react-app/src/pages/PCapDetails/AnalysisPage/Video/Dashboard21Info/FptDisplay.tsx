@@ -2,27 +2,26 @@ import React from 'react';
 import { nsAsMicroseconds } from 'utils/stats';
 import { MeasurementPassCriteriaDisplay, ExtraPanelInformation } from 'components';
 import { SetSidebarInfoType } from 'utils/useSidebarInfo';
+import { IMeasurementData } from 'utils/measurements';
 import * as labels from 'utils/labels';
 
 const FptDisplay = ({ videoMediaSpecific, setInfo }: { videoMediaSpecific: any; setInfo: SetSidebarInfoType }) => {
-    const FptData = {
-        measurementData: {
-            title: 'FPT',
-            data: [
-                {
-                    labelTag: 'Min',
-                    value: nsAsMicroseconds(videoMediaSpecific.min_tro_ns),
-                },
-                {
-                    labelTag: 'Avg',
-                    value: nsAsMicroseconds(videoMediaSpecific.avg_tro_ns),
-                },
-                {
-                    labelTag: 'Max',
-                    value: nsAsMicroseconds(videoMediaSpecific.max_tro_ns),
-                },
-            ],
-        },
+    const measurementData: IMeasurementData = {
+        title: 'FPT',
+        data: [
+            {
+                label: 'Min',
+                value: nsAsMicroseconds(videoMediaSpecific.min_tro_ns),
+            },
+            {
+                label: 'Avg',
+                value: nsAsMicroseconds(videoMediaSpecific.avg_tro_ns),
+            },
+            {
+                label: 'Max',
+                value: nsAsMicroseconds(videoMediaSpecific.max_tro_ns),
+            },
+        ],
         unit: 'μs',
     };
 
@@ -42,7 +41,8 @@ const FptDisplay = ({ videoMediaSpecific, setInfo }: { videoMediaSpecific: any; 
             setInfo(undefined);
         },
     };
-    return <MeasurementPassCriteriaDisplay displayData={FptData} actions={actions} />;
+
+    return <MeasurementPassCriteriaDisplay displayData={measurementData} actions={actions} />;
 };
 
 export default FptDisplay;

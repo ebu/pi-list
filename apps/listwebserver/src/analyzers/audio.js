@@ -6,6 +6,10 @@ const {
     appendError
 } = require('./utils');
 
+import {
+    updateStreamWithPktTsVsRtpTs
+} from './audio2';
+
 // returns
 // {
 //     result : as defined in constants.outcome
@@ -72,69 +76,6 @@ function updateStreamWithTsdfMax(stream, tsdfMax, tsdfProfile) {
     if (result === constants.outcome.not_compliant) {
         stream = appendError(stream, {
             id: constants.errors.tsdf_not_compliant,
-        });
-    }
-
-    return stream;
-}
-
-function getPktTsVsRtpTsCompliance(range, limit) {
-    if (
-        _.isNil(range) ||
-        _.isNil(range.min) ||
-        _.isNil(range.max) ||
-        range.min < limit.min ||
-        range.max > limit.max ||
-        range.avg > limit.maxAvg
-    ) {
-        return {
-            result: constants.outcome.not_compliant,
-        };
-    }
-
-    return {
-        result: constants.outcome.compliant,
-    };
-}
-
-function updateStreamWithPktTsVsRtpTs(stream, range, profile) {
-    let global_audio_analysis = stream.global_audio_analysis === undefined ? {} : stream.global_audio_analysis;
-
-    // convert to 'μs'
-    const packet_time_us = stream.media_specific.packet_time * 1000;
-    const limit =
-        profile.unit === 'packet_time' ? {
-            min: profile.min * packet_time_us,
-            maxAvg: profile.maxAvg * packet_time_us,
-            max: profile.max * packet_time_us,
-        } : {
-            min: profile.min,
-            maxAvg: profile.maxAvg,
-            max: profile.max,
-        };
-
-    const packet_ts_vs_rtp_ts = {
-        range: range,
-        limit: limit,
-        unit: 'μs',
-    };
-    global_audio_analysis['packet_ts_vs_rtp_ts'] = packet_ts_vs_rtp_ts;
-
-    // TODO: maybe remove global_audio_analysis
-    stream = _.set(stream, 'global_audio_analysis', global_audio_analysis);
-
-    const {
-        result
-    } = getPktTsVsRtpTsCompliance(range, limit);
-    const report = {
-        result,
-        details: packet_ts_vs_rtp_ts,
-    };
-    stream = _.set(stream, 'analyses.packet_ts_vs_rtp_ts', report);
-
-    if (result === constants.outcome.not_compliant) {
-        stream = appendError(stream, {
-            id: constants.errors.audio_rtp_ts_not_compliant,
         });
     }
 
