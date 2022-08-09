@@ -15,7 +15,9 @@ const HTTP_STATUS_CODE = require('../../enums/httpStatusCode');
 const exec = util.promisify(child_process.exec);
 const Pcap = require('../../models/pcap');
 const Stream = require('../../models/stream');
-const { sdpToSource } = require('../../controllers/sdp');
+const {
+    sdpToSource
+} = require('../../controllers/sdp');
 const {
     doVideoAnalysis
 } = require('../../analyzers/video');
@@ -50,7 +52,9 @@ const {
 import {
     getUserFolder
 } from '../../util/analysis/utils';
-import { getIpInfoFromSdp } from '../sdp';
+import {
+    getIpInfoFromSdp
+} from '../sdp';
 
 /**
  * Provides a command-line string to be appended
@@ -114,8 +118,8 @@ function pcapFormatConversion(req, res, next) {
 
                 res.locals.pcapFileName =
                     uploadedFileExtension !== '' ?
-                        req.file.filename.replace(fileExtensionRegex, 'pcap') :
-                        req.file.filename + '.pcap';
+                    req.file.filename.replace(fileExtensionRegex, 'pcap') :
+                    req.file.filename + '.pcap';
                 res.locals.pcapFilePath = convertedFilePath;
                 next();
             })
@@ -213,11 +217,11 @@ function handlePreprocessorResponse(msg) {
         };
 
         Pcap.findOneAndUpdate({
-            id: pcapId
-        }, _.merge(pcapData, pcapAdditionalData), {
-            upsert: true,
-            new: true
-        })
+                id: pcapId
+            }, _.merge(pcapData, pcapAdditionalData), {
+                upsert: true,
+                new: true
+            })
             .exec()
             .then(function (pcapDbData) {
                 logger('stream-pre-processor').info(`Added new Pcap file to the database: ${pcapId}`);
@@ -309,12 +313,14 @@ function pcapPreProcessing(req, res, next) {
         next
     };
 
-    Pcap.findOne({ id: req.pcap.uuid }).exec()
+    Pcap.findOne({
+            id: req.pcap.uuid
+        }).exec()
         .then((data) => {
             let transport_type = "RTP";
-            
-            if(data){
-               transport_type = data.transport_type 
+
+            if (data) {
+                transport_type = data.transport_type
             }
 
             preprocessorRequestSender.send({
@@ -341,12 +347,12 @@ function mapSdpsToStreams(pcapData) {
         const sdpParsed = sdpToSource(sdp);
         sdpsParsed.push(sdpParsed)
     })
-    
+
     let sdp_count = 0;
 
     Stream.find({
-        pcap: pcapData.id
-    }).exec()
+            pcap: pcapData.id
+        }).exec()
         .then((streamsData) => {
             streamsData.map((stream) => {
                 const streamDestinationAddress = stream.network_information.destination_address;
@@ -358,20 +364,23 @@ function mapSdpsToStreams(pcapData) {
 
                     if (streamDestinationAddress === sdpDestinationAddress && streamDestinationPort === sdpDestinationPort) {
                         sdp_count++;
-                        Stream.findOneAndUpdate({ id: stream.id },
-                            {
+                        Stream.findOneAndUpdate({
+                                id: stream.id
+                            }, {
                                 sdp: sdp
-                            },
-                            { upsert: true }).exec()
+                            }, {
+                                upsert: true
+                            }).exec()
                             .then(() => {
                                 const filteredSdps = pcapData.sdps.filter(sdpFromPcap => sdpFromPcap !== sdp.sdp.raw);
-                                Pcap.findOneAndUpdate({ id: pcapData.id },
-                                    {
-                                        sdps: filteredSdps,
-                                        sdp_count: sdp_count
-                                    },
-                                    { upsert: true }
-                                ).exec()
+                                Pcap.findOneAndUpdate({
+                                    id: pcapData.id
+                                }, {
+                                    sdps: filteredSdps,
+                                    sdp_count: sdp_count
+                                }, {
+                                    upsert: true
+                                }).exec()
                             });
                     }
                 })
@@ -381,7 +390,9 @@ function mapSdpsToStreams(pcapData) {
 
 function parseSdps(req, res, next) {
     try {
-        Pcap.findOne({ id: req.pcap.uuid }).exec()
+        Pcap.findOne({
+                id: req.pcap.uuid
+            }).exec()
             .then((pcapData) => {
                 mapSdpsToStreams(pcapData);
                 next();
@@ -394,14 +405,22 @@ function parseSdps(req, res, next) {
 
 function parseTransportType(req, res, next) {
     try {
-        Pcap.findOne({ id: req.pcap.uuid }).exec()
+        Pcap.findOne({
+                id: req.pcap.uuid
+            }).exec()
             .then((pcapData) => {
-                Stream.find({ pcap: req.pcap.uuid }).exec()
+                Stream.find({
+                        pcap: req.pcap.uuid
+                    }).exec()
                     .then((streamsData) => {
                         streamsData.map((stream) => {
-                            Stream.findOneAndUpdate({ id: stream.id },
-                                { full_transport_type: pcapData.transport_type },
-                                { upsert: true }).exec();
+                            Stream.findOneAndUpdate({
+                                id: stream.id
+                            }, {
+                                full_transport_type: pcapData.transport_type
+                            }, {
+                                upsert: true
+                            }).exec();
                         });
                     });
                 next();
@@ -449,8 +468,8 @@ function insertInDatabase(req, res, next) {
 
 const postProcessSdpFiles = async (pcapId, folder) => {
     Pcap.findOne({
-        id: pcapId
-    })
+            id: pcapId
+        })
         .exec()
         .then(async (data) => {
             const filename = data.file_name.replace(/\.[^\.]*$/, '-sdp.zip').replace(RegExp('/', 'g'), '-');
@@ -487,8 +506,8 @@ export const runAnalysis = async (params) => {
 
         if (extractFrames === false) {
             Pcap.findOne({
-                id: pcapId
-            })
+                    id: pcapId
+                })
                 .exec()
                 .then((pcap) => {
                     if (pcap.error) {
@@ -541,8 +560,8 @@ function resetStreamCountersAndErrors(req, res, next) {
     } = req.params;
 
     Stream.findOne({
-        id: streamID
-    })
+            id: streamID
+        })
         .exec()
         .then((data) => {
             if (typeof data.statistics !== 'undefined') {
@@ -565,8 +584,8 @@ function resetStreamCountersAndErrors(req, res, next) {
             }
 
             Stream.findOneAndUpdate({
-                id: streamID
-            }, data)
+                    id: streamID
+                }, data)
                 .exec()
                 .then((data) => {
                     next();
@@ -646,13 +665,14 @@ const videoConsolidation = async (req, res, next) => {
 };
 
 function audioConsolidation(req, res, next) {
+    const userId = getUserId(req);
     const pcapId = req.pcap.uuid;
     Stream.find({
-        pcap: pcapId,
-        media_type: 'audio'
-    })
+            pcap: pcapId,
+            media_type: 'audio'
+        })
         .exec()
-        .then((streams) => doAudioAnalysis(pcapId, streams, req.analysisProfile.audio))
+        .then((streams) => doAudioAnalysis(userId, pcapId, streams, req.analysisProfile.audio))
         .then((streams) => {
             addStreamsToReq(streams, req);
         })
@@ -665,9 +685,9 @@ function audioConsolidation(req, res, next) {
 function ancillaryConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
     Stream.find({
-        pcap: pcapId,
-        media_type: 'ancillary_data'
-    })
+            pcap: pcapId,
+            media_type: 'ancillary_data'
+        })
         .exec()
         .then((streams) => doAncillaryAnalysis(req, streams))
         .then((streams) => {
@@ -682,9 +702,9 @@ function ancillaryConsolidation(req, res, next) {
 function ttmlConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
     Stream.find({
-        pcap: pcapId,
-        media_type: 'ttml'
-    })
+            pcap: pcapId,
+            media_type: 'ttml'
+        })
         .exec()
         .then((streams) => doTtmlAnalysis(req, streams))
         .then((streams) => {
@@ -699,9 +719,9 @@ function ttmlConsolidation(req, res, next) {
 function unknownConsolidation(req, res, next) {
     const pcapId = req.pcap.uuid;
     Stream.find({
-        pcap: pcapId,
-        media_type: 'unknown'
-    })
+            pcap: pcapId,
+            media_type: 'unknown'
+        })
         .exec()
         .then((streams) => {
             addStreamsToReq(streams, req);
@@ -728,12 +748,12 @@ function pcapIngestEnd(req, res, next) {
     const pcapId = req.pcap.uuid;
 
     Pcap.findOneAndUpdate({
-        id: pcapId
-    }, {
-        analyzed: true
-    }, {
-        new: true
-    })
+            id: pcapId
+        }, {
+            analyzed: true
+        }, {
+            new: true
+        })
         .exec()
         .then((pcapData) => {
             // Everything is done, we must notify the GUI

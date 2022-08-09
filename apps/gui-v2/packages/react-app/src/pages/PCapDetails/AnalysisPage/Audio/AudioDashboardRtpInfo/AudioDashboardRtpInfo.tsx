@@ -6,7 +6,10 @@ import DeltaPacketVsRTPDisplay from './DeltaPacketVsRTPDisplay';
 import useSidebarInfo from 'utils/useSidebarInfo';
 
 function AudioDashboardRtpInfo({ currentStream }: { currentStream: SDK.types.IStreamInfo | undefined }) {
+    const setInfo = useSidebarInfo();
+
     const deltaPktTsVsRtpTs = currentStream?.analyses.packet_ts_vs_rtp_ts || undefined;
+    if (!deltaPktTsVsRtpTs) return null;
 
     const summary = [
         {
@@ -14,8 +17,6 @@ function AudioDashboardRtpInfo({ currentStream }: { currentStream: SDK.types.ISt
             ...getComplianceSummary([deltaPktTsVsRtpTs]),
         },
     ];
-
-    const setInfo = useSidebarInfo();
 
     return (
         <>

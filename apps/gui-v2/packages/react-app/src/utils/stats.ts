@@ -1,13 +1,16 @@
 import { api } from '@bisect/ebu-list-sdk';
+import { isArray } from 'lodash';
 
 export const getComplianceSummary = (v: any) => {
+    if (!isArray(v)) {
+        return { value: 'Not compliant', attention: true };
+    }
+
     var res = true;
     for (var i = 0; i < v.length; i++) {
         res = v[i].result !== api.constants.analysisConstants.outcome.compliant ? false : res;
     }
-    return res
-        ? { value: 'Compliant' }
-        : { value: 'Not compliant', attention: true };
+    return res ? { value: 'Compliant' } : { value: 'Not compliant', attention: true };
 };
 
 export const nsPropAsMinMaxAvgUs = (info: any) => {

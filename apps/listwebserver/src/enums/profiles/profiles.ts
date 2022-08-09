@@ -18,7 +18,7 @@ const EBUAudioTsdfProfile: SDK.api.pcap.ITsdfProfile = {
     unit: 'packet_time',
 };
 
-const profiles: SDK.api.pcap.IAnalysisProfile[] = [
+export const profiles: SDK.api.pcap.IAnalysisProfile[] = [
     {
         id: '17555997-661c-451a-a682-d79299e4dbda',
         label: 'JT-NM Tested 2022',
@@ -40,6 +40,11 @@ const profiles: SDK.api.pcap.IAnalysisProfile[] = [
                 tolerance: 1,
                 limit: 17,
                 unit: 'packet_time',
+            },
+            pit: {
+                min: [undefined, undefined, 'μs'],
+                avg: [0.99, 1.01, 'packet_time'],
+                max: [undefined, 17, 'packet_time'],
             },
         },
     },
@@ -77,5 +82,3 @@ const profiles: SDK.api.pcap.IAnalysisProfile[] = [
         },
     },
 ];
-
-export default profiles;

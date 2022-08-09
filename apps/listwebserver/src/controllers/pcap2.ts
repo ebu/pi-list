@@ -1,7 +1,6 @@
 import fs from 'fs';
 import util from 'util';
 import sdk from '@bisect/ebu-list-sdk';
-// import {} from '../util/filesystem';
 import { basename, join } from 'path';
 import { generatePcapDefinitionFromId } from '../util/analysis/utils';
 import { IPcapReq } from '../util/analysis';

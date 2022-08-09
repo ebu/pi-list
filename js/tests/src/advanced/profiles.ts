@@ -90,7 +90,7 @@ addTest(`Validate profile list"`, async (c: testUtils.ITestContext) => {
         const response: types.IAnalysisProfiles = await list.analysisProfile.getInfo();
         expect(response).not.toBeNull();
         expect(Array.isArray(response.all)).toBe(true);
-        expect(response.all.length).toBe(3);
+        expect(response.all.length).toBe(4);
     } catch (err: unknown) {
         const { message } = err as Error;
         console.error(`Error verifying profile list: ${message}`);

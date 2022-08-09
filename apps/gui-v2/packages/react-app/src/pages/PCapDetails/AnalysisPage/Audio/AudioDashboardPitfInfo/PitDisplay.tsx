@@ -1,45 +1,50 @@
 import SDK from '@bisect/ebu-list-sdk';
-import { MeasurementPassCriteriaDisplay, ExtraPanelInformation } from 'components';
-import { IMeasurementData, rangeToContentArray } from 'utils/measurements';
+import { MeasurementPassCriteriaDisplay } from 'components';
 import { SetSidebarInfoType } from 'utils/useSidebarInfo';
-import MinMaxAvgRangeAdditionalInformation from 'pages/PCapDetails/AnalysisPage/MinMaxAvgRangeAdditionalInformation';
+import { IMeasurementData } from 'utils/measurements';
 import * as labels from 'utils/labels';
+import MinMaxAvgRangeAdditionalInformation from 'pages/PCapDetails/AnalysisPage/MinMaxAvgRangeAdditionalInformation';
 
-const DeltaPacketVsRTPDisplay = ({
-    deltaPktTsVsRtpTs,
+const PitDisplay = ({
+    details,
     setAdditionalInformation,
+    attention,
 }: {
-    deltaPktTsVsRtpTs: SDK.api.pcap.IAudioLatencyAnalysis;
+    details: SDK.api.pcap.IAudioPitAnalysisDetails;
     setAdditionalInformation: SetSidebarInfoType;
+    attention: boolean;
 }) => {
-    if (!deltaPktTsVsRtpTs) return null;
+    if (!details) return null;
 
     const measurementData: IMeasurementData = {
         title: labels.audioLatencyTitle,
         data: [
             {
                 label: 'Min',
-                value: deltaPktTsVsRtpTs.details.range.min.toFixed(1),
+                value: details.range.min.toFixed(1),
+                attention,
             },
             {
                 label: 'Avg',
-                value: deltaPktTsVsRtpTs.details.range.avg.toFixed(1),
+                value: details.range.avg.toFixed(1),
+                attention,
             },
             {
                 label: 'Max',
-                value: deltaPktTsVsRtpTs.details.range.max.toFixed(1),
+                value: details.range.max.toFixed(1),
+                attention,
             },
         ],
-        unit: 'μs',
+        unit: details.range.unit,
     };
 
     const actions = {
         onMouseEnter: () => {
             setAdditionalInformation(
                 <MinMaxAvgRangeAdditionalInformation
-                    title={labels.audioLatencyTitle}
-                    definition={labels.audioLatencyDefinition}
-                    limit={deltaPktTsVsRtpTs.details?.limit}
+                    title={labels.pitTitle}
+                    definition={labels.pitDefinition}
+                    limit={details.limit}
                 />
             );
         },
@@ -51,4 +56,4 @@ const DeltaPacketVsRTPDisplay = ({
     return <MeasurementPassCriteriaDisplay displayData={measurementData} actions={actions} />;
 };
 
-export default DeltaPacketVsRTPDisplay;
+export default PitDisplay;

@@ -103,6 +103,8 @@ export const gapDefinition = (
     </span>
 );
 
+export const pitTitle = 'Packet Interval Time';
+
 export const pitDefinition = (
     <span>
         TPA<span className="list-subscript">j</span> - TPA
