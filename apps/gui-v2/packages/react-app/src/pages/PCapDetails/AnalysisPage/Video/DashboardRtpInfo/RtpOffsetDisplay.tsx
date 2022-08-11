@@ -13,6 +13,8 @@ const RtpOffsetDisplay = ({
     deltaRtpTsVsNTFrame: SDK.api.pcap.IStreamAnalysis;
     setInfo: SetSidebarInfoType;
 }) => {
+    if (!deltaRtpTsVsNTFrame) return null;
+
     const rtpOffsetMeasurementData = propAsMinMaxAvg(deltaRtpTsVsNTFrame?.details.range);
     const rtpOffsetPassCriteriaData = deltaRtpTsVsNTFrame?.details.limit;
     const measurementData: IMeasurementData = {

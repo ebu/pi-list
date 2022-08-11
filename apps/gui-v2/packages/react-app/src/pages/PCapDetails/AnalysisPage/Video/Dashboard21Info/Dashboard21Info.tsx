@@ -25,6 +25,11 @@ function Dashboard21Info({ currentStream }: { currentStream: SDK.types.IStreamIn
     const setInfo = useSidebarInfo();
 
     const globalVideoAnalysis = currentStream?.global_video_analysis;
+
+    if (!globalVideoAnalysis?.compliance) {
+        return null;
+    }
+
     const videoMediaSpecific = currentStream?.media_specific as SDK.api.pcap.IST2110VideoInfo;
     const interPacketSpacing = currentStream?.network_information.inter_packet_spacing;
     const gapData = interPacketSpacing && interPacketSpacing.after_m_bit;

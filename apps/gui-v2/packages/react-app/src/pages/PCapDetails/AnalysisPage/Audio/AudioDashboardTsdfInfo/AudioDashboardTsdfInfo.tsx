@@ -5,7 +5,10 @@ import MaxTsdfDisplay from './MaxTsdfDisplay';
 import useSidebarInfo from 'utils/useSidebarInfo';
 
 function AudioDashboardRtpInfo({ currentStream }: { currentStream: SDK.types.IStreamInfo | undefined }) {
-    const analysis = currentStream?.global_audio_analysis.tsdf;
+    const setInfo = useSidebarInfo();
+
+    const analysis = currentStream?.global_audio_analysis?.tsdf;
+    if (!analysis) return null;
     const invalid = analysis.result !== 'compliant';
 
     const summary = [
@@ -15,8 +18,6 @@ function AudioDashboardRtpInfo({ currentStream }: { currentStream: SDK.types.ISt
             attention: invalid,
         },
     ];
-
-    const setInfo = useSidebarInfo();
 
     return (
         <>

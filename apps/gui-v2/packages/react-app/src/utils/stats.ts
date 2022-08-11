@@ -20,8 +20,8 @@ export const nsPropAsMinMaxAvgUs = (info: any) => {
 };
 
 export const propAsMinMaxAvg = (info: any, nDecimal?: number) => {
-    if (info === null) return { min: '---', max: '---', avg: '---' };
-    return { min: info.min, max: info.max, avg: info.avg.toFixed(nDecimal || 0) };
+    if (!info) return { min: '---', max: '---', avg: '---' };
+    return { min: info.min, max: info.max, avg: info.avg?.toFixed(nDecimal || 0) };
 };
 
 export const getAverageFromHistogram = (hist: any) => {

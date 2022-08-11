@@ -13,8 +13,8 @@ export interface IMeasurementData {
 }
 
 const rangeToString = (value: SDK.api.pcap.IAudioValueRangeUs): string | undefined => {
-    const min = value[0] ?? undefined;
-    const max = value[1] ?? undefined;
+    const min = value.min ?? undefined;
+    const max = value.max ?? undefined;
 
     if (min === undefined && max === undefined) {
         return undefined;

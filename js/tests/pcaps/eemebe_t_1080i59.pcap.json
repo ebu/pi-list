@@ -18,22 +18,26 @@
     "parsed_sdps": [],
     "media_type_map": [],
     "transport_type": "RTP",
-    "_id": "62f3c2df967b3db4b911df89",
-    "id": "14c5e290-18ba-11ed-a312-b71d57f5064c",
+    "_id": "62f52907967b3db4b91269c3",
+    "id": "90c8a640-198f-11ed-b5cc-d112a8e210a4",
     "__v": 0,
     "analyzer_version": "2.1.0",
     "capture_date": 1516906244153,
-    "capture_file_name": "1660142301031_d44a50c6-383d-4ea8-8c72-3b5cd30c8d83.pcap",
-    "date": 1660142303840,
+    "capture_file_name": "1660233991870_41eb89ae-fb8f-43b5-81ff-c129af2f663a.pcap",
+    "date": 1660233991946,
     "file_name": "eemebe_t_1080i59.pcap",
     "owner_id": "42103150-1893-11ed-9329-fd5c8cb1cedf",
-    "pcap_file_name": "1660142301031_d44a50c6-383d-4ea8-8c72-3b5cd30c8d83.pcap",
+    "pcap_file_name": "1660233991870_41eb89ae-fb8f-43b5-81ff-c129af2f663a.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
         "timestamps": { "source": "pcap" },
         "audio": {
-            "deltaPktTsVsRtpTsLimit": { "min": [0, null, "μs"], "avg": [null, 1000, "μs"], "max": [null, 1000, "μs"] },
+            "deltaPktTsVsRtpTsLimit": {
+                "min": { "min": 0, "max": null, "unit": "μs" },
+                "avg": { "min": null, "max": 1000, "unit": "μs" },
+                "max": { "min": null, "max": 1000, "unit": "μs" }
+            },
             "tsdf": { "tolerance": 1, "limit": 17, "unit": "packet_time" }
         }
     },
@@ -44,10 +48,10 @@
     "streams": [
         {
             "error_list": [],
-            "_id": "62f3c2df795842db38c45e82",
+            "_id": "62f529076cebdd95c42f338c",
             "full_media_type": "video/raw",
             "full_transport_type": "RTP",
-            "id": "3f39f0d7-40cb-4234-8075-e6491abc40ff",
+            "id": "912c9a6c-4065-4fdb-a0ba-9809cd09b5ab",
             "media_specific": {
                 "avg_tro_ns": 615145,
                 "color_depth": 10,
@@ -69,7 +73,6 @@
             "media_type_validation": {
                 "application/ttml+xml": ["STATUS_CODE_TTML_INVALID_DOCUMENT"],
                 "audio/L16": ["STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"],
-                "video/jxsv": ["STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"],
                 "video/smpte291": ["STATUS_CODE_ANC_WRONG_HEADER"]
             },
             "network_information": {
@@ -91,7 +94,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "14c5e290-18ba-11ed-a312-b71d57f5064c",
+            "pcap": "90c8a640-198f-11ed-b5cc-d112a8e210a4",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -111,12 +114,12 @@
             "analyses": {
                 "mac_address_analysis": { "result": "compliant" },
                 "rtp_ts_vs_nt": {
+                    "result": "compliant",
                     "details": {
                         "range": { "min": -1, "max": -1, "avg": -1 },
                         "limit": { "min": -1, "max": 60 },
                         "unit": "ticks"
-                    },
-                    "result": "compliant"
+                    }
                 },
                 "packet_ts_vs_rtp_ts": {
                     "details": {

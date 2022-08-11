@@ -59,17 +59,18 @@ export function updateStreamWithTsdfMax(
         max: tsdfMax,
         tolerance: packetTime * tsdfProfile.tolerance,
         limit: packetTime * tsdfProfile.limit,
-        unit: 'μs',
+        unit: 'μs' as 'μs',
     };
     const { result, level } = getTsdfCompliance(tsdfInfo);
 
-    const tsdf: api.pcap.ITsdfAnalysisDetails = {
+    const tsdf: api.pcap.ITsdfGlobalDetails = {
         ...tsdfInfo,
         compliance: result,
         level: level,
         result: result,
     };
 
+    stream.global_audio_analysis = stream.global_audio_analysis ?? {};
     stream.global_audio_analysis[AnalysisNames.tsdf] = tsdf;
 
     const report = {
@@ -89,8 +90,8 @@ export function updateStreamWithTsdfMax(
 
 // Returns true if the value is within the range
 function checkRangeValue(value: number, limit: api.pcap.IAudioValueRangeUs): boolean {
-    const min = limit[0];
-    const max = limit[1];
+    const min = limit.min;
+    const max = limit.max;
     if (min !== undefined && value < min) return false;
     if (max !== undefined && value > max) return false;
     return true;
@@ -109,14 +110,14 @@ const getRangeCompliance = (
 ): api.pcap.Compliance => (limit === undefined ? 'disabled' : checkRange(range, limit) ? 'compliant' : 'not_compliant');
 
 function toUsRange(packet_time_us: number, range: api.pcap.IAudioValueRange): api.pcap.IAudioValueRangeUs {
-    if (range[2] === 'packet_time') {
-        const min = range[0] === undefined ? undefined : range[0] * packet_time_us;
-        const max = range[1] === undefined ? undefined : range[1] * packet_time_us;
+    if (range.unit === 'packet_time') {
+        const min = range.min === undefined ? undefined : range.min * packet_time_us;
+        const max = range.max === undefined ? undefined : range.max * packet_time_us;
 
-        return [min, max];
+        return { min, max };
     }
 
-    return [range[0], range[1]];
+    return { min: range.min, max: range.max };
 }
 
 const toUsProfile = (packet_time_us: number, profile: api.pcap.IMinMaxAvgRanges): api.pcap.IMinMaxAvgUsRanges => ({
@@ -141,9 +142,10 @@ export function updateStreamWithPktTsVsRtpTs(
     const packet_ts_vs_rtp_ts = {
         range: range,
         limit: limitUs,
-        unit: 'μs',
+        unit: 'μs' as api.pcap.AudioTimeUnit,
     };
 
+    stream.global_audio_analysis = stream.global_audio_analysis ?? {};
     stream.global_audio_analysis[AnalysisNames.packet_ts_vs_rtp_ts] = packet_ts_vs_rtp_ts;
 
     const result = getRangeCompliance(range, limitUs);
@@ -151,7 +153,9 @@ export function updateStreamWithPktTsVsRtpTs(
         result,
         details: packet_ts_vs_rtp_ts,
     };
-    stream = _.set(stream, makeAnalysisName(AnalysisNames.packet_ts_vs_rtp_ts), report);
+
+    stream.analyses = stream.analyses ?? {};
+    stream.analyses.packet_ts_vs_rtp_ts = report;
 
     if (result === 'not_compliant') {
         stream = appendError(stream, {
@@ -204,6 +208,8 @@ function addPitAnalysis(
         throw Error('Calling with a non-audio stream');
 
     const limit = profile !== undefined ? toUsProfile(packetTimeAsUs(stream.media_specific), profile) : undefined;
+
+    if (limit == undefined) return;
 
     const result = getRangeCompliance(pitRange, limit);
 

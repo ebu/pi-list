@@ -79,7 +79,7 @@ function VrxAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     const vrxHistPercData: number[][] = getPercHistData(vrxHistData);
     const vrxHistFinalData = getFinalHistData(vrxHistPercData);
     const leftMarginVrxHist = getLeftMarginBarGraphic(vrxHistFinalData);
-    const complianceVrxHist = getCompliance(currentStream?.global_video_analysis['vrx'].compliance);
+    const complianceVrxHist = getCompliance(currentStream?.global_video_analysis?.vrx?.compliance);
     const vrxHistGraphData = {
         barGraphic: vrxHistFinalData,
         title: mediaInfoHistogram,

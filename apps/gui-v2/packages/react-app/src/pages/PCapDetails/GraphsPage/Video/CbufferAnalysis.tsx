@@ -90,7 +90,7 @@ function CbufferAnalysis({
         leftMargin: leftMarginCinst,
     };
 
-    const complianceCHist = getCompliance(currentStream?.global_video_analysis['cinst'].compliance);
+    const complianceCHist = getCompliance(currentStream?.global_video_analysis?.cinst?.compliance);
     const cHistPercData: number[][] = getPercHistData(cHistData);
     const cHistFinalData = getFinalHistData(cHistPercData);
     const leftMarginCHist = getLeftMarginBarGraphic(cHistFinalData);

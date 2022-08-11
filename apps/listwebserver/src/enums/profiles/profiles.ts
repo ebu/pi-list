@@ -1,15 +1,15 @@
 import SDK from '@bisect/ebu-list-sdk';
 
 const JTNM2020AudioRtpProfile: SDK.api.pcap.IAudioRtpProfile = {
-    min: [0, undefined, 'μs'],
-    avg: [undefined, 1000, 'μs'], // same as max to inhibit the impact for this profile
-    max: [undefined, 1000, 'μs'],
+    min: { min: 0, max: undefined, unit: 'μs' },
+    avg: { min: undefined, max: 1000, unit: 'μs' }, // same as max to inhibit the impact for this profile
+    max: { min: undefined, max: 1000, unit: 'μs' },
 };
 
 const CBCAudioRtpProfile: SDK.api.pcap.IAudioRtpProfile = {
-    min: [0, undefined, 'packet_time'],
-    avg: [undefined, 3, 'packet_time'],
-    max: [undefined, 19, 'packet_time'],
+    min: { min: 0, max: undefined, unit: 'packet_time' },
+    avg: { min: undefined, max: 3, unit: 'packet_time' },
+    max: { min: undefined, max: 19, unit: 'packet_time' },
 };
 
 const EBUAudioTsdfProfile: SDK.api.pcap.ITsdfProfile = {
@@ -32,9 +32,9 @@ export const profiles: SDK.api.pcap.IAnalysisProfile[] = [
                 // The instantaneous value of the RTP timestamp is expected not to be in the future.
                 // It should be measured between 1 packet time in the past and a tolerance corresponding
                 // to the encapsulation time (1 packet time)
-                min: [0, undefined, 'μs'],
-                avg: [undefined, 2500, 'μs'], // same as max to inhibit the impact for this profile
-                max: [undefined, 20, 'packet_time'],
+                min: { min: 0, max: undefined, unit: 'μs' },
+                avg: { min: undefined, max: 2500, unit: 'μs' }, // same as max to inhibit the impact for this profile
+                max: { min: undefined, max: 20, unit: 'packet_time' },
             },
             tsdf: {
                 tolerance: 1,
@@ -42,9 +42,9 @@ export const profiles: SDK.api.pcap.IAnalysisProfile[] = [
                 unit: 'packet_time',
             },
             pit: {
-                min: [undefined, undefined, 'μs'],
-                avg: [0.99, 1.01, 'packet_time'],
-                max: [undefined, 17, 'packet_time'],
+                min: { min: undefined, max: undefined, unit: 'μs' },
+                avg: { min: 0.99, max: 1.01, unit: 'packet_time' },
+                max: { min: undefined, max: 17, unit: 'packet_time' },
             },
         },
     },
