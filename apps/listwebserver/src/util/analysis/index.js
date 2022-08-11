@@ -15,9 +15,7 @@ const HTTP_STATUS_CODE = require('../../enums/httpStatusCode');
 const exec = util.promisify(child_process.exec);
 const Pcap = require('../../models/pcap');
 const Stream = require('../../models/stream');
-const {
-    sdpToSource
-} = require('../../controllers/sdp');
+
 const {
     doVideoAnalysis
 } = require('../../analyzers/video');
@@ -52,9 +50,10 @@ const {
 import {
     getUserFolder
 } from '../../util/analysis/utils';
+
 import {
-    getIpInfoFromSdp
-} from '../sdp';
+    parseSdps
+} from './sdp/sdp';
 
 /**
  * Provides a command-line string to be appended
@@ -336,71 +335,6 @@ function pcapPreProcessing(req, res, next) {
                 persistent: mq.persistent,
             });
         })
-}
-
-function mapSdpsToStreams(pcapData) {
-    const sdps = pcapData.sdps;
-    let sdpsParsed = [];
-
-    if (!sdps) return;
-    sdps.map((sdp) => {
-        const sdpParsed = sdpToSource(sdp);
-        sdpsParsed.push(sdpParsed)
-    })
-
-    let sdp_count = 0;
-
-    Stream.find({
-            pcap: pcapData.id
-        }).exec()
-        .then((streamsData) => {
-            streamsData.map((stream) => {
-                const streamDestinationAddress = stream.network_information.destination_address;
-                const streamDestinationPort = stream.network_information.destination_port;
-
-                sdpsParsed.map((sdp) => {
-                    const sdpDestinationAddress = sdp.sdp.streams[0].dstAddr;
-                    const sdpDestinationPort = (sdp.sdp.streams[0].dstPort).toString();
-
-                    if (streamDestinationAddress === sdpDestinationAddress && streamDestinationPort === sdpDestinationPort) {
-                        sdp_count++;
-                        Stream.findOneAndUpdate({
-                                id: stream.id
-                            }, {
-                                sdp: sdp
-                            }, {
-                                upsert: true
-                            }).exec()
-                            .then(() => {
-                                const filteredSdps = pcapData.sdps.filter(sdpFromPcap => sdpFromPcap !== sdp.sdp.raw);
-                                Pcap.findOneAndUpdate({
-                                    id: pcapData.id
-                                }, {
-                                    sdps: filteredSdps,
-                                    sdp_count: sdp_count
-                                }, {
-                                    upsert: true
-                                }).exec()
-                            });
-                    }
-                })
-            })
-        })
-}
-
-function parseSdps(req, res, next) {
-    try {
-        Pcap.findOne({
-                id: req.pcap.uuid
-            }).exec()
-            .then((pcapData) => {
-                mapSdpsToStreams(pcapData);
-                next();
-            })
-    } catch (err) {
-        logger('pcap-parse-sdps').error(`exception: ${err}`);
-        return err;
-    }
 }
 
 function parseTransportType(req, res, next) {
@@ -853,8 +787,8 @@ const {
 
 const analysisFromFile = [
     getAnalysisProfile,
-    pcapPreProcessing,
     parseSdps,
+    pcapPreProcessing,
     parseTransportType,
     pcapFullAnalysis,
     videoConsolidation,

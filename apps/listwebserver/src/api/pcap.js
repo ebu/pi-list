@@ -403,30 +403,6 @@ router.get('/:pcapID/download', (req, res, next) => {
         });
 });
 
-// /* Get sdp.sdp file for a pcap */
-// router.get('/:pcapID/sdp', (req, res, next) => {
-//     const { pcapID } = req.params;
-
-//     logger('sdp-get').info(`Getting SDP for ${pcapID}`);
-
-//     Pcap.findOne({
-//         id: pcapID,
-//     })
-//         .exec()
-//         .then((data) => {
-//             const filename = data.file_name.replace(/\.[^\.]*$/, '-sdp.zip');
-//             const sdpPath = path.join(`${getUserFolder(req)}`, `${pcapID}`, `${filename}`);
-
-//             res.download(sdpPath, filename, (err) => {
-//                 if (err) {
-//                     next(err);
-//                 } else {
-//                     logger('download').info(`File ${sdpPath}`);
-//                 }
-//             });
-//         });
-// });
-
 /* Get info from pcap */
 router.get('/:pcapID/', (req, res) => {
     const {

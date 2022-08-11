@@ -17,7 +17,7 @@ const PitDisplay = ({
     if (!details) return null;
 
     const measurementData: IMeasurementData = {
-        title: labels.audioLatencyTitle,
+        title: labels.pitTitle,
         data: [
             {
                 label: 'Min',

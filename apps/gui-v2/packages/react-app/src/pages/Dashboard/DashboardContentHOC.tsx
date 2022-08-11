@@ -239,7 +239,7 @@ const getDataToInformationSidebar = (
         buttonWithIconList.pop();
     }
 
-    if (currentPCap && currentPCap.sdp_count < 1) delete buttonWithIconList[1];
+    if (currentPCap && currentPCap.sdps.length === 0) delete buttonWithIconList[1];
 
     const isMultipleFilesSelected = currentPCapIds.length > 1;
 

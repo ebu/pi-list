@@ -1,0 +1,14 @@
+v=0
+o=- 3826217993 3826217993 IN IP4 10.1.1.198
+s=Video
+t=0 0
+m=video 50000 RTP/AVP 96
+c=IN IP4 239.1.1.1/64
+b=AS:2568807
+a=source-filter: incl IN IP4 239.1.1.1 10.1.1.2
+a=rtpmap:96 raw/90000
+a=fmtp:96 sampling=YCbCr-4:2:2; width=1920; height=1080; 
+   exactframerate=60; depth=10; TCS=SDR; colorimetry=BT709; 
+   interlaced; PM=2110GPM; SSN=ST2110-20:2017; TP=2110TPN; PAR=1:1;
+a=mediaclk:direct=0
+a=ts-refclk:localmac=1c-34-da-5a-be-34

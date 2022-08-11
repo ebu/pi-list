@@ -15,18 +15,19 @@
     "generated_from_network": false,
     "truncated": true,
     "sdps": [],
-    "sdp_count": 0,
+    "parsed_sdps": [],
+    "media_type_map": [],
     "transport_type": "RTP",
-    "_id": "62eeabfdc7dfc0f2f254c5a6",
-    "id": "824c3320-15b1-11ed-89ce-e97e27da4bfb",
+    "_id": "62f3c2df967b3db4b911df89",
+    "id": "14c5e290-18ba-11ed-a312-b71d57f5064c",
     "__v": 0,
     "analyzer_version": "2.1.0",
     "capture_date": 1516906244153,
-    "capture_file_name": "1659808765787_22a30de7-4842-4aaf-ac42-c5da49799a08.pcap",
-    "date": 1659808765824,
+    "capture_file_name": "1660142301031_d44a50c6-383d-4ea8-8c72-3b5cd30c8d83.pcap",
+    "date": 1660142303840,
     "file_name": "eemebe_t_1080i59.pcap",
-    "owner_id": "cb1e4760-15b0-11ed-bdf3-41577ba67b6f",
-    "pcap_file_name": "1659808765787_22a30de7-4842-4aaf-ac42-c5da49799a08.pcap",
+    "owner_id": "42103150-1893-11ed-9329-fd5c8cb1cedf",
+    "pcap_file_name": "1660142301031_d44a50c6-383d-4ea8-8c72-3b5cd30c8d83.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
@@ -43,10 +44,10 @@
     "streams": [
         {
             "error_list": [],
-            "_id": "62eeabfd114d52d9a53aae83",
+            "_id": "62f3c2df795842db38c45e82",
             "full_media_type": "video/raw",
             "full_transport_type": "RTP",
-            "id": "787012f8-19d5-4417-b775-ed8980b0590d",
+            "id": "3f39f0d7-40cb-4234-8075-e6491abc40ff",
             "media_specific": {
                 "avg_tro_ns": 615145,
                 "color_depth": 10,
@@ -90,7 +91,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "824c3320-15b1-11ed-89ce-e97e27da4bfb",
+            "pcap": "14c5e290-18ba-11ed-a312-b71d57f5064c",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
