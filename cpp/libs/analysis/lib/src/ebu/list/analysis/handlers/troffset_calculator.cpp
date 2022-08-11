@@ -1,7 +1,7 @@
 #include "ebu/list/analysis/handlers/troffset_calculator.h"
 #include "ebu/list/analysis/constants.h"
 #include "ebu/list/core/platform/parallel.h"
-//#include "ebu/list/database.h"
+// #include "ebu/list/database.h"
 #include "ebu/list/analysis/utils/rtp_utils.h"
 #include "ebu/list/pcap/player.h"
 #include "ebu/list/rtp/udp_handler.h"
@@ -17,7 +17,10 @@ using json = nlohmann::json;
 namespace
 {
     // TODO: move this to a common location
-    int64_t to_ns(fraction64 t) { return static_cast<uint64_t>(round(static_cast<double>(t) * 1'000'000'000)); }
+    int64_t to_ns(fraction64 t)
+    {
+        return static_cast<uint64_t>(round(static_cast<double>(t) * 1'000'000'000));
+    }
 } // namespace
 
 //------------------------------------------------------------------------------

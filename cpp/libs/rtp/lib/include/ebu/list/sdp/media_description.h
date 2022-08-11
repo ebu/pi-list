@@ -38,9 +38,9 @@ namespace ebu_list::media
         UNKNOWN
     };
 
-    std::string full_media_to_string(full_media_type full_media_type);
+    std::string to_string(full_media_type full_media_type);
     full_media_type full_media_from_string(std::string_view full_media);
-    std::string full_transport_type_to_string(transport_type full_transport_type);
+    std::string to_string(transport_type full_transport_type);
     transport_type full_transport_type_from_string(std::string_view full_media);
     bool is_full_media_type_video_raw(media::full_media_type full_media_type);
     bool is_full_media_type_video_jxsv(media::full_media_type full_media_type);

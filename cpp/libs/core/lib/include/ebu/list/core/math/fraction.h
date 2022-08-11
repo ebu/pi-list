@@ -142,13 +142,25 @@ namespace ebu_list
         return fraction_t<decltype(T() / U())>(f.numerator(), f.denominator() * u);
     }
 
-    template <typename T> inline T floor(const fraction_t<T>& f) { return f.numerator() / f.denominator(); }
+    template <typename T> inline T floor(const fraction_t<T>& f)
+    {
+        return f.numerator() / f.denominator();
+    }
 
-    template <typename T> inline T ceil(const fraction_t<T>& f) { return static_cast<T>(std::ceil(to_double(f))); }
+    template <typename T> inline T ceil(const fraction_t<T>& f)
+    {
+        return static_cast<T>(std::ceil(to_double(f)));
+    }
 
-    template <typename T> constexpr double to_float(const fraction_t<T>& f) noexcept { return static_cast<float>(f); }
+    template <typename T> constexpr double to_float(const fraction_t<T>& f) noexcept
+    {
+        return static_cast<float>(f);
+    }
 
-    template <typename T> constexpr double to_double(const fraction_t<T>& f) noexcept { return static_cast<double>(f); }
+    template <typename T> constexpr double to_double(const fraction_t<T>& f) noexcept
+    {
+        return static_cast<double>(f);
+    }
 
     /**
      * Converts a fraction to a string representation

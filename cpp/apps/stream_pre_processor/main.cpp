@@ -38,10 +38,76 @@ namespace
     std::string get_transport_type(const json::const_iterator& options)
     {
         const auto transport_type = options->find("transport_type");
-        if(transport_type == options->end() || transport_type.value() == nullptr){
+        if(transport_type == options->end() || transport_type.value() == nullptr)
+        {
             return "RTP";
         }
         return transport_type->get<std::string>();
+    }
+
+    std::optional<media_type_map_entry::destination_t> get_destination(const json& j_entry)
+    {
+        const auto destination_it = j_entry.find("destination");
+        if(destination_it == j_entry.end()) return std::nullopt;
+
+        const auto address_it = destination_it->find("address");
+        if(address_it == destination_it->end()) return std::nullopt;
+        if(!address_it->is_string()) return std::nullopt;
+
+        const auto port_it = destination_it->find("port");
+        if(port_it == destination_it->end()) return std::nullopt;
+        if(!port_it->is_number()) return std::nullopt;
+
+        const auto a = ipv4::from_dotted_string(address_it->get<std::string>());
+        const auto p = to_port(port_it->get<uint16_t>());
+        media_type_map_entry::destination_t destination{a, p};
+        return {destination};
+    }
+
+    std::optional<media_type_map_entry> get_entry(const json& entry)
+    {
+        auto destination = get_destination(entry);
+        if(!destination) return std::nullopt;
+        media_type_map_entry result{*destination};
+        return result;
+    }
+
+    std::optional<media::full_media_type> get_media_type(const json& j_entry)
+    {
+        const auto media_type_it = j_entry.find("media_type");
+        if(media_type_it == j_entry.end()) return std::nullopt;
+        if(!media_type_it->is_string()) return std::nullopt;
+        return media::full_media_from_string(media_type_it->get<std::string>());
+    }
+
+    media_type_mapping get_media_type_mapping(const json::const_iterator& options)
+    {
+        const auto j_mapping = options->find("media_type_map");
+        if(j_mapping == options->end())
+        {
+            return {};
+        }
+
+        if(!j_mapping->is_array())
+        {
+            logger()->error("invalid media type mapping - not an array: {}", j_mapping->dump());
+            return {};
+        }
+
+        media_type_mapping mapping;
+        for(const auto& entry : *j_mapping)
+        {
+            const auto key   = get_entry(entry);
+            const auto value = get_media_type(entry);
+            if(!key.has_value() || !value.has_value())
+            {
+                logger()->error("invalid media type entry: {}", entry.dump());
+            }
+
+            mapping.insert({*key, *value});
+        }
+
+        return mapping;
     }
 
     bool is_action_valid(const json& msg, const json::const_iterator& action)
@@ -69,7 +135,6 @@ namespace
         std::string id    = "5126c43c-076c-4fc1-befa-7e273a4c8cd9";
         std::string label = "EBU LIST Stream Pre-Processor";
         std::optional<std::string> cli_broker_url;
-
         std::string broker_url = "amqp://localhost:5672";
     };
 
@@ -91,7 +156,6 @@ namespace
         logger()->error("usage: {} {}", path(argv[0]).filename().string(), to_string(parse_result));
         exit(-1);
     }
-
 } // namespace
 
 //------------------------------------------------------------------------------
@@ -117,13 +181,14 @@ int main(int argc, char* argv[])
 
         auto on_message = [&exchange, &timer, &console](const std::string& /*routing_key*/, const json& message,
                                                         const bisect::bimo::mq::ack_callback& ack) {
-            const auto action      = message.find("action");
-            const auto workflow_id = message.find("workflow_id");
-            const auto pcap_id     = message.find("pcap_id");
-            const auto pcap_path   = message.find("pcap_path");
-            const auto options = message.find("options");
-            const auto transport_type = get_transport_type(options);
-            const auto is_srt = transport_type == "SRT";
+            const auto action             = message.find("action");
+            const auto workflow_id        = message.find("workflow_id");
+            const auto pcap_id            = message.find("pcap_id");
+            const auto pcap_path          = message.find("pcap_path");
+            const auto options            = message.find("options");
+            const auto transport_type     = get_transport_type(options);
+            const auto media_type_mapping = get_media_type_mapping(options);
+
             json response{};
 
             ack();
@@ -151,8 +216,10 @@ int main(int argc, char* argv[])
                 console->info("Processing {}.", pcap_id->get<std::string>());
                 try
                 {
-                    const json analysis_result =
-                        analyze_stream(pcap_path->get<std::string>(), pcap_id->get<std::string>(), transport_type, is_srt);
+                    analysis_options_t analysis_options{transport_type, media_type_mapping};
+
+                    const json analysis_result = analyze_stream(
+                        pcap_path->get<std::string>(), pcap_id->get<std::string>(), std::move(analysis_options));
                     response = compose_response(workflow_id->get<std::string>(), "completed", 100, "", analysis_result);
 
                     console->info("Processing {} succeeded.", pcap_id->get<std::string>());

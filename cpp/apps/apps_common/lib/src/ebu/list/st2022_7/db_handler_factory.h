@@ -12,9 +12,9 @@ namespace ebu_list
     {
       public:
         explicit pcap_reader(std::string_view pcap_file);
-        pcap_reader(pcap_reader&) = delete;
-        pcap_reader& operator=(pcap_reader&) = delete;
-        pcap_reader(pcap_reader&&)           = delete;
+        pcap_reader(pcap_reader&)             = delete;
+        pcap_reader& operator=(pcap_reader&)  = delete;
+        pcap_reader(pcap_reader&&)            = delete;
         pcap_reader& operator=(pcap_reader&&) = delete;
         ~pcap_reader()                        = default;
 

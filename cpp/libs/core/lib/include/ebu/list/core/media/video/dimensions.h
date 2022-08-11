@@ -13,7 +13,13 @@ namespace ebu_list::media::video
 
     std::string to_string(video_dimensions raster);
 
-    constexpr video_dimensions build_1920x1080() { return video_dimensions{1920, 1080}; }
+    constexpr video_dimensions build_1920x1080()
+    {
+        return video_dimensions{1920, 1080};
+    }
 
-    constexpr video_dimensions build_1280x720() { return video_dimensions{1280, 720}; }
+    constexpr video_dimensions build_1280x720()
+    {
+        return video_dimensions{1280, 720};
+    }
 } // namespace ebu_list::media::video

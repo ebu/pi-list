@@ -7,7 +7,7 @@ using namespace ebu_list;
 
 namespace
 {
-    constexpr auto maximum_packets_per_frame = 1000;
+    constexpr auto maximum_packets_per_frame = 10000;
     constexpr auto minimum_packets_per_frame = 20;
 } // namespace
 

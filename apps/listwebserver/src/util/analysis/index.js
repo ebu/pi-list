@@ -15,6 +15,10 @@ const HTTP_STATUS_CODE = require('../../enums/httpStatusCode');
 const exec = util.promisify(child_process.exec);
 const Pcap = require('../../models/pcap');
 const Stream = require('../../models/stream');
+const {
+    outstandingPreprocessorRequests,
+    pcapPreProcessing
+} = require('./preprocessor');
 
 const {
     doVideoAnalysis
@@ -142,14 +146,11 @@ function pcapFormatConversion(req, res, next) {
     }
 }
 
-const preprocessorRequestSender = mq.createQueueSender(program.rabbitmqUrl, api.mq.queues.preprocessorRequest);
 const preprocessorAnnounceReceiver = mq.createExchangeReceiver(
     program.rabbitmqUrl,
     api.mq.exchanges.preprocessorStatus,
     [api.mq.exchanges.preprocessorStatus.keys.announce]
 );
-
-const outstandingPreprocessorRequests = {};
 
 function handlePreprocessorResponse(msg) {
     try {
@@ -298,44 +299,6 @@ function handlePreprocessorResponse(msg) {
 }
 
 preprocessorAnnounceReceiver.emitter.on(mq.onMessageKey, handlePreprocessorResponse);
-
-function pcapPreProcessing(req, res, next) {
-    logger('stream-pre-processor').info(
-        `Pcap original file name: ${req.body.originalFilename || req.file.originalname}`
-    );
-    logger('stream-pre-processor').info(`Pcap ID: ${req.pcap.uuid}`);
-
-    const key = req.pcap.uuid;
-    outstandingPreprocessorRequests[key] = {
-        req,
-        res,
-        next
-    };
-
-    Pcap.findOne({
-            id: req.pcap.uuid
-        }).exec()
-        .then((data) => {
-            let transport_type = "RTP";
-
-            if (data) {
-                transport_type = data.transport_type
-            }
-
-            preprocessorRequestSender.send({
-                msg: {
-                    options: {
-                        transport_type: transport_type
-                    },
-                    action: 'preprocessing.request',
-                    workflow_id: uuid(),
-                    pcap_id: req.pcap.uuid,
-                    pcap_path: res.locals.pcapFilePath,
-                },
-                persistent: mq.persistent,
-            });
-        })
-}
 
 function parseTransportType(req, res, next) {
     try {

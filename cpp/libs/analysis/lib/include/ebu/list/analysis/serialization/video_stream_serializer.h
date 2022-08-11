@@ -4,9 +4,9 @@
 #include "ebu/list/analysis/serialization/compliance.h"
 #include "ebu/list/analysis/serialization/video/frame_info_builder.h"
 #include "ebu/list/core/platform/executor.h"
+#include "ebu/list/net/mac_address_analyzer.h"
 #include "ebu/list/st2110/d21/c_analyzer.h"
 #include "ebu/list/st2110/d21/compliance.h"
-#include "ebu/list/net/mac_address_analyzer.h"
 
 namespace ebu_list::analysis
 {

@@ -12,7 +12,10 @@ SCENARIO("mac to_string")
         const auto a = ethernet::mac_address(to_byte_array(0xA1, 0xB2, 0xC3, 0xD4, 0xE5, 0xF6));
         WHEN("we convert it to a string")
         {
-            THEN("it is correctly represented") { REQUIRE(to_string(a) == "a1:b2:c3:d4:e5:f6"); }
+            THEN("it is correctly represented")
+            {
+                REQUIRE(to_string(a) == "a1:b2:c3:d4:e5:f6");
+            }
         }
     }
 
@@ -41,7 +44,10 @@ SCENARIO("mac to_string")
                 REQUIRE(a <= b);
             }
 
-            THEN("they don't match as unequal") { REQUIRE_FALSE(a != b); }
+            THEN("they don't match as unequal")
+            {
+                REQUIRE_FALSE(a != b);
+            }
         }
     }
 

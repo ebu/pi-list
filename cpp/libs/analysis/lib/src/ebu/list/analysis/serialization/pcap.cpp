@@ -11,7 +11,7 @@ nlohmann::json pcap_info::to_json(const pcap_info& info)
     j["pcap_file_name"]   = info.pcap_file_name;
     j["analyzer_version"] = info.analyzer_version;
     j["date"]             = std::chrono::duration_cast<std::chrono::milliseconds>(info.date.time_since_epoch()).count();
-    j["transport_type"] = info.transport_type;
+    j["transport_type"]   = info.transport_type;
     j["capture_date"] =
         std::chrono::duration_cast<std::chrono::milliseconds>(info.capture_timestamp.time_since_epoch()).count();
     j["analyzed"]  = info.analyzed;

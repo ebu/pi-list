@@ -39,5 +39,8 @@ namespace ebu_list
     std::string to_string(const port& m);
     std::ostream& operator<<(std::ostream& os, port a);
 
-    inline port to_port(uint16_t p) { return to_net(p); }
+    inline port to_port(uint16_t p)
+    {
+        return to_net(p);
+    }
 } // namespace ebu_list

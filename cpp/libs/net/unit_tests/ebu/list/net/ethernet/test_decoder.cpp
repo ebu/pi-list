@@ -5,7 +5,10 @@ using namespace ebu_list;
 
 namespace bisect::bimo
 {
-    bool operator==(const bimo::owning_view& lhs, const bimo::owning_view& rhs) { return lhs.view() == rhs.view(); }
+    bool operator==(const bimo::owning_view& lhs, const bimo::owning_view& rhs)
+    {
+        return lhs.view() == rhs.view();
+    }
 } // namespace bisect::bimo
 //------------------------------------------------------------------------------
 

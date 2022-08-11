@@ -12,7 +12,10 @@ SCENARIO("default values for st2110-10")
 
         WHEN("we check the default UDP max packet size")
         {
-            THEN("we get Standard Size") { REQUIRE(stream_info.max_udp == STANDARD_UDP_SIZE_LIMIT); }
+            THEN("we get Standard Size")
+            {
+                REQUIRE(stream_info.max_udp == STANDARD_UDP_SIZE_LIMIT);
+            }
         }
     }
 }

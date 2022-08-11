@@ -133,11 +133,10 @@ void anc_stream_handler::on_data(const rtp::packet& packet)
     last_field_            = field_;
 }
 
-
-mac_address_analyzer::mac_addresses_info anc_stream_handler::get_mac_adresses_analyses() const{
+mac_address_analyzer::mac_addresses_info anc_stream_handler::get_mac_adresses_analyses() const
+{
     return mac_analyzer_.get_mac_addresses_analysis();
 }
-
 
 void anc_stream_handler::on_complete()
 {

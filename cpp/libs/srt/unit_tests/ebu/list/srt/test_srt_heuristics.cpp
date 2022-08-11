@@ -22,7 +22,10 @@ SCENARIO("SRT heuristics")
 
         WHEN("we check the status")
         {
-            THEN("it is valid") { REQUIRE(result.state == detector::state::valid); }
+            THEN("it is valid")
+            {
+                REQUIRE(result.state == detector::state::valid);
+            }
         }
     }
 }

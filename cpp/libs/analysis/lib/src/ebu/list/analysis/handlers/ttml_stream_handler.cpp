@@ -88,7 +88,8 @@ ebu_list::analysis::ttml::stream_handler::stream_handler(ebu_list::rtp::packet f
 
 stream_handler::~stream_handler() = default;
 
-mac_address_analyzer::mac_addresses_info stream_handler::get_mac_adresses_analyses() const{
+mac_address_analyzer::mac_addresses_info stream_handler::get_mac_adresses_analyses() const
+{
     return mac_analyzer_.get_mac_addresses_analysis();
 }
 

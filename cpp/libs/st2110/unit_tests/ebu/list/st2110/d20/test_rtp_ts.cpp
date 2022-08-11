@@ -14,7 +14,10 @@ SCENARIO("test calculate_rtp_timestamp")
         WHEN("we calculate the corresponding RTP timestamp")
         {
             const auto ts = calculate_rtp_timestamp(packet_ts);
-            THEN("we get the right value") { REQUIRE(ts == 2857610649); }
+            THEN("we get the right value")
+            {
+                REQUIRE(ts == 2857610649);
+            }
         }
     }
 }
@@ -28,7 +31,10 @@ SCENARIO("test calculate_n")
         WHEN("we calculate the corresponding frame number")
         {
             const auto n = calculate_n(packet_ts, frame_period);
-            THEN("we get the right value") { REQUIRE(n == 78196239371); }
+            THEN("we get the right value")
+            {
+                REQUIRE(n == 78196239371);
+            }
         }
     }
 }

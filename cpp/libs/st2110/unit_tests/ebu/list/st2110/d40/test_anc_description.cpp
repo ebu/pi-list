@@ -15,17 +15,26 @@ SCENARIO("default values for st2110-40")
 
         WHEN("we check the default rate")
         {
-            THEN("we get a value of {0/1}") { REQUIRE(anc_info.rate == video::Rate(0, 1)); }
+            THEN("we get a value of {0/1}")
+            {
+                REQUIRE(anc_info.rate == video::Rate(0, 1));
+            }
         }
 
         WHEN("we check the number of packets per frame")
         {
-            THEN("we get 0") { REQUIRE(anc_info.packets_per_frame == 0); }
+            THEN("we get 0")
+            {
+                REQUIRE(anc_info.packets_per_frame == 0);
+            }
         }
 
         WHEN("we check the number of substreams")
         {
-            THEN("we get 0") { REQUIRE(anc_info.sub_streams.size() == 0); }
+            THEN("we get 0")
+            {
+                REQUIRE(anc_info.sub_streams.size() == 0);
+            }
         }
     }
 }

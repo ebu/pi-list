@@ -72,13 +72,13 @@ bool d40::sanity_check_sum(const uint16_t checksum, uint16_t sum)
 {
     if((checksum & checksum_mask) != (sum & checksum_mask))
     {
-//        logger()->debug("Ancillary checksum error");
+        //        logger()->debug("Ancillary checksum error");
         return false;
     }
 
     if(((checksum & word_parity_mask) >> 8) == ((checksum & word_inverted_parity_mask) >> 9))
     {
-//        logger()->debug("Ancillary checksum malformed");
+        //        logger()->debug("Ancillary checksum malformed");
         return false;
     }
 

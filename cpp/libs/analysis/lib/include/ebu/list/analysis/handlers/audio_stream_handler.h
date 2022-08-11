@@ -4,9 +4,9 @@
 #include "ebu/list/analysis/serialization/audio_serialization.h"
 #include "ebu/list/analysis/serialization/serializable_stream_info.h"
 #include "ebu/list/core/memory/bimo.h"
+#include "ebu/list/net/mac_address_analyzer.h"
 #include "ebu/list/rtp/inter_packet_spacing_analyzer.h"
 #include "ebu/list/rtp/listener.h"
-#include "ebu/list/net/mac_address_analyzer.h"
 
 namespace ebu_list::analysis
 {
@@ -23,7 +23,6 @@ namespace ebu_list::analysis
         [[nodiscard]] const serializable_stream_info& network_info() const;
         [[nodiscard]] mac_address_analyzer::mac_addresses_info get_mac_adresses_analyses() const;
 
-
       private:
 #pragma region rtp::listener events
         void on_data(const rtp::packet& packet) override;
@@ -37,8 +36,6 @@ namespace ebu_list::analysis
 #pragma endregion event handlers
 
         void parse_packet(const rtp::packet& packet);
-
-
 
         serializable_stream_info info_;
         audio_stream_details audio_description_;

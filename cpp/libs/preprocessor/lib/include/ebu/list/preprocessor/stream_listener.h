@@ -20,19 +20,20 @@ namespace ebu_list::analysis
         };
 
       public:
-        stream_listener(const udp::datagram& first_datagram, std::string_view pcap_id);
+        stream_listener(const udp::datagram& first_datagram, std::string_view pcap_id,
+                        std::optional<media::full_media_type> media_type);
 
         void on_data(const udp::datagram& datagram) override;
         void on_complete() override;
         void on_error(std::exception_ptr ptr) override;
 
-        std::optional<nlohmann::json> get_info() const;
-        clock::time_point get_capture_timestamp() const;
+        [[nodiscard]] std::optional<nlohmann::json> get_info() const;
+        [[nodiscard]] clock::time_point get_capture_timestamp() const;
 
       private:
         analysis::serializable_stream_info stream_id_;
         st2110::format_detector detector_;
-        int64_t num_packets_;
+        int64_t num_packets_ = 0;
         rtp::sequence_number_analyzer<uint16_t> seqnum_analyzer_;
         dscp_analyzer dscp_;
         nlohmann::json info_;

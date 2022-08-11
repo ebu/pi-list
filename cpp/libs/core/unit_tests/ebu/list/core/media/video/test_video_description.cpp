@@ -67,7 +67,10 @@ SCENARIO("parsing rate from a string")
 
         WHEN("we try to convert it to a rate representation")
         {
-            THEN("it returns 0") { REQUIRE_THROWS_AS(parse_from_string(not_valid), std::runtime_error); }
+            THEN("it returns 0")
+            {
+                REQUIRE_THROWS_AS(parse_from_string(not_valid), std::runtime_error);
+            }
         }
     }
 }

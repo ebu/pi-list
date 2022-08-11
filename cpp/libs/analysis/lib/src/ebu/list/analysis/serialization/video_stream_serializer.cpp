@@ -66,7 +66,8 @@ void video_stream_serializer::on_frame_complete(frame_uptr&& f)
     write_frame_info(base_dir_, stream_id, fi);
 }
 
-mac_address_analyzer::mac_addresses_info video_stream_serializer::get_mac_adresses_analyses() const{
+mac_address_analyzer::mac_addresses_info video_stream_serializer::get_mac_adresses_analyses() const
+{
     return mac_analyzer_.get_mac_addresses_analysis();
 }
 

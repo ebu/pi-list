@@ -53,7 +53,10 @@ SCENARIO("PTP decoding")
         {
             auto decode_result = decode(clock::time_point{}, std::move(pdu));
 
-            THEN("the type is correctly inferred") { REQUIRE(decode_result); }
+            THEN("the type is correctly inferred")
+            {
+                REQUIRE(decode_result);
+            }
         }
     }
 
@@ -65,7 +68,10 @@ SCENARIO("PTP decoding")
         {
             auto decode_result = decode(clock::time_point{}, std::move(pdu));
 
-            THEN("decode returns no data") { REQUIRE_FALSE(decode_result); }
+            THEN("decode returns no data")
+            {
+                REQUIRE_FALSE(decode_result);
+            }
         }
     }
 
@@ -81,7 +87,10 @@ SCENARIO("PTP decoding")
         {
             auto decode_result = decode(clock::time_point{}, std::move(pdu));
 
-            THEN("decode returns no data") { REQUIRE_FALSE(decode_result); }
+            THEN("decode returns no data")
+            {
+                REQUIRE_FALSE(decode_result);
+            }
         }
     }
 }

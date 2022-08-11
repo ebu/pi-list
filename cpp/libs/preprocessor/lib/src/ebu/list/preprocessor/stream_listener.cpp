@@ -45,7 +45,9 @@ namespace
     }
 } // namespace
 
-stream_listener::stream_listener(const udp::datagram& first_datagram, std::string_view pcap_id) : num_packets_(0)
+stream_listener::stream_listener(const udp::datagram& first_datagram, std::string_view pcap_id,
+                                 std::optional<media::full_media_type> media_type)
+    : detector_(media_type)
 {
     auto maybe_rtp_packet = rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
     if(!maybe_rtp_packet)

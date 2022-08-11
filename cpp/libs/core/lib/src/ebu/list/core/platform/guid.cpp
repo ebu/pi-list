@@ -87,16 +87,27 @@ namespace ebu_list
     }
 
     // conversion operator for std::string
-    guid::operator std::string() const { return str(); }
+    guid::operator std::string() const
+    {
+        return str();
+    }
 
     // Access underlying bytes
-    const std::array<unsigned char, 16>& guid::bytes() const { return _bytes; }
+    const std::array<unsigned char, 16>& guid::bytes() const
+    {
+        return _bytes;
+    }
 
     // create a guid from vector of bytes
-    guid::guid(const std::array<unsigned char, 16>& bytes) : _bytes(bytes) {}
+    guid::guid(const std::array<unsigned char, 16>& bytes) : _bytes(bytes)
+    {
+    }
 
     // create a guid from array of bytes
-    guid::guid(const unsigned char* bytes) { std::copy(bytes, bytes + 16, std::begin(_bytes)); }
+    guid::guid(const unsigned char* bytes)
+    {
+        std::copy(bytes, bytes + 16, std::begin(_bytes));
+    }
 
     // converts a single hex char to a number (0 - 15)
     unsigned char hexDigitToChar(char ch)
@@ -128,7 +139,10 @@ namespace ebu_list
     }
 
     // converts the two hexadecimal characters to an unsigned char (a byte)
-    unsigned char hexPairToChar(char a, char b) { return hexDigitToChar(a) * 16 + hexDigitToChar(b); }
+    unsigned char hexPairToChar(char a, char b)
+    {
+        return hexDigitToChar(a) * 16 + hexDigitToChar(b);
+    }
 
     // create a guid from string
     guid::guid(const std::string& fromString)
@@ -171,11 +185,18 @@ namespace ebu_list
         }
     }
 
-    guid::guid() : _bytes{0} {}
+    guid::guid() : _bytes{0}
+    {
+    }
 
-    guid::guid(const guid& other) : _bytes(other._bytes) {}
+    guid::guid(const guid& other) : _bytes(other._bytes)
+    {
+    }
 
-    void guid::zeroify() { std::fill(_bytes.begin(), _bytes.end(), static_cast<unsigned char>(0)); }
+    void guid::zeroify()
+    {
+        std::fill(_bytes.begin(), _bytes.end(), static_cast<unsigned char>(0));
+    }
 
     guid& guid::operator=(const guid& other)
     {
@@ -183,11 +204,20 @@ namespace ebu_list
         return *this;
     }
 
-    bool guid::operator==(const guid& other) const { return _bytes == other._bytes; }
+    bool guid::operator==(const guid& other) const
+    {
+        return _bytes == other._bytes;
+    }
 
-    bool guid::operator!=(const guid& other) const { return !((*this) == other); }
+    bool guid::operator!=(const guid& other) const
+    {
+        return !((*this) == other);
+    }
 
-    void guid::swap(guid& other) { _bytes.swap(other._bytes); }
+    void guid::swap(guid& other)
+    {
+        _bytes.swap(other._bytes);
+    }
 
 // This is the linux friendly implementation, but it could work on other
 // systems that have libuuid available
