@@ -35,7 +35,7 @@ let convertFile = () => {
 
       if (fileExtension !== ".json") return;
       const jsonPath = require(path.join(__dirname, './jsonsToParse/' + file));
-      const pathToWrite = path.join(__dirname, './parsedJsons/jsonParsed.csv');
+      const pathToWrite = path.join(__dirname, './parsedCsv/jsonParsed.csv');
 
       const fields = [{ value: 'file_name', label: 'PCAP Name' },
       { value: 'total_streams', label: 'Total Streams' },
@@ -82,6 +82,7 @@ let convertFile = () => {
 
             const json2csvParser = new Parser({
               fields,
+              defaultValue: "Not applicable",
               transforms: [unwind({ paths: ['streams'] })],
               formatters: { string: functionNameFormatter() }
             });
@@ -111,6 +112,11 @@ let convertFile = () => {
           }
         });
 
+        const filePath = path.join(__dirname, './jsonsToParse/' + file)
+        const pathToMoveFiles = path.join(__dirname, './parsedJsons/' + file)
+
+
+        fs.rename(filePath, pathToMoveFiles, () => console.log('Files moved'));
 
       } catch (err) {
         console.error(err);

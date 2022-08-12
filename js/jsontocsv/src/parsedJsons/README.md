@@ -1,1 +1,1 @@
-## The json parsed to CSV will be saved here
+# Json files will be moved here after parsed
