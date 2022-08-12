@@ -1,0 +1,26 @@
+v=0
+o=- 1660030839 1660030839 IN IP4 192.168.200.17
+s=Video
+t=0 0
+a=recvonly
+a=group:DUP primary secondary
+m=video 50022 RTP/AVP 98
+c=IN IP4 239.0.22.17/64
+b=AS:1219336
+a=source-filter: incl IN IP4 239.0.22.17 192.168.200.17
+a=ts-refclk:ptp=IEEE1588-2008:EC-46-70-FF-FE-0C-ED-71:127
+a=mediaclk:direct=0
+a=rtpmap:98 jxsv/90000
+a=fmtp:98 packetmode=0; profile=High444.12; level=4k-2; sublevel=Sublev3bpp; sampling=YCbCr-4:2:2; width=3840; height=2160; exactframerate=50; depth=10; TCS=SDR; colorimetry=BT2020; PM=2110GPM; SSN=ST2110-22:2019; TP=2110TPN; 
+a=mid:primary
+a=ssrc:587423665
+m=video 50022 RTP/AVP 98
+c=IN IP4 239.1.22.17/64
+b=AS:1219336
+a=source-filter: incl IN IP4 239.1.22.17 192.168.201.17
+a=ts-refclk:ptp=IEEE1588-2008:EC-46-70-FF-FE-0C-ED-71:127
+a=mediaclk:direct=0
+a=rtpmap:98 jxsv/90000
+a=fmtp:98 packetmode=0; profile=High444.12; level=4k-2; sublevel=Sublev3bpp; sampling=YCbCr-4:2:2; width=3840; height=2160; exactframerate=50; depth=10; TCS=SDR; colorimetry=BT2020; PM=2110GPM; SSN=ST2110-22:2019; TP=2110TPN; 
+a=mid:secondary
+a=ssrc:587423665

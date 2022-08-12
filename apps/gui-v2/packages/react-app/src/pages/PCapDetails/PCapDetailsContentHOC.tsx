@@ -238,7 +238,7 @@ function PCapDetailsContentHOC(props: any) {
                 </div>
                 <div>
                     <PCapDetailsContent
-                        currentStream={currentStream}
+                        stream={currentStream}
                         pcapFilename={pcapFilename}
                         pcapID={pcapID}
                         pcap={pcap}
@@ -254,20 +254,18 @@ function PCapDetailsContentHOC(props: any) {
         </Routes>
     );
 
+    if (!currentStream) return null;
+
     return (
-        <>
-            {currentStream && (
-                <MainContentLayout
-                    middlePageContent={middleContent}
-                    informationSidebarContent={getDataToInformationSidebar(
-                        currentStream,
-                        informationSidebarContent,
-                        userInfo?.username
-                    )}
-                    logout={() => navigate('/logout')}
-                />
+        <MainContentLayout
+            middlePageContent={middleContent}
+            informationSidebarContent={getDataToInformationSidebar(
+                currentStream,
+                informationSidebarContent,
+                userInfo?.username
             )}
-        </>
+            logout={() => navigate('/logout')}
+        />
     );
 }
 

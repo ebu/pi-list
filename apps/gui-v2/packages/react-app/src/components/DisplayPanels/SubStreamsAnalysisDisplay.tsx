@@ -14,7 +14,6 @@ function SubStreamsAnalysisDisplay({ displayData }: IComponentProps) {
         <div className="sub-streams-display-panel-container">
             <div className="blend-div"></div>
             <span className="display-panel-title">Ancillary sub stream</span>
-            <span className="display-panel-title-underline"></span>
             <div className="sub-streams-display-panel-information">
                 {displayData.map((item, index) => (
                     <div className="sub-streams-display-panel-information-data" key={index}>

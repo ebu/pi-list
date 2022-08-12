@@ -25,13 +25,34 @@ SCENARIO("st2110-22 payload header")
             auto packetization_mode = payload_header.get_packetization_mode();
             auto transmission_mode  = payload_header.get_transmission_mode();
 
-            THEN("p counter must be 0x4B") { REQUIRE(p_counter == 0x4B); }
-            THEN("sep counter must be 0") { REQUIRE(sep_counter == 0); }
-            THEN("f counter must be 0") { REQUIRE(f_counter == 3); }
-            THEN("interlaced must be 0") { REQUIRE(interlaced == 0); }
-            THEN("last must be 0") { REQUIRE(last == 0); }
-            THEN("packetization_mode must be 0") { REQUIRE(packetization_mode == 0); }
-            THEN("transmission_mode must be 0") { REQUIRE(transmission_mode == 1); }
+            THEN("p counter must be 0x4B")
+            {
+                REQUIRE(p_counter == 0x4B);
+            }
+            THEN("sep counter must be 0")
+            {
+                REQUIRE(sep_counter == 0);
+            }
+            THEN("f counter must be 0")
+            {
+                REQUIRE(f_counter == 3);
+            }
+            THEN("interlaced must be 0")
+            {
+                REQUIRE(interlaced == 0);
+            }
+            THEN("last must be 0")
+            {
+                REQUIRE(last == 0);
+            }
+            THEN("packetization_mode must be 0")
+            {
+                REQUIRE(packetization_mode == 0);
+            }
+            THEN("transmission_mode must be 0")
+            {
+                REQUIRE(transmission_mode == 1);
+            }
         }
     }
 
@@ -51,13 +72,34 @@ SCENARIO("st2110-22 payload header")
             auto packetization_mode = payload_header.get_packetization_mode();
             auto transmission_mode  = payload_header.get_transmission_mode();
 
-            THEN("p counter must be 0x4B") { REQUIRE(p_counter == 0x26); }
-            THEN("sep counter must be 0") { REQUIRE(sep_counter == 9); }
-            THEN("f counter must be 0") { REQUIRE(f_counter == 9); }
-            THEN("interlaced must be 0") { REQUIRE(interlaced == 1); }
-            THEN("last must be 0") { REQUIRE(last == 0); }
-            THEN("packetization_mode must be 0") { REQUIRE(packetization_mode == 0); }
-            THEN("transmission_mode must be 0") { REQUIRE(transmission_mode == 1); }
+            THEN("p counter must be 0x4B")
+            {
+                REQUIRE(p_counter == 0x26);
+            }
+            THEN("sep counter must be 0")
+            {
+                REQUIRE(sep_counter == 9);
+            }
+            THEN("f counter must be 0")
+            {
+                REQUIRE(f_counter == 9);
+            }
+            THEN("interlaced must be 0")
+            {
+                REQUIRE(interlaced == 1);
+            }
+            THEN("last must be 0")
+            {
+                REQUIRE(last == 0);
+            }
+            THEN("packetization_mode must be 0")
+            {
+                REQUIRE(packetization_mode == 0);
+            }
+            THEN("transmission_mode must be 0")
+            {
+                REQUIRE(transmission_mode == 1);
+            }
         }
     }
 
@@ -77,13 +119,34 @@ SCENARIO("st2110-22 payload header")
             auto packetization_mode = payload_header.get_packetization_mode();
             auto transmission_mode  = payload_header.get_transmission_mode();
 
-            THEN("p counter must be 0x4B") { REQUIRE(p_counter == 0x07FF); }
-            THEN("sep counter must be 0") { REQUIRE(sep_counter == 0x07FF); }
-            THEN("f counter must be 0") { REQUIRE(f_counter == 0); }
-            THEN("interlaced must be 0") { REQUIRE(interlaced == 0); }
-            THEN("last must be 0") { REQUIRE(last == 0); }
-            THEN("packetization_mode must be 0") { REQUIRE(packetization_mode == 0); }
-            THEN("transmission_mode must be 0") { REQUIRE(transmission_mode == 0); }
+            THEN("p counter must be 0x4B")
+            {
+                REQUIRE(p_counter == 0x07FF);
+            }
+            THEN("sep counter must be 0")
+            {
+                REQUIRE(sep_counter == 0x07FF);
+            }
+            THEN("f counter must be 0")
+            {
+                REQUIRE(f_counter == 0);
+            }
+            THEN("interlaced must be 0")
+            {
+                REQUIRE(interlaced == 0);
+            }
+            THEN("last must be 0")
+            {
+                REQUIRE(last == 0);
+            }
+            THEN("packetization_mode must be 0")
+            {
+                REQUIRE(packetization_mode == 0);
+            }
+            THEN("transmission_mode must be 0")
+            {
+                REQUIRE(transmission_mode == 0);
+            }
         }
     }
 }

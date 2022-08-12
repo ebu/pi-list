@@ -13,11 +13,17 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 0") { REQUIRE(analyzer.num_dropped_packets() == 0); }
+            THEN("it is 0")
+            {
+                REQUIRE(analyzer.num_dropped_packets() == 0);
+            }
         }
         WHEN("we check the dropped packet gaps")
         {
-            THEN("it has none") { REQUIRE(analyzer.dropped_packets().size() == 0); }
+            THEN("it has none")
+            {
+                REQUIRE(analyzer.dropped_packets().size() == 0);
+            }
         }
     }
 
@@ -34,11 +40,17 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 0") { REQUIRE(analyzer.num_dropped_packets() == 0); }
+            THEN("it is 0")
+            {
+                REQUIRE(analyzer.num_dropped_packets() == 0);
+            }
         }
         WHEN("we check the dropped packet gaps")
         {
-            THEN("it has none") { REQUIRE(analyzer.dropped_packets().size() == 0); }
+            THEN("it has none")
+            {
+                REQUIRE(analyzer.dropped_packets().size() == 0);
+            }
         }
     }
 
@@ -56,11 +68,17 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 0") { REQUIRE(analyzer.num_dropped_packets() == 0); }
+            THEN("it is 0")
+            {
+                REQUIRE(analyzer.num_dropped_packets() == 0);
+            }
         }
         WHEN("we check the dropped packet gaps")
         {
-            THEN("it has none") { REQUIRE(analyzer.dropped_packets().size() == 0); }
+            THEN("it has none")
+            {
+                REQUIRE(analyzer.dropped_packets().size() == 0);
+            }
         }
     }
 
@@ -82,11 +100,17 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 0") { REQUIRE(analyzer.num_dropped_packets() == 0); }
+            THEN("it is 0")
+            {
+                REQUIRE(analyzer.num_dropped_packets() == 0);
+            }
         }
         WHEN("we check the dropped packet gaps")
         {
-            THEN("it has none") { REQUIRE(analyzer.dropped_packets().size() == 0); }
+            THEN("it has none")
+            {
+                REQUIRE(analyzer.dropped_packets().size() == 0);
+            }
         }
     }
 
@@ -108,11 +132,17 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 0") { REQUIRE(analyzer.num_dropped_packets() == 0); }
+            THEN("it is 0")
+            {
+                REQUIRE(analyzer.num_dropped_packets() == 0);
+            }
         }
         WHEN("we check the dropped packet gaps")
         {
-            THEN("it has none") { REQUIRE(analyzer.dropped_packets().size() == 0); }
+            THEN("it has none")
+            {
+                REQUIRE(analyzer.dropped_packets().size() == 0);
+            }
         }
     }
 
@@ -129,11 +159,17 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 1") { REQUIRE(analyzer.num_dropped_packets() == 1); }
+            THEN("it is 1")
+            {
+                REQUIRE(analyzer.num_dropped_packets() == 1);
+            }
         }
         WHEN("we check the dropped packet gaps")
         {
-            THEN("it has one") { REQUIRE(analyzer.dropped_packets().size() == 1); }
+            THEN("it has one")
+            {
+                REQUIRE(analyzer.dropped_packets().size() == 1);
+            }
             THEN("last packet has sequence number #1")
             {
                 REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == 1);
@@ -162,11 +198,17 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 5") { REQUIRE(analyzer.num_dropped_packets() == 5); }
+            THEN("it is 5")
+            {
+                REQUIRE(analyzer.num_dropped_packets() == 5);
+            }
         }
         WHEN("we check the dropped packet gaps")
         {
-            THEN("it has one") { REQUIRE(analyzer.dropped_packets().size() == 1); }
+            THEN("it has one")
+            {
+                REQUIRE(analyzer.dropped_packets().size() == 1);
+            }
             THEN("last packet has sequence number #1")
             {
                 REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == 1);
@@ -195,11 +237,17 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 5") { REQUIRE(analyzer.num_dropped_packets() == 5); }
+            THEN("it is 5")
+            {
+                REQUIRE(analyzer.num_dropped_packets() == 5);
+            }
         }
         WHEN("we check the dropped packet gaps")
         {
-            THEN("it has one") { REQUIRE(analyzer.dropped_packets().size() == 1); }
+            THEN("it has one")
+            {
+                REQUIRE(analyzer.dropped_packets().size() == 1);
+            }
             THEN("last packet has sequence number #UINT32_MAX - 6")
             {
                 REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == UINT32_MAX - 6);
@@ -233,11 +281,17 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 1") { REQUIRE(analyzer.num_dropped_packets() == 1); }
+            THEN("it is 1")
+            {
+                REQUIRE(analyzer.num_dropped_packets() == 1);
+            }
         }
         WHEN("we check the dropped packet gaps")
         {
-            THEN("it has one") { REQUIRE(analyzer.dropped_packets().size() == 1); }
+            THEN("it has one")
+            {
+                REQUIRE(analyzer.dropped_packets().size() == 1);
+            }
             THEN("last packet has sequence number #UINT32_MAX - 1")
             {
                 REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == UINT32_MAX - 1);
@@ -269,11 +323,17 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 5") { REQUIRE(analyzer.num_dropped_packets() == 5); }
+            THEN("it is 5")
+            {
+                REQUIRE(analyzer.num_dropped_packets() == 5);
+            }
         }
         WHEN("we check the dropped packet gaps")
         {
-            THEN("it has three") { REQUIRE(analyzer.dropped_packets().size() == 3); }
+            THEN("it has three")
+            {
+                REQUIRE(analyzer.dropped_packets().size() == 3);
+            }
             THEN("first gap's last packet has sequence number #UINT32_MAX - 4")
             {
                 REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == UINT32_MAX - 4);
@@ -331,11 +391,17 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 1") { REQUIRE(analyzer.num_dropped_packets() == 1); }
+            THEN("it is 1")
+            {
+                REQUIRE(analyzer.num_dropped_packets() == 1);
+            }
         }
         WHEN("we check the dropped packet gaps")
         {
-            THEN("it has one") { REQUIRE(analyzer.dropped_packets().size() == 1); }
+            THEN("it has one")
+            {
+                REQUIRE(analyzer.dropped_packets().size() == 1);
+            }
             THEN("last packet has sequence number #UINT16_MAX - 1")
             {
                 REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == UINT16_MAX - 1);
@@ -367,11 +433,17 @@ SCENARIO("Sequence number analyser")
 
         WHEN("we check the dropped count")
         {
-            THEN("it is 5") { REQUIRE(analyzer.num_dropped_packets() == 5); }
+            THEN("it is 5")
+            {
+                REQUIRE(analyzer.num_dropped_packets() == 5);
+            }
         }
         WHEN("we check the dropped packet gaps")
         {
-            THEN("it has three") { REQUIRE(analyzer.dropped_packets().size() == 3); }
+            THEN("it has three")
+            {
+                REQUIRE(analyzer.dropped_packets().size() == 3);
+            }
             THEN("first gap's last packet has sequence number #UINT16_MAX - 4")
             {
                 REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == UINT16_MAX - 4);
@@ -432,7 +504,10 @@ SCENARIO("Sequence number analyser")
         }
         WHEN("we check the dropped packet gaps")
         {
-            THEN("it has one") { REQUIRE(analyzer.dropped_packets().size() == 1); }
+            THEN("it has one")
+            {
+                REQUIRE(analyzer.dropped_packets().size() == 1);
+            }
             THEN("last packet has sequence number #0")
             {
                 REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == 0);
@@ -468,7 +543,10 @@ SCENARIO("Sequence number analyser")
         }
         WHEN("we check the dropped packet gaps")
         {
-            THEN("it has one") { REQUIRE(analyzer.dropped_packets().size() == 1); }
+            THEN("it has one")
+            {
+                REQUIRE(analyzer.dropped_packets().size() == 1);
+            }
             THEN("last packet has sequence number #2")
             {
                 REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == 2);
@@ -510,7 +588,10 @@ SCENARIO("Sequence number analyser")
         }
         WHEN("we check the dropped packet gaps")
         {
-            THEN("it has three") { REQUIRE(analyzer.dropped_packets().size() == 3); }
+            THEN("it has three")
+            {
+                REQUIRE(analyzer.dropped_packets().size() == 3);
+            }
             THEN("first gap's last packet has sequence number #2")
             {
                 REQUIRE(analyzer.dropped_packets()[0].last_sequence_number == 2);

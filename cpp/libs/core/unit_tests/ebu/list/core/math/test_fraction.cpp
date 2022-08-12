@@ -15,14 +15,20 @@ SCENARIO("Fraction is created")
         {
             auto value = to_double(f);
 
-            THEN("we get the right value") { REQUIRE(value == 2); }
+            THEN("we get the right value")
+            {
+                REQUIRE(value == 2);
+            }
         }
 
         WHEN("we build an equivalent fraction")
         {
             fraction f2(2, 1);
 
-            THEN("they represent the same value") { REQUIRE(f == f2); }
+            THEN("they represent the same value")
+            {
+                REQUIRE(f == f2);
+            }
 
             THEN("they have the same numerator")
             {
@@ -48,21 +54,30 @@ SCENARIO("Fraction is created")
         {
             auto value = to_double(f);
 
-            THEN("we get the right value") { REQUIRE(value == 0.75); }
+            THEN("we get the right value")
+            {
+                REQUIRE(value == 0.75);
+            }
         }
 
         WHEN("we try to get the numerator")
         {
             auto numerator = f.numerator();
 
-            THEN("we get the right value") { REQUIRE(numerator == 3); }
+            THEN("we get the right value")
+            {
+                REQUIRE(numerator == 3);
+            }
         }
 
         WHEN("we try to get the denominator")
         {
             auto denominator = f.denominator();
 
-            THEN("we get the right value") { REQUIRE(denominator == 4); }
+            THEN("we get the right value")
+            {
+                REQUIRE(denominator == 4);
+            }
         }
     }
 
@@ -70,7 +85,10 @@ SCENARIO("Fraction is created")
     {
         WHEN("we build the fraction")
         {
-            THEN("we get an exception thrown") { REQUIRE_THROWS_AS(fraction(1, 0), std::domain_error); }
+            THEN("we get an exception thrown")
+            {
+                REQUIRE_THROWS_AS(fraction(1, 0), std::domain_error);
+            }
         }
     }
 
@@ -82,14 +100,20 @@ SCENARIO("Fraction is created")
         {
             auto value = to_double(f);
 
-            THEN("we get the right value") { REQUIRE(value == 0.75); }
+            THEN("we get the right value")
+            {
+                REQUIRE(value == 0.75);
+            }
         }
 
         WHEN("we build an equivalent fraction")
         {
             fraction f2(3, 4);
 
-            THEN("they represent the same value") { REQUIRE(f == f2); }
+            THEN("they represent the same value")
+            {
+                REQUIRE(f == f2);
+            }
 
             THEN("they have the same numerator")
             {
@@ -119,7 +143,10 @@ SCENARIO("Operations over fraction abstraction")
         {
             const auto result = f1 + f2;
 
-            THEN("we get the right value") { REQUIRE(fraction(5, 2) == result); }
+            THEN("we get the right value")
+            {
+                REQUIRE(fraction(5, 2) == result);
+            }
 
             THEN("the operation is commutative")
             {
@@ -134,7 +161,10 @@ SCENARIO("Operations over fraction abstraction")
         {
             const auto result = f1 - f2;
 
-            THEN("we get the right value") { REQUIRE(fraction(3, 2) == result); }
+            THEN("we get the right value")
+            {
+                REQUIRE(fraction(3, 2) == result);
+            }
         }
 
         WHEN("we multiply them")
@@ -172,9 +202,15 @@ SCENARIO("Operations over fraction abstraction")
             const auto f1_string = to_string(f1);
             const auto f2_string = to_string(f2);
 
-            THEN("we get a single digit if denominator is 1") { REQUIRE("2" == f1_string); }
+            THEN("we get a single digit if denominator is 1")
+            {
+                REQUIRE("2" == f1_string);
+            }
 
-            THEN("we get the right representation if it's not a simple fraction") { REQUIRE("1/2" == f2_string); }
+            THEN("we get the right representation if it's not a simple fraction")
+            {
+                REQUIRE("1/2" == f2_string);
+            }
         }
     }
 }

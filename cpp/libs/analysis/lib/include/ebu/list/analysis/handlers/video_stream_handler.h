@@ -27,6 +27,8 @@ namespace ebu_list::analysis
         lines_info line_info;
     };
 
+    void update_net_info_with_address_validation(media::network_info& info, const rtp::packet_info& packet_info);
+
     class video_stream_handler : public rtp::listener
     {
       public:

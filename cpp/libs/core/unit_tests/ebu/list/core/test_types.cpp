@@ -15,7 +15,10 @@ SCENARIO("net to native conversion")
         {
             auto target = to_native(source);
 
-            THEN("the value is correct") { REQUIRE(target == 0x0807060504030201); }
+            THEN("the value is correct")
+            {
+                REQUIRE(target == 0x0807060504030201);
+            }
         }
     }
 
@@ -27,7 +30,10 @@ SCENARIO("net to native conversion")
         {
             auto target = to_native(source);
 
-            THEN("the value is correct") { REQUIRE(target == 0x04030201); }
+            THEN("the value is correct")
+            {
+                REQUIRE(target == 0x04030201);
+            }
         }
     }
 
@@ -39,7 +45,10 @@ SCENARIO("net to native conversion")
         {
             auto target = to_native(source);
 
-            THEN("the value is correct") { REQUIRE(target == 0x0201); }
+            THEN("the value is correct")
+            {
+                REQUIRE(target == 0x0201);
+            }
         }
     }
 }
@@ -54,7 +63,10 @@ SCENARIO("native to net round-trip")
         {
             auto target = to_net(source);
 
-            THEN("the value is correct") { REQUIRE(to_native(target) == source); }
+            THEN("the value is correct")
+            {
+                REQUIRE(to_native(target) == source);
+            }
         }
     }
 }

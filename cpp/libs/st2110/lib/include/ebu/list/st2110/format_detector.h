@@ -34,10 +34,10 @@ namespace ebu_list::st2110
         using full_type      = std::variant<std::nullopt_t, std::string>;
         using transport_type = std::variant<std::nullopt_t, std::string>;
 
-        virtual detector::status_description handle_data(const rtp::packet& packet) = 0;
-        virtual details get_details() const                                         = 0;
-        virtual full_type get_full_media_type() const                               = 0;
-        virtual transport_type get_transport_type() const                           = 0;
+        [[nodiscard]] virtual detector::status_description handle_data(const rtp::packet& packet) = 0;
+        [[nodiscard]] virtual details get_details() const                                         = 0;
+        [[nodiscard]] virtual full_type get_full_media_type() const                               = 0;
+        [[nodiscard]] virtual transport_type get_transport_type() const                           = 0;
     };
 
     class sub_detector : public detector
@@ -46,10 +46,12 @@ namespace ebu_list::st2110
         virtual std::string get_kind() const noexcept = 0;
     };
 
+    using maybe_media_type = std::optional<media::full_media_type>;
+
     class format_detector : public rtp::listener
     {
       public:
-        format_detector(/*rtp::packet first_packet*/);
+        format_detector(maybe_media_type media_type);
 
         void on_data(const rtp::packet& packet) override;
         void on_complete() override;

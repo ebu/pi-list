@@ -7,25 +7,25 @@ import PcapDetailsStreamExplorerPage from './StreamExplorerPage/PcapDetailsStrea
 import PcapDetailsGraphsPage from './GraphsPage/PcapDetailsGraphsPage';
 import './styles.scss';
 function PCapDetailsContent({
-    currentStream,
+    stream,
     pcapFilename,
     pcapID,
     pcap,
 }: {
-    currentStream: SDK.types.IStreamInfo | undefined;
+    stream: SDK.types.IStreamInfo | undefined;
     pcapFilename: string | undefined;
     pcapID: string;
     pcap: SDK.types.IPcapInfo | undefined;
 }) {
     const [currentHeaderType, setcurrentHeaderType] = React.useState<number>(0);
 
-    const isTTML = currentStream?.full_media_type === 'application/ttml+xml' ? true : false;
-    const isUnknown = currentStream?.full_media_type === 'unknown' ? true : false;
-    const isJxsv = currentStream?.full_media_type === 'video/jxsv' ? true : false;
-    const isSRT = currentStream?.full_transport_type === 'SRT' ? true : false;
+    const isTTML = stream?.full_media_type === 'application/ttml+xml';
+    const isUnknown = stream?.full_media_type === 'unknown';
+    const isJxsv = stream?.full_media_type === 'video/jxsv';
+    const isSRT = stream?.full_transport_type === 'SRT';
 
     //If we support more media types that don't need graphs or analysis, this needs to be changed
-    const hasAnalysis = !isTTML && !isJxsv && !isSRT;
+    const hasAnalysis = !isTTML && !isSRT;
     const hasStreamExplorer = !isUnknown && !isJxsv && !isSRT;
 
     React.useEffect(() => {
@@ -41,21 +41,24 @@ function PCapDetailsContent({
     const getPcapDetailsMiddleContent = () => {
         switch (currentHeaderType) {
             case 0:
-                return <PCapDetailsAnalysisPage currentStream={currentStream} pcapID={pcapID} />;
+                return <PCapDetailsAnalysisPage currentStream={stream} pcapID={pcapID} />;
             case 1:
-                return <PcapDetailsStreamExplorerPage currentStream={currentStream} pcapID={pcapID} pcap={pcap} />;
+                return <PcapDetailsStreamExplorerPage currentStream={stream} pcapID={pcapID} pcap={pcap} />;
             case 2:
-                return <PcapDetailsGraphsPage currentStream={currentStream} pcapID={pcapID} />;
+                return <PcapDetailsGraphsPage currentStream={stream} pcapID={pcapID} />;
             default:
                 return <div>ERROR, CONTENT NOT FOUND</div>;
         }
     };
+
+    const profileName = pcap?.analysis_profile.label;
 
     return (
         <div>
             <div className="main-page-header">
                 <PCapDetailsHeaderHOC
                     headerTitle={pcapFilename}
+                    profileName={profileName}
                     onHeaderTypeClick={onHeaderTypeClick}
                     currentHeaderType={currentHeaderType}
                     hasAnalysis={hasAnalysis}

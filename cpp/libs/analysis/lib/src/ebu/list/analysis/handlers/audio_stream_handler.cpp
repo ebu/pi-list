@@ -11,9 +11,15 @@ using namespace ebu_list::st2110::d30;
 //------------------------------------------------------------------------------
 namespace
 {
-    int channel_size_in_bytes(const audio_description& desc) { return number_of_bits(desc.encoding) / 8; }
+    int channel_size_in_bytes(const audio_description& desc)
+    {
+        return number_of_bits(desc.encoding) / 8;
+    }
 
-    int sample_size(const audio_description& desc) { return desc.number_channels * channel_size_in_bytes(desc); }
+    int sample_size(const audio_description& desc)
+    {
+        return desc.number_channels * channel_size_in_bytes(desc);
+    }
 
     constexpr uint32_t rtp_seqnum_window = 2048;
 } // namespace
@@ -116,6 +122,7 @@ void audio_stream_handler::parse_packet(const rtp::packet& packet)
     audio_description_.sample_count += number_of_samples;
 }
 
-mac_address_analyzer::mac_addresses_info audio_stream_handler::get_mac_adresses_analyses() const{
+mac_address_analyzer::mac_addresses_info audio_stream_handler::get_mac_adresses_analyses() const
+{
     return mac_analyzer_.get_mac_addresses_analysis();
 }

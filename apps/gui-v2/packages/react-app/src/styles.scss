@@ -55,6 +55,7 @@ body {
 }
 
 .sb-information-sidebar-content {
+    padding-right: 12px;
     & > div {
         padding: 1.5em;
         &:not(:last-child) {
@@ -99,4 +100,21 @@ body {
 
 html {
     overflow-y: hidden;
+}
+
+.list-subscript {
+    vertical-align: sub;
+    font-size: 0.75em;
+}
+
+.list-title-and-comment {
+    .comment {
+        font-size: 0.75em;
+        margin-top: 1em;
+        color: grey;
+    }
+}
+
+.list-nowrap {
+    white-space: nowrap;
 }

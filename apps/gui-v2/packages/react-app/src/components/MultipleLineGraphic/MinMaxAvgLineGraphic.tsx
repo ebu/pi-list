@@ -6,7 +6,7 @@ import { MinAvgMaxTooltip } from '../index';
 
 interface IComponentProps {
     graphicData: Array<IGraphicMinMaxAvgData>;
-    title: string;
+    title: string | React.ReactElement;
     yAxisTitle: string;
     xAxisTitle: string;
     datakeyX: string;

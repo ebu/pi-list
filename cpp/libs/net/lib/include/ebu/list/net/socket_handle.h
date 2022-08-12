@@ -23,7 +23,7 @@ namespace ebu_list
         socket_handle();
         socket_handle(int af, int type, int protocol = IPPROTO_IP);
         ~socket_handle();
-        socket_handle(const socket_handle&) = delete;
+        socket_handle(const socket_handle&)            = delete;
         socket_handle& operator=(const socket_handle&) = delete;
         socket_handle(socket_handle&& rhs);
         socket_handle& operator=(socket_handle&& rhs);

@@ -10,7 +10,7 @@ namespace ebu_list::analysis
       public:
         using completion_callback = std::function<void(const jpeg_xs_stream_extractor& vsh)>;
 
-        jpeg_xs_stream_extractor(rtp::packet first_packet, path base_dir, executor_ptr main_executor,
+        jpeg_xs_stream_extractor(rtp::packet first_packet, serializable_stream_info info, video_stream_details details, path base_dir, executor_ptr main_executor,
                                  std::string stream_id);
 
       private:

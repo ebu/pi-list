@@ -15,49 +15,40 @@
     "generated_from_network": false,
     "truncated": false,
     "sdps": [],
-    "sdp_count": 0,
+    "parsed_sdps": [],
+    "media_type_map": [],
     "transport_type": "RTP",
-    "_id": "626953d1f93e29dfd57d87df",
-    "id": "c37b63e0-c636-11ec-966a-13e25495ef0a",
+    "_id": "62f52917967b3db4b91269f3",
+    "id": "99c5fae0-198f-11ed-b5cc-d112a8e210a4",
     "__v": 0,
-    "analyzer_version": "2.0.3",
+    "analyzer_version": "2.1.0",
     "capture_date": 1548356088263,
-    "capture_file_name": "1651069905229_79cd57b2-920e-476a-83a1-2838d93b2b16.pcap",
-    "date": 1651069905420,
+    "capture_file_name": "1660234006993_556cd77c-78b1-499f-9639-26747d11275a.pcap",
+    "date": 1660234007230,
     "file_name": "emb_L24_48k_16ch_pt125us.pcap",
-    "owner_id": "473c23a0-c636-11ec-8bf3-e1cb62c23cbf",
-    "pcap_file_name": "1651069905229_79cd57b2-920e-476a-83a1-2838d93b2b16.pcap",
+    "owner_id": "42103150-1893-11ed-9329-fd5c8cb1cedf",
+    "pcap_file_name": "1660234006993_556cd77c-78b1-499f-9639-26747d11275a.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
-        "timestamps": {
-            "source": "pcap"
-        },
+        "timestamps": { "source": "pcap" },
         "audio": {
             "deltaPktTsVsRtpTsLimit": {
-                "unit": "μs",
-                "min": 0,
-                "maxAvg": 1000,
-                "max": 1000
+                "min": { "min": 0, "max": null, "unit": "μs" },
+                "avg": { "min": null, "max": 1000, "unit": "μs" },
+                "max": { "min": null, "max": 1000, "unit": "μs" }
             },
-            "tsdf": {
-                "tolerance": 1,
-                "limit": 17,
-                "unit": "packet_time"
-            }
+            "tsdf": { "tolerance": 1, "limit": 17, "unit": "packet_time" }
         }
     },
-    "summary": {
-        "error_list": [],
-        "warning_list": []
-    },
+    "summary": { "error_list": [], "warning_list": [] },
     "streams": [
         {
             "error_list": [],
-            "_id": "626953d1b7e764870dcfc1c1",
+            "_id": "62f529176cebdd95c42f33c5",
             "full_media_type": "audio/L24",
             "full_transport_type": "RTP",
-            "id": "b29ae749-d05e-43b6-a657-3c0e07a32d10",
+            "id": "d99df780-67df-43fc-9972-9b3f62e7d211",
             "media_specific": {
                 "encoding": "L24",
                 "number_channels": 16,
@@ -66,39 +57,19 @@
             },
             "media_type": "audio",
             "media_type_validation": {
-                "application/ttml+xml": [
-                    "STATUS_CODE_TTML_INVALID_LENGTH"
-                ],
-                "video/jxsv": [
-                    "STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"
-                ],
-                "video/raw": [
-                    "STATUS_CODE_VIDEO_INVALID_LINE_NUMBER"
-                ],
-                "video/smpte291": [
-                    "STATUS_CODE_ANC_WRONG_RESERVED_BIT"
-                ]
+                "application/ttml+xml": ["STATUS_CODE_TTML_INVALID_LENGTH"],
+                "video/raw": ["STATUS_CODE_VIDEO_INVALID_LINE_NUMBER"],
+                "video/smpte291": ["STATUS_CODE_ANC_WRONG_RESERVED_BIT"]
             },
             "network_information": {
                 "destination_address": "239.0.1.13",
                 "destination_mac_address": "01:00:5e:00:01:0d",
                 "destination_port": "20000",
-                "dscp": {
-                    "consistent": true,
-                    "value": 0
-                },
+                "dscp": { "consistent": true, "value": 0 },
                 "has_extended_header": false,
                 "inter_packet_spacing": {
-                    "after_m_bit": {
-                        "avg": 0,
-                        "max": 0,
-                        "min": 0
-                    },
-                    "regular": {
-                        "avg": 117974,
-                        "max": 176000,
-                        "min": 88000
-                    }
+                    "after_m_bit": { "avg": 0, "max": 0, "min": 0 },
+                    "regular": { "avg": 117974, "max": 176000, "min": 88000 }
                 },
                 "multicast_address_match": true,
                 "payload_type": 97,
@@ -109,7 +80,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": true
             },
-            "pcap": "c37b63e0-c636-11ec-966a-13e25495ef0a",
+            "pcap": "99c5fae0-198f-11ed-b5cc-d112a8e210a4",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -126,9 +97,7 @@
             },
             "__v": 0,
             "analyses": {
-                "mac_address_analysis": {
-                    "result": "compliant"
-                },
+                "mac_address_analysis": { "result": "compliant" },
                 "tsdf": {
                     "result": "compliant",
                     "details": {
@@ -136,7 +105,7 @@
                         "tolerance": 125,
                         "limit": 2125,
                         "unit": "μs",
-                        "compliance": "narrow",
+                        "compliance": "compliant",
                         "level": "narrow",
                         "result": "compliant"
                     }
@@ -144,39 +113,18 @@
                 "packet_ts_vs_rtp_ts": {
                     "result": "compliant",
                     "details": {
-                        "range": {
-                            "time": "1970-01-01T00:00:00Z",
-                            "max": 104,
-                            "min": 62,
-                            "avg": 69.76600346020761
-                        },
-                        "limit": {
-                            "min": 0,
-                            "maxAvg": 1000,
-                            "max": 1000
-                        },
+                        "range": { "time": "1970-01-01T00:00:00Z", "max": 104, "min": 62, "avg": 69.76600346020761 },
+                        "limit": { "min": { "min": 0 }, "avg": { "max": 1000 }, "max": { "max": 1000 } },
                         "unit": "μs"
                     }
                 },
-                "unique_multicast_destination_ip_address": {
-                    "result": "compliant"
-                },
-                "destination_multicast_mac_address": {
-                    "result": "compliant"
-                },
-                "destination_multicast_ip_address": {
-                    "result": "compliant"
-                },
-                "unrelated_multicast_addresses": {
-                    "result": "compliant"
-                },
+                "unique_multicast_destination_ip_address": { "result": "compliant" },
+                "destination_multicast_mac_address": { "result": "compliant" },
+                "destination_multicast_ip_address": { "result": "compliant" },
+                "unrelated_multicast_addresses": { "result": "compliant" },
                 "rtp_sequence": {
                     "result": "compliant",
-                    "details": {
-                        "dropped_packets_count": 0,
-                        "dropped_packets_samples": [],
-                        "packet_count": 39304
-                    }
+                    "details": { "dropped_packets_count": 0, "dropped_packets_samples": [], "packet_count": 39304 }
                 }
             },
             "global_audio_analysis": {
@@ -185,28 +133,17 @@
                     "tolerance": 125,
                     "limit": 2125,
                     "unit": "μs",
-                    "compliance": "narrow",
+                    "compliance": "compliant",
                     "level": "narrow",
                     "result": "compliant"
                 },
                 "packet_ts_vs_rtp_ts": {
-                    "range": {
-                        "time": "1970-01-01T00:00:00Z",
-                        "max": 104,
-                        "min": 62,
-                        "avg": 69.76600346020761
-                    },
-                    "limit": {
-                        "min": 0,
-                        "maxAvg": 1000,
-                        "max": 1000
-                    },
+                    "range": { "time": "1970-01-01T00:00:00Z", "max": 104, "min": 62, "avg": 69.76600346020761 },
+                    "limit": { "min": { "min": 0 }, "avg": { "max": 1000 }, "max": { "max": 1000 } },
                     "unit": "μs"
                 }
             },
-            "processing": {
-                "extractedFrames": "IDLE"
-            }
+            "processing": { "extractedFrames": "IDLE" }
         }
     ]
 }

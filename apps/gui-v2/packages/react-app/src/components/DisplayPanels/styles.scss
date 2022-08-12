@@ -67,9 +67,10 @@
 
     &.attention {
         color: red;
+        font-weight: 300;
     }
 
-    color: $font-dark-grey;
+    color: $font-light-grey;
 }
 
 .display-panel-label {
@@ -82,13 +83,8 @@
         line-height: 18px;
         padding-top: 0.25em;
 
-        color: $font-light-grey;
+        color: $font-dark-grey;
     }
-}
-
-.display-panel-title-underline {
-    border: solid 1px $vibrant-blue;
-    border-radius: 50%;
 }
 
 .display-panel-title {
@@ -96,8 +92,8 @@
     font-size: 16px;
     line-height: 14px;
     padding-bottom: 0.7em;
-
     color: $font-light-grey;
+    border-bottom: solid 1px $vibrant-blue;
 }
 
 //SUBSTREAMS ANALYSIS PANEL

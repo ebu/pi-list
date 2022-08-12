@@ -42,7 +42,7 @@ export function useGraphData({
     const [initialMeasurement, setInitialMeasurement] = useState<string>('');
 
     //Number of points available from that graph
-    const [numberOfPoints, setNumberOfPoints] = useState<number>(1);
+    const [numberOfPoints, setNumberOfPoints] = useState<number>(150);
 
     useEffect(() => {
         const fetchCount = async () => {
@@ -95,7 +95,7 @@ export function useGraphData({
         const first_packet_ts_final = isZoomOut ? state.first_packet_ts : getTimeInNs(first_packet_ts!).toString();
         const last_packet_ts_final = isZoomOut ? state.last_packet_ts : getTimeInNs(last_packet_ts!).toString();
         //If it is zoom out we get the initial points to get the same result as the beggining
-        const number_of_points_final = isZoomOut ? numberOfInitialPoints : numberOfPointsGraph;
+        let number_of_points_final = isZoomOut ? numberOfInitialPoints : numberOfPointsGraph;
 
         //If it has more than 150 points we only display NUMBER_OF_RENDERED_POINTS points
         const numberOfPointsCondition =
@@ -132,6 +132,20 @@ export function useGraphData({
                                 last_packet_ts_final
                             );
 
+                  if (nextState.data.length > 500 || nextState.data.length <= 0) {
+                      let nextState = await list.stream.getMeasurement(
+                          state.pcapID,
+                          `${state.measurementType}Grouped`,
+                          state.streamID,
+                          first_packet_ts_final,
+                          last_packet_ts_final,
+                          grouped_ts
+                      );
+                      setData(nextState);
+                  } else {
+                      setData(nextState);
+                  }
+
                   setData(nextState);
               }
             : async () => {
@@ -153,7 +167,19 @@ export function useGraphData({
                                 last_packet_ts_final
                             );
 
-                  setData(nextState);
+                  if (nextState.data.length > 500 || nextState.data.length <= 0) {
+                      let nextState = await list.stream.getMeasurement(
+                          state.pcapID,
+                          `${state.measurementType}Grouped`,
+                          state.streamID,
+                          first_packet_ts_final,
+                          last_packet_ts_final,
+                          grouped_ts
+                      );
+                      setData(nextState);
+                  } else {
+                      setData(nextState);
+                  }
               };
 
         fetchData();

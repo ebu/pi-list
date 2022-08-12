@@ -1,13 +1,18 @@
+const _ = require('lodash');
+import Stream from '../models/stream';
+const { updateStreamWithTsdfMax } = require('../analyzers/audio');
+const { addRtpSequenceAnalysisToStream } = require('../analyzers/rtp');
 import path from 'path';
 import { api } from '@bisect/ebu-list-sdk';
-import { IStreamInfo } from '@bisect/ebu-list-sdk/dist/types';
-import Stream from '../models/stream';
 const websocketManager = require('../managers/websocket');
 const { getUserId } = require('../auth/middleware');
 import { runAnalysis } from '../util/analysis';
 import Pcap from '../models/pcap';
 import loggerFactory from '../util/logger';
 import { getPcapFolder } from '../util/analysis/utils';
+import { getUserFolderFromUserId } from '../util/analysis/utils';
+import { readFile } from 'fs/promises';
+const CONSTANTS = require('../enums/constants');
 
 const logger = loggerFactory('streams');
 
@@ -30,7 +35,7 @@ export async function waitForFramesExtraction(userId: string, pcapId: string, st
         extractFrames: extractFrames,
     };
 
-    const stream = (await Stream.findOne({ id: streamId })) as IStreamInfo | null;
+    const stream = (await Stream.findOne({ id: streamId })) as api.pcap.IStreamInfo | null;
 
     if (stream === null) {
         logger.error(`${streamId} not found`);
@@ -85,4 +90,53 @@ export async function verifyIfFramesAreExtractedOrExtract(req: any) {
     const pcapId = req.params.pcapID;
     const streamId = req.params.streamID;
     return waitForFramesExtraction(userId, pcapId, streamId);
+}
+
+function upgradeTsdfAnalysis(stream: any) {
+    const tsdfAnalysis = _.get(stream, ['analyses', 'tsdf']);
+    if (tsdfAnalysis) return stream;
+
+    const tsdfMax = _.get(stream, ['global_audio_analysis', 'tsdf_max']);
+    return updateStreamWithTsdfMax(stream, tsdfMax);
+}
+
+function upgradeStreamInfo(stream: any) {
+    if (!stream) return stream;
+
+    if (stream.media_type == 'audio') {
+        stream = upgradeTsdfAnalysis(stream);
+    }
+    stream = addRtpSequenceAnalysisToStream(stream);
+
+    return stream;
+}
+
+export async function getStreamWithId(id: string) {
+    const stream = await Stream.findOne({ id }).exec();
+    return upgradeStreamInfo(stream);
+}
+
+export async function getStreamsForPcap(pcapId: string) {
+    return Stream.find({ pcap: pcapId }).exec();
+}
+
+export function getPitFilePathForStream(userID: string, pcapID: string, streamID: string): string {
+    const userFolder = getUserFolderFromUserId(userID);
+    return path.join(userFolder, pcapID, streamID, CONSTANTS.PIT_FILE);
+}
+
+export async function getPitRangeForStream(
+    userID: string,
+    pcapID: string,
+    streamID: string
+): Promise<api.pcap.MinMaxAvgUsRange> {
+    const pitPath = getPitFilePathForStream(userID, pcapID, streamID);
+    const data = await readFile(pitPath);
+    const p = JSON.parse(data.toString());
+    return {
+        min: p.min / 1000,
+        max: p.max / 1000,
+        avg: p.avg / 1000,
+        unit: 'μs',
+    };
 }

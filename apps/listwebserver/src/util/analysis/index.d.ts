@@ -1,9 +1,11 @@
+import * as express from 'express';
+
 export interface IPcapDefinition {
     uuid: string;
     folder: string;
 }
 
-export interface IPcapReq {
+export interface IPcapReqAdditional {
     pcap: IPcapDefinition;
     file: {
         path: string; // Uploaded file path
@@ -11,5 +13,7 @@ export interface IPcapReq {
         originalname: string; // The name of the pcap file
     };
 }
+
+export interface IPcapReq extends express.Request, IPcapReqAdditional {}
 
 export function runAnalysis(params: unknown): unknown;

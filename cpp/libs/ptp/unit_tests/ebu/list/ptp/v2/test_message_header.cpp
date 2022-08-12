@@ -20,7 +20,10 @@ SCENARIO("PTPv2 header parsing")
         {
             const auto [header, remainder] = take_header(std::move(pdu));
 
-            THEN("the header is correct") { REQUIRE(header.value().sequence_id() == sync_1::sequence_id); }
+            THEN("the header is correct")
+            {
+                REQUIRE(header.value().sequence_id() == sync_1::sequence_id);
+            }
 
             AND_THEN("the remainder of the message is correct")
             {

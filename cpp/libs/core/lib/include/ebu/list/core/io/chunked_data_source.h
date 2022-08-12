@@ -11,9 +11,9 @@ namespace ebu_list
     {
       public:
         chunked_data_source(sbuffer_factory_ptr factory, data_source_uptr source);
-        chunked_data_source(chunked_data_source&) = delete;
-        chunked_data_source& operator=(chunked_data_source&) = delete;
-        chunked_data_source(chunked_data_source&&)           = delete;
+        chunked_data_source(chunked_data_source&)             = delete;
+        chunked_data_source& operator=(chunked_data_source&)  = delete;
+        chunked_data_source(chunked_data_source&&)            = delete;
         chunked_data_source& operator=(chunked_data_source&&) = delete;
 
         // throws if EOF

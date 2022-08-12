@@ -4,12 +4,14 @@ import { translate } from '../../../utils/translation';
 
 function PCapDetailsHeaderHOC({
     headerTitle,
+    profileName,
     onHeaderTypeClick,
     currentHeaderType,
     hasAnalysis,
     hasStreamExplorer,
 }: {
     headerTitle: string | undefined;
+    profileName: string | undefined;
     onHeaderTypeClick: (headerType: number) => void;
     currentHeaderType: number;
     hasAnalysis?: boolean;
@@ -55,6 +57,7 @@ function PCapDetailsHeaderHOC({
     return (
         <Header
             headerTitle={headerTitle}
+            subtitle={`Profile: ${profileName}`}
             state={categories}
             onLocalHeaderClick={onHeaderTypeClick}
             dropdownMenu={false}

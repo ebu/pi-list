@@ -42,7 +42,6 @@ export { default as MeasurementPassCriteriaDisplay } from './DisplayPanels/Measu
 export { default as ExtraPanelInformation } from './ExtraPanelInformation/ExtraPanelInformation';
 export { default as SubStreamsAnalysisDisplay } from './DisplayPanels/SubStreamsAnalysisDisplay';
 export { default as SubStreamsExplorerDisplay } from './DisplayPanels/SubStreamsExplorerDisplay';
-export type { IMouseOverHandler } from './DisplayPanels/MeasurementPassCriteriaDisplay';
 export type { ICategory } from './Header/Header';
 export { default as CheckboxListHOC } from './CheckboxList/CheckboxListHOC';
 export { default as CheckboxList } from './CheckboxList/CheckboxList';

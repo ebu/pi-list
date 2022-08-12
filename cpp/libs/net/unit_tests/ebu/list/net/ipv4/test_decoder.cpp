@@ -81,7 +81,10 @@ SCENARIO("IPv4 decoding")
             const auto [header, payload] = ipv4::decode(std::move(frame));
             (void)header; // [[maybe_unused]]
 
-            THEN("the value is correct") { REQUIRE(payload.view().size_bytes() == frame_fcs::ip_payload_size); }
+            THEN("the value is correct")
+            {
+                REQUIRE(payload.view().size_bytes() == frame_fcs::ip_payload_size);
+            }
         }
     }
 }

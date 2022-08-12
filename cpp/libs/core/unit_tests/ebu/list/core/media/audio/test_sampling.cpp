@@ -59,12 +59,18 @@ SCENARIO("audio_sampling")
 
         WHEN("we convert them to int")
         {
-            THEN("it throws") { REQUIRE_THROWS_AS(to_int(unknown), std::invalid_argument); }
+            THEN("it throws")
+            {
+                REQUIRE_THROWS_AS(to_int(unknown), std::invalid_argument);
+            }
         }
 
         WHEN("we convert them to string")
         {
-            THEN("it throws") { REQUIRE_THROWS_AS(to_string(unknown), std::invalid_argument); }
+            THEN("it throws")
+            {
+                REQUIRE_THROWS_AS(to_string(unknown), std::invalid_argument);
+            }
         }
     }
 }
@@ -122,12 +128,18 @@ SCENARIO("audio_encoding")
 
         WHEN("we try to convert it to string")
         {
-            THEN("we get an 'unknown' string'") { REQUIRE("unknown" == to_string(invalid)); }
+            THEN("we get an 'unknown' string'")
+            {
+                REQUIRE("unknown" == to_string(invalid));
+            }
         }
 
         WHEN("we try to get the bits per sample")
         {
-            THEN("it throws") { REQUIRE_THROWS_AS(number_of_bits(invalid), std::invalid_argument); }
+            THEN("it throws")
+            {
+                REQUIRE_THROWS_AS(number_of_bits(invalid), std::invalid_argument);
+            }
         }
     }
 }

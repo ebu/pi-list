@@ -16,14 +16,20 @@ SCENARIO("Modulo difference")
         {
             const auto result = modulo_difference(larger, smaller);
 
-            THEN("the result is correct") { REQUIRE(result == 0xFF00); }
+            THEN("the result is correct")
+            {
+                REQUIRE(result == 0xFF00);
+            }
         }
 
         WHEN("the smaller is lhs")
         {
             const auto result = modulo_difference(smaller, larger);
 
-            THEN("the result is correct") { REQUIRE(result == 0x0100); }
+            THEN("the result is correct")
+            {
+                REQUIRE(result == 0x0100);
+            }
         }
     }
 
@@ -36,14 +42,20 @@ SCENARIO("Modulo difference")
         {
             const auto result = modulo_difference(larger, smaller);
 
-            THEN("the result is correct") { REQUIRE(result == 0xFF000000); }
+            THEN("the result is correct")
+            {
+                REQUIRE(result == 0xFF000000);
+            }
         }
 
         WHEN("the smaller is lhs")
         {
             const auto result = modulo_difference(smaller, larger);
 
-            THEN("the result is correct") { REQUIRE(result == 0x1000000); }
+            THEN("the result is correct")
+            {
+                REQUIRE(result == 0x1000000);
+            }
         }
     }
 
@@ -56,14 +68,20 @@ SCENARIO("Modulo difference")
         {
             const auto result = modulo_difference(larger, smaller);
 
-            THEN("the result is correct") { REQUIRE(result == 0xFF00000FFFFFFFF0); }
+            THEN("the result is correct")
+            {
+                REQUIRE(result == 0xFF00000FFFFFFFF0);
+            }
         }
 
         WHEN("the smaller is lhs")
         {
             const auto result = modulo_difference(smaller, larger);
 
-            THEN("the result is correct") { REQUIRE(result == 0xFFFFF000000010); }
+            THEN("the result is correct")
+            {
+                REQUIRE(result == 0xFFFFF000000010);
+            }
         }
     }
 }

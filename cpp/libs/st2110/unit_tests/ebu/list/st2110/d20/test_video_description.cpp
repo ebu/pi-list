@@ -14,7 +14,10 @@ SCENARIO("default values for st2110-20")
 
         WHEN("we check the default scan type")
         {
-            THEN("we get a progressive scan") { REQUIRE(video_info.scan_type == video::scan_type::PROGRESSIVE); }
+            THEN("we get a progressive scan")
+            {
+                REQUIRE(video_info.scan_type == video::scan_type::PROGRESSIVE);
+            }
         }
     }
 }

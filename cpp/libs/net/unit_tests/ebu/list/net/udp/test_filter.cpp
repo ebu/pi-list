@@ -13,7 +13,10 @@ SCENARIO("UDP filter filters datagrams")
 
         WHEN("we try to build an udp_filter without a listener")
         {
-            THEN("it throws") { REQUIRE_THROWS_AS(udp_filter(nullptr, address, port), std::runtime_error); }
+            THEN("it throws")
+            {
+                REQUIRE_THROWS_AS(udp_filter(nullptr, address, port), std::runtime_error);
+            }
         }
 
         // todo: add tests to check the filter

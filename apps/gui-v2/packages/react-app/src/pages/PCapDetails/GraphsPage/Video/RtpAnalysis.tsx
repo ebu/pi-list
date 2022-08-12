@@ -38,7 +38,7 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     });
 
     const mediaInfoRtpDelta = translate('media_information.rtp.delta_rtp_ts_vs_nt');
-    const mediaInfoRtpTsStep = translate('media_information.rtp.rtp_ts_step');
+    const mediaInfoRtpTsStep = 'Inter-frame RTP TS Delta';
 
     if (!rtpTimeStepData) return null;
     if (!latencyData) return null;
@@ -54,16 +54,6 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
         ? getFinalDataMinMaxAvgGraph(rtpOffsetData.data)
         : getFinalData(rtpOffsetData.data);
 
-    if (latencyData.data.length === 0) {
-        return null;
-    }
-    if (rtpOffsetData.data.length === 0) {
-        return null;
-    }
-    if (rtpTimeStepData.data.length === 0) {
-        return null;
-    }
-
     const leftMarginLatency = latencyData.isGrouped
         ? getLeftMargin(latencyData.data)
         : getLeftMargin(latencyFinalData!);
@@ -76,7 +66,7 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
 
     const latencyGraphLineGraphData = {
         graphicData: getFinalData(latencyFinalData!),
-        title: 'Latency',
+        title: 'Video latency',
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'Latency (μs)',
         datakeyY: 'value',
@@ -86,7 +76,7 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
 
     const latencyGraphMinMaxAvgGraphData = {
         graphicData: getFinalDataMinMaxAvgGraph(latencyData.data!),
-        title: 'Latency',
+        title: 'Video latency',
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'Latency (μs)',
         datakeyY: ['min', 'avg', 'max'],
@@ -94,9 +84,16 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
         leftMargin: leftMarginLatency,
     };
 
+    const rtpOffsetTitle = (
+        <>
+            <span>RTP</span>
+            <span style={{ verticalAlign: 'sub', fontSize: '0.75em' }}>OFFSET</span>
+        </>
+    );
+
     const rtpOffsetLineGraphData = {
         graphicData: getFinalData(rtpOffsetFinalData!),
-        title: mediaInfoRtpDelta,
+        title: rtpOffsetTitle,
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'RTP offset (ticks)',
         datakeyY: 'value',
@@ -106,7 +103,7 @@ function RtpAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
 
     const rtpOffsetMinMaxAvgGraphData = {
         graphicData: getFinalDataMinMaxAvgGraph(rtpOffsetData.data),
-        title: mediaInfoRtpDelta,
+        title: rtpOffsetTitle,
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'RTP offset (ticks)',
         datakeyY: ['min', 'avg', 'max'],

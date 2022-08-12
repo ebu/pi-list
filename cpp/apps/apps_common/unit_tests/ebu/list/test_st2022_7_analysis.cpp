@@ -111,7 +111,10 @@ SCENARIO("Analyze 2022-7")
             config["main"]      = group_1::get_b();
 
             const auto result = st2022_7::analyse(config);
-            THEN("the result is correct") { check_result<group_1>(result); }
+            THEN("the result is correct")
+            {
+                check_result<group_1>(result);
+            }
         }
 
         WHEN("we reverse the streams")
@@ -121,7 +124,10 @@ SCENARIO("Analyze 2022-7")
             config["main"]      = group_1::get_a();
 
             const auto result = st2022_7::analyse(config);
-            THEN("the result is correct") { check_result<group_1>(result); }
+            THEN("the result is correct")
+            {
+                check_result<group_1>(result);
+            }
         }
     }
 
@@ -134,7 +140,10 @@ SCENARIO("Analyze 2022-7")
             config["main"]      = group_2::get_b();
 
             const auto result = st2022_7::analyse(config);
-            THEN("the result is correct") { check_result<group_2>(result); }
+            THEN("the result is correct")
+            {
+                check_result<group_2>(result);
+            }
         }
 
         WHEN("we reverse the streams")
@@ -144,7 +153,10 @@ SCENARIO("Analyze 2022-7")
             config["main"]      = group_2::get_a();
 
             const auto result = st2022_7::analyse(config);
-            THEN("the result is correct") { check_result<group_2>(result); }
+            THEN("the result is correct")
+            {
+                check_result<group_2>(result);
+            }
         }
     }
 }

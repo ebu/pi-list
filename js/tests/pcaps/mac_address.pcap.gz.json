@@ -15,96 +15,61 @@
     "generated_from_network": false,
     "truncated": false,
     "sdps": [],
-    "sdp_count": 0,
+    "parsed_sdps": [],
+    "media_type_map": [],
     "transport_type": "RTP",
-    "_id": "626953d6f93e29dfd57d88e1",
-    "id": "c6739540-c636-11ec-966a-13e25495ef0a",
+    "_id": "62f5291a967b3db4b9126acf",
+    "id": "9bba9ef0-198f-11ed-b5cc-d112a8e210a4",
     "__v": 0,
-    "analyzer_version": "2.0.3",
+    "analyzer_version": "2.1.0",
     "capture_date": 1518791594875,
-    "capture_file_name": "1651069910190_da83cc68-0347-4391-bf0c-2388990890d0.gz",
-    "date": 1651069910355,
+    "capture_file_name": "1660234010276_d5f8be8e-b001-4768-ac5a-0f2d23bb7352.gz",
+    "date": 1660234010571,
     "file_name": "mac_address.pcap.gz",
-    "owner_id": "473c23a0-c636-11ec-8bf3-e1cb62c23cbf",
-    "pcap_file_name": "1651069910190_da83cc68-0347-4391-bf0c-2388990890d0.pcap",
+    "owner_id": "42103150-1893-11ed-9329-fd5c8cb1cedf",
+    "pcap_file_name": "1660234010276_d5f8be8e-b001-4768-ac5a-0f2d23bb7352.pcap",
     "analysis_profile": {
         "id": "5b2203b2-0aec-40fa-b0da-2f36a1c06af6",
         "label": "JT-NM Tested 2020",
-        "timestamps": {
-            "source": "pcap"
-        },
+        "timestamps": { "source": "pcap" },
         "audio": {
             "deltaPktTsVsRtpTsLimit": {
-                "unit": "μs",
-                "min": 0,
-                "maxAvg": 1000,
-                "max": 1000
+                "min": { "min": 0, "max": null, "unit": "μs" },
+                "avg": { "min": null, "max": 1000, "unit": "μs" },
+                "max": { "min": null, "max": 1000, "unit": "μs" }
             },
-            "tsdf": {
-                "tolerance": 1,
-                "limit": 17,
-                "unit": "packet_time"
-            }
+            "tsdf": { "tolerance": 1, "limit": 17, "unit": "packet_time" }
         }
     },
     "summary": {
         "error_list": [
+            { "stream_id": "0d9ee70b-3630-413c-a559-e4f398250710", "value": { "id": "errors.invalid_rtp_ts_vs_nt" } },
             {
-                "stream_id": "99da9af9-c3ba-49f1-8929-753e54e558f4",
-                "value": {
-                    "id": "errors.invalid_rtp_ts_vs_nt"
-                }
+                "stream_id": "0d9ee70b-3630-413c-a559-e4f398250710",
+                "value": { "id": "errors.invalid_delta_packet_ts_vs_rtp_ts" }
             },
+            { "stream_id": "0d9ee70b-3630-413c-a559-e4f398250710", "value": { "id": "errors.vrx_above_maximum" } },
             {
-                "stream_id": "99da9af9-c3ba-49f1-8929-753e54e558f4",
-                "value": {
-                    "id": "errors.invalid_delta_packet_ts_vs_rtp_ts"
-                }
+                "stream_id": "0d9ee70b-3630-413c-a559-e4f398250710",
+                "value": { "id": "errors.invalid_multicast_mac_address" }
             },
-            {
-                "stream_id": "99da9af9-c3ba-49f1-8929-753e54e558f4",
-                "value": {
-                    "id": "errors.vrx_above_maximum"
-                }
-            },
-            {
-                "stream_id": "99da9af9-c3ba-49f1-8929-753e54e558f4",
-                "value": {
-                    "id": "errors.invalid_multicast_mac_address"
-                }
-            },
-            {
-                "stream_id": "99da9af9-c3ba-49f1-8929-753e54e558f4",
-                "value": {
-                    "id": "errors.repeated_mac_addresses"
-                }
-            }
+            { "stream_id": "0d9ee70b-3630-413c-a559-e4f398250710", "value": { "id": "errors.repeated_mac_addresses" } }
         ],
         "warning_list": []
     },
     "streams": [
         {
             "error_list": [
-                {
-                    "id": "errors.invalid_rtp_ts_vs_nt"
-                },
-                {
-                    "id": "errors.invalid_delta_packet_ts_vs_rtp_ts"
-                },
-                {
-                    "id": "errors.vrx_above_maximum"
-                },
-                {
-                    "id": "errors.invalid_multicast_mac_address"
-                },
-                {
-                    "id": "errors.repeated_mac_addresses"
-                }
+                { "id": "errors.invalid_rtp_ts_vs_nt" },
+                { "id": "errors.invalid_delta_packet_ts_vs_rtp_ts" },
+                { "id": "errors.vrx_above_maximum" },
+                { "id": "errors.invalid_multicast_mac_address" },
+                { "id": "errors.repeated_mac_addresses" }
             ],
-            "_id": "626953d6b7e764870dcfc30f",
+            "_id": "62f5291a6cebdd95c42f34e6",
             "full_media_type": "video/raw",
             "full_transport_type": "RTP",
-            "id": "99da9af9-c3ba-49f1-8929-753e54e558f4",
+            "id": "0d9ee70b-3630-413c-a559-e4f398250710",
             "media_specific": {
                 "avg_tro_ns": 12493753,
                 "color_depth": 10,
@@ -124,39 +89,19 @@
             },
             "media_type": "video",
             "media_type_validation": {
-                "application/ttml+xml": [
-                    "STATUS_CODE_TTML_INVALID_DOCUMENT"
-                ],
-                "audio/L16": [
-                    "STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"
-                ],
-                "video/jxsv": [
-                    "STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"
-                ],
-                "video/smpte291": [
-                    "STATUS_CODE_ANC_WRONG_RESERVED_BIT"
-                ]
+                "application/ttml+xml": ["STATUS_CODE_TTML_INVALID_DOCUMENT"],
+                "audio/L16": ["STATUS_CODE_AUDIO_DIFFERENCE_VALUE_EQUAL_TO_ZERO"],
+                "video/smpte291": ["STATUS_CODE_ANC_WRONG_RESERVED_BIT"]
             },
             "network_information": {
                 "destination_address": "239.120.144.1",
                 "destination_mac_address": "01:00:5e:78:90:01",
                 "destination_port": "50120",
-                "dscp": {
-                    "consistent": true,
-                    "value": 0
-                },
+                "dscp": { "consistent": true, "value": 0 },
                 "has_extended_header": false,
                 "inter_packet_spacing": {
-                    "after_m_bit": {
-                        "avg": 680000,
-                        "max": 692000,
-                        "min": 662000
-                    },
-                    "regular": {
-                        "avg": 5970,
-                        "max": 11000,
-                        "min": 5000
-                    }
+                    "after_m_bit": { "avg": 680000, "max": 692000, "min": 662000 },
+                    "regular": { "avg": 5970, "max": 11000, "min": 5000 }
                 },
                 "multicast_address_match": true,
                 "payload_type": 96,
@@ -167,7 +112,7 @@
                 "valid_multicast_ip_address": true,
                 "valid_multicast_mac_address": false
             },
-            "pcap": "c6739540-c636-11ec-966a-13e25495ef0a",
+            "pcap": "9bba9ef0-198f-11ed-b5cc-d112a8e210a4",
             "state": "analyzed",
             "statistics": {
                 "dropped_packet_count": 0,
@@ -185,79 +130,40 @@
             },
             "__v": 0,
             "analyses": {
-                "mac_address_analysis": {
-                    "result": "not_compliant"
-                },
+                "mac_address_analysis": { "result": "not_compliant" },
                 "rtp_ts_vs_nt": {
+                    "result": "not_compliant",
                     "details": {
-                        "range": {
-                            "min": 329444115,
-                            "max": 329444115,
-                            "avg": 329444115
-                        },
-                        "limit": {
-                            "min": -1,
-                            "max": 60
-                        },
+                        "range": { "min": 329444115, "max": 329444115, "avg": 329444115 },
+                        "limit": { "min": -1, "max": 60 },
                         "unit": "ticks"
-                    },
-                    "result": "not_compliant"
+                    }
                 },
                 "packet_ts_vs_rtp_ts": {
                     "details": {
-                        "range": {
-                            "min": -3660477682114,
-                            "max": -3660477666855,
-                            "avg": -3660477673101.4
-                        },
-                        "limit": {
-                            "min": 0,
-                            "max": 1000000
-                        },
+                        "range": { "min": -3660477682114, "max": -3660477666855, "avg": -3660477673101.4 },
+                        "limit": { "min": 0, "max": 1000000 },
                         "unit": "ns"
                     },
                     "result": "not_compliant"
                 },
                 "inter_frame_rtp_ts_delta": {
                     "details": {
-                        "range": {
-                            "min": 1501,
-                            "max": 1502,
-                            "avg": 1501.5
-                        },
-                        "limit": {
-                            "min": 1501,
-                            "max": 1502
-                        },
+                        "range": { "min": 1501, "max": 1502, "avg": 1501.5 },
+                        "limit": { "min": 1501, "max": 1502 },
                         "unit": "ticks"
                     },
                     "result": "compliant"
                 },
-                "2110_21_cinst": {
-                    "result": "compliant"
-                },
-                "2110_21_vrx": {
-                    "result": "not_compliant"
-                },
-                "unique_multicast_destination_ip_address": {
-                    "result": "compliant"
-                },
-                "destination_multicast_mac_address": {
-                    "result": "not_compliant"
-                },
-                "destination_multicast_ip_address": {
-                    "result": "compliant"
-                },
-                "unrelated_multicast_addresses": {
-                    "result": "compliant"
-                },
+                "2110_21_cinst": { "result": "compliant" },
+                "2110_21_vrx": { "result": "not_compliant" },
+                "unique_multicast_destination_ip_address": { "result": "compliant" },
+                "destination_multicast_mac_address": { "result": "not_compliant" },
+                "destination_multicast_ip_address": { "result": "compliant" },
+                "unrelated_multicast_addresses": { "result": "compliant" },
                 "rtp_sequence": {
                     "result": "compliant",
-                    "details": {
-                        "dropped_packets_count": 0,
-                        "dropped_packets_samples": [],
-                        "packet_count": 11790
-                    }
+                    "details": { "dropped_packets_count": 0, "dropped_packets_samples": [], "packet_count": 11790 }
                 }
             },
             "global_video_analysis": {
@@ -266,47 +172,25 @@
                     "cmax_wide": 16,
                     "compliance": "narrow",
                     "histogram": [
-                        [
-                            0,
-                            88.85496520996094
-                        ],
-                        [
-                            1,
-                            11.145038604736328
-                        ]
+                        [0, 88.85496520996094],
+                        [1, 11.145038604736328]
                     ]
                 },
                 "compliance": "not_compliant",
-                "trs": {
-                    "trs_ns": 7414.814814814815
-                },
+                "trs": { "trs_ns": 7414.814814814815 },
                 "vrx": {
                     "compliance": "not_compliant",
                     "histogram": [
-                        [
-                            -1598,
-                            0.03703703731298447
-                        ],
-                        [
-                            -1597,
-                            59.96296310424805
-                        ],
-                        [
-                            -1596,
-                            0.018518518656492233
-                        ],
-                        [
-                            -1595,
-                            39.98147964477539
-                        ]
+                        [-1598, 0.03703703731298447],
+                        [-1597, 59.96296310424805],
+                        [-1596, 0.018518518656492233],
+                        [-1595, 39.98147964477539]
                     ],
                     "vrx_full_narrow": 8,
                     "vrx_full_wide": 720
                 }
             },
-            "processing": {
-                "extractedFrames": "IDLE"
-            }
+            "processing": { "extractedFrames": "IDLE" }
         }
     ]
 }

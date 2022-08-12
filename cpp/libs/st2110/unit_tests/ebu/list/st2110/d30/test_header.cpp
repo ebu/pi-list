@@ -11,7 +11,9 @@ SCENARIO("ST2110-30 header")
     {
         WHEN("we read its header")
         {
-            THEN("we get the correct header information") {}
+            THEN("we get the correct header information")
+            {
+            }
         }
     }
 }

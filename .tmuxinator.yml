@@ -8,6 +8,7 @@ on_project_start:
     - cmake .. -G Ninja -DBUILD_ALL=1 -DCMAKE_BUILD_TYPE=Release || exit -1
     - cmake --build . || exit -1
     - cd ..
+    - yarn install || exit -1
     - npx lerna bootstrap || exit -1
     - npx lerna run build || exit -1
     - cd ..

@@ -177,8 +177,8 @@ namespace
         db_updater updater(db, config.storage_folder);
 
         const auto is_srt = pcap.transport_type == "SRT";
-        auto context = processing_context{
-            config.pcap_file, config.profile,    config.storage_folder, pcap, get_stream_info, &factory,
+        auto context      = processing_context{
+            config.pcap_file, config.profile,    config.storage_folder, pcap,  get_stream_info, &factory,
             &updater,         progress_callback, config.extract_frames, is_srt};
 
         run_full_analysis(context);

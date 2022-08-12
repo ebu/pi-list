@@ -40,15 +40,12 @@ function VrxAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
         loadVrxHistData();
     }, [currentStream?.id]);
 
-    const mediaInfoHistogram = translate('media_information.histogram');
+    const mediaInfoHistogram = 'VRX histogram';
     const generalBufferLevel = translate('general.buffer_level');
     const mediaInfoRtpPacketCount = translate('media_information.rtp.packet_count');
 
     if (!vrxData) return null;
 
-    if (vrxData.data.length === 0) {
-        return null;
-    }
     if (vrxHistData === undefined) {
         return null;
     }
@@ -82,7 +79,7 @@ function VrxAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     const vrxHistPercData: number[][] = getPercHistData(vrxHistData);
     const vrxHistFinalData = getFinalHistData(vrxHistPercData);
     const leftMarginVrxHist = getLeftMarginBarGraphic(vrxHistFinalData);
-    const complianceVrxHist = getCompliance(currentStream?.global_video_analysis['vrx'].compliance);
+    const complianceVrxHist = getCompliance(currentStream?.global_video_analysis?.vrx?.compliance);
     const vrxHistGraphData = {
         barGraphic: vrxHistFinalData,
         title: mediaInfoHistogram,

@@ -21,7 +21,7 @@ namespace
         auto callback             = [](float) {};
 
         constexpr auto is_srt = false;
-        auto context = processing_context{pcap_file,        profile,  storage_folder, pcap, get_stream_info,
+        auto context          = processing_context{pcap_file,        profile,  storage_folder, pcap,  get_stream_info,
                                           &handler_factory, &updater, callback,       false, is_srt};
 
         run_full_analysis(context);

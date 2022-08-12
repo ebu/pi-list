@@ -20,15 +20,11 @@ function Rtp({ currentStream, pcapID }: { currentStream: SDK.types.IStreamInfo |
         last_packet_ts,
     });
 
-    const mediaInfoRtpDeltaPacketTimeRtpTime = translate('media_information.rtp.delta_packet_time_vs_rtp_time');
+    const mediaInfoRtpDeltaPacketTimeRtpTime = 'Audio latency';
     const mediaInfoTimelime = translate('media_information.timeline');
     const MediaInfoDelay = translate('media_information.delay');
 
     if (!rtpData) return null;
-
-    if (rtpData.data.length === 0) {
-        return null;
-    }
 
     const rtpFinalData = rtpData.isGrouped ? getFinalDataMinMaxAvgGraph(rtpData.data) : getFinalData(rtpData.data);
 
