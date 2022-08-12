@@ -21,7 +21,6 @@ namespace ebu_list::analysis
                                 path base_dir, completion_callback on_complete_callback);
 
         st2110::d21::video_analysis_info get_video_analysis_info() const;
-
         mac_address_analyzer::mac_addresses_info get_mac_adresses_analyses() const;
 
       private:

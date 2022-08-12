@@ -33,11 +33,6 @@ export function map2110d21Vrx(stream: api.pcap.IStreamInfo): api.pcap.IStreamInf
 // Sets analyses.2110_21_cinst.result to compliant or not_compliant
 // - if not compliant, adds and error to analyses.errors
 export function map2110d21Cinst(stream: api.pcap.IStreamInfo): api.pcap.IStreamInfo {
-    if (stream.full_media_type !== 'video/raw') {
-        // TODO: implement CInst analysis on the extractor
-        return stream;
-    }
-
     const compliance = stream.global_video_analysis?.cinst?.compliance;
     stream.analyses = stream.analyses ?? {};
 

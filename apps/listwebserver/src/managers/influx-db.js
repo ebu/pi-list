@@ -1,4 +1,7 @@
 const Influx = require('influx');
+import {
+    isArray
+} from 'lodash';
 import logger from '../util/logger';
 const program = require('../util/programArguments');
 
@@ -36,8 +39,7 @@ class InfluxDbManager {
 
     sendQueryAndFormatResults(query, isGrouped) {
         return this.influx.query(query).then((data) =>
-        (
-            {
+            ({
                 data: data.map((item) => ({
                     ...item,
                     time: item.time._nanoISO,
@@ -49,15 +51,28 @@ class InfluxDbManager {
 
     sendQueryAndCountResults(query) {
         return this.influx.query(query).then((data) =>
-        ({
-            count: data[0].count
-        })
+            (data && isArray(data) && data[0]) ? ({
+                count: data[0].count
+            }) : {
+                count: 0
+            }
         );
     }
 
     getPtpOffsetSamplesByPcap(pcapID) {
         const query = `select "ptp_offset" as "value" from /^${pcapID}$/`;
         log.info(`Get PTP for the pcap ${pcapID}. Query: \n ${query}`);
+        return this.sendQueryAndFormatResults(query, false);
+    }
+
+    getCInstRange(pcapID, streamID) {
+        const query = `
+            select max("cinst") as "max", min("cinst") as "min", mean("cinst") as "avg"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}
+        `;
+
+        log.info(`Get CInst for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+
         return this.sendQueryAndFormatResults(query, false);
     }
 

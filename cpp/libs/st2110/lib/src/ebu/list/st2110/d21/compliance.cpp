@@ -9,9 +9,10 @@ using namespace ebu_list::st2110::d21;
 
 compliance_analyzer::compliance_analyzer(int npackets, media::video::Rate rate, media::video::info video_info,
                                          vrx_settings settings, media::video::scan_type scan,
-                                         media::video::video_dimensions raster) noexcept
+                                         media::video::video_dimensions raster,
+                                         vrx_analysis_mode_t vrx_analysis_mode) noexcept
     : c_calculator_(npackets, rate), vrx_calculator_(npackets, video_info, settings),
-      checker_(npackets, 1 / rate, settings.schedule, scan, raster)
+      checker_(npackets, 1 / rate, settings.schedule, scan, raster), vrx_analysis_mode_(vrx_analysis_mode)
 {
 }
 
@@ -19,6 +20,8 @@ void compliance_analyzer::handle_packet(const rtp::packet_info& info) noexcept
 {
     const auto cinst = c_calculator_.on_packet(info.udp.packet_time);
     cinst_histogram_.add_value(cinst);
+
+    if(vrx_analysis_mode_ == vrx_analysis_mode_t::disabled) return;
 
     if(state_ != state::waiting_for_frame)
     {
@@ -59,8 +62,8 @@ compliance_analyzer::compliance_status compliance_analyzer::get_compliance() con
     const auto current_vrx_peak = get_histogram_peak(vrx_histogram_.values());
     const auto current_c_peak   = get_histogram_peak(cinst_histogram_.values());
 
-    return {checker_.check(current_vrx_min, current_vrx_peak, current_c_peak), checker_.check_c_peak(current_c_peak),
-            checker_.check_vrx_min_peak(current_vrx_min, current_vrx_peak)};
+    return {checker_.check(vrx_analysis_mode_, current_vrx_min, current_vrx_peak, current_c_peak), checker_.check_c_peak(current_c_peak),
+            checker_.check_vrx_min_peak(current_vrx_min, current_vrx_peak), vrx_analysis_mode_};
 }
 
 void compliance_analyzer::clear_histograms() noexcept
@@ -124,10 +127,12 @@ compliance_profile compliance_checker::check_c_peak(int c_peak) const noexcept
     return compliance_profile::not_compliant;
 }
 
-compliance_profile compliance_checker::check(int vrx_min, int vrx_peak, int c_peak) const noexcept
+compliance_profile compliance_checker::check(vrx_analysis_mode_t mode, int vrx_min, int vrx_peak, int c_peak) const noexcept
 {
-    const auto vrx = check_vrx_min_peak(vrx_min, vrx_peak);
     const auto c   = check_c_peak(c_peak);
+    if(mode == vrx_analysis_mode_t::disabled) return c;
+
+    const auto vrx = check_vrx_min_peak(vrx_min, vrx_peak);
 
     if(vrx == narrow_kind_) return c;
 

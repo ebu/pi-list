@@ -40,28 +40,31 @@ namespace
         }
         // todo: detect streams marked as interlaced but is progressive
     }
-
-    void update_net_info_with_address_validation(media::network_info& info, const rtp::packet_info& packet_info)
-    {
-        info.valid_multicast_mac_address =
-            info.valid_multicast_mac_address && is_multicast_address(packet_info.ethernet_info.destination_address);
-
-        info.valid_multicast_ip_address =
-            info.valid_multicast_ip_address && is_multicast_address(packet_info.udp.destination_address);
-
-        info.multicast_address_match =
-            info.multicast_address_match && is_same_multicast_address(packet_info.ethernet_info.destination_address,
-                                                                      packet_info.udp.destination_address);
-
-        //        logger()->trace(
-        //            "valid_multicast_mac_address: {} -
-        //            valid_multicast_ip_address: {} - "
-        //            "multicast_address_match: {}",
-        //            info.valid_multicast_mac_address,
-        //            info.valid_multicast_ip_address,
-        //            info.multicast_address_match);
-    }
 } // namespace
+
+// TODO: move to another file
+void ebu_list::analysis::update_net_info_with_address_validation(media::network_info& info,
+                                                                 const rtp::packet_info& packet_info)
+{
+    info.valid_multicast_mac_address =
+        info.valid_multicast_mac_address && is_multicast_address(packet_info.ethernet_info.destination_address);
+
+    info.valid_multicast_ip_address =
+        info.valid_multicast_ip_address && is_multicast_address(packet_info.udp.destination_address);
+
+    info.multicast_address_match =
+        info.multicast_address_match &&
+        is_same_multicast_address(packet_info.ethernet_info.destination_address, packet_info.udp.destination_address);
+
+    //        logger()->trace(
+    //            "valid_multicast_mac_address: {} -
+    //            valid_multicast_ip_address: {} - "
+    //            "multicast_address_match: {}",
+    //            info.valid_multicast_mac_address,
+    //            info.valid_multicast_ip_address,
+    //            info.multicast_address_match);
+}
+
 //------------------------------------------------------------------------------
 
 video_stream_handler::video_stream_handler(decode_video should_decode_video, rtp::packet first_packet,
@@ -76,7 +79,6 @@ video_stream_handler::video_stream_handler(decode_video should_decode_video, rtp
     video_description_.first_frame_ts  = first_packet.info.rtp.view().timestamp();
     video_description_.last_frame_ts   = video_description_.first_frame_ts;
     video_description_.first_packet_ts = first_packet.info.udp.packet_time;
-
     update_net_info_with_address_validation(info_.network, first_packet.info);
 
     info_.network.has_extended_header = first_packet.info.rtp.view().extension();

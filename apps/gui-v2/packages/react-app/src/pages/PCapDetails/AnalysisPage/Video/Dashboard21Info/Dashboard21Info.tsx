@@ -21,50 +21,62 @@ const getCompliance = (value: string) => {
     }
 };
 
-function Dashboard21Info({ currentStream }: { currentStream: SDK.types.IStreamInfo | undefined }) {
+function Dashboard21Info({ stream }: { stream: SDK.types.IStreamInfo }) {
     const setInfo = useSidebarInfo();
 
-    const globalVideoAnalysis = currentStream?.global_video_analysis;
+    const isRawVideo = stream.full_media_type === 'video/raw';
+
+    const globalVideoAnalysis = stream.global_video_analysis;
 
     if (!globalVideoAnalysis?.compliance) {
         return null;
     }
 
-    const videoMediaSpecific = currentStream?.media_specific as SDK.api.pcap.IST2110VideoInfo;
-    const interPacketSpacing = currentStream?.network_information.inter_packet_spacing;
+    const videoMediaSpecific = stream.media_specific as SDK.api.pcap.IST2110VideoInfo;
+    const interPacketSpacing = stream.network_information.inter_packet_spacing;
     const gapData = interPacketSpacing && interPacketSpacing.after_m_bit;
     const interPacketData = interPacketSpacing && interPacketSpacing.regular;
     const complianceSummary = getCompliance(globalVideoAnalysis.compliance);
-    const cinstAnalysis = currentStream?.analyses['2110_21_cinst'];
-    const vrxAnalysis = currentStream?.analyses['2110_21_vrx'];
+    const cinstAnalysis = stream.analyses['2110_21_cinst'];
+    const vrxAnalysis = stream.analyses['2110_21_vrx'];
+    const showFpt = videoMediaSpecific && isRawVideo;
+    const showGapData = gapData && isRawVideo;
 
-    const summaryValues = [
+    const summaryValues: {
+        labelTag: any;
+        value: any;
+        units?: string;
+        attention?: boolean;
+    }[] = [
         {
             labelTag: translate('stream.compliance'),
             value: complianceSummary.value,
             units: complianceSummary.units,
             attention: complianceSummary.attention,
         },
-        {
+    ];
+
+    if (isRawVideo) {
+        summaryValues.push({
             labelTag: translate('media_information.video.read_schedule'),
             value:
                 typeof videoMediaSpecific.schedule !== 'undefined'
                     ? videoMediaSpecific.schedule
                     : translate('headings.unknown'),
-        },
-        {
+        });
+        summaryValues.push({
             labelTag: labels.trs,
             value: globalVideoAnalysis.trs
                 ? (globalVideoAnalysis.trs.trs_ns / 1000).toFixed(3) + ' µs'
                 : translate('headings.unknown'),
-        },
-        {
+        });
+        summaryValues.push({
             labelTag: labels.troDefault,
             value: videoMediaSpecific
                 ? (videoMediaSpecific.tro_default_ns / 1000).toFixed(3) + ' µs'
                 : translate('headings.unknown'),
-        },
-    ];
+        });
+    }
 
     return (
         <>
@@ -99,8 +111,8 @@ function Dashboard21Info({ currentStream }: { currentStream: SDK.types.IStreamIn
                 {vrxAnalysis && globalVideoAnalysis && (
                     <VrxDisplay vrxAnalysis={vrxAnalysis} globalVideoAnalysis={globalVideoAnalysis} setInfo={setInfo} />
                 )}
-                {videoMediaSpecific && <FptDisplay videoMediaSpecific={videoMediaSpecific} setInfo={setInfo} />}
-                {gapData && <GapDisplay gapData={gapData} setInfo={setInfo} />}
+                {showFpt && <FptDisplay videoMediaSpecific={videoMediaSpecific} setInfo={setInfo} />}
+                {showGapData && <GapDisplay gapData={gapData} setInfo={setInfo} />}
                 {interPacketData && <PitDisplay interPacketData={interPacketData} setInfo={setInfo} />}
             </div>
         </>

@@ -16,23 +16,25 @@ const {
 
 const {
     map2110d21Vrx,
-    map2110d21Cinst
+    map2110d21Cinst,
 } = require('./video2');
 
 
 
 const doVideoStreamAnalysis = async (pcapId, stream) => {
+    const deltaRange = await getDeltaRtpVsNtTicksRange(pcapId, stream);
+    const rtp_validation = getVideoRtpValidation(stream.media_specific);
+    await validateRtpTicks(stream, rtp_validation, deltaRange);
+    await doRtpTsAnalysis(pcapId, stream);
+    await validateRtpTs(stream, rtp_validation);
+    await doInterFrameRtpTsDeltaAnalysis(pcapId, stream);
+    await validateInterFrameRtpTsDelta(stream);
+    await map2110d21Cinst(stream);
+
     if (stream.full_media_type === 'video/raw') {
-        const deltaRange = await getDeltaRtpVsNtTicksRange(pcapId, stream);
-        const rtp_validation = getVideoRtpValidation(stream.media_specific);
-        await validateRtpTicks(stream, rtp_validation, deltaRange);
-        await doRtpTsAnalysis(pcapId, stream);
-        await validateRtpTs(stream, rtp_validation);
-        await doInterFrameRtpTsDeltaAnalysis(pcapId, stream);
-        await validateInterFrameRtpTsDelta(stream);
-        await map2110d21Cinst(stream);
         await map2110d21Vrx(stream);
     }
+
 
     return await Stream.findOneAndUpdate({
         id: stream.id

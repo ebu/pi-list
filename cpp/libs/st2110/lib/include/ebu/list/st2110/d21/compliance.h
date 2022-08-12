@@ -9,6 +9,12 @@
 
 namespace ebu_list::st2110::d21
 {
+    enum vrx_analysis_mode_t
+    {
+        enabled,
+        disabled
+    };
+
     class compliance_checker
     {
       public:
@@ -17,7 +23,7 @@ namespace ebu_list::st2110::d21
 
         compliance_profile check_vrx_min_peak(int vrx_min, int vrx_peak) const noexcept;
         compliance_profile check_c_peak(int c_peak) const noexcept;
-        compliance_profile check(int vrx_min, int vrx_peak, int c_peak) const noexcept;
+        compliance_profile check(vrx_analysis_mode_t mode, int vrx_min, int vrx_peak, int c_peak) const noexcept;
 
         compliance_parameters get_narrow_parameters() const;
         compliance_parameters get_wide_parameters() const;
@@ -34,7 +40,8 @@ namespace ebu_list::st2110::d21
         using int_histogram = histogram<int>;
 
         compliance_analyzer(int npackets, media::video::Rate rate, media::video::info video_info, vrx_settings settings,
-                            media::video::scan_type scan, media::video::video_dimensions raster) noexcept;
+                            media::video::scan_type scan, media::video::video_dimensions raster,
+                            vrx_analysis_mode_t vrx_analysis_mode) noexcept;
 
         void handle_packet(const rtp::packet_info& info) noexcept;
 
@@ -48,13 +55,13 @@ namespace ebu_list::st2110::d21
             compliance_profile global;
             compliance_profile cinst;
             compliance_profile vrx;
+            vrx_analysis_mode_t mode;
         };
 
-        compliance_status get_compliance() const noexcept;
-
-        compliance_parameters get_narrow_parameters() const;
-        compliance_parameters get_wide_parameters() const;
-        double get_trs() const;
+        [[nodiscard]] compliance_status get_compliance() const noexcept;
+        [[nodiscard]] compliance_parameters get_narrow_parameters() const;
+        [[nodiscard]] compliance_parameters get_wide_parameters() const;
+        [[nodiscard]] double get_trs() const;
 
       private:
         st2110::d21::c_calculator c_calculator_;
@@ -71,5 +78,6 @@ namespace ebu_list::st2110::d21
         };
 
         state state_ = state::waiting_for_frame;
+        const vrx_analysis_mode_t vrx_analysis_mode_;
     };
 } // namespace ebu_list::st2110::d21
