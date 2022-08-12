@@ -31,7 +31,12 @@ const rangeToString = (value: SDK.api.pcap.IAudioValueRangeUs): string | undefin
     return `[${min} .. ${max}]`;
 };
 
-const rangeToContentItem = (label: string, value: SDK.api.pcap.IAudioValueRangeUs): LabelValue | undefined => {
+const rangeToContentItem = (
+    label: string,
+    value: SDK.api.pcap.IAudioValueRangeUs | undefined
+): LabelValue | undefined => {
+    if (!value) return undefined;
+
     const v = rangeToString(value);
     if (!v) return undefined;
     return {

@@ -14,6 +14,8 @@ const VrxDisplay = ({
     vrxAnalysis: any;
     setInfo: SetSidebarInfoType;
 }) => {
+    if (!globalVideoAnalysis.vrx) return null;
+
     const vrxmin = getLowestFromHistogram(globalVideoAnalysis.vrx.histogram);
     const vrxpeak = getHighestFromHistogram(globalVideoAnalysis.vrx.histogram);
     const vrxavg = getAverageFromHistogram(globalVideoAnalysis.vrx.histogram);

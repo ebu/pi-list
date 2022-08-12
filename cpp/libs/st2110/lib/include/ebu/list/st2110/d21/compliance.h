@@ -62,6 +62,7 @@ namespace ebu_list::st2110::d21
         [[nodiscard]] compliance_parameters get_narrow_parameters() const;
         [[nodiscard]] compliance_parameters get_wide_parameters() const;
         [[nodiscard]] double get_trs() const;
+        [[nodiscard]] vrx_analysis_mode_t get_vrx_analysis_mode() const;
 
       private:
         st2110::d21::c_calculator c_calculator_;

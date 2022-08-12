@@ -33,7 +33,7 @@ namespace ebu_list::st2110::d21
         cinst_analysis cinst;
         vrx_analysis vrx;
         trs_analysis trs;
-        d21::vrx_analysis_mode_t vrx_analysis_mode;
+        const d21::vrx_analysis_mode_t vrx_analysis_mode;
     };
 
     compliance_analyzer build_compliance_analyzer(const st2110::d20::video_description& video, vrx_settings settings,

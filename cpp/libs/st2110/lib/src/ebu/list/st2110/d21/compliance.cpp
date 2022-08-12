@@ -55,6 +55,10 @@ double compliance_analyzer::get_trs() const
 {
     return vrx_calculator_.get_trs();
 }
+vrx_analysis_mode_t compliance_analyzer::get_vrx_analysis_mode() const
+{
+    return vrx_analysis_mode_;
+}
 
 compliance_analyzer::compliance_status compliance_analyzer::get_compliance() const noexcept
 {

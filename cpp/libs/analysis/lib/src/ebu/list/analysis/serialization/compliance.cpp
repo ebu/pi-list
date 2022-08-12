@@ -14,22 +14,26 @@ d21::compliance_analyzer d21::build_compliance_analyzer(const d20::video_descrip
 
 d21::video_analysis_info d21::get_video_analysis_info(const st2110::d21::compliance_analyzer& ca)
 {
-    d21::video_analysis_info va;
-
     const auto compliance = ca.get_compliance();
 
-    va.compliance = compliance.global;
+    const auto global = compliance.global;
 
-    va.cinst =
+    const auto cinst =
         d21::cinst_analysis{compliance.cinst, transform_histogram_samples_to_percentages(ca.get_cinst_histogram()),
                             ca.get_wide_parameters().cmax, ca.get_narrow_parameters().cmax};
 
-    va.vrx = d21::vrx_analysis{compliance.vrx, transform_histogram_samples_to_percentages(ca.get_vrx_histogram()),
+    const auto vrx = d21::vrx_analysis{compliance.vrx, transform_histogram_samples_to_percentages(ca.get_vrx_histogram()),
                                ca.get_wide_parameters().vrx_full, ca.get_narrow_parameters().vrx_full};
 
-    va.trs = d21::trs_analysis{ca.get_trs()};
+    const auto trs = d21::trs_analysis{ca.get_trs()};
 
-    return va;
+    return d21::video_analysis_info{
+        global,
+        cinst,
+        vrx,
+        trs,
+        ca.get_vrx_analysis_mode()
+    };
 }
 
 void d21::to_json(nlohmann::json& j, const video_analysis_info& v)
