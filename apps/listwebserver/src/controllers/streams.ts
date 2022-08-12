@@ -11,7 +11,10 @@ import Pcap from '../models/pcap';
 import loggerFactory from '../util/logger';
 import { getPcapFolder } from '../util/analysis/utils';
 import { getUserFolderFromUserId } from '../util/analysis/utils';
-import { readFile } from 'fs/promises';
+import fs from 'fs';
+import util from 'util';
+const readFile = util.promisify(fs.readFile);
+
 const CONSTANTS = require('../enums/constants');
 
 const logger = loggerFactory('streams');

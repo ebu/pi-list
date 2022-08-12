@@ -1,8 +1,10 @@
 import { api } from '@bisect/ebu-list-sdk';
 import path from 'path';
-import { readFile } from 'fs/promises';
 import { SessionDescription } from 'sdp-transform';
 import { parseSDPs, getMappingsFromSDPs } from './sdpParser';
+import fs from 'fs';
+import util from 'util';
+const readFile = util.promisify(fs.readFile);
 
 async function loadSDP(sdpFile: string): Promise<string> {
     // Go up and down so that it works with both src and the compiled output in dist
