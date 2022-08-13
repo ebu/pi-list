@@ -1,8 +1,32 @@
 import { translate } from '../../../../utils/translation';
 import { MeasurementPassCriteriaDisplay } from '../../../../components';
+import { IMeasurementData } from 'utils/measurements';
+
+const DeltaBetweenPacketsDisplay = ({ analysis }: { analysis: any }) => {
+    const deltaBetweenPackets = translate('workflow.st2022_7_analysis.deltaBetweenPackets');
+    const measurementData: IMeasurementData = {
+        title: deltaBetweenPackets,
+        data: [
+            {
+                label: 'Min',
+                value: analysis.minDeltaNs.toFixed(0),
+            },
+            {
+                label: 'Avg',
+                value: analysis.averageDeltaNs.toFixed(0),
+            },
+            {
+                label: 'Max',
+                value: analysis.maxDeltaNs.toFixed(0),
+            },
+        ],
+        unit: 'ns',
+    };
+
+    return <MeasurementPassCriteriaDisplay displayData={measurementData} />;
+};
 
 function ST2022_7_View({ comparisonInfo }: any) {
-    const deltaBetweenPackets = translate('workflow.st2022_7_analysis.deltaBetweenPackets');
     const workflowNamesSt2022 = translate('workflow.names.st2022_7_analysis');
     const workflowNamesSt2022TotalNumberPackets = translate('workflow.st2022_7_analysis.totalNumberOfPackets');
     const workflowNamesSt2022IntersectionSizeInPackets = translate(
@@ -30,31 +54,6 @@ function ST2022_7_View({ comparisonInfo }: any) {
     const missingPercentage =
         intersection === 0 ? 100 : (comparisonInfo.result.analysis.numberOfMissingPackets / intersection) * 100;
     const equalPercentage = intersection == 0 ? 100 : (numberOfEqualPackets / intersection) * 100;
-
-    const DeltaBetweenPacketsDisplay = () => {
-        const deltaBetweenPacketsData = {
-            measurementData: {
-                title: deltaBetweenPackets,
-                data: [
-                    {
-                        labelTag: 'Min',
-                        value: comparisonInfo.result.analysis.minDeltaNs.toFixed(0),
-                    },
-                    {
-                        labelTag: 'Avg',
-                        value: comparisonInfo.result.analysis.averageDeltaNs.toFixed(0),
-                    },
-                    {
-                        labelTag: 'Max',
-                        value: comparisonInfo.result.analysis.maxDeltaNs.toFixed(0),
-                    },
-                ],
-            },
-            unit: 'ns',
-        };
-
-        return <MeasurementPassCriteriaDisplay displayData={deltaBetweenPacketsData} />;
-    };
 
     return (
         <div>
@@ -106,7 +105,7 @@ function ST2022_7_View({ comparisonInfo }: any) {
                     <span className="comparison-configuration-panel-data"> packets</span>
                 </div>
             </div>
-            <DeltaBetweenPacketsDisplay />
+            <DeltaBetweenPacketsDisplay analysis={comparisonInfo.result.analysis} />
         </div>
     );
 }

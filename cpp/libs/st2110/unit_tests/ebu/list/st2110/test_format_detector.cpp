@@ -13,20 +13,21 @@ using namespace ebu_list::st2110::d40;
 
 //------------------------------------------------------------------------------
 
-SCENARIO("format detector")
+SCENARIO("format detector with media type specification")
 {
-    format_detector_handler* fd = nullptr;
-
-    auto create_handler = [&](const udp::datagram&) {
-        auto d = std::make_unique<format_detector_handler>();
-        fd     = d.get();
-        return d;
-    };
-
-    auto udp_handler = std::make_shared<rtp::udp_handler>(create_handler);
-
     GIVEN("a st2110-22 video stream")
     {
+        format_detector_handler* fd = nullptr;
+        media::full_media_type media_type = ebu_list::media::full_media_type::JXSV;
+
+        auto create_handler = [&](const udp::datagram&) {
+            auto d = std::make_unique<format_detector_handler>(media_type);
+            fd     = d.get();
+            return d;
+        };
+
+        auto udp_handler = std::make_shared<rtp::udp_handler>(create_handler);
+
         const auto pcap_file   = test_lib::sample_file("pcap/st2110/2110-22/125mbps-JPEGXS.pcap");
         auto progress_callback = [](float) {};
         pcap::pcap_player player(pcap_file, progress_callback, udp_handler, on_error_exit);
@@ -43,6 +44,35 @@ SCENARIO("format detector")
 
             REQUIRE(fd->status().state == detector::state::valid);
             REQUIRE(full_media_type == "video/jxsv");
+        }
+    }
+}
+SCENARIO("format detector")
+{
+    format_detector_handler* fd = nullptr;
+
+    auto create_handler = [&](const udp::datagram&) {
+        auto d = std::make_unique<format_detector_handler>();
+        fd     = d.get();
+        return d;
+    };
+
+    auto udp_handler = std::make_shared<rtp::udp_handler>(create_handler);
+
+    GIVEN("a st2110-22 video stream with no media type specified")
+    {
+        const auto pcap_file   = test_lib::sample_file("pcap/st2110/2110-22/125mbps-JPEGXS.pcap");
+        auto progress_callback = [](float) {};
+        pcap::pcap_player player(pcap_file, progress_callback, udp_handler, on_error_exit);
+        while(player.next())
+        {
+        }
+
+        REQUIRE(fd != nullptr);
+
+        WHEN("we check the state")
+        {
+            REQUIRE(fd->status().state == detector::state::invalid);
         }
     }
 

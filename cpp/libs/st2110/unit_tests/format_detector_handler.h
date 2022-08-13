@@ -11,7 +11,7 @@ namespace ebu_list::st2110
     class format_detector_handler : public udp::listener
     {
       public:
-        format_detector_handler() = default;
+        format_detector_handler(maybe_media_type media_type = {}): format_detector_(media_type){};
         detector::status_description status() const noexcept;
         detector::details get_details() const;
         detector::full_type get_full_media_type() const;

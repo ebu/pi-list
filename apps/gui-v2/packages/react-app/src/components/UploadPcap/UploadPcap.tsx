@@ -52,7 +52,6 @@ function UploadPcap() {
                 callback(uploadProgressKind.progress, item);
                 if (index === arrayN.length - 1) {
                     callback(uploadProgressKind.completed);
-                    //callback(uploadProgressKind.failed);
                 }
             }, index * 1000);
         });
@@ -67,7 +66,6 @@ function UploadPcap() {
     const resetState = () => setState(states.normal);
 
     const normalContents = <DragAndDropTileUpload />;
-    // const normalContents = <Panel onClick={downloadRequestCallback} icon={icon} />;
     const activeContents = <DropHere />;
     const uploading = (
         <CircularProgressBar filename={filename} percentage={uploadPercentage} numberFiles={1} uploadedFiles={1} />

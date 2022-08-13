@@ -11,9 +11,11 @@ using namespace ebu_list::analysis;
 using namespace ebu_list::st2110;
 using json = nlohmann::json;
 
-jpeg_xs_stream_extractor::jpeg_xs_stream_extractor(rtp::packet first_packet, path base_dir, executor_ptr main_executor,
-                                                   std::string stream_id)
-    : jpeg_xs_stream_handler(std::move(first_packet), [](const jpeg_xs_stream_handler&) {}),
+jpeg_xs_stream_extractor::jpeg_xs_stream_extractor(rtp::packet first_packet, serializable_stream_info info,
+                                                   video_stream_details details, path base_dir,
+                                                   executor_ptr main_executor, std::string stream_id)
+    : jpeg_xs_stream_handler(std::move(first_packet), std::move(info), std::move(details),
+                             [](const jpeg_xs_stream_handler&) {}),
       base_dir_(std::move(base_dir)), main_executor_(std::move(main_executor)), stream_id_(std::move(stream_id))
 {
 }

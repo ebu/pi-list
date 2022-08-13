@@ -22,7 +22,10 @@ SCENARIO("SDP serialization")
             const auto sdp    = sdp_builder(settings);
             const auto& lines = sdp.sdp();
 
-            THEN("it has, at least, 6 lines") { REQUIRE(lines.size() >= 6); }
+            THEN("it has, at least, 6 lines")
+            {
+                REQUIRE(lines.size() >= 6);
+            }
 
             THEN("the first line has the version")
             {
@@ -68,7 +71,10 @@ SCENARIO("SDP serialization")
             auto initial_size = sdp.sdp().size();
             const auto lines  = sdp.add_media(media).sdp();
 
-            THEN("4 lines were added") { REQUIRE(lines.size() - initial_size == 4); }
+            THEN("4 lines were added")
+            {
+                REQUIRE(lines.size() - initial_size == 4);
+            }
 
             THEN("the first added line is a media line")
             {
@@ -103,7 +109,10 @@ SCENARIO("SDP serialization")
             auto initial_size = sdp.sdp().size();
             const auto lines  = sdp.add_media(media).sdp();
 
-            THEN("4 lines were added") { REQUIRE(lines.size() - initial_size == 4); }
+            THEN("4 lines were added")
+            {
+                REQUIRE(lines.size() - initial_size == 4);
+            }
 
             THEN("the first added line is a media line")
             {
@@ -134,7 +143,10 @@ SCENARIO("SDP serialization")
 
         WHEN("we try to serialize it into SDP format")
         {
-            THEN("we get an error") { REQUIRE_THROWS_AS(sdp.add_media(unknown), std::invalid_argument); }
+            THEN("we get an error")
+            {
+                REQUIRE_THROWS_AS(sdp.add_media(unknown), std::invalid_argument);
+            }
         }
     }
 }

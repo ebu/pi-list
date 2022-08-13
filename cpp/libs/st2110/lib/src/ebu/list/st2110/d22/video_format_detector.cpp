@@ -1,5 +1,6 @@
 #include "ebu/list/st2110/d22/video_format_detector.h"
 #include "ebu/list/st2110/d22/header.h"
+#include "ebu/list/st2110/d20/video_description.h"
 
 using namespace ebu_list::st2110::d22;
 using namespace ebu_list::st2110;
@@ -7,7 +8,7 @@ using namespace ebu_list;
 
 namespace
 {
-    constexpr auto maximum_packets_per_frame = 1000;
+    constexpr auto maximum_packets_per_frame = 10000;
     constexpr auto minimum_packets_per_frame = 20;
 } // namespace
 
@@ -61,7 +62,11 @@ detector::status_description video_format_detector::handle_data(const rtp::packe
 
 detector::details video_format_detector::get_details() const
 {
-    auto result = std::nullopt;
+    // TODO: define a specific descriptor for -22
+    auto result              = d20::video_description{};
+    result.packets_per_frame = detector_.packets_per_frame();
+    result.rate              = detector_.rate();
+
     return result;
 }
 

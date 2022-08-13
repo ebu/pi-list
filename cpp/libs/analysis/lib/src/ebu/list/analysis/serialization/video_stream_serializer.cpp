@@ -30,7 +30,7 @@ video_stream_serializer::video_stream_serializer(rtp::packet first_packet, seria
     : video_stream_handler(decode_video::no, std::move(first_packet), std::move(info), details,
                            [this, on_complete_callback](const video_stream_handler&) { on_complete_callback(*this); }),
       base_dir_(std::move(base_dir)), compliance_(d21::build_compliance_analyzer(
-                                          details.video, {details.video.schedule, d21::tvd_kind::ideal, std::nullopt}))
+                                          details.video, {details.video.schedule, d21::tvd_kind::ideal, std::nullopt}, d21::vrx_analysis_mode_t::enabled))
 {
 }
 
@@ -66,7 +66,8 @@ void video_stream_serializer::on_frame_complete(frame_uptr&& f)
     write_frame_info(base_dir_, stream_id, fi);
 }
 
-mac_address_analyzer::mac_addresses_info video_stream_serializer::get_mac_adresses_analyses() const{
+mac_address_analyzer::mac_addresses_info video_stream_serializer::get_mac_adresses_analyses() const
+{
     return mac_analyzer_.get_mac_addresses_analysis();
 }
 

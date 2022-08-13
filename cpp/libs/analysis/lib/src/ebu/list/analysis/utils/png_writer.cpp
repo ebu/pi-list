@@ -42,9 +42,15 @@ namespace
         }
     };
 
-    void user_error_fn(png_structp /*png_ptr*/, png_const_charp error_msg) { (void)error_msg; }
+    void user_error_fn(png_structp /*png_ptr*/, png_const_charp error_msg)
+    {
+        (void)error_msg;
+    }
 
-    void user_warning_fn(png_structp /*png_ptr*/, png_const_charp warning_msg) { (void)warning_msg; }
+    void user_warning_fn(png_structp /*png_ptr*/, png_const_charp warning_msg)
+    {
+        (void)warning_msg;
+    }
 } // namespace
 
 void analysis::write_png(oview data, media::video::video_dimensions dimensions, path target)

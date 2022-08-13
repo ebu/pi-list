@@ -28,7 +28,10 @@ SCENARIO("media_type is created")
         {
             auto value = from_string(s);
 
-            THEN("we get the audio enum value") { REQUIRE(media_type::UNKNOWN == value); }
+            THEN("we get the audio enum value")
+            {
+                REQUIRE(media_type::UNKNOWN == value);
+            }
         }
     }
 }
@@ -58,7 +61,10 @@ SCENARIO("network media description is created")
 
         WHEN("we check its media_type")
         {
-            THEN("we get it as unknown") { REQUIRE(desc.type == media_type::UNKNOWN); }
+            THEN("we get it as unknown")
+            {
+                REQUIRE(desc.type == media_type::UNKNOWN);
+            }
         }
     }
 }

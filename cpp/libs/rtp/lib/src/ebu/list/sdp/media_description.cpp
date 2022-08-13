@@ -29,7 +29,7 @@ media::media_type media::from_string(std::string_view media)
         return media_type::UNKNOWN;
 }
 
-string media::full_media_to_string(full_media_type full_media_type)
+std::string media::to_string(full_media_type full_media_type)
 {
     switch(full_media_type)
     {
@@ -43,7 +43,7 @@ string media::full_media_to_string(full_media_type full_media_type)
     }
 }
 
-string media::full_transport_type_to_string(transport_type full_transport_type)
+string media::to_string(transport_type full_transport_type)
 {
     switch(full_transport_type)
     {

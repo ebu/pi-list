@@ -1,12 +1,12 @@
 #pragma once
 
-#include "ebu/list/srt/header.h"
 #include "ebu/list/analysis/serialization/serializable_stream_info.h"
 #include "ebu/list/analysis/serialization/video/frame.h"
 #include "ebu/list/core/memory/bimo.h"
+#include "ebu/list/net/udp/listener.h"
+#include "ebu/list/srt/header.h"
 #include "ebu/list/st2110/d20/packing_mode_analyzer.h"
 #include "ebu/list/st2110/rate_calculator.h"
-#include "ebu/list/net/udp/listener.h"
 
 namespace ebu_list::srt
 {
@@ -58,4 +58,4 @@ namespace ebu_list::srt
     };
 
     using srt_handler_uptr = std::unique_ptr<srt_decoder>;
-} // namespace ebu_list::analysis
+} // namespace ebu_list::srt

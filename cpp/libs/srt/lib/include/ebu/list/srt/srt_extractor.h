@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ebu/list/srt/srt_decoder.h"
 #include "ebu/list/core/platform/executor.h"
+#include "ebu/list/srt/srt_decoder.h"
 
 namespace ebu_list::analysis
 {
@@ -10,8 +10,7 @@ namespace ebu_list::analysis
       public:
         using completion_callback = std::function<void(const srt_extractor& vsh)>;
 
-        srt_extractor(udp::datagram first_datagram, path base_dir, executor_ptr main_executor,
-                                 std::string frame_id_);
+        srt_extractor(udp::datagram first_datagram, path base_dir, executor_ptr main_executor, std::string frame_id_);
 
       private:
         void on_frame_started(const srt::frame_srt& f) override;

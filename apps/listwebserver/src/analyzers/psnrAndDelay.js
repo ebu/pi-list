@@ -4,7 +4,7 @@ const util = require('util');
 const child_process = require('child_process');
 const {
     waitForFramesExtraction
-} = require('../controllers/streams2');
+} = require('../controllers/streams');
 const _glob = require('glob');
 import logger from '../util/logger';
 const CONSTANTS = require('../enums/constants');

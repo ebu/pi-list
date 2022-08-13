@@ -85,7 +85,10 @@ namespace ebu_list
 namespace std
 {
     // Template specialization for std::swap<guid>() --
-    template <> inline void swap(ebu_list::guid& lhs, ebu_list::guid& rhs) { lhs.swap(rhs); }
+    template <> inline void swap(ebu_list::guid& lhs, ebu_list::guid& rhs)
+    {
+        lhs.swap(rhs);
+    }
 
     // Specialization for std::hash<guid> -- this implementation
     // uses std::hash<std::string> on the stringification of the guid

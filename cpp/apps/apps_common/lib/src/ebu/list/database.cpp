@@ -18,9 +18,15 @@ using json = nlohmann::json;
 
 namespace
 {
-    json from_bson_to_json(bsoncxx::document::view b) { return json::parse(bsoncxx::to_json(b)); }
+    json from_bson_to_json(bsoncxx::document::view b)
+    {
+        return json::parse(bsoncxx::to_json(b));
+    }
 
-    bsoncxx::document::value from_json_to_bson(const json& j) { return bsoncxx::from_json(j.dump()); }
+    bsoncxx::document::value from_json_to_bson(const json& j)
+    {
+        return bsoncxx::from_json(j.dump());
+    }
 } // namespace
 
 struct db_serializer::impl

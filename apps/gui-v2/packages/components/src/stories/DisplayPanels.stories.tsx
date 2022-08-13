@@ -2,6 +2,7 @@
 
 import React, { ComponentProps } from 'react';
 import { Story } from '@storybook/react/types-6-0';
+import { IMeasurementData } from '../../../react-app/src/utils/measurements';
 import './styles.scss';
 
 import {
@@ -24,37 +25,22 @@ const displayDataMinMaxAvg = {
     unit: 'ns',
 };
 
-const displayDataMinMaxAvgPassCriteria = {
-    measurementData: {
-        title: 'CInst',
-        data: [
-            {
-                labelTag: 'Min',
-                value: '0',
-            },
-            {
-                labelTag: 'Avg',
-                value: '0',
-            },
-            {
-                labelTag: 'Max',
-                value: '0',
-            },
-        ],
-    },
-    passCriteriaData: {
-        title: 'CMax',
-        data: [
-            {
-                labelTag: 'Narrow',
-                value: '4',
-            },
-            {
-                labelTag: 'Wide',
-                value: '16',
-            },
-        ],
-    },
+const displayDataMinMaxAvgPassCriteria: IMeasurementData = {
+    title: 'CInst',
+    data: [
+        {
+            label: 'Min',
+            value: '0',
+        },
+        {
+            label: 'Avg',
+            value: '0',
+        },
+        {
+            label: 'Max',
+            value: '0',
+        },
+    ],
     unit: 'packets',
 };
 

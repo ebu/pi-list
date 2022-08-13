@@ -54,9 +54,6 @@ function CbufferAnalysis({
         ? getFinalDataMinMaxAvgGraph(cinstData.data)
         : getFinalData(cinstData.data);
 
-    if (cinstData.data.length === 0) {
-        return null;
-    }
     if (cHistData === undefined) {
         return null;
     }
@@ -65,7 +62,12 @@ function CbufferAnalysis({
 
     const cinstLineGraphData = {
         graphicData: getFinalData(cinstFinalData!),
-        title: 'Cinst',
+        title: (
+            <>
+                <span>C</span>
+                <span style={{ verticalAlign: 'sub', fontSize: '0.75em' }}>inst</span>
+            </>
+        ),
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: mediaInfoRtpPacketCount,
         datakeyY: 'max',
@@ -75,7 +77,12 @@ function CbufferAnalysis({
 
     const cinstMinMaxAvgGraphData = {
         graphicData: getFinalDataMinMaxAvgGraph(cinstData.data!),
-        title: 'Cinst',
+        title: (
+            <>
+                <span>C</span>
+                <span style={{ verticalAlign: 'sub', fontSize: '0.75em' }}>inst</span>
+            </>
+        ),
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: mediaInfoRtpPacketCount,
         datakeyY: ['min', 'avg', 'max'],
@@ -83,13 +90,13 @@ function CbufferAnalysis({
         leftMargin: leftMarginCinst,
     };
 
-    const complianceCHist = getCompliance(currentStream?.global_video_analysis['cinst'].compliance);
+    const complianceCHist = getCompliance(currentStream?.global_video_analysis?.cinst?.compliance);
     const cHistPercData: number[][] = getPercHistData(cHistData);
     const cHistFinalData = getFinalHistData(cHistPercData);
     const leftMarginCHist = getLeftMarginBarGraphic(cHistFinalData);
     const cHistGraphData = {
         barGraphic: cHistFinalData,
-        title: 'C',
+        title: 'Cinst histogram',
         complianceInfo: complianceCHist,
         xAxisTitle: generalBufferLevel,
         yAxisTitle: '%',

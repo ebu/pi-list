@@ -21,9 +21,9 @@ namespace ebu_list
         explicit operator bool() const;
 
       private:
-        file_handle(file_handle&) = delete;
-        file_handle& operator=(file_handle&) = delete;
-        file_handle(file_handle&&)           = delete;
+        file_handle(file_handle&)             = delete;
+        file_handle& operator=(file_handle&)  = delete;
+        file_handle(file_handle&&)            = delete;
         file_handle& operator=(file_handle&&) = delete;
 
         FILE* const handle_ = nullptr;

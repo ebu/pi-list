@@ -13,7 +13,10 @@ SCENARIO("Test sequence number helpers")
         {
             const auto a = uint32_t(0x12345678);
             const auto b = uint32_t(0x12345678);
-            THEN("the result should be equal") { REQUIRE(sequence_number::compare(a, b) == compare_result::equal); }
+            THEN("the result should be equal")
+            {
+                REQUIRE(sequence_number::compare(a, b) == compare_result::equal);
+            }
         }
         WHEN("a is before b")
         {

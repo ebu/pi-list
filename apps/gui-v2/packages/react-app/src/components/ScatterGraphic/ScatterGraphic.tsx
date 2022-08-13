@@ -204,6 +204,9 @@ function ScatterGraphic({ data }: { data: IComponentProps }) {
                     </ScatterChart>
                 </ResponsiveContainer>
             </div>
+            <button className="zoom-out-graph-button" onClick={handleZoomOut}>
+                Zoom Out
+            </button>
         </div>
     );
 }

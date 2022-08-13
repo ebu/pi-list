@@ -17,7 +17,7 @@ LIST is mostly composed of:
 
 ## Pre-requisites
 
-- **CMake** >= v3.9
+- **CMake** >= v3.19
 - **Conan** >= v1.33
 - **Ninja** >= v1.10
 - **Docker** >= v15
@@ -44,7 +44,7 @@ If you run a Debian-based distribution, you can install everythin with:
 When you meet all the pre-requisites, a quick way to start right away is:
 
 ```
-./scripts/build_node.sh
+./scripts/build_cpp.sh
 ls ./build/bin/
 ```
 
@@ -52,13 +52,13 @@ ls ./build/bin/
 
 All the options below can be combined together
 
-| Option | Description | Default |
-| --- | --- | --- |
-| USE_PCH | Use Cotire for Pre-Compiled Headers (Windows only) | ON on Windows, OFF on others |
-| BUILD_DEMOS | Build demo applications | OFF |
-| BUILD_TESTS | Build unit tests for each library | OFF |
-| BUILD_APPS | Build LIST applications | OFF |
-| BUILD_ALL | Build everything | OFF |
+| Option      | Description                                        | Default                      |
+| ----------- | -------------------------------------------------- | ---------------------------- |
+| USE_PCH     | Use Cotire for Pre-Compiled Headers (Windows only) | ON on Windows, OFF on others |
+| BUILD_DEMOS | Build demo applications                            | OFF                          |
+| BUILD_TESTS | Build unit tests for each library                  | OFF                          |
+| BUILD_APPS  | Build LIST applications                            | OFF                          |
+| BUILD_ALL   | Build everything                                   | OFF                          |
 
 The folder `config/cmake` contains some cmake files that are used project-wide in order to simplify
 CMake usage and extra functionality.
@@ -67,14 +67,14 @@ CMake usage and extra functionality.
 
 The stream analyzer uses a set of libraries which can be used separately:
 
-| Library Name | Contains | Link as |
-| --- | --- | --- |
-| **Core** | Core functionality such as math functions, platform-dependent code, IO abstractions, memory management and media description | ebu_list_core |
-| **Net** | Ethernet, IPv4 and UDP handling | ebu_list_net |
-| **Pcap** | Reading of PCAP files | ebu_list_pcap |
-| **PTP** | PTP decoding | ebu_list_ptp |
-| **RTP** | RTP decoding and SDP handling | ebu_list_rtp |
-| **ST2110** | Parsing and analysis of ST2110 format | ebu_list_st2110 |
+| Library Name | Contains                                                                                                                     | Link as         |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------- | --------------- |
+| **Core**     | Core functionality such as math functions, platform-dependent code, IO abstractions, memory management and media description | ebu_list_core   |
+| **Net**      | Ethernet, IPv4 and UDP handling                                                                                              | ebu_list_net    |
+| **Pcap**     | Reading of PCAP files                                                                                                        | ebu_list_pcap   |
+| **PTP**      | PTP decoding                                                                                                                 | ebu_list_ptp    |
+| **RTP**      | RTP decoding and SDP handling                                                                                                | ebu_list_rtp    |
+| **ST2110**   | Parsing and analysis of ST2110 format                                                                                        | ebu_list_st2110 |
 
 Each project has the following structure:
 

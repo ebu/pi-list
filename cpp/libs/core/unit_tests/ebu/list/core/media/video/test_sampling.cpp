@@ -22,7 +22,10 @@ SCENARIO("Samples per pixel for video sampling")
 
         WHEN("we provide an uknown sampling")
         {
-            THEN("it throws") { REQUIRE_THROWS_AS(samples_per_pixel(video_sampling::UNKNOWN), std::runtime_error); }
+            THEN("it throws")
+            {
+                REQUIRE_THROWS_AS(samples_per_pixel(video_sampling::UNKNOWN), std::runtime_error);
+            }
         }
     }
 }

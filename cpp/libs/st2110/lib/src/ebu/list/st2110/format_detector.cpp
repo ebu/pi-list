@@ -7,15 +7,35 @@
 
 using namespace ebu_list;
 using namespace ebu_list::st2110;
+using namespace ebu_list::media;
 //////////////////////////////////////////////////////////////////////
 
-format_detector::format_detector(/*rtp::packet first_packet*/)
+format_detector::format_detector(std::optional<media::full_media_type> media_type)
 {
-    detectors_.push_back(std::make_unique<d20::video_format_detector>());
-    detectors_.push_back(std::make_unique<d22::video_format_detector>());
-    detectors_.push_back(std::make_unique<d30::audio_format_detector>());
-    detectors_.push_back(std::make_unique<d40::anc_format_detector>());
-    detectors_.push_back(std::make_unique<ttml::format_detector>());
+    if(!media_type.has_value())
+    {
+        // Not adding ST 2110-22
+        detectors_.push_back(std::make_unique<d20::video_format_detector>());
+        detectors_.push_back(std::make_unique<d30::audio_format_detector>());
+        detectors_.push_back(std::make_unique<d40::anc_format_detector>());
+        detectors_.push_back(std::make_unique<ttml::format_detector>());
+
+        return;
+    }
+
+    switch(media_type.value())
+    {
+    case full_media_type::RAW: detectors_.push_back(std::make_unique<d20::video_format_detector>()); break;
+
+    case full_media_type::JXSV: detectors_.push_back(std::make_unique<d22::video_format_detector>()); break;
+
+    case full_media_type::L16:
+    case full_media_type::L24: detectors_.push_back(std::make_unique<d30::audio_format_detector>()); break;
+
+    case full_media_type::SMPTE291: detectors_.push_back(std::make_unique<d40::anc_format_detector>()); break;
+    case full_media_type::TTMLXML: detectors_.push_back(std::make_unique<ttml::format_detector>()); break;
+    case full_media_type::UNKNOWN: break;
+    }
 }
 
 void format_detector::on_data(const rtp::packet& packet)

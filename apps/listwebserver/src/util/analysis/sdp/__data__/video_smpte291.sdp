@@ -1,0 +1,11 @@
+v=0
+o=- 1443716955 1443716955 IN IP4 10.1.1.236
+s=st2110 0-9-0
+t=0 0
+m=video 20000 RTP/AVP 100
+c=IN IP4 239.1.1.1/64
+a=source-filter: incl IN IP4 239.1.1.1 10.1.1.236
+a=rtpmap:100 smpte291/90000
+a=fmtp:100 VPID_Code=133;
+a=mediaclk:direct=0 rate=90000
+a=ts-refclk:ptp=IEEE1588-2008:04-5c-6c-ff-fe-0a-53-70:127

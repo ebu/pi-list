@@ -53,6 +53,21 @@ button.dashboard-view {
 .main-page-header {
     background: $background-color-blue;
     grid-column: 1 / 4;
+
+    .header {
+        padding: 1em 3em;
+        justify-content: space-between;
+
+        .header-title {
+            padding: 0;
+        }
+
+        .header-subtitle {
+            color: #757575;
+            font-size: 0.75em;
+            margin-bottom: 1em;
+        }
+    }
 }
 
 .main-page-dashboard {

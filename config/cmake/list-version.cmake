@@ -1,7 +1,7 @@
 # -------------------------------------------------------------------------------
 # The version number and commit hash
 set(EBU_LIST_VERSION_MAJOR 2)
-set(EBU_LIST_VERSION_MINOR 1)
+set(EBU_LIST_VERSION_MINOR 2)
 set(EBU_LIST_VERSION_PATCH 0)
 set(EBU_LIST_VERSION
     "${EBU_LIST_VERSION_MAJOR}.${EBU_LIST_VERSION_MINOR}.${EBU_LIST_VERSION_PATCH}"

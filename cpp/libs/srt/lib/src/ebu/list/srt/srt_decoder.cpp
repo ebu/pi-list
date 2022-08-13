@@ -1,14 +1,12 @@
+#include "ebu/list/srt/srt_decoder.h"
 #include "ebu/list/core/idioms.h"
 #include "ebu/list/core/memory/bimo.h"
-#include "ebu/list/srt/srt_decoder.h"
 
 using namespace ebu_list;
 using namespace ebu_list::analysis;
 using namespace ebu_list::srt;
 
-
-srt_decoder::srt_decoder(udp::datagram first_datagram, completion_handler ch)
-    : completion_handler_(std::move(ch))
+srt_decoder::srt_decoder(udp::datagram first_datagram, completion_handler ch) : completion_handler_(std::move(ch))
 {
     /*logger()->info("created handler for {:08x}, {}->{}", info_.network.ssrc, to_string(info_.network.source),
                    to_string(info_.network.destination));*/
@@ -18,7 +16,6 @@ srt_decoder::srt_decoder(udp::datagram first_datagram, completion_handler ch)
     if(static_cast<size_t>(sdu.view().size()) < sizeof(uint32_t))
     {
         logger()->error("Packet size smaller than minimum: {}", sdu.view().size());
-
     }
     auto payload_header = header(sdu);
 
@@ -29,7 +26,6 @@ srt_decoder::srt_decoder(udp::datagram first_datagram, completion_handler ch)
 
 void srt_decoder::new_frame()
 {
-
 
     current_frame_            = std::make_unique<frame_srt>();
     current_frame_->timestamp = last_frame_ts_;
@@ -60,7 +56,6 @@ void srt_decoder::on_data(const udp::datagram& datagram)
     if(static_cast<size_t>(sdu.view().size()) < sizeof(uint32_t))
     {
         logger()->error("Packet size smaller than minimum: {}", sdu.view().size());
-
     }
     auto payload_header = header(sdu);
 

@@ -14,8 +14,8 @@ using json = nlohmann::json;
 
 srt_extractor::srt_extractor(udp::datagram first_datagram, path base_dir, executor_ptr main_executor,
                              std::string frame_id)
-    : srt_decoder(std::move(first_datagram), [](const srt_decoder&) {}),
-      base_dir_(std::move(base_dir)), main_executor_(std::move(main_executor)), frame_id_(std::move(frame_id))
+    : srt_decoder(std::move(first_datagram), [](const srt_decoder&) {}), base_dir_(std::move(base_dir)),
+      main_executor_(std::move(main_executor)), frame_id_(std::move(frame_id))
 {
 }
 

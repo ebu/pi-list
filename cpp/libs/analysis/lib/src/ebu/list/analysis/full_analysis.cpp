@@ -2,8 +2,7 @@
 #include "ebu/list/analysis/serialization/anc_stream_serializer.h"
 #include "ebu/list/analysis/serialization/audio_stream_serializer.h"
 #include "ebu/list/analysis/serialization/jpeg_xs_stream_extractor.h"
-#include "ebu/list/srt/srt_extractor.h"
-#include "ebu/list/net/mac_address_analyzer.h"
+#include "ebu/list/analysis/serialization/jxsv_stream_serializer.h"
 #include "ebu/list/analysis/serialization/ttml_stream_serializer.h"
 #include "ebu/list/analysis/serialization/video_stream_extractor.h"
 #include "ebu/list/analysis/serialization/video_stream_serializer.h"
@@ -11,9 +10,11 @@
 #include "ebu/list/analysis/utils/udp_multi_listener.h"
 #include "ebu/list/core/platform/executor.h"
 #include "ebu/list/core/platform/parallel.h"
+#include "ebu/list/net/mac_address_analyzer.h"
 #include "ebu/list/pcap/player.h"
 #include "ebu/list/ptp/udp_filter.h"
 #include "ebu/list/rtp/udp_handler.h"
+#include "ebu/list/srt/srt_extractor.h"
 #include "ebu/list/st2110/d21/settings.h"
 #include "stream_counter.h"
 
@@ -39,14 +40,15 @@ namespace
     {
         const auto analysis_info = handler.get_video_analysis_info();
         const auto& network_info = handler.network_info();
-        const auto mac_analyses = handler.get_mac_adresses_analyses();
+        const auto mac_analyses  = handler.get_mac_adresses_analyses();
 
-        const auto& video_info            = handler.info();
-        auto j                     = ::gather_info(network_info, video_info);
-        j["global_video_analysis"] = nlohmann::json(analysis_info);
-        j["analyses"] = nlohmann::json::object();
+        const auto& video_info                = handler.info();
+        auto j                                = ::gather_info(network_info, video_info);
+        j["global_video_analysis"]            = nlohmann::json(analysis_info);
+        j["analyses"]                         = nlohmann::json::object();
         j["analyses"]["mac_address_analysis"] = nlohmann::json::object();
-        j["analyses"]["mac_address_analysis"]["result"] = mac_analyses.repeated_mac_addresses.size() > 1 ? "not_compliant" : "compliant";
+        j["analyses"]["mac_address_analysis"]["result"] =
+            mac_analyses.repeated_mac_addresses.size() > 1 ? "not_compliant" : "compliant";
 
         context.updater->update_stream_info(network_info.id, j);
 
@@ -56,17 +58,32 @@ namespace
         context.updater->update_sdp(network_info.id, sdp, media::media_type::VIDEO);
     }
 
-    void audio_finalizer(const processing_context& context, const audio_stream_handler& handler)
+    void jxsv_finalizer(const processing_context& context, const jxsv_stream_serializer& handler)
     {
-        const auto& network_info = handler.network_info();
-        const auto mac_analyses = handler.get_mac_adresses_analyses();
-        auto j                   = ::gather_info(network_info, handler.info());
-        j["analyses"] = nlohmann::json::object();
+        const auto analysis_info              = handler.get_video_analysis_info();
+        const auto& network_info              = handler.network_info();
+        const auto mac_analyses               = handler.get_mac_adresses_analyses();
+        auto j                                = ::gather_info(network_info, handler.info());
+        j["global_video_analysis"]            = nlohmann::json(analysis_info);
+        j["analyses"]                         = nlohmann::json::object();
         j["analyses"]["mac_address_analysis"] = nlohmann::json::object();
-        j["analyses"]["mac_address_analysis"]["result"] = mac_analyses.repeated_mac_addresses.size() > 1 ? "not_compliant" : "compliant";
+        j["analyses"]["mac_address_analysis"]["result"] =
+            mac_analyses.repeated_mac_addresses.size() > 1 ? "not_compliant" : "compliant";
 
         context.updater->update_stream_info(network_info.id, j);
+    }
 
+    void audio_finalizer(const processing_context& context, const audio_stream_handler& handler)
+    {
+        const auto& network_info              = handler.network_info();
+        const auto mac_analyses               = handler.get_mac_adresses_analyses();
+        auto j                                = ::gather_info(network_info, handler.info());
+        j["analyses"]                         = nlohmann::json::object();
+        j["analyses"]["mac_address_analysis"] = nlohmann::json::object();
+        j["analyses"]["mac_address_analysis"]["result"] =
+            mac_analyses.repeated_mac_addresses.size() > 1 ? "not_compliant" : "compliant";
+
+        context.updater->update_stream_info(network_info.id, j);
 
         st2110::d30::st2110_30_sdp_serializer s(handler.info().audio);
         ebu_list::sdp::sdp_builder sdp({"LIST Generated SDP", "audio flow"});
@@ -76,12 +93,13 @@ namespace
 
     void anc_finalizer(const processing_context& context, const anc_stream_handler& handler)
     {
-        const auto& network_info = handler.network_info();
-        auto j                   = ::gather_info(network_info, handler.info());
-        const auto mac_analyses = handler.get_mac_adresses_analyses();
-        j["analyses"] = nlohmann::json::object();
+        const auto& network_info              = handler.network_info();
+        auto j                                = ::gather_info(network_info, handler.info());
+        const auto mac_analyses               = handler.get_mac_adresses_analyses();
+        j["analyses"]                         = nlohmann::json::object();
         j["analyses"]["mac_address_analysis"] = nlohmann::json::object();
-        j["analyses"]["mac_address_analysis"]["result"] = mac_analyses.repeated_mac_addresses.size() > 1 ? "not_compliant" : "compliant";
+        j["analyses"]["mac_address_analysis"]["result"] =
+            mac_analyses.repeated_mac_addresses.size() > 1 ? "not_compliant" : "compliant";
 
         context.updater->update_stream_info(network_info.id, j);
 
@@ -93,12 +111,13 @@ namespace
 
     void ttml_finalizer(const processing_context& context, const analysis::ttml::stream_handler& handler)
     {
-        const auto& network_info = handler.network_info();
-        auto j                   = ::gather_info(network_info, handler.info());
-        const auto mac_analyses = handler.get_mac_adresses_analyses();
-        j["analyses"] = nlohmann::json::object();
+        const auto& network_info              = handler.network_info();
+        auto j                                = ::gather_info(network_info, handler.info());
+        const auto mac_analyses               = handler.get_mac_adresses_analyses();
+        j["analyses"]                         = nlohmann::json::object();
         j["analyses"]["mac_address_analysis"] = nlohmann::json::object();
-        j["analyses"]["mac_address_analysis"]["result"] = mac_analyses.repeated_mac_addresses.size() > 1 ? "not_compliant" : "compliant";
+        j["analyses"]["mac_address_analysis"]["result"] =
+            mac_analyses.repeated_mac_addresses.size() > 1 ? "not_compliant" : "compliant";
 
         context.updater->update_stream_info(network_info.id, j);
 
@@ -146,14 +165,19 @@ void analysis::run_full_analysis(processing_context& context)
         ttml_finalizer(context, tsh);
     };
 
+    auto jxsv_finalizer_callback = [&context](const jxsv_stream_serializer& handler) {
+        jxsv_finalizer(context, handler);
+    };
+
     auto create_handler = [&](const udp::datagram& first_datagram) -> udp::listener_uptr {
         const auto maybe_stream_info = context.get_stream_info(context.is_srt, first_datagram);
 
         if(!maybe_stream_info)
         {
             /*logger()->warn("Bypassing stream with ssrc: {}", first_packet.info.rtp.view().ssrc());*/
-//            logger()->warn("\tdestination: {}", to_string(ipv4::endpoint{first_datagram.info.destination_address,
-//                                                                         first_datagram.info.destination_port}));
+            //            logger()->warn("\tdestination: {}",
+            //            to_string(ipv4::endpoint{first_datagram.info.destination_address,
+            //                                                                         first_datagram.info.destination_port}));
             auto handler = std::make_unique<udp::null_listener>();
             return handler;
         }
@@ -201,8 +225,8 @@ void analysis::run_full_analysis(processing_context& context)
                 }
 
                 {
-                    auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
-                    auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                    auto pit_writer  = context.handler_factory->create_pit_logger(stream_info.id);
+                    auto analyzer    = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
                     auto mac_address = std::make_unique<mac_address_analyzer>();
 
                     ml->add_udp_listener(std::move(analyzer));
@@ -286,7 +310,9 @@ void analysis::run_full_analysis(processing_context& context)
             }
             auto first_packet = std::move(maybe_rtp_packet.value());
 
-            const auto perform_essence_analysis = context.pcap.truncated ? anc_stream_serializer::payload_analysis_t::no : anc_stream_serializer::payload_analysis_t::yes;
+            const auto perform_essence_analysis = context.pcap.truncated
+                                                      ? anc_stream_serializer::payload_analysis_t::no
+                                                      : anc_stream_serializer::payload_analysis_t::yes;
             auto new_handler =
                 std::make_unique<anc_stream_serializer>(first_packet, stream_info, anc_info, perform_essence_analysis,
                                                         anc_finalizer_callback, context.storage_folder);
@@ -352,6 +378,9 @@ void analysis::run_full_analysis(processing_context& context)
         {
             counter.handle_video_jxsv();
 
+            const auto& in_video_info = std::get<video_stream_details>(media_info);
+            //            logger()->info("{}", in_video_info.packet_count);
+
             auto maybe_rtp_packet = rtp::decode(first_datagram.ethernet_info, first_datagram.info, first_datagram.sdu);
             if(!maybe_rtp_packet)
             {
@@ -364,15 +393,47 @@ void analysis::run_full_analysis(processing_context& context)
 
             if(context.extract_frames)
             {
-                auto new_handler = std::make_unique<jpeg_xs_stream_extractor>(first_packet, context.storage_folder,
-                                                                              main_executor, stream_info.id);
+                auto new_handler = std::make_unique<jpeg_xs_stream_extractor>(
+                    first_packet, stream_info, in_video_info, context.storage_folder, main_executor, stream_info.id);
                 ml->add_rtp_listener(std::move(new_handler));
             }
             else
             {
-                auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
-                auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
-                ml->add_udp_listener(std::move(analyzer));
+                {
+                    auto new_handler = std::make_unique<jxsv_stream_serializer>(first_packet, stream_info,
+                                                                                in_video_info, jxsv_finalizer_callback);
+                    ml->add_rtp_listener(std::move(new_handler));
+                }
+                {
+                    auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
+                    auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));
+                    ml->add_udp_listener(std::move(analyzer));
+                }
+
+                {
+                    auto db_logger =
+                        context.handler_factory->create_c_inst_data_logger(context.pcap.id, stream_info.id);
+                    auto cinst_writer = context.handler_factory->create_c_inst_histogram_logger(stream_info.id);
+                    auto analyzer =
+                        std::make_unique<c_analyzer>(std::move(db_logger), std::move(cinst_writer),
+                                                     in_video_info.video.packets_per_frame, in_video_info.video.rate);
+                    ml->add_rtp_listener(std::move(analyzer));
+                }
+                {
+                    auto framer_ml = std::make_unique<
+                        multi_listener_t<frame_start_filter::listener, frame_start_filter::packet_info>>();
+
+                    {
+                        auto db_logger = context.handler_factory->create_rtp_ts_logger(context.pcap.id, stream_info.id);
+                        auto analyzer =
+                            std::make_unique<rtp_ts_analyzer>(std::move(db_logger), in_video_info.video.rate);
+                        framer_ml->add(std::move(analyzer));
+                    }
+
+                    auto framer =
+                        std::make_unique<frame_start_filter>(frame_start_filter::listener_uptr(std::move(framer_ml)));
+                    ml->add_rtp_listener(std::move(framer));
+                }
             }
 
             return ml;
@@ -386,9 +447,11 @@ void analysis::run_full_analysis(processing_context& context)
             if(context.extract_frames)
             {
                 auto new_handler = std::make_unique<srt_extractor>(first_datagram, context.storage_folder,
-                                                                              main_executor, stream_info.id);
+                                                                   main_executor, stream_info.id);
                 ml->add_udp_listener(std::move(new_handler));
-            }else {
+            }
+            else
+            {
 
                 auto pit_writer = context.handler_factory->create_pit_logger(stream_info.id);
                 auto analyzer   = std::make_unique<packet_interval_time_analyzer>(std::move(pit_writer));

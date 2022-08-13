@@ -108,9 +108,13 @@ const PcapSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
-    sdp_count: {
-        type: Number,
-        default: 0
+    parsed_sdps: {
+        type: Array,
+        default: [],
+    },
+    media_type_map: {
+        type: Array,
+        default: [],
     },
     transport_type: {
         type: String,

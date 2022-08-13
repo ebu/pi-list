@@ -111,7 +111,7 @@ function RtpLineCharts({
 
     const latencyGraphData = {
         graphicData: latencyData,
-        title: 'Latency',
+        title: 'Ancillary latency',
         xAxisTitle: 'Time (TAI)',
         yAxisTitle: 'Latency (μs)',
         datakeyY: 'value',

@@ -1,7 +1,9 @@
 const _ = require('lodash');
 const Stream = require('../models/stream');
 const constants = require('../enums/analysis');
-const { appendError } = require('./utils');
+const {
+    appendError
+} = require('./utils');
 const influxDbManager = require('../managers/influx-db');
 
 function getResult(dropped_packets) {
@@ -80,7 +82,10 @@ function validateInterFrameRtpTsDelta(stream) {
     _.set(stream, 'analyses.inter_frame_rtp_ts_delta.details.limit', limit);
     _.set(stream, 'analyses.inter_frame_rtp_ts_delta.details.unit', 'ticks');
 
-    const { min, max } = delta;
+    const {
+        min,
+        max
+    } = delta;
     if (min < limit.min || max > limit.max) {
         _.set(stream, 'analyses.inter_frame_rtp_ts_delta.result', constants.outcome.not_compliant);
         stream = appendError(stream, {
@@ -104,7 +109,11 @@ const doInterFrameRtpTsDeltaAnalysis = async (pcapId, stream) => {
         return stream;
     }
 
-    const { min, max, avg } = value.data[0];
+    const {
+        min,
+        max,
+        avg
+    } = value.data[0];
     _.set(stream, 'analyses.inter_frame_rtp_ts_delta.details.range', {
         min,
         max,
@@ -126,7 +135,11 @@ const doRtpTsAnalysis = async (pcapId, stream) => {
         return stream;
     }
 
-    const { min, max, avg } = value.data[0];
+    const {
+        min,
+        max,
+        avg
+    } = value.data[0];
     _.set(stream, 'analyses.packet_ts_vs_rtp_ts.details.range', {
         min,
         max,
@@ -152,7 +165,10 @@ function validateRtpTs(stream, validation) {
     _.set(stream, 'analyses.packet_ts_vs_rtp_ts.details.limit', limit);
     _.set(stream, 'analyses.packet_ts_vs_rtp_ts.details.unit', 'ns');
 
-    const { min, max } = delta;
+    const {
+        min,
+        max
+    } = delta;
     _.set(stream, 'analyses.packet_ts_vs_rtp_ts.result', constants.outcome.not_compliant);
     if (min < limit.min || max > limit.max) {
         _.set(stream, 'analyses.packet_ts_vs_rtp_ts.result', constants.outcome.not_compliant);
@@ -166,65 +182,19 @@ function validateRtpTs(stream, validation) {
     return stream;
 }
 
-const doRtpTicksAnalysis = async (pcapId, stream) => {
-    const value = await influxDbManager.getDeltaRtpVsNtTicksMinMax(pcapId, stream.id);
-
-    if (_.isNil(value.data) || value.data.length < 1 || _.isNil(value.data[0])) {
-        stream = appendError(stream, {
-            id: constants.errors.missing_information,
-            value: 'no DeltaRtpVsNtTicksMinMax for stream `stream.id` in `pcapId`',
-        });
-        return stream;
-    }
-
-    const { min, max, avg } = value.data[0];
-    _.set(stream, 'analyses.rtp_ts_vs_nt.details.range', {
-        min,
-        max,
-        avg,
-    });
-
-    return stream;
-};
-
-function validateRtpTicks(stream, validation) {
-    const delta = _.get(stream, 'analyses.rtp_ts_vs_nt.details.range', null);
-    if (delta === null) {
-        _.set(stream, 'analyses.rtp_ts_vs_nt.result', constants.outcome.not_compliant);
-        stream = appendError(stream, {
-            id: constants.errors.missing_information,
-            value: 'no value for "analyses.rtp_ts_vs_nt.details.range"',
-        });
-
-        return stream;
-    }
-
-    const limit = validation.rtp.deltaRtpTsVsNtLimit;
-    _.set(stream, 'analyses.rtp_ts_vs_nt.details.limit', limit);
-    _.set(stream, 'analyses.rtp_ts_vs_nt.details.unit', 'ticks');
-
-    if (delta.min < limit.min || delta.max > limit.max) {
-        _.set(stream, 'analyses.rtp_ts_vs_nt.result', constants.outcome.not_compliant);
-        stream = appendError(stream, {
-            id: constants.errors.invalid_rtp_ts_vs_nt,
-        });
-    } else {
-        _.set(stream, 'analyses.rtp_ts_vs_nt.result', constants.outcome.compliant);
-    }
-
-    return stream;
-}
 
 // Returns one promise, which result is undefined.
 async function doRtpStreamAnalysis(stream) {
     const s = addRtpSequenceAnalysisToStream(stream);
 
-    await Stream.findOneAndUpdate({ id: stream.id }, s, { new: true });
+    await Stream.findOneAndUpdate({
+        id: stream.id
+    }, s, {
+        new: true
+    });
 }
 
 module.exports = {
-    doRtpTicksAnalysis,
-    validateRtpTicks,
     doInterFrameRtpTsDeltaAnalysis,
     validateInterFrameRtpTsDelta,
     doRtpTsAnalysis,

@@ -1,4 +1,7 @@
 const Influx = require('influx');
+import {
+    isArray
+} from 'lodash';
 import logger from '../util/logger';
 const program = require('../util/programArguments');
 
@@ -36,27 +39,40 @@ class InfluxDbManager {
 
     sendQueryAndFormatResults(query, isGrouped) {
         return this.influx.query(query).then((data) =>
-        ({
-            data: data.map((item) => ({
-                ...item,
-                time: item.time._nanoISO,
-            })),
-            isGrouped: isGrouped
-        })
+            ({
+                data: data.map((item) => ({
+                    ...item,
+                    time: item.time._nanoISO,
+                })),
+                isGrouped: isGrouped
+            })
         );
     }
 
     sendQueryAndCountResults(query) {
         return this.influx.query(query).then((data) =>
-        ({
-            count: data[0].count
-        })
+            (data && isArray(data) && data[0]) ? ({
+                count: data[0].count
+            }) : {
+                count: 0
+            }
         );
     }
 
     getPtpOffsetSamplesByPcap(pcapID) {
         const query = `select "ptp_offset" as "value" from /^${pcapID}$/`;
         log.info(`Get PTP for the pcap ${pcapID}. Query: \n ${query}`);
+        return this.sendQueryAndFormatResults(query, false);
+    }
+
+    getCInstRange(pcapID, streamID) {
+        const query = `
+            select max("cinst") as "max", min("cinst") as "min", mean("cinst") as "avg"
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)}
+        `;
+
+        log.info(`Get CInst for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);
+
         return this.sendQueryAndFormatResults(query, false);
     }
 
@@ -391,11 +407,11 @@ class InfluxDbManager {
     }
 
     getAudioPktTsVsRtpTsGrouped(pcapID, streamID, startTime, endTime, groupTime) {
-        const grouped_fixed = (parseInt(groupTime) * 10).toString();
+        const grouped_fixed = (parseInt(groupTime) / 10000).toString();
         const query = `
             select
             max("audio-pkt-vs-rtp") as "max", min("audio-pkt-vs-rtp") as "min", mean("audio-pkt-vs-rtp") as "avg"
-            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeGroupFilter(startTime, endTime, grouped_fixed)}
+            ${this.fromPcapIdWhereStreamIs(pcapID, streamID)} and ${this.timeGroupFilter(startTime, endTime, groupTime)}
         `;
 
         log.info(`Get RTP-TS vs PKT-TS for the stream ${streamID} in the pcap ${pcapID}. Query: \n ${query}`);

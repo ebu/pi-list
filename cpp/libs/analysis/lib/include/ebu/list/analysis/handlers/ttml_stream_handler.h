@@ -5,9 +5,9 @@
 #include "ebu/list/analysis/utils/histogram_listener.h"
 #include "ebu/list/analysis/utils/rtp_utils.h"
 #include "ebu/list/core/memory/bimo.h"
+#include "ebu/list/net/mac_address_analyzer.h"
 #include "ebu/list/rtp/listener.h"
 #include "ebu/list/st2110/packets_per_frame_calculator.h"
-#include "ebu/list/net/mac_address_analyzer.h"
 
 namespace ebu_list::analysis::ttml
 {
@@ -28,8 +28,6 @@ namespace ebu_list::analysis::ttml
 
         using listener_uptr = std::unique_ptr<listener>;
 
-
-
         stream_handler(
             ebu_list::rtp::packet first_packet, listener_uptr l_rtp, serializable_stream_info info,
             ttml::stream_details details, completion_handler ch = [](const stream_handler&) {});
@@ -39,7 +37,6 @@ namespace ebu_list::analysis::ttml
         [[nodiscard]] const stream_details& info() const;
         [[nodiscard]] const serializable_stream_info& network_info() const;
         [[nodiscard]] mac_address_analyzer::mac_addresses_info get_mac_adresses_analyses() const;
-
 
       private:
 #pragma region rtp::listener events
