@@ -97,6 +97,7 @@ let convertFile = () => {
           } else {
             const json2csvParser = new Parser({
               fields,
+              defaultValue: "Not applicable",
               header: false,
               transforms: [unwind({ paths: ['streams'] })],
               formatters: { string: functionNameFormatter() }
