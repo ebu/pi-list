@@ -16,32 +16,21 @@ struct packet_interval_time_analyzer::impl
 
     void on_data(const udp::datagram& p)
     {
-
-        info.packets_count++;
+        ++info.packets_count;
         const auto packet_ts = p.info.packet_time;
 
         if(previous_timestamp_.has_value())
         {
-
             const auto diff_packet_time = packet_ts - previous_timestamp_.value();
             const auto diff_packet_time_ns =
                 std::chrono::duration_cast<std::chrono::nanoseconds>(diff_packet_time).count();
 
-            if(diff_packet_time_ns > info.max)
-            {
-                info.max = diff_packet_time_ns;
-            }
+            info.data =
+                info.data.value_or(min_max_avg_t{diff_packet_time_ns, diff_packet_time_ns, diff_packet_time_ns});
 
-            if(!info.min.has_value())
-            {
-                info.min = info.max;
-            }
-            else if(diff_packet_time_ns < info.min)
-            {
-                info.min = diff_packet_time_ns;
-            }
-
-            info.avg = (info.avg * (info.packets_count - 1) + diff_packet_time_ns) / info.packets_count;
+            info.data->min = std::min(info.data->min, diff_packet_time_ns);
+            info.data->max = std::max(info.data->max, diff_packet_time_ns);
+            info.data->avg = (info.data->avg * (info.packets_count - 1) + diff_packet_time_ns) / info.packets_count;
 
             histogram_.add_value(diff_packet_time_ns, bucket_width);
         }
@@ -70,8 +59,7 @@ void packet_interval_time_analyzer::on_data(const udp::datagram& p)
 
 void packet_interval_time_analyzer::on_complete()
 {
-    impl_->listener_->on_data({impl_->info.max, impl_->info.min, impl_->info.avg, impl_->histogram_.values(),
-                               impl_->bucket_width, impl_->info.packets_count});
+    impl_->listener_->on_data(impl_->info);
     impl_->listener_->on_complete();
 }
 

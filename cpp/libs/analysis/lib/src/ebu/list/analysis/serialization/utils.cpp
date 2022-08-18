@@ -43,9 +43,12 @@ pit_writer::pit_writer::pit_writer(path info_path, std::string_view filename)
 void pit_writer::pit_writer::on_data(const st2110::packet_interval_time_analyzer::packet_interval_time_info& pit_info)
 {
     nlohmann::json j;
-    j["avg"]           = pit_info.avg;
-    j["min"]           = pit_info.min.value();
-    j["max"]           = pit_info.max;
+    if(pit_info.data.has_value())
+    {
+        j["avg"] = pit_info.data->avg;
+        j["min"] = pit_info.data->min;
+        j["max"] = pit_info.data->max;
+    }
     j["total_packets"] = pit_info.packets_count;
     j["histogram"]     = pit_info.histogram;
     j["bucket_width"]  = pit_info.bucket_width;

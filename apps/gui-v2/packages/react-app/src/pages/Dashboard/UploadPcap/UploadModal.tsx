@@ -99,7 +99,7 @@ const UploadModal = ({ isOpen, onUploadDone, onModalClose, receivedFiles }: ICom
                 </div>
                 <div className="upload-pcap-modal-button-container">
                     <a className="upload-pcap-modal-upload-button" onClick={() => onUpload()}>
-                        Upload
+                        Analyze
                     </a>
                 </div>
             </Modal>

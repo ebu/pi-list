@@ -15,11 +15,16 @@ namespace ebu_list::st2110
     class packet_interval_time_analyzer : public udp::listener
     {
       public:
+        struct min_max_avg_t
+        {
+            int64_t min = 0;
+            int64_t max = 0;
+            int64_t avg = 0;
+        };
+
         struct packet_interval_time_info
         {
-            int64_t max = 0;
-            std::optional<int64_t> min;
-            int64_t avg = 0;
+            std::optional<min_max_avg_t> data;
             histogram_t histogram;
             int bucket_width;
             int packets_count = 0;
