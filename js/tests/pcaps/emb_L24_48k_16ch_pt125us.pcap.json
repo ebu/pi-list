@@ -39,7 +39,8 @@
                 "max": { "min": null, "max": 1000, "unit": "μs" }
             },
             "tsdf": { "tolerance": 1, "limit": 17, "unit": "packet_time" }
-        }
+        },
+        "validationMap": { "video": { "rtp_ts_vs_nt": { "type": "use_troffset" } } }
     },
     "summary": { "error_list": [], "warning_list": [] },
     "streams": [

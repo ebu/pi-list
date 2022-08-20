@@ -552,7 +552,7 @@ const videoConsolidation = async (req, res, next) => {
             media_type: 'video',
         }).exec();
 
-        await doVideoAnalysis(pcapId, streams);
+        await doVideoAnalysis(pcapId, streams, req.analysisProfile);
         addStreamsToReq(streams, req);
 
         next();

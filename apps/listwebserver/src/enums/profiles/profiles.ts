@@ -18,6 +18,25 @@ const EBUAudioTsdfProfile: SDK.api.pcap.ITsdfProfile = {
     unit: 'packet_time',
 };
 
+const jtnm2020: SDK.api.pcap.IAnalysisProfile = {
+    id: '5b2203b2-0aec-40fa-b0da-2f36a1c06af6',
+    label: 'JT-NM Tested 2020',
+    timestamps: {
+        source: 'pcap',
+    },
+    audio: {
+        deltaPktTsVsRtpTsLimit: JTNM2020AudioRtpProfile,
+        tsdf: EBUAudioTsdfProfile,
+    },
+    validationMap: {
+        video: {
+            rtp_ts_vs_nt: {
+                type: 'use_troffset',
+            },
+        },
+    },
+};
+
 export const profiles: SDK.api.pcap.IAnalysisProfile[] = [
     {
         id: '17555997-661c-451a-a682-d79299e4dbda',
@@ -47,27 +66,22 @@ export const profiles: SDK.api.pcap.IAnalysisProfile[] = [
                 max: { min: undefined, max: 17, unit: 'packet_time' },
             },
         },
-    },
-    {
-        id: '5b2203b2-0aec-40fa-b0da-2f36a1c06af6',
-        label: 'JT-NM Tested 2020',
-        timestamps: {
-            source: 'pcap',
-        },
-        audio: {
-            deltaPktTsVsRtpTsLimit: JTNM2020AudioRtpProfile,
-            tsdf: EBUAudioTsdfProfile,
+        validationMap: {
+            video: {
+                rtp_ts_vs_nt: {
+                    type: 'use_ticks',
+                    limit: { min: -1, max: 1 },
+                },
+            },
         },
     },
+    jtnm2020,
     {
+        ...jtnm2020,
         id: 'b89d08b5-0dc8-4860-b5d5-32d2a051957e',
         label: 'JT-NM Tested 2020 (use PTP packets to derive clock)',
         timestamps: {
             source: 'ptp_packets',
-        },
-        audio: {
-            deltaPktTsVsRtpTsLimit: JTNM2020AudioRtpProfile,
-            tsdf: EBUAudioTsdfProfile,
         },
     },
     {
@@ -79,6 +93,13 @@ export const profiles: SDK.api.pcap.IAnalysisProfile[] = [
         audio: {
             deltaPktTsVsRtpTsLimit: CBCAudioRtpProfile,
             tsdf: EBUAudioTsdfProfile,
+        },
+        validationMap: {
+            video: {
+                rtp_ts_vs_nt: {
+                    type: 'use_troffset',
+                },
+            },
         },
     },
 ];
