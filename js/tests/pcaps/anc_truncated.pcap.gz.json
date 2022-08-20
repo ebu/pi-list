@@ -31,7 +31,8 @@
         "audio": {
             "deltaPktTsVsRtpTsLimit": { "unit": "μs", "min": 0, "maxAvg": 1000, "max": 1000 },
             "tsdf": { "tolerance": 1, "limit": 17, "unit": "packet_time" }
-        }
+        },
+        "validationMap": { "video": { "rtp_ts_vs_nt": { "type": "use_troffset" } } }
     },
     "summary": {
         "error_list": [

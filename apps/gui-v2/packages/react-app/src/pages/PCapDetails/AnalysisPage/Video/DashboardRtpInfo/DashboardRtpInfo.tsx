@@ -10,11 +10,15 @@ import useSidebarInfo from 'utils/useSidebarInfo';
 function DashboardRtpInfo({ currentStream }: { currentStream: SDK.types.IStreamInfo | undefined }) {
     const setInfo = useSidebarInfo();
 
+    if (!currentStream) return null;
+
     const deltaPktTsVsRtpTs = currentStream?.analyses.packet_ts_vs_rtp_ts || undefined;
     const deltaRtpTsVsNTFrame = currentStream?.analyses.rtp_ts_vs_nt || undefined;
     const interFrameRtpDelta = currentStream?.analyses.inter_frame_rtp_ts_delta || undefined;
     const packet_count = currentStream?.analyses?.rtp_sequence?.details?.packet_count || 0;
-    const complianceSummary = getComplianceSummary([deltaPktTsVsRtpTs, deltaRtpTsVsNTFrame, interFrameRtpDelta]);
+    const complianceSummary = getComplianceSummary(
+        [deltaPktTsVsRtpTs, deltaRtpTsVsNTFrame, interFrameRtpDelta].filter(x => x !== undefined)
+    );
 
     const summaryValues = [
         {
