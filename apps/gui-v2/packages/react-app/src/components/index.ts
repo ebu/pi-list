@@ -15,7 +15,7 @@ export { default as StreamsSidebarInfo } from './StreamsSidebarInfo/StreamsSideb
 export { default as MediaInformation } from './MediaInformation/index';
 export { default as ButtonWithIcon } from './ButtonWithIcon/ButtonWithIcon';
 export { default as ComplianceTag } from './ComplianceTag/ComplianceTag';
-export type { IComponentProps as IComplianceProps } from './ComplianceTag/ComplianceTag';
+export type { ComplianceTagInterface as IComplianceProps } from './ComplianceTag/ComplianceTag';
 export { default as ComplianceTagContainer } from './ComplianceTagContainer/index';
 export { default as ButtonWithIconSidebarContainer } from './ButtonWithIconSidebarContainer/ButtonWithIconSidebarContainer';
 export { default as MeasurementMinAvgMaxDisplay } from './DisplayPanels/MeasurementMinAvgMaxDisplay';
