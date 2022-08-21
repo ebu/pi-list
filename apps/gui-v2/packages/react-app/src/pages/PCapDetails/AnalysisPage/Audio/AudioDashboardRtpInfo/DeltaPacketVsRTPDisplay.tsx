@@ -8,9 +8,11 @@ import * as labels from 'utils/labels';
 const DeltaPacketVsRTPDisplay = ({
     deltaPktTsVsRtpTs,
     setAdditionalInformation,
+    attention,
 }: {
     deltaPktTsVsRtpTs: SDK.api.pcap.IAudioLatencyAnalysis;
     setAdditionalInformation: SetSidebarInfoType;
+    attention: boolean;
 }) => {
     if (!deltaPktTsVsRtpTs) return null;
 
@@ -20,14 +22,17 @@ const DeltaPacketVsRTPDisplay = ({
             {
                 label: 'Min',
                 value: deltaPktTsVsRtpTs.details.range.min.toFixed(1),
+                attention,
             },
             {
                 label: 'Avg',
                 value: deltaPktTsVsRtpTs.details.range.avg.toFixed(1),
+                attention,
             },
             {
                 label: 'Max',
                 value: deltaPktTsVsRtpTs.details.range.max.toFixed(1),
+                attention,
             },
         ],
         unit: 'μs',

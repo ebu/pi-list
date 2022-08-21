@@ -9,8 +9,6 @@ import * as labels from 'utils/labels';
 function AudioDashboardPitfInfo({ currentStream }: { currentStream: SDK.types.IStreamInfo | undefined }) {
     const analysis = currentStream?.analyses.pit;
     if (!analysis) return null;
-    console.log('STREAM');
-    console.dir(analysis);
     const invalid = analysis.result !== 'compliant';
 
     const summary = [

@@ -10,6 +10,7 @@ function AudioDashboardRtpInfo({ currentStream }: { currentStream: SDK.types.ISt
 
     const deltaPktTsVsRtpTs = currentStream?.analyses.packet_ts_vs_rtp_ts || undefined;
     if (!deltaPktTsVsRtpTs) return null;
+    const invalid = deltaPktTsVsRtpTs.result !== 'compliant';
 
     const summary = [
         {
@@ -38,7 +39,11 @@ function AudioDashboardRtpInfo({ currentStream }: { currentStream: SDK.types.ISt
             </div>
             {deltaPktTsVsRtpTs && (
                 <div className="pcap-details-page-panels-container">
-                    <DeltaPacketVsRTPDisplay deltaPktTsVsRtpTs={deltaPktTsVsRtpTs} setAdditionalInformation={setInfo} />
+                    <DeltaPacketVsRTPDisplay
+                        deltaPktTsVsRtpTs={deltaPktTsVsRtpTs}
+                        setAdditionalInformation={setInfo}
+                        attention={invalid}
+                    />
                 </div>
             )}
         </>
