@@ -1,6 +1,7 @@
 import React from 'react';
 import './styles.scss';
 import { LeftArrowIcon } from '../icons/index';
+import { CustomScrollbar } from 'components/index';
 
 interface IComponentProps {
     streamsList: Array<ISidebarItem>;
@@ -16,33 +17,41 @@ function SidebarStreamsList({ streamsList, onItemClicked, activeStreamId, onBack
                 <LeftArrowIcon />
                 <span>Dashboard</span>
             </div>
-            {streamsList.map((item, index) => (
-                <div
-                    onClick={() => onItemClicked(item.id)}
-                    className={
-                        item.id === activeStreamId ? 'sidebar-helper-information-active' : 'sidebar-helper-information'
-                    }
-                    key={index}
-                >
-                    <div
-                        className={
-                            item.id === activeStreamId
-                                ? 'sidebar-helper-index-type-active'
-                                : 'sidebar-helper-index-type'
-                        }
-                    >
-                        <span>{item.key + ' ' + item.fullType}</span>
-                    </div>
-                    <div
-                        className={
-                            item.id === activeStreamId ? 'sidebar-helper-protocol-active' : 'sidebar-helper-protocol'
-                        }
-                    >
-                        <span>{item.protocol + ' - ' + item.transport_type}</span>
-                        {item.hasError ? <span className="sidebar-stream-list-red-dot"></span> : null}
-                    </div>
-                </div>
-            ))}
+            <div className="main-page-dashboard">
+                <CustomScrollbar>
+                    {streamsList.map((item, index) => (
+                        <div
+                            onClick={() => onItemClicked(item.id)}
+                            className={
+                                item.id === activeStreamId
+                                    ? 'sidebar-helper-information-active'
+                                    : 'sidebar-helper-information'
+                            }
+                            key={index}
+                        >
+                            <div
+                                className={
+                                    item.id === activeStreamId
+                                        ? 'sidebar-helper-index-type-active'
+                                        : 'sidebar-helper-index-type'
+                                }
+                            >
+                                <span>{item.key + ' ' + item.fullType}</span>
+                            </div>
+                            <div
+                                className={
+                                    item.id === activeStreamId
+                                        ? 'sidebar-helper-protocol-active'
+                                        : 'sidebar-helper-protocol'
+                                }
+                            >
+                                <span>{item.protocol + ' - ' + item.transport_type}</span>
+                                {item.hasError ? <span className="sidebar-stream-list-red-dot"></span> : null}
+                            </div>
+                        </div>
+                    ))}
+                </CustomScrollbar>
+            </div>
         </div>
     );
 }
