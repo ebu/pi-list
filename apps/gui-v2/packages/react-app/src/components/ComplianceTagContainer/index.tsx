@@ -10,16 +10,25 @@ function index({
     complianceTagList: Array<ComplianceTagInterface>;
     hasError: boolean;
 }) {
+    const [hadErrors, setHadErrors] = React.useState<boolean>(hasError);
+    const [isUserExpanded, setIsUserExpanded] = React.useState<boolean>(false);
+    const isOpen = isUserExpanded || hadErrors;
+
     React.useEffect(() => {
-        console.log('has error:', hasError);
-
-        setIsExpanded(hasError);
+        setHadErrors(hasError);
     }, [hasError]);
-    const [isExpanded, setIsExpanded] = React.useState<boolean>(false);
 
-    const onClick = () => setIsExpanded(!isExpanded);
+    const onClick = React.useCallback(() => {
+        console.log('Click!', isOpen, isUserExpanded, hadErrors);
+        // Even if it had errors, close it if the user asks so
+        if (hadErrors) {
+            setHadErrors(() => false);
+        }
 
-    return isExpanded ? (
+        setIsUserExpanded(!isOpen);
+    }, [isUserExpanded, hadErrors, isOpen, setHadErrors, setIsUserExpanded]);
+
+    return isOpen ? (
         <ComplianceTagContainerExpanded onClick={onClick} complianceTagList={complianceTagList} />
     ) : (
         <ComplianceTagContainerCollapsed onClick={onClick} />
