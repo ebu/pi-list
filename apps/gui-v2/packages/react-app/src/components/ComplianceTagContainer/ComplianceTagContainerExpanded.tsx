@@ -1,5 +1,5 @@
 import React from 'react';
-import { IComponentProps as ComplianceTagInterface } from '../ComplianceTag/ComplianceTag';
+import { ComplianceTagInterface } from '../ComplianceTag/ComplianceTag';
 import { ComplianceTag } from '../index';
 import './styles.scss';
 import { ArrowExpandedIcon } from '../icons';

@@ -1,35 +1,36 @@
 import { api, types } from '@bisect/ebu-list-sdk';
 import { ComplianceTagContainer } from 'components/index';
+import { ComplianceTagInterface } from 'components/ComplianceTag/ComplianceTag';
 
 const ComplianceTagPanel = ({ stream }: { stream: types.IStreamInfo | any | undefined }) => {
     const analyses = stream?.analyses;
-    const hasError: boolean = stream?.error_list.length === 0 ? false : true;
     if (!analyses) return null;
-    const dataArray: any = [];
 
-    const badges = Object.keys(analyses)
+    const hasError: boolean = stream?.error_list.length === 0 ? false : true;
+
+    const dataArray = Object.keys(analyses)
         .sort()
         .map(analysis => {
             const compliance = analyses[analysis].result;
             const analysisNames: { [key: string]: string | undefined } = api.constants.analysisConstants.analysesNames;
 
             const name = analysisNames[analysis];
-            if (!name) return null;
+            if (!name) return undefined;
 
             if (compliance === api.constants.analysisConstants.outcome.disabled) {
                 const data = {
                     text: `[Disabled] ${name}`,
                     compliant: compliance,
                 };
-                dataArray.push(data);
-            } else {
-                const data = {
-                    text: name,
-                    compliant: compliance,
-                };
-                dataArray.push(data);
+                return data;
             }
-        });
+            const data = {
+                text: name,
+                compliant: compliance,
+            };
+            return data;
+        })
+        .filter(x => x !== undefined) as ComplianceTagInterface[];
 
     return <ComplianceTagContainer complianceTagList={dataArray} hasError={hasError} />;
 };
