@@ -271,7 +271,7 @@ const getDataToInformationSidebar = (
                                 </div>
                                 <div>
                                     <span className="text-warning-description">
-                                        This files was analyzed by an older version of EBU LIST.
+                                        This file was analyzed by an older version of EBU LIST.
                                     </span>
                                 </div>
                             </div>
