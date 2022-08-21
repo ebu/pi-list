@@ -75,7 +75,7 @@
 div.sidebar-helper-container {
     padding-top: 5.7em;
     padding-bottom: 5.7em;
-    width: 70%;
+    width: 75%;
 }
 
 .sidebar-helper-information {
@@ -118,15 +118,10 @@ div.sidebar-helper-container {
 }
 
 .sidebar-helper-information-active {
-    &:last-child {
-        padding-bottom: 0;
-    }
-    cursor: pointer;
-    padding-bottom: 1em;
+    @extend .sidebar-helper-information;
+    margin-right: 12px; // give room to the scroll bar
     padding-right: 2em;
     border-right: 2px solid $vibrant-blue;
-    display: flex;
-    flex-direction: column;
 }
 
 .sidebar-helper-title {
