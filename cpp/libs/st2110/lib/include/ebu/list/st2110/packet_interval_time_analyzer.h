@@ -19,7 +19,7 @@ namespace ebu_list::st2110
         {
             int64_t min = 0;
             int64_t max = 0;
-            int64_t avg = 0;
+            double_t avg = 0;
         };
 
         struct packet_interval_time_info

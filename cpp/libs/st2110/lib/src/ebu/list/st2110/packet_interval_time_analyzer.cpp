@@ -25,8 +25,8 @@ struct packet_interval_time_analyzer::impl
             const auto diff_packet_time_ns =
                 std::chrono::duration_cast<std::chrono::nanoseconds>(diff_packet_time).count();
 
-            info.data =
-                info.data.value_or(min_max_avg_t{diff_packet_time_ns, diff_packet_time_ns, diff_packet_time_ns});
+            info.data = info.data.value_or(
+                min_max_avg_t{diff_packet_time_ns, diff_packet_time_ns, static_cast<double_t>(diff_packet_time_ns)});
 
             info.data->min = std::min(info.data->min, diff_packet_time_ns);
             info.data->max = std::max(info.data->max, diff_packet_time_ns);
