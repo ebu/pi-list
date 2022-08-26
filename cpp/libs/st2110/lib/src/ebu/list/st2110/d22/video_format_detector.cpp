@@ -30,8 +30,9 @@ detector::status_description video_format_detector::handle_data(const rtp::packe
     auto transmission_mode = payload_header.get_transmission_mode();
     if(transmission_mode != 1)
     {
-        return detector::status_description{/*.state*/ detector::state::invalid,
-                                            /*.error_code*/ "STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"};
+        logger()->info("Transmission mode: {}", transmission_mode);
+//        return detector::status_description{/*.state*/ detector::state::invalid,
+//                                            /*.error_code*/ "STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"};
     }
     // Verify if packetization mode field is the same for all packets of the RTP stream
     auto payload_packetization_mode = payload_header.get_packetization_mode();
@@ -41,8 +42,9 @@ detector::status_description video_format_detector::handle_data(const rtp::packe
     }
     else if(payload_packetization_mode != packetization_mode.value())
     {
-        return detector::status_description{/*.state*/ detector::state::invalid,
-                                            /*.error_code*/ "STATUS_CODE_VIDEO_INVALID_PACKETIZATION_MODE"};
+        logger()->info("Inconsistent packetization mode. Header: {}. Payload: {}", packetization_mode.value(), payload_packetization_mode);
+//        return detector::status_description{/*.state*/ detector::state::invalid,
+//                                            /*.error_code*/ "STATUS_CODE_VIDEO_INVALID_PACKETIZATION_MODE"};
     }
 
     // Verify if last packet is marked when it is marked the end of the frame
