@@ -66,14 +66,7 @@ export const profiles: SDK.api.pcap.IAnalysisProfile[] = [
                 max: { min: undefined, max: 17, unit: 'packet_time' },
             },
         },
-        validationMap: {
-            video: {
-                rtp_ts_vs_nt: {
-                    type: 'use_ticks',
-                    limit: { min: -1, max: 1 },
-                },
-            },
-        },
+        validationMap: {},
     },
     jtnm2020,
     {

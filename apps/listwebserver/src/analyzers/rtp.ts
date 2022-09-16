@@ -28,8 +28,10 @@ export async function getDeltaRtpVsNtTicksRange(
 
 export function getVideoDeltaRtpTsVsNtLimit(
     info: api.pcap.IST2110VideoInfo,
-    validation: api.pcap.IRtpOffsetValidation
-): api.pcap.IMinMax {
+    validation?: api.pcap.IRtpOffsetValidation
+): api.pcap.IMinMax | undefined {
+    if (validation === undefined) return undefined;
+
     if (validation.type == 'use_troffset') {
         const tro_default = info.tro_default_ns / 1000000000;
         const max_ticks_offset = tro_default * 90000;

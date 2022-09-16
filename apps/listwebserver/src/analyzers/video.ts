@@ -74,8 +74,11 @@ async function doVideoStreamAnalysis(pcapId: string, stream: api.pcap.IStreamInf
             stream.media_specific as api.pcap.IST2110VideoInfo,
             analyses.rtp_ts_vs_nt
         );
-        const deltaRange = await getDeltaRtpVsNtTicksRange(pcapId, stream);
-        validateRtpTicks(stream, deltaRtpTsVsNtLimit, deltaRange);
+
+        if (deltaRtpTsVsNtLimit !== undefined) {
+            const deltaRange = await getDeltaRtpVsNtTicksRange(pcapId, stream);
+            validateRtpTicks(stream, deltaRtpTsVsNtLimit, deltaRange);
+        }
     }
 
     await doRtpTsAnalysis(pcapId, stream);
