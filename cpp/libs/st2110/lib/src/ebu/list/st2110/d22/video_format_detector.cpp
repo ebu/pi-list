@@ -1,6 +1,6 @@
 #include "ebu/list/st2110/d22/video_format_detector.h"
-#include "ebu/list/st2110/d22/header.h"
 #include "ebu/list/st2110/d20/video_description.h"
+#include "ebu/list/st2110/d22/header.h"
 
 using namespace ebu_list::st2110::d22;
 using namespace ebu_list::st2110;
@@ -26,9 +26,9 @@ detector::status_description video_format_detector::handle_data(const rtp::packe
         return detector::status_description{/*.state*/ detector::state::invalid,
                                             /*.error_code*/ "STATUS_CODE_VIDEO_INVALID_PAYLOAD_SIZE"};
     }
-    auto payload_header    = header(sdu);
-    auto transmission_mode = payload_header.get_transmission_mode();
-//        logger()->info("Transmission mode: {}", transmission_mode);
+    auto payload_header = header(sdu);
+    //    auto transmission_mode = payload_header.get_transmission_mode();
+    //    logger()->trace("Transmission mode: {}", transmission_mode);
 
     // Verify if packetization mode field is the same for all packets of the RTP stream
     auto payload_packetization_mode = payload_header.get_packetization_mode();
@@ -38,9 +38,10 @@ detector::status_description video_format_detector::handle_data(const rtp::packe
     }
     else if(payload_packetization_mode != packetization_mode.value())
     {
-        logger()->info("Inconsistent packetization mode. Header: {}. Payload: {}", packetization_mode.value(), payload_packetization_mode);
-//        return detector::status_description{/*.state*/ detector::state::invalid,
-//                                            /*.error_code*/ "STATUS_CODE_VIDEO_INVALID_PACKETIZATION_MODE"};
+        logger()->info("Inconsistent packetization mode. Header: {}. Payload: {}", packetization_mode.value(),
+                       payload_packetization_mode);
+        //        return detector::status_description{/*.state*/ detector::state::invalid,
+        //                                            /*.error_code*/ "STATUS_CODE_VIDEO_INVALID_PACKETIZATION_MODE"};
     }
 
     // Verify if last packet is marked when it is marked the end of the frame
