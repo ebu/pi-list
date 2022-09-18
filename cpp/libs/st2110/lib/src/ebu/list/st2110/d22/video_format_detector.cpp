@@ -28,12 +28,8 @@ detector::status_description video_format_detector::handle_data(const rtp::packe
     }
     auto payload_header    = header(sdu);
     auto transmission_mode = payload_header.get_transmission_mode();
-    if(transmission_mode != 1)
-    {
-        logger()->info("Transmission mode: {}", transmission_mode);
-//        return detector::status_description{/*.state*/ detector::state::invalid,
-//                                            /*.error_code*/ "STATUS_CODE_VIDEO_INVALID_TRANSMISSION_MODE"};
-    }
+//        logger()->info("Transmission mode: {}", transmission_mode);
+
     // Verify if packetization mode field is the same for all packets of the RTP stream
     auto payload_packetization_mode = payload_header.get_packetization_mode();
     if(!packetization_mode.has_value())
