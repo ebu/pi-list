@@ -17,3 +17,4 @@ yarn.lock
 package-lock.json
 *.log
 apps/listwebserver/version.yml
+.user
