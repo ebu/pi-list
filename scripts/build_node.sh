@@ -9,7 +9,6 @@ cd $TOP_DIR
 
 echo "Bootstrapping..."
 yarn install
-npx lerna bootstrap
 
 echo "Building..."
 npx lerna run build
@@ -17,7 +16,7 @@ npx lerna run build
 
 echo "Building GUI..."
 cd $TOP_DIR/apps/gui-v2/
-yarn run build:production
+yarn run build:production --verbose
 
 echo "Done"
 

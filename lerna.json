@@ -11,7 +11,6 @@
         "apps/gui-v2/packages/*",
         "apps/gui-v2"
     ],
-    "useWorkspaces": false,
     "npmClient": "yarn",
     "version": "0.0.0"
 }
