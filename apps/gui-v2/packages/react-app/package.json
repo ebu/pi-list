@@ -5,6 +5,8 @@
     "dependencies": {
         "@bisect/ebu-list-sdk": "^0.1.0",
         "bulma": "^0.9.1",
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
         "react-circular-progressbar": "^2.0.3",
         "@ebu-list/translations": "^0.1.0",
         "fs": "^0.0.1-security",
@@ -23,6 +25,10 @@
         "build:production": "react-app-rewired build",
         "test": "react-app-rewired test",
         "eject": "react-app-rewired eject"
+    },
+    "devDependencies": {
+        "@types/react": "^18.0.1",
+        "@types/react-dom": "^18.0.0"
     },
     "peerDependencies": {
         "@types/query-string": "^6.3.0",
