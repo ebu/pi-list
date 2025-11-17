@@ -14,7 +14,7 @@ function useWaitForFrames(pcapId: string, streamId: string): WaitForFramesStates
     const [framesAreReady, setFramesAreReady] = React.useState(WaitForFramesStates.waiting);
     const wsClient = list.wsClient;
     React.useEffect(() => {
-        if (wsClient === (null || undefined)) {
+        if (wsClient == null) {
             return;
         }
 

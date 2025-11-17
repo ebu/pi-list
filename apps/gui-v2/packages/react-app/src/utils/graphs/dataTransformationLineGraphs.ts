@@ -5,7 +5,7 @@ const isIGraphicTimeMaxData = (
     data: IGraphicTimeMaxData[] | IGraphicTimeValueData[]
 ): data is IGraphicTimeMaxData[] => {
     if (data.length === 0) return false;
-    return (data as IGraphicTimeMaxData[])[0].max !== (undefined || null);
+    return (data as IGraphicTimeMaxData[])[0].max != null;
 };
 
 export const getFinalData = (data: IGraphicTimeMaxData[] | IGraphicTimeValueData[]) => {

@@ -48,7 +48,7 @@ function AudioPlayerDisplay({
     const wsClient = list.wsClient;
 
     React.useEffect(() => {
-        if (wsClient === (null || undefined)) {
+        if (wsClient == null) {
             return;
         }
         const handleMessage = (msg: any) => {

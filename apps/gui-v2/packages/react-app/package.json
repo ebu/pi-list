@@ -41,6 +41,8 @@
         "@types/react": "^18.0.1",
         "@types/react-dom": "18.0.0",
         "@types/react-router-dom": "^5.3.3",
+        "@types/smpte-timecode": "^1.2.1",
+        "@types/wavesurfer.js": "^6.0.12",
         "customize-cra": "^0.8.0",
         "file-loader": "^6.2.0",
         "history": "^5.0.0",
@@ -50,17 +52,17 @@
         "react-router-dom": "^6.3.0",
         "react-scripts": "4.0.0",
         "svg-url-loader": "^7.1.1",
-        "typescript": "^4.0.3",
         "smpte-timecode": "^1.2.3",
-        "@types/smpte-timecode": "^1.2.1",
         "recoil": "0.7.1",
         "rc-scrollbars": "^1.1.2",
         "react-custom-scrollbars-2": "^4.4.0",
-        "@types/wavesurfer.js": "^3.3.2",
         "simplebar-react": "^2.3.6",
-        "wavesurfer.js": "^4.2.0",
         "npm-license-crawler": "^0.2.1",
         "luxon": "^1.27.0",
-        "@types/luxon": "^1.26.5"
+        "@types/luxon": "^1.26.5",
+        "typescript": "^5.9.3",
+        "wavesurfer.js": "^7.12.1",
+        "webpack": "^5.2.1",
+        "webpack-dev-server": "5.2.1"
     }
 }

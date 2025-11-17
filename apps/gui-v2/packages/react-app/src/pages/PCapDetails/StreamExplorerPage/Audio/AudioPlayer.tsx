@@ -1,8 +1,9 @@
 import React from 'react';
-import WaveSurfer, { WaveSurferPlugin } from 'wavesurfer.js';
+import { useWavesurfer } from '@wavesurfer/react'
+import Timeline from 'wavesurfer.js/dist/plugins/timeline.esm.js'
+
 import './styles.scss';
-const TimelinePlugin = require('wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js');
-const CursorPlugin = require('wavesurfer.js/dist/plugin/wavesurfer.cursor.js');
+
 import { Slider, ButtonAudioPlayer, CustomScrollbar } from 'components/index';
 import { translate } from '../../../../utils/translation';
 
@@ -29,46 +30,46 @@ function timeInterval(pxPerSec: number) {
 }
 
 const createWaveSurfer = (waveform: any) => {
-    const wavesurfer = WaveSurfer.create({
+    const wavesurfer = useWavesurfer({
         container: waveform,
         waveColor: '#80c1ff',
         progressColor: '#0083ff',
-        splitChannels: true,
+        // splitChannels: true,
         autoCenter: true,
-        scrollParent: true,
+        // scrollParent: true,
         fillParent: true,
         barWidth: 1,
-        responsive: true,
+        // responsive: true,
         normalize: true,
         hideScrollbar: false,
         height: 120,
         cursorWidth: 3,
         cursorColor: 'rgba(255, 71, 71, 0.5)',
 
-        xhr: { withCredentials: true },
+        // xhr: { withCredentials: true },
         plugins: [
-            TimelinePlugin.create({
+            Timeline.create({
                 container: '.wave-timeline',
-                timeInterval: timeInterval,
-                primaryColor: '#39415a',
-                secondaryColor: 'white',
-                primaryFontColor: '#39415a',
-                secondaryFontColor: 'white',
+                // timeInterval: timeInterval,
+                // primaryColor: '#39415a',
+                // secondaryColor: 'white',
+                // primaryFontColor: '#39415a',
+                // secondaryFontColor: 'white',
             }),
-            CursorPlugin.create({
-                showTime: true,
-                opacity: 1,
+            // CursorPlugin.create({
+            //     showTime: true,
+            //     opacity: 1,
 
-                customShowTimeStyle: {
-                    'background-color': '#fff',
-                    color: '#000',
-                    padding: '2px',
-                    'font-size': '10px',
-                },
-                customStyle: {
-                    'border-color': 'white',
-                },
-            }),
+            //     customShowTimeStyle: {
+            //         'background-color': '#fff',
+            //         color: '#000',
+            //         padding: '2px',
+            //         'font-size': '10px',
+            //     },
+            //     customStyle: {
+            //         'border-color': 'white',
+            //     },
+            // }),
         ],
     });
 
@@ -120,7 +121,7 @@ function AudioPlayer({
 
     React.useEffect(() => {
         const waveform = waveformRef?.current?.querySelector('.wave');
-        const wavesurfer = createWaveSurfer(waveform);
+        const {wavesurfer, isPlaying, currentTime} = createWaveSurfer(waveform);
         waveSurferRef.current = wavesurfer;
         if (mp3Url === '') {
             return;

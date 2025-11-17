@@ -1,7 +1,10 @@
 import React from 'react';
-import Modal from 'react-modal';
+import _Modal from 'react-modal';
 import SourceInfo from './SourceInfo';
 import './styles.scss';
+
+const Modal: any = _Modal;
+
 
 interface IComponentProps {
     source: any | undefined,

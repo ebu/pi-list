@@ -217,19 +217,20 @@ export async function doInterFrameRtpTsDeltaAnalysis(
 }
 
 function getInterFrameRtpTsDeltaLimit(stream: api.pcap.IStreamInfo): api.pcap.IMinMax | null {
-    var rate;
 
-    if (_.get(stream, 'statistics.rate', null) !== null) {
-        rate = _.get(stream, 'statistics.rate', null);
-    } else if (_.get(stream, 'media_specific.rate', null) !== null) {
-        rate = _.get(stream, 'media_specific.rate', null);
-    } else {
-        return null;
-    }
+    const mediaSpecific = stream.media_specific as unknown as { rate?: unknown } | undefined;
+    const rate = stream.statistics?.rate ?? (mediaSpecific && 'rate' in (mediaSpecific as object) ? mediaSpecific.rate : null);
+
+
+    if (rate == null) return null;
+
+    const rateValue = Number(rate);
+    if (isNaN(rateValue) || rateValue === 0) return null; 
+
 
     const rtpClockRate = 90000;
-    const interTicks = rtpClockRate / eval(rate);
-
+    const interTicks = rtpClockRate / rateValue;
+    
     return {
         min: Math.floor(interTicks),
         max: Math.ceil(interTicks),
