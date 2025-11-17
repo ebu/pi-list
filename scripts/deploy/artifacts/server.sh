@@ -32,9 +32,9 @@ start()
     echo -e "Starting containers..." '\n'
     if [ "$1" = '-m' ] || [ "$2" = '-m' ]
     then
-        docker-compose up --build
+        docker compose up --build
     else
-        docker-compose up --build -d
+        docker compose up --build -d
     fi
     echo -e "Started!" '\n'
     exit
@@ -43,7 +43,7 @@ start()
 stop()
 {
     echo -e "Stopping containers..." '\n'
-    docker-compose stop
+    docker compose stop
     echo -e "Stopped!" '\n'
     exit
 }
@@ -59,7 +59,7 @@ restart()
 remove()
 {
     echo -e "Removing..." '\n'
-    docker-compose down -v
+    docker compose down -v
     echo -e "Removed!" '\n'
     exit
 }
@@ -67,7 +67,7 @@ remove()
 prune()
 {
     echo -e "Pruning..." '\n'
-    docker-compose rm -f -s -v
+    docker compose rm -f -s -v
     echo -e "Pruned!" '\n'
     exit
 }
@@ -75,7 +75,7 @@ prune()
 monitor()
 {
     echo -e "Monitoring containers..." '\n'
-    docker-compose logs -f --tail=500
+    docker compose logs -f --tail=500
     echo -e "No longer monitoring containers!" '\n'
     exit
 }
