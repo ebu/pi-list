@@ -14,19 +14,26 @@ configure_file(
         "${PROJECT_SOURCE_DIR}/apps/listwebserver/version.yml"
 )
 
-execute_process(COMMAND bash "${PROJECT_SOURCE_DIR}/scripts/reset_libssl_permissions.sh"
-        WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}")
+#execute_process(COMMAND bash "${PROJECT_SOURCE_DIR}/scripts/reset_libssl_permissions.sh"
+#        WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}")
 
 # -------------------------------------------------------------------------
 # conan
 conan_check()
 
 # Remove repositories used in older versions
-conan_remove_remote(NAME conan-center)
-conan_remove_remote(NAME bincrafters)
-conan_remove_remote(NAME bisect)
+
+# Remote 'conan-center' can't be found or is disabled
+# conan_remove_remote(NAME conan-center)
+
+# Remote 'bincrafters' can't be found or is disabled
+# conan_remove_remote(NAME bincrafters)
+
+# Remote 'bisect' can't be found or is disabled
+# conan_remove_remote(NAME bisect)
+
 # Add conan center
-conan_add_remote(NAME conancenter URL https://center.conan.io)
+# conan_add_remote(NAME conancenter URL https://center.conan.io)
 
 conan_cmake_run(CONANFILE conanfile.txt
         BASIC_SETUP CMAKE_TARGETS
