@@ -10,10 +10,10 @@ function createNewConnection(databaseName: string) {
 
     const conn = mongoose.createConnection(mongoDatabaseUrl, options);
 
-    conn.then(
-        (connection) => {
+    // Handle mongoose 6.x connection via promise
+    conn.asPromise().then(
+        () => {
             logger('database-manager').info('Connected to DB.');
-            return connection;
         },
         (err: any) => {
             logger('database-manager').error(`Failed to create a connection to DB: ${err.toString()}`);

@@ -4,7 +4,10 @@ import { hostname, options, port } from './databaseCommon';
 
 async function doTestConnection(mongoDatabaseUrl: string): Promise<boolean> {
     try {
-        await mongoose.createConnection(mongoDatabaseUrl, options);
+        const conn = mongoose.createConnection(mongoDatabaseUrl, options);
+        // Wait for connection to be established
+        await conn.asPromise();
+        await conn.close();
         return true;
     } catch (err) {
         return false;
