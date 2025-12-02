@@ -23,6 +23,21 @@ class InfluxDbManager {
         });
 
         log.info(`Influx DB Manager connect to ${program.influxURL}`);
+
+        // Ensure the 'LIST' database exists. InfluxDB doesn't always auto-create
+        // databases; explicitly create it if missing to avoid write errors later.
+        this.influx.getDatabaseNames()
+            .then((names) => {
+                if (!names.includes('LIST')) {
+                    log.info("'LIST' database not found — creating it.");
+                    return this.influx.createDatabase('LIST');
+                }
+                log.info("'LIST' database already exists.");
+                return null;
+            })
+            .catch((err) => {
+                log.error(`Error while checking/creating 'LIST' database: ${err && err.message ? err.message : err}`);
+            });
     }
 
     fromPcapIdWhereStreamIs(pcapID, streamID) {
