@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path')
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const morgan = require('morgan');
@@ -75,7 +76,8 @@ app.use(resourceNotFoundHandler);
 app.use(apiErrorHandler);
 
 // Generate static config data when the LIST web server is executed.
-const generateStaticConfigCommand = `"${programArguments.cpp}/static_generator" "${programArguments.folder}"`;
+const static_gen_path = path.join(programArguments.cpp, 'static_generator')
+const generateStaticConfigCommand = `"${static_gen_path}" "${programArguments.folder}"`;
 
 logger('static-generator').profile('Static configurations generated');
 
