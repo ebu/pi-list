@@ -1,14 +1,14 @@
 # This is the LIST server's runtime Dockerfile
 
-FROM gcc:10.2
+FROM gcc:11
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Debian Buster archives were moved to archive.debian.org; 
 # The lines below switch apt sources to archive.debian.org and disable the
 # 'Valid-Until' check so `apt-get update` succeeds for EOL releases.
-RUN sed -i 's|deb.debian.org|archive.debian.org|g; s|security.debian.org|archive.debian.org|g' /etc/apt/sources.list || true
-RUN printf 'Acquire::Check-Valid-Until "false";\n' > /etc/apt/apt.conf.d/99no-check-valid-until
+# RUN sed -i 's|deb.debian.org|archive.debian.org|g; s|security.debian.org|archive.debian.org|g' /etc/apt/sources.list || true
+# RUN printf 'Acquire::Check-Valid-Until "false";\n' > /etc/apt/apt.conf.d/99no-check-valid-until
 
 RUN apt-get update
 RUN apt-get install -yq \
