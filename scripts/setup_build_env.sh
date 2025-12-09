@@ -28,7 +28,6 @@ pip install conan
 curl -sL https://deb.nodesource.com/setup_12.x | bash -
 apt-get install -y nodejs
 
-npm i -g lerna
 npm i -g yarn
 
 echo "Please install FFMPEG v2.8 or newer using your package manager or https://www.ffmpeg.org/download.html"

@@ -1,9 +1,7 @@
 {
     "name": "root",
     "private": true,
-    "devDependencies": {
-        "lerna": "^9.0.0"
-    },
+    "devDependencies": {},
     "version": "0.0.0",
     "workspaces": [
         "apps/listwebserver",
@@ -17,6 +15,10 @@
         "apps/gui-v2/packages/*",
         "apps/gui-v2"
     ],
+    "scripts": {
+        "start:gui": "cd apps/gui-v2 && yarn start",
+        "build:gui": "cd apps/gui-v2 && yarn build:production"
+    },
     "resolutions": {
         "@types/minimatch": "5.1.2",
         "semver": "^7.3.5",

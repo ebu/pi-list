@@ -2,9 +2,9 @@
     "name": "list-ebu-gui-v2",
     "private": true,
     "scripts": {
-        "start": "lerna run start --stream --scope '@ebu-list/gui-v2'",
-        "live": "lerna run live --stream --scope '@ebu-list/gui-v2'",
-        "build:production": "lerna run build:production --stream --scope '@ebu-list/gui-v2'"
+        "start": "cd packages/react-app && yarn start",
+        "live": "cd packages/react-app && yarn live",
+        "build:production": "cd packages/react-app && yarn build:production"
     },
     "version": "1.0.0",
     "devDependencies": {
@@ -38,9 +38,7 @@
         "eslint-plugin-react": "^7.37.5",
         "eslint-plugin-react-hooks": "^7.0.1",
         "jest": "^30.2.0",
-        "lerna": "^9.0.1",
         "prettier": "^3.6.2",
-        "react-app-rewired": "^2.2.1",
         "sass": "^1.94.0",
         "sass-loader": "^16.0.6",
         "style-loader": "^4.0.0",
