@@ -125,7 +125,7 @@ function getResult(dropped_packets: number | undefined): api.pcap.Compliance {
     return 'not_compliant';
 }
 
-function addRtpSequenceAnalysisToStream(stream: api.pcap.IStreamInfo) {
+export function addRtpSequenceAnalysisToStream(stream: api.pcap.IStreamInfo) {
     const dropped_packets_count = stream.statistics?.dropped_packet_count;
     const dropped_packets_samples = stream.statistics?.dropped_packet_samples;
     const packet_count = stream.statistics?.packet_count;

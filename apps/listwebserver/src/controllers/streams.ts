@@ -109,8 +109,11 @@ function upgradeStreamInfo(stream: any) {
     if (stream.media_type == 'audio') {
         stream = upgradeTsdfAnalysis(stream);
     }
-    stream = addRtpSequenceAnalysisToStream(stream);
-
+    try {
+        stream = addRtpSequenceAnalysisToStream(stream);
+    } catch (err: any) {
+        logger.error(`upgradeStreamInfo: addRtpSequenceAnalysisToStream failed err=${err?.toString?.() ?? err}`);
+    }
     return stream;
 }
 
