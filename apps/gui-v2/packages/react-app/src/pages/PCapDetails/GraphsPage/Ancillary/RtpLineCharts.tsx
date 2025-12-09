@@ -32,7 +32,8 @@ function RtpLineCharts({
         setpacketsFrameData([]);
         const loadPacketsFrameData = async (): Promise<void> => {
             const all = await list.stream.getPacketsPerFrame(pcapID, streamID, first_packet_ts, last_packet_ts);
-            const packetsFrameFinalData = getFinalData(all);
+            const normalized = Array.isArray(all) ? all : (Array.isArray((all as any)?.data) ? (all as any).data : []);
+            const packetsFrameFinalData = getFinalData(normalized);
             setpacketsFrameData(packetsFrameFinalData as IGraphicTimeValueData[]);
         };
         loadPacketsFrameData();
@@ -47,7 +48,8 @@ function RtpLineCharts({
                 first_packet_ts,
                 last_packet_ts
             );
-            const latencyFinalData = getFinalData(getDeltaFPTvsRTP(all));
+            const normalized = Array.isArray(all) ? all : (Array.isArray((all as any)?.data) ? (all as any).data : []);
+            const latencyFinalData = getFinalData(getDeltaFPTvsRTP(normalized));
             setlatencyData(latencyFinalData as IGraphicTimeValueData[]);
         };
         loadLatencyData();
@@ -57,7 +59,8 @@ function RtpLineCharts({
         setRtpTimeStepData([]);
         const loadRtpTimeStepData = async (): Promise<void> => {
             const all = await list.stream.getDeltaToPreviousRtpTsRaw(pcapID, streamID, first_packet_ts, last_packet_ts);
-            const rtpTimeStepFinalData = getFinalData(all);
+            const normalized = Array.isArray(all) ? all : (Array.isArray((all as any)?.data) ? (all as any).data : []);
+            const rtpTimeStepFinalData = getFinalData(normalized);
             setRtpTimeStepData(rtpTimeStepFinalData as IGraphicTimeValueData[]);
         };
         loadRtpTimeStepData();
@@ -133,6 +136,7 @@ function RtpLineCharts({
     const packetsFrameHistFinalData = getFinalHistData(packetsFrameHistPercData);
     const leftMarginPacketsFrameHist = getLeftMarginBarGraphic(packetsFrameHistFinalData);
     const compliancePacketsFrameHist = getCompliance(currentStream?.analyses.pkts_per_frame.result || undefined);
+    const yDomainPercent: [number | string, number | string] = [0, 100];
     const packetsFrameHistGraphData = {
         barGraphic: packetsFrameHistFinalData,
         title: mediaInfoVideoPacketPerFrame,
@@ -142,6 +146,7 @@ function RtpLineCharts({
         datakeyY: 'value',
         datakeyX: 'label',
         leftMargin: leftMarginPacketsFrameHist,
+        yDomain: yDomainPercent,
     };
 
     return (

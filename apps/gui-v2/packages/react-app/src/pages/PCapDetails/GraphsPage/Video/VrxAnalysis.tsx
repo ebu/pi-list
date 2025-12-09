@@ -80,6 +80,7 @@ function VrxAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
     const vrxHistFinalData = getFinalHistData(vrxHistPercData);
     const leftMarginVrxHist = getLeftMarginBarGraphic(vrxHistFinalData);
     const complianceVrxHist = getCompliance(currentStream?.global_video_analysis?.vrx?.compliance);
+    const yDomainPercent: [number | string, number | string] = [0, 100];
     const vrxHistGraphData = {
         barGraphic: vrxHistFinalData,
         title: mediaInfoHistogram,
@@ -89,6 +90,7 @@ function VrxAnalysis({ currentStream, pcapID }: { currentStream: SDK.types.IStre
         datakeyY: 'value',
         datakeyX: 'label',
         leftMargin: leftMarginVrxHist,
+        yDomain: yDomainPercent,
     };
 
     return (
