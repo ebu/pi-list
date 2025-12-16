@@ -27,7 +27,6 @@
         "mongoose": "^6.13.6",
         "form-data": "^2.5.4",
         "url-parse": "^1.5.10",
-        "axios": "^1.8.2",
         "multer": "^2.0.2",
         "jsonwebtoken": "^9.0.0",
         "follow-redirects": "^1.15.6",

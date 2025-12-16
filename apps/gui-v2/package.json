@@ -47,6 +47,7 @@
     "dependencies": {
         "@wavesurfer/react": "^1.0.11",
         "assert": "^2.1.0",
+        "axios": "^1.8.2",
         "buffer": "^6.0.3",
         "csv-parse": "^6.1.0",
         "customize-cra": "^1.0.0",

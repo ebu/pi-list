@@ -32,6 +32,14 @@ module.exports = {
         })
       );
 
+      // Ensure .cjs files are parsed as JavaScript (prevents axios CJS from being treated as an asset)
+      config.module = config.module || {};
+      config.module.rules = config.module.rules || [];
+      config.module.rules.push({
+        test: /\.cjs$/,
+        type: 'javascript/auto',
+      });
+
       return config;
     },
   },
