@@ -25,7 +25,6 @@
         "form-data": "^2.5.4",
         "url-parse": "^1.5.10",
         "multer": "^2.0.2",
-        "jsonwebtoken": "^9.0.0",
         "follow-redirects": "^1.15.6",
         "dicer": "^0.3.0",
         "nth-check": "^2.1.1",

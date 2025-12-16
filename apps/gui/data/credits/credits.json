@@ -153,7 +153,7 @@
         "licenseUrl": "https://github.com/benjamn/install/raw/master/LICENSE",
         "parents": "list-ebu-gui"
     },
-    "jsonwebtoken@8.5.1": {
+    "jsonwebtoken@9.0.3": {
         "licenses": "MIT",
         "repository": "https://github.com/auth0/node-jsonwebtoken",
         "licenseUrl": "https://github.com/auth0/node-jsonwebtoken/raw/master/LICENSE",
