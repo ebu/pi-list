@@ -399,7 +399,7 @@
         "licenseUrl": "https://github.com/uuidjs/uuid/raw/master/LICENSE.md",
         "parents": "list-ebu-gui"
     },
-    "validator@12.2.0": {
+    "validator@13.15.23": {
         "licenses": "MIT",
         "repository": "https://github.com/chriso/validator.js",
         "licenseUrl": "https://github.com/chriso/validator.js/raw/master/LICENSE",
