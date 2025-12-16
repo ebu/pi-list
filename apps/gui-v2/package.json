@@ -38,6 +38,7 @@
         "eslint-plugin-react": "^7.37.5",
         "eslint-plugin-react-hooks": "^7.0.1",
         "jest": "^30.2.0",
+        "npm-license-crawler": "^0.2.1",
         "prettier": "^3.6.2",
         "sass": "^1.94.0",
         "sass-loader": "^16.0.6",
@@ -60,7 +61,6 @@
         "lodash": "^4.17.21",
         "luxon": "^3.7.2",
         "node-polyglot": "^2.6.0",
-        "npm-license-crawler": "^0.2.1",
         "os": "^0.1.2",
         "os-browserify": "^0.3.0",
         "process": "^0.11.10",
@@ -107,8 +107,7 @@
     "resolutions": {
         "nth-check": "^2.0.1",
         "postcss": "^8.4.31",
-        "webpack-dev-server": "^5.2.1",
-        "semver": "^5.7.2"
+        "webpack-dev-server": "^5.2.1"
     },
     "browserslist": {
         "production": [
