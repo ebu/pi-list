@@ -22,8 +22,6 @@
     "resolutions": {
         "@types/minimatch": "5.1.2",
         "semver": "^7.3.5",
-        "@types/react": "^18.2.21",
-        "@types/react-dom": "^18.2.7",
         "mongoose": "^6.13.6",
         "form-data": "^2.5.4",
         "url-parse": "^1.5.10",

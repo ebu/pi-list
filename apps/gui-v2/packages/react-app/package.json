@@ -28,8 +28,8 @@
     },
     "devDependencies": {
         "@craco/craco": "^7.1.0",
-        "@types/react": "^18.0.1",
-        "@types/react-dom": "^18.0.0",
+        "@types/react": "^18.2.21",
+        "@types/react-dom": "^18.2.7",
         "react-scripts": "^5.0.1",
         "webpack": "^5.2.1",
         "webpack-dev-server": "5.2.1"
@@ -40,8 +40,8 @@
         "@types/lodash": "^4.14.176",
         "@types/node": "12.11.1",
         "@types/query-string": "^6.3.0",
-        "@types/react": "^18.0.1",
-        "@types/react-dom": "18.0.0",
+        "@types/react": "^18.2.21",
+        "@types/react-dom": "18.2.7",
         "@types/react-router-dom": "^5.3.3",
         "@types/smpte-timecode": "^1.2.1",
         "@types/wavesurfer.js": "^6.0.12",
