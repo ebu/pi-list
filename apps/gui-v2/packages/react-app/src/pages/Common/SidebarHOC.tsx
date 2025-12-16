@@ -148,10 +148,8 @@ function SidebarHOC() {
             case sidebarButtonsKeys.settings:
                 path = routeNames.SETTINGS;
                 break;
-            case helpString:
-                const win = window.open('https://github.com/ebu/pi-list/issues', '_blank');
-                win?.focus();
-                routeBasePath ? (path = routeBasePath) : (path = '/');
+            case sidebarButtonsKeys.help:
+                window.open('https://github.com/ebu/pi-list/issues', '_blank');
                 break;
             case sidebarButtonsKeys.version:
                 path = location.pathname;
