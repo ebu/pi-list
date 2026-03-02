@@ -1,25 +1,33 @@
 import { IGraphicTimeMaxData, IGraphicTimeValueData } from 'components/index';
 import _ from 'lodash';
 
-const isIGraphicTimeMaxData = (
-    data: IGraphicTimeMaxData[] | IGraphicTimeValueData[]
-): data is IGraphicTimeMaxData[] => {
-    if (data.length === 0) return false;
-    return (data as IGraphicTimeMaxData[])[0].max !== (undefined || null);
-};
+export function isIGraphicTimeMaxData(
+    data: IGraphicTimeMaxData[] | IGraphicTimeValueData[] | Array<IGraphicTimeMaxData | IGraphicTimeValueData>
+): data is IGraphicTimeMaxData[] {
+    if (!Array.isArray(data) || data.length === 0) return false as any;
+    const first = (data as Array<IGraphicTimeMaxData | IGraphicTimeValueData>).find((d) => d != null);
+    if (!first) return false as any;
+    return (first as IGraphicTimeMaxData).max != null;
+}
 
 export const getFinalData = (data: IGraphicTimeMaxData[] | IGraphicTimeValueData[]) => {
-    if (isIGraphicTimeMaxData(data)) {
-        const result: IGraphicTimeMaxData[] = data.reduce((acc, curr) => {
-            if ((!_.isNil(curr.time)) || (!_.isNil(curr.max))) {
+    const arr: Array<IGraphicTimeMaxData | IGraphicTimeValueData> = Array.isArray(data)
+        ? data
+        : ((data as any)?.data && Array.isArray((data as any).data) ? (data as any).data : []);
+
+    if (arr.length === 0) return [];
+
+    if (isIGraphicTimeMaxData(arr)) {
+        const result: IGraphicTimeMaxData[] = (arr as IGraphicTimeMaxData[]).reduce((acc, curr) => {
+            if (!_.isNil((curr as IGraphicTimeMaxData).time) && !_.isNil((curr as IGraphicTimeMaxData).max)) {
                 acc.push(curr);
             }
             return acc;
         }, [] as IGraphicTimeMaxData[]);
         return result;
     } else {
-        const result: IGraphicTimeValueData[] = data.reduce((acc, curr) => {
-            if ((!_.isNil(curr.time)) && (_.isNil(curr.value))) {
+        const result: IGraphicTimeValueData[] = (arr as IGraphicTimeValueData[]).reduce((acc, curr) => {
+            if (!_.isNil((curr as IGraphicTimeValueData).time) && !_.isNil((curr as IGraphicTimeValueData).value)) {
                 acc.push(curr);
             }
             return acc;

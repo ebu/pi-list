@@ -8,13 +8,14 @@ Automated validation tests for EBU-LIST based on [ebu-list-sdk](https://github.c
 ## Build
 
 ```sh
-npx lerna run build --scope="@list/validation-tests"
+cd js/tests
+yarn build
 ```
 
 ## Tests
 
 ```sh
-cd packages/tests
+cd js/tests
 yarn run validation-tests-basics -b http://<server_@> -u <user> -p <pwd>
 yarn run validation-tests-advanced -b http://<server_@> -u <user> -p <pwd>
 ```

@@ -94,6 +94,7 @@ function CbufferAnalysis({
     const cHistPercData: number[][] = getPercHistData(cHistData);
     const cHistFinalData = getFinalHistData(cHistPercData);
     const leftMarginCHist = getLeftMarginBarGraphic(cHistFinalData);
+    const yDomain: [number | string, number | string] = [0, 100];
     const cHistGraphData = {
         barGraphic: cHistFinalData,
         title: 'Cinst histogram',
@@ -103,6 +104,7 @@ function CbufferAnalysis({
         datakeyY: 'value',
         datakeyX: 'label',
         leftMargin: leftMarginCHist,
+        yDomain,
     };
 
     return (

@@ -1,10 +1,11 @@
 import programArguments from '../util/programArguments';
 
+// Mongoose 6.x compatible options
 export const options = {
-    reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
-    reconnectInterval: 500, // Reconnect every 500ms
-    useFindAndModify: false,
-    useNewUrlParser: true,
+    retryWrites: true,
+    retryReads: true,
+    maxPoolSize: 10,
+    serverSelectionTimeoutMS: 5000,
 };
 
 export const { hostname, port } = programArguments.database;

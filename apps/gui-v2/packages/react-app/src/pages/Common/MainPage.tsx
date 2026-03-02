@@ -57,7 +57,7 @@ const MainPage  = () => {
                 draggable={false}
                 pauseOnHover
                 progressClassName="toastProgress"
-                bodyClassName="toastBody"
+                toastClassName="toastBody"
             />
         </div>
     );

@@ -851,9 +851,16 @@ function renderMp3(req, res) {
         })
         .exec()
         .then((data) => {
-            const folderPath = `${getUserFolder(req)}/${pcapID}/${streamID}/`;
-            const rawFilePath = `${folderPath}/raw`;
-            const mp3FilePath = `${folderPath}/audio-${channels}.mp3`;
+
+            const folderPath = path.join(getUserFolder(req), pcapID, streamID);
+            const rawFilePath = path.join(folderPath, 'raw');
+            const mp3FilePath = path.join(folderPath, `audio-${channels}.mp3`);
+
+            try {
+                const rawExists = fs.fileExists(rawFilePath);
+            } catch (e) {
+                logger('render-mp3').error(`Error checking raw file existence: ${e}`);
+            }
             const encodingBits = data.media_specific.encoding == 'L24' ? 24 : 16;
             const sampling = parseInt(data.media_specific.sampling) / 1000;
             const channelNumber = data.media_specific.number_channels;
@@ -883,6 +890,7 @@ function renderMp3(req, res) {
                 .catch((output) => {
                     logger('render-mp3').error(output.stdout);
                     logger('render-mp3').error(output.stderr);
+                    logger('render-mp3').error(`ffmpeg failed for mp3: ${mp3FilePath}`);
                     const userId = getUserId(req);
                     websocketManager.instance().sendEventToUser(userId, {
                         event: api.wsEvents.Mp3.failed,
@@ -904,14 +912,27 @@ router.get('/:pcapID/stream/:streamID/downloadmp3', (req, res) => {
     if (channels === undefined || channels === '') {
         channels = '0'; // keep first channel by default
     }
-    const folderPath = `${getUserFolder(req)}/${pcapID}/${streamID}`;
-    const filePath = `${folderPath}/audio-${channels}.mp3`;
+    const folderPath = path.join(getUserFolder(req), pcapID, streamID);
+    const filePath = path.join(folderPath, `audio-${channels}.mp3`);
 
-    if (fs.fileExists(filePath)) {
-        fs.sendFileAsResponse(filePath, res);
-        logger('download-mp3').info(`Mp3 file ${filePath} already exist`);
-    } else {
-        logger('download-mp3').info(`Render mp3 file ${filePath}`);
+    logger('download-mp3').info(
+        `downloadmp3 request: pcapID=${pcapID} streamID=${streamID} channels=${channels} file=${filePath}`
+    );
+
+    try {
+        const exists = fs.fileExists(filePath);
+        logger('download-mp3').info(`fileExists=${exists} for ${filePath}`);
+        if (exists) {
+            fs.sendFileAsResponse(filePath, res);
+            logger('download-mp3').info(`Mp3 file served: ${filePath}`);
+        } else {
+            logger('download-mp3').info(`Mp3 file not found, will render: ${filePath}`);
+            renderMp3(req, res);
+        }
+    } catch (e) {
+        logger('download-mp3').error(`Error checking/serving mp3 file: ${e}`);
+        // Fallback to attempt render
+        logger('download-mp3').info(`Attempting to render mp3 due to error for: ${filePath}`);
         renderMp3(req, res);
     }
 });

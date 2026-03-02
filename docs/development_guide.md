@@ -22,7 +22,7 @@ LIST is mostly composed of:
 - **Ninja** >= v1.10
 - **Docker** >= v15
 - **Docker-compose** >= v1.20
-- **NodeJS** >= v12 + npm packages: lerna & yarn
+- **NodeJS** >= v12 + yarn
 - **C++17 compatible compiler**
 
 We use CMake as the meta build system and require most of our third-party dependencies using conan.
@@ -91,7 +91,7 @@ To use as an external library, just use cmake's `add_subdirectory()` and it will
 
 ## Build node packages:
 
-Packages are listed in `lerna.json` and mostly includes:
+Node packages are under the `apps/` and `js/` workspace folders and mostly include:
 
 - backend server
 - reacjs GUI
@@ -102,10 +102,11 @@ Packages are listed in `lerna.json` and mostly includes:
 ./scripts/build_node.sh
 ```
 
-You can still compile an individual package.
+You can still compile an individual package, for example the validation tests:
 
 ```
-npx lerna run build --scope="@list/validation-tests"
+cd js/tests
+yarn build
 ```
 
 ## Contribute

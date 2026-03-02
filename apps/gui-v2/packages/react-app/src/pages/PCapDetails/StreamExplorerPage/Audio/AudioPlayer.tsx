@@ -1,8 +1,9 @@
 import React from 'react';
-import WaveSurfer, { WaveSurferPlugin } from 'wavesurfer.js';
+import { useWavesurfer } from '@wavesurfer/react'
+import Timeline from 'wavesurfer.js/dist/plugins/timeline.esm.js'
+
 import './styles.scss';
-const TimelinePlugin = require('wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js');
-const CursorPlugin = require('wavesurfer.js/dist/plugin/wavesurfer.cursor.js');
+
 import { Slider, ButtonAudioPlayer, CustomScrollbar } from 'components/index';
 import { translate } from '../../../../utils/translation';
 
@@ -28,126 +29,92 @@ function timeInterval(pxPerSec: number) {
     return retval;
 }
 
-const createWaveSurfer = (waveform: any) => {
-    const wavesurfer = WaveSurfer.create({
-        container: waveform,
-        waveColor: '#80c1ff',
+function AudioPlayer({ mp3Url }: { mp3Url: string }) {
+    const [isLoading, setisLoading] = React.useState(true);
+    const [isPlaying, setIsPlaying] = React.useState(false);
+    const [hasError, setHasError] = React.useState(false);
+    const waveContainerRef = React.useRef<HTMLDivElement>(null);
+
+    const timelinePlugin = React.useMemo(() => (
+        Timeline.create({ container: '.wave-timeline' })
+    ), []);
+
+    const wsOptions = React.useMemo(() => ({
+        container: waveContainerRef,
         progressColor: '#0083ff',
-        splitChannels: true,
         autoCenter: true,
-        scrollParent: true,
         fillParent: true,
         barWidth: 1,
-        responsive: true,
         normalize: true,
         hideScrollbar: false,
         height: 120,
         cursorWidth: 3,
         cursorColor: 'rgba(255, 71, 71, 0.5)',
+        plugins: [timelinePlugin],
+    }), [timelinePlugin]);
 
-        xhr: { withCredentials: true },
-        plugins: [
-            TimelinePlugin.create({
-                container: '.wave-timeline',
-                timeInterval: timeInterval,
-                primaryColor: '#39415a',
-                secondaryColor: 'white',
-                primaryFontColor: '#39415a',
-                secondaryFontColor: 'white',
-            }),
-            CursorPlugin.create({
-                showTime: true,
-                opacity: 1,
+    const { wavesurfer, isReady } = useWavesurfer(wsOptions);
 
-                customShowTimeStyle: {
-                    'background-color': '#fff',
-                    color: '#000',
-                    padding: '2px',
-                    'font-size': '10px',
-                },
-                customStyle: {
-                    'border-color': 'white',
-                },
-            }),
-        ],
-    });
+    const onFinishPlay = () => setIsPlaying(false);
 
-    return wavesurfer;
-};
-
-function AudioPlayer({
-    mp3Url,
-    cursorInitPos,
-    onCursorChanged,
-}: {
-    mp3Url: string;
-    cursorInitPos: number;
-    onCursorChanged: ((d: number, c: number) => void) | undefined;
-}) {
-    const [isLoading, setisLoading] = React.useState(true);
-    const [isPlaying, setIsPlaying] = React.useState(false);
-    const [hasError, setHasError] = React.useState(false);
-    const waveSurferRef = React.useRef<any>(null);
-    const waveformRef = React.useRef<HTMLDivElement>(null);
-
-    const onPlayerReady = () => {
-        setisLoading(false);
-        setHasError(false);
-        waveSurferRef.current.seekTo(cursorInitPos);
-
-        if (onCursorChanged) {
-            waveSurferRef.current.on('seek', onSeek);
-            waveSurferRef.current.on('pause', onSeek);
-            onSeek();
-        }
-    };
-
-    const onFinishPlay = () => {
-        setIsPlaying(false);
-    };
-
-    const onPlayerError = () => {
-        setHasError(true);
-    };
-
-    const onSeek = () => {
-        if (onCursorChanged) {
-            const duration = waveSurferRef.current.getDuration();
-            const currenttime = waveSurferRef.current.getCurrentTime();
-            onCursorChanged(duration, currenttime);
-        }
-    };
-
+    // Load audio and attach handlers when url changes
     React.useEffect(() => {
-        const waveform = waveformRef?.current?.querySelector('.wave');
-        const wavesurfer = createWaveSurfer(waveform);
-        waveSurferRef.current = wavesurfer;
-        if (mp3Url === '') {
-            return;
-        }
-        wavesurfer.load(mp3Url);
+        if (!wavesurfer || !mp3Url) return;
 
-        wavesurfer.on('ready', onPlayerReady);
-        wavesurfer.on('finish', onFinishPlay);
-        wavesurfer.on('error', onPlayerError);
+        setisLoading(true);
+        setHasError(false);
+
+        const handleReady = () => {
+            setisLoading(false);
+        };
+        const handleError = () => {
+            setHasError(true);
+            setisLoading(false);
+        };
+        const handleFinish = onFinishPlay;
+
+        wavesurfer.on('ready', handleReady);
+        wavesurfer.on('error', handleError);
+        wavesurfer.on('finish', handleFinish);
+
+        // Check content-type before loading to avoid WaveSurfer crashes
+        // when the first requests don't have the correct content-type
+        const loadWithContentTypeCheck = async () => {
+            try {
+                const response = await fetch(mp3Url, { method: 'HEAD' });
+                const contentType = response.headers.get('content-type') || '';
+                
+                if (contentType.startsWith('audio/') || contentType.includes('mpeg')) {
+                    wavesurfer.load(mp3Url);
+                } else {
+                    // Not ready yet, trigger retry logic
+                    handleError();
+                }
+            } catch (error) {
+                handleError();
+            }
+        };
+
+        loadWithContentTypeCheck();
 
         return () => {
-            wavesurfer.unAll();
-            wavesurfer.destroy();
+            wavesurfer.un('ready', handleReady);
+            wavesurfer.un('error', handleError);
+            wavesurfer.un('finish', handleFinish);
         };
-    }, [mp3Url]);
+    }, [wavesurfer, mp3Url]);
 
     const play = () => {
-        waveSurferRef?.current?.playPause();
-        setIsPlaying(prevIsPlaying => !prevIsPlaying);
+        wavesurfer?.playPause();
+        setIsPlaying(prev => !prev);
     };
 
     const onZoom = (value: number) => {
-        waveSurferRef.current.zoom(value);
+        wavesurfer?.zoom(value);
     };
 
     const onVolumeChange = (value: number) => {
-        waveSurferRef.current.setVolume(value);
+        wavesurfer?.setVolume(value);
     };
 
     const buttonLabel = isPlaying ? translate('audio_player.pause') : translate('audio_player.play');
@@ -156,10 +123,10 @@ function AudioPlayer({
     const buttonDisabled = hasError;
 
     return (
-        <div ref={waveformRef} className="waveform">
+        <div className="waveform">
             {/* {isLoading && <Loader />} */}
 
-            <div className="wave"></div>
+            <div ref={waveContainerRef} className="wave"></div>
 
             <div className="wave-timeline"></div>
             {!isLoading && (

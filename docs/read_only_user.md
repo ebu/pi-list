@@ -5,12 +5,13 @@
 ## Build
 
 ```sh
-npx lerna run build --scope="@list/user-read-only-script"
+cd js/user-read-only
+yarn build
 ```
 
 ```sh
-cd packages/user-read-only
-yarn run user-read-only -b http://<server_@> -u <user> -p <pwd>
+cd js/user-read-only
+yarn run read-only-user -b http://<server_@> -u <user> -p <pwd>
 ```
 
 -   u - The username from the demo user that you want to create.

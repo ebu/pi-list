@@ -146,7 +146,7 @@ export default () => {
     );
 
     React.useEffect(() => {
-        if (wsClient === (null || undefined)) {
+        if (wsClient == null) {
             return;
         }
 

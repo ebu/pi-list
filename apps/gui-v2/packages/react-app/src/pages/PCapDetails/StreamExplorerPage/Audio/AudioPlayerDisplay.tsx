@@ -38,17 +38,14 @@ function AudioPlayerDisplay({
 
     const [mp3Url, setMp3Url] = React.useState<string>();
     React.useEffect(() => {
-        const loadMp3Url = async (): Promise<void> => {
-            const newMp3Url = await list.stream.downloadMp3Url(pcapID, currentStream?.id);
-            setMp3Url(newMp3Url);
-        };
-        loadMp3Url();
+        const newMp3Url = list.stream.downloadMp3Url(pcapID, currentStream?.id);
+        setMp3Url(newMp3Url);
     }, [currentStream?.id]);
 
     const wsClient = list.wsClient;
 
     React.useEffect(() => {
-        if (wsClient === (null || undefined)) {
+        if (wsClient == null) {
             return;
         }
         const handleMessage = (msg: any) => {
@@ -92,7 +89,7 @@ function AudioPlayerDisplay({
             <div className="audio-player">
                 <div>
                     {mp3Url !== '' ? (
-                        <AudioPlayer mp3Url={mp3Url} cursorInitPos={cursorInitPos} onCursorChanged={onChange} />
+                        <AudioPlayer mp3Url={mp3Url}/>
                     ) : (
                         <div style={{ color: 'red' }}>ERROR: MP3_FILE_FAILED</div>
                     )}

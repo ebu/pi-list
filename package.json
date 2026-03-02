@@ -1,8 +1,41 @@
 {
     "name": "root",
     "private": true,
-    "devDependencies": {
-        "lerna": "^4.0.0"
+    "devDependencies": {},
+    "version": "0.0.0",
+    "workspaces": [
+        "apps/listwebserver",
+        "apps/capture_probe",
+        "js/tests",
+        "js/user-read-only",
+        "third_party/bisect-core-ts",
+        "third_party/bisect-core-ts-be",
+        "third_party/ebu-list-sdk/lib",
+        "third_party/ebu-list-sdk/demos",
+        "apps/gui-v2/packages/*",
+        "apps/gui-v2"
+    ],
+    "scripts": {
+        "start:gui": "cd apps/gui-v2 && yarn start",
+        "build:gui": "cd apps/gui-v2 && yarn build:production"
     },
-    "version": "0.0.0"
+    "resolutions": {
+        "@types/minimatch": "5.1.2",
+        "@types/react": "18.3.27",
+        "@types/react-dom": "18.3.0",
+        "form-data": "^2.5.4",
+        "url-parse": "^1.5.10",
+        "multer": "^2.0.2",
+        "follow-redirects": "^1.15.6",
+        "dicer": "^0.3.0",
+        "nth-check": "^2.1.1",
+        "node-forge": "^1.3.2",
+        "debug": "^4.3.4",
+        "webpack-dev-server": "^5.2.1",
+        "postcss": "^8.4.31",
+        "js-yaml": "^3.14.1",
+        "cookie": "^0.7.0",
+        "fast-xml-parser": "^4.1.2",
+        "tough-cookie": "^4.1.3"
+    }
 }

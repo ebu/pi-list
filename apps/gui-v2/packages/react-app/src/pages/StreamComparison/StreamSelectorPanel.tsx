@@ -17,6 +17,16 @@ function StreamSelectorPanel({ pcaps, onChange, enableAudioChannelSelector, isAu
     const [streams, setStreams] = React.useState([]);
     const [audioChannels, setAudioChannels] = React.useState<any[]>([]);
 
+    const extractErrorMessage = (err: any): string => {
+        if (err?.response?.data?.message) return err.response.data.message;
+        if (err?.message) return err.message;
+        try {
+            return JSON.stringify(err);
+        } catch {
+            return String(err);
+        }
+    };
+
     React.useEffect(() => {
         if (!selectedPcapId) {
             return;
@@ -29,17 +39,17 @@ function StreamSelectorPanel({ pcaps, onChange, enableAudioChannelSelector, isAu
                 setSelectedStreamId(s[0].id);
                 onChange({ pcap: selectedPcapId, stream: s[0].id, audioChannel: null });
             })
-            .catch(e => {
+            .catch((e: any) => {
                 Notification({
                     typeMessage: 'error',
                     message: (
                         <div>
                             <p>Could not get stream from Pcap</p>
-                            <p> {e} </p>
+                            <p>{extractErrorMessage(e)}</p>
                         </div>
                     ),
                 });
-                console.error(`Error getting streams: ${e}`);
+                console.error('Error getting streams:', e);
             });
     }, [selectedPcapId]);
 
@@ -67,17 +77,17 @@ function StreamSelectorPanel({ pcaps, onChange, enableAudioChannelSelector, isAu
                     onChange({ pcap: selectedPcapId, stream: selectedStreamId, audioChannel: null });
                 }
             })
-            .catch((e: React.ReactNode) => {
+            .catch((e: any) => {
                 Notification({
                     typeMessage: 'error',
                     message: (
                         <div>
                             <p>Could not get streaminfo from id:</p>
-                            <p> {e} </p>
+                            <p>{extractErrorMessage(e)}</p>
                         </div>
                     ),
                 });
-                console.error(`Error getting streams: ${e}`);
+                console.error('Error getting stream info:', e);
             });
     }, [selectedStreamId]);
 

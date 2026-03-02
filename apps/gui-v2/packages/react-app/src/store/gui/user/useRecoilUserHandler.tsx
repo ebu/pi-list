@@ -16,7 +16,7 @@ export default () => {
 
     //Reconnect websocket after refreshing browser
     const wsClient = list.wsClient;
-    if (wsClient === (null || undefined) && userInfo) {
+    if (wsClient == null && userInfo) {
         list.reconnectWsClient(userInfo?.id);
     }
 };

@@ -2,9 +2,12 @@ import { IPcapDefinition } from './index';
 import { getUserId } from '../../auth/middleware';
 import program from '../programArguments';
 import { v4 as uuid } from 'uuid';
+import path from 'path';
 
 export function getUserFolderFromUserId(userId: string): string {
-    return `${program.folder}/${userId}`;
+    // Use path.join to avoid accidental duplicate slashes when program.folder already
+    // ends with a trailing slash (sanitizeDirectoryPath currently appends one).
+    return path.join(program.folder, userId);
 }
 
 export function getUserFolder(req: unknown): string {
@@ -23,7 +26,7 @@ export function generateRandomPcapFilename(file: { originalname: string }) {
 export function generatePcapDefinitionFromId(userId: string, pcapId: string): IPcapDefinition {
     return {
         uuid: pcapId,
-        folder: `${getUserFolderFromUserId(userId)}/${pcapId}`,
+        folder: path.join(getUserFolderFromUserId(userId), pcapId),
     };
 }
 
@@ -37,5 +40,5 @@ export function generateRandomPcapDefinition(
 }
 
 export function getPcapFolder(userId: string, pcapId: string): string {
-    return `${getUserFolderFromUserId(userId)}/${pcapId}`;
+    return path.join(getUserFolderFromUserId(userId), pcapId);
 }

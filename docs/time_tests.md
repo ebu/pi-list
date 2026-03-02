@@ -5,12 +5,13 @@ Pcaps upload duration time tests for EBU-LIST based on [ebu-list-sdk](https://gi
 ## Build
 
 ```sh
-npx lerna run build --scope="@list/validation-tests"
+cd js/tests
+yarn build
 ```
 
 ## Tests
 
-from the root_directory:
+From the repository root:
 
 ```sh
 cd js/tests

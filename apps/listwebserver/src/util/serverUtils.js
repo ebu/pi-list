@@ -16,7 +16,7 @@ function onError(error) {
     // handle specific listen errors with friendly messages
     switch (error.code) {
         case 'EACCES':
-            Logger('server').error(`${bind} requires elevated privileges`);
+            logger('server').error(`${bind} requires elevated privileges`);
             process.exit(1);
             break;
         case 'EADDRINUSE':

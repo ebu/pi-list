@@ -28,6 +28,7 @@ interface IComponentProps {
     datakeyX: string;
     datakeyY: string;
     leftMargin?: number;
+    yDomain?: [number | string, number | string];
 }
 
 function BarGraphic({ barGraphicData }: { barGraphicData: IComponentProps }) {
@@ -97,7 +98,6 @@ function BarGraphic({ barGraphicData }: { barGraphicData: IComponentProps }) {
                             right: 30,
                             left: barGraphicData.leftMargin === undefined ? 0 : barGraphicData.leftMargin,
                         }}
-                        stackOffset={'expand'}
                     >
                         <CartesianGrid strokeDasharray="5 10" vertical={false} stroke="#39415A" />
                         <XAxis
@@ -126,7 +126,6 @@ function BarGraphic({ barGraphicData }: { barGraphicData: IComponentProps }) {
                                 },
                             }}
                             interval={0}
-                            domain={['dataMin', 'dataMax']}
                         />
                         <YAxis
                             dataKey={barGraphicData.datakeyY}
@@ -141,8 +140,8 @@ function BarGraphic({ barGraphicData }: { barGraphicData: IComponentProps }) {
                             }}
                             interval="preserveStart"
                             width={0}
+                            domain={barGraphicData.yDomain}
                         />
-                        )
                         <Tooltip cursor={{ fill: 'transparent' }} content={<CustomTooltip />} />
                         {barGraphicData.referenceLines &&
                             barGraphicData.referenceLines.map((item, index) => (

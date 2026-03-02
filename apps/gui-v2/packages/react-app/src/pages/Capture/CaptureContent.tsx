@@ -54,7 +54,7 @@ function CaptureContent({
                 message: (
                     <div>
                         <p>Could not capture pcap {name}</p>
-                        <p> {captureResult} </p>
+                        <p>{JSON.stringify(captureResult)}</p>
                     </div>
                 ),
             });
@@ -69,7 +69,7 @@ function CaptureContent({
                 message: (
                     <div>
                         <p>Could not analyze pcap {name}</p>
-                        <p> {awaiterResult} </p>
+                        <p>{JSON.stringify(awaiterResult)}</p>
                     </div>
                 ),
             });

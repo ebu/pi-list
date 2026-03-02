@@ -1,11 +1,14 @@
 import React from 'react';
-import Modal from 'react-modal';
+import _Modal from 'react-modal';
 import './styles.scss';
 import _ from 'lodash';
 import list from '../../../utils/api';
 import PcapUploadInformation from './PcapUploadInformation';
 import { CancelIcon } from 'components/icons';
 import { CustomScrollbar } from 'components';
+
+const Modal: any = _Modal;
+
 
 interface IComponentProps {
     isOpen: boolean;

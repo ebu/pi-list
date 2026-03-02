@@ -41,39 +41,10 @@ run () {
     cd "$SRC/$1" && $2
 }
 
-if [ $INSTALL -eq 1 ] ; then
-    echo "INSTALL"
-    if ! command -v lerna &> /dev/null
-    then
-        echo "Lerna is not installed. Run 'npm i -g lerna'"
-        exit 1
-    fi
+if [ $INSTALL -eq 1 ] ; then    
     
-    cd "$SRC"
-    
-    echo "lerna bootstrap..."
-    lerna bootstrap
-    if [ $? -ne 0 ]; then
-        echo "Failed"
-        exit 1
-    fi
-    echo "Done"
-    
-    echo "lerna build"
-    lerna run build
-    if [ $? -ne 0 ]; then
-        echo "Failed"
-        exit 1
-    fi
-    echo "Done"
-    
-    echo "lerna run production"
-    lerna run production
-    if [ $? -ne 0 ]; then
-        echo "Failed"
-        exit 1
-    fi
-    echo "Done"
+    (cd "$SRC/apps/listwebserver" && yarn build) || exit 1
+    (cd "$SRC/apps/gui-v2" && yarn build:production) || exit 1
 fi
 
 if [ $RUN_ALL -eq 1 ] ; then
