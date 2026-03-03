@@ -11,6 +11,7 @@ echo "Bootstrapping..."
 yarn install
 
 echo "Building..."
+npx lerna run build
 (cd "$TOP_DIR/apps/gui-v2" && yarn build:production) || exit 1
 (cd "$TOP_DIR/apps/listwebserver" && yarn build) || exit 1
 
