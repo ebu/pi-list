@@ -38,7 +38,13 @@ const {
 const {
     doPcapConsolidation
 } = require('../../analyzers/pcap');
-const glob = util.promisify(require('glob'));
+const globModule = require('glob');
+const glob = (pattern) => {
+    if (typeof globModule === 'function') {
+        return util.promisify(globModule)(pattern);
+    }
+    return globModule.glob(pattern);
+};
 const {
     zipFilesExt
 } = require('../zip');

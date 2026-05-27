@@ -18,7 +18,13 @@ import {
     api
 } from '@bisect/ebu-list-sdk';
 
-const glob = util.promisify(require('glob'));
+const globModule = require('glob');
+const glob = (pattern) => {
+    if (typeof globModule === 'function') {
+        return util.promisify(globModule)(pattern);
+    }
+    return globModule.glob(pattern);
+};
 
 
 // TODO: some files may end in, say .pcap.gz but we don't deal with that

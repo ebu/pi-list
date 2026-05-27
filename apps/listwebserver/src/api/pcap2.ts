@@ -12,7 +12,13 @@ const {
     zipFilesExt
 } = require('../util/zip');
 import * as util from 'util';
-const glob = util.promisify(require('glob'));
+const globModule = require('glob');
+const glob = (pattern: string) => {
+    if (typeof globModule === 'function') {
+        return util.promisify(globModule)(pattern);
+    }
+    return globModule.glob(pattern);
+};
 
 let router = express.Router();
 
