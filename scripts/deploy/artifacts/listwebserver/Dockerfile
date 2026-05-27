@@ -21,10 +21,10 @@ RUN bash nodesource_setup.sh
 RUN apt-get install -y \
         ffmpeg \
         zip \
-        nodejs
-
-RUN npm install -g serve
-RUN npm install -g lerna
+        nodejs && \
+        rm -rf /usr/lib/node_modules/npm && \
+        rm -f /usr/bin/npm /usr/bin/npx && \
+        rm -f nodesource_setup.sh
 
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:/usr/local/lib/
 
