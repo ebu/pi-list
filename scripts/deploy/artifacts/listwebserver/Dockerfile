@@ -20,9 +20,9 @@ RUN apt-get update && apt-get install --no-install-recommends -yq  \
 RUN update-ca-certificates
 
 # Install node
-RUN curl -sL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh
-RUN bash nodesource_setup.sh
-RUN apt-get install -y \
+RUN curl -sL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh && \
+        bash nodesource_setup.sh && \
+        apt-get install -y --no-install-recommends \
         ffmpeg \
         zip \
         nodejs && \
@@ -33,12 +33,12 @@ RUN apt-get install -y \
 
 ENV LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
 
-ADD app/ /app
-ADD lib/ /usr/local/lib
+COPY app/ /app
+COPY lib/ /usr/local/lib
 # nginx Configuration
-ADD data/config/ /etc/nginx/
+COPY data/config/ /etc/nginx/
 # nginx certs
-ADD data/certs/ /etc/ssl/certs/
+COPY data/certs/ /etc/ssl/certs/
 # for static content
 RUN mkdir -p /var/data/nginx/
 RUN chown -R www-data:www-data /var/data/nginx/
