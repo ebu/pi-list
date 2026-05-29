@@ -5,11 +5,16 @@ const child_process = require('child_process');
 const {
     waitForFramesExtraction
 } = require('../controllers/streams');
-const _glob = require('glob');
+const globModule = require('glob');
 import logger from '../util/logger';
 const CONSTANTS = require('../enums/constants');
 
-const glob = util.promisify(_glob);
+const glob = (pattern) => {
+    if (typeof globModule === 'function') {
+        return util.promisify(globModule)(pattern);
+    }
+    return globModule.glob(pattern);
+};
 const exec = util.promisify(child_process.exec);
 const readFile = util.promisify(fs.readFile);
 

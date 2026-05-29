@@ -79,6 +79,19 @@ const getTimeCode = (frameCount?: number, rate?: number) => {
     }
 };
 
+const getNumericRate = (rate: string): number => {
+    switch (rate) {
+        case '60000/1001':
+            return 59.94;
+        case '30000/1001':
+            return 29.97;
+        case '24000/1001':
+            return 23.976;
+        default:
+            return parseFloat(rate);
+    }
+};
+
 const videoInformationList = (
     currentStream: SDK.types.IStreamInfo,
     mediaInfo: SDK.api.pcap.IST2110VideoInfo
@@ -128,7 +141,7 @@ const videoInformationList = (
         },
         {
             titleTag: 'media_information.media_duration',
-            value: getTimeCode(currentStream?.statistics?.frame_count, currentStream?.statistics?.rate),
+            value: getTimeCode(currentStream?.statistics?.frame_count, getNumericRate(mediaInfo.rate)),
         },
         {
             titleTag: currentStream.statistics.is_interlaced
@@ -139,27 +152,13 @@ const videoInformationList = (
     ];
 };
 
-const getRateAnc = (rate: string): number => {
-    let finalRate = undefined;
-    switch (rate) {
-        case '60000/1001':
-            return (finalRate = 59.94);
-        case '30000/1001':
-            return (finalRate = 29.97);
-        case '24000/1001':
-            return (finalRate = 23.976);
-        default:
-            return parseFloat(rate);
-    }
-};
-
 const ancillaryInformationList = (
     currentStream: SDK.types.IStreamInfo,
     mediaInfo: SDK.api.pcap.IST2110AncInfo
 ): Array<Information> => {
     const isInterlaced = mediaInfo.scan_type === 'interlaced';
 
-    const rate = getRateAnc(mediaInfo.rate);
+    const rate = getNumericRate(mediaInfo.rate);
 
     return [
         {

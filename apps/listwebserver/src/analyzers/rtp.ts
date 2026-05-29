@@ -218,8 +218,10 @@ export async function doInterFrameRtpTsDeltaAnalysis(
 
 function getInterFrameRtpTsDeltaLimit(stream: api.pcap.IStreamInfo): api.pcap.IMinMax | null {
 
+    const statistics = stream.statistics as unknown as { rate?: unknown } | undefined;
     const mediaSpecific = stream.media_specific as unknown as { rate?: unknown } | undefined;
-    const rate = stream.statistics?.rate ?? (mediaSpecific && 'rate' in (mediaSpecific as object) ? mediaSpecific.rate : null);
+    const rate = (statistics && 'rate' in statistics ? statistics.rate : null) ??
+        (mediaSpecific && 'rate' in mediaSpecific ? mediaSpecific.rate : null);
 
 
     if (rate == null) return null;
