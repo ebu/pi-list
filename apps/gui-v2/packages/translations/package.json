@@ -17,8 +17,8 @@
         "typescript": "^4.0.3"
     },
     "peerDependencies": {
-        "rollup": "^2.38.5",
-        "csv-parse": "^3.0.0"
+        "rollup": "^4.53.2",
+        "csv-parse": "^6.1.0"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^17.1.0",
