@@ -10,7 +10,7 @@ class WebSocket {
         this.connections = new Map(); //<userID, [socketID]>
 
         this.websocket = require('socket.io')(app, {
-            path: '/socket'
+            path: '/socket',
         });
 
         logger('websocket-manager').info('WebSocket server listen at :3030/socket');
@@ -22,7 +22,7 @@ class WebSocket {
                 socketPool === undefined ? (socketPool = [socket.id]) : socketPool.push(socket.id);
                 this.connections.set(userID, socketPool);
 
-                const sessionCount = Object.keys(this.websocket.sockets.connected).length;
+                const sessionCount = this.getSessionCount();
 
                 logger('websocket-manager').info(
                     `User ${userID} successfully registered in the websocket server` +
@@ -32,7 +32,7 @@ class WebSocket {
 
             socket.on('disconnect', () => {
                 this.disconnectSession(socket.id);
-                const sessionCount = Object.keys(this.websocket.sockets.connected).length;
+                const sessionCount = this.getSessionCount();
 
                 logger('websocket-manager').info(
                     `Websocket connection ended (id: ${socket.id})` + `. Active Sessions: ${sessionCount}`
@@ -41,6 +41,23 @@ class WebSocket {
         });
 
         return this;
+    }
+
+    getSessionCount() {
+        const namespaceSockets = this.websocket?.of?.('/')?.sockets;
+        if (namespaceSockets && typeof namespaceSockets.size === 'number') {
+            return namespaceSockets.size;
+        }
+
+        return 0;
+    }
+
+    getSocketById(socketID) {
+        const namespaceSockets = this.websocket?.of?.('/')?.sockets;
+        if (namespaceSockets && typeof namespaceSockets.get === 'function') {
+            return namespaceSockets.get(socketID);
+        }
+
     }
 
     sendEventToUser(userID, dataObject) {
@@ -69,7 +86,8 @@ class WebSocket {
         for (let [key, value] of this.connections) {
             value.forEach((sID) => {
                 if (sID === socketID) {
-                    if (isObject(this.websocket.sockets.sockets[sID])) this.websocket.sockets.sockets[sID].disconnect();
+                    const socket = this.getSocketById(sID);
+                    if (isObject(socket)) socket.disconnect();
 
                     var newSocketPool = value.filter(function (el) {
                         return el != socketID;
