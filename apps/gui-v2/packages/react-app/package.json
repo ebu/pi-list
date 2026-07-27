@@ -60,6 +60,6 @@
         "typescript": "^5.9.3",
         "wavesurfer.js": "^7.12.1",
         "webpack": "^5.2.1",
-        "webpack-dev-server": "5.2.4"
+        "webpack-dev-server": "5.2.6"
     }
 }
