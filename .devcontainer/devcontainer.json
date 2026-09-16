@@ -8,7 +8,7 @@
 	},
 	"features": {
 		"ghcr.io/meaningful-ooo/devcontainer-features/fish": {},
-		"ghcr.io/devcontainers/features/docker-in-docker:3": {
+		"ghcr.io/devcontainers/features/docker-in-docker:4": {
 			"version": "latest",
 			"enableNonRootDocker": "true",
 			"moby": "true"
